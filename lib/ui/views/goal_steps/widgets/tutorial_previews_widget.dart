@@ -1,0 +1,325 @@
+import 'dart:math' as math; 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:mwb_connect_app/service_locator.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/services/translate_service.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
+
+class TutorialPreviews extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _TutorialPreviewsState();
+}
+
+class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProviderStateMixin {
+  LocalizationDelegate _localizationDelegate;
+  TranslateService _translator = locator<TranslateService>();    
+  GoalsViewModel _goalProvider;  
+  PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
+  AnimationController _animationController;
+  Animation<double> _animation;
+  GlobalKey _stackKey = GlobalKey();
+  GlobalKey _pageIndicatorKey = GlobalKey();
+  final _animationDuration = 300;
+  double _textHeight = 0;
+  double _pageIndicatorHeight = 0;
+  double _previewsOpenHeight = 0;
+  double _previewsClosedHeight = 30;
+  bool _isOpen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    _setAnimationController();
+  }
+
+  void _setAnimationController() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
+    _animation = Tween<double>(begin: _previewsClosedHeight, end: _previewsOpenHeight).animate(_animationController)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _goalProvider.setIsTutorialPreviewsAnimationCompleted(true);
+          if (!_goalProvider.shouldShowTutorialChevrons) {
+            _goalProvider.setShouldShowTutorialChevrons(false);
+          } else {
+            _goalProvider.setShouldShowTutorialChevrons(true);
+          }
+        }
+      });
+    _animationController.forward();     
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }  
+
+  _afterLayout(_) {
+    final RenderBox textBox = _stackKey.currentContext.findRenderObject();
+    final RenderBox pageIndicatorBox = _pageIndicatorKey.currentContext.findRenderObject();
+    setState(() {
+      _textHeight = textBox.size.height;
+      _pageIndicatorHeight = pageIndicatorBox.size.height + 2;
+      _previewsOpenHeight = _textHeight + _pageIndicatorHeight;
+      _isOpen = true;
+    });
+    _setAnimationController();         
+  } 
+
+  Widget _showTutorialPreviews(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 12.0),
+      height: _animation.value,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: Colors.white
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          _showPreviewsOpen(),
+          _showPreviewsClosed()
+        ]
+      )
+    );
+  }
+
+  Widget _showPreviewsOpen() {
+    var _storageService = locator<LocalStorageService>();
+    List<String> previews = [];
+    _storageService.tutorials.forEach((key, value) => previews.add(key));
+
+    return AnimatedOpacity(
+      opacity: _isOpen ? 1.0 : 0.0,
+      duration: Duration(milliseconds: _animationDuration),
+      child: Wrap(
+        children: <Widget>[
+          _buildTextStack(context, previews),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () async => {
+                  await _closePreviews()
+                },
+                child: Container(
+                  width: 58,
+                  child: _showChevron(isUp: true)
+                )
+              ),
+              Expanded(
+                child: Center(
+                  child: Container(
+                    key: _pageIndicatorKey,
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: SmoothPageIndicator(
+                      controller: _pageController,
+                      count: previews.length,
+                      effect: ScrollingDotsEffect(
+                        spacing: 8.0,
+                        dotWidth: 7.0,
+                        dotHeight: 7.0,
+                        dotColor: AppColors.SILVER,
+                        activeDotColor: Colors.yellowAccent
+                      ),
+                    ),
+                  )
+                )
+              ),
+              GestureDetector(
+                onTap: () async => {
+                  await _closePreviews()
+                },
+                child: Container(
+                  width: 58,
+                  child: _showChevron(isUp: true)
+                )
+              ),
+            ]
+          )
+        ]
+      )
+    );
+  }
+
+  Widget _showChevron({bool isUp}) {
+    return AnimatedOpacity(
+      opacity: _goalProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+      duration: Duration(milliseconds: _animationDuration),
+      child: Transform(
+        alignment: Alignment.center,
+        transform: !isUp ? Matrix4.rotationX(math.pi) : Matrix4.rotationY(math.pi),
+        child: Image.asset(
+          'assets/images/chevron.png',
+          width: 18,
+          height: 18,
+        )
+      ),
+    );
+  }
+
+  _closePreviews() async {
+    setState(() {
+      _isOpen = false;
+    });
+    _goalProvider.setIsTutorialPreviewsAnimationCompleted(false);
+    _animationController.reverse();
+  }  
+
+  Widget _showPreviewsClosed() {
+    return AnimatedOpacity(
+      opacity: _isOpen ? 0.0 : 1.0,
+      duration: Duration(milliseconds: _animationDuration),
+      child: Row(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () async => {
+              await _openPreviews()
+            },
+            child: Container(
+              width: 58,
+              child: _showChevron(isUp: false)
+            )
+          ),
+          Expanded(
+            child: AnimatedOpacity(
+              opacity: _goalProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+              duration: Duration(milliseconds: _animationDuration),              
+              child: Center(
+                child: GestureDetector(
+                  onTap: () async => {
+                    await _openPreviews()
+                  },
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      _translator.getText('tutorial_previews.show_helpers'),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold
+                      )
+                    )
+                  )
+                ),
+              ),
+            )
+          ),
+          GestureDetector(
+            onTap: () async => {
+              await _openPreviews()
+            },
+            child: Container(
+              width: 58,
+              child: _showChevron(isUp: false)
+            )
+          )
+        ]
+      )
+    ); 
+  }
+
+  _openPreviews() async {
+    setState(() {
+      _isOpen = true;
+    });    
+    _goalProvider.setIsTutorialPreviewsAnimationCompleted(false);
+    _animationController.forward();
+  }
+
+  _buildTextStack(BuildContext context, List<String> previews) {
+    Widget carousel;
+    if (_textHeight == null) {
+      carousel = Container();
+    } else {
+      carousel = Container(
+        height: _textHeight,
+        child: PageView.builder(
+          controller: _pageController,
+          itemBuilder: (BuildContext context, int itemIndex) {
+            return _buildCarouselItem(context, previews[itemIndex]);
+          },
+          itemCount: previews.length,
+        ),
+      );
+    }
+
+    final previewItems = previews
+      .map((item) => Column(children: [
+        Container(
+          child: _buildCarouselItem(context, item)
+        )]))
+      .toList();
+
+    return IndexedStack(
+      key: _stackKey,
+      children: <Widget>[
+        carousel,
+        ...previewItems
+      ],
+    );
+  }   
+
+  Widget _buildCarouselItem(BuildContext context, String item) {
+    String itemText = _translator.getText('tutorials.$item.preview.text');
+    String itemLink = _translator.getText('tutorials.$item.preview.link');
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.white,
+            height: 1.2
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: itemText + ' ',
+              recognizer: TapGestureRecognizer()..onTap = () {
+                if (_isOpen) Phoenix.rebirth(context);
+                //if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
+              },              
+            ),
+            TextSpan(
+              text: itemLink,
+              style: TextStyle(
+                color: Colors.yellow,
+                decoration: TextDecoration.underline,
+                fontWeight: FontWeight.bold
+              ),
+              recognizer: TapGestureRecognizer()..onTap = () {
+                if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
+              },
+            )
+          ],
+        )
+      )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {  
+    _localizationDelegate = LocalizedApp.of(context).delegate;    
+    _translator.localizationDelegate = _localizationDelegate;    
+    _goalProvider = Provider.of<GoalsViewModel>(context);
+
+    return _showTutorialPreviews(context);
+  }
+}

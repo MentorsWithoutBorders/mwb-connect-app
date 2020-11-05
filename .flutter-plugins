@@ -1,0 +1,25 @@
+# This is a generated file; do not edit or check into version control.
+cloud_firestore=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.13.7/
+cloud_firestore_web=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-0.1.1+2/
+devicelocale=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/devicelocale-0.2.3/
+firebase_analytics=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-5.0.16/
+firebase_analytics_web=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_analytics_web-0.1.1/
+firebase_auth=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.14.0+9/
+firebase_core=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.4.5/
+firebase_core_web=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.1.1+2/
+firebase_storage=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-3.1.6/
+flutter_device_locale=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_device_locale-0.4.0/
+flutter_local_notifications=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-1.5.0+1/
+flutter_segment=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_segment-2.2.2/
+flutuate_mixpanel=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutuate_mixpanel-1.1.5/
+keyboard_visibility=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/keyboard_visibility-0.5.6/
+package_info=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/package_info-0.4.3+2/
+path_provider=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.24/
+path_provider_linux=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2/
+path_provider_macos=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+6/
+path_provider_windows=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-0.0.4+3/
+shared_preferences=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4/
+shared_preferences_linux=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-0.0.2+4/
+shared_preferences_macos=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+11/
+shared_preferences_web=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+7/
+shared_preferences_windows=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-0.0.1+3/

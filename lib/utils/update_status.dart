@@ -1,0 +1,5 @@
+enum UpdateStatus {
+  NO_UPDATE,
+  RECOMMEND_UPDATE,
+  FORCE_UPDATE
+}
