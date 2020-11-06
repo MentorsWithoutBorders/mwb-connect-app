@@ -293,8 +293,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
             TextSpan(
               text: itemText + ' ',
               recognizer: TapGestureRecognizer()..onTap = () {
-                if (_isOpen) Phoenix.rebirth(context);
-                //if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
+                // if (_isOpen) Phoenix.rebirth(context);
+                if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
               },              
             ),
             TextSpan(

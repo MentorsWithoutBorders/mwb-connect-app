@@ -65,7 +65,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: AppColors.ALLPORTS
+              color: AppColors.CINNABAR
             ),
             child: Column(
               children: <Widget>[
