@@ -8,6 +8,7 @@ import 'package:rxdart/subjects.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/received_notification_model.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
+import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
@@ -49,6 +50,7 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView> {
   LocalStorageService _storageService = locator<LocalStorageService>();
+  UserService _userService = locator<UserService>();
   DownloadService _downloadService = locator<DownloadService>();
   AnalyticsService _analyticsService = locator<AnalyticsService>();
   LocalizationDelegate _localizationDelegate;
@@ -229,8 +231,8 @@ class _RootViewState extends State<RootView> {
     );
   }
   
-  void _setUserDetails() {
-    _downloadService.setUserDetails();
+  void _setUserStorage() {
+    _userService.setUserStorage();
   }    
 
   @override
@@ -259,7 +261,7 @@ class _RootViewState extends State<RootView> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          _setUserDetails();
+          _setUserStorage();
           return _showGoalsView(goalProvider);
         } else
           return _buildWaitingScreen();

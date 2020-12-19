@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:async';
-import 'package:quiver/strings.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
@@ -15,12 +14,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/onboarding_model.dart';
 import 'package:mwb_connect_app/core/models/tutorial_model.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/quiz_settings_model.dart';
-import 'package:mwb_connect_app/core/models/notification_settings_model.dart';
 import 'package:mwb_connect_app/core/models/i18n_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/users_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
@@ -136,30 +131,6 @@ class DownloadService {
       storageService.showQuizTimer = quizSettings.showTimer;
     }  
     debugPrint('preferences were set');
-  }
-
-  setUserDetails() async {
-    LocalStorageService storageService = locator<LocalStorageService>();    
-    // Get user details
-    UsersViewModel usersViewModel = locator<UsersViewModel>();
-    User user = await usersViewModel.getUserDetails();
-    if (user != null) {
-      if (isNotEmpty(user.name)) {
-        storageService.userName = user.name;
-      }
-      if (isNotEmpty(user.email)) {
-        storageService.userEmail = user.email;
-      }
-    }
-    // Get notifications settings
-    NotificationsViewModel notificationsViewModel = locator<NotificationsViewModel>();
-    NotificationSettings notificationSettings = await notificationsViewModel.getNotificationSettings();
-    if (notificationSettings != null) {
-      storageService.notificationsEnabled = notificationSettings.enabled;
-    }
-    if (notificationSettings != null && notificationSettings.time != null) {
-      storageService.notificationsTime = notificationSettings.time;
-    }      
   }
 
   getImages() async {

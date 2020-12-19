@@ -3,7 +3,6 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 
 class DefaultsService {
-
   void setDefaults() {
     var storageService = locator<LocalStorageService>();
     if (storageService.onboarding == null ) {

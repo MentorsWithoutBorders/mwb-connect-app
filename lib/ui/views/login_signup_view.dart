@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/users_view_model.dart';
@@ -28,7 +29,8 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   LocalStorageService _storageService = locator<LocalStorageService>();
   LocalizationDelegate _localizationDelegate;
   TranslateService _translator = locator<TranslateService>();  
-  AnalyticsService analyticsService = locator<AnalyticsService>();  
+  UserService _userService = locator<UserService>();  
+  AnalyticsService _analyticsService = locator<AnalyticsService>();  
   KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
   final ScrollController _scrollController = ScrollController();
@@ -464,18 +466,19 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
+          _setUserId(userId);
+          _userService.setUserStorage();
           print('Signed in: $userId');
         } else {
           userId = await widget.auth.signUp(_name, _email, _password);
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
+          _setUserId(userId);
+          _setUserStorage(_name, _email);
+          _addUser(userId, _name, _email);          
           print('Signed up user: $userId');
         }
-        _setUserId(userId);
-        _setUserEmail(_email);
-        _setUserName(_name);
-        _addUser(userId, _name, _email);
-        _identifyUser(userId, _name, _email);
+        _identifyUser();
         setState(() {
           _isLoading = false;
         });
@@ -494,7 +497,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     }
   }
 
-  // Check if form is valid before perform login or sign_up
+  // Check if form is valid before performing login or sign_up
   bool _validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -506,24 +509,24 @@ class _LoginSignupViewState extends State<LoginSignupView> {
 
   void _setUserId(String userId) {
     _storageService.userId = userId;
-  }
-  
-  void _setUserEmail(String email) {
-    _storageService.userEmail = email;
-  }
-  
-  void _setUserName(String name) {
+  }  
+
+  void _setUserStorage(String name, String email) {
     _storageService.userName = name;
-  }     
+    _storageService.userEmail = email;
+  }   
 
   void _addUser(String userId, String name, String email) {
     UsersViewModel usersViewModel = locator<UsersViewModel>();
     User user = User(id: userId, name: name, email: email);
-    usersViewModel.setUser(user);
+    usersViewModel.setUserDetails(user);
   }
 
-  void _identifyUser(String userId, String name, String email) {
-    analyticsService.identifyUser(userId, name, email);
+  void _identifyUser() {
+    String userId = _storageService.userId;
+    String name = _storageService.userName;
+    String email = _storageService.userEmail;
+    _analyticsService.identifyUser(userId, name, email);
   }  
 
   void _resetForm() {
