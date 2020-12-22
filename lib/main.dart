@@ -84,11 +84,13 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
   }
 
   Widget _buildWaitingScreen() {
-    return Stack(
-      children: <Widget>[
-        BackgroundGradient(),
-        Loader()
-      ]
+    return MaterialApp(
+      home: Stack(
+        children: <Widget>[
+          BackgroundGradient(),
+          Loader()
+        ]
+      ),
     );
   }  
 

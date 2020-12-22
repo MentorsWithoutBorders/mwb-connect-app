@@ -8,7 +8,6 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
-import 'package:mwb_connect_app/core/viewmodels/users_view_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
 import 'package:mwb_connect_app/ui/widgets/loader.dart';
@@ -466,15 +465,13 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-          _setUserId(userId);
-          _userService.setUserStorage();
+          _setUserStorage(userId: userId, userEmail: _email);
           print('Signed in: $userId');
         } else {
           userId = await widget.auth.signUp(_name, _email, _password);
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
-          _setUserId(userId);
-          _setUserStorage(_name, _email);
+          _setUserStorage(userId: userId, userName: _name, userEmail: _email);
           _addUser(userId, _name, _email);          
           print('Signed up user: $userId');
         }
@@ -507,19 +504,13 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return false;
   }
 
-  void _setUserId(String userId) {
-    _storageService.userId = userId;
-  }  
-
-  void _setUserStorage(String name, String email) {
-    _storageService.userName = name;
-    _storageService.userEmail = email;
-  }   
+  void _setUserStorage({String userId, String userName, String userEmail}) {
+    _userService.setUserStorage(userId: userId, userName: userName, userEmail: _email);
+  }
 
   void _addUser(String userId, String name, String email) {
-    UsersViewModel usersViewModel = locator<UsersViewModel>();
     User user = User(id: userId, name: name, email: email);
-    usersViewModel.setUserDetails(user);
+    _userService.setUserDetails(user);
   }
 
   void _identifyUser() {
