@@ -25,11 +25,11 @@ class User {
     subFields = snapshot['subFields']?.cast<String>() ?? [];
     availability = snapshot['availability']?.cast<String>() ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
-    lessonsAvailability = availabilityFromJson(snapshot['lessonsAvailability']) ?? LessonsAvailability();
+    lessonsAvailability = lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? LessonsAvailability();
     registeredOn = snapshot['registeredOn']?.toDate();
   } 
 
-  LessonsAvailability availabilityFromJson(Map<String, dynamic> json) {
+  LessonsAvailability lessonsAvailabilityFromJson(Map<String, dynamic> json) {
     return LessonsAvailability(maxNumber: json['maxNumber'], maxNumberUnit: json['maxNumberUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
   }
 
@@ -43,12 +43,12 @@ class User {
       'subFields': subFields,
       'availability': availability,
       'isAvailable': isAvailable,
-      'lessonsAvailability': availabilityToJson(lessonsAvailability),
+      'lessonsAvailability': lessonsAvailabilityToJson(lessonsAvailability),
       'registeredOn': registeredOn
     };
   }
 
-  Map<String, dynamic> availabilityToJson(LessonsAvailability availability) {
+  Map<String, dynamic> lessonsAvailabilityToJson(LessonsAvailability availability) {
     return {
       'maxNumber': availability.maxNumber, 
       'maxNumberUnit': availability.maxNumberUnit, 
