@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:quiver/strings.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/received_notification_model.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
@@ -260,7 +261,7 @@ class _RootViewState extends State<RootView> {
         );
         break;
       case AuthStatus.LOGGED_IN:
-        if (_userId.length > 0 && _userId != null) {
+        if (isNotEmpty(_userId)) {
           _setUserStorage();
           return _showGoalsView(goalProvider);
         } else

@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/api_service.dart';
+import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 
 class GoalsViewModel extends ChangeNotifier {
-  Api _api = locator<Api>();
+  GoalsService _goalsService = locator<GoalsService>();   
 
   List<Goal> goals;
   Goal selectedGoal;
@@ -16,46 +16,31 @@ class GoalsViewModel extends ChangeNotifier {
   bool shouldShowTutorialChevrons = false;
 
   Future<List<Goal>> fetchGoals() async {
-    QuerySnapshot result = await _api.getDataCollection(path: 'goals', isForUser: true);
-    goals = result.documents
-        .map((doc) => Goal.fromMap(doc.data, doc.documentID))
-        .toList();
-    sortGoalList();
+    goals = await _goalsService.fetchGoals();
     return goals;
   }
 
   Stream<QuerySnapshot> fetchGoalsAsStream() {
-    return _api.streamDataCollection(path: 'goals', isForUser: true);
+    return _goalsService.fetchGoalsAsStream();
   }
 
   Future<Goal> getGoalById(String id) async {
-    DocumentSnapshot doc = await _api.getDocumentById(path: 'goals', isForUser: true, id: id);
-    return Goal.fromMap(doc.data, doc.documentID);
+    return _goalsService.getGoalById(id);
   }
 
   Future deleteGoal(String id) async {
     _removeGoalFromList(id);
-    await _api.removeSubCollection(path: 'goals/' + id + '/steps', isForUser: true);    
-    await _api.removeDocument(path: 'goals', isForUser: true, id: id);
+    await _goalsService.deleteGoal(id);
     return ;
   }
 
-  Future updateGoal(Goal data, String id) async {
-    await _api.updateDocument(path: 'goals', isForUser: true, data: data.toJson(), id: id);
+  Future updateGoal(Goal goal, String id) async {
+    await _goalsService.updateGoal(goal, id);
     return ;
   }
 
-  Future<Goal> addGoal(Goal data) async {
-    DocumentReference doc = await _api.addDocument(path: 'goals', isForUser: true, data: data.toJson());
-    Goal addedGoal = await doc.get().then((datasnapshot) {
-      if (datasnapshot.exists) {
-        Goal goal = Goal(id: doc.documentID, text: datasnapshot.data['text'], index: datasnapshot.data['index']);
-        return goal;
-      } else {
-        return Goal();
-      }
-    });    
-    return addedGoal;
+  Future<Goal> addGoal(Goal goal) async {  
+    return _goalsService.addGoal(goal);
   }
 
   _removeGoalFromList(String goalId) {

@@ -33,7 +33,8 @@
 		"title": "Get started",
 		"full_name": "Full name",
 		"action": "Create account",
-		"login": "Have an account? Sign in"
+		"login": "Have an account? Sign in",
+		"not_approved": "You have to be a student from one of our partner NGOs or an employee of one of our partner companies."
 	},
 	"forgot_password": {
 		"title": "Forgot password",

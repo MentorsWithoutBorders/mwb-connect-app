@@ -13,7 +13,7 @@ class ApprovedUser extends User {
     isMentor = snapshot['isMentor'] ?? false;
     organization = snapshot['organization'] ?? '';
     field = snapshot['field'] ?? '';
-    subFields = snapshot['subFields'] ?? [];
+    subFields = snapshot['subFields']?.cast<String>() ?? [];
     goal = snapshot['goal'] ?? '';
   }
 

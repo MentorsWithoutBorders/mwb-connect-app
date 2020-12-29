@@ -3,6 +3,7 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
+import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/notifications_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
@@ -23,6 +24,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => Api());
   locator.registerLazySingleton(() => DefaultsService());
   locator.registerLazySingleton(() => UserService());
+  locator.registerLazySingleton(() => GoalsService());
   locator.registerLazySingleton(() => NotificationsService());
   locator.registerLazySingleton(() => DownloadService());
   locator.registerLazySingleton(() => TranslateService());

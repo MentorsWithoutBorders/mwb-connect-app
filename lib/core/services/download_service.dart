@@ -53,11 +53,11 @@ class DownloadService {
     Directory directory = await getApplicationDocumentsDirectory();
     String fileAssetsPath = 'assets/i18n/' + locale + '.json';
     String fileAppDirPath = directory.path + '/i18n/' + locale + '.json';
-    if (FileSystemEntity.typeSync(fileAppDirPath) == FileSystemEntityType.notFound) {
+    //if (FileSystemEntity.typeSync(fileAppDirPath) == FileSystemEntityType.notFound) {
       ByteData data = await rootBundle.load(fileAssetsPath);
       List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(fileAppDirPath).writeAsBytes(bytes);
-    }
+    //}
   }
   
   _downloadLocaleFile(String fileName) async {   

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/approved_user_model.dart';
+import 'package:quiver/strings.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -6,9 +8,11 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
+import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
 import 'package:mwb_connect_app/ui/widgets/loader.dart';
 import 'package:mwb_connect_app/ui/views/forgot_password.dart';
@@ -29,6 +33,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   LocalizationDelegate _localizationDelegate;
   TranslateService _translator = locator<TranslateService>();  
   UserService _userService = locator<UserService>();  
+  GoalsService _goalsService = locator<GoalsService>();  
   AnalyticsService _analyticsService = locator<AnalyticsService>();  
   KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
@@ -381,7 +386,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             _errorMessage,
             style: TextStyle(
               fontSize: 13.0,
-              color: Colors.orange,
+              color: AppColors.SOLITUDE,
               height: 1.0,
               fontWeight: FontWeight.w400
             ),
@@ -465,22 +470,28 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-          _setUserStorage(userId: userId, userEmail: _email);
+          _setUserStorage(userId: userId, email: _email);
           print('Signed in: $userId');
         } else {
-          userId = await widget.auth.signUp(_name, _email, _password);
-          //widget.auth.sendEmailVerification();
-          //_showVerifyEmailSentDialog();
-          _setUserStorage(userId: userId, userName: _name, userEmail: _email);
-          _addUser(userId, _name, _email);          
-          print('Signed up user: $userId');
+          await _signInAnonymously();
+          ApprovedUser approvedUser = await _userService.checkApprovedUser(_email);
+          if (approvedUser != null) {
+            userId = await widget.auth.signUp(_name, _email, _password);
+            //widget.auth.sendEmailVerification();
+            //_showVerifyEmailSentDialog();
+            _setUserStorage(userId: userId, name: _name, email: _email);
+            _addUser(approvedUser);          
+            print('Signed up user: $userId');
+          } else {
+            throw Exception(_translator.getText('sign_up.not_approved'));
+          }
         }
-        _identifyUser();
         setState(() {
           _isLoading = false;
         });
 
-        if (userId.length > 0 && userId != null) {
+        if (isNotEmpty(userId)) {
+          _identifyUser();
           Navigator.pop(context);
           widget.loginCallback();
         }
@@ -504,13 +515,36 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return false;
   }
 
-  void _setUserStorage({String userId, String userName, String userEmail}) {
-    _userService.setUserStorage(userId: userId, userName: userName, userEmail: _email);
+  Future _signInAnonymously() async {
+    await widget.auth.signInAnonymously();
+  }  
+
+  void _setUserStorage({String userId, String name, String email}) {
+    User user = User(id: userId, name: name, email: email);    
+    _userService.setUserStorage(user: user);
   }
 
-  void _addUser(String userId, String name, String email) {
-    User user = User(id: userId, name: name, email: email);
+  void _addUser(ApprovedUser approvedUser) async {
+    DateTime now = DateTime.now();
+    User defaultUser = await _userService.getDefaultUserDetails();
+    User user = User(id: approvedUser.id, name: approvedUser.name, email: approvedUser.email, isMentor: approvedUser.isMentor, 
+        organization: approvedUser.organization, field: approvedUser.field, subFields: approvedUser.subFields, 
+        availability: defaultUser.availability, registeredOn: now);
+    if (approvedUser.isMentor) {
+      user.isAvailable = defaultUser.isAvailable;
+      user.lessonsAvailability = defaultUser.lessonsAvailability;
+    }
     _userService.setUserDetails(user);
+    if (!approvedUser.isMentor && isNotEmpty(approvedUser.goal)) {
+      _addGoal(approvedUser.goal);
+    }
+  }
+
+  void _addGoal(String goalText) {
+    DateTime now = DateTime.now();
+    DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);    
+    Goal goal = Goal(text: goalText, index: 0, dateTime: dateTime);
+    _goalsService.addGoal(goal);
   }
 
   void _identifyUser() {

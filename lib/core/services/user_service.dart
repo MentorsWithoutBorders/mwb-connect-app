@@ -10,37 +10,35 @@ import 'package:mwb_connect_app/core/services/notifications_service.dart';
 
 class UserService {
   Api _api = locator<Api>();
-  LocalStorageService storageService = locator<LocalStorageService>();
+  LocalStorageService _storageService = locator<LocalStorageService>();
   NotificationsService _notificationsService = locator<NotificationsService>(); 
 
-  setUserStorage({String userId, String userName, String userEmail}) async { 
-    if (storageService.userId == null) {
-      storageService.userId = userId;
-      storageService.userEmail = userEmail;
-      if (userName != null) {
-        storageService.userName = userName;
+  setUserStorage({User user}) async { 
+    if (_storageService.userId == null) {
+      _storageService.userId = user.id;
+      _storageService.userEmail = user.email;
+      if (user.name != null) {
+        _storageService.userName = user.name;
       } else {
         // Get user details
-        User user = await getUserDetails();
-        if (user != null) {
-          if (isNotEmpty(user.name)) {
-            storageService.userName = user.name;
-          }
+        User userDetails = await getUserDetails();
+        if (isNotEmpty(userDetails.name)) {
+          _storageService.userName = userDetails.name;
         }
       }
     }
     // Get notifications settings
     NotificationSettings notificationSettings = await _notificationsService.getNotificationSettings();
     if (notificationSettings != null) {
-      storageService.notificationsEnabled = notificationSettings.enabled;
+      _storageService.notificationsEnabled = notificationSettings.enabled;
     }
     if (notificationSettings != null && notificationSettings.time != null) {
-      storageService.notificationsTime = notificationSettings.time;
+      _storageService.notificationsTime = notificationSettings.time;
     }      
   }
   
-  setUserDetails(User data) async {
-    await _api.setDocument(path: 'profile', isForUser: true, data: data.toJson(), id: 'details');
+  setUserDetails(User user) async {
+    await _api.setDocument(path: 'profile', isForUser: true, data: user.toJson(), id: 'details');
   }
 
   Future<User> getUserDetails() async {
@@ -51,11 +49,30 @@ class UserService {
       return User();
     }
   }
+
+  Future<User> getDefaultUserDetails() async {
+    DocumentSnapshot doc = await _api.getDocumentById(path: 'user_default_profile', isForUser: false, id: 'details');
+    if (doc.exists) {
+      return User.fromMap(doc.data, doc.documentID);
+    } else {
+      return User();
+    }
+  }  
   
   Future<List<ApprovedUser>> fetchApprovedUsers() async {
     QuerySnapshot result = await _api.getDataCollection(path: 'approved_users', isForUser: false);
     return result.documents
         .map((doc) => ApprovedUser.fromMap(doc.data, doc.documentID))
         .toList();
-  }    
+  }
+
+  Future<ApprovedUser> checkApprovedUser(String email) async {
+    List<ApprovedUser> approvedUsers = await fetchApprovedUsers();
+    for (final user in approvedUsers) {
+      if (user.email == email) {
+        return user;
+      }
+    }
+    return null;
+  }
 }
