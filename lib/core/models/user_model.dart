@@ -8,7 +8,7 @@ class User {
   String organization;
   String field;
   List<String> subFields;
-  List<String> availability;
+  List<Availability> availability;
   bool isAvailable;
   LessonsAvailability lessonsAvailability;
   DateTime registeredOn;
@@ -23,11 +23,19 @@ class User {
     organization = snapshot['organization'] ?? '';
     field = snapshot['field'] ?? '';
     subFields = snapshot['subFields']?.cast<String>() ?? [];
-    availability = snapshot['availability']?.cast<String>() ?? [];
+    availability = availabilityFromJson(snapshot['availability']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
     lessonsAvailability = lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? LessonsAvailability();
     registeredOn = snapshot['registeredOn']?.toDate();
-  } 
+  }
+  
+  List<Availability> availabilityFromJson(List<Map<String, dynamic>> json) {
+    List<Availability> availabilityList = List();
+    for (int i = 0; i < json.length; i++) {
+      availabilityList.add(Availability(dayOfWeek: json[i]['dayOfWeek'], time: Time(from: json[i]['time']['from'], to: json[i]['time']['to'])));
+    }
+    return availabilityList;
+  }
 
   LessonsAvailability lessonsAvailabilityFromJson(Map<String, dynamic> json) {
     return LessonsAvailability(maxNumber: json['maxNumber'], maxNumberUnit: json['maxNumberUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
@@ -41,19 +49,49 @@ class User {
       'organization': organization,
       'field': field,
       'subFields': subFields,
-      'availability': availability,
+      'availability': availabilityToJson(availability),
       'isAvailable': isAvailable,
       'lessonsAvailability': lessonsAvailabilityToJson(lessonsAvailability),
       'registeredOn': registeredOn
     };
   }
 
-  Map<String, dynamic> lessonsAvailabilityToJson(LessonsAvailability availability) {
+  List<Map<String, dynamic>> availabilityToJson(List<Availability> availability) {
+    List<Map<String,dynamic>> availabilityList = List();
+    for (int i = 0; i < availability.length; i++) {
+      availabilityList.add({
+        'dayOfWeek': availability[i].dayOfWeek, 
+        'time': {
+          'from': availability[i].time.from,
+          'to': availability[i].time.to
+        }
+      });
+    }
+    return availabilityList;
+  }   
+
+  Map<String, dynamic> lessonsAvailabilityToJson(LessonsAvailability lessonsAvailability) {
     return {
-      'maxNumber': availability.maxNumber, 
-      'maxNumberUnit': availability.maxNumberUnit, 
-      'minInterval': availability.minInterval,
-      'minIntervalUnit': availability.minIntervalUnit
+      'maxNumber': lessonsAvailability.maxNumber, 
+      'maxNumberUnit': lessonsAvailability.maxNumberUnit, 
+      'minInterval': lessonsAvailability.minInterval,
+      'minIntervalUnit': lessonsAvailability.minIntervalUnit
     };
   }  
+}
+
+
+class Availability {
+  String dayOfWeek;
+  Time time;
+
+  Availability({this.dayOfWeek, this.time});
+}
+
+
+class Time {
+  String from;
+  String to;
+
+  Time({this.from, this.to});
 }
