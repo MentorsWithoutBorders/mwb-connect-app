@@ -10,6 +10,7 @@ import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_view.dart';
 import 'package:mwb_connect_app/ui/views/others/feedback_view.dart';
@@ -58,6 +59,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     _translator.localizationDelegate = _localizationDelegate;       
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _stepProvider = Provider.of<StepsViewModel>(context);
+    bool isMentor = _storageService.isMentor;
     
     return Drawer(
       child: ListView(
@@ -85,6 +87,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
               ],
             ),
+          ),
+          ListTile(
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: IconTheme(
+                data: IconThemeData(
+                  color: AppColors.SILVER
+                ),
+                child: Icon(Icons.account_circle),
+              )
+            ),
+            dense: true,
+            title: Text(_translator.getText('drawer.profile')),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileView(isMentor: isMentor)));
+            },
           ),
           ListTile(
             leading: Padding(

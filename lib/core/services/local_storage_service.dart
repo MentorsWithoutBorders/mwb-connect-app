@@ -18,6 +18,9 @@ class LocalStorageService {
   String get userName => _getFromDisk('userName');
   set userName(String value) => _saveToDisk('userName', value);
 
+  bool get isMentor => _getFromDisk('isMentor');
+  set isMentor(bool value) => _saveToDisk('isMentor', value);  
+
   String get onboarding => _getFromDisk('onboarding');
   set onboarding(String value) => _saveToDisk('onboarding', value);  
 

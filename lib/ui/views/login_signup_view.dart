@@ -470,7 +470,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-          _setUserStorage(userId: userId, email: _email);
+          await _setUserStorage(userId: userId, email: _email);
           print('Signed in: $userId');
         } else {
           await _signInAnonymously();
@@ -479,7 +479,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             userId = await widget.auth.signUp(_name, _email, _password);
             //widget.auth.sendEmailVerification();
             //_showVerifyEmailSentDialog();
-            _setUserStorage(userId: userId, name: _name, email: _email);
+            await _setUserStorage(userId: userId, name: _name, email: _email);
             _addUser(approvedUser);          
             print('Signed up user: $userId');
           } else {
@@ -519,9 +519,9 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     await widget.auth.signInAnonymously();
   }  
 
-  void _setUserStorage({String userId, String name, String email}) {
+  Future _setUserStorage({String userId, String name, String email}) async {
     User user = User(id: userId, name: name, email: email);    
-    _userService.setUserStorage(user: user);
+    await _userService.setUserStorage(user: user);
   }
 
   void _addUser(ApprovedUser approvedUser) async {

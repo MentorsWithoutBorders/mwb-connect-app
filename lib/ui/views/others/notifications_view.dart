@@ -52,11 +52,11 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     super.dispose();
     _controller.dispose();
   }
-
+  
   Widget _showNotifications(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: _animationDuration),
-      margin: const EdgeInsets.fromLTRB(20.0, 120.0, 20.0, 0.0),
+      margin: const EdgeInsets.fromLTRB(20.0, 100.0, 20.0, 0.0),
       height: _isEnabled ? 75.0 : 55.0,
       child: Card(
         elevation: 3,

@@ -46,12 +46,16 @@
 		"email_sent": "We've sent you an email, please click on the link that you'll find in the message and you'll be able to reset your password."
 	},
 	"drawer": {
+		"profile": "Profile",		
 		"notifications": "Notifications",
 		"support": "Support",
 		"feedback": "Send feedback",
 		"terms": "Terms of usage",
 		"logout": "Logout"
 	},
+	"profile": {
+		"title": "My profile"
+	},	
 	"goals": {
 		"my_goals": "My goals",
 		"first_goal": "First goal",

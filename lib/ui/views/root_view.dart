@@ -63,6 +63,7 @@ class _RootViewState extends State<RootView> {
     super.initState();
     _setPreferences();
     _downloadService.getImages();
+    _setUserStorage();
     widget.auth.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
@@ -232,8 +233,8 @@ class _RootViewState extends State<RootView> {
     );
   }
   
-  void _setUserStorage() {
-    _userService.setUserStorage();
+  Future _setUserStorage() async {
+    await _userService.setUserStorage();
   }    
 
   @override
@@ -262,7 +263,6 @@ class _RootViewState extends State<RootView> {
         break;
       case AuthStatus.LOGGED_IN:
         if (isNotEmpty(_userId)) {
-          _setUserStorage();
           return _showGoalsView(goalProvider);
         } else
           return _buildWaitingScreen();

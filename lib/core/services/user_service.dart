@@ -13,18 +13,22 @@ class UserService {
   LocalStorageService _storageService = locator<LocalStorageService>();
   NotificationsService _notificationsService = locator<NotificationsService>(); 
 
-  setUserStorage({User user}) async { 
-    if (_storageService.userId == null) {
+  setUserStorage({User user}) async {
+    User userDetails = await getUserDetails();
+    if (_storageService.userId == null && user != null) {
       _storageService.userId = user.id;
       _storageService.userEmail = user.email;
       if (user.name != null) {
         _storageService.userName = user.name;
       } else {
-        // Get user details
-        User userDetails = await getUserDetails();
         if (isNotEmpty(userDetails.name)) {
           _storageService.userName = userDetails.name;
         }
+      }
+      if (userDetails.isMentor != null) {
+        _storageService.isMentor = userDetails.isMentor;
+      } else {
+        _storageService.isMentor = false;
       }
     }
     // Get notifications settings
@@ -34,7 +38,7 @@ class UserService {
     }
     if (notificationSettings != null && notificationSettings.time != null) {
       _storageService.notificationsTime = notificationSettings.time;
-    }      
+    }
   }
   
   setUserDetails(User user) async {

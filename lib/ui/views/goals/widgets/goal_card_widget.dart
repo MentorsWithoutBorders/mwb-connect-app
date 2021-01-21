@@ -17,7 +17,7 @@ class GoalCard extends StatefulWidget {
 class _GoalCardState extends State<GoalCard> {
   GoalsViewModel _goalProvider;  
 
-  Widget showGoalCard(context) {
+  Widget _showGoalCard(context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
       child: Card(
@@ -50,7 +50,7 @@ class _GoalCardState extends State<GoalCard> {
         _goalProvider.setIsTutorialPreviewsAnimationCompleted(false);
         Navigator.push(context, MaterialPageRoute(builder: (_) => GoalStepsView()));
       },
-      child: showGoalCard(context)
+      child: _showGoalCard(context)
     );
   }
 }

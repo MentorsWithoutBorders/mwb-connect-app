@@ -79,7 +79,7 @@ class _TutorialViewState extends State<TutorialView> {
   Widget _showTutorial(BuildContext context, _localizationDelegate) {
     int initialPage = widget.section != null ? _sections.indexOf(widget.section) : 0;
     PageController controller = PageController(initialPage: initialPage, viewportFraction: 1, keepPage: true);
-    return Container(
+    return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 90.0, 15.0, 50.0),    
       child: Container(
         decoration: BoxDecoration(
@@ -110,7 +110,7 @@ class _TutorialViewState extends State<TutorialView> {
                   dotWidth: 7.0,
                   dotHeight: 7.0,
                   dotColor: AppColors.SILVER,
-                  activeDotColor: AppColors.MINT_GREEN
+                  activeDotColor: AppColors.EMERALD
                 ),
               ),
             ),
@@ -206,7 +206,16 @@ class _TutorialViewState extends State<TutorialView> {
         Loader()
       ]
     );
-  }   
+  }
+
+  Widget _showTitle() {
+    return Container(
+      padding: const EdgeInsets.only(right: 50.0),
+      child: Center(
+        child: Text(_translator.getText('tutorials.${widget.type}.title'),),
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -216,12 +225,7 @@ class _TutorialViewState extends State<TutorialView> {
     if (_isLoaded) {
       return Scaffold(
         appBar: AppBar(
-          title: Container(
-            padding: const EdgeInsets.only(right: 50.0),
-            child: Center(
-              child: Text(_translator.getText('tutorials.${widget.type}.title')),
-            )
-          ),
+          title: _showTitle(),
           elevation: 0.0,
           backgroundColor: Colors.transparent,
         ),

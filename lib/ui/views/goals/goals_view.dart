@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
-import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
@@ -37,7 +36,6 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   LocalizationDelegate _localizationDelegate;
   LocalStorageService _storageService = locator<LocalStorageService>();
   TranslateService _translator = locator<TranslateService>();  
-  CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
   QuizzesViewModel _quizProvider;
   final _scrollDirection = Axis.vertical;  
@@ -210,7 +208,6 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     _localizationDelegate = LocalizedApp.of(context).delegate;    
     _translator.localizationDelegate = _localizationDelegate;    
-    _commonProvider = Provider.of<CommonViewModel>(context);
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _quizProvider = Provider.of<QuizzesViewModel>(context);
 

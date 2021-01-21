@@ -1,5 +1,3 @@
-import 'package:mwb_connect_app/core/models/lessons_availability_model.dart';
-
 class User {
   String id;
   String name;
@@ -31,14 +29,20 @@ class User {
   
   List<Availability> availabilityFromJson(List<Map<String, dynamic>> json) {
     List<Availability> availabilityList = List();
-    for (int i = 0; i < json.length; i++) {
-      availabilityList.add(Availability(dayOfWeek: json[i]['dayOfWeek'], time: Time(from: json[i]['time']['from'], to: json[i]['time']['to'])));
+    if (json != null) {
+      for (int i = 0; i < json.length; i++) {
+        availabilityList.add(Availability(dayOfWeek: json[i]['dayOfWeek'], time: Time(from: json[i]['time']['from'], to: json[i]['time']['to'])));
+      }
     }
     return availabilityList;
   }
 
   LessonsAvailability lessonsAvailabilityFromJson(Map<String, dynamic> json) {
-    return LessonsAvailability(maxNumber: json['maxNumber'], maxNumberUnit: json['maxNumberUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
+    LessonsAvailability lessonsAvailability = LessonsAvailability();
+    if (json != null) {
+      lessonsAvailability = LessonsAvailability(maxNumber: json['maxNumber'], maxNumberUnit: json['maxNumberUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
+    }
+    return lessonsAvailability;
   }
 
   toJson() {
@@ -80,6 +84,14 @@ class User {
   }  
 }
 
+class LessonsAvailability {
+  int maxNumber;
+  String maxNumberUnit;
+  int minInterval;
+  String minIntervalUnit;
+
+  LessonsAvailability({this.maxNumber, this.maxNumberUnit, this.minInterval, this.minIntervalUnit});
+}
 
 class Availability {
   String dayOfWeek;
@@ -87,7 +99,6 @@ class Availability {
 
   Availability({this.dayOfWeek, this.time});
 }
-
 
 class Time {
   String from;
