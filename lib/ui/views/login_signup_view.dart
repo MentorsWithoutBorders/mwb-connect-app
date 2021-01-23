@@ -416,7 +416,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             setState(() {
               _primaryButtonPressed = true;
             });
-            _validateAndSubmit();
+            await _validateAndSubmit();
           }
         ),
       )
@@ -460,7 +460,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   }
 
   // Perform login or sign_up
-  void _validateAndSubmit() async {
+  Future _validateAndSubmit() async {
     setState(() {
       _errorMessage = '';
       _isLoading = true;
@@ -520,7 +520,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   }  
 
   Future _setUserStorage({String userId, String name, String email}) async {
-    User user = User(id: userId, name: name, email: email);    
+    User user = User(id: userId, name: name, email: email);
     await _userService.setUserStorage(user: user);
   }
 

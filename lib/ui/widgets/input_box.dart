@@ -33,7 +33,7 @@ class _InputBoxState extends State<InputBox> {
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+        contentPadding: EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
         hintText: widget.hint,
         hintStyle: TextStyle(
           color: AppColors.SILVER

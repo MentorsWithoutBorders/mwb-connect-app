@@ -7,7 +7,7 @@ class ApprovedUser extends User {
     super(id: id, name: name, email: email, isMentor: isMentor, organization: organization, field: field, subFields: subFields);
 
   ApprovedUser.fromMap(Map snapshot, String id) {
-    id = id;
+    this.id = id;
     name = snapshot['name'] ?? '';
     email = snapshot['email'] ?? '';
     isMentor = snapshot['isMentor'] ?? false;

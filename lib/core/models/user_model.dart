@@ -14,7 +14,7 @@ class User {
   User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subFields, this.availability, this.isAvailable, this.lessonsAvailability, this.registeredOn});
 
   User.fromMap(Map snapshot, String id) {
-    id = id;
+    this.id = id;
     name = snapshot['name'] ?? '';
     email = snapshot['email'] ?? '';
     isMentor = snapshot['isMentor'] ?? false;
@@ -62,25 +62,31 @@ class User {
 
   List<Map<String, dynamic>> availabilityToJson(List<Availability> availability) {
     List<Map<String,dynamic>> availabilityList = List();
-    for (int i = 0; i < availability.length; i++) {
-      availabilityList.add({
-        'dayOfWeek': availability[i].dayOfWeek, 
-        'time': {
-          'from': availability[i].time.from,
-          'to': availability[i].time.to
-        }
-      });
+    if (availability != null) {
+      for (int i = 0; i < availability.length; i++) {
+        availabilityList.add({
+          'dayOfWeek': availability[i].dayOfWeek, 
+          'time': {
+            'from': availability[i].time.from,
+            'to': availability[i].time.to
+          }
+        });
+      }
     }
     return availabilityList;
   }   
 
   Map<String, dynamic> lessonsAvailabilityToJson(LessonsAvailability lessonsAvailability) {
-    return {
-      'maxNumber': lessonsAvailability.maxNumber, 
-      'maxNumberUnit': lessonsAvailability.maxNumberUnit, 
-      'minInterval': lessonsAvailability.minInterval,
-      'minIntervalUnit': lessonsAvailability.minIntervalUnit
-    };
+    if (lessonsAvailability != null) {
+      return {
+        'maxNumber': lessonsAvailability.maxNumber, 
+        'maxNumberUnit': lessonsAvailability.maxNumberUnit, 
+        'minInterval': lessonsAvailability.minInterval,
+        'minIntervalUnit': lessonsAvailability.minIntervalUnit
+      };
+    } else {
+      return Map();
+    }
   }  
 }
 
