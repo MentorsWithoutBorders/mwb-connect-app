@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/editable_goal_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/tutorial_previews_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/steps_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class GoalStepsView extends StatefulWidget {
   @override

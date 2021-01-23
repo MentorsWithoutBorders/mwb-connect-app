@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/models/support_request_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/support_request_view_model.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class SupportView extends StatefulWidget {
   SupportView({this.auth});

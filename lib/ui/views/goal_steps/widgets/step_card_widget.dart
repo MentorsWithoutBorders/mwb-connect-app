@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/step_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/animated_dialog.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class StepCard extends StatefulWidget {

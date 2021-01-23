@@ -10,9 +10,9 @@ import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
-import 'package:mwb_connect_app/ui/widgets/loader.dart';
-import 'package:mwb_connect_app/ui/widgets/slide_swipe.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/slide_swipe_widget.dart';
 import 'package:mwb_connect_app/ui/views/login_signup_view.dart';
 
 class OnboardingView extends StatefulWidget {

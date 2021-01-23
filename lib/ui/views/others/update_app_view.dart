@@ -4,8 +4,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
-import 'package:mwb_connect_app/ui/widgets/loader.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class UpdateAppView extends StatefulWidget {
   UpdateAppView({this.isForced});

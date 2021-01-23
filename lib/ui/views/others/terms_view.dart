@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class TermsView extends StatefulWidget {
   TermsView({this.auth});

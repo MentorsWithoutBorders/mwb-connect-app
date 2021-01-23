@@ -17,8 +17,8 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
-import 'package:mwb_connect_app/ui/widgets/loader.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 final getIt = GetIt.instance;
 

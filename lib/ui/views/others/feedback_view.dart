@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/models/feedback_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/feedback_view_model.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class FeedbackView extends StatefulWidget {
   FeedbackView({this.auth});

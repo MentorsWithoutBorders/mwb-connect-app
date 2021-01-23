@@ -7,29 +7,29 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 
-class Name extends StatefulWidget {
-  Name({@required this.user});
+class Field extends StatefulWidget {
+  Field({@required this.user});
 
   final User user;
 
   @override
-  State<StatefulWidget> createState() => _NameState();
+  State<StatefulWidget> createState() => _FieldState();
 }
 
-class _NameState extends State<Name> {
+class _FieldState extends State<Field> {
   LocalizationDelegate _localizationDelegate;
   TranslateService _translator = locator<TranslateService>();  
   ProfileViewModel _profileProvider;
 
-  void setName(String name) {
-    widget.user.name = name;
+  void setField(String field) {
+    widget.user.field = field;
     _profileProvider.setUserDetails(widget.user);
   }    
 
-  Widget _showName(context) {
+  Widget _showField(context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: InputBox(autofocus: false, label: 'Name', hint: 'Enter name', text: widget.user?.name, inputChangedCallback: setName)
+      child: InputBox(autofocus: false, label: 'Field', hint: 'Enter Field', text: widget.user?.field, inputChangedCallback: setField)
     );
   }
 
@@ -39,6 +39,6 @@ class _NameState extends State<Name> {
     _translator.localizationDelegate = _localizationDelegate;    
     _profileProvider = Provider.of<ProfileViewModel>(context);
 
-    return _showName(context);
+    return _showField(context);
   }
 }

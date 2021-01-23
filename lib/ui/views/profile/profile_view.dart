@@ -6,8 +6,8 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
-import 'package:mwb_connect_app/ui/widgets/loader.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class ProfileView extends StatefulWidget {
   ProfileView({@required this.isMentor});

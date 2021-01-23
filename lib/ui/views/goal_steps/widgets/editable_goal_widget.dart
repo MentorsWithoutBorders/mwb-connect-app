@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/goal_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/animated_dialog.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class EditableGoal extends StatefulWidget {
   @override

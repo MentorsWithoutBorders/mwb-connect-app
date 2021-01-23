@@ -13,8 +13,8 @@ import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
-import 'package:mwb_connect_app/ui/widgets/loader.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/views/forgot_password.dart';
 
 class LoginSignupView extends StatefulWidget {

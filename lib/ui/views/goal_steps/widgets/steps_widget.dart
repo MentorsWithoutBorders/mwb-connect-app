@@ -11,8 +11,8 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/step_card_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/add_step_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/loader.dart';
-import 'package:mwb_connect_app/ui/widgets/animated_dialog.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class Steps extends StatefulWidget {
   Steps({Key key}): super(key: key);

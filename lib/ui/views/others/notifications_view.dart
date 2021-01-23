@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/notification_settings_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class NotificationsView extends StatefulWidget {
   NotificationsView({this.auth});

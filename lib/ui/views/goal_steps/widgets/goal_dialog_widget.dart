@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/update_goal_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/animated_dialog.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalDialog extends StatefulWidget {
   GoalDialog({@required this.context});
