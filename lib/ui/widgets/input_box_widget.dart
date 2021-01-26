@@ -21,7 +21,10 @@ class _InputBoxState extends State<InputBox> {
       padding: const EdgeInsets.only(left: 3.0, bottom: 8.0),
       child: Text(
         widget.label,
-        style: TextStyle(color: AppColors.DOVE_GRAY),
+        style: TextStyle(
+          fontSize: 12.0,
+          color: AppColors.DOVE_GRAY
+        ),
       )
     );
   }
@@ -31,9 +34,12 @@ class _InputBoxState extends State<InputBox> {
       initialValue: widget.text,
       autofocus: widget.autofocus,
       textCapitalization: TextCapitalization.sentences,
+      style: TextStyle(
+        fontSize: 15.0,
+      ),
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         hintText: widget.hint,
         hintStyle: TextStyle(
           color: AppColors.SILVER

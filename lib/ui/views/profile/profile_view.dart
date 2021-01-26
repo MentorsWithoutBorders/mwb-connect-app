@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -22,8 +25,18 @@ class _ProfileViewState extends State<ProfileView> {
   LocalizationDelegate _localizationDelegate;
   TranslateService _translator = locator<TranslateService>();
   ProfileViewModel _profileProvider;
-  User user;
+  Profile profile;
+
+  void setName(String name) {
+    profile.user.name = name;
+    _profileProvider.setUserDetails(profile.user);
+  }
   
+  void setField(String field) {
+    profile.user.field = field;
+    _profileProvider.setUserDetails(profile.user);
+  }    
+
   Widget _showProfileCard(context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(15.0, 90.0, 15.0, 50.0), 
@@ -35,7 +48,12 @@ class _ProfileViewState extends State<ProfileView> {
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
           padding: const EdgeInsets.all(16),
-          child: Name(user: user)
+          child: Wrap(
+            children: [
+              Name(user: profile.user, onNameChangedCallback: setName),
+              FieldDropdown(fields: profile.fields, selectedField: profile.user.field, onFieldChangedCallback: setField),
+            ],
+          )
         ),
       ),
     );
@@ -51,12 +69,18 @@ class _ProfileViewState extends State<ProfileView> {
   }
   
   Widget _showContent(BuildContext context, bool hasData) {
-    if (!hasData) {
-      return Loader();
-    } else {
+    if (hasData) {
       return _showProfileCard(context);
+    } else {
+      return Loader();
     }
   }
+
+  Future<Profile> _getProfile() async {
+    User user = await _profileProvider.getUserDetails();
+    List<Field> fields = await _profileProvider.getFields();
+    return (Profile(user: user, fields: fields));
+  }  
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +89,9 @@ class _ProfileViewState extends State<ProfileView> {
     _profileProvider = Provider.of<ProfileViewModel>(context);
 
     return FutureBuilder(
-      future: _profileProvider.getUserDetails(),
-      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-        user = snapshot.data;
+      future: _getProfile(),
+      builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+        profile = snapshot.data;
         return Stack(
           children: <Widget>[
             BackgroundGradient(),
