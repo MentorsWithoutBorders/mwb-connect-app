@@ -62,33 +62,41 @@ class _FieldDropdownState extends State<FieldDropdown> {
     }
   }
 
+  Widget _showLabel() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 3.0, bottom: 8.0),
+      child: const SizedBox(
+        width: double.infinity,
+        child: Text(
+          'Field',
+          style: TextStyle(
+            fontSize: 12.0
+          ), 
+        ),
+      ),
+    );
+  }
+
+  Widget _showDropdown() {
+    return Container(
+      child: Container(
+        height: 40,
+        child: Dropdown(
+          dropdownMenuItemList: _fieldDropdownList,
+          onChanged: _onChangeFieldDropdown,
+          value: _field
+        ),
+      ),
+    );  
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 3.0, bottom: 8.0),
-            child: const SizedBox(
-              width: double.infinity,
-              child: Text(
-                'Field',
-                style: TextStyle(
-                  fontSize: 12.0
-                ), 
-              ),
-            ),
-          ),
-          Container(
-            child: Container(
-              height: 40,
-              child: Dropdown(
-                dropdownMenuItemList: _fieldDropdownList,
-                onChanged: _onChangeFieldDropdown,
-                value: _field
-              ),
-            ),
-          ),
+          _showLabel(),
+          _showDropdown()
         ],
       ),
     );

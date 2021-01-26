@@ -2,37 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
-class InputBox extends StatefulWidget {
-  InputBox({@required this.autofocus, @required this.label, this.hint, this.text, this.inputChangedCallback});
-
+class InputBox extends StatelessWidget {
   final bool autofocus;
-  final String label;
   final String hint;
   final String text;
-  final Function(String) inputChangedCallback;  
+  final Function(String) inputChangedCallback;
 
-  @override
-  State<StatefulWidget> createState() => _InputBoxState();
-}
-
-class _InputBoxState extends State<InputBox> {
-  Widget _showLabel() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 3.0, bottom: 8.0),
-      child: Text(
-        widget.label,
-        style: TextStyle(
-          fontSize: 12.0,
-          color: AppColors.DOVE_GRAY
-        ),
-      )
-    );
-  }
+  InputBox({
+    @required this.autofocus,
+    this.hint,
+    this.text,
+    this.inputChangedCallback
+  });  
 
   Widget _showInput() {
     return TextFormField(
-      initialValue: widget.text,
-      autofocus: widget.autofocus,
+      initialValue: text,
+      autofocus: autofocus,
       textCapitalization: TextCapitalization.sentences,
       style: TextStyle(
         fontSize: 15.0,
@@ -40,7 +26,7 @@ class _InputBoxState extends State<InputBox> {
       decoration: InputDecoration(
         isDense: true,
         contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        hintText: widget.hint,
+        hintText: hint,
         hintStyle: TextStyle(
           color: AppColors.SILVER
         ),
@@ -64,18 +50,13 @@ class _InputBoxState extends State<InputBox> {
         )
       ),
       onChanged: (value) {
-        widget.inputChangedCallback(value);
+        inputChangedCallback(value);
       }
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        _showLabel(),
-        _showInput()
-      ],
-    );
+    return _showInput();
   }
 }
