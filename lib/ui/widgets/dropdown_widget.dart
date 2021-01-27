@@ -4,12 +4,14 @@ import 'package:mwb_connect_app/utils/colors.dart';
 
 class Dropdown<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>> dropdownMenuItemList;
+  final Function onTapped;
   final ValueChanged<T> onChanged;
   final T value;
 
   Dropdown({
     Key key,
     @required this.dropdownMenuItemList,
+    @required this.onTapped,
     @required this.onChanged,
     @required this.value,
   }) : super(key: key);
@@ -35,6 +37,7 @@ class Dropdown<T> extends StatelessWidget {
           ),
           items: dropdownMenuItemList,
           onChanged: onChanged,
+          onTap: onTapped,
           value: value,
         ),
       ),

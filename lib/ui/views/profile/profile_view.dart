@@ -27,15 +27,19 @@ class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel _profileProvider;
   Profile profile;
 
-  void setName(String name) {
+  void _setName(String name) {
     profile.user.name = name;
     _profileProvider.setUserDetails(profile.user);
   }
   
-  void setField(String field) {
+  void _setField(String field) {
     profile.user.field = field;
     _profileProvider.setUserDetails(profile.user);
-  }    
+  }
+  
+  void _unfocus() {
+    FocusScope.of(context).unfocus();    
+  }
 
   Widget _showProfileCard(context) {
     return Container(
@@ -50,8 +54,8 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16),
           child: Wrap(
             children: [
-              Name(user: profile.user, onNameChangedCallback: setName),
-              FieldDropdown(fields: profile.fields, selectedField: profile.user.field, onFieldChangedCallback: setField),
+              Name(user: profile.user, onNameChangedCallback: _setName),
+              FieldDropdown(fields: profile.fields, selectedField: profile.user.field, onFieldTappedCallback: _unfocus, onFieldChangedCallback: _setField),
             ],
           )
         ),
@@ -92,20 +96,25 @@ class _ProfileViewState extends State<ProfileView> {
       future: _getProfile(),
       builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
         profile = snapshot.data;
-        return Stack(
-          children: <Widget>[
-            BackgroundGradient(),
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                title: _showTitle(),
-                backgroundColor: Colors.transparent,          
-                elevation: 0.0
-              ),
-              extendBodyBehindAppBar: true,
-              body: _showContent(context, snapshot.hasData)
-            )
-          ],
+        return GestureDetector(
+          onTap: () {
+            _unfocus();
+          },
+          child: Stack(
+            children: <Widget>[
+              BackgroundGradient(),
+              Scaffold(
+                backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  title: _showTitle(),
+                  backgroundColor: Colors.transparent,          
+                  elevation: 0.0
+                ),
+                extendBodyBehindAppBar: true,
+                body: _showContent(context, snapshot.hasData)
+              )
+            ],
+          )
         );
       }
     );

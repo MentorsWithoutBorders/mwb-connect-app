@@ -7,10 +7,11 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class FieldDropdown extends StatefulWidget {
-  FieldDropdown({@required this.fields, this.selectedField, this.onFieldChangedCallback});
+  FieldDropdown({@required this.fields, this.selectedField, this.onFieldTappedCallback, this.onFieldChangedCallback});
 
   final List<Field> fields;
   final String selectedField;
+  final Function onFieldTappedCallback;  
   final Function(String) onFieldChangedCallback;  
 
   @override
@@ -34,7 +35,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
     return items;
   }
 
-  _onChangeFieldDropdown(Field field) {
+  _onChangedFieldDropdown(Field field) {
     widget.onFieldChangedCallback(field.name);
     setState(() {
       _field = field;
@@ -83,7 +84,8 @@ class _FieldDropdownState extends State<FieldDropdown> {
         height: 40,
         child: Dropdown(
           dropdownMenuItemList: _fieldDropdownList,
-          onChanged: _onChangeFieldDropdown,
+          onTapped: widget.onFieldTappedCallback,
+          onChanged: _onChangedFieldDropdown,
           value: _field
         ),
       ),
