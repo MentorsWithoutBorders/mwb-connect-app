@@ -5,13 +5,13 @@ class User {
   bool isMentor;
   String organization;
   String field;
-  List<String> subFields;
+  List<String> subfields;
   List<Availability> availability;
   bool isAvailable;
   LessonsAvailability lessonsAvailability;
   DateTime registeredOn;
 
-  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subFields, this.availability, this.isAvailable, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.availability, this.isAvailable, this.lessonsAvailability, this.registeredOn});
 
   User.fromMap(Map snapshot, String id) {
     this.id = id;
@@ -20,14 +20,14 @@ class User {
     isMentor = snapshot['isMentor'] ?? false;
     organization = snapshot['organization'] ?? '';
     field = snapshot['field'] ?? '';
-    subFields = snapshot['subFields']?.cast<String>() ?? [];
-    availability = availabilityFromJson(snapshot['availability']?.cast<Map<String,dynamic>>()) ?? [];
+    subfields = snapshot['subfields']?.cast<String>() ?? [];
+    availability = _availabilityFromJson(snapshot['availability']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
-    lessonsAvailability = lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? LessonsAvailability();
+    lessonsAvailability = _lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? LessonsAvailability();
     registeredOn = snapshot['registeredOn']?.toDate();
   }
   
-  List<Availability> availabilityFromJson(List<Map<String, dynamic>> json) {
+  List<Availability> _availabilityFromJson(List<Map<String, dynamic>> json) {
     List<Availability> availabilityList = List();
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
@@ -37,7 +37,7 @@ class User {
     return availabilityList;
   }
 
-  LessonsAvailability lessonsAvailabilityFromJson(Map<String, dynamic> json) {
+  LessonsAvailability _lessonsAvailabilityFromJson(Map<String, dynamic> json) {
     LessonsAvailability lessonsAvailability = LessonsAvailability();
     if (json != null) {
       lessonsAvailability = LessonsAvailability(maxNumber: json['maxNumber'], maxNumberUnit: json['maxNumberUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
@@ -52,15 +52,15 @@ class User {
       'isMentor': isMentor,
       'organization': organization,
       'field': field,
-      'subFields': subFields,
-      'availability': availabilityToJson(availability),
+      'subfields': subfields,
+      'availability': _availabilityToJson(availability),
       'isAvailable': isAvailable,
-      'lessonsAvailability': lessonsAvailabilityToJson(lessonsAvailability),
+      'lessonsAvailability': _lessonsAvailabilityToJson(lessonsAvailability),
       'registeredOn': registeredOn
     };
   }
 
-  List<Map<String, dynamic>> availabilityToJson(List<Availability> availability) {
+  List<Map<String, dynamic>> _availabilityToJson(List<Availability> availability) {
     List<Map<String,dynamic>> availabilityList = List();
     if (availability != null) {
       for (int i = 0; i < availability.length; i++) {
@@ -76,7 +76,7 @@ class User {
     return availabilityList;
   }   
 
-  Map<String, dynamic> lessonsAvailabilityToJson(LessonsAvailability lessonsAvailability) {
+  Map<String, dynamic> _lessonsAvailabilityToJson(LessonsAvailability lessonsAvailability) {
     if (lessonsAvailability != null) {
       return {
         'maxNumber': lessonsAvailability.maxNumber, 

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
+import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class FieldDropdown extends StatefulWidget {
-  FieldDropdown({@required this.fields, this.selectedField, this.onFieldTappedCallback, this.onFieldChangedCallback});
+  FieldDropdown({
+    @required this.fields,
+    this.selectedField,
+    this.onFieldTappedCallback
+  });
 
   final List<Field> fields;
   final String selectedField;
   final Function onFieldTappedCallback;  
-  final Function(String) onFieldChangedCallback;  
 
   @override
   State<StatefulWidget> createState() => _FieldDropdownState();
@@ -20,7 +26,8 @@ class FieldDropdown extends StatefulWidget {
 
 class _FieldDropdownState extends State<FieldDropdown> {
   LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();  
+  TranslateService _translator = locator<TranslateService>();
+  ProfileViewModel _profileProvider;
   Field _field;
 
   List<DropdownMenuItem<Field>> _fieldDropdownList;
@@ -35,18 +42,11 @@ class _FieldDropdownState extends State<FieldDropdown> {
     return items;
   }
 
-  _onChangedFieldDropdown(Field field) {
-    widget.onFieldChangedCallback(field.name);
-    setState(() {
-      _field = field;
-    });
-  }
-
   @override
   void initState() {
+    super.initState();
     _fieldDropdownList = _buildFieldDropdown(widget.fields);
     _setSelectedField();
-    super.initState();
   }
 
   void _setSelectedField() {
@@ -63,44 +63,37 @@ class _FieldDropdownState extends State<FieldDropdown> {
     }
   }
 
-  Widget _showLabel() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 3.0, bottom: 8.0),
-      child: const SizedBox(
-        width: double.infinity,
-        child: Text(
-          'Field',
-          style: TextStyle(
-            fontSize: 12.0
-          ), 
-        ),
+  Widget _showFieldDropdown() {
+    return Container(
+      height: 55,
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Dropdown(
+        dropdownMenuItemList: _fieldDropdownList,
+        onTapped: widget.onFieldTappedCallback,
+        onChanged: _changeField,
+        value: _field
       ),
     );
   }
 
-  Widget _showDropdown() {
-    return Container(
-      child: Container(
-        height: 40,
-        child: Dropdown(
-          dropdownMenuItemList: _fieldDropdownList,
-          onTapped: widget.onFieldTappedCallback,
-          onChanged: _onChangedFieldDropdown,
-          value: _field
-        ),
-      ),
-    );  
-  }
+  void _changeField(Field field) {
+    setState(() {
+      _field = field;
+    });
+    _profileProvider.setField(field.name);
+  }  
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          _showLabel(),
-          _showDropdown()
-        ],
-      ),
+    _localizationDelegate = LocalizedApp.of(context).delegate;    
+    _translator.localizationDelegate = _localizationDelegate;     
+    _profileProvider = Provider.of<ProfileViewModel>(context);
+
+    return Wrap(
+      children: [
+        Label(text: 'Field'),
+        _showFieldDropdown()
+      ],
     );
   }
 }

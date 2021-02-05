@@ -83,14 +83,14 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
   }
   
-  _afterLayout(_) {
+  void _afterLayout(_) {
     if (_goalProvider.wasGoalAdded) {
       _scrollToLastGoal();
       _goalProvider.setWasGoalAdded(false);
     }
   }
 
-  _scrollToLastGoal() {
+  void _scrollToLastGoal() {
     _scrollController.scrollToIndex(_goalProvider.goals.length);
   }
   

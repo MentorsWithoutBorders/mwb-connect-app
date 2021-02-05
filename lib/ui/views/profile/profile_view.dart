@@ -9,6 +9,7 @@ import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -25,23 +26,12 @@ class _ProfileViewState extends State<ProfileView> {
   LocalizationDelegate _localizationDelegate;
   TranslateService _translator = locator<TranslateService>();
   ProfileViewModel _profileProvider;
-  Profile profile;
 
-  void _setName(String name) {
-    profile.user.name = name;
-    _profileProvider.setUserDetails(profile.user);
-  }
-  
-  void _setField(String field) {
-    profile.user.field = field;
-    _profileProvider.setUserDetails(profile.user);
-  }
-  
   void _unfocus() {
     FocusScope.of(context).unfocus();    
   }
 
-  Widget _showProfileCard(context) {
+  Widget _showProfileCard(BuildContext context, Profile profile) {
     return Container(
       padding: const EdgeInsets.fromLTRB(15.0, 90.0, 15.0, 50.0), 
       child: Card(
@@ -54,8 +44,9 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16),
           child: Wrap(
             children: [
-              Name(user: profile.user, onNameChangedCallback: _setName),
-              FieldDropdown(fields: profile.fields, selectedField: profile.user.field, onFieldTappedCallback: _unfocus, onFieldChangedCallback: _setField),
+              Name(user: profile.user),
+              FieldDropdown(fields: profile.fields, selectedField: profile.user.field, onFieldTappedCallback: _unfocus),
+              Subfields(fields: profile.fields, selectedField: profile.user.field, selectedSubfields: profile.user.subfields)
             ],
           )
         ),
@@ -72,9 +63,9 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
   
-  Widget _showContent(BuildContext context, bool hasData) {
+  Widget _showContent(BuildContext context, bool hasData, Profile profile) {
     if (hasData) {
-      return _showProfileCard(context);
+      return _showProfileCard(context, profile);
     } else {
       return Loader();
     }
@@ -83,7 +74,7 @@ class _ProfileViewState extends State<ProfileView> {
   Future<Profile> _getProfile() async {
     User user = await _profileProvider.getUserDetails();
     List<Field> fields = await _profileProvider.getFields();
-    return (Profile(user: user, fields: fields));
+    return Profile(user: user, fields: fields);
   }  
 
   @override
@@ -95,7 +86,7 @@ class _ProfileViewState extends State<ProfileView> {
     return FutureBuilder(
       future: _getProfile(),
       builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
-        profile = snapshot.data;
+        _profileProvider.profile = snapshot.data;
         return GestureDetector(
           onTap: () {
             _unfocus();
@@ -111,7 +102,7 @@ class _ProfileViewState extends State<ProfileView> {
                   elevation: 0.0
                 ),
                 extendBodyBehindAppBar: true,
-                body: _showContent(context, snapshot.hasData)
+                body: _showContent(context, snapshot.hasData, _profileProvider.profile)
               )
             ],
           )
