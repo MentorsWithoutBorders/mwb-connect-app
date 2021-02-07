@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/strings.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
-import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
   SubfieldDropdown({
-    @required this.subfields,
-    this.selectedSubfields,
     this.index,
     this.onSubfieldTappedCallback
   });
 
-  final List<Subfield> subfields;
-  final List<String> selectedSubfields;
   final int index;
   final Function onSubfieldTappedCallback;  
 
@@ -29,11 +24,17 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   LocalizationDelegate _localizationDelegate;
   TranslateService _translator = locator<TranslateService>();
   ProfileViewModel _profileProvider;  
-  Subfield _subfield;
+  Subfield _selectedSubfield;
 
-  List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown(List<Subfield> subfieldList) {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+  List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
     List<DropdownMenuItem<Subfield>> items = List();
-    for (Subfield subfield in _setSubfields(subfieldList)) {
+    for (Subfield subfield in _profileProvider.getSubfields(widget.index)) {
       items.add(DropdownMenuItem(
         value: subfield,
         child: Text(subfield.name),
@@ -42,62 +43,36 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
     return items;
   }
 
-  List<Subfield> _setSubfields(List<Subfield> subfieldList) {
-    List<Subfield> subfields = List();
-    if (subfieldList != null) {
-      for (int i = 0; i < subfieldList.length; i++) {
-        if (!widget.selectedSubfields.contains(subfieldList[i].name) || 
-            subfieldList[i].name == widget.selectedSubfields[widget.index]) {
-          subfields.add(subfieldList[i]);
-        }
-      }
-    }
-    return subfields;
-  }
-
-  void _setSelectedSubfield() {
-    String selectedSubfield;
-    if (isNotEmpty(widget.selectedSubfields[widget.index])) {
-      selectedSubfield = widget.selectedSubfields[widget.index];
-    } else {
-      selectedSubfield = widget.subfields[0].name;
-    }
-    for (int i = 0; i < widget.subfields.length; i++) {
-      if (widget.subfields[i].name == selectedSubfield) {
-        setState(() {
-          _subfield = widget.subfields[i];
-        });
-        break;
-      }
-    }
-  }
-
   Widget _showSubfieldDropdown() {
     return Container(
       height: 50,
       padding: EdgeInsets.only(bottom: 10),
       child: Dropdown(
-        dropdownMenuItemList: _buildSubfieldDropdown(widget.subfields),
+        dropdownMenuItemList: _buildSubfieldDropdown(),
         onTapped: widget.onSubfieldTappedCallback,
         onChanged: _changeSubfield,
-        value: _subfield
+        value: _selectedSubfield
       ),
     );
   }
 
   void _changeSubfield(Subfield subfield) {
-    setState(() {
-      _subfield = subfield;
-    });
+    _setSelectedSubfield(subfield);
     _profileProvider.setSubfield(subfield.name, widget.index);
-  }    
+  }
+  
+  void _setSelectedSubfield(Subfield subfield) {
+    setState(() {
+      _selectedSubfield = subfield;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     _localizationDelegate = LocalizedApp.of(context).delegate;    
     _translator.localizationDelegate = _localizationDelegate;
     _profileProvider = Provider.of<ProfileViewModel>(context);
-    _setSelectedSubfield();
+    _setSelectedSubfield(_profileProvider.getSelectedSubfield(widget.index));
 
     return _showSubfieldDropdown();
   }

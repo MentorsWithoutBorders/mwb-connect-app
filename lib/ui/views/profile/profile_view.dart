@@ -46,7 +46,7 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               Name(user: profile.user),
               FieldDropdown(fields: profile.fields, selectedField: profile.user.field, onFieldTappedCallback: _unfocus),
-              Subfields(fields: profile.fields, selectedField: profile.user.field, selectedSubfields: profile.user.subfields)
+              Subfields()
             ],
           )
         ),
