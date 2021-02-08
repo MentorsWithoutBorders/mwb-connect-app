@@ -26,12 +26,6 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   ProfileViewModel _profileProvider;  
   Subfield _selectedSubfield;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
     List<DropdownMenuItem<Subfield>> items = List();
     for (Subfield subfield in _profileProvider.getSubfields(widget.index)) {

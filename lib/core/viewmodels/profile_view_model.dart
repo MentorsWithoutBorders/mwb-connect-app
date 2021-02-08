@@ -39,6 +39,24 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
+  Field getSelectedField() {
+    Field selectedField;
+    String selectedFieldName;
+    List<Field> fields = profile.fields;
+    if (isNotEmpty(profile.user.field)) {
+      selectedFieldName = profile.user.field;
+    } else {
+      selectedFieldName = fields[0].name;
+    }
+    for (var field in fields) {
+      if (field.name == selectedFieldName) {
+        selectedField = field;
+        break;
+      }
+    }
+    return selectedField;
+  }   
+
   void setSubfield(String subfield, int index) {
     profile.user.subfields[index] = subfield;
     setUserDetails(profile.user);
@@ -78,7 +96,7 @@ class ProfileViewModel extends ChangeNotifier {
     }
     for (var subfield in subfields) {
       if (subfield.name == selectedSubfieldName) {
-          selectedSubfield = subfield;
+        selectedSubfield = subfield;
         break;
       }
     }
