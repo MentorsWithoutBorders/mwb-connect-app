@@ -12,6 +12,7 @@ class ProfileViewModel extends ChangeNotifier {
   UserService _userService = locator<UserService>();
   ProfileService _profileService = locator<ProfileService>();
   Profile profile;
+  bool _shouldUnfocus = false;
 
   Future<User> getUserDetails() async {
     return await _userService.getUserDetails();
@@ -101,5 +102,13 @@ class ProfileViewModel extends ChangeNotifier {
       }
     }
     return selectedSubfield;
-  }  
+  }
+
+  bool get shouldUnfocus => _shouldUnfocus;
+  set shouldUnfocus(bool unfocus) {
+    _shouldUnfocus = unfocus;
+    if (shouldUnfocus) {
+      notifyListeners();
+    }
+  }
 }

@@ -8,13 +8,9 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
-  SubfieldDropdown({
-    this.index,
-    this.onSubfieldTappedCallback
-  });
+  SubfieldDropdown({@required this.index});
 
   final int index;
-  final Function onSubfieldTappedCallback;  
 
   @override
   State<StatefulWidget> createState() => _SubfieldDropdownState();
@@ -43,7 +39,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
       padding: EdgeInsets.only(bottom: 10),
       child: Dropdown(
         dropdownMenuItemList: _buildSubfieldDropdown(),
-        onTapped: widget.onSubfieldTappedCallback,
+        onTapped: _unfocus,
         onChanged: _changeSubfield,
         value: _selectedSubfield
       ),
@@ -60,6 +56,10 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
       _selectedSubfield = subfield;
     });
   }
+
+  void _unfocus() {
+    _profileProvider.shouldUnfocus = true;
+  }  
 
   @override
   Widget build(BuildContext context) {

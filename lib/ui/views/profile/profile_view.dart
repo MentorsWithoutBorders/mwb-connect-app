@@ -44,8 +44,8 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16),
           child: Wrap(
             children: [
-              Name(user: profile.user),
-              FieldDropdown(onFieldTappedCallback: _unfocus),
+              Name(),
+              FieldDropdown(),
               Subfields()
             ],
           )
@@ -82,6 +82,11 @@ class _ProfileViewState extends State<ProfileView> {
     _localizationDelegate = LocalizedApp.of(context).delegate;    
     _translator.localizationDelegate = _localizationDelegate;    
     _profileProvider = Provider.of<ProfileViewModel>(context);
+
+    if (_profileProvider.shouldUnfocus) {
+      _unfocus();
+      _profileProvider.shouldUnfocus = false;
+    }
 
     return FutureBuilder(
       future: _getProfile(),

@@ -9,12 +9,6 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class FieldDropdown extends StatefulWidget {
-  FieldDropdown({
-    this.onFieldTappedCallback
-  });
-
-  final Function onFieldTappedCallback;  
-
   @override
   State<StatefulWidget> createState() => _FieldDropdownState();
 }
@@ -42,7 +36,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
       padding: const EdgeInsets.only(bottom: 15),
       child: Dropdown(
         dropdownMenuItemList: _buildFieldDropdown(),
-        onTapped: widget.onFieldTappedCallback,
+        onTapped: _unfocus,
         onChanged: _changeField,
         value: _selectedField
       ),
@@ -58,6 +52,10 @@ class _FieldDropdownState extends State<FieldDropdown> {
     setState(() {
       _selectedField = field;
     });
+  }
+
+  void _unfocus() {
+    _profileProvider.shouldUnfocus = true;
   }
 
   @override

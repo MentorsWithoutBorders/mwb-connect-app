@@ -4,15 +4,10 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 
 class Name extends StatefulWidget {
-  Name({@required this.user});
-
-  final User user;
-
   @override
   State<StatefulWidget> createState() => _NameState();
 }
@@ -28,7 +23,7 @@ class _NameState extends State<Name> {
       child: InputBox(
         autofocus: false, 
         hint: 'Enter name', 
-        text: widget.user?.name, 
+        text: _profileProvider.profile.user?.name, 
         inputChangedCallback: _changeName
       )
     );
