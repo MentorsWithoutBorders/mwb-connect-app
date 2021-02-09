@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
@@ -25,8 +26,27 @@ class _SubfieldsState extends State<Subfields> {
       Widget subfield = SubfieldDropdown(index: i);
       subfieldWidgets.add(subfield);
     }
+    subfieldWidgets.add(_showAddSubfieldButton());
     return Wrap(children: subfieldWidgets);
   }
+
+  Widget _showAddSubfieldButton() {
+    return Center(
+      child: RaisedButton(
+        elevation: 1.0,
+        padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+        splashColor: Colors.red,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        color: AppColors.MONZA,
+        child: Text('Add subfield', style: TextStyle(color: Colors.white)),
+        onPressed: () {
+          _profileProvider.addSubfield();
+        }        
+      ),
+    );
+  } 
 
   @override
   Widget build(BuildContext context) {

@@ -59,7 +59,11 @@ class ProfileViewModel extends ChangeNotifier {
   }   
 
   void setSubfield(String subfield, int index) {
-    profile.user.subfields[index] = subfield;
+    if (index <= profile.user.subfields.length) {
+      profile.user.subfields[index] = subfield;
+    } else {
+      profile.user.subfields.add(subfield);
+    }
     setUserDetails(profile.user);
     notifyListeners();
   }  
@@ -86,23 +90,29 @@ class ProfileViewModel extends ChangeNotifier {
   }
   
   Subfield getSelectedSubfield(int index) {
-    String selectedSubfieldName;
     Subfield selectedSubfield;
     List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
     List<String> selectedSubfields = profile.user.subfields;
-    if (isNotEmpty(selectedSubfields[index])) {
-      selectedSubfieldName = selectedSubfields[index];
-    } else {
-      selectedSubfieldName = subfields[0].name;
-    }
     for (var subfield in subfields) {
-      if (subfield.name == selectedSubfieldName) {
+      if (subfield.name == selectedSubfields[index]) {
         selectedSubfield = subfield;
         break;
       }
     }
     return selectedSubfield;
   }
+
+  void addSubfield() {
+    List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
+    List<String> selectedSubfields = profile.user.subfields;
+    for (var subfield in subfields) {
+      if (!selectedSubfields.contains(subfield.name)) {
+        setSubfield(subfield.name, selectedSubfields.length+1);
+        break;
+      }
+    }
+    notifyListeners();
+  }  
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
