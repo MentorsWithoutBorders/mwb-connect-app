@@ -112,7 +112,13 @@ class ProfileViewModel extends ChangeNotifier {
       }
     }
     notifyListeners();
-  }  
+  }
+  
+  void deleteSubfield(int index) {
+    profile.user.subfields.removeAt(index);
+    setUserDetails(profile.user);
+    notifyListeners();
+  }
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

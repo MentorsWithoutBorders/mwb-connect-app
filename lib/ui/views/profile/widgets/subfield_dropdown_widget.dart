@@ -35,14 +35,36 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   Widget _showSubfieldDropdown() {
     return Container(
-      height: 50,
+      height: 50.0,
       padding: EdgeInsets.only(bottom: 10),
-      child: Dropdown(
-        dropdownMenuItemList: _buildSubfieldDropdown(),
-        onTapped: _unfocus,
-        onChanged: _changeSubfield,
-        value: _selectedSubfield
-      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Dropdown(
+              dropdownMenuItemList: _buildSubfieldDropdown(),
+              onTapped: _unfocus,
+              onChanged: _changeSubfield,
+              value: _selectedSubfield
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              InkWell(
+                child: Container(
+                  width: 30.0,
+                  height: 40.0,
+                  child: Image.asset(
+                    'assets/images/delete_icon.png'
+                  ),
+                ),
+                onTap: () => _profileProvider.deleteSubfield(widget.index)                
+              )
+            ], 
+          )
+        ],
+      )
     );
   }
 

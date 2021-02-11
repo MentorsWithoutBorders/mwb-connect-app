@@ -41,9 +41,7 @@ class _SubfieldsState extends State<Subfields> {
         ),
         color: AppColors.MONZA,
         child: Text('Add subfield', style: TextStyle(color: Colors.white)),
-        onPressed: () {
-          _profileProvider.addSubfield();
-        }        
+        onPressed: () => _profileProvider.addSubfield()
       ),
     );
   } 
