@@ -32,7 +32,7 @@ class Dropdown<T> extends StatelessWidget {
         child: DropdownButton(
           isExpanded: true,
           style: TextStyle(
-            fontSize: 15.0,
+            fontSize: 14.0,
             color: Colors.black
           ),
           items: dropdownMenuItemList,

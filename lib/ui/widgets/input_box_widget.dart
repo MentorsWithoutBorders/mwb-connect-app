@@ -21,7 +21,7 @@ class InputBox extends StatelessWidget {
       autofocus: autofocus,
       textCapitalization: TextCapitalization.sentences,
       style: TextStyle(
-        fontSize: 15.0,
+        fontSize: 14.0,
       ),
       decoration: InputDecoration(
         isDense: true,
