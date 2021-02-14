@@ -22,7 +22,7 @@ class ProfileViewModel extends ChangeNotifier {
     return await _profileService.getFields();
   }  
 
-  setUserDetails(User user) async {
+  setUserDetails(User user) {
     _userService.setUserDetails(user);
   }
 
@@ -59,7 +59,7 @@ class ProfileViewModel extends ChangeNotifier {
   }   
 
   void setSubfield(String subfield, int index) {
-    if (index <= profile.user.subfields.length) {
+    if (index < profile.user.subfields.length) {
       profile.user.subfields[index] = subfield;
     } else {
       profile.user.subfields.add(subfield);
