@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
@@ -8,7 +9,7 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
-class ProfileViewModel extends ChangeNotifier {
+class ProfileViewModel extends ChangeNotifier with TranslateService {
   UserService _userService = locator<UserService>();
   ProfileService _profileService = locator<ProfileService>();
   Profile profile;

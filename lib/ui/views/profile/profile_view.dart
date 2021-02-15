@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
@@ -23,8 +20,6 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   ProfileViewModel _profileProvider;
 
   void _unfocus() {
@@ -46,7 +41,7 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               Name(),
               FieldDropdown(),
-              Subfields()
+              //Subfields()
             ],
           )
         ),
@@ -58,7 +53,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_translator.getText('profile.title'),),
+        child: Text(_profileProvider.getTextWithContext(context, 'profile.title')),
       )
     );
   }
@@ -79,8 +74,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;    
     _profileProvider = Provider.of<ProfileViewModel>(context);
 
     if (_profileProvider.shouldUnfocus) {
@@ -98,7 +91,7 @@ class _ProfileViewState extends State<ProfileView> {
           },
           child: Stack(
             children: <Widget>[
-              BackgroundGradient(),
+              //BackgroundGradient(),
               Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
