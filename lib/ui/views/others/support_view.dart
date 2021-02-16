@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/models/support_request_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/support_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -20,9 +19,7 @@ class SupportView extends StatefulWidget {
 }
 
 class _SupportViewState extends State<SupportView> {
-  LocalizationDelegate _localizationDelegate;
   LocalStorageService _storageService = locator<LocalStorageService>();
-  TranslateService _translator = locator<TranslateService>();
   PageController _controller = PageController(viewportFraction: 1, keepPage: true);
   KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
@@ -93,7 +90,7 @@ class _SupportViewState extends State<SupportView> {
       child: Column(
         children: <Widget>[
           Text(
-            _translator.getText('support.label'),
+            'support.label'.tr(),
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.white
@@ -102,7 +99,7 @@ class _SupportViewState extends State<SupportView> {
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Text(
-              _translator.getText('support.sub_label'),
+              'support.sub_label'.tr(),
               style: TextStyle(
                 fontSize: 12.0,
                 color: Colors.white
@@ -133,11 +130,11 @@ class _SupportViewState extends State<SupportView> {
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
             hintStyle: TextStyle(color: AppColors.SILVER),
-            hintText: _translator.getText('support.message_placeholder'),
+            hintText: 'support.message_placeholder'.tr(),
           ), 
           validator: (value) {
             if (_sendButtonPressed && value.isEmpty) {
-              return _translator.getText('support.message_error');
+              return 'support.message_error'.tr();
             } else {
               return null;
             }
@@ -171,7 +168,7 @@ class _SupportViewState extends State<SupportView> {
           ),
           color: AppColors.MONZA,
           child: Text(
-            _translator.getText('support.send_request'),
+            'support.send_request'.tr(),
             style: TextStyle(fontSize: 16.0, color: Colors.white)
           ),
           onPressed: () async {
@@ -231,7 +228,7 @@ class _SupportViewState extends State<SupportView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(25.0, 120.0, 25.0, 0.0),
       child: Text(
-        _translator.getText('support.confirmation'),
+        'support.confirmation'.tr(),
         style: TextStyle(
           fontSize: 14.0,
           color: Colors.white
@@ -244,16 +241,13 @@ class _SupportViewState extends State<SupportView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_translator.getText('support.title'),),
+        child: Text('support.title'.tr(),),
       )
     );
   }   
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;  
-
     return Stack(
       children: <Widget>[
         BackgroundGradient(),

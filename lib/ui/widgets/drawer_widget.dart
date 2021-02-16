@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
@@ -28,9 +27,7 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  LocalizationDelegate _localizationDelegate;
   LocalStorageService _storageService = locator<LocalStorageService>();
-  TranslateService _translator = locator<TranslateService>();  
   AnalyticsService _analyticsService = locator<AnalyticsService>();  
   GoalsViewModel _goalProvider;  
   StepsViewModel _stepProvider;  
@@ -55,8 +52,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;       
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _stepProvider = Provider.of<StepsViewModel>(context);
     bool isMentor = _storageService.isMentor;
@@ -99,7 +94,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               )
             ),
             dense: true,
-            title: Text(_translator.getText('drawer.profile')),
+            title: Text('drawer.profile'.tr()),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileView(isMentor: isMentor)));
@@ -116,7 +111,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               )
             ),
             dense: true,
-            title: Text(_translator.getText('drawer.notifications')),
+            title: Text('drawer.notifications'.tr()),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationsView()));
@@ -133,7 +128,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               )
             ),
             dense: true,
-            title: Text(_translator.getText('drawer.support')),
+            title: Text('drawer.support'.tr()),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (_) => SupportView()));
@@ -150,7 +145,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               )
             ),
             dense: true,
-            title: Text(_translator.getText('drawer.feedback')),
+            title: Text('drawer.feedback'.tr()),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (_) => FeedbackView()));
@@ -167,7 +162,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               )
             ),
             dense: true,
-            title: Text(_translator.getText('drawer.terms')),
+            title: Text('drawer.terms'.tr()),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (_) => TermsView()));
@@ -183,7 +178,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 child: Icon(Icons.power_settings_new),
               )
             ),
-            title: Text(_translator.getText('drawer.logout')),
+            title: Text('drawer.logout'.tr()),
             onTap: () {
               _signOut();
               Navigator.pop(context);

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
@@ -14,8 +11,6 @@ class FieldDropdown extends StatefulWidget {
 }
 
 class _FieldDropdownState extends State<FieldDropdown> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   ProfileViewModel _profileProvider;
   Field _selectedField;
 
@@ -60,8 +55,6 @@ class _FieldDropdownState extends State<FieldDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;     
     _profileProvider = Provider.of<ProfileViewModel>(context);
     _setSelectedField(_profileProvider.getSelectedField());
 

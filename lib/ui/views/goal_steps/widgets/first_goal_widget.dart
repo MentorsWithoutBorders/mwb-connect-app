@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -17,8 +15,6 @@ class FirstGoal extends StatefulWidget {
 
 class _FirstGoalState extends State<FirstGoal> {
   GoalsViewModel _goalProvider;
-  LocalizationDelegate localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   final _formKey = GlobalKey<FormState>();
   final _inputContainerOpacityDuration = 500;
   final _opacityDuration = 300;
@@ -56,7 +52,7 @@ class _FirstGoalState extends State<FirstGoal> {
                         margin: const EdgeInsets.only(top: 20.0, left: 20.0),    
                         width: 400.0,
                         child: Text(
-                          _translator.getText('goals.first_goal_label'),
+                          'goals.first_goal_label'.tr(),
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
@@ -87,7 +83,7 @@ class _FirstGoalState extends State<FirstGoal> {
                               ),
                             ),
                             hintStyle: TextStyle(color: Colors.grey[400]),
-                            hintText: _translator.getText('goals.first_goal_placeholder'),
+                            hintText: 'goals.first_goal_placeholder'.tr(),
                             filled: true,
                             fillColor: Colors.white,
                             errorStyle: TextStyle(
@@ -96,7 +92,7 @@ class _FirstGoalState extends State<FirstGoal> {
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
-                              return _translator.getText('goals.add_goal_error');
+                              return 'goals.add_goal_error'.tr();
                             }
                           },
                           onChanged: (value) {
@@ -133,7 +129,7 @@ class _FirstGoalState extends State<FirstGoal> {
                             }
                           },
                           child: Text(
-                            _translator.getText('goals.first_goal_start'),
+                            'goals.first_goal_start'.tr(),
                             style: TextStyle(
                               color: Colors.white, 
                               fontSize: 16
@@ -193,8 +189,6 @@ class _FirstGoalState extends State<FirstGoal> {
   
   @override
   Widget build(BuildContext context) {
-    localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = localizationDelegate;       
     _goalProvider = Provider.of<GoalsViewModel>(context);
 
     if (!_isAddingGoal) {

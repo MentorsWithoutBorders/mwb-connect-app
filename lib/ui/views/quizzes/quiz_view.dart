@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/quiz_status.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
@@ -18,8 +17,6 @@ class QuizView extends StatefulWidget {
 }
 
 class _QuizState extends State<QuizView> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();      
   LocalStorageService _storageService = locator<LocalStorageService>();
   QuizzesViewModel _quizProvider;  
   int _maxOptions = 3;
@@ -39,18 +36,18 @@ class _QuizState extends State<QuizView> {
 
   Widget _showQuiz() {
     int quizNumber = _storageService.quizNumber;
-    String question = _translator.getText('quizzes.quiz$quizNumber.question');
+    String question = 'quizzes.quiz$quizNumber.question'.tr();
     List<String> options = List();
     for (int i = 1; i <= _maxOptions; i++) {
-      String option = _translator.getText('quizzes.quiz$quizNumber.option$i');
+      String option = 'quizzes.quiz$quizNumber.option$i'.tr();
       if (option.indexOf('quizzes') == -1) {
         options.add(option);
       }
     }
-    _answer = _translator.getText('quizzes.quiz$quizNumber.answer');
-    String tutorialType = _translator.getText('quizzes.quiz$quizNumber.tutorial_type');
-    String tutorialSection = _translator.getText('quizzes.quiz$quizNumber.tutorial_section');
-    String closeWindowTimerMessage = _translator.getText('quiz.close_window_timer_message');
+    _answer = 'quizzes.quiz$quizNumber.answer'.tr();
+    String tutorialType = 'quizzes.quiz$quizNumber.tutorial_type'.tr();
+    String tutorialSection = 'quizzes.quiz$quizNumber.tutorial_section'.tr();
+    String closeWindowTimerMessage = 'quiz.close_window_timer_message'.tr();
     closeWindowTimerMessage = closeWindowTimerMessage.replaceAll('{timerStart}', _timerStart.toString());
 
     return Container(
@@ -99,7 +96,7 @@ class _QuizState extends State<QuizView> {
                       _closeWasPressed = true;
                       _onWillPop();
                     },
-                    child: Text(_translator.getText('quiz.close'), style: TextStyle(color: AppColors.ALLPORTS)),
+                    child: Text('quiz.close'.tr(), style: TextStyle(color: AppColors.ALLPORTS)),
                     color: Colors.white
                   )
                 ),
@@ -112,7 +109,7 @@ class _QuizState extends State<QuizView> {
                           padding: const EdgeInsets.only(top: 9.0),
                           width: 50.0,
                           child: Text(
-                            _translator.getText('quiz.learn_link'),
+                            'quiz.learn_link'.tr(),
                             style: TextStyle(
                               fontSize: 13.0,
                               color: Colors.white,
@@ -125,7 +122,7 @@ class _QuizState extends State<QuizView> {
                           padding: const EdgeInsets.only(top: 22.0),
                           width: 50.0,
                           child: Text(
-                            _translator.getText('quiz.more_link') + ' >>',
+                            'quiz.more_link'.tr() + ' >>',
                             style: TextStyle(
                               fontSize: 13.0,
                               color: Colors.white,
@@ -148,7 +145,7 @@ class _QuizState extends State<QuizView> {
             padding: const EdgeInsets.only(top: 10.0),
             child: Center(
               child: Text(
-                _timerStart > 0 ? closeWindowTimerMessage : _translator.getText('quiz.close_window_message'),
+                _timerStart > 0 ? closeWindowTimerMessage : 'quiz.close_window_message'.tr(),
                 style: TextStyle(
                   fontSize: 12.0,
                   color: Colors.white,
@@ -320,8 +317,6 @@ class _QuizState extends State<QuizView> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;      
     _quizProvider = Provider.of<QuizzesViewModel>(context);    
 
     return WillPopScope(

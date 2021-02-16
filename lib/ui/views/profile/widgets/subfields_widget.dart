@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widget.dart';
@@ -14,8 +12,6 @@ class Subfields extends StatefulWidget {
 }
 
 class _SubfieldsState extends State<Subfields> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   ProfileViewModel _profileProvider;    
 
   Widget _showSubfields() {

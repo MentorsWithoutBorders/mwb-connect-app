@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 
 class AddGoalDialog extends StatefulWidget {
   AddGoalDialog({Key key})
@@ -18,8 +16,6 @@ class AddGoalDialog extends StatefulWidget {
 }
 
 class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateMixin {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();    
   CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
   final _formKey = GlobalKey<FormState>();
@@ -55,7 +51,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
         children: <Widget>[
           Center(
             child: Text(
-              _translator.getText('goals.add_new_goal'),
+              'goals.add_new_goal'.tr(),
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold
@@ -73,7 +69,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
                 maxLines: null,
                 decoration: InputDecoration(
                   //contentPadding: EdgeInsets.only(bottom: -20.0),
-                  hintText: _translator.getText('goals.add_goal_placeholder'),
+                  hintText: 'goals.add_goal_placeholder'.tr(),
                   hintStyle: TextStyle(
                     color: AppColors.SILVER
                   ),
@@ -89,7 +85,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return _translator.getText('goals.add_goal_error');
+                    return 'goals.add_goal_error'.tr();
                   }
                 },
                 onChanged: (value) {
@@ -112,7 +108,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
                 InkWell(
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text(_translator.getText('common.cancel'), style: TextStyle(color: Colors.grey))
+                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -132,7 +128,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
                     } 
                   },
                   child: !_isAddingGoal ? Text(
-                    _translator.getText('goals.add_goal'), 
+                    'goals.add_goal'.tr(), 
                     style: TextStyle(color: Colors.white)
                   ) : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -164,8 +160,6 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;      
     _commonProvider = Provider.of<CommonViewModel>(context);
     _goalProvider = Provider.of<GoalsViewModel>(context);
 

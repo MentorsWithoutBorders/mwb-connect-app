@@ -1,14 +1,13 @@
 import 'dart:math' as math; 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:flutter/gestures.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
 
@@ -18,8 +17,6 @@ class TutorialPreviews extends StatefulWidget {
 }
 
 class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProviderStateMixin {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();    
   GoalsViewModel _goalProvider;  
   PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
   AnimationController _animationController;
@@ -208,7 +205,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
                   child: SizedBox(
                     width: double.infinity,
                     child: Text(
-                      _translator.getText('tutorial_previews.show_helpers'),
+                      'tutorial_previews.show_helpers'.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -277,8 +274,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
   }   
 
   Widget _buildCarouselItem(BuildContext context, String item) {
-    String itemText = _translator.getText('tutorials.$item.preview.text');
-    String itemLink = _translator.getText('tutorials.$item.preview.link');
+    String itemText = 'tutorials.$item.preview.text'.tr();
+    String itemLink = 'tutorials.$item.preview.link'.tr();
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: RichText(
@@ -293,7 +290,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
             TextSpan(
               text: itemText + ' ',
               recognizer: TapGestureRecognizer()..onTap = () {
-                // if (_isOpen) Phoenix.rebirth(context);
+                //if (_isOpen) Phoenix.rebirth(context);
                 if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
               },              
             ),
@@ -305,6 +302,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
                 fontWeight: FontWeight.bold
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
+                //if (_isOpen) Phoenix.rebirth(context);
                 if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
               },
             )
@@ -316,8 +314,6 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
 
   @override
   Widget build(BuildContext context) {  
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;    
     _goalProvider = Provider.of<GoalsViewModel>(context);
 
     return _showTutorialPreviews(context);

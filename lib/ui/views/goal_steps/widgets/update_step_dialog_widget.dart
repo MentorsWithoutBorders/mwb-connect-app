@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 
 class UpdateStepDialog extends StatefulWidget {
   UpdateStepDialog({Key key})
@@ -18,8 +16,6 @@ class UpdateStepDialog extends StatefulWidget {
 }
 
 class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProviderStateMixin {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();    
   CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
   StepsViewModel _stepProvider;
@@ -49,7 +45,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
         children: <Widget>[
           Center(
             child: Text(
-              _translator.getText('step_dialog.update_step'),
+              'step_dialog.update_step'.tr(),
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold
@@ -66,7 +62,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(
-                  hintText: _translator.getText('step_dialog.update_step_placeholder'),
+                  hintText: 'step_dialog.update_step_placeholder'.tr(),
                   hintStyle: TextStyle(
                     color: AppColors.SILVER
                   ),
@@ -83,7 +79,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
                 initialValue: _stepProvider.selectedStep.text,
                 validator: (value) {
                   if (value.isEmpty) {
-                    return _translator.getText('step_dialog.update_step_error');
+                    return 'step_dialog.update_step_error'.tr();
                   }
                 },
                 onChanged: (value) {
@@ -106,7 +102,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
                 InkWell(
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text(_translator.getText('common.cancel'), style: TextStyle(color: Colors.grey))
+                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -125,7 +121,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
                       Navigator.pop(context);
                     }                    
                   },
-                  child: Text(_translator.getText('step_dialog.update_step'), style: TextStyle(color: Colors.white)),
+                  child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white)),
                   color: AppColors.MONZA
                 )
               ]
@@ -146,8 +142,6 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;      
     _commonProvider = Provider.of<CommonViewModel>(context);
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _stepProvider = Provider.of<StepsViewModel>(context);

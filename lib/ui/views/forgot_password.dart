@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
@@ -17,8 +16,6 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();  
   PageController _controller = PageController(viewportFraction: 1, keepPage: true);
   KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
@@ -101,7 +98,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       child: Column(
         children: <Widget>[
           Text(
-            _translator.getText('forgot_password.email_label'),
+            'forgot_password.email_label'.tr(),
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.white
@@ -110,7 +107,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Text(
-              _translator.getText('forgot_password.link_label'),
+              'forgot_password.link_label'.tr(),
               style: TextStyle(
                 fontSize: 12.0,
                 color: Colors.white
@@ -167,14 +164,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             ),
           ),
           hintStyle: TextStyle(color: Colors.white),
-          hintText: _translator.getText('forgot_password.email'),
+          hintText: 'forgot_password.email'.tr(),
           errorStyle: TextStyle(
             color: Colors.orange
           )
         ), 
         validator: (value) {
           if (_changeButtonPressed && value.isEmpty) {
-            return _translator.getText('forgot_password.email_empty');
+            return 'forgot_password.email_empty'.tr();
           } else {
             return null;
           }
@@ -229,7 +226,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             borderRadius: BorderRadius.circular(30.0)),
           color: Colors.white,
           child: Text(
-            _translator.getText('forgot_password.next'),
+            'forgot_password.next'.tr(),
             style: TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)
           ),
           onPressed: () async {
@@ -288,7 +285,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(25.0, 120.0, 25.0, 0.0),
       child: Text(
-        _translator.getText('forgot_password.email_sent'),
+        'forgot_password.email_sent'.tr(),
         style: TextStyle(
           fontSize: 14.0,
           color: Colors.white
@@ -301,16 +298,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_translator.getText('forgot_password.title')),
+        child: Text('forgot_password.title'.tr()),
       )
     );
   }   
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;
-    _translator.localizationDelegate = _localizationDelegate;
-
     return Stack(
       children: <Widget>[
         BackgroundGradient(),

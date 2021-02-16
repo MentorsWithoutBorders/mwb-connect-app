@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:quiver/strings.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/received_notification_model.dart';
@@ -54,7 +54,6 @@ class _RootViewState extends State<RootView> {
   UserService _userService = locator<UserService>();
   DownloadService _downloadService = locator<DownloadService>();
   AnalyticsService _analyticsService = locator<AnalyticsService>();
-  LocalizationDelegate _localizationDelegate;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
 
@@ -200,7 +199,7 @@ class _RootViewState extends State<RootView> {
   }
 
   Future<void> _showDailyAtTime() async {
-    String notificationTitle = translate('daily_notification.title', args: {'language': translate('language.name.${_localizationDelegate.currentLocale.languageCode}')});
+    String notificationTitle = 'daily_notification.title'.tr();
 
     if (_storageService.notificationsEnabled) {
       List<String> notificationsTime = _storageService.notificationsTime.split(':');
@@ -239,7 +238,6 @@ class _RootViewState extends State<RootView> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;
     final GoalsViewModel goalProvider = Provider.of<GoalsViewModel>(context);
     final NotificationsViewModel notificationProvider = Provider.of<NotificationsViewModel>(context);
 

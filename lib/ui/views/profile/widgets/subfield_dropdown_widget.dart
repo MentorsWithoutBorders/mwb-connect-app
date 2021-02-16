@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
@@ -17,8 +14,6 @@ class SubfieldDropdown extends StatefulWidget {
 }
 
 class _SubfieldDropdownState extends State<SubfieldDropdown> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   ProfileViewModel _profileProvider;  
   Subfield _selectedSubfield;
 
@@ -85,8 +80,6 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;
     _profileProvider = Provider.of<ProfileViewModel>(context);
     _setSelectedSubfield(_profileProvider.getSelectedSubfield(widget.index));
 

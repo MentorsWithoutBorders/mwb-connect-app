@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -25,8 +24,6 @@ class TutorialView extends StatefulWidget {
 }
 
 class _TutorialViewState extends State<TutorialView> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   ScrollController _controller = ScrollController();
   final double _pageIndicatorHeight = 30.0;
   Directory _appDocsDir;  
@@ -76,7 +73,7 @@ class _TutorialViewState extends State<TutorialView> {
     _appDocsDir = await getApplicationDocumentsDirectory();
   }  
   
-  Widget _showTutorial(BuildContext context, _localizationDelegate) {
+  Widget _showTutorial() {
     int initialPage = widget.section != null ? _sections.indexOf(widget.section) : 0;
     PageController controller = PageController(initialPage: initialPage, viewportFraction: 1, keepPage: true);
     return Padding(
@@ -94,7 +91,7 @@ class _TutorialViewState extends State<TutorialView> {
               child: PageView.builder(
                 controller: controller,
                 itemBuilder: (BuildContext context, int itemIndex) {
-                  return _buildCarouselItem(context, _localizationDelegate, _sections[itemIndex]);
+                  return _buildCarouselItem( _sections[itemIndex]);
                 },
                 itemCount: _sections.length
               )
@@ -120,9 +117,9 @@ class _TutorialViewState extends State<TutorialView> {
     );
   }
 
-  Widget _buildCarouselItem(BuildContext context, _localizationDelegate, String section) {
-    String itemTitle = _translator.getText('tutorials.${widget.type}.$section.title');
-    String itemText = _translator.getText('tutorials.${widget.type}.$section.text');
+  Widget _buildCarouselItem(String section) {
+    String itemTitle = 'tutorials.${widget.type}.$section.title'.tr();
+    String itemText = 'tutorials.${widget.type}.$section.text'.tr();
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 20.0),
@@ -212,16 +209,13 @@ class _TutorialViewState extends State<TutorialView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_translator.getText('tutorials.${widget.type}.title'),),
+        child: Text('tutorials.${widget.type}.title'.tr(),),
       )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;  
-    
     if (_isLoaded) {
       return Scaffold(
         appBar: AppBar(
@@ -233,7 +227,7 @@ class _TutorialViewState extends State<TutorialView> {
         body: Stack(
           children: <Widget>[
             BackgroundGradient(),
-            _showTutorial(context, _localizationDelegate)
+            _showTutorial()
           ]
         )
       );

@@ -37,8 +37,8 @@ dependencies:
   rxdart: ^0.23.1
   enum_to_string: ^1.0.9
 
-  flutter_translate:
-    path: ./thirdparty/flutter_translate
+  easy_localization:
+    path: ./thirdparty/easy_localization    
 
 dev_dependencies:
   flutter_test:

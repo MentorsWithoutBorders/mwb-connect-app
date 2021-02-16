@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/models/feedback_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/feedback_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -20,9 +19,7 @@ class FeedbackView extends StatefulWidget {
 }
 
 class _FeedbackViewState extends State<FeedbackView> {
-  LocalizationDelegate _localizationDelegate;
   LocalStorageService _storageService = locator<LocalStorageService>();
-  TranslateService _translator = locator<TranslateService>();
   PageController _controller = PageController(viewportFraction: 1, keepPage: true);
   KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
@@ -93,7 +90,7 @@ class _FeedbackViewState extends State<FeedbackView> {
       child: Column(
         children: <Widget>[
           Text(
-            _translator.getText('feedback.label'),
+            'feedback.label'.tr(),
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.white
@@ -123,11 +120,11 @@ class _FeedbackViewState extends State<FeedbackView> {
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
             hintStyle: TextStyle(color: AppColors.SILVER),
-            hintText: _translator.getText('feedback.message_placeholder')
+            hintText: 'feedback.message_placeholder'.tr()
           ), 
           validator: (value) {
             if (_sendButtonPressed && value.isEmpty) {
-              return _translator.getText('feedback.message_error');
+              return 'feedback.message_error'.tr();
             } else {
               return null;
             }
@@ -161,7 +158,7 @@ class _FeedbackViewState extends State<FeedbackView> {
           ),
           color: AppColors.MONZA,
           child: Text(
-            _translator.getText('feedback.send'),
+            'feedback.send'.tr(),
             style: TextStyle(fontSize: 16.0, color: Colors.white)
           ),
           onPressed: () async {
@@ -221,7 +218,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(25.0, 120.0, 25.0, 0.0),
       child: Text(
-        _translator.getText('feedback.confirmation'),
+        'feedback.confirmation'.tr(),
         style: TextStyle(
           fontSize: 14.0,
           color: Colors.white
@@ -234,16 +231,13 @@ class _FeedbackViewState extends State<FeedbackView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_translator.getText('feedback.title')),
+        child: Text('feedback.title'.tr()),
       )
     );
   }   
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;      
-
     return Stack(
       children: <Widget>[
         BackgroundGradient(),

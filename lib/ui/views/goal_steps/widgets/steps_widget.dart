@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
@@ -22,8 +20,6 @@ class Steps extends StatefulWidget {
 }
 
 class _StepsState extends State<Steps> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();  
   GoalsViewModel _goalProvider;  
   StepsViewModel _stepProvider;  
   final _scrollDirection = Axis.vertical;  
@@ -136,7 +132,7 @@ class _StepsState extends State<Steps> {
           borderRadius: BorderRadius.circular(20)
         ),
         color: AppColors.MONZA,
-        child: Text(_translator.getText('steps.add_step'), style: TextStyle(color: Colors.white)),
+        child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white)),
         onPressed: () {
           showDialog(
             context: context,
@@ -152,8 +148,6 @@ class _StepsState extends State<Steps> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;    
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _stepProvider = Provider.of<StepsViewModel>(context);
 

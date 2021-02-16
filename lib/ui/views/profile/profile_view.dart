@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -41,7 +42,7 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               Name(),
               FieldDropdown(),
-              //Subfields()
+              Subfields()
             ],
           )
         ),
@@ -53,7 +54,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_profileProvider.getTextWithContext(context, 'profile.title')),
+        child: Text('profile.title'.tr()),
       )
     );
   }
@@ -91,7 +92,7 @@ class _ProfileViewState extends State<ProfileView> {
           },
           child: Stack(
             children: <Widget>[
-              //BackgroundGradient(),
+              BackgroundGradient(),
               Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(

@@ -1,11 +1,10 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/notification_settings_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
@@ -21,9 +20,7 @@ class NotificationsView extends StatefulWidget {
 }
 
 class _NotificationsViewState extends State<NotificationsView> with SingleTickerProviderStateMixin {
-  LocalizationDelegate _localizationDelegate;
   LocalStorageService _storageService = locator<LocalStorageService>();
-  TranslateService _translator = locator<TranslateService>();  
   NotificationsViewModel _notificationsViewModel;
   AnimationController _controller;
   Animation<Offset> _offset;  
@@ -71,7 +68,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        _translator.getText('notifications.label'),
+                        'notifications.label'.tr(),
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -195,7 +192,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_translator.getText('notifications.title')),
+        child: Text('notifications.title'.tr()),
       )
     );
   }
@@ -215,7 +212,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
                     child: Text(
-                      _translator.getText('common.cancel'),
+                      'common.cancel'.tr(),
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.blue
@@ -229,7 +226,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                 Expanded(
                   child: Center(
                     child: Text(
-                      _translator.getText('notifications.time'),
+                      'notifications.time'.tr(),
                       style: TextStyle(
                         fontSize: 16.0
                       ), 
@@ -240,7 +237,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                     child: Text(
-                      _translator.getText('notifications.done'),
+                      'notifications.done'.tr(),
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.blue
@@ -280,8 +277,6 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;     
     _notificationsViewModel = locator<NotificationsViewModel>();
 
     return Stack(

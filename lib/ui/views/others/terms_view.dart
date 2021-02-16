@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:mwb_connect_app/service_locator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
@@ -17,8 +15,6 @@ class TermsView extends StatefulWidget {
 }
 
 class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMixin {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   ScrollController _controller = ScrollController();
   GlobalKey _cardKey = GlobalKey();
   GlobalKey _textKey = GlobalKey();
@@ -48,10 +44,10 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
   }   
 
   Widget _showTerms(BuildContext context) {
-    String termsTitle = _translator.getText('terms.text_title');
-    String termsLastUpdatedLabel = _translator.getText('terms.last_updated_label');
-    String termsLastUpdated = _translator.getText('terms.last_updated');
-    String termsText = _translator.getText('terms.text');
+    String termsTitle = 'terms.text_title'.tr();
+    String termsLastUpdatedLabel = 'terms.last_updated_label'.tr();
+    String termsLastUpdated = 'terms.last_updated'.tr();
+    String termsText = 'terms.text'.tr();
     
     return Container(
       width: double.infinity,
@@ -137,16 +133,13 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(_translator.getText('terms.title')),
+        child: Text('terms.title'.tr()),
       )
     );
   } 
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;
-    _translator.localizationDelegate = _localizationDelegate;       
-
     return Stack(
       children: <Widget>[
         BackgroundGradient(),

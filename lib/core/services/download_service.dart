@@ -26,11 +26,11 @@ class DownloadService {
     await _createDir('i18n');
     await _createDir('images');
 
-    await _copyLocaleFile('en');
+    await _copyLocaleFile('en-US');
   }
 
   downloadLocales() async {
-    await _downloadLocaleFile('en');
+    await _downloadLocaleFile('en-US');
     String currentLocale = await Devicelocale.currentLocale;
     if (currentLocale.indexOf('_') > -1) {
       await _downloadLocaleFile(currentLocale.split('_')[0]);
@@ -229,7 +229,7 @@ class DownloadService {
   showFiles() async {
     final directory = await getApplicationDocumentsDirectory();
 
-    List<FileSystemEntity> files = Directory('${directory.path}' + '/images').listSync();
+    List<FileSystemEntity> files = Directory('${directory.path}' + '/i18n').listSync();
     // await Future.forEach(files, (file) async {
     //   await file.deleteSync();
     // });

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
@@ -19,8 +17,6 @@ class GoalDialog extends StatefulWidget {
 }
 
 class _GoalDialogState extends State<GoalDialog> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   GoalsViewModel _goalProvider;
   StepsViewModel _stepProvider;
 
@@ -33,7 +29,7 @@ class _GoalDialogState extends State<GoalDialog> {
         children: <Widget>[
           Center(
             child: Text(
-              _translator.getText('goal_dialog.title'),
+              'goal_dialog.title'.tr(),
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold
@@ -61,7 +57,7 @@ class _GoalDialogState extends State<GoalDialog> {
                         ),
                       );                      
                     },
-                    child: Text(_translator.getText('goal_dialog.update_goal'), style: TextStyle(color: Colors.white)),
+                    child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white)),
                     color: AppColors.PACIFIC_BLUE
                   )
                 ),
@@ -82,7 +78,7 @@ class _GoalDialogState extends State<GoalDialog> {
                         ),
                       );                      
                     },
-                    child: Text(_translator.getText('goal_dialog.delete_goal'), style: TextStyle(color: Colors.white)),
+                    child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white)),
                     color: AppColors.MONZA
                   )
                 ),
@@ -93,7 +89,7 @@ class _GoalDialogState extends State<GoalDialog> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Center(                      
-                        child: Text(_translator.getText('common.cancel'), style: TextStyle(color: Colors.grey))
+                        child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
                       )
                     ),
                     onTap: () {
@@ -118,8 +114,8 @@ class _GoalDialogState extends State<GoalDialog> {
           Center(
             child: Text(
               _stepProvider.steps.length > 0 ? 
-                _translator.getText('goal_dialog.delete_goal_steps_message') :
-                _translator.getText('goal_dialog.delete_goal_message'),
+                'goal_dialog.delete_goal_steps_message'.tr() :
+                'goal_dialog.delete_goal_message'.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
@@ -144,7 +140,7 @@ class _GoalDialogState extends State<GoalDialog> {
                 InkWell(
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text(_translator.getText('common.cancel'), style: TextStyle(color: Colors.grey))
+                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
                   ),
                   onTap: () {
                     Navigator.pop(widget.context);
@@ -159,7 +155,7 @@ class _GoalDialogState extends State<GoalDialog> {
                   onPressed: () {
                     _deleteGoal();
                   },
-                  child: Text(_translator.getText('goal_dialog.delete_goal'), style: TextStyle(color: Colors.white)),
+                  child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white)),
                   color: AppColors.MONZA
                 )
               ]
@@ -179,8 +175,6 @@ class _GoalDialogState extends State<GoalDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _stepProvider = Provider.of<StepsViewModel>(context);
 

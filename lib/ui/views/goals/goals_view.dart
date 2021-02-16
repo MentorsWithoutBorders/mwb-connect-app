@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
@@ -10,7 +10,6 @@ import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/views/quizzes/quiz_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/first_goal_widget.dart';
@@ -33,9 +32,7 @@ class GoalsView extends StatefulWidget {
 }
 
 class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
-  LocalizationDelegate _localizationDelegate;
   LocalStorageService _storageService = locator<LocalStorageService>();
-  TranslateService _translator = locator<TranslateService>();  
   GoalsViewModel _goalProvider;
   QuizzesViewModel _quizProvider;
   final _scrollDirection = Axis.vertical;  
@@ -138,7 +135,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
         ),
         color: AppColors.MONZA,
         child: Text(
-          _translator.getText('goals.add_goal'), 
+          'goals.add_goal'.tr(), 
           style: TextStyle(
             color: Colors.white
           )
@@ -162,9 +159,9 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
       title = Text('');
     } else {
       if (_goalProvider.goals.length > 0) {
-        title = Text(_translator.getText('goals.my_goals'));
+        title = Text('goals.my_goals'.tr());
       } else {
-        title = Text(_translator.getText('goals.first_goal'));
+        title = Text('goals.first_goal'.tr());
       } 
     }
 
@@ -206,8 +203,6 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;    
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _quizProvider = Provider.of<QuizzesViewModel>(context);
 

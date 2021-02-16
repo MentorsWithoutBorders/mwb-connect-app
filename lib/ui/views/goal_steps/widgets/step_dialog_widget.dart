@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/update_step_dialog_widget.dart';
@@ -20,8 +18,6 @@ class StepDialog extends StatefulWidget {
 }
 
 class _StepDialogState extends State<StepDialog> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();    
   GoalsViewModel _goalProvider;
   StepsViewModel _stepProvider;
   
@@ -33,7 +29,7 @@ class _StepDialogState extends State<StepDialog> {
         children: <Widget>[
           Center(
             child: Text(
-              _translator.getText('step_dialog.title'),
+              'step_dialog.title'.tr(),
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold
@@ -61,7 +57,7 @@ class _StepDialogState extends State<StepDialog> {
                         ),
                       );                      
                     },
-                    child: Text(_translator.getText('step_dialog.update_step'), style: TextStyle(color: Colors.white)),
+                    child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white)),
                     color: AppColors.PACIFIC_BLUE
                   )
                 ),
@@ -82,7 +78,7 @@ class _StepDialogState extends State<StepDialog> {
                         ),
                       );                       
                     },
-                    child: Text(_translator.getText('step_dialog.add_sub_step'), style: TextStyle(color: Colors.white)),
+                    child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white)),
                     color: AppColors.PACIFIC_BLUE
                   )
                 ),
@@ -97,7 +93,7 @@ class _StepDialogState extends State<StepDialog> {
                       Navigator.pop(context);
                       _moveStepUp();
                     },
-                    child: Text(_translator.getText('step_dialog.move_step_up'), style: TextStyle(color: Colors.white)),
+                    child: Text('step_dialog.move_step_up'.tr(), style: TextStyle(color: Colors.white)),
                     color: AppColors.PACIFIC_BLUE
                   )
                 ),
@@ -112,7 +108,7 @@ class _StepDialogState extends State<StepDialog> {
                       Navigator.pop(context);
                       _moveStepDown();                     
                     },
-                    child: Text(_translator.getText('step_dialog.move_step_down'), style: TextStyle(color: Colors.white)),
+                    child: Text('step_dialog.move_step_down'.tr(), style: TextStyle(color: Colors.white)),
                     color: AppColors.PACIFIC_BLUE
                   )
                 ),
@@ -133,7 +129,7 @@ class _StepDialogState extends State<StepDialog> {
                         ),
                       );                      
                     },
-                    child: Text(_translator.getText('step_dialog.delete_step'), style: TextStyle(color: Colors.white)),
+                    child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white)),
                     color: AppColors.MONZA
                   )
                 ),
@@ -144,7 +140,7 @@ class _StepDialogState extends State<StepDialog> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Center(                      
-                        child: Text(_translator.getText('common.cancel'), style: TextStyle(color: Colors.grey))
+                        child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
                       )
                     ),
                     onTap: () {
@@ -178,8 +174,8 @@ class _StepDialogState extends State<StepDialog> {
           Center(
             child: Text(
               subSteps.length > 0 ? 
-                _translator.getText('step_dialog.delete_step_sub_steps_message') : 
-                _translator.getText('step_dialog.delete_step_message'),
+                'step_dialog.delete_step_sub_steps_message'.tr() : 
+                'step_dialog.delete_step_message'.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
@@ -204,7 +200,7 @@ class _StepDialogState extends State<StepDialog> {
                 InkWell(
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text(_translator.getText('common.cancel'), style: TextStyle(color: Colors.grey))
+                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
                   ),
                   onTap: () {
                     Navigator.pop(widget.context);
@@ -219,7 +215,7 @@ class _StepDialogState extends State<StepDialog> {
                   onPressed: () {
                     _deleteStep(subSteps);
                   },
-                  child: Text(_translator.getText('step_dialog.delete_step'), style: TextStyle(color: Colors.white)),
+                  child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white)),
                   color: AppColors.MONZA
                 )
               ]
@@ -243,8 +239,6 @@ class _StepDialogState extends State<StepDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;    
-    _translator.localizationDelegate = _localizationDelegate;       
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _stepProvider = Provider.of<StepsViewModel>(context);
 

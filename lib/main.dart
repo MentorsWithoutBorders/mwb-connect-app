@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/locales.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
@@ -25,24 +23,21 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 Future<void> main() async {
   setupLocator();
 
-  WidgetsFlutterBinding.ensureInitialized();  
+  WidgetsFlutterBinding.ensureInitialized();
   await _signInAnonymously();
   await _initAppDirectory();
 
-  var delegate = await _getDelegate();
+  Directory directory = await getApplicationDocumentsDirectory();
   runApp(
     Phoenix(
-      child: LocalizedApp(delegate, MWBConnectApp(AppConstants.mixpanelToken)),
+      child: EasyLocalization(
+        supportedLocales: [Locale('en', 'US')],
+        path: directory.path+'/i18n',
+        fallbackLocale: Locale('en', 'US'),
+        child: MWBConnectApp(AppConstants.mixpanelToken)
+      ),
     )
   );
-}
-
-_getDelegate() async {
-  Directory directory = await getApplicationDocumentsDirectory();
-  return await LocalizationDelegate.create(
-      basePath: directory.path+'/i18n',
-      fallbackLocale: 'en_US',
-      supportedLocales: AppLocales.locales);  
 }
 
 _signInAnonymously() async {
@@ -79,11 +74,6 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
 
   _MWBConnectAppState(this._mixpanelToken);
 
-  _reloadDelegate(context) async {
-    LocalizationDelegate delegate = await _getDelegate();
-    LocalizedApp.of(context).delegate.shouldReload(delegate);
-  }
-
   Widget _buildWaitingScreen() {
     return MaterialApp(
       home: Stack(
@@ -103,9 +93,6 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
       _mixpanel.track('Test Event', properties);      
     });
 
-    _reloadDelegate(context);
-    var localizationDelegate = LocalizedApp.of(context).delegate;
-
     return FutureBuilder(
       future: getIt.allReady(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -120,22 +107,15 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
               ChangeNotifierProvider.value(value: locator<QuizzesViewModel>()),
               ChangeNotifierProvider.value(value: locator<NotificationsViewModel>())
             ],
-            child: LocalizationProvider(
-              state: LocalizationProvider.of(context).state,
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                initialRoute: '/',
-                title: 'MWBConnect',
-                localizationsDelegates: [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  localizationDelegate
-                ],
-                supportedLocales: localizationDelegate.supportedLocales,
-                locale: localizationDelegate.currentLocale,                
-                theme: ThemeData(),
-                home: RootView(auth: Auth())
-              )
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              initialRoute: '/',
+              title: 'MWBConnect',
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,                
+              theme: ThemeData(),
+              home: RootView(auth: Auth())
             )
           );
         } else {

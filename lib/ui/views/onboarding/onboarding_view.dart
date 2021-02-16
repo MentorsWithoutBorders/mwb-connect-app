@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -26,8 +25,6 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();
   AnalyticsService _analyticsService = locator<AnalyticsService>();
   PageController _controller = PageController(viewportFraction: 0.85, keepPage: true);  
   Directory _appDocsDir;  
@@ -66,7 +63,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     });
   }
 
-  Widget _showOnboarding(BuildContext context, _localizationDelegate) {
+  Widget _showOnboarding() {
     final sliderHeight = MediaQuery.of(context).size.height - 200;
 
     return Container(
@@ -83,7 +80,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               controller: _controller,
               slides: List.generate(
                 _sections.length,
-                (itemIndex) => _buildCarouselItem(context, _localizationDelegate, _sections[itemIndex])
+                (itemIndex) => _buildCarouselItem(_sections[itemIndex])
               ),
             )
           ),
@@ -120,7 +117,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                               _goToLogin();
                             },
                             child: Text(
-                              _translator.getText('onboarding.login'), 
+                              'onboarding.login'.tr(), 
                               style: TextStyle(
                                 fontFamily: 'LatoRegular',
                                 color: Colors.white,
@@ -142,7 +139,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                               _goToSignup();
                             },
                             child: Text(
-                              _translator.getText('onboarding.get_started'),
+                              'onboarding.get_started'.tr(),
                               style: TextStyle(
                                 fontFamily: 'LatoRegular',
                                 color: AppColors.ALLPORTS,
@@ -164,9 +161,9 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  Widget _buildCarouselItem(BuildContext context, _localizationDelegate, String section) {
-    String itemTitle = _translator.getText('onboarding.$section.title');
-    String itemText = _translator.getText('onboarding.$section.text');
+  Widget _buildCarouselItem(String section) {
+    String itemTitle = 'onboarding.$section.title'.tr();
+    String itemText = 'onboarding.$section.text'.tr();
     List<String> itemTitleList = itemTitle.split(' ');
     String itemTitleLastWord = itemTitleList[itemTitleList.length - 1];
     itemTitle = itemTitle.replaceAll(itemTitleLastWord, '');
@@ -290,15 +287,12 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;
-    _translator.localizationDelegate = _localizationDelegate;
-    
     if (_isLoaded) {
       return Scaffold(
         body: Stack(
           children: <Widget>[
             BackgroundGradient(),
-            _showOnboarding(context, _localizationDelegate)
+            _showOnboarding()
           ]
         )
       );

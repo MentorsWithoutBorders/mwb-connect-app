@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/core/models/approved_user_model.dart';
 import 'package:quiver/strings.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -9,9 +8,9 @@ import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
-import 'package:mwb_connect_app/core/services/translate_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/approved_user_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -30,8 +29,6 @@ class LoginSignupView extends StatefulWidget {
 
 class _LoginSignupViewState extends State<LoginSignupView> {
   LocalStorageService _storageService = locator<LocalStorageService>();
-  LocalizationDelegate _localizationDelegate;
-  TranslateService _translator = locator<TranslateService>();  
   UserService _userService = locator<UserService>();  
   GoalsService _goalsService = locator<GoalsService>();  
   AnalyticsService _analyticsService = locator<AnalyticsService>();  
@@ -137,7 +134,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       padding: const EdgeInsets.only(top: 40.0),
       child: Center(
         child: Text(
-          _isLoginForm ? _translator.getText('login.title') : _translator.getText('sign_up.title'),
+          _isLoginForm ? 'login.title'.tr() : 'sign_up.title'.tr(),
           style: TextStyle(
             fontSize: 22.0,
             color: Colors.white,
@@ -193,7 +190,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             ),
           ),
           hintStyle: TextStyle(color: Colors.white),
-          hintText: _translator.getText('sign_up.full_name'),
+          hintText: 'sign_up.full_name'.tr(),
           errorStyle: TextStyle(
             color: Colors.orange
           )
@@ -203,7 +200,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             setState(() {
               _isLoading = false;
             });
-            return _translator.getText('sign_up.full_name') + ' ' + _translator.getText('login_sign_up.empty');
+            return 'sign_up.full_name'.tr() + ' ' + 'login_sign_up.empty'.tr();
           } else {
             return null;
           }
@@ -269,7 +266,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             ),
           ),
           hintStyle: TextStyle(color: Colors.white),
-          hintText: _translator.getText('login_sign_up.email'),
+          hintText: 'login_sign_up.email'.tr(),
           errorStyle: TextStyle(
             color: Colors.orange
           )
@@ -279,7 +276,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             setState(() {
               _isLoading = false;
             });
-            return _translator.getText('login_sign_up.email') + ' ' + _translator.getText('login_sign_up.empty');
+            return 'login_sign_up.email'.tr() + ' ' + 'login_sign_up.empty'.tr();
           } else {
             return null;
           }
@@ -346,7 +343,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             ),
           ),
           hintStyle: TextStyle(color: Colors.white),
-          hintText: _translator.getText('login_sign_up.password'),
+          hintText: 'login_sign_up.password'.tr(),
           errorStyle: TextStyle(
             color: Colors.orange
           )
@@ -356,7 +353,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             setState(() {
               _isLoading = false;
             });
-            return _translator.getText('login_sign_up.password') + ' ' + _translator.getText('login_sign_up.empty');
+            return 'login_sign_up.password'.tr() + ' ' + 'login_sign_up.empty'.tr();
           } else {
             return null;
           }          
@@ -410,7 +407,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)),
           color: Colors.white,
-          child: Text(_isLoginForm ? _translator.getText('login.action') : _translator.getText('sign_up.action'),
+          child: Text(_isLoginForm ? 'login.action'.tr() : 'sign_up.action'.tr(),
               style: TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)),
           onPressed: () async {
             setState(() {
@@ -430,7 +427,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           height: 30.0,
           margin: const EdgeInsets.only(top: 15.0),
           child: Text(
-            _isLoginForm ? _translator.getText('login.sign_up') : _translator.getText('sign_up.login'),
+            _isLoginForm ? 'login.sign_up'.tr() : 'sign_up.login'.tr(),
             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: Colors. white)
           )
         )
@@ -446,7 +443,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           height: 30.0,
           margin: const EdgeInsets.only(top: 10.0),
           child: Text(
-            _translator.getText('login.forgot_password'),
+            'login.forgot_password'.tr(),
             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: Colors. white)
           )
         )
@@ -483,7 +480,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             _addUser(approvedUser);          
             print('Signed up user: $userId');
           } else {
-            throw Exception(_translator.getText('sign_up.not_approved'));
+            throw Exception('sign_up.not_approved'.tr());
           }
         }
         setState(() {
@@ -568,9 +565,6 @@ class _LoginSignupViewState extends State<LoginSignupView> {
 
   @override
   Widget build(BuildContext context) {
-    _localizationDelegate = LocalizedApp.of(context).delegate;
-    _translator.localizationDelegate = _localizationDelegate;
-
     return Stack(
       children: <Widget>[
         BackgroundGradient(),

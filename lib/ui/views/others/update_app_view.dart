@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -17,7 +17,6 @@ class UpdateAppView extends StatefulWidget {
 }
 
 class _UpdateAppViewState extends State<UpdateAppView> {
-  LocalizationDelegate localizationDelegate;
   Directory _appDocsDir;  
   bool _isLoaded = false;
 
@@ -35,8 +34,8 @@ class _UpdateAppViewState extends State<UpdateAppView> {
   }    
 
   Widget _showUpdateApp(BuildContext context) {
-    String updateTitle = translate('update_app.title', args: {'language': translate('language.name.${localizationDelegate.currentLocale.languageCode}')});
-    String updateText = translate('update_app.text', args: {'language': translate('language.name.${localizationDelegate.currentLocale.languageCode}')});
+    String updateTitle = 'update_app.title'.tr();
+    String updateText = 'update_app.text'.tr();
 
     return Container(
       width: double.infinity,
@@ -168,8 +167,6 @@ class _UpdateAppViewState extends State<UpdateAppView> {
 
   @override
   Widget build(BuildContext context) {
-    localizationDelegate = LocalizedApp.of(context).delegate;
-    
     if (_isLoaded) {
       return WillPopScope(
         onWillPop: _onWillPop,
