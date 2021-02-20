@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 
@@ -34,10 +35,11 @@ class RootBundleAssetLoader extends AssetLoader {
   Future<Map<String, dynamic>> load(String path, Locale locale) async {
     var localePath = getLocalePath(path, locale);
     EasyLocalization.logger.debug('Load asset from $path');
-    if (localePath.contains('assets')) {
-      return json.decode(await rootBundle.loadString(localePath));
-    } else {
+    final directory = await getApplicationDocumentsDirectory();
+    if (localePath.contains(directory.path)) {
       return json.decode(await File(localePath).readAsString());
+    } else {
+      return json.decode(await rootBundle.loadString(localePath));
     }  
   }
 }

@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   args: ^1.6.0
   path: ^1.7.0
+  path_provider: ^1.4.0
   easy_logger:
     path: packages/easy_logger
   flutter_localizations:

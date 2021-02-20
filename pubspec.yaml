@@ -38,7 +38,7 @@ dependencies:
   enum_to_string: ^1.0.9
 
   easy_localization:
-    path: ./thirdparty/easy_localization    
+    path: ./thirdparty/easy_localization 
 
 dev_dependencies:
   flutter_test:

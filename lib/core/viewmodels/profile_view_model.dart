@@ -20,7 +20,13 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<List<Field>> getFields() async {
     return await _profileService.getFields();
-  }  
+  }
+
+  setFields(List<Field> fields) {
+    for (Field field in fields) {
+      _profileService.addField(field);
+    }
+  }    
 
   setUserDetails(User user) {
     _userService.setUserDetails(user);
