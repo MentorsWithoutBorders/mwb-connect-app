@@ -30,6 +30,7 @@ class Dropdown<T> extends StatelessWidget {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
+          key: key,
           isExpanded: true,
           style: TextStyle(
             fontSize: 14.0,

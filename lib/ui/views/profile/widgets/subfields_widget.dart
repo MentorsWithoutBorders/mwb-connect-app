@@ -28,6 +28,7 @@ class _SubfieldsState extends State<Subfields> {
   Widget _showAddSubfieldButton() {
     return Center(
       child: RaisedButton(
+        key: Key('add_subfield'),
         elevation: 1.0,
         padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
         splashColor: Colors.red,

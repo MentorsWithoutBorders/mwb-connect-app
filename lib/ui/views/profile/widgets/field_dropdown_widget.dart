@@ -30,6 +30,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
       height: 55,
       padding: const EdgeInsets.only(bottom: 15),
       child: Dropdown(
+        key: Key('field'),
         dropdownMenuItemList: _buildFieldDropdown(),
         onTapped: _unfocus,
         onChanged: _changeField,

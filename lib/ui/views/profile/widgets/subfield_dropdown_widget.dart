@@ -36,6 +36,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
         children: [
           Expanded(
             child: Dropdown(
+              key: Key('subfield' + widget.index.toString()),
               dropdownMenuItemList: _buildSubfieldDropdown(),
               onTapped: _unfocus,
               onChanged: _changeSubfield,
@@ -47,6 +48,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               InkWell(
+                key: Key('delete_subfield' + widget.index.toString()),
                 child: Container(
                   width: 30.0,
                   height: 40.0,

@@ -7,17 +7,21 @@ class InputBox extends StatelessWidget {
   final String hint;
   final String text;
   final Function(String) inputChangedCallback;
+  final inputController = TextEditingController();
 
   InputBox({
+    Key key,
     @required this.autofocus,
     this.hint,
     this.text,
     this.inputChangedCallback
-  });  
+  }) : super(key: key);  
 
   Widget _showInput() {
+    inputController.text = text;
     return TextFormField(
-      initialValue: text,
+      key: key,
+      controller: inputController,
       autofocus: autofocus,
       textCapitalization: TextCapitalization.sentences,
       style: TextStyle(

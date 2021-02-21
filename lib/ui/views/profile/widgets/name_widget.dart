@@ -16,6 +16,7 @@ class _NameState extends State<Name> {
     return Container(
       padding: const EdgeInsets.only(bottom: 15),
       child: InputBox(
+        key: Key('name'),
         autofocus: false, 
         hint: 'Enter name', 
         text: _profileProvider.profile.user?.name, 
