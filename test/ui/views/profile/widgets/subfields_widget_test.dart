@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../utils/test_app.dart';
 import '../../../utils/widget_loader.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -21,6 +22,8 @@ void main() async {
   setupLocator();
   final getIt = GetIt.instance;
   await getIt.allReady();
+  LocalStorageService storageService = locator<LocalStorageService>();
+  storageService.userId = 'test_user';  
 
   group('Subfield dropdown widget tests:', () {
     var profileViewModel = locator<ProfileViewModel>();
@@ -71,7 +74,7 @@ void main() async {
       jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
     });
 
-    testWidgets('Testing subfield dropdowns show up', (tester) async {
+    testWidgets('Subfield dropdowns show up test', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
@@ -79,7 +82,7 @@ void main() async {
       });
     });
 
-    testWidgets('Testing add subfield', (tester) async {
+    testWidgets('Add subfield test', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
@@ -92,7 +95,7 @@ void main() async {
       });
     });
 
-    testWidgets('Testing change subfield', (tester) async {
+    testWidgets('Change subfield test', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
@@ -106,7 +109,7 @@ void main() async {
       });
     });
     
-    testWidgets('Testing delete subfields', (tester) async {
+    testWidgets('Delete subfields test', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();

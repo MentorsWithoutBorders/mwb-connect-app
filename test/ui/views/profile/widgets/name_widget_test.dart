@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../utils/test_app.dart';
 import '../../../utils/widget_loader.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -17,6 +18,8 @@ void main() async {
   setupLocator();
   final getIt = GetIt.instance;
   await getIt.allReady();
+  LocalStorageService storageService = locator<LocalStorageService>();
+  storageService.userId = 'test_user';    
 
   group('Name widget tests:', () {
     var profileViewModel = locator<ProfileViewModel>();
@@ -42,7 +45,7 @@ void main() async {
       jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
     });   
 
-    testWidgets('Testing name widget shows up', (tester) async {
+    testWidgets('Name widget shows up test', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
         await tester.pump();
@@ -52,7 +55,7 @@ void main() async {
       });
     });
 
-    testWidgets('Testing initial name', (tester) async {
+    testWidgets('Initial name test', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
         await tester.pump();
@@ -60,7 +63,7 @@ void main() async {
       });
     });    
 
-    testWidgets('Testing name change', (tester) async {
+    testWidgets('Name change test', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
         await tester.pump();

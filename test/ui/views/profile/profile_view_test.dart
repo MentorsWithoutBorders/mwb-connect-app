@@ -71,7 +71,7 @@ void main() async {
       jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
     });  
 
-    testWidgets('Testing if all profile widgets show up for mentor', (tester) async {
+    testWidgets('Profile widgets show up for mentor test', (tester) async {
       await tester.runAsync(() async {
         profile.user.isMentor = true;
         await profileViewModel.setUserDetails(profile.user);        
