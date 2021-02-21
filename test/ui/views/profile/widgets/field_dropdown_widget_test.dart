@@ -55,16 +55,17 @@ void main() async {
     testWidgets('Testing field dropdown shows up', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createFieldDropdownWidget());
-        await tester.pumpAndSettle();
+        await tester.pump();
         expect(find.text('Field'), findsOneWidget);
         expect(find.byType(FieldDropdown), findsOneWidget);
+        expect(find.byKey(Key('field')).last, findsOneWidget);
       });
     });
 
     testWidgets('Testing initial field', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createFieldDropdownWidget());
-        await tester.pumpAndSettle();
+        await tester.pump();
         expect((((tester.widget(find.byKey(Key('field')).last) as DropdownButton).value) as Field).name, equals('Programming'));
       });
     });
@@ -72,11 +73,11 @@ void main() async {
     testWidgets('Testing change field', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createFieldDropdownWidget());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(FieldDropdown));
-        await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.tap(find.byKey(Key('field')).last);
+        await tester.pump();
         await tester.tap(find.text('Graphic Design').last);
-        await tester.pumpAndSettle();
+        await tester.pump();
         expect((((tester.widget(find.byKey(Key('field')).last) as DropdownButton).value) as Field).name, equals('Graphic Design'));
       });
     });    

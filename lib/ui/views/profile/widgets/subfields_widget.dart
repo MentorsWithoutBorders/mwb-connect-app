@@ -17,9 +17,11 @@ class _SubfieldsState extends State<Subfields> {
     var subfieldWidgets = List<Widget>();
     List<String> selectedSubfields = _profileProvider.profile.user.subfields;
     subfieldWidgets.add(Label(text: 'Subfields'));
-    for (int i = 0; i < selectedSubfields.length; i++) {
-      Widget subfield = SubfieldDropdown(index: i);
-      subfieldWidgets.add(subfield);
+    if (selectedSubfields != null) {
+      for (int i = 0; i < selectedSubfields.length; i++) {
+        Widget subfield = SubfieldDropdown(index: i);
+        subfieldWidgets.add(subfield);
+      }
     }
     subfieldWidgets.add(_showAddSubfieldButton());
     return Wrap(children: subfieldWidgets);

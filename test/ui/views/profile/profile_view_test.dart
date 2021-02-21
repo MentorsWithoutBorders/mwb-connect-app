@@ -89,10 +89,10 @@ void main() async {
         expect(find.text('Subfields'), findsOneWidget);
         expect(find.byKey(Key('subfield0')).last, findsOneWidget);
         expect(find.byKey(Key('subfield1')).last, findsOneWidget);        
-        expect(find.text('Add subfield'), findsOneWidget);
-        expect(find.byKey(Key('add_subfield')).last, findsOneWidget);
         expect(find.byKey(Key('delete_subfield0')).last, findsOneWidget);
         expect(find.byKey(Key('delete_subfield1')).last, findsOneWidget);
+        expect(find.text('Add subfield'), findsOneWidget);
+        expect(find.byKey(Key('add_subfield')).last, findsOneWidget);
       });
     });
   });

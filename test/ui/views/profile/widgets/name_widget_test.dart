@@ -45,16 +45,17 @@ void main() async {
     testWidgets('Testing name widget shows up', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
-        await tester.pumpAndSettle();
+        await tester.pump();
         expect(find.text('Name'), findsOneWidget);
         expect(find.byType(TextFormField), findsOneWidget);
+        expect(find.byKey(Key('name')).last, findsOneWidget);
       });
     });
 
     testWidgets('Testing initial name', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
-        await tester.pumpAndSettle();
+        await tester.pump();
         expect((tester.widget(find.byKey(Key('name')).last) as TextFormField).controller.text, equals('Bob'));
       });
     });    
@@ -62,9 +63,9 @@ void main() async {
     testWidgets('Testing name change', (tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
-        await tester.pumpAndSettle();
+        await tester.pump();
         await tester.enterText(find.byType(TextFormField), 'Alice');
-        await tester.pumpAndSettle();
+        await tester.pump();
         expect((tester.widget(find.byKey(Key('name')).last) as TextFormField).controller.text, equals('Alice'));
       });
     });     
