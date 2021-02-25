@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -129,7 +130,7 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _showLoginButton() {
     return FlatButton(
-      key: Key('goToLogin'),
+      key: Key(AppKeys.goToLoginBtn),
       padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -151,7 +152,7 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _showSignupButton() {
     return RaisedButton(
-      key: Key('goToSignup'),
+      key: Key(AppKeys.goToSignupBtn),
       padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0)

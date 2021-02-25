@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../utils/test_app.dart';
 import '../../../utils/widget_loader.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -61,7 +62,7 @@ void main() async {
         await tester.pump();
         expect(find.text('Field'), findsOneWidget);
         expect(find.byType(FieldDropdown), findsOneWidget);
-        expect(find.byKey(Key('field')).last, findsOneWidget);
+        expect(find.byKey(Key(AppKeys.fieldDropdown)).last, findsOneWidget);
       });
     });
 
@@ -69,7 +70,7 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createFieldDropdownWidget());
         await tester.pump();
-        expect((((tester.widget(find.byKey(Key('field')).last) as DropdownButton).value) as Field).name, equals('Programming'));
+        expect((((tester.widget(find.byKey(Key(AppKeys.fieldDropdown)).last) as DropdownButton).value) as Field).name, equals('Programming'));
       });
     });
     
@@ -85,10 +86,10 @@ void main() async {
 
 class FieldDropdownWidgetTest {
   static Future<void> changeFieldTest(WidgetTester tester) async {
-    await tester.tap(find.byKey(Key('field')).last);
+    await tester.tap(find.byKey(Key(AppKeys.fieldDropdown)).last);
     await tester.pump();
     await tester.tap(find.text('Programming').last);
     await tester.pump();
-    expect((((tester.widget(find.byKey(Key('field')).last) as DropdownButton).value) as Field).name, equals('Programming'));  
+    expect((((tester.widget(find.byKey(Key(AppKeys.fieldDropdown)).last) as DropdownButton).value) as Field).name, equals('Programming'));  
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
@@ -16,7 +17,7 @@ class _NameState extends State<Name> {
     return Container(
       padding: const EdgeInsets.only(bottom: 15),
       child: InputBox(
-        key: Key('name'),
+        key: Key(AppKeys.nameField),
         autofocus: false, 
         hint: 'Enter name', 
         text: _profileProvider.profile.user?.name, 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
@@ -36,7 +37,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
         children: [
           Expanded(
             child: Dropdown(
-              key: Key('subfield' + widget.index.toString()),
+              key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
               dropdownMenuItemList: _buildSubfieldDropdown(),
               onTapped: _unfocus,
               onChanged: _changeSubfield,
@@ -48,7 +49,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               InkWell(
-                key: Key('delete_subfield' + widget.index.toString()),
+                key: Key(AppKeys.deleteSubfieldBtn + widget.index.toString()),
                 child: Container(
                   width: 30.0,
                   height: 40.0,

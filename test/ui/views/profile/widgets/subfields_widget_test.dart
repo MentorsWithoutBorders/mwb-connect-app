@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../utils/test_app.dart';
 import '../../../utils/widget_loader.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -86,12 +87,12 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
-        await tester.tap(find.byKey(Key('add_subfield')).last);
+        await tester.tap(find.byKey(Key(AppKeys.addSubfieldBtn)).last);
         await tester.pump();
-        expect((((tester.widget(find.byKey(Key('subfield0')).last) as DropdownButton).value) as Subfield).name, equals('Web Development'));
-        await tester.tap(find.byKey(Key('add_subfield')).last);
+        expect((((tester.widget(find.byKey(Key(AppKeys.subfieldDropdown + '0')).last) as DropdownButton).value) as Subfield).name, equals('Web Development'));
+        await tester.tap(find.byKey(Key(AppKeys.addSubfieldBtn)).last);
         await tester.pump();
-        expect((((tester.widget(find.byKey(Key('subfield1')).last) as DropdownButton).value) as Subfield).name, equals('Mobile Development'));        
+        expect((((tester.widget(find.byKey(Key(AppKeys.subfieldDropdown + '1')).last) as DropdownButton).value) as Subfield).name, equals('Mobile Development'));        
       });
     });
 
@@ -99,13 +100,13 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
-        await tester.tap(find.byKey(Key('add_subfield')).last);
+        await tester.tap(find.byKey(Key(AppKeys.addSubfieldBtn)).last);
         await tester.pump();
-        await tester.tap(find.byKey(Key('subfield0')).last);
+        await tester.tap(find.byKey(Key(AppKeys.subfieldDropdown + '0')).last);
         await tester.pump();
         await tester.tap(find.text('Game Development').last);
         await tester.pump();
-        expect((((tester.widget(find.byKey(Key('subfield0')).last) as DropdownButton).value) as Subfield).name, equals('Game Development'));
+        expect((((tester.widget(find.byKey(Key(AppKeys.subfieldDropdown + '0')).last) as DropdownButton).value) as Subfield).name, equals('Game Development'));
       });
     });
     
@@ -113,14 +114,14 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
-        await tester.tap(find.byKey(Key('add_subfield')).last);
+        await tester.tap(find.byKey(Key(AppKeys.addSubfieldBtn)).last);
         await tester.pump();
-        await tester.tap(find.byKey(Key('add_subfield')).last);
+        await tester.tap(find.byKey(Key(AppKeys.addSubfieldBtn)).last);
         await tester.pump();        
-        await tester.tap(find.byKey(Key('delete_subfield0')).last);
+        await tester.tap(find.byKey(Key(AppKeys.deleteSubfieldBtn + '0')).last);
         await tester.pump();
         expect(find.byType(SubfieldDropdown), findsNWidgets(1));
-        await tester.tap(find.byKey(Key('delete_subfield0')).last);
+        await tester.tap(find.byKey(Key(AppKeys.deleteSubfieldBtn + '0')).last);
         await tester.pump();
         expect(find.byType(SubfieldDropdown), findsNWidgets(0));        
       });

@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../utils/test_app.dart';
 import '../../../utils/widget_loader.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -51,7 +52,7 @@ void main() async {
         await tester.pump();
         expect(find.text('Name'), findsOneWidget);
         expect(find.byType(TextFormField), findsOneWidget);
-        expect(find.byKey(Key('name')).last, findsOneWidget);
+        expect(find.byKey(Key(AppKeys.nameField)).last, findsOneWidget);
       });
     });
 
@@ -59,7 +60,7 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
         await tester.pump();
-        expect((tester.widget(find.byKey(Key('name')).last) as TextFormField).controller.text, equals('Bob'));
+        expect((tester.widget(find.byKey(Key(AppKeys.nameField)).last) as TextFormField).controller.text, equals('Bob'));
       });
     });    
 
@@ -69,7 +70,7 @@ void main() async {
         await tester.pump();
         await tester.enterText(find.byType(TextFormField), 'Alice');
         await tester.pump();
-        expect((tester.widget(find.byKey(Key('name')).last) as TextFormField).controller.text, equals('Alice'));
+        expect((tester.widget(find.byKey(Key(AppKeys.nameField)).last) as TextFormField).controller.text, equals('Alice'));
       });
     });     
   });

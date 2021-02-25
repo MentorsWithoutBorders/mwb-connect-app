@@ -3,6 +3,7 @@ import 'package:quiver/strings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -225,7 +226,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: TextFormField(
-        key: Key('email'),
+        key: Key(AppKeys.loginEmailField),
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
@@ -302,7 +303,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: TextFormField(
-        key: Key('password'),
+        key: Key(AppKeys.loginPasswordField),
         maxLines: 1,
         obscureText: true,
         autofocus: false,
@@ -405,7 +406,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       child: SizedBox(
         height: 42.0,
         child: RaisedButton(
-          key: Key('primary_button'),
+          key: Key(AppKeys.loginSignupPrimaryBtn),
           elevation: 2.0,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)),

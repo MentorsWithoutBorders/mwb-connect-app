@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
@@ -30,7 +31,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
       height: 55,
       padding: const EdgeInsets.only(bottom: 15),
       child: Dropdown(
-        key: Key('field'),
+        key: Key(AppKeys.fieldDropdown),
         dropdownMenuItemList: _buildFieldDropdown(),
         onTapped: _unfocus,
         onChanged: _changeField,
