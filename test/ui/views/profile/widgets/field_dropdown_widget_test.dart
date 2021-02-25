@@ -77,12 +77,18 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createFieldDropdownWidget());
         await tester.pump();
-        await tester.tap(find.byKey(Key('field')).last);
-        await tester.pump();
-        await tester.tap(find.text('Graphic Design').last);
-        await tester.pump();
-        expect((((tester.widget(find.byKey(Key('field')).last) as DropdownButton).value) as Field).name, equals('Graphic Design'));
+        await FieldDropdownWidgetTest.changeFieldTest(tester);
       });
     });    
   });
+}
+
+class FieldDropdownWidgetTest {
+  static Future<void> changeFieldTest(WidgetTester tester) async {
+    await tester.tap(find.byKey(Key('field')).last);
+    await tester.pump();
+    await tester.tap(find.text('Programming').last);
+    await tester.pump();
+    expect((((tester.widget(find.byKey(Key('field')).last) as DropdownButton).value) as Field).name, equals('Programming'));  
+  }
 }

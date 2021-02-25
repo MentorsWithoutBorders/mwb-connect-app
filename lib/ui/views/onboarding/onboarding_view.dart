@@ -107,47 +107,13 @@ class _OnboardingViewState extends State<OnboardingView> {
                       Expanded(
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: FlatButton(
-                            padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.white)
-                            ),
-                            onPressed: () {
-                              _goToLogin();
-                            },
-                            child: Text(
-                              'onboarding.login'.tr(), 
-                              style: TextStyle(
-                                fontFamily: 'LatoRegular',
-                                color: Colors.white,
-                                fontSize: 15
-                              )
-                            )
-                          )
+                          child: _showLoginButton()
                         )
                       ),
                       Expanded(
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: RaisedButton(
-                            padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0)
-                            ),
-                            onPressed: () {
-                              _goToSignup();
-                            },
-                            child: Text(
-                              'onboarding.get_started'.tr(),
-                              style: TextStyle(
-                                fontFamily: 'LatoRegular',
-                                color: AppColors.ALLPORTS,
-                                fontSize: 15
-                              )
-                            ),
-                            color: Colors.white
-                          )
+                          child: _showSignupButton()
                         )
                       )
                     ]
@@ -158,6 +124,50 @@ class _OnboardingViewState extends State<OnboardingView> {
           )
         ]
       )
+    );
+  }
+
+  Widget _showLoginButton() {
+    return FlatButton(
+      key: Key('goToLogin'),
+      padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: BorderSide(color: Colors.white)
+      ),
+      onPressed: () {
+        _goToLogin();
+      },
+      child: Text(
+        'onboarding.login'.tr(), 
+        style: TextStyle(
+          fontFamily: 'LatoRegular',
+          color: Colors.white,
+          fontSize: 15
+        )
+      )
+    );
+  }
+
+  Widget _showSignupButton() {
+    return RaisedButton(
+      key: Key('goToSignup'),
+      padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0)
+      ),
+      onPressed: () {
+        _goToSignup();
+      },
+      child: Text(
+        'onboarding.get_started'.tr(),
+        style: TextStyle(
+          fontFamily: 'LatoRegular',
+          color: AppColors.ALLPORTS,
+          fontSize: 15
+        )
+      ),
+      color: Colors.white
     );
   }
 

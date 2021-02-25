@@ -5,6 +5,9 @@ version: 1.0.0+1
 dependencies:
   flutter:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  integration_test: ^1.0.1        
   flutter_localizations:
     sdk: flutter
 

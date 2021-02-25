@@ -225,6 +225,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: TextFormField(
+        key: Key('email'),
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
@@ -301,6 +302,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: TextFormField(
+        key: Key('password'),
         maxLines: 1,
         obscureText: true,
         autofocus: false,
@@ -403,6 +405,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       child: SizedBox(
         height: 42.0,
         child: RaisedButton(
+          key: Key('primary_button'),
           elevation: 2.0,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)),
