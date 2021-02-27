@@ -60,9 +60,7 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createFieldDropdownWidget());
         await tester.pump();
-        expect(find.text('Field'), findsOneWidget);
-        expect(find.byType(FieldDropdown), findsOneWidget);
-        expect(find.byKey(Key(AppKeys.fieldDropdown)).last, findsOneWidget);
+        await FieldDropdownWidgetTest.fieldShowsUpTest();
       });
     });
 
@@ -70,7 +68,7 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createFieldDropdownWidget());
         await tester.pump();
-        expect((((tester.widget(find.byKey(Key(AppKeys.fieldDropdown)).last) as DropdownButton).value) as Field).name, equals('Programming'));
+        await FieldDropdownWidgetTest.initialFieldTest(tester);
       });
     });
     
@@ -85,11 +83,28 @@ void main() async {
 }
 
 class FieldDropdownWidgetTest {
+  static Finder fieldDropdown = find.byKey(Key(AppKeys.fieldDropdown));
+
+  static Future<void> fieldShowsUpTest() async {
+    expect(find.text('Field'), findsOneWidget);
+    expect(find.byType(FieldDropdown), findsOneWidget);
+    expect(fieldDropdown.last, findsOneWidget); 
+  }
+
+  static Future<void> initialFieldTest(WidgetTester tester) async {
+    expect((((tester.widget(fieldDropdown.last) as DropdownButton).value) as Field).name, equals('Programming'));  
+  }  
+
   static Future<void> changeFieldTest(WidgetTester tester) async {
-    await tester.tap(find.byKey(Key(AppKeys.fieldDropdown)).last);
+    await tester.tap(fieldDropdown.last);
+    await tester.pump();
+    await tester.tap(find.text('Graphic Design').last);
+    await tester.pump();
+    expect((((tester.widget(fieldDropdown.last) as DropdownButton).value) as Field).name, equals('Graphic Design'));
+    await tester.tap(fieldDropdown.last);
     await tester.pump();
     await tester.tap(find.text('Programming').last);
     await tester.pump();
-    expect((((tester.widget(find.byKey(Key(AppKeys.fieldDropdown)).last) as DropdownButton).value) as Field).name, equals('Programming'));  
+    expect((((tester.widget(fieldDropdown.last) as DropdownButton).value) as Field).name, equals('Programming'));
   }
 }

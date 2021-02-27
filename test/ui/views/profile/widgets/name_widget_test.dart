@@ -50,9 +50,7 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
         await tester.pump();
-        expect(find.text('Name'), findsOneWidget);
-        expect(find.byType(TextFormField), findsOneWidget);
-        expect(find.byKey(Key(AppKeys.nameField)).last, findsOneWidget);
+        await NameWidgetTest.nameShowsUpTest();
       });
     });
 
@@ -60,7 +58,7 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
         await tester.pump();
-        expect((tester.widget(find.byKey(Key(AppKeys.nameField)).last) as TextFormField).controller.text, equals('Bob'));
+        await NameWidgetTest.initialNameTest(tester);
       });
     });    
 
@@ -68,10 +66,30 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createNameWidget());
         await tester.pump();
-        await tester.enterText(find.byType(TextFormField), 'Alice');
-        await tester.pump();
-        expect((tester.widget(find.byKey(Key(AppKeys.nameField)).last) as TextFormField).controller.text, equals('Alice'));
+        await NameWidgetTest.nameChangeTest(tester);
       });
     });     
   });
+}
+
+class NameWidgetTest {
+  static Finder nameField = find.byKey(Key(AppKeys.nameField));
+
+  static Future<void> nameShowsUpTest() async {
+    expect(find.text('Name'), findsOneWidget);
+    expect(nameField.last, findsOneWidget);
+  }
+
+  static Future<void> initialNameTest(WidgetTester tester) async {
+    expect((tester.widget(nameField.last) as TextFormField).controller.text, equals('Bob'));
+  }
+  
+  static Future<void> nameChangeTest(WidgetTester tester) async {
+    await tester.enterText(nameField, 'Alice');
+    await tester.pump();
+    expect((tester.widget(nameField.last) as TextFormField).controller.text, equals('Alice'));
+    await tester.enterText(nameField, 'Bob');
+    await tester.pump();
+    expect((tester.widget(nameField.last) as TextFormField).controller.text, equals('Bob'));    
+  }    
 }
