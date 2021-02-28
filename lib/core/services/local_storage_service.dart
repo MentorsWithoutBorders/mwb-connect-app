@@ -19,10 +19,7 @@ class LocalStorageService {
   set userName(String value) => _saveToDisk('userName', value);
 
   bool get isMentor => _getFromDisk('isMentor');
-  set isMentor(bool value) => _saveToDisk('isMentor', value);  
-
-  String get onboarding => _getFromDisk('onboarding');
-  set onboarding(String value) => _saveToDisk('onboarding', value);  
+  set isMentor(bool value) => _saveToDisk('isMentor', value);
 
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
   set tutorials(Map<String, String> value) => _saveToDisk('tutorials', value);

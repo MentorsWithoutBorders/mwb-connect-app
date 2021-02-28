@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
@@ -12,7 +13,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/models/onboarding_model.dart';
 import 'package:mwb_connect_app/core/models/tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/quiz_settings_model.dart';
 import 'package:mwb_connect_app/core/models/i18n_model.dart';
@@ -100,11 +100,6 @@ class DownloadService {
 
   setPreferences() async {
     LocalStorageService storageService = locator<LocalStorageService>();
-    // Set onboarding sections
-    Onboarding onboarding = await _getOnboardingSections();
-    if (onboarding != null && onboarding.sections != '') {
-      storageService.onboarding = onboarding.sections;
-    }     
     // Set tutorial sections
     Tutorial previews = await _getTutorial('previews');
     List<String> sections = previews.sections.split(', ');
@@ -148,12 +143,6 @@ class DownloadService {
           await _checkImage(image);
         } on Exception catch(e) {}
       }
-    }
-    List<String> onboardingSections = storageService.onboarding.split(', ');
-    for (var section in onboardingSections) {
-      try {
-        await _checkImage(section);
-      } on Exception catch(e) {}
     }
   }
   
@@ -204,12 +193,7 @@ class DownloadService {
     } finally {
       chunkEvents.close();
     }
-  } 
-
-  Future<Onboarding> _getOnboardingSections() async {
-    DocumentSnapshot doc = await _api.getDocumentById(path: 'onboarding', isForUser: false, id: 'setup');
-    return Onboarding.fromMap(doc.data, doc.documentID);    
-  }  
+  }
 
   Future<Tutorial> _getTutorial(String type) async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'tutorials', isForUser: false, id: type);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -8,7 +9,6 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -58,10 +58,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }    
 
   void _setSections() {
-    LocalStorageService _storageService = locator<LocalStorageService>();
-    setState(() {
-      _sections = _storageService.onboarding.split(', ');
-    });
+    _sections = AppConstants.onboarding;
   }
 
   Widget _showOnboarding() {

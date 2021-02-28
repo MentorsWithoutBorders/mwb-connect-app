@@ -71,6 +71,7 @@ class MWBConnectApp extends StatefulWidget {
 class _MWBConnectAppState extends State<MWBConnectApp> {
   MixpanelAPI _mixpanel;
   String _mixpanelToken;
+  DownloadService _downloadService = locator<DownloadService>();  
 
   _MWBConnectAppState(this._mixpanelToken);
 
@@ -83,7 +84,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
         ]
       ),
     );
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
