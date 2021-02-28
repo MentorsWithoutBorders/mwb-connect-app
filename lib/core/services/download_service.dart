@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
@@ -15,7 +14,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/quiz_settings_model.dart';
-import 'package:mwb_connect_app/core/models/i18n_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
@@ -31,12 +29,12 @@ class DownloadService {
 
   downloadLocales() async {
     await _downloadLocaleFile('en-US');
-    String currentLocale = await Devicelocale.currentLocale;
-    if (currentLocale.indexOf('_') > -1) {
-      await _downloadLocaleFile(currentLocale.split('_')[0]);
-    } else {
-      await _downloadLocaleFile(currentLocale);
-    }
+    // String currentLocale = await Devicelocale.currentLocale;
+    // if (currentLocale.indexOf('_') > -1) {
+    //   await _downloadLocaleFile(currentLocale.split('_')[0]);
+    // } else {
+    //   await _downloadLocaleFile(currentLocale);
+    // }
   }
 
   _createDir(String dirToBeCreated) async {
@@ -204,11 +202,6 @@ class DownloadService {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'quizzes', isForUser: false, id: 'settings');
     return QuizSettings.fromMap(doc.data, doc.documentID) ;
   } 
-
-  Future<I18n> _getLocales() async {
-    DocumentSnapshot doc = await _api.getDocumentById(path: 'locales', isForUser: false, id: 'i18n');
-    return I18n.fromMap(doc.data, doc.documentID);
-  }
 
   showFiles() async {
     final directory = await getApplicationDocumentsDirectory();
