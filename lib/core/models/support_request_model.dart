@@ -9,11 +9,11 @@ class SupportRequest {
   SupportRequest({this.id, this.text, this.userId, this.userName, this.userEmail, this.dateTime});
 
   SupportRequest.fromMap(Map snapshot, String id) :
-        id = id,
-        text = snapshot['text'] ?? '',
-        userId = snapshot['userId'] ?? '',
-        userName = snapshot['userName'] ?? '',
-        userEmail = snapshot['userEmail'] ?? '';
+    id = id,
+    text = snapshot['text'] ?? '',
+    userId = snapshot['userId'] ?? '',
+    userName = snapshot['userName'] ?? '',
+    userEmail = snapshot['userEmail'] ?? '';
 
   toJson() {
     return {

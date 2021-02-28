@@ -7,10 +7,10 @@ class QuizStatus {
   QuizStatus({this.id, this.solved, this.lastSolved, this.roundsSolved});
 
   QuizStatus.fromMap(Map snapshot, String id) :
-        id = id,
-        solved = snapshot['solved'] ?? '',
-        lastSolved = snapshot['lastSolved']?.toDate(),
-        roundsSolved = snapshot['roundsSolved'] ?? 0;
+    id = id,
+    solved = snapshot['solved'] ?? '',
+    lastSolved = snapshot['lastSolved']?.toDate(),
+    roundsSolved = snapshot['roundsSolved'] ?? 0;
 
   toJson() {
     return {

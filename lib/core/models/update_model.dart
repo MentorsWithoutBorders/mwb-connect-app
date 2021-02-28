@@ -8,11 +8,11 @@ class Update {
   Update({this.id, this.major, this.minor, this.release, this.build});
 
   Update.fromMap(Map snapshot, String id) :
-        id = id,
-        major = snapshot['major'],
-        minor = snapshot['minor'],
-        release = snapshot['release'],
-        build = snapshot['build'];
+    id = id,
+    major = snapshot['major'],
+    minor = snapshot['minor'],
+    release = snapshot['release'],
+    build = snapshot['build'];
 
   toJson() {
     return {

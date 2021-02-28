@@ -6,9 +6,9 @@ class NotificationSettings {
   NotificationSettings({this.id, this.enabled, this.time});
 
   NotificationSettings.fromMap(Map snapshot, String id) :
-        id = id,
-        enabled = snapshot['enabled'] ?? true,
-        time = snapshot['time'];
+    id = id,
+    enabled = snapshot['enabled'] ?? true,
+    time = snapshot['time'];
 
   toJson() {
     return {

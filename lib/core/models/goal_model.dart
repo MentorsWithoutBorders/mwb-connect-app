@@ -7,10 +7,10 @@ class Goal {
   Goal({this.id, this.text, this.index, this.dateTime});
 
   Goal.fromMap(Map snapshot, String id) :
-        id = id,
-        text = snapshot['text'] ?? '',
-        index = snapshot['index'] ?? 0,
-        dateTime = snapshot['dateTime']?.toDate();
+    id = id,
+    text = snapshot['text'] ?? '',
+    index = snapshot['index'] ?? 0,
+    dateTime = snapshot['dateTime']?.toDate();
 
   toJson() {
     return {

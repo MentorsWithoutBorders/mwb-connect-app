@@ -9,12 +9,12 @@ class StepModel {
   StepModel({this.id, this.parent, this.text, this.level, this.index, this.dateTime});
 
   StepModel.fromMap(Map snapshot, String id) :
-        id = id,
-        parent = snapshot['parent'],
-        text = snapshot['text'] ?? '',
-        level = snapshot['level'] ?? 0,
-        index = snapshot['index'] ?? 0,
-        dateTime = snapshot['dateTime']?.toDate();
+    id = id,
+    parent = snapshot['parent'],
+    text = snapshot['text'] ?? '',
+    level = snapshot['level'] ?? 0,
+    index = snapshot['index'] ?? 0,
+    dateTime = snapshot['dateTime']?.toDate();
 
   toJson() {
     return {
