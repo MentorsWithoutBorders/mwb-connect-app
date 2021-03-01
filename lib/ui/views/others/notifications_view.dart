@@ -2,10 +2,10 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/notification_settings_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -104,9 +104,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
             if (Platform.isAndroid) Switch(
               value: _storageService.notificationsEnabled,
               onChanged: (value){
-                setState(() {
-                  _updateNotificationsEnabled(value);
-                });
+                _updateNotificationsEnabled(value);
               },
               activeTrackColor: Colors.lightGreenAccent,
               activeColor: Colors.green,
@@ -119,9 +117,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                 child: CupertinoSwitch(
                   value: _storageService.notificationsEnabled,
                   onChanged: (value){
-                    setState(() {
-                      _updateNotificationsEnabled(value);
-                    });
+                    _updateNotificationsEnabled(value);
                   }
                 )
               ),

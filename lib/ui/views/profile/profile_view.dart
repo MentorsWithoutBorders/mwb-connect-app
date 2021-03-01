@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/availability_switch_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -30,22 +31,42 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _showProfileCard(BuildContext context, Profile profile) {
     return Container(
       padding: const EdgeInsets.fromLTRB(15.0, 90.0, 15.0, 50.0), 
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ), 
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          padding: const EdgeInsets.all(16),
-          child: Wrap(
-            children: [
-              Name(),
-              FieldDropdown(),
-              Subfields()
-            ],
-          )
-        ),
+      child: Column(
+        children: [
+          Card(
+            elevation: 5,
+            margin: const EdgeInsets.only(bottom: 15.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ), 
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              padding: const EdgeInsets.all(16.0),
+              child: Wrap(
+                children: [
+                  Name(),
+                  FieldDropdown(),
+                  Subfields()
+                ],
+              )
+            ),
+          ),
+          Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ), 
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              padding: const EdgeInsets.all(16.0),
+              child: Wrap(
+                children: [
+                  AvailabilitySwitch()
+                ],
+              )
+            ),
+          ), 
+        ],
       ),
     );
   }
