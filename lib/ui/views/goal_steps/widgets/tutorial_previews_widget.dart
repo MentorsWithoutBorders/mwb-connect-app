@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math; 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -100,7 +101,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
   Widget _showPreviewsOpen() {
     var _storageService = locator<LocalStorageService>();
     List<String> previews = [];
-    _storageService.tutorials.forEach((key, value) => previews.add(key));
+    Map<String, dynamic> tutorials = _storageService.tutorials;
+    tutorials.forEach((key, value) => previews.add(key));
 
     return AnimatedOpacity(
       opacity: _isOpen ? 1.0 : 0.0,

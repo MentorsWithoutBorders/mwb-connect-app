@@ -22,7 +22,7 @@ class LocalStorageService {
   set isMentor(bool value) => _saveToDisk('isMentor', value);
 
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
-  set tutorials(Map<String, String> value) => _saveToDisk('tutorials', value);
+  set tutorials(Map<String, List<String>> value) => _saveToDisk('tutorials', value);
   
   int get quizzesCount => _getFromDisk('quizzesCount');
   set quizzesCount(int value) => _saveToDisk('quizzesCount', value);
@@ -47,7 +47,7 @@ class LocalStorageService {
 
   dynamic _getFromDisk(String key) {
     var value = _preferences.get(key);
-    if (value is String && value !=null && value.indexOf('{') > -1) {
+    if (value is String && value != null && value.indexOf('{') == 0) {
       value = json.decode(value);
     }
     print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
@@ -76,7 +76,7 @@ class LocalStorageService {
     if (content is List<String>) {
       _preferences.setStringList(key, content);
     }
-    if (content is Map<String, String>) {
+    if (content is Map<String, List<String>>) {
       _preferences.setString(key, json.encode(content));
     }    
   }    

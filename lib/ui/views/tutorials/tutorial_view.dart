@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:easy_localization/easy_localization.dart';
@@ -28,7 +29,7 @@ class _TutorialViewState extends State<TutorialView> {
   final double _pageIndicatorHeight = 30.0;
   Directory _appDocsDir;  
   Map<String, bool> _imageExists = Map();
-  List<String> _sections = List();
+  List<String> _sections = [];
   bool _isLoaded = false;
 
   @override
@@ -40,8 +41,12 @@ class _TutorialViewState extends State<TutorialView> {
 
   _setSections() {
     LocalStorageService _storageService = locator<LocalStorageService>();
+    Map<String, List<String>> tutorials = Map();
+    for (var entry in _storageService.tutorials.entries) {
+      tutorials[entry.key] = entry.value.cast<String>();
+    }    
     setState(() {
-      _sections = _storageService.tutorials[widget.type].split(', ');
+      _sections = tutorials[widget.type];
     });
     _sections.forEach((section) {
       _imageExists.putIfAbsent(section, () => true);

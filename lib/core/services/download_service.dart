@@ -100,8 +100,8 @@ class DownloadService {
     LocalStorageService storageService = locator<LocalStorageService>();
     // Set tutorial sections
     Tutorial previews = await _getTutorial('previews');
-    List<String> sections = previews.sections.split(', ');
-    Map<String, String> tutorials = Map();
+    List<String> sections = previews.sections;
+    Map<String, List<String>> tutorials = Map();
     await Future.forEach(sections, (section) async {
       Tutorial tutorial = await _getTutorial(section);
       tutorials[section] = tutorial.sections;
@@ -128,8 +128,9 @@ class DownloadService {
 
   getImages() async {
     LocalStorageService storageService = locator<LocalStorageService>();
-    for (var entry in storageService.tutorials.entries) {
-      List<String> sections = entry.value.split(', '); 
+    Map<String, dynamic> tutorials = storageService.tutorials;
+    for (var entry in tutorials.entries) {
+      List<String> sections = entry.value.cast<String>(); 
       for (var section in sections) {
         String image;
         if (section == 'main') {
