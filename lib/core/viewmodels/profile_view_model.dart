@@ -130,7 +130,13 @@ class ProfileViewModel extends ChangeNotifier {
     profile.user.isAvailable = isAvailable;
     setUserDetails(profile.user);
     notifyListeners();
-  }  
+  }
+  
+  void deleteAvailability(int index) {
+    profile.user.availability.removeAt(index);
+    setUserDetails(profile.user);
+    notifyListeners();
+  }
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

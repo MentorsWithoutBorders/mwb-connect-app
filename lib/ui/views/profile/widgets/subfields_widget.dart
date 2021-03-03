@@ -15,7 +15,7 @@ class _SubfieldsState extends State<Subfields> {
   ProfileViewModel _profileProvider;    
 
   Widget _showSubfields() {
-    var subfieldWidgets = List<Widget>();
+    List<Widget> subfieldWidgets = List();
     List<String> selectedSubfields = _profileProvider.profile.user.subfields;
     subfieldWidgets.add(Label(text: 'Subfields'));
     if (selectedSubfields != null) {
