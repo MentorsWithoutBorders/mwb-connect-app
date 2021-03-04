@@ -39,102 +39,113 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
     _commonProvider.setDialogInputHeight(box.size.height);
   }  
 
-  Widget _showAddStepDialog(BuildContext context) {
+  Widget _showAddStepDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
       child: Wrap(
         children: <Widget>[
-          Center(
-            child: Text(
-              'steps.add_new_step'.tr(),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              )
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Form(
-              key: _formKey,
-              child: TextFormField(
-                autofocus: true,  
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: 'steps.add_step_placeholder'.tr(),
-                  hintStyle: TextStyle(
-                    color: AppColors.SILVER
-                  ),
-                  enabledBorder: UnderlineInputBorder(      
-                    borderSide: BorderSide(color: AppColors.ALLPORTS),   
-                  ),  
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.ALLPORTS),
-                  ), 
-                  errorStyle: TextStyle(
-                    color: Colors.orange
-                  )
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'steps.add_step_error'.tr();
-                  }
-                },
-                onChanged: (value) {
-                  Future.delayed(const Duration(milliseconds: 10), () {        
-                    if (value.isNotEmpty) {
-                      WidgetsBinding.instance.addPostFrameCallback(_afterLayout);             
-                      _formKey.currentState.validate();
-                    }
-                  });
-                },
-                onSaved: (value) => _stepText = value
-              )
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                InkWell(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                RaisedButton(
-                  padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-                  splashColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                     _addStep();
-                      Navigator.pop(context);
-                    } 
-                  },
-                  child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white)),
-                  color: AppColors.MONZA
-                )
-              ]
-            )
-          )
+          _showTitle(),
+          _showInput(),
+          _showButtons()
         ]
       )
     );
   }
+
+  Widget _showTitle() {
+    return Center(
+      child: Text(
+        'steps.add_new_step'.tr(),
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
+  }
+
+  Widget _showInput() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Form(
+        key: _formKey,
+        child: TextFormField(
+          autofocus: true,  
+          textCapitalization: TextCapitalization.sentences,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            hintText: 'steps.add_step_placeholder'.tr(),
+            hintStyle: TextStyle(
+              color: AppColors.SILVER
+            ),
+            enabledBorder: UnderlineInputBorder(      
+              borderSide: BorderSide(color: AppColors.ALLPORTS),   
+            ),  
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.ALLPORTS),
+            ), 
+            errorStyle: TextStyle(
+              color: Colors.orange
+            )
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'steps.add_step_error'.tr();
+            }
+          },
+          onChanged: (value) {
+            Future.delayed(const Duration(milliseconds: 10), () {        
+              if (value.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);             
+                _formKey.currentState.validate();
+              }
+            });
+          },
+          onSaved: (value) => _stepText = value
+        )
+      )
+    ); 
+  }
+
+  Widget _showButtons() {
+    return Padding(
+      padding: EdgeInsets.only(top: 30.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          InkWell(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
+              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          RaisedButton(
+            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
+            splashColor: Colors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _addStep();
+                Navigator.pop(context);
+              } 
+            },
+            child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white)),
+            color: AppColors.MONZA
+          )
+        ]
+      )
+    ); 
+  }
   
   void _addStep() async {
-    print(widget.steps);
     int index = _stepProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
     DateTime now = DateTime.now();
     DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
@@ -149,6 +160,6 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
     _goalProvider = Provider.of<GoalsViewModel>(context);
     _stepProvider = Provider.of<StepsViewModel>(context);
 
-    return _showAddStepDialog(context);
+    return _showAddStepDialog();
   }
 }

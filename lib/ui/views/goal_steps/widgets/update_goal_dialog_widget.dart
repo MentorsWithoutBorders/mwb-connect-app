@@ -41,96 +41,108 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
       child: Wrap(
         children: <Widget>[
-          Center(
-            child: Text(
-              'goal_dialog.update_goal'.tr(),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              )
+          _showTitle(),
+          _showInput(),
+          _showButtons()
+        ]
+      )
+    );
+  }
+
+  Widget _showTitle() {
+    return Center(
+      child: Text(
+        'goal_dialog.update_goal'.tr(),
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
+  }
+
+  Widget _showInput() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Form(
+        key: _formKey,
+        child: TextFormField(
+          autofocus: true,  
+          textCapitalization: TextCapitalization.sentences,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            hintText: 'goal_dialog.update_goal_placeholder'.tr(),
+            hintStyle: TextStyle(
+              color: AppColors.SILVER
+            ),
+            enabledBorder: UnderlineInputBorder(      
+              borderSide: BorderSide(color: AppColors.ALLPORTS),   
+            ),  
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.ALLPORTS),
+            ), 
+            errorStyle: TextStyle(
+              color: Colors.orange
             )
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Form(
-              key: _formKey,
-              child: TextFormField(
-                autofocus: true,  
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: 'goal_dialog.update_goal_placeholder'.tr(),
-                  hintStyle: TextStyle(
-                    color: AppColors.SILVER
-                  ),
-                  enabledBorder: UnderlineInputBorder(      
-                    borderSide: BorderSide(color: AppColors.ALLPORTS),   
-                  ),  
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.ALLPORTS),
-                  ), 
-                  errorStyle: TextStyle(
-                    color: Colors.orange
-                  )
-                ),
-                initialValue: _goalProvider.selectedGoal.text,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'goal_dialog.update_goal_error'.tr();
-                  }
-                },
-                onChanged: (value) {
-                  Future.delayed(const Duration(milliseconds: 10), () {        
-                    if (value.isNotEmpty) {      
-                      WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-                      _formKey.currentState.validate();
-                    }
-                  });
-                },
-                onSaved: (value) => _goalText = value
-              )
-            )
+          initialValue: _goalProvider.selectedGoal.text,
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'goal_dialog.update_goal_error'.tr();
+            }
+          },
+          onChanged: (value) {
+            Future.delayed(const Duration(milliseconds: 10), () {        
+              if (value.isNotEmpty) {      
+                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+                _formKey.currentState.validate();
+              }
+            });
+          },
+          onSaved: (value) => _goalText = value
+        )
+      )
+    ); 
+  }
+
+  Widget _showButtons() {
+    return Padding(
+      padding: EdgeInsets.only(top: 30.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          InkWell(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
+              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                InkWell(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                RaisedButton(
-                  padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-                  splashColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      _updateGoal();
-                      Navigator.pop(context);
-                    }                    
-                  },
-                  child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white)),
-                  color: AppColors.MONZA
-                )
-              ]
-            )
+          RaisedButton(
+            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
+            splashColor: Colors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _updateGoal();
+                Navigator.pop(context);
+              }                    
+            },
+            child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white)),
+            color: AppColors.MONZA
           )
         ]
       )
     );
   }
   
-  _updateGoal() {
+  void _updateGoal() {
     Goal goal = _goalProvider.selectedGoal;
     goal.text = _goalText;
     DateTime now = DateTime.now();
