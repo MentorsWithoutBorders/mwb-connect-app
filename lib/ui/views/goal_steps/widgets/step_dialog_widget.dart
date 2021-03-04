@@ -27,140 +27,148 @@ class _StepDialogState extends State<StepDialog> {
       padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 25.0),
       child: Wrap(
         children: <Widget>[
-          Center(
-            child: Text(
-              'step_dialog.title'.tr(),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              )
+          _showTitle(),
+          _showOptions()
+        ]
+      )
+    );
+  }
+
+  Widget _showTitle() {
+    return Center(
+      child: Text(
+        'step_dialog.title'.tr(),
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );    
+  }
+
+  Widget _showOptions() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Wrap(
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              splashColor: AppColors.ALLPORTS,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (_) => AnimatedDialog(
+                    widgetInside: UpdateStepDialog(),
+                    hasInput: true,
+                  ),
+                );                      
+              },
+              child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white)),
+              color: AppColors.PACIFIC_BLUE
+            )
+          ),
+          if (_stepProvider.selectedStep.level <=1) SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              splashColor: AppColors.ALLPORTS,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (_) => AnimatedDialog(
+                    widgetInside: AddSubStepDialog(),
+                    hasInput: true,
+                  ),
+                );                       
+              },
+              child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white)),
+              color: AppColors.PACIFIC_BLUE
+            )
+          ),
+          if (_stepProvider.selectedStep.index > 0) SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              splashColor: AppColors.ALLPORTS,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                _moveStepUp();
+              },
+              child: Text('step_dialog.move_step_up'.tr(), style: TextStyle(color: Colors.white)),
+              color: AppColors.PACIFIC_BLUE
+            )
+          ),
+          if (_stepProvider.selectedStep.index < _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.parent)) SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              splashColor: AppColors.ALLPORTS,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                _moveStepDown();                     
+              },
+              child: Text('step_dialog.move_step_down'.tr(), style: TextStyle(color: Colors.white)),
+              color: AppColors.PACIFIC_BLUE
+            )
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              splashColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (_) => AnimatedDialog(
+                    widgetInside: _showDeleteStepDialog(),
+                    hasInput: false,
+                  ),
+                );                      
+              },
+              child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white)),
+              color: AppColors.MONZA
             )
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Wrap(
-              children: <Widget>[
-                SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    splashColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context,
-                        builder: (_) => AnimatedDialog(
-                          widgetInside: UpdateStepDialog(),
-                          hasInput: true,
-                        ),
-                      );                      
-                    },
-                    child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white)),
-                    color: AppColors.PACIFIC_BLUE
-                  )
-                ),
-                if (_stepProvider.selectedStep.level <=1) SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    splashColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context,
-                        builder: (_) => AnimatedDialog(
-                          widgetInside: AddSubStepDialog(),
-                          hasInput: true,
-                        ),
-                      );                       
-                    },
-                    child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white)),
-                    color: AppColors.PACIFIC_BLUE
-                  )
-                ),
-                if (_stepProvider.selectedStep.index > 0) SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    splashColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _moveStepUp();
-                    },
-                    child: Text('step_dialog.move_step_up'.tr(), style: TextStyle(color: Colors.white)),
-                    color: AppColors.PACIFIC_BLUE
-                  )
-                ),
-                if (_stepProvider.selectedStep.index < _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.parent)) SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    splashColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _moveStepDown();                     
-                    },
-                    child: Text('step_dialog.move_step_down'.tr(), style: TextStyle(color: Colors.white)),
-                    color: AppColors.PACIFIC_BLUE
-                  )
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    splashColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context,
-                        builder: (_) => AnimatedDialog(
-                          widgetInside: _showDeleteStepDialog(),
-                          hasInput: false,
-                        ),
-                      );                      
-                    },
-                    child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white)),
-                    color: AppColors.MONZA
-                  )
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: InkWell(
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(                      
-                        child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
-                      )
-                    ),
-                    onTap: () {
-                      Navigator.pop(widget.context);
-                    },
-                  ),
+            padding: const EdgeInsets.only(top: 5.0),
+            child: InkWell(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: Center(                      
+                  child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
                 )
-              ]
-            )
+              ),
+              onTap: () {
+                Navigator.pop(widget.context);
+              },
+            ),
           )
         ]
       )
     );
   }
 
-  _moveStepUp() {
+  void _moveStepUp() {
     _stepProvider.moveStepUp(_goalProvider.selectedGoal.id, _stepProvider.steps, _stepProvider.selectedStep);
   }
 
-  _moveStepDown() {
+  void _moveStepDown() {
     _stepProvider.moveStepDown(_goalProvider.selectedGoal.id, _stepProvider.steps, _stepProvider.selectedStep);
   }  
   

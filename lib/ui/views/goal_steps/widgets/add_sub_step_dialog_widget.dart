@@ -45,94 +45,106 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
       child: Wrap(
         children: <Widget>[
-          Center(
-            child: Text(
-              'step_dialog.add_sub_step'.tr(),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              )
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Form(
-              key: _formKey,
-              child: TextFormField(
-                autofocus: true,  
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: 'step_dialog.add_sub_step_placeholder'.tr(),
-                  hintStyle: TextStyle(
-                    color: AppColors.SILVER
-                  ),
-                  enabledBorder: UnderlineInputBorder(      
-                    borderSide: BorderSide(color: AppColors.ALLPORTS),   
-                  ),  
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.ALLPORTS),
-                  ), 
-                  errorStyle: TextStyle(
-                    color: Colors.orange
-                  )
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'step_dialog.add_sub_step_error'.tr();
-                  }
-                },
-                onChanged: (value) {
-                  Future.delayed(const Duration(milliseconds: 10), () {        
-                    if (value.isNotEmpty) { 
-                      WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-                      _formKey.currentState.validate();
-                    }
-                  });
-                },
-                onSaved: (value) => _stepText = value
-              )
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                InkWell(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(25.0, 12.0, 25.0, 12.0),
-                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                RaisedButton(
-                  padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-                  splashColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      _addSubStep();
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white)),
-                  color: AppColors.MONZA
-                )
-              ]
-            )
-          )
+          _showTitle(),
+          _showInput(),
+          _showButtons()
         ]
       )
     );
   }
+
+  Widget _showTitle() {
+    return Center(
+      child: Text(
+        'step_dialog.add_sub_step'.tr(),
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
+  }
+
+  Widget _showInput() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Form(
+        key: _formKey,
+        child: TextFormField(
+          autofocus: true,  
+          textCapitalization: TextCapitalization.sentences,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            hintText: 'step_dialog.add_sub_step_placeholder'.tr(),
+            hintStyle: TextStyle(
+              color: AppColors.SILVER
+            ),
+            enabledBorder: UnderlineInputBorder(      
+              borderSide: BorderSide(color: AppColors.ALLPORTS),   
+            ),  
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.ALLPORTS),
+            ), 
+            errorStyle: TextStyle(
+              color: Colors.orange
+            )
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'step_dialog.add_sub_step_error'.tr();
+            }
+          },
+          onChanged: (value) {
+            Future.delayed(const Duration(milliseconds: 10), () {        
+              if (value.isNotEmpty) { 
+                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+                _formKey.currentState.validate();
+              }
+            });
+          },
+          onSaved: (value) => _stepText = value
+        )
+      )
+    );
+  }
   
+  Widget _showButtons() {
+    return Padding(
+      padding: EdgeInsets.only(top: 30.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          InkWell(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(25.0, 12.0, 25.0, 12.0),
+              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          RaisedButton(
+            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
+            splashColor: Colors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _addSubStep();
+                Navigator.pop(context);
+              }
+            },
+            child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white)),
+            color: AppColors.MONZA
+          )
+        ]
+      )
+    ); 
+  }
+
   _addSubStep() {
     int level = _stepProvider.selectedStep.level + 1;
     int index = _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.id) + 1;

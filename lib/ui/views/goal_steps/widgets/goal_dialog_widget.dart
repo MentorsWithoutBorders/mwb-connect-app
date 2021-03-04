@@ -27,83 +27,91 @@ class _GoalDialogState extends State<GoalDialog> {
       padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 25.0),
       child: Wrap(
         children: <Widget>[
-          Center(
-            child: Text(
-              'goal_dialog.title'.tr(),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              )
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Wrap(
-              children: <Widget>[
-                SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    splashColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context,
-                        builder: (_) => AnimatedDialog(
-                          widgetInside: UpdateGoalDialog(),
-                          hasInput: true,
-                        ),
-                      );                      
-                    },
-                    child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white)),
-                    color: AppColors.PACIFIC_BLUE
-                  )
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    splashColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context,
-                        builder: (_) => AnimatedDialog(
-                          widgetInside: _showDeleteGoalDialog(),
-                          hasInput: false,
-                        ),
-                      );                      
-                    },
-                    child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white)),
-                    color: AppColors.MONZA
-                  )
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: InkWell(
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(                      
-                        child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
-                      )
-                    ),
-                    onTap: () {
-                      Navigator.pop(widget.context);
-                    },
-                  ),
-                )
-              ]
-            )
-          )
+          _showTitle(),
+          _showOptions()
         ]
       )
     );
   }
+
+  Widget _showTitle() {
+    return Center(
+      child: Text(
+        'goal_dialog.title'.tr(),
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
+  }
+
+  Widget _showOptions() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Wrap(
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              splashColor: AppColors.ALLPORTS,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (_) => AnimatedDialog(
+                    widgetInside: UpdateGoalDialog(),
+                    hasInput: true,
+                  ),
+                );                      
+              },
+              child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white)),
+              color: AppColors.PACIFIC_BLUE
+            )
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              splashColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (_) => AnimatedDialog(
+                    widgetInside: _showDeleteGoalDialog(),
+                    hasInput: false,
+                  ),
+                );                      
+              },
+              child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white)),
+              color: AppColors.MONZA
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: InkWell(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: Center(                      
+                  child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+                )
+              ),
+              onTap: () {
+                Navigator.pop(widget.context);
+              },
+            ),
+          )
+        ]
+      )
+    );
+  }  
 
   Widget _showDeleteGoalDialog() {
     return Container(
