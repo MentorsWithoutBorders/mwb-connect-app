@@ -12,38 +12,43 @@ class AvailabilityList extends StatefulWidget {
   State<StatefulWidget> createState() => _AvailabilityListState();
 }
 
-class _AvailabilityListState extends State<AvailabilityList> {
+class _AvailabilityListState extends State<AvailabilityList> with TickerProviderStateMixin {
   ProfileViewModel _profileProvider;
 
   Widget _showAvailability() {
     bool isAvailable = _profileProvider.profile.user.isAvailable;
-    return AnimatedOpacity(
-      opacity: isAvailable ? 1.0 : 0.0,
+    return AnimatedSize(
+      vsync: this,
       duration: Duration(milliseconds: 300),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 1,
-            margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
-            color: AppColors.BOTTICELLI
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
-            child: Text(
-              'Availability',
-              style: TextStyle(
-                color: AppColors.TANGO,
-                fontWeight: FontWeight.bold
-              )
+      curve: Curves.fastOutSlowIn,
+      child: Container(
+        child: !isAvailable ?
+          null 
+          : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 1,
+              margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+              color: AppColors.BOTTICELLI
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 5.0, bottom: 10.0),
-            child: _showAvailabilityList()
-          ),
-          _showAddAvailabilityButton()
-        ]
+            Container(
+              margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+              child: Text(
+                'Availability',
+                style: TextStyle(
+                  color: AppColors.TANGO,
+                  fontWeight: FontWeight.bold
+                )
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 5.0, bottom: 10.0),
+              child: _showAvailabilityList()
+            ),
+            _showAddAvailabilityButton()
+          ]
+        ),
       ),
     );
   }

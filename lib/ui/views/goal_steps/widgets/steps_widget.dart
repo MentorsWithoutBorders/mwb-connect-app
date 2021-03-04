@@ -81,11 +81,8 @@ class _StepsState extends State<Steps> {
           _steps = snapshot.data.documents
               .map((doc) => StepModel.fromMap(doc.data, doc.documentID))
               .toList();
-
           _steps = _stepProvider.sortSteps(_steps);               
-
           WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-      
           return Expanded(
             child: Column(
               children: <Widget>[
