@@ -18,17 +18,6 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   ProfileViewModel _profileProvider;  
   Subfield _selectedSubfield;
 
-  List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
-    List<DropdownMenuItem<Subfield>> items = List();
-    for (Subfield subfield in _profileProvider.getSubfields(widget.index)) {
-      items.add(DropdownMenuItem(
-        value: subfield,
-        child: Text(subfield.name),
-      ));
-    }
-    return items;
-  }
-
   Widget _showSubfieldDropdown() {
     return Container(
       height: 50.0,
@@ -65,6 +54,17 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
       )
     );
   }
+
+  List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
+    List<DropdownMenuItem<Subfield>> items = List();
+    for (Subfield subfield in _profileProvider.getSubfields(widget.index)) {
+      items.add(DropdownMenuItem(
+        value: subfield,
+        child: Text(subfield.name),
+      ));
+    }
+    return items;
+  }  
 
   void _changeSubfield(Subfield subfield) {
     _setSelectedSubfield(subfield);

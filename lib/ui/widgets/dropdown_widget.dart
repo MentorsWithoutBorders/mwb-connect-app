@@ -11,7 +11,7 @@ class Dropdown<T> extends StatelessWidget {
   Dropdown({
     Key key,
     @required this.dropdownMenuItemList,
-    @required this.onTapped,
+    this.onTapped,
     @required this.onChanged,
     @required this.value,
   }) : super(key: key);
@@ -19,7 +19,7 @@ class Dropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0),      
+      padding: const EdgeInsets.only(left: 10.0, right: 5.0),      
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         border: Border.all(

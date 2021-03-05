@@ -6,6 +6,8 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_item_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/add_availability_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityList extends StatefulWidget {
   @override
@@ -73,7 +75,15 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
         ),
         color: AppColors.MONZA,
         child: Text('Add availability', style: TextStyle(color: Colors.white)),
-        onPressed: () => print('add')
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) => AnimatedDialog(
+              widgetInside: AddAvailability(),
+              hasInput: true,
+            ),
+          );          
+        }
       ),
     );
   }   

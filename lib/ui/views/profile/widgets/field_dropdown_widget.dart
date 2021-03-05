@@ -15,17 +15,6 @@ class _FieldDropdownState extends State<FieldDropdown> {
   ProfileViewModel _profileProvider;
   Field _selectedField;
 
-  List<DropdownMenuItem<Field>> _buildFieldDropdown() {
-    List<DropdownMenuItem<Field>> items = List();
-    for (Field field in _profileProvider.profile.fields) {
-      items.add(DropdownMenuItem(
-        value: field,
-        child: Text(field.name),
-      ));
-    }
-    return items;
-  }
-
   Widget _showFieldDropdown() {
     return Container(
       height: 55,
@@ -39,6 +28,17 @@ class _FieldDropdownState extends State<FieldDropdown> {
       ),
     );
   }
+
+  List<DropdownMenuItem<Field>> _buildFieldDropdown() {
+    List<DropdownMenuItem<Field>> items = List();
+    for (Field field in _profileProvider.profile.fields) {
+      items.add(DropdownMenuItem(
+        value: field,
+        child: Text(field.name),
+      ));
+    }
+    return items;
+  }  
 
   void _changeField(Field field) {
     _setSelectedField(field);

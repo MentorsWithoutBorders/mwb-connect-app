@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
@@ -132,11 +134,23 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
+  void addAvailability(Availability availability) {
+    profile.user.availability.add(availability);
+    setUserDetails(profile.user);
+    notifyListeners();
+  }
+
+  bool isAvailabilityValid(Availability availability) {
+    int timeFrom = Utils.convertTime12to24(availability.time.from);
+    int timeTo = Utils.convertTime12to24(availability.time.to);
+    return timeFrom < timeTo;
+  }
+
   void deleteAvailability(int index) {
     profile.user.availability.removeAt(index);
     setUserDetails(profile.user);
     notifyListeners();
-  }
+  }  
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
