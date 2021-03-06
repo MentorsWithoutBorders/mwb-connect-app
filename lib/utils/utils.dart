@@ -14,4 +14,17 @@ class Utils {
     }
     return hours;
   }
+
+  static List<String> buildHoursList() {
+    List<String> hoursList = List();
+    hoursList.add('12am');
+    for (int i = 1; i <= 11; i++) {
+      hoursList.add(i.toString() + 'am');
+    }
+    hoursList.add('12pm');
+    for (int i = 1; i <= 11; i++) {
+      hoursList.add(i.toString() + 'pm');
+    }    
+    return hoursList;
+  }
 }

@@ -49,7 +49,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
 
   Widget _showTitle() {
     return Container(
-      margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+      margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
         'Availability',
         style: TextStyle(

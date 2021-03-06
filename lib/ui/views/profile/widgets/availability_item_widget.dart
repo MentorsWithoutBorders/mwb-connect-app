@@ -28,12 +28,25 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
       children: [
         InkWell(
           child: Container(
-            width: 170.0,
-            child: Text(
-              '$dayOfWeek: $timeFrom - $timeTo',
-              style: TextStyle(
-                color: AppColors.DOVE_GRAY
-              )
+            width: 190.0,
+            child: Row(
+              children: [
+                Container(
+                  width: 90,
+                  child: Text(
+                    '$dayOfWeek:',
+                    style: TextStyle(
+                      color: AppColors.DOVE_GRAY
+                    )
+                  ),
+                ),
+                Text(
+                  '$timeFrom - $timeTo',
+                  style: TextStyle(
+                    color: AppColors.DOVE_GRAY
+                  )
+                )
+              ],
             ),
           ),
           onTap: () {

@@ -22,6 +22,9 @@ class _AddAvailabilityState extends State<AddAvailability> {
   ProfileViewModel _profileProvider;
   Availability _availability;
   bool _shouldShowError = false;
+  final _defaultDayOfWeek = Utils.daysOfWeek[5];
+  final _defaultTimeFrom = '10am';
+  final _defaultTimeTo = '2pm';
 
   @protected
   void initState() {
@@ -29,7 +32,8 @@ class _AddAvailabilityState extends State<AddAvailability> {
     if (widget.availability != null) {
       _availability = widget.availability;
     } else {
-      _availability = Availability(dayOfWeek: 'Saturday', time: Time(from: '10am', to: '2pm'));
+      
+      _availability = Availability(dayOfWeek: _defaultDayOfWeek, time: Time(from: _defaultTimeFrom, to: _defaultTimeTo));
     }    
   }
 
@@ -176,7 +180,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }    
   
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
-    List<String> times = ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'];
+    List<String> times = Utils.buildHoursList();
     List<DropdownMenuItem<String>> items = List();
     for (String time in times) {
       items.add(DropdownMenuItem(
