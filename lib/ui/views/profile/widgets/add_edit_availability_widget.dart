@@ -20,15 +20,16 @@ class AddAvailability extends StatefulWidget {
 
 class _AddAvailabilityState extends State<AddAvailability> {
   ProfileViewModel _profileProvider;
-  Availability availability;
+  Availability _availability;
+  bool _shouldShowError = false;
 
   @protected
   void initState() {
     super.initState();
     if (widget.availability != null) {
-      availability = widget.availability;
+      _availability = widget.availability;
     } else {
-      availability = Availability(dayOfWeek: 'Saturday', time: Time(from: '10am', to: '2pm'));
+      _availability = Availability(dayOfWeek: 'Saturday', time: Time(from: '10am', to: '2pm'));
     }    
   }
 
@@ -68,7 +69,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
         child: Dropdown(
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
-          value: availability.dayOfWeek
+          value: _availability.dayOfWeek
         ),
       ),
     );
@@ -87,7 +88,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   void _setDayOfWeek(String dayOfWeek) {
     setState(() {
-      availability.dayOfWeek = dayOfWeek;
+      _availability.dayOfWeek = dayOfWeek;
     });
   }
 
@@ -110,18 +111,22 @@ class _AddAvailabilityState extends State<AddAvailability> {
             _showTimeToDropdown()
           ]
         ),
-        if (!_profileProvider.isAvailabilityValid(availability)) Padding(
-          padding: const EdgeInsets.only(bottom: 5.0),
-          child: Text(
-            '"From" time cannot be equal to or after "to" time',
-            style: TextStyle(
-              fontSize: 13.0,
-              color: AppColors.MONZA
-            ) 
-          )
-        )
+        if (_shouldShowError) _showError() 
       ],
     );
+  }
+
+  Widget _showError() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Text(
+        '"From" time cannot be equal to or after "to" time',
+        style: TextStyle(
+          fontSize: 13.0,
+          color: AppColors.MONZA
+        )
+      )
+    );    
   }
   
   Widget _showTimeFromDropdown() {
@@ -131,15 +136,22 @@ class _AddAvailabilityState extends State<AddAvailability> {
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
         dropdownMenuItemList: _buildTimeDropdown(),
+        onTapped: _hideError,
         onChanged: _setTimeFrom,
-        value: availability.time.from
+        value: _availability.time.from
       ),
     );
   }
 
+  void _hideError() {
+    setState(() {
+      _shouldShowError = false;
+    });
+  }
+
   void _setTimeFrom(String time) {
     setState(() {
-      availability.time.from = time;
+      _availability.time.from = time;
     });
   }    
 
@@ -150,15 +162,16 @@ class _AddAvailabilityState extends State<AddAvailability> {
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
         dropdownMenuItemList: _buildTimeDropdown(),
+        onTapped: _hideError,
         onChanged: _setTimeTo,
-        value: availability.time.to
+        value: _availability.time.to
       ),
     );
   }
   
   void _setTimeTo(String time) {
     setState(() {
-      availability.time.to = time;
+      _availability.time.to = time;
     });
   }    
   
@@ -212,17 +225,25 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
   void _addAvailability() {
-    if (_profileProvider.isAvailabilityValid(availability)) {
-      _profileProvider.addAvailability(availability);
-      Navigator.pop(context);
-    }    
+    if (_profileProvider.isAvailabilityValid(_availability)) {
+      _profileProvider.addAvailability(_availability);
+      Navigator.pop(context, true);
+    } else {
+      setState(() {
+        _shouldShowError = true;
+      });
+    }
   }
 
   void _updateAvailability() {
-    if (_profileProvider.isAvailabilityValid(availability)) {
-      _profileProvider.updateAvailability(widget.availability, availability);
-      Navigator.pop(context);
-    }    
+    if (_profileProvider.isAvailabilityValid(_availability)) {
+      _profileProvider.updateAvailability(widget.availability, _availability);
+      Navigator.pop(context, true);
+    } else {
+      setState(() {
+        _shouldShowError = true;
+      });
+    }
   }  
 
   @override

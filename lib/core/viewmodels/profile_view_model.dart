@@ -13,6 +13,8 @@ class ProfileViewModel extends ChangeNotifier {
   UserService _userService = locator<UserService>();
   ProfileService _profileService = locator<ProfileService>();
   Profile profile;
+  String availabilityMergedMessage = '';
+  bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
 
   Future<User> getUserDetails() async {
@@ -165,7 +167,7 @@ class ProfileViewModel extends ChangeNotifier {
       }
       List<Availability> merged = List();
       int mergedLastTo = -1;
-      bool mergedLastShown = false;
+      _mergedAvailabilityLastShown = false;
       for (var availability in dayAvailabilities) {
         if (merged.isNotEmpty) {
           mergedLastTo = Utils.convertTime12to24(merged.last.time.to);
@@ -176,24 +178,31 @@ class ProfileViewModel extends ChangeNotifier {
           merged.add(availability);
         } else {
           if (mergedLastTo < availabilityTo) {
-            if (!mergedLastShown) {
-              print(merged.last.dayOfWeek + ' from ' + merged.last.time.from + ' to ' + merged.last.time.to);
-              mergedLastShown = true;
-            }
-            print(availability.dayOfWeek + ' from ' + availability.time.from + ' to ' + availability.time.to);
+            _setAvailabilityMergedMessage(availability, merged);
             merged.last.time.to = availability.time.to;
           } else {
-            if (!mergedLastShown) {
-              print('Inside ' + merged.last.dayOfWeek + ' from ' + merged.last.time.from + ' to ' + merged.last.time.to);
-              mergedLastShown = true;
-            }
-            print('Inside ' + availability.dayOfWeek + ' from ' + availability.time.from + ' to ' + availability.time.to);
+            _setAvailabilityMergedMessage(availability, merged);
           }
         }
       }
       availabilities.addAll(merged);
     }
     profile.user.availabilities = availabilities;
+  }
+
+  void _setAvailabilityMergedMessage(Availability availability, List<Availability> merged) {
+    if (availabilityMergedMessage.isEmpty) {
+      availabilityMergedMessage = 'The following availabilities have been merged:\n';
+    }    
+    if (!_mergedAvailabilityLastShown) {
+      availabilityMergedMessage += merged.last.dayOfWeek + ' from ' + merged.last.time.from + ' to ' + merged.last.time.to + '\n';
+      _mergedAvailabilityLastShown = true;
+    }
+    availabilityMergedMessage += availability.dayOfWeek + ' from ' + availability.time.from + ' to ' + availability.time.to + '\n';    
+  }
+
+  void resetAvailabilityMergedMessage() {
+    availabilityMergedMessage = '';
   }
 
   bool isAvailabilityValid(Availability availability) {

@@ -29,28 +29,33 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
           : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 1,
-              margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
-              color: AppColors.BOTTICELLI
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
-              child: Text(
-                'Availability',
-                style: TextStyle(
-                  color: AppColors.TANGO,
-                  fontWeight: FontWeight.bold
-                )
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 5.0, bottom: 10.0),
-              child: _showAvailabilityList()
-            ),
+            _showDivider(),
+            _showTitle(),
+            _showAvailabilityList(),
             _showAddAvailabilityButton()
           ]
         ),
+      ),
+    );
+  }
+
+  Widget _showDivider() {
+    return Container(
+      height: 1,
+      margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+      color: AppColors.BOTTICELLI
+    );
+  }  
+
+  Widget _showTitle() {
+    return Container(
+      margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+      child: Text(
+        'Availability',
+        style: TextStyle(
+          color: AppColors.TANGO,
+          fontWeight: FontWeight.bold
+        )
       ),
     );
   }
@@ -61,7 +66,12 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     for (int i = 0; i < availabilityList.length; i++) {
       availabilityWidgets.add(AvailabilityItem(index: i));
     }
-    return Wrap(children: availabilityWidgets);
+    return Padding(
+      padding: const EdgeInsets.only(left: 5.0, bottom: 10.0),
+      child: Wrap(
+        children: availabilityWidgets
+      )
+    );
   }
 
   Widget _showAddAvailabilityButton() {
@@ -76,22 +86,43 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
         color: AppColors.MONZA,
         child: Text('Add availability', style: TextStyle(color: Colors.white)),
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => AnimatedDialog(
-              widgetInside: AddAvailability(),
-              hasInput: true,
-            ),
-          );          
+          _showAddEditAvailabilityDialog();
         }
       ),
     );
-  }   
+  }
+
+  void _showAddEditAvailabilityDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: AddAvailability(),
+        hasInput: true,
+      ),
+    ).then((shouldShowToast) {
+      if (shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {
+        _showToast(context);
+        _profileProvider.resetAvailabilityMergedMessage();
+      }
+    });     
+  }
+
+  void _showToast(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(_profileProvider.availabilityMergedMessage),
+        action: SnackBarAction(
+          label: 'Close', onPressed: scaffold.hideCurrentSnackBar
+        ),
+      ),
+    );
+  }     
 
   @override
   Widget build(BuildContext context) {
-    _profileProvider = Provider.of<ProfileViewModel>(context);      
-
+    _profileProvider = Provider.of<ProfileViewModel>(context);
+      
     return _showAvailability();
   }
 }
