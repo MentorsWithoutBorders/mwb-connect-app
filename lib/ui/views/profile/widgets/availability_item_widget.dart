@@ -18,7 +18,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
   ProfileViewModel _profileProvider;  
 
   Widget _showAvailabilityItem() {
-    Availability availability = _profileProvider.profile.user.availability[widget.index];
+    Availability availability = _profileProvider.profile.user.availabilities[widget.index];
     String dayOfWeek = availability.dayOfWeek;
     String timeFrom = availability.time.from;
     String timeTo = availability.time.to;

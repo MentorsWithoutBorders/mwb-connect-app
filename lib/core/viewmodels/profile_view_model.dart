@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
@@ -135,9 +134,58 @@ class ProfileViewModel extends ChangeNotifier {
   }
   
   void addAvailability(Availability availability) {
-    profile.user.availability.add(availability);
+    profile.user.availabilities.add(availability);
+    sortAvailability();
+    mergeAvailabilityTimes();
     setUserDetails(profile.user);
     notifyListeners();
+  }
+
+  void sortAvailability() {
+    profile.user.availabilities.sort((a, b) => Utils.convertTime12to24(a.time.from).compareTo(Utils.convertTime12to24(b.time.from)));
+    profile.user.availabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek)));
+  }
+
+  void mergeAvailabilityTimes() {
+    List<Availability> availabilities = List();
+    for (String dayOfWeek in Utils.daysOfWeek) {
+      List<Availability> dayAvailabilities = List();
+      for (var availability in profile.user.availabilities) {
+        if (availability.dayOfWeek == dayOfWeek) {
+          dayAvailabilities.add(availability);
+        }
+      }
+      List<Availability> merged = List();
+      int mergedLastTo = -1;
+      bool mergedLastShown = false;
+      for (var availability in dayAvailabilities) {
+        if (merged.isNotEmpty) {
+          mergedLastTo = Utils.convertTime12to24(merged.last.time.to);
+        }
+        int availabilityFrom = Utils.convertTime12to24(availability.time.from);
+        int availabilityTo = Utils.convertTime12to24(availability.time.to);
+        if (merged.isEmpty || mergedLastTo < availabilityFrom) {
+          merged.add(availability);
+        } else {
+          if (mergedLastTo < availabilityTo) {
+            if (!mergedLastShown) {
+              print(merged.last.dayOfWeek + ' from ' + merged.last.time.from + ' to ' + merged.last.time.to);
+              mergedLastShown = true;
+            }
+            print(availability.dayOfWeek + ' from ' + availability.time.from + ' to ' + availability.time.to);
+            merged.last.time.to = availability.time.to;
+          } else {
+            if (!mergedLastShown) {
+              print('Inside ' + merged.last.dayOfWeek + ' from ' + merged.last.time.from + ' to ' + merged.last.time.to);
+              mergedLastShown = true;
+            }
+            print('Inside ' + availability.dayOfWeek + ' from ' + availability.time.from + ' to ' + availability.time.to);
+          }
+        }
+      }
+      availabilities.addAll(merged);
+    }
+    profile.user.availabilities = availabilities;
   }
 
   bool isAvailabilityValid(Availability availability) {
@@ -147,7 +195,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void deleteAvailability(int index) {
-    profile.user.availability.removeAt(index);
+    profile.user.availabilities.removeAt(index);
     setUserDetails(profile.user);
     notifyListeners();
   }  

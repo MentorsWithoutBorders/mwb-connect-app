@@ -57,7 +57,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
 
   Widget _showAvailabilityList() {
     List<Widget> availabilityWidgets = List();
-    List<Availability> availabilityList = _profileProvider.profile.user.availability;
+    List<Availability> availabilityList = _profileProvider.profile.user.availabilities;
     for (int i = 0; i < availabilityList.length; i++) {
       availabilityWidgets.add(AvailabilityItem(index: i));
     }

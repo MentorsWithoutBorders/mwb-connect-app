@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -66,9 +67,8 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
  List<DropdownMenuItem<String>> _buildDayOfWeekDropdown() {
-    List<String> daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     List<DropdownMenuItem<String>> items = List();
-    for (String day in daysOfWeek) {
+    for (String day in Utils.daysOfWeek) {
       items.add(DropdownMenuItem(
         value: day,
         child: Text(day),

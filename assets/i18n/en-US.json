@@ -1,6 +1,7 @@
 {
 	"common": {
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday"
 	},
 	"onboarding": {
 		"mental_process_goal_steps_onboarding": {

@@ -6,12 +6,12 @@ class User {
   String organization;
   String field;
   List<String> subfields;
-  List<Availability> availability;
+  List<Availability> availabilities;
   bool isAvailable;
   LessonsAvailability lessonsAvailability;
   DateTime registeredOn;
 
-  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.availability, this.isAvailable, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.availabilities, this.isAvailable, this.lessonsAvailability, this.registeredOn});
 
   User.fromMap(Map snapshot, String id) {
     this.id = id;
@@ -21,7 +21,7 @@ class User {
     organization = snapshot['organization'] ?? '';
     field = snapshot['field'] ?? '';
     subfields = snapshot['subfields']?.cast<String>() ?? [];
-    availability = _availabilityFromJson(snapshot['availability']?.cast<Map<String,dynamic>>()) ?? [];
+    availabilities = _availabilityFromJson(snapshot['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
     lessonsAvailability = _lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? LessonsAvailability();
     registeredOn = snapshot['registeredOn']?.toDate();
@@ -53,22 +53,22 @@ class User {
       'organization': organization,
       'field': field,
       'subfields': subfields,
-      'availability': _availabilityToJson(availability),
+      'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
       'lessonsAvailability': _lessonsAvailabilityToJson(lessonsAvailability),
       'registeredOn': registeredOn
     };
   }
 
-  List<Map<String, dynamic>> _availabilityToJson(List<Availability> availability) {
+  List<Map<String, dynamic>> _availabilityToJson(List<Availability> availabilities) {
     List<Map<String,dynamic>> availabilityList = List();
-    if (availability != null) {
-      for (int i = 0; i < availability.length; i++) {
+    if (availabilities != null) {
+      for (int i = 0; i < availabilities.length; i++) {
         availabilityList.add({
-          'dayOfWeek': availability[i].dayOfWeek, 
+          'dayOfWeek': availabilities[i].dayOfWeek, 
           'time': {
-            'from': availability[i].time.from,
-            'to': availability[i].time.to
+            'from': availabilities[i].time.from,
+            'to': availabilities[i].time.to
           }
         });
       }

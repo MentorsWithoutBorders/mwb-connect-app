@@ -530,7 +530,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     User defaultUser = await _userService.getDefaultUserDetails();
     User user = User(id: approvedUser.id, name: approvedUser.name, email: approvedUser.email, isMentor: approvedUser.isMentor, 
         organization: approvedUser.organization, field: approvedUser.field, subfields: approvedUser.subfields, 
-        availability: defaultUser.availability, registeredOn: now);
+        availabilities: defaultUser.availabilities, registeredOn: now);
     if (approvedUser.isMentor) {
       user.isAvailable = defaultUser.isAvailable;
       user.lessonsAvailability = defaultUser.lessonsAvailability;
