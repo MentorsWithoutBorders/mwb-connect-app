@@ -10,6 +10,10 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class AddAvailability extends StatefulWidget {
+  AddAvailability({this.availability});
+
+  final Availability availability;
+
   @override
   State<StatefulWidget> createState() => _AddAvailabilityState();
 }
@@ -21,7 +25,11 @@ class _AddAvailabilityState extends State<AddAvailability> {
   @protected
   void initState() {
     super.initState();
-    availability = Availability(dayOfWeek: 'Saturday', time: Time(from: '10am', to: '2pm'));
+    if (widget.availability != null) {
+      availability = widget.availability;
+    } else {
+      availability = Availability(dayOfWeek: 'Saturday', time: Time(from: '10am', to: '2pm'));
+    }    
   }
 
   Widget _showAddAvailabilityDialog() {
@@ -42,7 +50,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   Widget _showTitle() {
     return Center(
       child: Text(
-        'Add availability',
+        widget.availability == null ? 'Add availability' : 'Edit availability',
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
@@ -188,9 +196,14 @@ class _AddAvailabilityState extends State<AddAvailability> {
               borderRadius: BorderRadius.circular(20.0)
             ),
             onPressed: () {
-              _addAvailability();
+              widget.availability == null ? _addAvailability() : _updateAvailability();
             },
-            child: Text('Add', style: TextStyle(color: Colors.white)),
+            child: Text(
+              widget.availability == null ? 'Add' : 'Update',
+              style: TextStyle(
+                color: Colors.white
+              )
+            ),
             color: AppColors.MONZA
           )
         ]
@@ -204,6 +217,13 @@ class _AddAvailabilityState extends State<AddAvailability> {
       Navigator.pop(context);
     }    
   }
+
+  void _updateAvailability() {
+    if (_profileProvider.isAvailabilityValid(availability)) {
+      _profileProvider.updateAvailability(widget.availability, availability);
+      Navigator.pop(context);
+    }    
+  }  
 
   @override
   Widget build(BuildContext context) {

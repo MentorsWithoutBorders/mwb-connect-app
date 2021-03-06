@@ -141,6 +141,14 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateAvailability(Availability oldAvailability, Availability newAvailability) {
+    profile.user.availabilities[profile.user.availabilities.indexWhere((element) => element == oldAvailability)] = newAvailability;
+    sortAvailability();
+    mergeAvailabilityTimes();    
+    setUserDetails(profile.user);
+    notifyListeners();
+  }  
+
   void sortAvailability() {
     profile.user.availabilities.sort((a, b) => Utils.convertTime12to24(a.time.from).compareTo(Utils.convertTime12to24(b.time.from)));
     profile.user.availabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek)));
