@@ -7,6 +7,7 @@ Running the app in:
 * VS Code: https://flutter.dev/docs/development/tools/vs-code
 * Android Studio and IntelliJ: https://flutter.dev/docs/development/tools/android-studio
 
+### Description
 The MWB Connect mobile app will facilitate the connections between passionate professionals from various fields and underprivileged students served by MWB’s <a href="https://www.mentorswithoutborders.net/partners.php" target="_blank">partner NGOs</a>.
 The app is built with Flutter and uses Firestore on the backend. The way it should work is as follows:
 <ol>
