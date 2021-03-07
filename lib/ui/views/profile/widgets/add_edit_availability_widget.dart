@@ -22,7 +22,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   ProfileViewModel _profileProvider;
   Availability _availability;
   bool _shouldShowError = false;
-  final _defaultDayOfWeek = Utils.daysOfWeek[5];
+  final _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
   final _defaultTimeFrom = '10am';
   final _defaultTimeTo = '2pm';
 
@@ -32,7 +32,6 @@ class _AddAvailabilityState extends State<AddAvailability> {
     if (widget.availability != null) {
       _availability = widget.availability;
     } else {
-      
       _availability = Availability(dayOfWeek: _defaultDayOfWeek, time: Time(from: _defaultTimeFrom, to: _defaultTimeTo));
     }    
   }
@@ -81,10 +80,10 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
  List<DropdownMenuItem<String>> _buildDayOfWeekDropdown() {
     List<DropdownMenuItem<String>> items = List();
-    for (String day in Utils.daysOfWeek) {
+    for (String dayOfWeek in Utils.daysOfWeek) {
       items.add(DropdownMenuItem(
-        value: day,
-        child: Text(day),
+        value: dayOfWeek,
+        child: Text(dayOfWeek),
       ));
     }
     return items;
@@ -130,7 +129,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
           color: AppColors.MONZA
         )
       )
-    );    
+    );
   }
   
   Widget _showTimeFromDropdown() {
@@ -230,8 +229,8 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   void _addAvailability() {
     if (_profileProvider.isAvailabilityValid(_availability)) {
-      _profileProvider.addAvailability(_availability);
       Navigator.pop(context, true);
+      _profileProvider.addAvailability(_availability);
     } else {
       setState(() {
         _shouldShowError = true;
@@ -241,8 +240,8 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   void _updateAvailability() {
     if (_profileProvider.isAvailabilityValid(_availability)) {
-      _profileProvider.updateAvailability(widget.availability, _availability);
       Navigator.pop(context, true);
+      _profileProvider.updateAvailability(widget.availability, _availability);
     } else {
       setState(() {
         _shouldShowError = true;

@@ -1,3 +1,5 @@
+import 'package:mwb_connect_app/utils/utils.dart';
+
 class User {
   String id;
   String name;
@@ -65,7 +67,7 @@ class User {
     if (availabilities != null) {
       for (int i = 0; i < availabilities.length; i++) {
         availabilityList.add({
-          'dayOfWeek': availabilities[i].dayOfWeek, 
+          'dayOfWeek': availabilities[i].dayOfWeekToEng, 
           'time': {
             'from': availabilities[i].time.from,
             'to': availabilities[i].time.to
@@ -103,7 +105,11 @@ class Availability {
   String dayOfWeek;
   Time time;
 
-  Availability({this.dayOfWeek, this.time});
+  Availability({this.dayOfWeek, this.time}) {
+    dayOfWeek = Utils.translateDayOfWeekFromEng(dayOfWeek);
+  }
+
+  String get dayOfWeekToEng => Utils.translateDayOfWeekToEng(dayOfWeek);
 }
 
 class Time {

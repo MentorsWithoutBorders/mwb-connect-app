@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -50,26 +51,34 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
             ),
           ),
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (_) => AnimatedDialog(
-                widgetInside: AddAvailability(availability: availability),
-                hasInput: true,
-              ),
-            ); 
+            _showAddAvailabilityDialog(availability);
           },
         ),
-        InkWell(
-          child: Container(
-            width: 30.0,
-            height: 30.0,
-            child: Image.asset(
-              'assets/images/delete_icon.png'
-            ),
-          ),
-          onTap: () => _profileProvider.deleteAvailability(widget.index)
-        )
+        _showDeleteItem()
       ]
+    );
+  }
+
+  void _showAddAvailabilityDialog(Availability availability) {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: AddAvailability(availability: availability),
+        hasInput: true,
+      )
+    );     
+  }
+
+  Widget _showDeleteItem() {
+    return InkWell(
+      child: Container(
+        width: 30.0,
+        height: 30.0,
+        child: Image.asset(
+          'assets/images/delete_icon.png'
+        ),
+      ),
+      onTap: () => _profileProvider.deleteAvailability(widget.index)
     );
   }
 
