@@ -15,8 +15,8 @@ class StepsViewModel extends ChangeNotifier {
 
   Future<List<StepModel>> fetchSteps({String goalId}) async {
     QuerySnapshot result = await _api.getDataCollection(path: 'goals/' + goalId + '/steps', isForUser: true);
-    steps = result.documents
-        .map((doc) => StepModel.fromMap(doc.data, doc.documentID))
+    steps = result.docs
+        .map((doc) => StepModel.fromMap(doc.data(), doc.id))
         .toList();
     return steps;
   }
@@ -28,7 +28,7 @@ class StepsViewModel extends ChangeNotifier {
 
   Future<StepModel> getStepById({String goalId, String id}) async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'goals/' + goalId + '/steps', isForUser: true, id: id);
-    return StepModel.fromMap(doc.data, doc.documentID) ;
+    return StepModel.fromMap(doc.data(), doc.id) ;
   }
 
   Future deleteStep({String goalId, String id}) async {
@@ -45,7 +45,7 @@ class StepsViewModel extends ChangeNotifier {
     DocumentReference doc = await _api.addDocument(path: 'goals/' + goalId + '/steps', isForUser: true, data: data.toJson());
     StepModel step = await doc.get().then((datasnapshot) {
       if (datasnapshot.exists) {
-        return StepModel(id: doc.documentID, text: datasnapshot.data['text']);
+        return StepModel(id: doc.id, text: datasnapshot.data()['text']);
       } else {
         return StepModel();
       }

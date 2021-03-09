@@ -61,7 +61,7 @@ class DownloadService {
   _downloadLocaleFile(String fileName) async {   
     Directory directory = await getApplicationDocumentsDirectory();
     String fileAppDirPath = directory.path + '/i18n/' + fileName + '.json';     
-    final StorageReference ref = FirebaseStorage.instance.ref().child('i18n').child(fileName + '.json');
+    final Reference ref = FirebaseStorage.instance.ref().child('i18n').child(fileName + '.json');
     try {  
       await ref.getMetadata().then((value) async {
         File fileAppDir = File(fileAppDirPath);
@@ -69,7 +69,7 @@ class DownloadService {
           await _createFile(fileAppDir);
           await _getFileFromCloudstore(ref, fileAppDirPath);
         } else {
-          if (value.sizeBytes != fileAppDir.lengthSync()) {
+          if (value.size != fileAppDir.lengthSync()) {
             await _deleteFile(fileAppDir);
             await _createFile(fileAppDir);
             await _getFileFromCloudstore(ref, fileAppDirPath);
@@ -91,7 +91,7 @@ class DownloadService {
 
   _getFileFromCloudstore(ref, String fileAppDirPath) async {
     final String url = await ref.getDownloadURL();
-    final http.Response downloadData = await http.get(url);
+    final http.Response downloadData = await http.get(Uri.dataFromString(url));
     File file = File(fileAppDirPath);
     file.writeAsString(utf8.decode(downloadData.bodyBytes));
   }
@@ -147,11 +147,11 @@ class DownloadService {
   
   _checkImage(String image) async {
     Directory directory = await getApplicationDocumentsDirectory();    
-    StorageReference ref = FirebaseStorage.instance.ref().child('images').child(image + '.png');
+    Reference ref = FirebaseStorage.instance.ref().child('images').child(image + '.png');
     String url = await ref.getDownloadURL();
     String localImage = directory.path +'/images/' + image + '.png';    
     ref.getMetadata().then((value) async {
-      int remoteImageSize = value.sizeBytes;
+      int remoteImageSize = value.size;
       int localImageSize = 0;
       File localImageFile = File(localImage);
       if (localImageFile.existsSync()) {
@@ -196,12 +196,12 @@ class DownloadService {
 
   Future<Tutorial> _getTutorial(String type) async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'tutorials', isForUser: false, id: type);
-    return Tutorial.fromMap(doc.data, doc.documentID);    
+    return Tutorial.fromMap(doc.data(), doc.id);    
   }
 
   Future<QuizSettings> _getQuizSettings() async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'quizzes', isForUser: false, id: 'settings');
-    return QuizSettings.fromMap(doc.data, doc.documentID) ;
+    return QuizSettings.fromMap(doc.data(), doc.id) ;
   } 
 
   showFiles() async {

@@ -12,7 +12,7 @@ class NotificationsService {
   Future<NotificationSettings> getNotificationSettings() async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'notifications', isForUser: true, id: 'settings');
     if (doc.exists) {
-      return NotificationSettings.fromMap(doc.data, doc.documentID);
+      return NotificationSettings.fromMap(doc.data(), doc.id);
     } else {
       NotificationSettings data = NotificationSettings(enabled: _storageService.notificationsEnabled, time: _storageService.notificationsTime);
       await _api.setDocument(path: 'notifications', isForUser: true, data: data.toJson(), id: 'settings');

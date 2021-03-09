@@ -19,7 +19,7 @@ class QuizzesViewModel extends ChangeNotifier {
     if (!doc.exists) {
       await _api.setDocument(path: 'quizzes', isForUser: true, data: data.toJson(), id: 'status');
     }
-    return doc.exists ? QuizStatus.fromMap(doc.data, doc.documentID) : data;
+    return doc.exists ? QuizStatus.fromMap(doc.data(), doc.id) : data;
   }
 
   Future updateQuizStatus(QuizStatus data) async {

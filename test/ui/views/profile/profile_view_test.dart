@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
@@ -20,6 +21,7 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widge
 void main() async {
   SharedPreferences.setMockInitialValues({});
   TestWidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();    
   setupLocator();
   final getIt = GetIt.instance;
   await getIt.allReady();

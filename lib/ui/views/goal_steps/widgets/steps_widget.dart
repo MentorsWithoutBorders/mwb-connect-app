@@ -78,8 +78,8 @@ class _StepsState extends State<Steps> {
       stream: _stepProvider.fetchStepsAsStream(goalId: _goalProvider.selectedGoal.id),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
-          _steps = snapshot.data.documents
-              .map((doc) => StepModel.fromMap(doc.data, doc.documentID))
+          _steps = snapshot.data.docs
+              .map((doc) => StepModel.fromMap(doc.data(), doc.id))
               .toList();
           _steps = _stepProvider.sortSteps(_steps);               
           WidgetsBinding.instance.addPostFrameCallback(_afterLayout);

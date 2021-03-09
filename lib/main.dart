@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
@@ -24,6 +25,7 @@ Future<void> main() async {
   setupLocator();
 
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await _signInAnonymously();
   await _initAppDirectory();
 
@@ -32,7 +34,7 @@ Future<void> main() async {
     Phoenix(
       child: EasyLocalization(
         supportedLocales: [Locale('en', 'US')],
-        path: directory.path+'/i18n',
+        path: 'assets/i18n',
         fallbackLocale: Locale('en', 'US'),
         child: MWBConnectApp(AppConstants.mixpanelToken)
       ),

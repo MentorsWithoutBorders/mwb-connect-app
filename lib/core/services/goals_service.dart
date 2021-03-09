@@ -8,8 +8,8 @@ class GoalsService {
 
   Future<List<Goal>> fetchGoals() async {
     QuerySnapshot result = await _api.getDataCollection(path: 'goals', isForUser: true);
-    List<Goal> goals = result.documents
-        .map((doc) => Goal.fromMap(doc.data, doc.documentID))
+    List<Goal> goals = result.docs
+        .map((doc) => Goal.fromMap(doc.data(), doc.id))
         .toList();
     return goals;
   }
@@ -20,7 +20,7 @@ class GoalsService {
 
   Future<Goal> getGoalById(String id) async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'goals', isForUser: true, id: id);
-    return Goal.fromMap(doc.data, doc.documentID);
+    return Goal.fromMap(doc.data(), doc.id);
   }
 
   Future deleteGoal(String id) async {
@@ -38,7 +38,7 @@ class GoalsService {
     DocumentReference doc = await _api.addDocument(path: 'goals', isForUser: true, data: goal.toJson());
     Goal addedGoal = await doc.get().then((datasnapshot) {
       if (datasnapshot.exists) {
-        Goal goal = Goal(id: doc.documentID, text: datasnapshot.data['text'], index: datasnapshot.data['index']);
+        Goal goal = Goal(id: doc.id, text: datasnapshot.data()['text'], index: datasnapshot.data()['index']);
         return goal;
       } else {
         return Goal();

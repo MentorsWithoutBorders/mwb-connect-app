@@ -12,7 +12,7 @@ class UpdatesViewModel extends ChangeNotifier {
   Future<Update> _getCurrentVersion() async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'updates', isForUser: false, id: 'version');
     if (doc.exists) {
-      return Update.fromMap(doc.data, doc.documentID);
+      return Update.fromMap(doc.data(), doc.id);
     } else {
       return Update();
     }

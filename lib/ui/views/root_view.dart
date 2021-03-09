@@ -102,7 +102,7 @@ class _RootViewState extends State<RootView> {
               id: id, title: title, body: body, payload: payload));
         });
     var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
       if (payload != null) {
@@ -210,7 +210,7 @@ class _RootViewState extends State<RootView> {
           'Your MWB Connect daily reminders');
       IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
       NotificationDetails platformChannelSpecifics = NotificationDetails(
-          androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+          android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
       await flutterLocalNotificationsPlugin.showDailyAtTime(
           0,
           notificationTitle,

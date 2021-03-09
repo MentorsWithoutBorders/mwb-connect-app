@@ -9,8 +9,8 @@ class ProfileService {
 
   Future<List<Field>> getFields() async {
     QuerySnapshot result = await _api.getDataCollection(path: 'fields', isForUser: false);
-    return result.documents
-        .map((doc) => Field.fromMap(doc.data))
+    return result.docs
+        .map((doc) => Field.fromMap(doc.data()))
         .toList();
   }
 

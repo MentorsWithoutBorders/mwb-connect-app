@@ -45,7 +45,7 @@ class UserService {
   Future<User> getUserDetails() async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'profile', isForUser: true, id: 'details');
     if (doc.exists) {
-      return User.fromMap(doc.data, _storageService.userId);
+      return User.fromMap(doc.data(), _storageService.userId);
     } else {
       return User();
     }
@@ -54,7 +54,7 @@ class UserService {
   Future<User> getDefaultUserDetails() async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'user_default_profile', isForUser: false, id: 'details');
     if (doc.exists) {
-      return User.fromMap(doc.data, null);
+      return User.fromMap(doc.data(), null);
     } else {
       return User();
     }
@@ -62,8 +62,8 @@ class UserService {
   
   Future<List<ApprovedUser>> fetchApprovedUsers() async {
     QuerySnapshot result = await _api.getDataCollection(path: 'approved_users', isForUser: false);
-    return result.documents
-        .map((doc) => ApprovedUser.fromMap(doc.data, null))
+    return result.docs
+        .map((doc) => ApprovedUser.fromMap(doc.data(), null))
         .toList();
   }
 

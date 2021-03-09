@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test/test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -11,9 +12,10 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();  
   SharedPreferences.setMockInitialValues({});
   setupLocator();
-  WidgetsFlutterBinding.ensureInitialized();
   final getIt = GetIt.instance;
   await getIt.allReady();
   LocalStorageService storageService = locator<LocalStorageService>();
