@@ -1,16 +1,32 @@
-# mwb_connect_app
+This mobile app allows us to connect mentors with students from our partner NGOs (https://www.mentorswithoutborders.net/partners.php) for one-off lessons.
+This mobile app allows us to connect mentors with students from our <a href="https://www.mentorswithoutborders.net/partners.php" target="_blank">partner NGOs</a> for one-off lessons.
 
-A new Flutter project.
+The architecture is similar to the one from this <a href="https://medium.com/flutter-community/flutter-firebase-realtime-database-crud-operations-using-provider-c242a01f6a10" target="_blank">tutorial</a>. 
 
-## Getting Started
+Running the app in:
+* <a href="https://flutter.dev/docs/development/tools/vs-code" target="_blank">VS Code</a> 
+* <a href="https://flutter.dev/docs/development/tools/android-studio" target="_blank">Android Studio and IntelliJ</a> 
+* VS Code: https://flutter.dev/docs/development/tools/vs-code
+* Android Studio and IntelliJ: https://flutter.dev/docs/development/tools/android-studio
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Description
+The app is built with Flutter and uses Firestore on the backend. The way it should work is as follows:
+<ol>
+<li>The users (mentors and students) can create accounts and log in with their email addresses.</li>
+<li>In order to be able to use the app, they have to appear in the lists of students sent by our partner NGOs or in the lists of employees-mentors from our partner companies.</li>
+<li>The mentors can add/update the following details in their profiles:</li>
+<ol>
+<li>Field/subfield that they are specialized in (e.g. Programming/Machine Learning).</li>
+<li>Availability for doing 1h-2h lessons with their students (e.g. Wednesday 8pm-10pm, Saturday 3pm-7pm and Sunday 10am-2pm).</li>
+<li>Available/unavailable toggle.</li>
+<li>How many lessons they want to do per week, month, or year.</li>
+<li>The minimum interval between the lessons.</li>
+</ol>
+<li>The students can add/update the following details in their profiles:</li>
+<ol>
+<li>Full name</li>
+<li>Availability for doing 1h-2h lessons with their mentors (e.g. Wednesday 8pm-10pm, Saturday 3pm-7pm and Sunday 10am-2pm).</li>
+</ol>
+<li>The students have to set clear goals for themselves (e.g. “I want to land my first job as a web developer”) and in order to be able to book the next lesson with a mentor, they have to write at least one new idea of their own for achieving their goals and they also have to solve a quiz related to the mental process goal/steps, relaxation method or super-focus method that are part of the MWB training.</li>
+<li>The mentors can accept or reject the request for doing a lesson. If they accept, they will have to send a Google Meet link to their students.</li>
+</ol>
