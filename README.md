@@ -8,7 +8,7 @@ Running the app in:
 * VS Code: https://flutter.dev/docs/development/tools/vs-code
 * Android Studio and IntelliJ: https://flutter.dev/docs/development/tools/android-studio
 
-### Description
+### Details
 The app is built with Flutter and uses Firestore on the backend. The way it should work is as follows:
 <ol>
 <li>The users (mentors and students) can create accounts and log in with their email addresses.</li>
