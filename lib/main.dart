@@ -25,6 +25,7 @@ Future<void> main() async {
   setupLocator();
 
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
   await _signInAnonymously();
   await _initAppDirectory();

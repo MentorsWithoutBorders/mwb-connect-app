@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:test/test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,7 +14,8 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();  
+  await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp();  
   SharedPreferences.setMockInitialValues({});
   setupLocator();
   final getIt = GetIt.instance;
