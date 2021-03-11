@@ -20,9 +20,6 @@
 <a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/graphs/contributors">
 <img alt="Contributors" src="https://img.shields.io/github/contributors/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=f0f&label=Contributors"> </a>
 
-<a href="https://github.com/MentorsWithoutBorders?tab=followers">
-<img alt="Followers" src="https://img.shields.io/github/followers/MentorsWithoutBorders?color=222&style=plastic&label=Followers"> </a>
-
 <!-- <h2>Connecting mentors with mentees</h2>
 
 <figure>
