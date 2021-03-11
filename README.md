@@ -1,15 +1,51 @@
-# MWB Connect mobile app
+<div align = "center">
+
+<h1><a href="https://www.mentorswithoutborders.net/">MWB Connect mobile app</a></h1>
+
+<a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/blob/master/LICENSE">
+<img alt="License" src="https://img.shields.io/github/license/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=white&label=License"> </a>
+
+<a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/pulse">
+<img alt="Updated" src="https://img.shields.io/github/last-commit/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=e30724&label=Updated"> </a>
+
+<a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/stargazers">
+<img alt="Stars" src="https://img.shields.io/github/stars/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=00d451&label=Stars"></a>
+
+<a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/network/members">
+<img alt="Forks" src="https://img.shields.io/github/forks/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=1688f0&label=Forks"> </a>
+
+<a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/watchers">
+<img alt="Watchers" src="https://img.shields.io/github/watchers/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=ff5500&label=Watchers"> </a>
+
+<a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/graphs/contributors">
+<img alt="Contributors" src="https://img.shields.io/github/contributors/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=f0f&label=Contributors"> </a>
+
+<a href="https://github.com/MentorsWithoutBorders?tab=followers">
+<img alt="Followers" src="https://img.shields.io/github/followers/MentorsWithoutBorders?color=222&style=plastic&label=Followers"> </a>
+
+<!-- <h2>Connecting mentors with mentees</h2>
+
+<figure>
+  <img src= "https://raw.githubusercontent.com/MentorsWithoutBorders/mwb_connect_app/master/images/screenshot.jpg" alt="MWB Connect App Screenshot" style="width:100%">
+  <figcaption>MWB Connect App Screenshot</figcaption>
+</figure> -->
+
+</div>
+
 This mobile app allows us to connect mentors with students from our partner NGOs (https://www.mentorswithoutborders.net/partners.php) for one-off lessons.
 This mobile app allows us to connect mentors with students from our <a href="https://www.mentorswithoutborders.net/partners.php" target="_blank">partner NGOs</a> for one-off lessons.
 
-The architecture is similar to the one from this <a href="https://medium.com/flutter-community/flutter-firebase-realtime-database-crud-operations-using-provider-c242a01f6a10" target="_blank">tutorial</a>. 
+The architecture is similar to the one from this <a href="https://medium.com/flutter-community/flutter-firebase-realtime-database-crud-operations-using-provider-c242a01f6a10" target="_blank">tutorial</a>.
 
 Running the app in:
-* VS Code: https://flutter.dev/docs/development/tools/vs-code
-* Android Studio and IntelliJ: https://flutter.dev/docs/development/tools/android-studio
+
+- VS Code: https://flutter.dev/docs/development/tools/vs-code
+- Android Studio and IntelliJ: https://flutter.dev/docs/development/tools/android-studio
 
 ### Details
+
 The app is built with Flutter and uses Firestore on the backend. The way it should work is as follows:
+
 <ol>
 <li>The users (mentors and students) can create accounts and log in with their email addresses.</li>
 <li>In order to be able to use the app, they have to appear in the lists of students sent by our partner NGOs or in the lists of employees-mentors from our partner companies.</li>
