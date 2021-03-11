@@ -48,16 +48,16 @@ The app is built with Flutter and uses Firestore on the backend. The way it shou
 
 3. The mentors can add/update the following details in their profiles:
 
-> - Field/subfield that they are specialized in (e.g. Programming/Machine Learning).
-> - Availability for doing 1h-2h lessons with their students (e.g. Wednesday 8pm-10pm, Saturday 3pm-7pm and Sunday 10am-2pm).
-> - Available/unavailable toggle.
-> - How many lessons they want to do per week, month, or year.
-> - The minimum interval between the lessons.
+- Field/subfield that they are specialized in (e.g. Programming/Machine Learning).
+- Availability for doing 1h-2h lessons with their students (e.g. Wednesday 8pm-10pm, Saturday 3pm-7pm and Sunday 10am-2pm).
+- Available/unavailable toggle.
+- How many lessons they want to do per week, month, or year.
+- The minimum interval between the lessons.
 
 4. The students can add/update the following details in their profiles:
 
-> - Full name
-> - Availability for doing 1h-2h lessons with their mentors (e.g. Wednesday 8pm-10pm, Saturday 3pm-7pm and Sunday 10am-2pm).
+- Full name
+- Availability for doing 1h-2h lessons with their mentors (e.g. Wednesday 8pm-10pm, Saturday 3pm-7pm and Sunday 10am-2pm).
 
 5. The students have to set clear goals for themselves (e.g. “I want to land my first job as a web developer”) and in order to be able to book the next lesson with a mentor, they have to write at least one new idea of their own for achieving their goals and they also have to solve a quiz related to the mental process goal/steps, relaxation method or super-focus method that are part of the MWB training.
 
