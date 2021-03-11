@@ -1,6 +1,6 @@
 <div align = "center">
 
-<h1><a href="https://www.mentorswithoutborders.net/">MWB Connect mobile app</a></h1>
+<h1><a href="https://www.mentorswithoutborders.net/">MWB Connect Mobile App</a></h1>
 
 <a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/blob/master/LICENSE">
 <img alt="License" src="https://img.shields.io/github/license/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=white&label=License"> </a>
