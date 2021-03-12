@@ -149,14 +149,15 @@ class _FeedbackViewState extends State<FeedbackView> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
-        child: RaisedButton(
-          elevation: 2.0,
-          padding: const EdgeInsets.fromLTRB(50.0, 12.0, 50.0, 12.0),
-          splashColor: Colors.red,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0)
-          ),
-          color: AppColors.MONZA,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 2.0,
+            primary: AppColors.MONZA,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)
+            ),
+            padding: const EdgeInsets.fromLTRB(50.0, 12.0, 50.0, 12.0)
+          ), 
           child: Text(
             'feedback.send'.tr(),
             style: TextStyle(fontSize: 16.0, color: Colors.white)

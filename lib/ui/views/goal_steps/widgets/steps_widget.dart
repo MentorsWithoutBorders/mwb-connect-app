@@ -121,14 +121,15 @@ class _StepsState extends State<Steps> {
     return Padding(
       key: _addStepKey,
       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
-      child: RaisedButton(
-        elevation: 2.0,
-        padding: const EdgeInsets.fromLTRB(50.0, 12.0, 50.0, 12.0),
-        splashColor: Colors.red,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: AppColors.MONZA,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)
+          ),
+          elevation: 2.0,
+          padding: const EdgeInsets.fromLTRB(50.0, 12.0, 50.0, 12.0)          
         ),
-        color: AppColors.MONZA,
         child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white)),
         onPressed: () {
           showDialog(

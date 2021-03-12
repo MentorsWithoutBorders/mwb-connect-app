@@ -405,12 +405,15 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
       child: SizedBox(
         height: 42.0,
-        child: RaisedButton(
+        child: ElevatedButton(
           key: Key(AppKeys.loginSignupPrimaryBtn),
-          elevation: 2.0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0)),
-          color: Colors.white,
+          style: ElevatedButton.styleFrom(
+            elevation: 2.0,
+            primary: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)
+            )
+          ),  
           child: Text(_isLoginForm ? 'login.action'.tr() : 'sign_up.action'.tr(),
               style: TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)),
           onPressed: () async {

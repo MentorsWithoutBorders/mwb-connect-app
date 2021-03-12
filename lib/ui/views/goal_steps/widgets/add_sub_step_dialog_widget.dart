@@ -124,11 +124,13 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
               Navigator.pop(context);
             },
           ),
-          RaisedButton(
-            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-            splashColor: Colors.red,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.MONZA,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
             ),
             onPressed: () {
               if (_formKey.currentState.validate()) {
@@ -137,8 +139,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
                 Navigator.pop(context);
               }
             },
-            child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white)),
-            color: AppColors.MONZA
+            child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white))
           )
         ]
       )

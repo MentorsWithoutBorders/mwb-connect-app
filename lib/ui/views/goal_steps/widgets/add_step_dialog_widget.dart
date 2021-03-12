@@ -124,11 +124,13 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
               Navigator.pop(context);
             },
           ),
-          RaisedButton(
-            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-            splashColor: Colors.red,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.MONZA,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
             ),
             onPressed: () {
               if (_formKey.currentState.validate()) {
@@ -137,8 +139,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
                 Navigator.pop(context);
               } 
             },
-            child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white)),
-            color: AppColors.MONZA
+            child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white))
           )
         ]
       )

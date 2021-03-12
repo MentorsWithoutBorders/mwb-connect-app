@@ -30,15 +30,16 @@ class _SubfieldsState extends State<Subfields> {
 
   Widget _showAddSubfieldButton() {
     return Center(
-      child: RaisedButton(
+      child: ElevatedButton(
         key: Key(AppKeys.addSubfieldBtn),
-        elevation: 1.0,
-        padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-        splashColor: Colors.red,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        color: AppColors.MONZA,
+        style: ElevatedButton.styleFrom(
+          elevation: 1.0,
+          primary: AppColors.MONZA,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)
+          ),
+          padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0)
+        ), 
         child: Text('Add subfield', style: TextStyle(color: Colors.white)),
         onPressed: () => _profileProvider.addSubfield()
       ),

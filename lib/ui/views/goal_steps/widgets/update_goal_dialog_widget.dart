@@ -121,12 +121,14 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
               Navigator.pop(context);
             },
           ),
-          RaisedButton(
-            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-            splashColor: Colors.red,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.MONZA,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
+            ),  
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
@@ -134,8 +136,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
                 Navigator.pop(context);
               }                    
             },
-            child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white)),
-            color: AppColors.MONZA
+            child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white))
           )
         ]
       )

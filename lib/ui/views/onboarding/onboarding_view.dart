@@ -148,12 +148,15 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   Widget _showSignupButton() {
-    return RaisedButton(
+    return ElevatedButton(
       key: Key(AppKeys.goToSignupBtn),
-      padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0)
-      ),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0)
+        ),
+        padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
+      ), 
       onPressed: () {
         _goToSignup();
       },
@@ -164,8 +167,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           color: AppColors.ALLPORTS,
           fontSize: 15
         )
-      ),
-      color: Colors.white
+      )
     );
   }
 

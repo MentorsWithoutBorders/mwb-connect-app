@@ -53,11 +53,13 @@ class _StepDialogState extends State<StepDialog> {
         children: <Widget>[
           SizedBox(
             width: double.infinity,
-            child: RaisedButton(
-              splashColor: AppColors.ALLPORTS,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
-              ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.PACIFIC_BLUE,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                )
+              ),  
               onPressed: () {
                 Navigator.pop(context);
                 showDialog(
@@ -68,17 +70,18 @@ class _StepDialogState extends State<StepDialog> {
                   ),
                 );                      
               },
-              child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white)),
-              color: AppColors.PACIFIC_BLUE
+              child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white))
             )
           ),
-          if (_stepProvider.selectedStep.level <=1) SizedBox(
+          if (_stepProvider.selectedStep.level <= 1) SizedBox(
             width: double.infinity,
-            child: RaisedButton(
-              splashColor: AppColors.ALLPORTS,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
-              ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.PACIFIC_BLUE,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                )
+              ), 
               onPressed: () {
                 Navigator.pop(context);
                 showDialog(
@@ -89,46 +92,49 @@ class _StepDialogState extends State<StepDialog> {
                   ),
                 );                       
               },
-              child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white)),
-              color: AppColors.PACIFIC_BLUE
+              child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white))
             )
           ),
           if (_stepProvider.selectedStep.index > 0) SizedBox(
             width: double.infinity,
-            child: RaisedButton(
-              splashColor: AppColors.ALLPORTS,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.PACIFIC_BLUE,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                )
               ),
               onPressed: () {
                 Navigator.pop(context);
                 _moveStepUp();
               },
-              child: Text('step_dialog.move_step_up'.tr(), style: TextStyle(color: Colors.white)),
-              color: AppColors.PACIFIC_BLUE
+              child: Text('step_dialog.move_step_up'.tr(), style: TextStyle(color: Colors.white))
             )
           ),
           if (_stepProvider.selectedStep.index < _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.parent)) SizedBox(
             width: double.infinity,
-            child: RaisedButton(
-              splashColor: AppColors.ALLPORTS,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.PACIFIC_BLUE,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                )
               ),
               onPressed: () {
                 Navigator.pop(context);
                 _moveStepDown();                     
               },
-              child: Text('step_dialog.move_step_down'.tr(), style: TextStyle(color: Colors.white)),
-              color: AppColors.PACIFIC_BLUE
+              child: Text('step_dialog.move_step_down'.tr(), style: TextStyle(color: Colors.white))
             )
           ),
           SizedBox(
             width: double.infinity,
-            child: RaisedButton(
-              splashColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.MONZA,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                )
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -140,8 +146,7 @@ class _StepDialogState extends State<StepDialog> {
                   ),
                 );                      
               },
-              child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white)),
-              color: AppColors.MONZA
+              child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white))
             )
           ),
           Padding(
@@ -214,17 +219,18 @@ class _StepDialogState extends State<StepDialog> {
                     Navigator.pop(widget.context);
                   },
                 ),
-                RaisedButton(
-                  padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-                  splashColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.MONZA,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)
+                    ),
+                    padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
+                  ), 
                   onPressed: () {
                     _deleteStep(subSteps);
                   },
-                  child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white)),
-                  color: AppColors.MONZA
+                  child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white))
                 )
               ]
             )

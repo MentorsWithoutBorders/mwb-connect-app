@@ -83,12 +83,14 @@ class _UpdateAppViewState extends State<UpdateAppView> {
             padding: const EdgeInsets.only(top: 40.0),
             child: Column(
               children: <Widget>[
-                RaisedButton(
-                  padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 12.0),
-                  splashColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.MONZA,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)
+                    ),
+                    padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 12.0),
+                  ), 
                   onPressed: () {
                     _updateApp();
                   },
@@ -98,8 +100,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
                       fontSize: 14.0,
                       color: Colors.white
                     )
-                  ),
-                  color: AppColors.MONZA,
+                  )
                 ),
                 if (!widget.isForced) Padding(
                   padding: const EdgeInsets.only(top: 8.0),

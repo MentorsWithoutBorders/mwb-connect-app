@@ -116,11 +116,13 @@ class _FirstGoalState extends State<FirstGoal> {
                       duration: Duration(milliseconds: _opacityDuration),
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: RaisedButton(
-                          padding: const EdgeInsets.fromLTRB(60.0, 12.0, 60.0, 12.0),
-                          splashColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColors.MONZA,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)
+                            ),
+                            padding: const EdgeInsets.fromLTRB(60.0, 12.0, 60.0, 12.0),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
@@ -134,8 +136,7 @@ class _FirstGoalState extends State<FirstGoal> {
                               color: Colors.white, 
                               fontSize: 16
                             )
-                          ),
-                          color: AppColors.MONZA
+                          )
                         )
                       )
                     )

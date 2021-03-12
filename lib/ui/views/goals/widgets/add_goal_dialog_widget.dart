@@ -129,11 +129,13 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
               Navigator.pop(context);
             },
           ),
-          RaisedButton(
-            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-            splashColor: Colors.red,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.MONZA,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ),
             onPressed: () async {
               if (_formKey.currentState.validate() && !_isAddingGoal) {
@@ -148,8 +150,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
             ) : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: loader,
-            ),
-            color: AppColors.MONZA
+            )
           )
         ]
       )

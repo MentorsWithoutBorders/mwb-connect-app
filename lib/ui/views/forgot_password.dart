@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
-import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
@@ -220,11 +219,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
       child: SizedBox(
         height: 42.0,
-        child: RaisedButton(
-          elevation: 2.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0)),
-          color: Colors.white,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 2.0,
+            primary: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)
+            ),
+          ),
           child: Text(
             'forgot_password.next'.tr(),
             style: TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)

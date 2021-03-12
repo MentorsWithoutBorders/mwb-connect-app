@@ -88,16 +88,18 @@ class _QuizState extends State<QuizView> {
             child: Stack(
               children: <Widget>[
                 Center(
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)
+                      )
+                    ), 
                     onPressed: () {
                       _closeWasPressed = true;
                       _onWillPop();
                     },
-                    child: Text('quiz.close'.tr(), style: TextStyle(color: AppColors.ALLPORTS)),
-                    color: Colors.white
+                    child: Text('quiz.close'.tr(), style: TextStyle(color: AppColors.ALLPORTS))
                   )
                 ),
                 Align(

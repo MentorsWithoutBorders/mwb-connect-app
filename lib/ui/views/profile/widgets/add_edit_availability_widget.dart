@@ -205,12 +205,14 @@ class _AddAvailabilityState extends State<AddAvailability> {
               Navigator.pop(context);
             },
           ),
-          RaisedButton(
-            padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-            splashColor: Colors.red,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.MONZA,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
+            ), 
             onPressed: () {
               widget.availability == null ? _addAvailability() : _updateAvailability();
             },
@@ -219,8 +221,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
               style: TextStyle(
                 color: Colors.white
               )
-            ),
-            color: AppColors.MONZA
+            )
           )
         ]
       )

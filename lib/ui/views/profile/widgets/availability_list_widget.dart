@@ -76,14 +76,15 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
 
   Widget _showAddAvailabilityButton() {
     return Center(
-      child: RaisedButton(
-        elevation: 1.0,
-        padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-        splashColor: Colors.red,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        color: AppColors.MONZA,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 1.0,
+          primary: AppColors.MONZA,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)
+          ),
+          padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+        ), 
         child: Text('Add availability', style: TextStyle(color: Colors.white)),
         onPressed: () {
           _showAddEditAvailabilityDialog();

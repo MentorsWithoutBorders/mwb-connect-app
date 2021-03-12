@@ -53,11 +53,13 @@ class _GoalDialogState extends State<GoalDialog> {
         children: <Widget>[
           SizedBox(
             width: double.infinity,
-            child: RaisedButton(
-              splashColor: AppColors.ALLPORTS,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
-              ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.PACIFIC_BLUE,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                )
+              ),             
               onPressed: () {
                 Navigator.pop(context);
                 showDialog(
@@ -68,16 +70,17 @@ class _GoalDialogState extends State<GoalDialog> {
                   ),
                 );                      
               },
-              child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white)),
-              color: AppColors.PACIFIC_BLUE
+              child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white))
             )
           ),
           SizedBox(
             width: double.infinity,
-            child: RaisedButton(
-              splashColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.MONZA,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                )
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -89,8 +92,7 @@ class _GoalDialogState extends State<GoalDialog> {
                   ),
                 );                      
               },
-              child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white)),
-              color: AppColors.MONZA
+              child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white))
             )
           ),
           Padding(
@@ -154,17 +156,18 @@ class _GoalDialogState extends State<GoalDialog> {
                     Navigator.pop(widget.context);
                   },
                 ),
-                RaisedButton(
-                  padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
-                  splashColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.MONZA,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)
+                    ),
+                    padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
+                  ),  
                   onPressed: () {
                     _deleteGoal();
                   },
-                  child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white)),
-                  color: AppColors.MONZA
+                  child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white))
                 )
               ]
             )
