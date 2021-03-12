@@ -61,7 +61,7 @@ class _RootViewState extends State<RootView> {
   void initState() {
     super.initState();
     _setPreferences();
-    _downloadService.getImages();
+    //_downloadService.getImages();
     _setUserStorage();
     widget.auth.getCurrentUser().then((user) {
       setState(() {
