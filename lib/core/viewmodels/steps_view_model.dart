@@ -59,7 +59,7 @@ class StepsViewModel extends ChangeNotifier {
   }
   
   List<String> getSubSteps(String stepId) {
-    List<String> subSteps = List();
+    List<String> subSteps = [];
     for (final step in steps){
       if (step.parent == stepId) {
         subSteps.add(step.id);
@@ -73,9 +73,9 @@ class StepsViewModel extends ChangeNotifier {
   }
 
   List<StepModel> sortSteps(List<StepModel> steps) {
-    List<StepModel> stepsLevel0 = List();
-    List<StepModel> stepsLevel1 = List();
-    List<StepModel> stepsLevel2 = List();
+    List<StepModel> stepsLevel0 = [];
+    List<StepModel> stepsLevel1 = [];
+    List<StepModel> stepsLevel2 = [];
     steps.forEach((step) { 
       switch(step.level) { 
         case 0: { 
@@ -93,14 +93,14 @@ class StepsViewModel extends ChangeNotifier {
       }
     });
     
-    List<StepModel> sortedSteps = List();
+    List<StepModel> sortedSteps = [];
     // Sort steps level 0
     List<StepModel> sortedStepsLevel0 = _sortStepsByIndex(stepsLevel0);
     sortedStepsLevel0.forEach((sortedStepLevel0) {
       // Add each step level 0 to sorted list
       sortedSteps.add(sortedStepLevel0);
       // Get steps level 1
-      List<StepModel> sortedStepsLevel1 = List();
+      List<StepModel> sortedStepsLevel1 = [];
       stepsLevel1.forEach((stepLevel1) {
         if (stepLevel1.parent == sortedStepLevel0.id) {
           sortedStepsLevel1.add(stepLevel1);
@@ -113,7 +113,7 @@ class StepsViewModel extends ChangeNotifier {
         // Add each step level 1 to sorted list
         sortedSteps.add(sortedStepLevel1);
         // Get steps level 2
-        List<StepModel> sortedStepsLevel2 = List();
+        List<StepModel> sortedStepsLevel2 = [];
         stepsLevel2.forEach((stepLevel2) {
           if (stepLevel2.parent == sortedStepLevel1.id) {
             sortedStepsLevel2.add(stepLevel2);
@@ -150,7 +150,7 @@ class StepsViewModel extends ChangeNotifier {
 
   setAddedStepIndex(List<StepModel> steps, StepModel step) {
     int index = 0;
-    List<StepModel> sortedSteps = List();
+    List<StepModel> sortedSteps = [];
     sortedSteps.addAll(steps);
     sortedSteps.add(step);
     sortedSteps = sortSteps(sortedSteps);

@@ -30,7 +30,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
   }
 
   List<DropdownMenuItem<Field>> _buildFieldDropdown() {
-    List<DropdownMenuItem<Field>> items = List();
+    List<DropdownMenuItem<Field>> items = [];
     for (Field field in _profileProvider.profile.fields) {
       items.add(DropdownMenuItem(
         value: field,

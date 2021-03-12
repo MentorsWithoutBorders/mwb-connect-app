@@ -79,7 +79,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
  List<DropdownMenuItem<String>> _buildDayOfWeekDropdown() {
-    List<DropdownMenuItem<String>> items = List();
+    List<DropdownMenuItem<String>> items = [];
     for (String dayOfWeek in Utils.daysOfWeek) {
       items.add(DropdownMenuItem(
         value: dayOfWeek,
@@ -180,7 +180,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
     List<String> times = Utils.buildHoursList();
-    List<DropdownMenuItem<String>> items = List();
+    List<DropdownMenuItem<String>> items = [];
     for (String time in times) {
       items.add(DropdownMenuItem(
         value: time,

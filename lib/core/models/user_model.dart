@@ -30,7 +30,7 @@ class User {
   }
   
   List<Availability> _availabilityFromJson(List<Map<String, dynamic>> json) {
-    List<Availability> availabilityList = List();
+    List<Availability> availabilityList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
         availabilityList.add(Availability(dayOfWeek: json[i]['dayOfWeek'], time: Time(from: json[i]['time']['from'], to: json[i]['time']['to'])));
@@ -63,7 +63,7 @@ class User {
   }
 
   List<Map<String, dynamic>> _availabilityToJson(List<Availability> availabilities) {
-    List<Map<String,dynamic>> availabilityList = List();
+    List<Map<String,dynamic>> availabilityList = [];
     if (availabilities != null) {
       for (int i = 0; i < availabilities.length; i++) {
         availabilityList.add({

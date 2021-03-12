@@ -29,7 +29,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   AnalyticsService _analyticsService = locator<AnalyticsService>();
   PageController _controller = PageController(viewportFraction: 0.85, keepPage: true);  
   Directory _appDocsDir;  
-  List<String> _sections = List();
+  List<String> _sections = [];
   bool _isLoaded = false;
 
   @override

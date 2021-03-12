@@ -56,7 +56,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }
 
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
-    List<DropdownMenuItem<Subfield>> items = List();
+    List<DropdownMenuItem<Subfield>> items = [];
     for (Subfield subfield in _profileProvider.getSubfields(widget.index)) {
       items.add(DropdownMenuItem(
         value: subfield,

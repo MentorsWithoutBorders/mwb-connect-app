@@ -1,5 +1,3 @@
-import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 

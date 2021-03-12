@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../ui/utils/firebase_auth_mocks.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -13,10 +13,11 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp();  
+  TestWidgetsFlutterBinding.ensureInitialized();
+  setupFirebaseAuthMocks();
+  await Firebase.initializeApp();
   SharedPreferences.setMockInitialValues({});
+  await EasyLocalization.ensureInitialized();
   setupLocator();
   final getIt = GetIt.instance;
   await getIt.allReady();
@@ -55,8 +56,8 @@ void main() async {
         ),
       ];
     });    
-
     test('profile name should be changed', () async {
+
       String name = 'Alice';
       profileViewModel.setName(name);
       expect(identical(profileViewModel.profile.user.name, name), true);

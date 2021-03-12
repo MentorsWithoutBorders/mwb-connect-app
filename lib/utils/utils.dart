@@ -25,7 +25,7 @@ class Utils {
   }
 
   static List<String> buildHoursList() {
-    List<String> hoursList = List();
+    List<String> hoursList = [];
     hoursList.add('12am');
     for (int i = 1; i <= 11; i++) {
       hoursList.add(i.toString() + 'am');

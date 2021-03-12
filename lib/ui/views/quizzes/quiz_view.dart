@@ -37,7 +37,7 @@ class _QuizState extends State<QuizView> {
   Widget _showQuiz() {
     int quizNumber = _storageService.quizNumber;
     String question = 'quizzes.quiz$quizNumber.question'.tr();
-    List<String> options = List();
+    List<String> options = [];
     for (int i = 1; i <= _maxOptions; i++) {
       String option = 'quizzes.quiz$quizNumber.option$i'.tr();
       if (option.indexOf('quizzes') == -1) {

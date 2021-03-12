@@ -24,7 +24,7 @@ class _StepsState extends State<Steps> {
   StepsViewModel _stepProvider;  
   final _scrollDirection = Axis.vertical;  
   AutoScrollController _scrollController = AutoScrollController();
-  List<StepModel> _steps = List();
+  List<StepModel> _steps = [];
   GlobalKey _addStepKey = GlobalKey();
 
   @override

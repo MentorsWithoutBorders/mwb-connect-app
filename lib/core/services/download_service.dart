@@ -7,7 +7,6 @@ import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:devicelocale/devicelocale.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -140,7 +139,9 @@ class DownloadService {
         }
         try {
           await _checkImage(image);
-        } on Exception catch(e) {}
+        } on Exception catch(e) {
+          print(e);
+        }
       }
     }
   }

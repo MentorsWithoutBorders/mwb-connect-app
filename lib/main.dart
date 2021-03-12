@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -30,7 +28,7 @@ Future<void> main() async {
   await _signInAnonymously();
   await _initAppDirectory();
 
-  Directory directory = await getApplicationDocumentsDirectory();
+  //Directory directory = await getApplicationDocumentsDirectory();
   runApp(
     Phoenix(
       child: EasyLocalization(
@@ -74,7 +72,7 @@ class MWBConnectApp extends StatefulWidget {
 class _MWBConnectAppState extends State<MWBConnectApp> {
   MixpanelAPI _mixpanel;
   String _mixpanelToken;
-  DownloadService _downloadService = locator<DownloadService>();  
+  //DownloadService _downloadService = locator<DownloadService>();  
 
   _MWBConnectAppState(this._mixpanelToken);
 

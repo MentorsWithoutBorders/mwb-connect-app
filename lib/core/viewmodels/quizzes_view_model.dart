@@ -34,7 +34,7 @@ class QuizzesViewModel extends ChangeNotifier {
   getQuizNumber() async {
     quizStatus = await getQuizStatus();
     // Create solved list
-    List<int> solvedList = List();
+    List<int> solvedList = [];
     if (quizStatus.solved != null && quizStatus.solved != '') {
       solvedList = quizStatus.solved.split(', ').map(int.parse).toList();
     }
@@ -93,7 +93,7 @@ class QuizzesViewModel extends ChangeNotifier {
   }
   
   setQuizStatus(QuizStatus quizStatus, int solvedNumber) {
-    List<int> solvedList = List();
+    List<int> solvedList = [];
     if (quizStatus.solved != null && quizStatus.solved != '') {
       solvedList = quizStatus.solved.split(', ').map(int.parse).toList();
     }

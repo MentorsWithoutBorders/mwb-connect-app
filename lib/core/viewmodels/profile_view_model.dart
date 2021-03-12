@@ -80,7 +80,7 @@ class ProfileViewModel extends ChangeNotifier {
   List<Subfield> getSubfields(int index) {
     List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
     List<String> selectedSubfields = profile.user.subfields;
-    List<Subfield> filteredSubfields = List();
+    List<Subfield> filteredSubfields = [];
     if (subfields != null) {
       for (var subfield in subfields) {
         if (!selectedSubfields.contains(subfield.name) || 
@@ -157,15 +157,15 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void mergeAvailabilityTimes() {
-    List<Availability> availabilities = List();
+    List<Availability> availabilities = [];
     for (String dayOfWeek in Utils.daysOfWeek) {
-      List<Availability> dayAvailabilities = List();
+      List<Availability> dayAvailabilities = [];
       for (var availability in profile.user.availabilities) {
         if (availability.dayOfWeek == dayOfWeek) {
           dayAvailabilities.add(availability);
         }
       }
-      List<Availability> merged = List();
+      List<Availability> merged = [];
       int mergedLastTo = -1;
       _mergedAvailabilityLastShown = false;
       for (var availability in dayAvailabilities) {
