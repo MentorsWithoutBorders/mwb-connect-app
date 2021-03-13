@@ -17,15 +17,19 @@ class _SlideSwipeState extends State<SlideSwipe> {
   int _currentPage;
   bool _initial;
 
-  _initiate(index) {
+  double _initiate(int index) {
     try {
       _currentPage = widget.controller.initialPage.round();
     } catch (e) {
-      print("exception here => $e");
+      print('exception here => $e');
     }
     double value;
-    if (index == _currentPage - 1 && _initial) value = 1.0;
-    if (index == _currentPage && _initial) value = 0.0;
+    if (index == _currentPage - 1 && _initial) {
+      value = 1.0;
+    }
+    if (index == _currentPage && _initial) {
+      value = 0.0;
+    }
     if (index == _currentPage + 1 && _initial) {
       value = 1.0;
       _initial = false;
@@ -37,12 +41,12 @@ class _SlideSwipeState extends State<SlideSwipe> {
   Widget build(BuildContext context) {
     _currentPage = 0;
     _initial = true;
-    int count = widget.slides.length;
-    Widget carouserBuilder = PageView.builder(
+    final int count = widget.slides.length;
+    final Widget carouserBuilder = PageView.builder(
         scrollDirection: Axis.horizontal,
         controller: widget.controller,
         itemCount: count,
-        itemBuilder: (context, index) => builder(index, widget.controller));
+        itemBuilder: (BuildContext context, int index) => builder(index, widget.controller));
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -55,10 +59,10 @@ class _SlideSwipeState extends State<SlideSwipe> {
     );
   }
 
-  builder(int index, PageController controller) {
+  Widget builder(int index, PageController controller) {
     return AnimatedBuilder(
       animation: controller,
-      builder: (context, child) {
+      builder: (BuildContext context, Widget child) {
         double value = 1.0;
         value = _initial
             ? _initiate(index) ?? controller.page - index

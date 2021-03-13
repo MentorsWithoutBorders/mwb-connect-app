@@ -19,10 +19,10 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
   ProfileViewModel _profileProvider;  
 
   Widget _showAvailabilityItem() {
-    Availability availability = _profileProvider.profile.user.availabilities[widget.index];
-    String dayOfWeek = availability.dayOfWeek;
-    String timeFrom = availability.time.from;
-    String timeTo = availability.time.to;
+    final Availability availability = _profileProvider.profile.user.availabilities[widget.index];
+    final String dayOfWeek = availability.dayOfWeek;
+    final String timeFrom = availability.time.from;
+    final String timeTo = availability.time.to;
     return Row(
       children: [
         InkWell(
@@ -34,14 +34,14 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
                   width: 90,
                   child: Text(
                     '$dayOfWeek:',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.DOVE_GRAY
                     )
                   ),
                 ),
                 Text(
                   '$timeFrom - $timeTo',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.DOVE_GRAY
                   )
                 )

@@ -10,8 +10,8 @@ class Api {
   CollectionReference _ref;
   String userId;
 
-  _setRef(String path, bool isForUser) {
-    LocalStorageService storageService = locator<LocalStorageService>();
+  void _setRef(String path, bool isForUser) {
+    final LocalStorageService storageService = locator<LocalStorageService>();
     userId = storageService.userId;
     if (userId != 'test_user') {
       _ref = isForUser ? _db.collection('users').doc(userId).collection(path) : _db.collection(path);
@@ -42,8 +42,8 @@ class Api {
 
   Future<void> removeSubCollection({String path, bool isForUser = false}){
     _setRef(path, isForUser);   
-    return _ref.get().then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.docs) {
+    return _ref.get().then((QuerySnapshot snapshot) {
+      for (final DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
     }); 

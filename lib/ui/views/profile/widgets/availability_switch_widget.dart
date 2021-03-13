@@ -21,7 +21,7 @@ class _AvailabilitySwitchState extends State<AvailabilitySwitch> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.fromLTRB(5.0, paddingTop, 20.0, 5.0),
-            child: Text(
+            child: const Text(
               'I\'m currently available',
               style: TextStyle(
                 fontSize: 16.0,
@@ -34,7 +34,7 @@ class _AvailabilitySwitchState extends State<AvailabilitySwitch> {
         // Android
         if (Platform.isAndroid) Switch(
           value: _profileProvider.profile.user.isAvailable,
-          onChanged: (value){
+          onChanged: (bool value){
             _profileProvider.setIsAvailable(value);
           },
           activeTrackColor: Colors.lightGreenAccent,
@@ -46,7 +46,7 @@ class _AvailabilitySwitchState extends State<AvailabilitySwitch> {
             scale: 0.8,
             child: CupertinoSwitch(
               value: _profileProvider.profile.user.isAvailable,
-              onChanged: (value){
+              onChanged: (bool value){
                 _profileProvider.setIsAvailable(value);
               }
             )

@@ -38,7 +38,7 @@ class _StepDialogState extends State<StepDialog> {
     return Center(
       child: Text(
         'step_dialog.title'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -70,7 +70,7 @@ class _StepDialogState extends State<StepDialog> {
                   ),
                 );                      
               },
-              child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white))
+              child: Text('step_dialog.update_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
           if (_stepProvider.selectedStep.level <= 1) SizedBox(
@@ -92,7 +92,7 @@ class _StepDialogState extends State<StepDialog> {
                   ),
                 );                       
               },
-              child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white))
+              child: Text('step_dialog.add_sub_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
           if (_stepProvider.selectedStep.index > 0) SizedBox(
@@ -108,7 +108,7 @@ class _StepDialogState extends State<StepDialog> {
                 Navigator.pop(context);
                 _moveStepUp();
               },
-              child: Text('step_dialog.move_step_up'.tr(), style: TextStyle(color: Colors.white))
+              child: Text('step_dialog.move_step_up'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
           if (_stepProvider.selectedStep.index < _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.parent)) SizedBox(
@@ -124,7 +124,7 @@ class _StepDialogState extends State<StepDialog> {
                 Navigator.pop(context);
                 _moveStepDown();                     
               },
-              child: Text('step_dialog.move_step_down'.tr(), style: TextStyle(color: Colors.white))
+              child: Text('step_dialog.move_step_down'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
           SizedBox(
@@ -146,7 +146,7 @@ class _StepDialogState extends State<StepDialog> {
                   ),
                 );                      
               },
-              child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white))
+              child: Text('step_dialog.delete_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
           Padding(
@@ -156,7 +156,7 @@ class _StepDialogState extends State<StepDialog> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Center(                      
-                  child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+                  child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
                 )
               ),
               onTap: () {
@@ -178,7 +178,7 @@ class _StepDialogState extends State<StepDialog> {
   }  
   
   Widget _showDeleteStepDialog() {
-    List<String> subSteps = _stepProvider.getSubSteps(_stepProvider.selectedStep.id);
+    final List<String> subSteps = _stepProvider.getSubSteps(_stepProvider.selectedStep.id);
     return Container(
       width: MediaQuery.of(widget.context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -186,34 +186,34 @@ class _StepDialogState extends State<StepDialog> {
         children: <Widget>[
           Center(
             child: Text(
-              subSteps.length > 0 ? 
+              subSteps.isNotEmpty ? 
                 'step_dialog.delete_step_sub_steps_message'.tr() : 
                 'step_dialog.delete_step_message'.tr(),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold
               )
             )
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
             child: Text(
               _stepProvider.selectedStep.text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
               )
             )
           ),
           Padding(
-            padding: EdgeInsets.only(top: 30.0),
+            padding: const EdgeInsets.only(top: 30.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 InkWell(
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+                    child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
                   ),
                   onTap: () {
                     Navigator.pop(widget.context);
@@ -230,7 +230,7 @@ class _StepDialogState extends State<StepDialog> {
                   onPressed: () {
                     _deleteStep(subSteps);
                   },
-                  child: Text('step_dialog.delete_step'.tr(), style: TextStyle(color: Colors.white))
+                  child: Text('step_dialog.delete_step'.tr(), style: const TextStyle(color: Colors.white))
                 )
               ]
             )
@@ -240,11 +240,11 @@ class _StepDialogState extends State<StepDialog> {
     );
   }
 
-  _deleteStep(List<String> subSteps) {
+  void _deleteStep(List<String> subSteps) {
     _stepProvider.deleteStep(goalId: _goalProvider.selectedGoal.id, id: _stepProvider.selectedStep.id);
     _stepProvider.updateIndexesAfterDeleteStep(_goalProvider.selectedGoal.id, _stepProvider.steps, _stepProvider.selectedStep);
-    if (subSteps.length > 0) {
-      subSteps.forEach((stepId) { 
+    if (subSteps.isNotEmpty) {
+      subSteps.forEach((String stepId) { 
         _stepProvider.deleteStep(goalId: _goalProvider.selectedGoal.id, id: stepId);
       });
     }

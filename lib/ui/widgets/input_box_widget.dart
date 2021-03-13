@@ -7,7 +7,7 @@ class InputBox extends StatelessWidget {
   final String hint;
   final String text;
   final Function(String) inputChangedCallback;
-  final inputController = TextEditingController();
+  final TextEditingController inputController = TextEditingController();
 
   InputBox({
     Key key,
@@ -24,28 +24,28 @@ class InputBox extends StatelessWidget {
       controller: inputController,
       autofocus: autofocus,
       textCapitalization: TextCapitalization.sentences,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 14.0,
       ),
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         hintText: hint,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: AppColors.SILVER
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(10.0),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0),
           ),
           borderSide: BorderSide(
             color: AppColors.SILVER,
             width: 1.0,
           ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(10.0),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0),
           ),
           borderSide: BorderSide(
             color: AppColors.EMERALD,
@@ -53,7 +53,7 @@ class InputBox extends StatelessWidget {
           ),
         )
       ),
-      onChanged: (value) {
+      onChanged: (String value) {
         inputChangedCallback(value);
       }
     );

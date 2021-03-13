@@ -5,12 +5,12 @@ import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 
 class ProfileService {
-  Api _api = locator<Api>();
+  final Api _api = locator<Api>();
 
   Future<List<Field>> getFields() async {
-    QuerySnapshot result = await _api.getDataCollection(path: 'fields', isForUser: false);
+    final QuerySnapshot result = await _api.getDataCollection(path: 'fields', isForUser: false);
     return result.docs
-        .map((doc) => Field.fromMap(doc.data()))
+        .map((QueryDocumentSnapshot doc) => Field.fromMap(doc.data()))
         .toList();
   }
 

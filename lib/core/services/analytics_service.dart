@@ -6,7 +6,7 @@ class AnalyticsService {
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);  
 
-  void identifyUser(String userId, String name, String email) async {
+  Future<void> identifyUser(String userId, String name, String email) async {
     // Segment.identify(
     //   userId: userId,
     //   traits: {

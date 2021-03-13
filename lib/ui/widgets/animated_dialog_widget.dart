@@ -26,7 +26,7 @@ class AnimatedDialogState extends State<AnimatedDialog>
 
   void _setController() {
     _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     _scaleAnimation =
         CurvedAnimation(parent: _controller, curve: Curves.easeInQuad);
     _controller.addListener(() {

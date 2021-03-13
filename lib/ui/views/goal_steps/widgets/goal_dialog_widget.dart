@@ -38,7 +38,7 @@ class _GoalDialogState extends State<GoalDialog> {
     return Center(
       child: Text(
         'goal_dialog.title'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -68,7 +68,7 @@ class _GoalDialogState extends State<GoalDialog> {
                     widgetInside: UpdateGoalDialog(),
                     hasInput: true,
                   ),
-                );                      
+                ); 
               },
               child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white))
             )
@@ -102,7 +102,7 @@ class _GoalDialogState extends State<GoalDialog> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Center(                      
-                  child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+                  child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
                 )
               ),
               onTap: () {
@@ -123,34 +123,34 @@ class _GoalDialogState extends State<GoalDialog> {
         children: <Widget>[
           Center(
             child: Text(
-              _stepProvider.steps.length > 0 ? 
+              _stepProvider.steps.isNotEmpty ? 
                 'goal_dialog.delete_goal_steps_message'.tr() :
                 'goal_dialog.delete_goal_message'.tr(),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold
               )
             )
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
             child: Text(
               _goalProvider.selectedGoal.text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
               )
             )
           ),
           Padding(
-            padding: EdgeInsets.only(top: 30.0),
+            padding: const EdgeInsets.only(top: 30.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 InkWell(
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+                    child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
                   ),
                   onTap: () {
                     Navigator.pop(widget.context);
@@ -177,7 +177,7 @@ class _GoalDialogState extends State<GoalDialog> {
     );
   }
 
-  _deleteGoal() {
+  void _deleteGoal() {
     _goalProvider.deleteGoal(_goalProvider.selectedGoal.id);
     _goalProvider.updateIndexesAfterDeleteGoal(_goalProvider.selectedGoal.id, _goalProvider.goals, _goalProvider.selectedGoal.index);
     Navigator.pop(widget.context);

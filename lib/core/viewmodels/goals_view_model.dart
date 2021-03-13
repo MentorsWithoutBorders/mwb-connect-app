@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 
 class GoalsViewModel extends ChangeNotifier {
-  GoalsService _goalsService = locator<GoalsService>();   
+  final GoalsService _goalsService = locator<GoalsService>();   
 
   List<Goal> goals;
   Goal selectedGoal;
@@ -28,13 +28,13 @@ class GoalsViewModel extends ChangeNotifier {
     return _goalsService.getGoalById(id);
   }
 
-  Future deleteGoal(String id) async {
+  Future<void> deleteGoal(String id) async {
     _removeGoalFromList(id);
     await _goalsService.deleteGoal(id);
     return ;
   }
 
-  Future updateGoal(Goal goal, String id) async {
+  Future<void> updateGoal(Goal goal, String id) async {
     await _goalsService.updateGoal(goal, id);
     return ;
   }
@@ -43,12 +43,12 @@ class GoalsViewModel extends ChangeNotifier {
     return _goalsService.addGoal(goal);
   }
 
-  _removeGoalFromList(String goalId) {
+  void _removeGoalFromList(String goalId) {
     goals.removeWhere((goal) => goal.id == goalId);
     notifyListeners();
   }  
 
-  setSelectedGoal(Goal goal) {
+  void setSelectedGoal(Goal goal) {
     selectedGoal = goal;
     notifyListeners();
   }
@@ -61,36 +61,36 @@ class GoalsViewModel extends ChangeNotifier {
     return index;
   }  
 
-  addGoalToList(Goal goal) {
+  void addGoalToList(Goal goal) {
     goals.add(goal);
     notifyListeners();
   }
   
-  sortGoalList() {
+  void sortGoalList() {
     goals.sort((a, b) => a.index.compareTo(b.index));
     notifyListeners();
   }
 
-  setWasGoalAdded(wasAdded) {
+  void setWasGoalAdded(bool wasAdded) {
     wasGoalAdded = wasAdded;
   }
 
-  updateIndexesAfterDeleteGoal(String goalId, List<Goal> goals, int index) {
+  void updateIndexesAfterDeleteGoal(String goalId, List<Goal> goals, int index) {
     for (int i = 0; i < goals.length; i++) {
       if (goals[i].index > index) {
-        Goal modifiedGoal = goals[i];
+        final Goal modifiedGoal = goals[i];
         modifiedGoal.index--;
         updateGoal(modifiedGoal, modifiedGoal.id);
       }
     }    
   }
 
-  setIsTutorialPreviewsAnimationCompleted(bool isCompleted) {
+  void setIsTutorialPreviewsAnimationCompleted(bool isCompleted) {
     isTutorialPreviewsAnimationCompleted = isCompleted;
     notifyListeners();
   }   
 
-  setShouldShowTutorialChevrons(bool showChevrons) {
+  void setShouldShowTutorialChevrons(bool showChevrons) {
     shouldShowTutorialChevrons = showChevrons;
     notifyListeners();
   }

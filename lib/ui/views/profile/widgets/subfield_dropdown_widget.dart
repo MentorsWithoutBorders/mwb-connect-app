@@ -21,7 +21,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   Widget _showSubfieldDropdown() {
     return Container(
       height: 50.0,
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
           Expanded(
@@ -56,8 +56,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }
 
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
-    List<DropdownMenuItem<Subfield>> items = [];
-    for (Subfield subfield in _profileProvider.getSubfields(widget.index)) {
+    final List<DropdownMenuItem<Subfield>> items = [];
+    for (final Subfield subfield in _profileProvider.getSubfields(widget.index)) {
       items.add(DropdownMenuItem(
         value: subfield,
         child: Text(subfield.name),

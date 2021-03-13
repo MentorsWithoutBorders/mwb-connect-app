@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 
 class AddGoalDialog extends StatefulWidget {
-  AddGoalDialog({Key key})
+  const AddGoalDialog({Key key})
     : super(key: key);  
 
   @override
@@ -18,7 +18,7 @@ class AddGoalDialog extends StatefulWidget {
 class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _goalText;  
   bool _isAddingGoal = false;
 
@@ -32,7 +32,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
     _getFormHeight();
   }
   
-  void _getFormHeight() async {
+  void _getFormHeight() {
     RenderBox box = _formKey.currentContext.findRenderObject();
     _commonProvider.setDialogInputHeight(box.size.height);
   }  
@@ -55,7 +55,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
     return Center(
       child: Text(
         'goals.add_new_goal'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -76,55 +76,55 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
           decoration: InputDecoration(
             //contentPadding: EdgeInsets.only(bottom: -20.0),
             hintText: 'goals.add_goal_placeholder'.tr(),
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: AppColors.SILVER
             ),
-            enabledBorder: UnderlineInputBorder(      
+            enabledBorder: const UnderlineInputBorder(      
               borderSide: BorderSide(color: AppColors.ALLPORTS),   
             ),  
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.ALLPORTS),
             ), 
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.orange
             )
           ),
-          validator: (value) {
+          validator: (String value) {
             if (value.isEmpty) {
               return 'goals.add_goal_error'.tr();
             }
             return null;
           },
-          onChanged: (value) {
-            Future.delayed(const Duration(milliseconds: 10), () {        
+          onChanged: (String value) {
+            Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
                 WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
                 _formKey.currentState.validate();
               }
             });
           },
-          onSaved: (value) => _goalText = value
+          onSaved: (String value) => _goalText = value
         )
       )
     );
   }
 
   Widget _showButtons() {
-    final loader = SpinKitThreeBounce(
+    final SpinKitThreeBounce loader = SpinKitThreeBounce(
       color: Colors.white,
       size: 18.0,
       controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1000)),
     );
 
     return Padding(
-      padding: EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+              child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
               Navigator.pop(context);
@@ -147,7 +147,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
             },
             child: !_isAddingGoal ? Text(
               'goals.add_goal'.tr(), 
-              style: TextStyle(color: Colors.white)
+              style: const TextStyle(color: Colors.white)
             ) : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: loader,
@@ -158,15 +158,15 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
     ); 
   }
   
-  _addGoal() async {
+  Future<void> _addGoal() async {
     setState(() {
       _isAddingGoal = true;
     });
-    int index = _goalProvider.getCurrentIndex(_goalProvider.goals) + 1;
-    DateTime now = DateTime.now();
-    DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
-    Goal goal = Goal(text: _goalText, index: index, dateTime: dateTime);
-    Goal addedGoal = await _goalProvider.addGoal(goal);
+    final int index = _goalProvider.getCurrentIndex(_goalProvider.goals) + 1;
+    final DateTime now = DateTime.now();
+    final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
+    final Goal goal = Goal(text: _goalText, index: index, dateTime: dateTime);
+    final Goal addedGoal = await _goalProvider.addGoal(goal);
     _goalProvider.addGoalToList(addedGoal);
     _goalProvider.sortGoalList();
     _goalProvider.setWasGoalAdded(true);

@@ -11,7 +11,7 @@ class Label extends StatelessWidget {
       padding: const EdgeInsets.only(left: 3.0, bottom: 8.0),
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12.0,
           color: AppColors.DOVE_GRAY
         ),

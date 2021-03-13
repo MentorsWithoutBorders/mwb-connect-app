@@ -10,28 +10,28 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  UserService _userService = locator<UserService>();
-  ProfileService _profileService = locator<ProfileService>();
+  final UserService _userService = locator<UserService>();
+  final ProfileService _profileService = locator<ProfileService>();
   Profile profile;
   String availabilityMergedMessage = '';
   bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
 
   Future<User> getUserDetails() async {
-    return await _userService.getUserDetails();
+    return _userService.getUserDetails();
   }
 
   Future<List<Field>> getFields() async {
-    return await _profileService.getFields();
+    return _profileService.getFields();
   }
 
-  setFields(List<Field> fields) {
-    for (Field field in fields) {
+  void setFields(List<Field> fields) {
+    for (final Field field in fields) {
       _profileService.addField(field);
     }
   }    
 
-  setUserDetails(User user) {
+  void setUserDetails(User user) {
     _userService.setUserDetails(user);
   }
 
@@ -52,13 +52,13 @@ class ProfileViewModel extends ChangeNotifier {
   Field getSelectedField() {
     Field selectedField;
     String selectedFieldName;
-    List<Field> fields = profile.fields;
+    final List<Field> fields = profile.fields;
     if (isNotEmpty(profile.user.field)) {
       selectedFieldName = profile.user.field;
     } else {
       selectedFieldName = fields[0].name;
     }
-    for (var field in fields) {
+    for (final Field field in fields) {
       if (field.name == selectedFieldName) {
         selectedField = field;
         break;
@@ -78,11 +78,11 @@ class ProfileViewModel extends ChangeNotifier {
   }  
 
   List<Subfield> getSubfields(int index) {
-    List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    List<String> selectedSubfields = profile.user.subfields;
-    List<Subfield> filteredSubfields = [];
+    final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
+    final List<String> selectedSubfields = profile.user.subfields;
+    final List<Subfield> filteredSubfields = [];
     if (subfields != null) {
-      for (var subfield in subfields) {
+      for (final Subfield subfield in subfields) {
         if (!selectedSubfields.contains(subfield.name) || 
             subfield.name == selectedSubfields[index]) {
           filteredSubfields.add(subfield);
@@ -93,16 +93,16 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   int _getSelectedFieldIndex() {
-    List<Field> fields = profile.fields;
-    String selectedField = profile.user.field;
-    return fields.indexWhere((field) => field.name == selectedField);
+    final List<Field> fields = profile.fields;
+    final String selectedField = profile.user.field;
+    return fields.indexWhere((Field field) => field.name == selectedField);
   }
   
   Subfield getSelectedSubfield(int index) {
     Subfield selectedSubfield;
-    List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    List<String> selectedSubfields = profile.user.subfields;
-    for (var subfield in subfields) {
+    final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
+    final List<String> selectedSubfields = profile.user.subfields;
+    for (final Subfield subfield in subfields) {
       if (subfield.name == selectedSubfields[index]) {
         selectedSubfield = subfield;
         break;
@@ -112,9 +112,9 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void addSubfield() {
-    List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    List<String> selectedSubfields = profile.user.subfields;
-    for (var subfield in subfields) {
+    final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
+    final List<String> selectedSubfields = profile.user.subfields;
+    for (final Subfield subfield in subfields) {
       if (!selectedSubfields.contains(subfield.name)) {
         setSubfield(subfield.name, selectedSubfields.length+1);
         break;
@@ -144,7 +144,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void updateAvailability(Availability oldAvailability, Availability newAvailability) {
-    profile.user.availabilities[profile.user.availabilities.indexWhere((element) => element == oldAvailability)] = newAvailability;
+    profile.user.availabilities[profile.user.availabilities.indexWhere((Availability element) => element == oldAvailability)] = newAvailability;
     sortAvailabilities();
     mergeAvailabilityTimes();
     setUserDetails(profile.user);
@@ -157,23 +157,23 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void mergeAvailabilityTimes() {
-    List<Availability> availabilities = [];
-    for (String dayOfWeek in Utils.daysOfWeek) {
-      List<Availability> dayAvailabilities = [];
-      for (var availability in profile.user.availabilities) {
+    final List<Availability> availabilities = [];
+    for (final String dayOfWeek in Utils.daysOfWeek) {
+      final List<Availability> dayAvailabilities = [];
+      for (final Availability availability in profile.user.availabilities) {
         if (availability.dayOfWeek == dayOfWeek) {
           dayAvailabilities.add(availability);
         }
       }
-      List<Availability> merged = [];
+      final List<Availability> merged = [];
       int mergedLastTo = -1;
       _mergedAvailabilityLastShown = false;
-      for (var availability in dayAvailabilities) {
+      for (final Availability availability in dayAvailabilities) {
         if (merged.isNotEmpty) {
           mergedLastTo = Utils.convertTime12to24(merged.last.time.to);
         }
-        int availabilityFrom = Utils.convertTime12to24(availability.time.from);
-        int availabilityTo = Utils.convertTime12to24(availability.time.to);
+        final int availabilityFrom = Utils.convertTime12to24(availability.time.from);
+        final int availabilityTo = Utils.convertTime12to24(availability.time.to);
         if (merged.isEmpty || mergedLastTo < availabilityFrom) {
           merged.add(availability);
         } else {
@@ -206,8 +206,8 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   bool isAvailabilityValid(Availability availability) {
-    int timeFrom = Utils.convertTime12to24(availability.time.from);
-    int timeTo = Utils.convertTime12to24(availability.time.to);
+    final int timeFrom = Utils.convertTime12to24(availability.time.from);
+    final int timeTo = Utils.convertTime12to24(availability.time.to);
     return timeFrom < timeTo;
   }
 

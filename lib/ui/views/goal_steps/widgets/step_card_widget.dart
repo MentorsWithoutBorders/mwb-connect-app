@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class StepCard extends StatefulWidget {
-  StepCard({Key key, @required this.step}): 
+  const StepCard({Key key, @required this.step}): 
     super(key: key);
 
   final StepModel step;
@@ -23,7 +23,7 @@ class _StepCardState extends State<StepCard> {
     return Padding(
       padding: EdgeInsets.fromLTRB(widget.step.level * 20.0 + 16.0, 3.0, 16.0, 10.0),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           color: Colors.white
         ),
@@ -34,7 +34,7 @@ class _StepCardState extends State<StepCard> {
             child: Row(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 5.0),
+                  padding: const EdgeInsets.only(left: 5.0),
                   child: _showBullet(widget.step.level)
                 ),
                 Expanded(
@@ -42,7 +42,7 @@ class _StepCardState extends State<StepCard> {
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Text(
                       widget.step.text,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 15
                       ),
@@ -59,7 +59,7 @@ class _StepCardState extends State<StepCard> {
   }
 
   Widget _showBullet(int level) {
-    const isBulletEmpty = [false, true, false];    
+    const List<bool> isBulletEmpty = [false, true, false];    
     return Container(
       width: 8.0,
       height: 8.0,

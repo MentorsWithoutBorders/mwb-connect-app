@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
@@ -22,7 +23,7 @@ import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -52,12 +53,12 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
-  LocalStorageService _storageService = locator<LocalStorageService>();
-  UserService _userService = locator<UserService>();
-  DownloadService _downloadService = locator<DownloadService>();
-  AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
+  final UserService _userService = locator<UserService>();
+  final DownloadService _downloadService = locator<DownloadService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
-  var _location;
+  dynamic _location;
   String _userId = '';
 
   @override
@@ -80,12 +81,12 @@ class _RootViewState extends State<RootView> {
     });    
   }
 
-  Future _setUserStorage() async {
+  Future<void> _setUserStorage() async {
     await _userService.setUserStorage();
   }      
 
   void _setCurrentUser() {
-    widget.auth.getCurrentUser().then((user) {
+    widget.auth.getCurrentUser().then((User user) {
       setState(() {
         if (user != null) {
           _userId = user?.uid;
@@ -100,10 +101,10 @@ class _RootViewState extends State<RootView> {
     notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
     // of the `IOSFlutterLocalNotificationsPlugin` class
-    var initializationSettingsIOS = IOSInitializationSettings(
+    final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
         requestAlertPermission: false,
         requestBadgePermission: false,
         requestSoundPermission: false,
@@ -112,7 +113,7 @@ class _RootViewState extends State<RootView> {
           didReceiveLocalNotificationSubject.add(ReceivedNotification(
               id: id, title: title, body: body, payload: payload));
         });
-    var initializationSettings = InitializationSettings(
+    final InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
@@ -149,7 +150,7 @@ class _RootViewState extends State<RootView> {
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
-              child: Text('Ok'),
+              child: const Text('Ok'),
               onPressed: () async {
                 Navigator.of(context, rootNavigator: true).pop();
                 print(receivedNotification.payload);
@@ -175,7 +176,7 @@ class _RootViewState extends State<RootView> {
   }  
 
   void loginCallback() {
-    widget.auth.getCurrentUser().then((user) {
+    widget.auth.getCurrentUser().then((User user) {
       setState(() {
         _userId = user.uid.toString();
       });
@@ -211,13 +212,13 @@ class _RootViewState extends State<RootView> {
 
   Future<void> _showDailyAtTime() async {
     if (_storageService.notificationsEnabled) {
-      String notificationTitle = 'daily_notification.title'.tr();
-      AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      final String notificationTitle = 'daily_notification.title'.tr();
+      const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
           'MWB Connect',
           'MWB Connect notifications',
           'Your MWB Connect daily reminders');
-      IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
-      NotificationDetails platformChannelSpecifics = NotificationDetails(
+      const IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
+      const NotificationDetails platformChannelSpecifics = NotificationDetails(
           android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
       await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
@@ -235,8 +236,8 @@ class _RootViewState extends State<RootView> {
   }
 
   Future<tz.TZDateTime> _nextInstanceOfNotificationsTime() async {
-    List<String> notificationsTime = _storageService.notificationsTime.split(':');
-    Time time = Time(int.parse(notificationsTime[0]), int.parse(notificationsTime[1]), 0);
+    final List<String> notificationsTime = _storageService.notificationsTime.split(':');
+    final Time time = Time(int.parse(notificationsTime[0]), int.parse(notificationsTime[1]), 0);
     await _setTimeZone();
     final tz.TZDateTime now = tz.TZDateTime.now(_location);
     tz.TZDateTime scheduledDate =
@@ -248,8 +249,8 @@ class _RootViewState extends State<RootView> {
   }
   
   Future<void> _setTimeZone() async {
-    final timeZone = TimeZone();
-    String timeZoneName = await timeZone.getTimeZoneName();
+    final TimeZone timeZone = TimeZone();
+    final String timeZoneName = await timeZone.getTimeZoneName();
     _location = await timeZone.getLocation(timeZoneName);    
   } 
 

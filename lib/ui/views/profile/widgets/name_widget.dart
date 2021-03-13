@@ -13,11 +13,11 @@ class Name extends StatefulWidget {
 class _NameState extends State<Name> {
   ProfileViewModel _profileProvider;  
 
-  Widget _showName(context) {
+  Widget _showName() {
     return Container(
       padding: const EdgeInsets.only(bottom: 15),
       child: InputBox(
-        key: Key(AppKeys.nameField),
+        key: const Key(AppKeys.nameField),
         autofocus: false, 
         hint: 'Enter name', 
         text: _profileProvider.profile.user?.name, 
@@ -37,7 +37,7 @@ class _NameState extends State<Name> {
     return Wrap(
       children: [
         Label(text: 'Name'),
-        _showName(context)
+        _showName()
       ],
     );
   }

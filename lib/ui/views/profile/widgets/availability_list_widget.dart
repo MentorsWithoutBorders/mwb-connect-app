@@ -17,10 +17,10 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   ProfileViewModel _profileProvider;
 
   Widget _showAvailability() {
-    bool isAvailable = _profileProvider.profile.user.isAvailable;
+    final bool isAvailable = _profileProvider.profile.user.isAvailable;
     return AnimatedSize(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.fastOutSlowIn,
       child: Container(
         child: !isAvailable ?
@@ -49,7 +49,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   Widget _showTitle() {
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
-      child: Text(
+      child: const Text(
         'Availability',
         style: TextStyle(
           color: AppColors.TANGO,
@@ -60,8 +60,8 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   Widget _showAvailabilityList() {
-    List<Widget> availabilityWidgets = [];
-    List<Availability> availabilityList = _profileProvider.profile.user.availabilities;
+    final List<Widget> availabilityWidgets = [];
+    final List<Availability> availabilityList = _profileProvider.profile.user.availabilities;
     for (int i = 0; i < availabilityList.length; i++) {
       availabilityWidgets.add(AvailabilityItem(index: i));
     }
@@ -84,7 +84,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
           ),
           padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
         ), 
-        child: Text('Add availability', style: TextStyle(color: Colors.white)),
+        child: const Text('Add availability', style: TextStyle(color: Colors.white)),
         onPressed: () {
           _showAddEditAvailabilityDialog();
         }
@@ -108,7 +108,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   void _showToast(BuildContext context) {
-    final scaffold = ScaffoldMessenger.of(context);
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
         content: Text(_profileProvider.availabilityMergedMessage),

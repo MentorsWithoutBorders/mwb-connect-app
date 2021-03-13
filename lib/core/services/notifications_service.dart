@@ -6,8 +6,8 @@ import 'package:mwb_connect_app/core/models/notification_settings_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class NotificationsService {
-  Api _api = locator<Api>();
-  LocalStorageService _storageService = locator<LocalStorageService>();
+  final Api _api = locator<Api>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
 
   Future<NotificationSettings> getNotificationSettings() async {
     DocumentSnapshot doc = await _api.getDocumentById(path: 'notifications', isForUser: true, id: 'settings');

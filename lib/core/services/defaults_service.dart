@@ -4,25 +4,13 @@ import 'package:mwb_connect_app/utils/constants.dart';
 
 class DefaultsService {
   void setDefaults() {
-    var storageService = locator<LocalStorageService>();
-    if (storageService.tutorials == null ) {
-      storageService.tutorials = AppConstants.tutorials;
-    }
-    if (storageService.quizzesCount == null ) {
-      storageService.quizzesCount = AppConstants.quizzesCount;
-    }
-    if (storageService.quizzesRounds == null ) {
-      storageService.quizzesRounds = AppConstants.quizzesRounds;
-    }
-    if (storageService.timeBetweenQuizzesRounds == null ) {
-      storageService.timeBetweenQuizzesRounds = AppConstants.timeBetweenQuizzesRounds;
-    }
-    if (storageService.notificationsEnabled == null ) {
-      storageService.notificationsEnabled = AppConstants.notificationsEnabled;
-    }
-    if (storageService.notificationsTime == null ) {
-      storageService.notificationsTime = AppConstants.notificationsTime;
-    }    
+    final LocalStorageService storageService = locator<LocalStorageService>();
+    storageService.tutorials ??= AppConstants.tutorials;
+    storageService.quizzesCount ??= AppConstants.quizzesCount;
+    storageService.quizzesRounds ??= AppConstants.quizzesRounds;
+    storageService.timeBetweenQuizzesRounds ??= AppConstants.timeBetweenQuizzesRounds;
+    storageService.notificationsEnabled ??= AppConstants.notificationsEnabled;
+    storageService.notificationsTime ??= AppConstants.notificationsTime;    
   }
 
 }

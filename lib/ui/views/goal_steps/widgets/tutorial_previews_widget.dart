@@ -18,16 +18,16 @@ class TutorialPreviews extends StatefulWidget {
 
 class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProviderStateMixin {
   GoalsViewModel _goalProvider;  
-  PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
+  final PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
   AnimationController _animationController;
   Animation<double> _animation;
-  GlobalKey _stackKey = GlobalKey();
-  GlobalKey _pageIndicatorKey = GlobalKey();
-  final _animationDuration = 300;
+  final GlobalKey _stackKey = GlobalKey();
+  final GlobalKey _pageIndicatorKey = GlobalKey();
+  final int _animationDuration = 300;
   double _textHeight = 0;
   double _pageIndicatorHeight = 0;
   double _previewsOpenHeight = 0;
-  double _previewsClosedHeight = 30;
+  final double _previewsClosedHeight = 30;
   bool _isOpen = false;
 
   @override
@@ -44,7 +44,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
       ..addListener(() {
         setState(() {});
       })
-      ..addStatusListener((status) {
+      ..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
           _goalProvider.setIsTutorialPreviewsAnimationCompleted(true);
           if (!_goalProvider.shouldShowTutorialChevrons) {
@@ -64,7 +64,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     super.dispose();
   }  
 
-  _afterLayout(_) {
+  void _afterLayout(_) {
     final RenderBox textBox = _stackKey.currentContext.findRenderObject();
     final RenderBox pageIndicatorBox = _pageIndicatorKey.currentContext.findRenderObject();
     setState(() {
@@ -85,7 +85,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
           width: 1,
           color: Colors.white
         ),
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
       ),
       child: Stack(
         alignment: Alignment.topCenter,
@@ -98,10 +98,10 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
   }
 
   Widget _showPreviewsOpen() {
-    var _storageService = locator<LocalStorageService>();
-    List<String> previews = [];
-    Map<String, dynamic> tutorials = _storageService.tutorials;
-    tutorials.forEach((key, value) => previews.add(key));
+    final LocalStorageService _storageService = locator<LocalStorageService>();
+    final List<String> previews = [];
+    final Map<String, dynamic> tutorials = _storageService.tutorials;
+    tutorials.forEach((String key, value) => previews.add(key));
 
     return AnimatedOpacity(
       opacity: _isOpen ? 1.0 : 0.0,
@@ -112,8 +112,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () async => {
-                  await _closePreviews()
+                onTap: () => {
+                  _closePreviews()
                 },
                 child: Container(
                   width: 58,
@@ -128,7 +128,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
                     child: SmoothPageIndicator(
                       controller: _pageController,
                       count: previews.length,
-                      effect: ScrollingDotsEffect(
+                      effect: const ScrollingDotsEffect(
                         spacing: 8.0,
                         dotWidth: 7.0,
                         dotHeight: 7.0,
@@ -140,8 +140,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
                 )
               ),
               GestureDetector(
-                onTap: () async => {
-                  await _closePreviews()
+                onTap: () => {
+                  _closePreviews()
                 },
                 child: Container(
                   width: 58,
@@ -171,7 +171,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     );
   }
 
-  _closePreviews() async {
+  void _closePreviews() {
     setState(() {
       _isOpen = false;
     });
@@ -186,8 +186,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
       child: Row(
         children: <Widget>[
           GestureDetector(
-            onTap: () async => {
-              await _openPreviews()
+            onTap: () => {
+              _openPreviews()
             },
             child: Container(
               width: 58,
@@ -200,15 +200,15 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
               duration: Duration(milliseconds: _animationDuration),              
               child: Center(
                 child: GestureDetector(
-                  onTap: () async => {
-                    await _openPreviews()
+                  onTap: () => {
+                    _openPreviews()
                   },
                   child: SizedBox(
                     width: double.infinity,
                     child: Text(
                       'tutorial_previews.show_helpers'.tr(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold
@@ -220,8 +220,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
             )
           ),
           GestureDetector(
-            onTap: () async => {
-              await _openPreviews()
+            onTap: () => {
+              _openPreviews()
             },
             child: Container(
               width: 58,
@@ -233,7 +233,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     ); 
   }
 
-  _openPreviews() async {
+  void _openPreviews() {
     setState(() {
       _isOpen = true;
     });    
@@ -241,7 +241,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     _animationController.forward();
   }
 
-  _buildTextStack(BuildContext context, List<String> previews) {
+  Widget _buildTextStack(BuildContext context, List<String> previews) {
     Widget carousel;
     if (_textHeight == null) {
       carousel = Container();
@@ -258,8 +258,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
       );
     }
 
-    final previewItems = previews
-      .map((item) => Column(children: [
+    final List<Column> previewItems = previews
+      .map((String item) => Column(children: [
         Container(
           child: _buildCarouselItem(context, item)
         )]))
@@ -275,14 +275,14 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
   }   
 
   Widget _buildCarouselItem(BuildContext context, String item) {
-    String itemText = 'tutorials.$item.preview.text'.tr();
-    String itemLink = 'tutorials.$item.preview.link'.tr();
+    final String itemText = 'tutorials.$item.preview.text'.tr();
+    final String itemLink = 'tutorials.$item.preview.link'.tr();
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: RichText(
         textAlign: TextAlign.justify,
         text: TextSpan(
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             color: Colors.white,
             height: 1.2
@@ -297,7 +297,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
             ),
             TextSpan(
               text: itemLink,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.yellow,
                 decoration: TextDecoration.underline,
                 fontWeight: FontWeight.bold

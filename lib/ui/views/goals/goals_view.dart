@@ -32,13 +32,13 @@ class GoalsView extends StatefulWidget {
 }
 
 class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
-  LocalStorageService _storageService = locator<LocalStorageService>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
   GoalsViewModel _goalProvider;
   QuizzesViewModel _quizProvider;
-  final _scrollDirection = Axis.vertical;  
-  AutoScrollController _scrollController = AutoScrollController();  
-  double _paddingTop = 90.0;
-  int _opacityDuration = 300;
+  final Axis _scrollDirection = Axis.vertical;  
+  final AutoScrollController _scrollController = AutoScrollController();  
+  final double _paddingTop = 90.0;
+  final int _opacityDuration = 300;
   bool _isLoaded = false;
   bool _shouldShowGoals = false;
 
@@ -50,7 +50,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
 
   @override
-  void reassemble() async {
+  Future<void> reassemble() async {
     super.reassemble();
     //Show quiz
     // await _quizProvider.getQuizNumber();
@@ -64,8 +64,8 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     //   );
     // }
     //Show update
-    UpdatesViewModel updatesViewModel = locator<UpdatesViewModel>();
-    UpdateStatus updateStatus = await updatesViewModel.getUpdateStatus();
+    final UpdatesViewModel updatesViewModel = locator<UpdatesViewModel>();
+    final UpdateStatus updateStatus = await updatesViewModel.getUpdateStatus();
     if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
       Navigator.push(context, MaterialPageRoute(builder: (_) => UpdateAppView(isForced: false)));
     } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
@@ -107,7 +107,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
                 controller: _scrollController,                
                 shrinkWrap: true,
                 itemCount: _goalProvider.goals.length,
-                itemBuilder: (buildContext, index) =>
+                itemBuilder: (BuildContext buildContext, int index) =>
                   AutoScrollTag(
                     key: ValueKey(index),
                     controller: _scrollController,
@@ -116,7 +116,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
                   )
               ),
             ),
-            if (_goalProvider.goals.length > 0) _showAddGoalButton()
+            if (_goalProvider.goals.isNotEmpty) _showAddGoalButton()
           ]
         ),
       )
@@ -137,7 +137,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
         ),
         child: Text(
           'goals.add_goal'.tr(), 
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white
           )
         ),
@@ -157,9 +157,9 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   Widget _showTitle() {
     Widget title;
     if (_goalProvider.goals == null) {
-      title = Text('');
+      title = const Text('');
     } else {
-      if (_goalProvider.goals.length > 0) {
+      if (_goalProvider.goals.isNotEmpty) {
         title = Text('goals.my_goals'.tr());
       } else {
         title = Text('goals.first_goal'.tr());
@@ -184,9 +184,9 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   
   Widget _showContent() {
     if (_isLoaded) {
-      if (_goalProvider.goals.length > 0) {
+      if (_goalProvider.goals.isNotEmpty) {
         // For opacity animation
-        Future.delayed(Duration(milliseconds: 300), () {
+        Future<void>.delayed(const Duration(milliseconds: 300), () {
           if (mounted && !_shouldShowGoals) {
             setState(() {
               _shouldShowGoals = true;
@@ -228,7 +228,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
       drawer: _goalProvider.goals != null ? DrawerWidget(
         auth: widget.auth,
         logoutCallback: widget.logoutCallback
-      ) : SizedBox.shrink()
+      ) : const SizedBox.shrink()
     );
   }
 }

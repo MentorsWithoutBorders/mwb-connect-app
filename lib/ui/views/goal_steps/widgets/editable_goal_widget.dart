@@ -13,9 +13,9 @@ class _EditableGoalState extends State<EditableGoal> {
   GoalsViewModel _goalProvider;
   bool _isVisible = false;
 
-  void _animateElements() async {
+  Future<void> _animateElements() async {
     if (!_isVisible) { 
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future<void>.delayed(const Duration(milliseconds: 100));
       setState(() {
         _isVisible = true;
       });
@@ -28,7 +28,7 @@ class _EditableGoalState extends State<EditableGoal> {
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.fromLTRB(16.0, 90.0, 16.0, 0.0),
       padding: const EdgeInsets.fromLTRB(12.0, 12.0, 15.0, 12.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         color: Colors.white
       ),
@@ -46,17 +46,17 @@ class _EditableGoalState extends State<EditableGoal> {
           duration: const Duration(milliseconds: 500),
           textAlign: TextAlign.center,
           style: !_isVisible ?
-            TextStyle(
+            const TextStyle(
               fontSize: 20.0,
               color: Colors.white,
               fontWeight: FontWeight.bold
-            ) : TextStyle(
+            ) : const TextStyle(
               fontSize: 20.0, 
               color: Colors.black,
               fontWeight: FontWeight.bold
             ),
           child: Text(
-            _goalProvider.selectedGoal != null && _goalProvider.selectedGoal.text != null ? _goalProvider.selectedGoal.text : ""
+            _goalProvider.selectedGoal != null && _goalProvider.selectedGoal.text != null ? _goalProvider.selectedGoal.text : ''
           )
         )
       )

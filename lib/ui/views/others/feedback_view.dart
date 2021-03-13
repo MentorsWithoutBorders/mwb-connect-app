@@ -19,22 +19,23 @@ class FeedbackView extends StatefulWidget {
 }
 
 class _FeedbackViewState extends State<FeedbackView> {
-  LocalStorageService _storageService = locator<LocalStorageService>();
-  PageController _controller = PageController(viewportFraction: 1, keepPage: true);
+  final LocalStorageService _storageService = locator<LocalStorageService>();
+  final PageController _controller = PageController(viewportFraction: 1, keepPage: true);
   KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
   String _feedbackText;
   bool _sendButtonPressed = false;
 
+  @override
   @protected
   void initState() {
     super.initState();
     _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          Future.delayed(const Duration(milliseconds: 100), () {
+          Future<void>.delayed(const Duration(milliseconds: 100), () {
             _scrollController.animateTo(
               _scrollController.position.maxScrollExtent,
               curve: Curves.easeOut,
@@ -58,7 +59,7 @@ class _FeedbackViewState extends State<FeedbackView> {
       height: double.infinity,
       child: PageView(
         controller: _controller,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           _showForm(),
           _showConfirmation()
@@ -91,7 +92,7 @@ class _FeedbackViewState extends State<FeedbackView> {
         children: <Widget>[
           Text(
             'feedback.label'.tr(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.white
             ),
@@ -109,7 +110,7 @@ class _FeedbackViewState extends State<FeedbackView> {
         elevation: 3,
         child: TextFormField(
           maxLines: null,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 15.0
           ),
           decoration: InputDecoration(
@@ -119,27 +120,27 @@ class _FeedbackViewState extends State<FeedbackView> {
             enabledBorder: InputBorder.none,
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
-            hintStyle: TextStyle(color: AppColors.SILVER),
+            hintStyle: const TextStyle(color: AppColors.SILVER),
             hintText: 'feedback.message_placeholder'.tr()
           ), 
-          validator: (value) {
+          validator: (String value) {
             if (_sendButtonPressed && value.isEmpty) {
               return 'feedback.message_error'.tr();
             } else {
               return null;
             }
           },
-          onChanged: (value) {
+          onChanged: (String value) {
             setState(() {
               _sendButtonPressed = false;
             });          
-            Future.delayed(const Duration(milliseconds: 20), () {        
+            Future<void>.delayed(const Duration(milliseconds: 20), () {        
               if (value.isNotEmpty) {
                 _formKey.currentState.validate();
               }
             });
           },             
-          onSaved: (value) => _feedbackText = value.trim(),
+          onSaved: (String value) => _feedbackText = value.trim(),
         ),
       ),
     );
@@ -160,7 +161,7 @@ class _FeedbackViewState extends State<FeedbackView> {
           ), 
           child: Text(
             'feedback.send'.tr(),
-            style: TextStyle(fontSize: 16.0, color: Colors.white)
+            style: const TextStyle(fontSize: 16.0, color: Colors.white)
           ),
           onPressed: () async {
             setState(() {
@@ -173,11 +174,11 @@ class _FeedbackViewState extends State<FeedbackView> {
     );
   }
   
-  void _validateAndSubmit() async {
+  Future<void> _validateAndSubmit() async {
     if (_validateAndSave()) {
       try {
         // Just a delay effect for the send request
-        await Future.delayed(const Duration(milliseconds: 300));
+        await Future<void>.delayed(const Duration(milliseconds: 300));
         _sendFeedback(_feedbackText);
       } catch (e) {
         print('Error: $e');
@@ -187,7 +188,7 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   // Check if form is valid
   bool _validateAndSave() {
-    final form = _formKey.currentState;
+    final FormState form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -196,8 +197,8 @@ class _FeedbackViewState extends State<FeedbackView> {
   }
   
   Future<void> _sendFeedback(String text) async {
-    FeedbackViewModel feedbackViewModel = locator<FeedbackViewModel>();
-    FeedbackModel feedback = FeedbackModel(
+    final FeedbackViewModel feedbackViewModel = locator<FeedbackViewModel>();
+    final FeedbackModel feedback = FeedbackModel(
       text: text,
       userId: _storageService.userId,
       userEmail: _storageService.userEmail,
@@ -210,7 +211,7 @@ class _FeedbackViewState extends State<FeedbackView> {
 
  void _goToConfirmation() {
     _controller.animateToPage(_controller.page.toInt() + 1,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.ease
     );
   }   
@@ -220,7 +221,7 @@ class _FeedbackViewState extends State<FeedbackView> {
       padding: const EdgeInsets.fromLTRB(25.0, 120.0, 25.0, 0.0),
       child: Text(
         'feedback.confirmation'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14.0,
           color: Colors.white
         ),
@@ -249,7 +250,7 @@ class _FeedbackViewState extends State<FeedbackView> {
             backgroundColor: Colors.transparent,          
             elevation: 0.0,
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(null),
             )
           ),

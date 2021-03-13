@@ -17,11 +17,11 @@ class User {
 
   User.fromMap(Map snapshot, String id) {
     this.id = id;
-    name = snapshot['name'] ?? '';
-    email = snapshot['email'] ?? '';
+    name = snapshot['name'].toString() ?? '';
+    email = snapshot['email'].toString() ?? '';
     isMentor = snapshot['isMentor'] ?? false;
-    organization = snapshot['organization'] ?? '';
-    field = snapshot['field'] ?? '';
+    organization = snapshot['organization'].toString() ?? '';
+    field = snapshot['field'].toString() ?? '';
     subfields = snapshot['subfields']?.cast<String>() ?? [];
     availabilities = _availabilityFromJson(snapshot['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;

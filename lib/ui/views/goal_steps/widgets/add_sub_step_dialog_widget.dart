@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 
 class AddSubStepDialog extends StatefulWidget {
-  AddSubStepDialog({Key key, this.steps})
+  const AddSubStepDialog({Key key, this.steps})
     : super(key: key);  
 
   final List<StepModel> steps;
@@ -21,7 +21,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
   CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
   StepsViewModel _stepProvider;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
   @override
@@ -34,7 +34,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
     _getFormHeight();
   }
   
-  void _getFormHeight() async {
+  Future<void> _getFormHeight() async {
     RenderBox box = _formKey.currentContext.findRenderObject();
     _commonProvider.setDialogInputHeight(box.size.height);
   }  
@@ -57,7 +57,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
     return Center(
       child: Text(
         'step_dialog.add_sub_step'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -77,34 +77,34 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
           maxLines: null,
           decoration: InputDecoration(
             hintText: 'step_dialog.add_sub_step_placeholder'.tr(),
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: AppColors.SILVER
             ),
-            enabledBorder: UnderlineInputBorder(      
+            enabledBorder: const UnderlineInputBorder(      
               borderSide: BorderSide(color: AppColors.ALLPORTS),   
             ),  
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.ALLPORTS),
             ), 
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.orange
             )
           ),
-          validator: (value) {
+          validator: (String value) {
             if (value.isEmpty) {
               return 'step_dialog.add_sub_step_error'.tr();
             }
             return null;
           },
-          onChanged: (value) {
-            Future.delayed(const Duration(milliseconds: 10), () {        
+          onChanged: (String value) {
+            Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) { 
                 WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
                 _formKey.currentState.validate();
               }
             });
           },
-          onSaved: (value) => _stepText = value
+          onSaved: (String value) => _stepText = value
         )
       )
     );
@@ -112,14 +112,14 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
   
   Widget _showButtons() {
     return Padding(
-      padding: EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
             child: Container(
               padding: const EdgeInsets.fromLTRB(25.0, 12.0, 25.0, 12.0),
-              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+              child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
               Navigator.pop(context);
@@ -147,10 +147,10 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
     ); 
   }
 
-  _addSubStep() {
-    int level = _stepProvider.selectedStep.level + 1;
-    int index = _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.id) + 1;
-    StepModel step = StepModel(text: _stepText, level: level, index: index, parent: _stepProvider.selectedStep.id);
+  void _addSubStep() {
+    final int level = _stepProvider.selectedStep.level + 1;
+    final int index = _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.id) + 1;
+    final StepModel step = StepModel(text: _stepText, level: level, index: index, parent: _stepProvider.selectedStep.id);
     _stepProvider.setAddedStepIndex(_stepProvider.steps, step);
     _stepProvider.addStep(goalId: _goalProvider.selectedGoal.id, data: step);
   }

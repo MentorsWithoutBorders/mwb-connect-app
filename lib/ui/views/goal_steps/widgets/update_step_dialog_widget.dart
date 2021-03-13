@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 
 class UpdateStepDialog extends StatefulWidget {
-  UpdateStepDialog({Key key})
+  const UpdateStepDialog({Key key})
     : super(key: key);  
 
   @override
@@ -19,7 +19,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
   StepsViewModel _stepProvider;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
   @override
@@ -32,7 +32,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
     _getFormHeight();
   }
   
-  void _getFormHeight() async {
+  void _getFormHeight() {
     RenderBox box = _formKey.currentContext.findRenderObject();
     _commonProvider.setDialogInputHeight(box.size.height);
   }  
@@ -55,7 +55,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
     return Center(
       child: Text(
         'step_dialog.update_step'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -75,16 +75,16 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
           maxLines: null,
           decoration: InputDecoration(
             hintText: 'step_dialog.update_step_placeholder'.tr(),
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: AppColors.SILVER
             ),
-            enabledBorder: UnderlineInputBorder(      
+            enabledBorder: const UnderlineInputBorder(      
               borderSide: BorderSide(color: AppColors.ALLPORTS),   
             ),  
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.ALLPORTS),
             ), 
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.orange
             )
           ),
@@ -95,15 +95,15 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
             }
             return null;
           },
-          onChanged: (value) {
-            Future.delayed(const Duration(milliseconds: 10), () {        
+          onChanged: (String value) {
+            Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
                 WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
                 _formKey.currentState.validate();
               }
             });
           },
-          onSaved: (value) => _stepText = value
+          onSaved: (String value) => _stepText = value
         )
       )
     );
@@ -111,14 +111,14 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
 
   Widget _showButtons() {
     return Padding(
-      padding: EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+              child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
               Navigator.pop(context);
@@ -147,9 +147,9 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   }
   
   void _updateStep() {
-    StepModel step = _stepProvider.selectedStep;
+    final StepModel step = _stepProvider.selectedStep;
     step.text = _stepText;
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     step.dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
     _stepProvider.updateStep(goalId: _goalProvider.selectedGoal.id, data: step, id: _stepProvider.selectedStep.id);
   }

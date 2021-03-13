@@ -17,9 +17,9 @@ class QuizView extends StatefulWidget {
 }
 
 class _QuizState extends State<QuizView> {
-  LocalStorageService _storageService = locator<LocalStorageService>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
   QuizzesViewModel _quizProvider;  
-  int _maxOptions = 3;
+  final int _maxOptions = 3;
   int _selectedIndex = -1;
   bool _wasSelected = false;
   bool _closeWasPressed = false;
@@ -35,18 +35,18 @@ class _QuizState extends State<QuizView> {
   }
 
   Widget _showQuiz() {
-    int quizNumber = _storageService.quizNumber;
-    String question = 'quizzes.quiz$quizNumber.question'.tr();
-    List<String> options = [];
+    final int quizNumber = _storageService.quizNumber;
+    final String question = 'quizzes.quiz$quizNumber.question'.tr();
+    final List<String> options = [];
     for (int i = 1; i <= _maxOptions; i++) {
-      String option = 'quizzes.quiz$quizNumber.option$i'.tr();
-      if (option.indexOf('quizzes') == -1) {
+      final String option = 'quizzes.quiz$quizNumber.option$i'.tr();
+      if (!option.contains('quizzes')) {
         options.add(option);
       }
     }
     _answer = 'quizzes.quiz$quizNumber.answer'.tr();
-    String tutorialType = 'quizzes.quiz$quizNumber.tutorial_type'.tr();
-    String tutorialSection = 'quizzes.quiz$quizNumber.tutorial_section'.tr();
+    final String tutorialType = 'quizzes.quiz$quizNumber.tutorial_type'.tr();
+    final String tutorialSection = 'quizzes.quiz$quizNumber.tutorial_section'.tr();
     String closeWindowTimerMessage = 'quiz.close_window_timer_message'.tr();
     closeWindowTimerMessage = closeWindowTimerMessage.replaceAll('{timerStart}', _timerStart.toString());
 
@@ -57,7 +57,7 @@ class _QuizState extends State<QuizView> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0)
         ),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [AppColors.ALLPORTS, AppColors.EMERALD]
@@ -70,7 +70,7 @@ class _QuizState extends State<QuizView> {
             child: Text(
               question,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.white
               )
@@ -99,7 +99,7 @@ class _QuizState extends State<QuizView> {
                       _closeWasPressed = true;
                       _onWillPop();
                     },
-                    child: Text('quiz.close'.tr(), style: TextStyle(color: AppColors.ALLPORTS))
+                    child: Text('quiz.close'.tr(), style: const TextStyle(color: AppColors.ALLPORTS))
                   )
                 ),
                 Align(
@@ -112,7 +112,7 @@ class _QuizState extends State<QuizView> {
                           width: 50.0,
                           child: Text(
                             'quiz.learn_link'.tr(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13.0,
                               color: Colors.white,
                               decoration: TextDecoration.underline,
@@ -125,7 +125,7 @@ class _QuizState extends State<QuizView> {
                           width: 50.0,
                           child: Text(
                             'quiz.more_link'.tr() + ' >>',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13.0,
                               color: Colors.white,
                               decoration: TextDecoration.underline,
@@ -148,7 +148,7 @@ class _QuizState extends State<QuizView> {
             child: Center(
               child: Text(
                 _timerStart > 0 ? closeWindowTimerMessage : 'quiz.close_window_message'.tr(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12.0,
                   color: Colors.white,
                   fontWeight: FontWeight.bold
@@ -164,12 +164,12 @@ class _QuizState extends State<QuizView> {
   ListView _showOptions(List<String> options, String answer) {
     return ListView.separated(
       shrinkWrap: true,
-      separatorBuilder: (context, index) => Divider(
+      separatorBuilder: (BuildContext context, int index) => const Divider(
         height: 0.0,
         color: AppColors.MYSTIC,
       ),
       itemCount: options.length,
-      itemBuilder: (context, index) => Container(
+      itemBuilder: (BuildContext context, int index) => Container(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
         decoration: BoxDecoration(
           color: _selectedIndex != null && _selectedIndex == index
@@ -185,13 +185,13 @@ class _QuizState extends State<QuizView> {
         child: ListTile(
           dense: true,
           title: ConstrainedBox(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               minHeight: 40.0
             ),
             child: Row(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(right: 10.0),
+                  padding: const EdgeInsets.only(right: 10.0),
                   child: Stack(
                     children: <Widget>[
                       Container(
@@ -250,7 +250,7 @@ class _QuizState extends State<QuizView> {
     );
   }
   
-  _onSelected(int index, String answer) {
+  void _onSelected(int index, String answer) {
     _wasSelected = true;
     if ((index + 1).toString() == answer) {
       _quizProvider.setQuizStatus(_quizProvider.quizStatus, _storageService.quizNumber);
@@ -268,26 +268,26 @@ class _QuizState extends State<QuizView> {
     return DateTime(now.year, now.month, now.day, now.hour, now.minute);    
   }
 
-  _checkIncorrectAnswer(int index, String answer) {
+  bool _checkIncorrectAnswer(int index, String answer) {
     return _selectedIndex != -1 && index == _selectedIndex && answer != (index + 1).toString();
   }
 
-  _checkCorrectAnswer(int index, String answer) {
+  bool _checkCorrectAnswer(int index, String answer) {
     return _selectedIndex != -1 && answer == (index + 1).toString();
   }
 
   Future<bool> _onWillPop() async {
-    if (_status == null) {
-      _status = EnumToString.convertToString(QuizStatus.closed);
-    }
-    Quiz quiz = Quiz(number: _storageService.quizNumber, status: _status, dateTime: _getCurrentDateTime());
+    _status ??= EnumToString.convertToString(QuizStatus.closed);
+    final Quiz quiz = Quiz(number: _storageService.quizNumber, status: _status, dateTime: _getCurrentDateTime());
 
     if (_storageService.showQuizTimer && !_wasSelected && _timerStart > 0) {
       if (_timer == null) {
         setState(() {
           _selectedIndex = int.parse(_answer) - 1;
         });
-        if (mounted) startTimer();
+        if (mounted) {
+          startTimer();
+        }
       }
       return false;
     } else {
@@ -302,7 +302,7 @@ class _QuizState extends State<QuizView> {
   }
   
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
+    const Duration oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) => setState(

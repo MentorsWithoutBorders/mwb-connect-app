@@ -21,10 +21,11 @@ class _AddAvailabilityState extends State<AddAvailability> {
   ProfileViewModel _profileProvider;
   Availability _availability;
   bool _shouldShowError = false;
-  final _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
-  final _defaultTimeFrom = '10am';
-  final _defaultTimeTo = '2pm';
+  final String _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
+  final String _defaultTimeFrom = '10am';
+  final String _defaultTimeTo = '2pm';
 
+  @override
   @protected
   void initState() {
     super.initState();
@@ -54,7 +55,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
     return Center(
       child: Text(
         widget.availability == null ? 'Add availability' : 'Edit availability',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -79,7 +80,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
  List<DropdownMenuItem<String>> _buildDayOfWeekDropdown() {
     List<DropdownMenuItem<String>> items = [];
-    for (String dayOfWeek in Utils.daysOfWeek) {
+    for (final String dayOfWeek in Utils.daysOfWeek) {
       items.add(DropdownMenuItem(
         value: dayOfWeek,
         child: Text(dayOfWeek),
@@ -101,13 +102,13 @@ class _AddAvailabilityState extends State<AddAvailability> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 4.0, right: 3.0),
+            const Padding(
+              padding: EdgeInsets.only(top: 4.0, right: 3.0),
               child: Text('From')
             ),
             _showTimeFromDropdown(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5.0, 4.0, 5.0, 0.0),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(5.0, 4.0, 5.0, 0.0),
               child: Text('to')
             ),
             _showTimeToDropdown()
@@ -119,8 +120,8 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
   Widget _showError() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+    return const Padding(
+      padding: EdgeInsets.only(bottom: 5.0),
       child: Text(
         '"From" time cannot be equal to or after "to" time',
         style: TextStyle(
@@ -178,9 +179,9 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }    
   
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
-    List<String> times = Utils.buildHoursList();
-    List<DropdownMenuItem<String>> items = [];
-    for (String time in times) {
+    final List<String> times = Utils.buildHoursList();
+    final List<DropdownMenuItem<String>> items = [];
+    for (final String time in times) {
       items.add(DropdownMenuItem(
         value: time,
         child: Text(time),
@@ -191,14 +192,14 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   Widget _showButtons() {
     return Padding(
-      padding: EdgeInsets.only(top: 15.0),
+      padding: const EdgeInsets.only(top: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+              child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
               Navigator.pop(context);
@@ -217,7 +218,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
             },
             child: Text(
               widget.availability == null ? 'Add' : 'Update',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white
               )
             )

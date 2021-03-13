@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -41,21 +42,21 @@ Future<void> main() async {
   );
 }
 
-_signInAnonymously() async {
+Future<void> _signInAnonymously() async {
   final BaseAuth auth = Auth();
-  auth.getCurrentUser().then((user) async {
+  auth.getCurrentUser().then((User user) async {
     if (user == null) {
       await auth.signInAnonymously();
     }
   });  
 }
 
-_initAppDirectory() async {
+Future<void> _initAppDirectory() async {
   DownloadService downloadService = locator<DownloadService>();
   await downloadService.initAppDirectory();  
 }
 
-_setDefaults() {
+void _setDefaults() {
   DefaultsService defaultsService = locator<DefaultsService>();
   defaultsService.setDefaults();    
 }
@@ -89,9 +90,9 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
 
   @override
   Widget build(BuildContext context) {
-    MixpanelAPI.getInstance(_mixpanelToken).then((mixpanel) {
+    MixpanelAPI.getInstance(_mixpanelToken).then((MixpanelAPI mixpanel) {
       _mixpanel = mixpanel;
-      Map<String, String> properties = {"p1": "property1"};
+      final Map<String, String> properties = {'p1': 'property1'};
       _mixpanel.track('Test Event', properties);      
     });
 

@@ -10,7 +10,7 @@ class Loader extends StatefulWidget {
 class _LoaderState extends State<Loader> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final loader = SpinKitFadingCircle(
+    final SpinKitFadingCircle loader = SpinKitFadingCircle(
       color: Colors.white,
       size: 50.0,
       controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1000)),

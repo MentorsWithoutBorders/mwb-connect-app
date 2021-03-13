@@ -8,30 +8,30 @@ import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class QuizzesViewModel extends ChangeNotifier {
-  Api _api = locator<Api>();
-  LocalStorageService _storageService = locator<LocalStorageService>();
+  final Api _api = locator<Api>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
 
   QuizStatus quizStatus;
 
   Future<QuizStatus> getQuizStatus() async {
-    DocumentSnapshot doc = await _api.getDocumentById(path: 'quizzes', isForUser: true, id: 'status');
-    QuizStatus data = QuizStatus(solved: '', roundsSolved: 0);
+    final DocumentSnapshot doc = await _api.getDocumentById(path: 'quizzes', isForUser: true, id: 'status');
+    final QuizStatus data = QuizStatus(solved: '', roundsSolved: 0);
     if (!doc.exists) {
       await _api.setDocument(path: 'quizzes', isForUser: true, data: data.toJson(), id: 'status');
     }
     return doc.exists ? QuizStatus.fromMap(doc.data(), doc.id) : data;
   }
 
-  Future updateQuizStatus(QuizStatus data) async {
+  Future<void> updateQuizStatus(QuizStatus data) async {
     await _api.updateDocument(path: 'quizzes', isForUser: true, data: data.toJson(), id: 'status');
     return ;
   }
 
-  void addQuiz({Quiz data}) async {
+  Future<void> addQuiz({Quiz data}) async {
     _api.addDocument(path: 'quizzes/status/submitted', isForUser: true, data: data.toJson());
   }  
 
-  getQuizNumber() async {
+  Future<void> getQuizNumber() async {
     quizStatus = await getQuizStatus();
     // Create solved list
     List<int> solvedList = [];
@@ -80,11 +80,11 @@ class QuizzesViewModel extends ChangeNotifier {
   }
 
   int _dateDifference(DateTime date) {
-    final dateNow = DateTime.now();
+    final DateTime dateNow = DateTime.now();
     return date != null ? dateNow.difference(date).inDays : 0;
   }
 
-  setQuizNumber() {
+  void setQuizNumber() {
     if (_storageService.quizNumber == _storageService.quizzesCount) {
       _storageService.quizNumber = 1;
     } else {
@@ -92,7 +92,7 @@ class QuizzesViewModel extends ChangeNotifier {
     }    
   }
   
-  setQuizStatus(QuizStatus quizStatus, int solvedNumber) {
+  void setQuizStatus(QuizStatus quizStatus, int solvedNumber) {
     List<int> solvedList = [];
     if (quizStatus.solved != null && quizStatus.solved != '') {
       solvedList = quizStatus.solved.split(', ').map(int.parse).toList();

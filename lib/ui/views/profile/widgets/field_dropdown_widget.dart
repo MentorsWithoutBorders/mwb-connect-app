@@ -20,7 +20,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
       height: 55,
       padding: const EdgeInsets.only(bottom: 15),
       child: Dropdown(
-        key: Key(AppKeys.fieldDropdown),
+        key: const Key(AppKeys.fieldDropdown),
         dropdownMenuItemList: _buildFieldDropdown(),
         onTapped: _unfocus,
         onChanged: _changeField,
@@ -30,8 +30,8 @@ class _FieldDropdownState extends State<FieldDropdown> {
   }
 
   List<DropdownMenuItem<Field>> _buildFieldDropdown() {
-    List<DropdownMenuItem<Field>> items = [];
-    for (Field field in _profileProvider.profile.fields) {
+    final List<DropdownMenuItem<Field>> items = [];
+    for (final Field field in _profileProvider.profile.fields) {
       items.add(DropdownMenuItem(
         value: field,
         child: Text(field.name),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class Utils {
   static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');  
 
@@ -14,7 +15,7 @@ class Utils {
 
   static int convertTime12to24(String time12h) {
     int hours = int.parse(time12h.replaceAll(RegExp(r'[^0-9]'),''));
-    String modifier = time12h.replaceAll(hours.toString(), '');
+    final String modifier = time12h.replaceAll(hours.toString(), '');
     if (hours == 12) {
       hours = 0;
     }
@@ -25,7 +26,7 @@ class Utils {
   }
 
   static List<String> buildHoursList() {
-    List<String> hoursList = [];
+    final List<String> hoursList = [];
     hoursList.add('12am');
     for (int i = 1; i <= 11; i++) {
       hoursList.add(i.toString() + 'am');

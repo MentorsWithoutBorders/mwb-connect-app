@@ -29,14 +29,14 @@ class LoginSignupView extends StatefulWidget {
 }
 
 class _LoginSignupViewState extends State<LoginSignupView> {
-  LocalStorageService _storageService = locator<LocalStorageService>();
-  UserService _userService = locator<UserService>();  
-  GoalsService _goalsService = locator<GoalsService>();  
-  AnalyticsService _analyticsService = locator<AnalyticsService>();  
-  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
+  final UserService _userService = locator<UserService>();  
+  final GoalsService _goalsService = locator<GoalsService>();  
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();  
+  final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
   final ScrollController _scrollController = ScrollController();
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _name;
   String _email;
   String _password;
@@ -45,13 +45,14 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   bool _isLoading;
   bool _primaryButtonPressed = false;  
 
+  @override
   @protected
   void initState() {
     super.initState();
     _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          Future.delayed(const Duration(milliseconds: 100), () {
+          Future<void>.delayed(const Duration(milliseconds: 100), () {
             _scrollController.animateTo(
               _scrollController.position.maxScrollExtent,
               curve: Curves.easeOut,
@@ -136,7 +137,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       child: Center(
         child: Text(
           _isLoginForm ? 'login.title'.tr() : 'sign_up.title'.tr(),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 22.0,
             color: Colors.white,
             fontWeight: FontWeight.bold
@@ -152,7 +153,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       child: TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.text,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 15.0
         ),
@@ -160,7 +161,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),          
           prefixIcon: Container(
             padding: const EdgeInsets.only(left: 10.0),
-            child: Icon(
+            child: const Icon(
               Icons.person,
               color: Colors.white,
               size: 18.0
@@ -168,35 +169,35 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: const TextStyle(color: Colors.white),
           hintText: 'sign_up.full_name'.tr(),
-          errorStyle: TextStyle(
+          errorStyle: const TextStyle(
             color: Colors.orange
           )
         ), 
-        validator: (value) {
+        validator: (String value) {
           if (_primaryButtonPressed && value.isEmpty) {
             setState(() {
               _isLoading = false;
@@ -206,18 +207,18 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             return null;
           }
         },
-        onChanged: (value) {
+        onChanged: (String value) {
           setState(() {
             _primaryButtonPressed = false;
             _errorMessage = '';
           });          
-          Future.delayed(const Duration(milliseconds: 20), () {        
+          Future<void>.delayed(const Duration(milliseconds: 20), () {        
             if (value.isNotEmpty) {
               _formKey.currentState.validate();
             }
           });
         },             
-        onSaved: (value) => _name = value.trim(),
+        onSaved: (String value) => _name = value.trim(),
       ),
     );
   }  
@@ -226,10 +227,10 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: TextFormField(
-        key: Key(AppKeys.loginEmailField),
+        key: const Key(AppKeys.loginEmailField),
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 15.0
         ),
@@ -237,7 +238,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),          
           prefixIcon: Container(
             padding: const EdgeInsets.only(left: 10.0),
-            child: Icon(
+            child: const Icon(
               Icons.mail,
               color: Colors.white,
               size: 18.0
@@ -245,35 +246,35 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: const TextStyle(color: Colors.white),
           hintText: 'login_sign_up.email'.tr(),
-          errorStyle: TextStyle(
+          errorStyle: const TextStyle(
             color: Colors.orange
           )
         ), 
-        validator: (value) {
+        validator: (String value) {
           if (_primaryButtonPressed && value.isEmpty) {
             setState(() {
               _isLoading = false;
@@ -283,18 +284,18 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             return null;
           }
         },
-        onChanged: (value) {
+        onChanged: (String value) {
           setState(() {
             _primaryButtonPressed = false;
             _errorMessage = '';
           });          
-          Future.delayed(const Duration(milliseconds: 20), () {        
+          Future<void>.delayed(const Duration(milliseconds: 20), () {        
             if (value.isNotEmpty) {
               _formKey.currentState.validate();
             }
           });
         },             
-        onSaved: (value) => _email = value.trim(),
+        onSaved: (String value) => _email = value.trim(),
       ),
     );
   }
@@ -303,18 +304,18 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: TextFormField(
-        key: Key(AppKeys.loginPasswordField),
+        key: const Key(AppKeys.loginPasswordField),
         maxLines: 1,
         obscureText: true,
         autofocus: false,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 15.0
         ),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0), 
-          prefixIcon: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(left: 10.0),
             child: Icon(
               Icons.lock,
               color: Colors.white,
@@ -323,35 +324,35 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: const TextStyle(color: Colors.white),
           hintText: 'login_sign_up.password'.tr(),
-          errorStyle: TextStyle(
+          errorStyle: const TextStyle(
             color: Colors.orange
           )
         ),
-        validator: (value) {
+        validator: (String value) {
           if (_primaryButtonPressed && value.isEmpty) {
             setState(() {
               _isLoading = false;
@@ -361,30 +362,30 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             return null;
           }          
         },
-        onChanged: (value) {
+        onChanged: (String value) {
           setState(() {
             _primaryButtonPressed = false;
             _errorMessage = '';
           });
-          Future.delayed(const Duration(milliseconds: 20), () {
+          Future<void>.delayed(const Duration(milliseconds: 20), () {
             if (value.isNotEmpty) {              
               _formKey.currentState.validate();
             }
           });
         },          
-        onSaved: (value) => _password = value.trim(),
+        onSaved: (String value) => _password = value.trim(),
       ),
     );
   }
 
   Widget _showErrorMessage() {
-    if (_errorMessage.length > 0 && _errorMessage != null) {
+    if (_errorMessage.isNotEmpty && _errorMessage != null) {
       return Padding(
         padding: const EdgeInsets.only(left: 20.0, top: 20.0),
         child: Center(
           child: Text(
             _errorMessage,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 13.0,
               color: AppColors.SOLITUDE,
               height: 1.0,
@@ -406,7 +407,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       child: SizedBox(
         height: 42.0,
         child: ElevatedButton(
-          key: Key(AppKeys.loginSignupPrimaryBtn),
+          key: const Key(AppKeys.loginSignupPrimaryBtn),
           style: ElevatedButton.styleFrom(
             elevation: 2.0,
             primary: Colors.white,
@@ -415,7 +416,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             )
           ),  
           child: Text(_isLoginForm ? 'login.action'.tr() : 'sign_up.action'.tr(),
-              style: TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)),
+              style: const TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)),
           onPressed: () async {
             setState(() {
               _primaryButtonPressed = true;
@@ -435,7 +436,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           margin: const EdgeInsets.only(top: 15.0),
           child: Text(
             _isLoginForm ? 'login.sign_up'.tr() : 'sign_up.login'.tr(),
-            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: Colors. white)
+            style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: Colors. white)
           )
         )
       ),
@@ -451,7 +452,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           margin: const EdgeInsets.only(top: 10.0),
           child: Text(
             'login.forgot_password'.tr(),
-            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: Colors. white)
+            style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: Colors. white)
           )
         )
       ),
@@ -459,12 +460,12 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     );
   }
 
-  _goToForgotPassword() {
+  void _goToForgotPassword() {
     Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPasswordView(auth: widget.auth)));
   }
 
   // Perform login or sign_up
-  Future _validateAndSubmit() async {
+  Future<void> _validateAndSubmit() async {
     setState(() {
       _errorMessage = '';
       _isLoading = true;
@@ -478,7 +479,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           print('Signed in: $userId');
         } else {
           await _signInAnonymously();
-          ApprovedUser approvedUser = await _userService.checkApprovedUser(_email);
+          final ApprovedUser approvedUser = await _userService.checkApprovedUser(_email);
           if (approvedUser != null) {
             userId = await widget.auth.signUp(_name, _email, _password);
             //widget.auth.sendEmailVerification();
@@ -511,7 +512,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
 
   // Check if form is valid before performing login or sign_up
   bool _validateAndSave() {
-    final form = _formKey.currentState;
+    final FormState form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -519,19 +520,19 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return false;
   }
 
-  Future _signInAnonymously() async {
+  Future<void> _signInAnonymously() async {
     await widget.auth.signInAnonymously();
   }  
 
-  Future _setUserStorage({String userId, String name, String email}) async {
-    User user = User(id: userId, name: name, email: email);
+  Future<void> _setUserStorage({String userId, String name, String email}) async {
+    final User user = User(id: userId, name: name, email: email);
     await _userService.setUserStorage(user: user);
   }
 
-  void _addUser(ApprovedUser approvedUser) async {
-    DateTime now = DateTime.now();
-    User defaultUser = await _userService.getDefaultUserDetails();
-    User user = User(id: approvedUser.id, name: approvedUser.name, email: approvedUser.email, isMentor: approvedUser.isMentor, 
+  Future<void> _addUser(ApprovedUser approvedUser) async {
+    final DateTime now = DateTime.now();
+    final User defaultUser = await _userService.getDefaultUserDetails();
+    final User user = User(id: approvedUser.id, name: approvedUser.name, email: approvedUser.email, isMentor: approvedUser.isMentor, 
         organization: approvedUser.organization, field: approvedUser.field, subfields: approvedUser.subfields, 
         availabilities: defaultUser.availabilities, registeredOn: now);
     if (approvedUser.isMentor) {
@@ -545,16 +546,16 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   }
 
   void _addGoal(String goalText) {
-    DateTime now = DateTime.now();
-    DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);    
-    Goal goal = Goal(text: goalText, index: 0, dateTime: dateTime);
+    final DateTime now = DateTime.now();
+    final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);    
+    final Goal goal = Goal(text: goalText, index: 0, dateTime: dateTime);
     _goalsService.addGoal(goal);
   }
 
   void _identifyUser() {
-    String userId = _storageService.userId;
-    String name = _storageService.userName;
-    String email = _storageService.userEmail;
+    final String userId = _storageService.userId;
+    final String name = _storageService.userName;
+    final String email = _storageService.userEmail;
     _analyticsService.identifyUser(userId, name, email);
   }  
 

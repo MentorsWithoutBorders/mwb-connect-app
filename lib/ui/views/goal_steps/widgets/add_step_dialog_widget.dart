@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 
 class AddStepDialog extends StatefulWidget {
-  AddStepDialog({Key key, this.steps})
+  const AddStepDialog({Key key, this.steps})
     : super(key: key);  
 
   final List<StepModel> steps;
@@ -21,7 +21,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
   StepsViewModel _stepProvider;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
   @override
@@ -34,7 +34,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
     _getFormHeight();
   }
   
-  void _getFormHeight() async {
+  Future<void> _getFormHeight() async {
     RenderBox box = _formKey.currentContext.findRenderObject();
     _commonProvider.setDialogInputHeight(box.size.height);
   }  
@@ -57,7 +57,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
     return Center(
       child: Text(
         'steps.add_new_step'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -77,34 +77,34 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
           maxLines: null,
           decoration: InputDecoration(
             hintText: 'steps.add_step_placeholder'.tr(),
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: AppColors.SILVER
             ),
-            enabledBorder: UnderlineInputBorder(      
+            enabledBorder: const UnderlineInputBorder(      
               borderSide: BorderSide(color: AppColors.ALLPORTS),   
             ),  
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.ALLPORTS),
             ), 
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.orange
             )
           ),
-          validator: (value) {
+          validator: (String value) {
             if (value.isEmpty) {
               return 'steps.add_step_error'.tr();
             } 
             return null;
           },
-          onChanged: (value) {
-            Future.delayed(const Duration(milliseconds: 10), () {        
+          onChanged: (String value) {
+            Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
                 WidgetsBinding.instance.addPostFrameCallback(_afterLayout);             
                 _formKey.currentState.validate();
               }
             });
           },
-          onSaved: (value) => _stepText = value
+          onSaved: (String value) => _stepText = value
         )
       )
     ); 
@@ -112,14 +112,14 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
 
   Widget _showButtons() {
     return Padding(
-      padding: EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+              child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
               Navigator.pop(context);
@@ -140,18 +140,18 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
                 Navigator.pop(context);
               } 
             },
-            child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white))
+            child: Text('steps.add_step'.tr(), style: const TextStyle(color: Colors.white))
           )
         ]
       )
     ); 
   }
   
-  void _addStep() async {
-    int index = _stepProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
-    DateTime now = DateTime.now();
-    DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
-    StepModel step = StepModel(text: _stepText, level: 0, index: index, dateTime: dateTime);
+  void _addStep() {
+    final int index = _stepProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
+    final DateTime now = DateTime.now();
+    final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
+    final StepModel step = StepModel(text: _stepText, level: 0, index: index, dateTime: dateTime);
     _stepProvider.setAddedStepIndex(widget.steps, step);
     _stepProvider.addStep(goalId: _goalProvider.selectedGoal.id, data: step);
   }

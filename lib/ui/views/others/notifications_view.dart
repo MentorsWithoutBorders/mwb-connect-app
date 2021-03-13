@@ -20,7 +20,7 @@ class NotificationsView extends StatefulWidget {
 }
 
 class _NotificationsViewState extends State<NotificationsView> with SingleTickerProviderStateMixin {
-  LocalStorageService _storageService = locator<LocalStorageService>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
   NotificationsViewModel _notificationsViewModel;
   AnimationController _controller;
   Animation<Offset> _offset;  
@@ -40,7 +40,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
 
-    _offset = Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)
+    _offset = Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.ease));    
   }
 
@@ -69,7 +69,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                     children: <Widget>[
                       Text(
                         'notifications.label'.tr(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: AppColors.ALLPORTS
@@ -81,7 +81,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                           duration: Duration(milliseconds: _animationDuration),
                           child: Text(
                             _time,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16.0,
                               height: 1.5
                             ),
@@ -103,7 +103,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
             // Android
             if (Platform.isAndroid) Switch(
               value: _storageService.notificationsEnabled,
-              onChanged: (value){
+              onChanged: (bool value){
                 _updateNotificationsEnabled(value);
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -132,8 +132,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     return _time.split(':');   
   }
 
-  _showTimePickerAndroid() async {
-    TimeOfDay picked = await showTimePicker(
+  Future<void> _showTimePickerAndroid() async {
+    final TimeOfDay picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: int.parse(_initialTime()[0]), minute: int.parse(_initialTime()[1])),
       builder: (BuildContext context, Widget child) {
@@ -154,16 +154,16 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     }    
   }
 
-  _setPickedTimeAndroid(TimeOfDay time) {
+  void _setPickedTimeAndroid(TimeOfDay time) {
     _pickedTime = time.toString().replaceAll('TimeOfDay(', '');
     _pickedTime = _pickedTime.replaceAll(')', '');    
   }
 
-  _showTimePickerIOS() {
+  void _showTimePickerIOS() {
     _controller.forward();    
   }
 
-  _updateNotificationsEnabled(bool value) {
+  void _updateNotificationsEnabled(bool value) {
     if (value == false && Platform.isIOS) {
       _controller.reverse();
     }
@@ -171,16 +171,16 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
       _isEnabled = value;
     });    
     _storageService.notificationsEnabled = value;
-    NotificationSettings notificationSettings = NotificationSettings(enabled: value, time: _storageService.notificationsTime);
+    final NotificationSettings notificationSettings = NotificationSettings(enabled: value, time: _storageService.notificationsTime);
     _notificationsViewModel.updateNotificationSettings(notificationSettings);
   }
 
-  _updateNotificationsTime(String time) {
+  void _updateNotificationsTime(String time) {
     setState(() {
       _time = time;
     });
     _storageService.notificationsTime = time;
-    NotificationSettings notificationSettings = NotificationSettings(enabled: _storageService.notificationsEnabled, time: time);
+    final NotificationSettings notificationSettings = NotificationSettings(enabled: _storageService.notificationsEnabled, time: time);
     _notificationsViewModel.updateNotificationSettings(notificationSettings);
   }  
 
@@ -209,7 +209,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
                     child: Text(
                       'common.cancel'.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16.0,
                         color: Colors.blue
                       ), 
@@ -223,7 +223,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                   child: Center(
                     child: Text(
                       'notifications.time'.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16.0
                       ), 
                     ),
@@ -234,7 +234,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                     child: Text(
                       'notifications.done'.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16.0,
                         color: Colors.blue
                       ), 
@@ -256,7 +256,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
             child: CupertinoTimerPicker(
               mode: CupertinoTimerPickerMode.hm,
               initialTimerDuration: Duration(hours: int.parse(_initialTime()[0]), minutes: int.parse(_initialTime()[1])),
-              onTimerDurationChanged: (picked) {
+              onTimerDurationChanged: (Duration picked) {
                 _setPickedTimeIOS(picked);
               },
             ),
@@ -266,8 +266,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     );
   }
 
-  _setPickedTimeIOS(Duration picked) {
-    List<String> timeSplit = picked.toString().split(':');
+  void _setPickedTimeIOS(Duration picked) {
+    final List<String> timeSplit = picked.toString().split(':');
     _pickedTime = timeSplit[0].padLeft(2, '0') + ':' + timeSplit[1].padLeft(2, '0');
   }
 
@@ -285,7 +285,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(null),
             )
           ),

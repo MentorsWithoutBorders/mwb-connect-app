@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 
 class GoalCard extends StatefulWidget {
-  GoalCard({Key key, @required this.goal}): 
+  const GoalCard({Key key, @required this.goal}): 
     super(key: key);
 
   final Goal goal;
@@ -17,7 +17,7 @@ class GoalCard extends StatefulWidget {
 class _GoalCardState extends State<GoalCard> {
   GoalsViewModel _goalProvider;  
 
-  Widget _showGoalCard(context) {
+  Widget _showGoalCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
       child: Card(
@@ -28,7 +28,7 @@ class _GoalCardState extends State<GoalCard> {
             padding: const EdgeInsets.all(16),
             child: Text(
               widget.goal.text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 18
               ),
@@ -50,7 +50,7 @@ class _GoalCardState extends State<GoalCard> {
         _goalProvider.setIsTutorialPreviewsAnimationCompleted(false);
         Navigator.push(context, MaterialPageRoute(builder: (_) => GoalStepsView()));
       },
-      child: _showGoalCard(context)
+      child: _showGoalCard()
     );
   }
 }

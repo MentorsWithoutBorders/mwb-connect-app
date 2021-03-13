@@ -19,22 +19,23 @@ class SupportView extends StatefulWidget {
 }
 
 class _SupportViewState extends State<SupportView> {
-  LocalStorageService _storageService = locator<LocalStorageService>();
-  PageController _controller = PageController(viewportFraction: 1, keepPage: true);
-  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
+  final PageController _controller = PageController(viewportFraction: 1, keepPage: true);
+  final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
   String _supportText;
   bool _sendButtonPressed = false;
 
+  @override
   @protected
   void initState() {
     super.initState();
     _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          Future.delayed(const Duration(milliseconds: 100), () {
+          Future<void>.delayed(const Duration(milliseconds: 100), () {
             _scrollController.animateTo(
               _scrollController.position.maxScrollExtent,
               curve: Curves.easeOut,
@@ -58,7 +59,7 @@ class _SupportViewState extends State<SupportView> {
       height: double.infinity,
       child: PageView(
         controller: _controller,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           _showForm(),
           _showConfirmation()
@@ -91,7 +92,7 @@ class _SupportViewState extends State<SupportView> {
         children: <Widget>[
           Text(
             'support.label'.tr(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.white
             ),
@@ -100,7 +101,7 @@ class _SupportViewState extends State<SupportView> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Text(
               'support.sub_label'.tr(),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.white
               ),
@@ -119,7 +120,7 @@ class _SupportViewState extends State<SupportView> {
         elevation: 3,
         child: TextFormField(
           maxLines: null,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 15.0
           ),
           decoration: InputDecoration(
@@ -129,27 +130,27 @@ class _SupportViewState extends State<SupportView> {
             enabledBorder: InputBorder.none,
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
-            hintStyle: TextStyle(color: AppColors.SILVER),
+            hintStyle: const TextStyle(color: AppColors.SILVER),
             hintText: 'support.message_placeholder'.tr(),
           ), 
-          validator: (value) {
+          validator: (String value) {
             if (_sendButtonPressed && value.isEmpty) {
               return 'support.message_error'.tr();
             } else {
               return null;
             }
           },
-          onChanged: (value) {
+          onChanged: (String value) {
             setState(() {
               _sendButtonPressed = false;
             });          
-            Future.delayed(const Duration(milliseconds: 20), () {        
+            Future<void>.delayed(const Duration(milliseconds: 20), () {        
               if (value.isNotEmpty) {
                 _formKey.currentState.validate();
               }
             });
           },             
-          onSaved: (value) => _supportText = value.trim(),
+          onSaved: (String value) => _supportText = value.trim(),
         ),
       ),
     );
@@ -170,7 +171,7 @@ class _SupportViewState extends State<SupportView> {
           ), 
           child: Text(
             'support.send_request'.tr(),
-            style: TextStyle(fontSize: 16.0, color: Colors.white)
+            style: const TextStyle(fontSize: 16.0, color: Colors.white)
           ),
           onPressed: () async {
             setState(() {
@@ -183,11 +184,11 @@ class _SupportViewState extends State<SupportView> {
     );
   }
   
-  void _validateAndSubmit() async {
+  Future<void> _validateAndSubmit() async {
     if (_validateAndSave()) {
       try {
         // Just a delay effect for the send request
-        await Future.delayed(const Duration(milliseconds: 300));
+        await Future<void>.delayed(const Duration(milliseconds: 300));
         _sendRequest(_supportText);
       } catch (e) {
         print('Error: $e');
@@ -197,7 +198,7 @@ class _SupportViewState extends State<SupportView> {
 
   // Check if form is valid
   bool _validateAndSave() {
-    final form = _formKey.currentState;
+    final FormState form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -206,8 +207,8 @@ class _SupportViewState extends State<SupportView> {
   }
   
   Future<void> _sendRequest(String text) async {
-    SupportRequestViewModel requestViewModel = locator<SupportRequestViewModel>();
-    SupportRequest request = SupportRequest(
+    final SupportRequestViewModel requestViewModel = locator<SupportRequestViewModel>();
+    final SupportRequest request = SupportRequest(
       text: text,
       userId: _storageService.userId,
       userEmail: _storageService.userEmail,
@@ -220,7 +221,7 @@ class _SupportViewState extends State<SupportView> {
 
  void _goToConfirmation() {
     _controller.animateToPage(_controller.page.toInt() + 1,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.ease
     );
   }   
@@ -230,7 +231,7 @@ class _SupportViewState extends State<SupportView> {
       padding: const EdgeInsets.fromLTRB(25.0, 120.0, 25.0, 0.0),
       child: Text(
         'support.confirmation'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14.0,
           color: Colors.white
         ),
@@ -259,7 +260,7 @@ class _SupportViewState extends State<SupportView> {
             backgroundColor: Colors.transparent,          
             elevation: 0.0,
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(null),
             )
           ),

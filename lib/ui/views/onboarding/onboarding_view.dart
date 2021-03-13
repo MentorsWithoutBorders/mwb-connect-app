@@ -26,14 +26,14 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
-  AnalyticsService _analyticsService = locator<AnalyticsService>();
-  PageController _controller = PageController(viewportFraction: 0.85, keepPage: true);  
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final PageController _controller = PageController(viewportFraction: 0.85, keepPage: true);  
   Directory _appDocsDir;  
   List<String> _sections = [];
   bool _isLoaded = false;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     _sendScreenNameAnalytics();
     _setAppDirectory();
@@ -50,7 +50,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     _analyticsService.sendScreenName('Onboarding');   
   }
 
-  void _setAppDirectory() async {
+  Future<void> _setAppDirectory() async {
     _appDocsDir = await getApplicationDocumentsDirectory();
     setState(() {
       _isLoaded = true;
@@ -62,7 +62,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   Widget _showOnboarding() {
-    final sliderHeight = MediaQuery.of(context).size.height - 200;
+    final double sliderHeight = MediaQuery.of(context).size.height - 200;
 
     return Container(
       height: double.infinity,
@@ -78,7 +78,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               controller: _controller,
               slides: List.generate(
                 _sections.length,
-                (itemIndex) => _buildCarouselItem(_sections[itemIndex])
+                (int itemIndex) => _buildCarouselItem(_sections[itemIndex])
               ),
             )
           ),
@@ -90,7 +90,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 SmoothPageIndicator(
                   controller: _controller,
                   count: _sections.length,
-                  effect: ScrollingDotsEffect(
+                  effect: const ScrollingDotsEffect(
                     spacing: 8.0,
                     dotWidth: 7.0,
                     dotHeight: 7.0,
@@ -127,12 +127,12 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _showLoginButton() {
     return TextButton(
-      key: Key(AppKeys.goToLoginBtn),
+      key: const Key(AppKeys.goToLoginBtn),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
-          side: BorderSide(color: Colors.white)
+          side: const BorderSide(color: Colors.white)
         )
       ),       
       onPressed: () {
@@ -140,7 +140,7 @@ class _OnboardingViewState extends State<OnboardingView> {
       },
       child: Text(
         'onboarding.login'.tr(), 
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'LatoRegular',
           color: Colors.white,
           fontSize: 15
@@ -151,7 +151,7 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _showSignupButton() {
     return ElevatedButton(
-      key: Key(AppKeys.goToSignupBtn),
+      key: const Key(AppKeys.goToSignupBtn),
       style: ElevatedButton.styleFrom(
         primary: Colors.white,
         shape: RoundedRectangleBorder(
@@ -164,7 +164,7 @@ class _OnboardingViewState extends State<OnboardingView> {
       },
       child: Text(
         'onboarding.get_started'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'LatoRegular',
           color: AppColors.ALLPORTS,
           fontSize: 15
@@ -175,9 +175,9 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _buildCarouselItem(String section) {
     String itemTitle = 'onboarding.$section.title'.tr();
-    String itemText = 'onboarding.$section.text'.tr();
-    List<String> itemTitleList = itemTitle.split(' ');
-    String itemTitleLastWord = itemTitleList[itemTitleList.length - 1];
+    final String itemText = 'onboarding.$section.text'.tr();
+    final List<String> itemTitleList = itemTitle.split(' ');
+    final String itemTitleLastWord = itemTitleList[itemTitleList.length - 1];
     itemTitle = itemTitle.replaceAll(itemTitleLastWord, '');
 
     return Container(
@@ -186,7 +186,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         alignment: Alignment.topCenter,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
@@ -196,7 +196,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: Divider(
+                  child: const Divider(
                     color: AppColors.BOTTICELLI
                   ),
                 ),
@@ -204,7 +204,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   padding: const EdgeInsets.only(top: 15.0),
                   child: RichText(
                     text: TextSpan(
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'RopaSans',
                         color: AppColors.ALLPORTS,
                         fontSize: 24,
@@ -216,7 +216,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         ),
                         TextSpan(
                           text: itemTitleLastWord.toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.MONZA
                           )
                         )
@@ -228,7 +228,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   padding: const EdgeInsets.only(top: 15.0),          
                   child: Text(
                     itemText,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'LatoRegular',
                       color: AppColors.ALLPORTS,
                       fontSize: 14,
@@ -251,7 +251,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   Widget _showImage(String section) {
-    File fileDocsDir = _fileFromDocsDir('images/' + section + '.png');
+    final File fileDocsDir = _fileFromDocsDir('images/' + section + '.png');
     if (fileDocsDir.existsSync()) {
       return Image.file(fileDocsDir);
     } else {
@@ -260,7 +260,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   File _fileFromDocsDir(String filename) {
-    String pathName = p.join(_appDocsDir.path, filename);
+    final String pathName = p.join(_appDocsDir.path, filename);
     return File(pathName);
   }
 
@@ -280,7 +280,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   void _resetController() {
     _controller.animateToPage(
         0,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.linear,
     );
   }

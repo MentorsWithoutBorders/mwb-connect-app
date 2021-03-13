@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 
 class UpdateGoalDialog extends StatefulWidget {
-  UpdateGoalDialog({Key key})
+  const UpdateGoalDialog({Key key})
     : super(key: key);  
 
   @override
@@ -17,7 +17,7 @@ class UpdateGoalDialog extends StatefulWidget {
 class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
   GoalsViewModel _goalProvider;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _goalText;
   
   @override
@@ -30,7 +30,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
     _getFormHeight();
   }
   
-  void _getFormHeight() async {
+  void _getFormHeight() {
     RenderBox box = _formKey.currentContext.findRenderObject();
     _commonProvider.setDialogInputHeight(box.size.height);
   }  
@@ -53,7 +53,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
     return Center(
       child: Text(
         'goal_dialog.update_goal'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
         )
@@ -73,35 +73,35 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
           maxLines: null,
           decoration: InputDecoration(
             hintText: 'goal_dialog.update_goal_placeholder'.tr(),
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: AppColors.SILVER
             ),
-            enabledBorder: UnderlineInputBorder(      
+            enabledBorder: const UnderlineInputBorder(      
               borderSide: BorderSide(color: AppColors.ALLPORTS),   
             ),  
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.ALLPORTS),
             ), 
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.orange
             )
           ),
           initialValue: _goalProvider.selectedGoal.text,
-          validator: (value) {
+          validator: (String value) {
             if (value.isEmpty) {
               return 'goal_dialog.update_goal_error'.tr();
             }
             return null;
           },
-          onChanged: (value) {
-            Future.delayed(const Duration(milliseconds: 10), () {        
+          onChanged: (String value) {
+            Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {      
                 WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
                 _formKey.currentState.validate();
               }
             });
           },
-          onSaved: (value) => _goalText = value
+          onSaved: (String value) => _goalText = value
         )
       )
     ); 
@@ -109,14 +109,14 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
 
   Widget _showButtons() {
     return Padding(
-      padding: EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-              child: Text('common.cancel'.tr(), style: TextStyle(color: Colors.grey))
+              child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
               Navigator.pop(context);
@@ -137,7 +137,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
                 Navigator.pop(context);
               }                    
             },
-            child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white))
+            child: Text('goal_dialog.update_goal'.tr(), style: const TextStyle(color: Colors.white))
           )
         ]
       )
@@ -145,9 +145,9 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
   }
   
   void _updateGoal() {
-    Goal goal = _goalProvider.selectedGoal;
+    final Goal goal = _goalProvider.selectedGoal;
     goal.text = _goalText;
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     goal.dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
     _goalProvider.updateGoal(goal, _goalProvider.selectedGoal.id);
   }

@@ -24,10 +24,10 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  LocalStorageService _storageService = locator<LocalStorageService>();
-  AnalyticsService _analyticsService = locator<AnalyticsService>();  
+  final LocalStorageService _storageService = locator<LocalStorageService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();  
 
-  _signOut() async {
+  Future<void> _signOut() async {
     try {
       await widget.auth.signOut();
       _resetAll();
@@ -47,14 +47,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    bool isMentor = _storageService.isMentor;
+    final bool isMentor = _storageService.isMentor;
     
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.CINNABAR
             ),
             child: Column(
@@ -64,7 +64,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 15.0),
                   child: Image.asset('assets/images/logo.png')
                 ),
-                Text(
+                const Text(
                   'MWB Connect',
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
@@ -77,8 +77,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ),
           ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 5.0),
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
               child: IconTheme(
                 data: IconThemeData(
                   color: AppColors.SILVER
@@ -94,8 +94,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 5.0),
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
               child: IconTheme(
                 data: IconThemeData(
                   color: AppColors.SILVER
@@ -111,8 +111,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 5.0),
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
               child: IconTheme(
                 data: IconThemeData(
                   color: AppColors.SILVER
@@ -128,8 +128,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 5.0),
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
               child: IconTheme(
                 data: IconThemeData(
                   color: AppColors.SILVER
@@ -145,8 +145,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 5.0),
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
               child: IconTheme(
                 data: IconThemeData(
                   color: AppColors.SILVER
@@ -162,8 +162,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 5.0),
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
               child: IconTheme(
                 data: IconThemeData(
                   color: AppColors.SILVER

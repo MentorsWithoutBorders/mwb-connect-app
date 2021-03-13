@@ -46,7 +46,7 @@ class LocalStorageService {
   set notificationsTime(String value) => _saveToDisk('notificationsTime', value);    
 
   dynamic _getFromDisk(String key) {
-    var value = _preferences.get(key);
+    Object value = _preferences.get(key);
     if (value is String && value != null && value.indexOf('{') == 0) {
       value = json.decode(value);
     }

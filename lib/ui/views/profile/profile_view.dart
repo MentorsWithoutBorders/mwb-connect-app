@@ -93,8 +93,8 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<Profile> _getProfile() async {
-    User user = await _profileProvider.getUserDetails();
-    List<Field> fields = await _profileProvider.getFields();
+    final User user = await _profileProvider.getUserDetails();
+    final List<Field> fields = await _profileProvider.getFields();
     return Profile(user: user, fields: fields);
   }  
 

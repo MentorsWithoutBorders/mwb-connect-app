@@ -24,38 +24,38 @@ class TutorialView extends StatefulWidget {
 }
 
 class _TutorialViewState extends State<TutorialView> {
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
   final double _pageIndicatorHeight = 30.0;
   Directory _appDocsDir;  
-  Map<String, bool> _imageExists = Map();
+  final Map<String, bool> _imageExists = {};
   List<String> _sections = [];
   bool _isLoaded = false;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     _setSections();
     _setImageExists();
   }
 
-  _setSections() {
-    LocalStorageService _storageService = locator<LocalStorageService>();
-    Map<String, List<String>> tutorials = Map();
-    for (var entry in _storageService.tutorials.entries) {
+  void _setSections() {
+    final LocalStorageService _storageService = locator<LocalStorageService>();
+    final Map<String, List<String>> tutorials = {};
+    for (final MapEntry<String, dynamic> entry in _storageService.tutorials.entries) {
       tutorials[entry.key] = entry.value.cast<String>();
     }    
     setState(() {
       _sections = tutorials[widget.type];
     });
-    _sections.forEach((section) {
+    _sections.forEach((String section) {
       _imageExists.putIfAbsent(section, () => true);
     });
   }
 
-  _setImageExists() async {
+  Future<void> _setImageExists() async {
     await _setAppDirectory();
-    await Future.forEach(_sections, (section) async {
-      File fileDocsDir = _fileFromDocsDir('images/' + _imageName(section) + '.png');
+    await Future.forEach(_sections, (String section) async {
+      final File fileDocsDir = _fileFromDocsDir('images/' + _imageName(section) + '.png');
       await rootBundle.load('assets/images/' + _imageName(section) + '.png').catchError((_) {
         if (!fileDocsDir.existsSync()) {
           _imageExists[_imageName(section)] = false;
@@ -73,17 +73,17 @@ class _TutorialViewState extends State<TutorialView> {
     _controller.dispose();
   }  
 
-  _setAppDirectory() async {
+  Future<void> _setAppDirectory() async {
     _appDocsDir = await getApplicationDocumentsDirectory();
   }  
   
   Widget _showTutorial() {
-    int initialPage = widget.section != null ? _sections.indexOf(widget.section) : 0;
-    PageController controller = PageController(initialPage: initialPage, viewportFraction: 1, keepPage: true);
+    final int initialPage = widget.section != null ? _sections.indexOf(widget.section) : 0;
+    final PageController controller = PageController(initialPage: initialPage, viewportFraction: 1, keepPage: true);
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 90.0, 15.0, 50.0),    
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
@@ -106,7 +106,7 @@ class _TutorialViewState extends State<TutorialView> {
               child: SmoothPageIndicator(
                 controller: controller,
                 count: _sections.length,
-                effect: ScrollingDotsEffect(
+                effect: const ScrollingDotsEffect(
                   spacing: 8.0,
                   dotWidth: 7.0,
                   dotHeight: 7.0,
@@ -122,8 +122,8 @@ class _TutorialViewState extends State<TutorialView> {
   }
 
   Widget _buildCarouselItem(String section) {
-    String itemTitle = 'tutorials.${widget.type}.$section.title'.tr();
-    String itemText = 'tutorials.${widget.type}.$section.text'.tr();
+    final String itemTitle = 'tutorials.${widget.type}.$section.title'.tr();
+    final String itemText = 'tutorials.${widget.type}.$section.text'.tr();
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 20.0),
@@ -133,14 +133,14 @@ class _TutorialViewState extends State<TutorialView> {
           padding: const EdgeInsets.only(top: 0.0),
           controller: _controller,
           itemCount: 1,
-          itemBuilder: (context, index) {
+          itemBuilder: (BuildContext context, int index) {
             return Column(
               children: <Widget>[
                 if (itemTitle != '') Container(
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: Text(
                     itemTitle,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold
                     ),
@@ -187,7 +187,7 @@ class _TutorialViewState extends State<TutorialView> {
   }
 
   Widget _showImage(String section) {
-    File fileDocsDir = _fileFromDocsDir('images/' + _imageName(section) + '.png');
+    final File fileDocsDir = _fileFromDocsDir('images/' + _imageName(section) + '.png');
     if (fileDocsDir.existsSync()) {
       return Image.file(fileDocsDir);
     } else {
@@ -196,7 +196,7 @@ class _TutorialViewState extends State<TutorialView> {
   }
 
   File _fileFromDocsDir(String filename) {
-    String pathName = p.join(_appDocsDir.path, filename);
+    final String pathName = p.join(_appDocsDir.path, filename);
     return File(pathName);
   }
 

@@ -13,7 +13,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class Steps extends StatefulWidget {
-  Steps({Key key}): super(key: key);
+  const Steps({Key key}): super(key: key);
 
   @override
   State<StatefulWidget> createState() => _StepsState();
@@ -22,10 +22,10 @@ class Steps extends StatefulWidget {
 class _StepsState extends State<Steps> {
   GoalsViewModel _goalProvider;  
   StepsViewModel _stepProvider;  
-  final _scrollDirection = Axis.vertical;  
-  AutoScrollController _scrollController = AutoScrollController();
+  final Axis _scrollDirection = Axis.vertical;  
+  final AutoScrollController _scrollController = AutoScrollController();
   List<StepModel> _steps = [];
-  GlobalKey _addStepKey = GlobalKey();
+  final GlobalKey _addStepKey = GlobalKey();
 
   @override
   void initState() {
@@ -45,11 +45,11 @@ class _StepsState extends State<Steps> {
     _scrollController.dispose();
   }  
 
-  void _setShouldShowTutorialChevrons() async {
+  void _setShouldShowTutorialChevrons() {
     if (_addStepKey.currentContext != null) {
       RenderBox addStepBox = _addStepKey.currentContext.findRenderObject();
-      Offset position = addStepBox.localToGlobal(Offset.zero); 
-      double screenHeight = MediaQuery.of(context).size.height;
+      final Offset position = addStepBox.localToGlobal(Offset.zero); 
+      final double screenHeight = MediaQuery.of(context).size.height;
       if (screenHeight - position.dy < 80) {
         if (!_goalProvider.shouldShowTutorialChevrons && _goalProvider.isTutorialPreviewsAnimationCompleted) {
           _goalProvider.setShouldShowTutorialChevrons(true);
@@ -66,7 +66,7 @@ class _StepsState extends State<Steps> {
     _stepProvider.steps = _steps;
   }  
   
-  void _scrollToStep() async {
+  void _scrollToStep() {
     if (![-1,0].contains(_stepProvider.previousStepIndex)) {
       _scrollController.scrollToIndex(_stepProvider.previousStepIndex, preferPosition: AutoScrollPosition.begin);
       _stepProvider.previousStepIndex = -1;
@@ -76,10 +76,10 @@ class _StepsState extends State<Steps> {
   Widget _showSteps() {
     return StreamBuilder(
       stream: _stepProvider.fetchStepsAsStream(goalId: _goalProvider.selectedGoal.id),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           _steps = snapshot.data.docs
-              .map((doc) => StepModel.fromMap(doc.data(), doc.id))
+              .map((QueryDocumentSnapshot doc) => StepModel.fromMap(doc.data(), doc.id))
               .toList();
           _steps = _stepProvider.sortSteps(_steps);               
           WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
@@ -94,7 +94,7 @@ class _StepsState extends State<Steps> {
                     controller: _scrollController,
                     shrinkWrap: true,
                     itemCount: _steps.length,
-                    itemBuilder: (buildContext, index) =>
+                    itemBuilder: (BuildContext buildContext, int index) =>
                       AutoScrollTag(
                         key: ValueKey(index),
                         controller: _scrollController,
@@ -130,7 +130,7 @@ class _StepsState extends State<Steps> {
           elevation: 2.0,
           padding: const EdgeInsets.fromLTRB(50.0, 12.0, 50.0, 12.0)          
         ),
-        child: Text('steps.add_step'.tr(), style: TextStyle(color: Colors.white)),
+        child: Text('steps.add_step'.tr(), style: const TextStyle(color: Colors.white)),
         onPressed: () {
           showDialog(
             context: context,

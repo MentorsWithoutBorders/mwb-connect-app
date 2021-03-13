@@ -15,22 +15,23 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-  PageController _controller = PageController(viewportFraction: 1, keepPage: true);
+  final PageController _controller = PageController(viewportFraction: 1, keepPage: true);
   KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
   String _email;
   String _errorMessage;
   bool _changeButtonPressed = false;
 
+  @override
   @protected
   void initState() {
     super.initState();
     _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          Future.delayed(const Duration(milliseconds: 100), () {
+          Future<void>.delayed(const Duration(milliseconds: 100), () {
             _scrollController.animateTo(
               _scrollController.position.maxScrollExtent,
               curve: Curves.easeOut,
@@ -55,7 +56,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       height: double.infinity,
       child: PageView(
         controller: _controller,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           _showForm(),
           _showConfirmation()
@@ -98,7 +99,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         children: <Widget>[
           Text(
             'forgot_password.email_label'.tr(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.white
             ),
@@ -107,7 +108,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Text(
               'forgot_password.link_label'.tr(),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.white
               ),
@@ -124,7 +125,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       child: TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 15.0
         ),
@@ -132,7 +133,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),          
           prefixIcon: Container(
             padding: const EdgeInsets.only(left: 10.0),
-            child: Icon(
+            child: const Icon(
               Icons.mail,
               color: Colors.white,
               size: 18.0
@@ -140,31 +141,31 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white
             ),
           ),
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: const TextStyle(color: Colors.white),
           hintText: 'forgot_password.email'.tr(),
-          errorStyle: TextStyle(
+          errorStyle: const TextStyle(
             color: Colors.orange
           )
         ), 
@@ -175,30 +176,30 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             return null;
           }
         },
-        onChanged: (value) {
+        onChanged: (String value) {
           setState(() {
             _changeButtonPressed = false;
             _errorMessage = '';
           });          
-          Future.delayed(const Duration(milliseconds: 20), () {        
+          Future<void>.delayed(const Duration(milliseconds: 20), () {        
             if (value.isNotEmpty) {
               _formKey.currentState.validate();
             }
           });
         },             
-        onSaved: (value) => _email = value.trim(),
+        onSaved: (String value) => _email = value.trim(),
       ),
     );
   }
 
   Widget _showErrorMessage() {
-    if (_errorMessage.length > 0 && _errorMessage != null) {
+    if (_errorMessage.isNotEmpty && _errorMessage != null) {
       return Padding(
         padding: const EdgeInsets.only(left: 20.0, top: 20.0),
         child: Center(
           child: Text(
             _errorMessage,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 13.0,
               color: Colors.orange,
               height: 1.0,
@@ -229,7 +230,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           ),
           child: Text(
             'forgot_password.next'.tr(),
-            style: TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)
+            style: const TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)
           ),
           onPressed: () async {
             if (!_changeButtonPressed) {
@@ -244,7 +245,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     );
   }
   
-  void _validateAndSubmit() async {
+  Future<void> _validateAndSubmit() async {
     FocusScope.of(context).unfocus();
     setState(() {
       _errorMessage = '';
@@ -263,7 +264,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   // Check if form is valid
   bool _validateAndSave() {
-    final form = _formKey.currentState;
+    final FormState form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -278,7 +279,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
  void _goToConfirmation() {
     _controller.animateToPage(_controller.page.toInt() + 1,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.ease
     );
   }   
@@ -288,7 +289,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       padding: const EdgeInsets.fromLTRB(25.0, 120.0, 25.0, 0.0),
       child: Text(
         'forgot_password.email_sent'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14.0,
           color: Colors.white
         ),
@@ -317,7 +318,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             backgroundColor: Colors.transparent,          
             elevation: 0.0,
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(null),
             )
           ),

@@ -15,11 +15,11 @@ class FirstGoal extends StatefulWidget {
 
 class _FirstGoalState extends State<FirstGoal> {
   GoalsViewModel _goalProvider;
-  final _formKey = GlobalKey<FormState>();
-  final _inputContainerOpacityDuration = 500;
-  final _opacityDuration = 300;
-  final _topAnimatedContainerDuration = 300;
-  final _emptyAnimatedContainerDuration = 500;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final int _inputContainerOpacityDuration = 500;
+  final int _opacityDuration = 300;
+  final int _topAnimatedContainerDuration = 300;
+  final int _emptyAnimatedContainerDuration = 500;
   bool _isInputVisible = false;
   bool _isStartButtonVisible = true;
   bool _isAddingGoal = false;
@@ -53,7 +53,7 @@ class _FirstGoalState extends State<FirstGoal> {
                         width: 400.0,
                         child: Text(
                           'goals.first_goal_label'.tr(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
                             color: Colors.white),
@@ -76,34 +76,34 @@ class _FirstGoalState extends State<FirstGoal> {
                           textCapitalization: TextCapitalization.sentences, 
                           maxLines: null,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide.none,
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(10.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
                               ),
                             ),
                             hintStyle: TextStyle(color: Colors.grey[400]),
                             hintText: 'goals.first_goal_placeholder'.tr(),
                             filled: true,
                             fillColor: Colors.white,
-                            errorStyle: TextStyle(
+                            errorStyle: const TextStyle(
                               color: Colors.orange
                             )
                           ),
-                          validator: (value) {
+                          validator: (String value) {
                             if (value.isEmpty) {
                               return 'goals.add_goal_error'.tr();
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            Future.delayed(const Duration(milliseconds: 10), () {        
+                          onChanged: (String value) {
+                            Future<void>.delayed(const Duration(milliseconds: 10), () {        
                               if (value.isNotEmpty) {              
                                 _formKey.currentState.validate();
                               }
                             });
                           },                    
-                          onSaved: (value) => _goalText = value
+                          onSaved: (String value) => _goalText = value
                         )
                       )
                     ),
@@ -133,7 +133,7 @@ class _FirstGoalState extends State<FirstGoal> {
                           },
                           child: Text(
                             'goals.first_goal_start'.tr(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white, 
                               fontSize: 16
                             )
@@ -151,9 +151,9 @@ class _FirstGoalState extends State<FirstGoal> {
     ); 
   }
 
-  void _animateElements() async {
+  Future<void> _animateElements() async {
     if (!_isInputVisible) {
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future<void>.delayed(const Duration(milliseconds: 100));
       setState(() {
         _isInputVisible = true;
         _inputAnimationHeight = 0;
@@ -161,22 +161,22 @@ class _FirstGoalState extends State<FirstGoal> {
     } 
   }  
 
-  _addGoal() async {
+  Future<void> _addGoal() async {
     _transitionToGoalSteps();
     // Needed for setState to not be called when FirstGoal is not part of the view
-    await Future.delayed(const Duration(milliseconds: 350));
-    DateTime now = DateTime.now();
-    DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);    
-    Goal goal = Goal(text: _goalText, index: 0, dateTime: dateTime);
+    await Future<void>.delayed(const Duration(milliseconds: 350));
+    final DateTime now = DateTime.now();
+    final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);    
+    final Goal goal = Goal(text: _goalText, index: 0, dateTime: dateTime);
     _isAddingGoal = true;
-    Goal addedGoal = await _goalProvider.addGoal(goal);
+    final Goal addedGoal = await _goalProvider.addGoal(goal);
     _isAddingGoal = false;
     _goalProvider.addGoalToList(addedGoal);
     _goalProvider.setSelectedGoal(addedGoal);
     _goToGoalStepsView();
   }
   
-  _transitionToGoalSteps() {
+  void _transitionToGoalSteps() {
     FocusScope.of(context).unfocus();
     setState(() {
       _isStartButtonVisible = false;
@@ -185,7 +185,7 @@ class _FirstGoalState extends State<FirstGoal> {
     });
   }
 
-  _goToGoalStepsView() {
+  void _goToGoalStepsView() {
     Navigator.push(context, MaterialPageRoute(builder: (_) => GoalStepsView()));    
   }
   

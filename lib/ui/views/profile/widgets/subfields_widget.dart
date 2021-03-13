@@ -15,12 +15,12 @@ class _SubfieldsState extends State<Subfields> {
   ProfileViewModel _profileProvider;    
 
   Widget _showSubfields() {
-    List<Widget> subfieldWidgets = [];
-    List<String> selectedSubfields = _profileProvider.profile.user.subfields;
+    final List<Widget> subfieldWidgets = [];
+    final List<String> selectedSubfields = _profileProvider.profile.user.subfields;
     subfieldWidgets.add(Label(text: 'Subfields'));
     if (selectedSubfields != null) {
       for (int i = 0; i < selectedSubfields.length; i++) {
-        Widget subfield = SubfieldDropdown(index: i);
+        final Widget subfield = SubfieldDropdown(index: i);
         subfieldWidgets.add(subfield);
       }
     }
@@ -31,7 +31,7 @@ class _SubfieldsState extends State<Subfields> {
   Widget _showAddSubfieldButton() {
     return Center(
       child: ElevatedButton(
-        key: Key(AppKeys.addSubfieldBtn),
+        key: const Key(AppKeys.addSubfieldBtn),
         style: ElevatedButton.styleFrom(
           elevation: 1.0,
           primary: AppColors.MONZA,
@@ -40,7 +40,7 @@ class _SubfieldsState extends State<Subfields> {
           ),
           padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0)
         ), 
-        child: Text('Add subfield', style: TextStyle(color: Colors.white)),
+        child: const Text('Add subfield', style: TextStyle(color: Colors.white)),
         onPressed: () => _profileProvider.addSubfield()
       ),
     );
