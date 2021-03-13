@@ -64,7 +64,6 @@ class _RootViewState extends State<RootView> {
   void initState() {
     super.initState();
     _setPreferences();
-    _setTimeZone();
     //_downloadService.getImages();
     _setUserStorage();
     _setCurrentUser();
@@ -79,12 +78,6 @@ class _RootViewState extends State<RootView> {
     _downloadService.downloadLocales().then((value) {
       _downloadService.setPreferences();
     });    
-  }
-
-  Future<void> _setTimeZone() async {
-    final timeZone = TimeZone();
-    String timeZoneName = await timeZone.getTimeZoneName();
-    _location = await timeZone.getLocation(timeZoneName);    
   }
 
   Future _setUserStorage() async {
@@ -230,7 +223,7 @@ class _RootViewState extends State<RootView> {
         0,
         notificationTitle,
         null,
-        _nextInstanceOfNotificationsTime(),
+        await _nextInstanceOfNotificationsTime(),
         platformChannelSpecifics,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
@@ -241,9 +234,10 @@ class _RootViewState extends State<RootView> {
     }
   }
 
-  tz.TZDateTime _nextInstanceOfNotificationsTime() {
+  Future<tz.TZDateTime> _nextInstanceOfNotificationsTime() async {
     List<String> notificationsTime = _storageService.notificationsTime.split(':');
     Time time = Time(int.parse(notificationsTime[0]), int.parse(notificationsTime[1]), 0);
+    await _setTimeZone();
     final tz.TZDateTime now = tz.TZDateTime.now(_location);
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(_location, now.year, now.month, now.day, time.hour, time.minute);
@@ -251,7 +245,13 @@ class _RootViewState extends State<RootView> {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
-  }  
+  }
+  
+  Future<void> _setTimeZone() async {
+    final timeZone = TimeZone();
+    String timeZoneName = await timeZone.getTimeZoneName();
+    _location = await timeZone.getLocation(timeZoneName);    
+  } 
 
   void _sendAnalyticsEvent() {
     _analyticsService.sendEvent(
