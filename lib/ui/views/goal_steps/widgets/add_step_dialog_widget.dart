@@ -93,7 +93,8 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
           validator: (value) {
             if (value.isEmpty) {
               return 'steps.add_step_error'.tr();
-            }
+            } 
+            return null;
           },
           onChanged: (value) {
             Future.delayed(const Duration(milliseconds: 10), () {        

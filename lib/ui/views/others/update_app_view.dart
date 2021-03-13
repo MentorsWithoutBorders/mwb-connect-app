@@ -153,6 +153,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
     if (!widget.isForced) {
       Navigator.of(context).pop(null);
     }
+    return Future.value(false);
   }  
 
   Widget _showLeftIcon() {

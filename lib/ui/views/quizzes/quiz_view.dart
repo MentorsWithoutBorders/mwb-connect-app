@@ -254,9 +254,9 @@ class _QuizState extends State<QuizView> {
     _wasSelected = true;
     if ((index + 1).toString() == answer) {
       _quizProvider.setQuizStatus(_quizProvider.quizStatus, _storageService.quizNumber);
-      _status = EnumToString.parse(QuizStatus.correct);
+      _status = EnumToString.convertToString(QuizStatus.correct);
     } else {
-      _status = EnumToString.parse(QuizStatus.incorrect);
+      _status = EnumToString.convertToString(QuizStatus.incorrect);
     }
     setState(() {
       _selectedIndex = index;
@@ -278,7 +278,7 @@ class _QuizState extends State<QuizView> {
 
   Future<bool> _onWillPop() async {
     if (_status == null) {
-      _status = EnumToString.parse(QuizStatus.closed);
+      _status = EnumToString.convertToString(QuizStatus.closed);
     }
     Quiz quiz = Quiz(number: _storageService.quizNumber, status: _status, dateTime: _getCurrentDateTime());
 

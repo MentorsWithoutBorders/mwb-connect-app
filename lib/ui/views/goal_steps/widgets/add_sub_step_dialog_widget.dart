@@ -94,6 +94,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
             if (value.isEmpty) {
               return 'step_dialog.add_sub_step_error'.tr();
             }
+            return null;
           },
           onChanged: (value) {
             Future.delayed(const Duration(milliseconds: 10), () {        

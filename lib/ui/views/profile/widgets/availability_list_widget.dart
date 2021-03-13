@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -109,7 +108,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   void _showToast(BuildContext context) {
-    final scaffold = Scaffold.of(context);
+    final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
         content: Text(_profileProvider.availabilityMergedMessage),

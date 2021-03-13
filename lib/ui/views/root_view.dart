@@ -6,7 +6,9 @@ import 'package:rxdart/subjects.dart';
 import 'package:quiver/strings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/timezone.dart';
 import 'package:mwb_connect_app/core/models/received_notification_model.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
@@ -55,23 +57,17 @@ class _RootViewState extends State<RootView> {
   DownloadService _downloadService = locator<DownloadService>();
   AnalyticsService _analyticsService = locator<AnalyticsService>();
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
+  var _location;
   String _userId = '';
 
   @override
   void initState() {
     super.initState();
     _setPreferences();
+    _setTimeZone();
     //_downloadService.getImages();
     _setUserStorage();
-    widget.auth.getCurrentUser().then((user) {
-      setState(() {
-        if (user != null) {
-          _userId = user?.uid;
-        }
-        _authStatus =
-          user?.isAnonymous == true || user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
-      });
-    });
+    _setCurrentUser();
     _setLocalNotifications().then((value) {
       _requestIOSPermissions();
       _configureDidReceiveLocalNotificationSubject();
@@ -82,6 +78,28 @@ class _RootViewState extends State<RootView> {
   void _setPreferences() {
     _downloadService.downloadLocales().then((value) {
       _downloadService.setPreferences();
+    });    
+  }
+
+  Future<void> _setTimeZone() async {
+    final timeZone = TimeZone();
+    String timeZoneName = await timeZone.getTimeZoneName();
+    _location = await timeZone.getLocation(timeZoneName);    
+  }
+
+  Future _setUserStorage() async {
+    await _userService.setUserStorage();
+  }      
+
+  void _setCurrentUser() {
+    widget.auth.getCurrentUser().then((user) {
+      setState(() {
+        if (user != null) {
+          _userId = user?.uid;
+        }
+        _authStatus =
+          user?.isAnonymous == true || user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+      });
     });    
   }
 
@@ -199,11 +217,8 @@ class _RootViewState extends State<RootView> {
   }
 
   Future<void> _showDailyAtTime() async {
-    String notificationTitle = 'daily_notification.title'.tr();
-
     if (_storageService.notificationsEnabled) {
-      List<String> notificationsTime = _storageService.notificationsTime.split(':');
-      Time time = Time(int.parse(notificationsTime[0]), int.parse(notificationsTime[1]), 0);
+      String notificationTitle = 'daily_notification.title'.tr();
       AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
           'MWB Connect',
           'MWB Connect notifications',
@@ -211,16 +226,32 @@ class _RootViewState extends State<RootView> {
       IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
       NotificationDetails platformChannelSpecifics = NotificationDetails(
           android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
-      await flutterLocalNotificationsPlugin.showDailyAtTime(
-          0,
-          notificationTitle,
-          null,
-          time,
-          platformChannelSpecifics);
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        notificationTitle,
+        null,
+        _nextInstanceOfNotificationsTime(),
+        platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time);            
     } else {
       await flutterLocalNotificationsPlugin.cancelAll();
     }
   }
+
+  tz.TZDateTime _nextInstanceOfNotificationsTime() {
+    List<String> notificationsTime = _storageService.notificationsTime.split(':');
+    Time time = Time(int.parse(notificationsTime[0]), int.parse(notificationsTime[1]), 0);
+    final tz.TZDateTime now = tz.TZDateTime.now(_location);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(_location, now.year, now.month, now.day, time.hour, time.minute);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }  
 
   void _sendAnalyticsEvent() {
     _analyticsService.sendEvent(
@@ -231,10 +262,6 @@ class _RootViewState extends State<RootView> {
       }
     );
   }
-  
-  Future _setUserStorage() async {
-    await _userService.setUserStorage();
-  }    
 
   @override
   Widget build(BuildContext context) {

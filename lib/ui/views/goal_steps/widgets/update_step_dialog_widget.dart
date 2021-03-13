@@ -93,6 +93,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
             if (value.isEmpty) {
               return 'step_dialog.update_step_error'.tr();
             }
+            return null;
           },
           onChanged: (value) {
             Future.delayed(const Duration(milliseconds: 10), () {        

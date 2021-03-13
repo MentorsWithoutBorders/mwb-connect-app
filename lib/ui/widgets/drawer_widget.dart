@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -7,8 +6,6 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
-import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_view.dart';
@@ -29,8 +26,6 @@ class DrawerWidget extends StatefulWidget {
 class _DrawerWidgetState extends State<DrawerWidget> {
   LocalStorageService _storageService = locator<LocalStorageService>();
   AnalyticsService _analyticsService = locator<AnalyticsService>();  
-  GoalsViewModel _goalProvider;  
-  StepsViewModel _stepProvider;  
 
   _signOut() async {
     try {
@@ -52,8 +47,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _goalProvider = Provider.of<GoalsViewModel>(context);
-    _stepProvider = Provider.of<StepsViewModel>(context);
     bool isMentor = _storageService.isMentor;
     
     return Drawer(

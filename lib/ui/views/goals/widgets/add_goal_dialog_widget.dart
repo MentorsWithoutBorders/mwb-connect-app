@@ -93,6 +93,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
             if (value.isEmpty) {
               return 'goals.add_goal_error'.tr();
             }
+            return null;
           },
           onChanged: (value) {
             Future.delayed(const Duration(milliseconds: 10), () {        

@@ -91,6 +91,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
             if (value.isEmpty) {
               return 'goal_dialog.update_goal_error'.tr();
             }
+            return null;
           },
           onChanged: (value) {
             Future.delayed(const Duration(milliseconds: 10), () {        

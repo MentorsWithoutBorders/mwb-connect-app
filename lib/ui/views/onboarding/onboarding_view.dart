@@ -126,13 +126,15 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   Widget _showLoginButton() {
-    return FlatButton(
+    return TextButton(
       key: Key(AppKeys.goToLoginBtn),
-      padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(color: Colors.white)
-      ),
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          side: BorderSide(color: Colors.white)
+        )
+      ),       
       onPressed: () {
         _goToLogin();
       },

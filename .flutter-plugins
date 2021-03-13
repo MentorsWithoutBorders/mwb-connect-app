@@ -11,6 +11,7 @@ firebase_core_web=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dar
 firebase_storage=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-8.0.0/
 firebase_storage_web=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-1.0.1/
 flutter_local_notifications=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-4.0.1+2/
+flutter_native_timezone=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_timezone-1.0.10/
 flutter_segment=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_segment-3.0.0/
 flutuate_mixpanel=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/flutuate_mixpanel-1.1.7/
 integration_test=/Users/m/Desktop/Development/flutter/.pub-cache/hosted/pub.dartlang.org/integration_test-1.0.2+2/
