@@ -23,10 +23,11 @@ class _EditableGoalState extends State<EditableGoal> {
   }
 
   Widget _showEditableGoal(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     _animateElements();
     return Container(
       width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.fromLTRB(16.0, 90.0, 16.0, 0.0),
+      margin: EdgeInsets.fromLTRB(16.0, statusBarHeight, 16.0, 0.0),
       padding: const EdgeInsets.fromLTRB(12.0, 12.0, 15.0, 12.0),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),

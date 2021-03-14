@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -37,7 +38,6 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   QuizzesViewModel _quizProvider;
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();  
-  final double _paddingTop = 90.0;
   final int _opacityDuration = 300;
   bool _isLoaded = false;
   bool _shouldShowGoals = false;
@@ -67,9 +67,9 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     final UpdatesViewModel updatesViewModel = locator<UpdatesViewModel>();
     final UpdateStatus updateStatus = await updatesViewModel.getUpdateStatus();
     if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => UpdateAppView(isForced: false)));
+      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));
     } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => UpdateAppView(isForced: true)));
+      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
     }
   }  
 
@@ -92,11 +92,12 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
   
   Widget _showGoals() {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return AnimatedOpacity(
       opacity: _shouldShowGoals ? 1.0 : 0.0,
       duration: Duration(milliseconds: _opacityDuration),
       child: Padding(
-        padding: EdgeInsets.only(top: _paddingTop),
+        padding: EdgeInsets.only(top: statusBarHeight + 50.0),
         child: Column(
           children: <Widget>[
             Flexible(
@@ -109,7 +110,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
                 itemCount: _goalProvider.goals.length,
                 itemBuilder: (BuildContext buildContext, int index) =>
                   AutoScrollTag(
-                    key: ValueKey(index),
+                    key: ValueKey<int>(index),
                     controller: _scrollController,
                     index: index,
                     child: GoalCard(goal: _goalProvider.goals[index])
@@ -145,7 +146,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
           showDialog(
             context: context,
             builder: (_) => AnimatedDialog(
-              widgetInside: AddGoalDialog(),
+              widgetInside: const AddGoalDialog(),
               hasInput: true,
             ),
           );
@@ -175,7 +176,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
 
   void _getGoals() {
-    _goalProvider.fetchGoals().then((goals) {
+    _goalProvider.fetchGoals().then((List<Goal> goals) {
       setState(() {
         _isLoaded = true;
       });

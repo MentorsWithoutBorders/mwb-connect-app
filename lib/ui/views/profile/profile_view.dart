@@ -29,10 +29,11 @@ class _ProfileViewState extends State<ProfileView> {
     FocusScope.of(context).unfocus();    
   }
 
-  Widget _showProfileCard(BuildContext context, Profile profile) {
+  Widget _showProfileCard(Profile profile) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return SingleChildScrollView(
       child: Container(
-        padding: const EdgeInsets.fromLTRB(15.0, 90.0, 15.0, 20.0), 
+        padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 55.0, 15.0, 20.0), 
         child: Column(
           children: [
             Card(
@@ -84,9 +85,9 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
   
-  Widget _showContent(BuildContext context, bool hasData, Profile profile) {
+  Widget _showContent(bool hasData, Profile profile) {
     if (hasData) {
-      return _showProfileCard(context, profile);
+      return _showProfileCard(profile);
     } else {
       return Loader();
     }
@@ -107,7 +108,7 @@ class _ProfileViewState extends State<ProfileView> {
       _profileProvider.shouldUnfocus = false;
     }
 
-    return FutureBuilder(
+    return FutureBuilder<Profile>(
       future: _getProfile(),
       builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
         _profileProvider.profile = snapshot.data;
@@ -126,7 +127,7 @@ class _ProfileViewState extends State<ProfileView> {
                   elevation: 0.0
                 ),
                 extendBodyBehindAppBar: true,
-                body: _showContent(context, snapshot.hasData, _profileProvider.profile)
+                body: _showContent(snapshot.hasData, _profileProvider.profile)
               )
             ],
           )

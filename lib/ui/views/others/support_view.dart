@@ -54,7 +54,7 @@ class _SupportViewState extends State<SupportView> {
     _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
   }
 
-  Widget _showSupport(BuildContext context) {
+  Widget _showSupport() {
     return Container(
       height: double.infinity,
       child: PageView(
@@ -265,7 +265,7 @@ class _SupportViewState extends State<SupportView> {
             )
           ),
           extendBodyBehindAppBar: true,
-          body: _showSupport(context)
+          body: _showSupport()
         )
       ],
     );

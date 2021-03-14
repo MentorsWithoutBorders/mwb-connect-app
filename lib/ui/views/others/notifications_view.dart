@@ -50,10 +50,11 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     _controller.dispose();
   }
   
-  Widget _showNotifications(BuildContext context) {
+  Widget _showNotifications() {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return AnimatedContainer(
       duration: Duration(milliseconds: _animationDuration),
-      margin: const EdgeInsets.fromLTRB(20.0, 100.0, 20.0, 0.0),
+      margin: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 0.0),
       height: _isEnabled ? 75.0 : 55.0,
       child: Card(
         elevation: 3,
@@ -292,7 +293,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
           extendBodyBehindAppBar: true,
           body: Stack(
             children: <Widget>[
-              _showNotifications(context),
+              _showNotifications(),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: _showCupertinoTimePicker()

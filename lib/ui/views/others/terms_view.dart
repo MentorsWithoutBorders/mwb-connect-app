@@ -43,16 +43,17 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
     });
   }   
 
-  Widget _showTerms(BuildContext context) {
+  Widget _showTerms() {
     final String termsTitle = 'terms.text_title'.tr();
     final String termsLastUpdatedLabel = 'terms.last_updated_label'.tr();
     final String termsLastUpdated = 'terms.last_updated'.tr();
     final String termsText = 'terms.text'.tr();
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     
     return Container(
       width: double.infinity,
       height: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20.0, 100.0, 20.0, 30.0),      
+      padding: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 30.0),      
       child: Card(
         key: _cardKey,
         elevation: 2,
@@ -155,7 +156,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
             )
           ),
           extendBodyBehindAppBar: true,
-          body: _showTerms(context)
+          body: _showTerms()
         )
       ],
     );

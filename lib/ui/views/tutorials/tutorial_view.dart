@@ -80,8 +80,9 @@ class _TutorialViewState extends State<TutorialView> {
   Widget _showTutorial() {
     final int initialPage = widget.section != null ? _sections.indexOf(widget.section) : 0;
     final PageController controller = PageController(initialPage: initialPage, viewportFraction: 1, keepPage: true);
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15.0, 90.0, 15.0, 50.0),    
+      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 50.0),    
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
