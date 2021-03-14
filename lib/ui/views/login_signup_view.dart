@@ -461,7 +461,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   }
 
   void _goToForgotPassword() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPasswordView(auth: widget.auth)));
+    Navigator.push(context, MaterialPageRoute<ForgotPasswordView>(builder: (_) => ForgotPasswordView(auth: widget.auth)));
   }
 
   // Perform login or sign_up

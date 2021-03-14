@@ -90,7 +90,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text('drawer.profile'.tr()),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileView(isMentor: isMentor)));
+              Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView(isMentor: isMentor)));
             },
           ),
           ListTile(
@@ -107,7 +107,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text('drawer.notifications'.tr()),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationsView()));
+              Navigator.push(context, MaterialPageRoute<NotificationsView>(builder: (_) => NotificationsView()));
             },
           ),
           ListTile(
@@ -124,7 +124,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text('drawer.support'.tr()),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => SupportView()));
+              Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
             },
           ),
           ListTile(
@@ -141,7 +141,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text('drawer.feedback'.tr()),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => FeedbackView()));
+              Navigator.push(context, MaterialPageRoute<FeedbackView>(builder: (_) => FeedbackView()));
             },
           ),
           ListTile(
@@ -158,7 +158,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text('drawer.terms'.tr()),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => TermsView()));
+              Navigator.push(context, MaterialPageRoute<TermsView>(builder: (_) => TermsView()));
             },
           ),
           ListTile(

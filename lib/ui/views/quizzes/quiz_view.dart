@@ -136,7 +136,7 @@ class _QuizState extends State<QuizView> {
                       ],
                     ),
                     onTap: () {                          
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: tutorialType, section: tutorialSection)));
+                      Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: tutorialType, section: tutorialSection)));
                     },                      
                   )
                 )

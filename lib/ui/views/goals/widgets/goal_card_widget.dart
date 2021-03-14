@@ -48,7 +48,7 @@ class _GoalCardState extends State<GoalCard> {
         _goalProvider.setSelectedGoal(widget.goal);
         _goalProvider.setShouldShowTutorialChevrons(false);
         _goalProvider.setIsTutorialPreviewsAnimationCompleted(false);
-        Navigator.push(context, MaterialPageRoute(builder: (_) => GoalStepsView()));
+        Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
       },
       child: _showGoalCard()
     );

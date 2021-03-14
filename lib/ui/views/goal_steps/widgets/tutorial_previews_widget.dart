@@ -292,7 +292,9 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
               text: itemText + ' ',
               recognizer: TapGestureRecognizer()..onTap = () {
                 //if (_isOpen) Phoenix.rebirth(context);
-                if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
+                if (_isOpen) {
+                  Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: item)));
+                }
               },              
             ),
             TextSpan(
@@ -304,7 +306,9 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
                 //if (_isOpen) Phoenix.rebirth(context);
-                if (_isOpen) Navigator.push(context, MaterialPageRoute(builder: (_) => TutorialView(type: item)));
+                if (_isOpen) {
+                  Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: item)));
+                }
               },
             )
           ],

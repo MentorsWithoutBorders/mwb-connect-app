@@ -35,7 +35,7 @@ Future<void> main() async {
       child: EasyLocalization(
         supportedLocales: [Locale('en', 'US')],
         path: 'assets/i18n',
-        fallbackLocale: Locale('en', 'US'),
+        fallbackLocale: const Locale('en', 'US'),
         child: MWBConnectApp(AppConstants.mixpanelToken)
       ),
     )
@@ -52,12 +52,12 @@ Future<void> _signInAnonymously() async {
 }
 
 Future<void> _initAppDirectory() async {
-  DownloadService downloadService = locator<DownloadService>();
+  final DownloadService downloadService = locator<DownloadService>();
   await downloadService.initAppDirectory();  
 }
 
 void _setDefaults() {
-  DefaultsService defaultsService = locator<DefaultsService>();
+  final DefaultsService defaultsService = locator<DefaultsService>();
   defaultsService.setDefaults();    
 }
 
@@ -98,17 +98,17 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
 
     return FutureBuilder(
       future: getIt.allReady(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) { 
           _setDefaults();
           return MultiProvider(
             providers: [
-              ChangeNotifierProvider.value(value: locator<CommonViewModel>()),
-              ChangeNotifierProvider.value(value: locator<ProfileViewModel>()),
-              ChangeNotifierProvider.value(value: locator<GoalsViewModel>()),
-              ChangeNotifierProvider.value(value: locator<StepsViewModel>()),
-              ChangeNotifierProvider.value(value: locator<QuizzesViewModel>()),
-              ChangeNotifierProvider.value(value: locator<NotificationsViewModel>())
+              ChangeNotifierProvider<CommonViewModel>.value(value: locator<CommonViewModel>()),
+              ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
+              ChangeNotifierProvider<GoalsViewModel>.value(value: locator<GoalsViewModel>()),
+              ChangeNotifierProvider<StepsViewModel>.value(value: locator<StepsViewModel>()),
+              ChangeNotifierProvider<QuizzesViewModel>.value(value: locator<QuizzesViewModel>()),
+              ChangeNotifierProvider<NotificationsViewModel>.value(value: locator<NotificationsViewModel>())
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

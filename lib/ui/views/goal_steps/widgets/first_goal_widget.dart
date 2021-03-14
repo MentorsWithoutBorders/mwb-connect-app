@@ -186,7 +186,7 @@ class _FirstGoalState extends State<FirstGoal> {
   }
 
   void _goToGoalStepsView() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => GoalStepsView()));    
+    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));    
   }
   
   @override

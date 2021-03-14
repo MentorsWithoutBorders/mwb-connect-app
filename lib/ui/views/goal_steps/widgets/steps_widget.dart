@@ -96,7 +96,7 @@ class _StepsState extends State<Steps> {
                     itemCount: _steps.length,
                     itemBuilder: (BuildContext buildContext, int index) =>
                       AutoScrollTag(
-                        key: ValueKey(index),
+                        key: ValueKey<int>(index),
                         controller: _scrollController,
                         index: index,
                         child: StepCard(step: _steps[index])

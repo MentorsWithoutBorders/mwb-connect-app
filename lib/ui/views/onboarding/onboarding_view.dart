@@ -270,7 +270,7 @@ class _OnboardingViewState extends State<OnboardingView> {
       eventName: 'Go to Login'
     );
     _resetController();
-    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginSignupView(
+    Navigator.push(context, MaterialPageRoute<LoginSignupView>(builder: (_) => LoginSignupView(
       auth: widget.auth,
       loginCallback: widget.loginCallback,
       isLoginForm: true
@@ -290,7 +290,7 @@ class _OnboardingViewState extends State<OnboardingView> {
       eventName: 'Go to Signup'
     );
     _resetController();
-    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginSignupView(
+    Navigator.push(context, MaterialPageRoute<LoginSignupView>(builder: (_) => LoginSignupView(
       auth: widget.auth,
       loginCallback: widget.loginCallback,
       isLoginForm: false
