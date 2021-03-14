@@ -9,7 +9,8 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class StepDialog extends StatefulWidget {
-  StepDialog({@required this.context});
+  const StepDialog({Key key, @required this.context})
+    : super(key: key);  
 
   final BuildContext context;  
 
@@ -64,7 +65,7 @@ class _StepDialogState extends State<StepDialog> {
                 Navigator.pop(context);
                 showDialog(
                   context: context,
-                  builder: (_) => AnimatedDialog(
+                  builder: (_) => const AnimatedDialog(
                     widgetInside: UpdateStepDialog(),
                     hasInput: true,
                   ),
@@ -86,7 +87,7 @@ class _StepDialogState extends State<StepDialog> {
                 Navigator.pop(context);
                 showDialog(
                   context: context,
-                  builder: (_) => AnimatedDialog(
+                  builder: (_) => const AnimatedDialog(
                     widgetInside: AddSubStepDialog(),
                     hasInput: true,
                   ),

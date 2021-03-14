@@ -6,7 +6,8 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class ForgotPasswordView extends StatefulWidget {
-  ForgotPasswordView({this.auth});
+  const ForgotPasswordView({Key key, this.auth})
+    : super(key: key); 
 
   final BaseAuth auth;
 
@@ -16,7 +17,7 @@ class ForgotPasswordView extends StatefulWidget {
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   final PageController _controller = PageController(viewportFraction: 1, keepPage: true);
-  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
+  final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
@@ -169,7 +170,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             color: Colors.orange
           )
         ), 
-        validator: (value) {
+        validator: (String value) {
           if (_changeButtonPressed && value.isEmpty) {
             return 'forgot_password.email_empty'.tr();
           } else {
@@ -310,7 +311,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        BackgroundGradient(),
+        const BackgroundGradient(),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(

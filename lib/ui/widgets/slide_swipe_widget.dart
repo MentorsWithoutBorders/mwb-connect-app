@@ -2,7 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class SlideSwipe extends StatefulWidget {
-  SlideSwipe({this.width, this.height, this.controller, this.slides});
+  const SlideSwipe({Key key, this.width, this.height, this.controller, this.slides})
+    : super(key: key);   
 
   final double width;
   final double height;

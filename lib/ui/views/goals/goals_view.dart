@@ -22,7 +22,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalsView extends StatefulWidget {
-  GoalsView({Key key, this.auth, this.logoutCallback})
+  const GoalsView({Key key, this.auth, this.logoutCallback})
     : super(key: key);  
 
   final BaseAuth auth;

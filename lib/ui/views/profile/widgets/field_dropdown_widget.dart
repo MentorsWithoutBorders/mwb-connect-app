@@ -7,6 +7,9 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class FieldDropdown extends StatefulWidget {
+  const FieldDropdown({Key key})
+    : super(key: key); 
+
   @override
   State<StatefulWidget> createState() => _FieldDropdownState();
 }

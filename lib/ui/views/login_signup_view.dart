@@ -18,7 +18,8 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/views/forgot_password.dart';
 
 class LoginSignupView extends StatefulWidget {
-  LoginSignupView({this.auth, this.loginCallback, this.isLoginForm});
+  const LoginSignupView({Key key, this.auth, this.loginCallback, this.isLoginForm})
+    : super(key: key); 
 
   final BaseAuth auth;
   final VoidCallback loginCallback;

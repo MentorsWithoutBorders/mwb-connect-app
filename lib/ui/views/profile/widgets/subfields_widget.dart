@@ -7,6 +7,9 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widget.dart';
 
 class Subfields extends StatefulWidget {
+  const Subfields({Key key})
+    : super(key: key); 
+
   @override
   State<StatefulWidget> createState() => _SubfieldsState();
 }
@@ -17,7 +20,7 @@ class _SubfieldsState extends State<Subfields> {
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
     final List<String> selectedSubfields = _profileProvider.profile.user.subfields;
-    subfieldWidgets.add(Label(text: 'Subfields'));
+    subfieldWidgets.add(const Label(text: 'Subfields'));
     if (selectedSubfields != null) {
       for (int i = 0; i < selectedSubfields.length; i++) {
         final Widget subfield = SubfieldDropdown(index: i);

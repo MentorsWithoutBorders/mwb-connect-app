@@ -10,7 +10,8 @@ import 'package:mwb_connect_app/core/viewmodels/feedback_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class FeedbackView extends StatefulWidget {
-  FeedbackView({this.auth});
+  const FeedbackView({Key key, this.auth})
+    : super(key: key);   
 
   final BaseAuth auth;
 

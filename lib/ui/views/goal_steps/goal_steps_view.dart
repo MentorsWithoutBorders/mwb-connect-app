@@ -6,6 +6,9 @@ import 'package:mwb_connect_app/ui/views/goal_steps/widgets/steps_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class GoalStepsView extends StatefulWidget {
+  const GoalStepsView({Key key})
+    : super(key: key);  
+
   @override
   State<StatefulWidget> createState() => _GoalStepsViewState();
 }

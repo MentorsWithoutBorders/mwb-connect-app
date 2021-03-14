@@ -12,6 +12,9 @@ import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
 
 class QuizView extends StatefulWidget {
+  const QuizView({Key key})
+    : super(key: key); 
+  
   @override
   State<StatefulWidget> createState() => _QuizState();
 }

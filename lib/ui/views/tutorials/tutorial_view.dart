@@ -14,7 +14,8 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class TutorialView extends StatefulWidget {
-  TutorialView({@required this.type, this.section});
+  const TutorialView({Key key, @required this.type, this.section})
+    : super(key: key); 
 
   final String type;
   final String section;
@@ -203,7 +204,7 @@ class _TutorialViewState extends State<TutorialView> {
 
   Widget _buildWaitingScreen() {
     return Stack(
-      children: <Widget>[
+      children: const <Widget>[
         BackgroundGradient(),
         Loader()
       ]
@@ -231,7 +232,7 @@ class _TutorialViewState extends State<TutorialView> {
         extendBodyBehindAppBar: true,
         body: Stack(
           children: <Widget>[
-            BackgroundGradient(),
+            const BackgroundGradient(),
             _showTutorial()
           ]
         )

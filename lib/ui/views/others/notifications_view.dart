@@ -11,7 +11,8 @@ import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class NotificationsView extends StatefulWidget {
-  NotificationsView({this.auth});
+  const NotificationsView({Key key, this.auth})
+    : super(key: key);   
 
   final BaseAuth auth;
 

@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 
 class AnimatedDialog extends StatefulWidget {
-  AnimatedDialog({@required this.widgetInside, this.hasInput});
+  const AnimatedDialog({Key key, @required this.widgetInside, this.hasInput})
+    : super(key: key); 
 
   final Widget widgetInside;
   final bool hasInput;
@@ -42,7 +43,7 @@ class AnimatedDialogState extends State<AnimatedDialog>
   }
   
   Widget _showDialog() {
-    double marginBottom = widget.hasInput ? _commonProvider.dialogInputHeight + 45 : 50.0;
+    final double marginBottom = widget.hasInput ? _commonProvider.dialogInputHeight + 45 : 50.0;
 
     return Center(
       child: Material(

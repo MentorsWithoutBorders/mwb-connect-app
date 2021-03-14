@@ -13,8 +13,8 @@ import 'package:mwb_connect_app/ui/views/others/feedback_view.dart';
 import 'package:mwb_connect_app/ui/views/others/terms_view.dart';
 
 class DrawerWidget extends StatefulWidget {
-  DrawerWidget({Key key, this.auth, this.logoutCallback})
-    : super(key: key);
+  const DrawerWidget({Key key, this.auth, this.logoutCallback})
+    : super(key: key);   
 
   final BaseAuth auth;
   final VoidCallback logoutCallback;

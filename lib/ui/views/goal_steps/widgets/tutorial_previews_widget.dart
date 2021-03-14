@@ -12,6 +12,9 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
 
 class TutorialPreviews extends StatefulWidget {
+  const TutorialPreviews({Key key})
+    : super(key: key);  
+  
   @override
   State<StatefulWidget> createState() => _TutorialPreviewsState();
 }
@@ -101,7 +104,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     final LocalStorageService _storageService = locator<LocalStorageService>();
     final List<String> previews = [];
     final Map<String, dynamic> tutorials = _storageService.tutorials;
-    tutorials.forEach((String key, value) => previews.add(key));
+    tutorials.forEach((String key, dynamic value) => previews.add(key));
 
     return AnimatedOpacity(
       opacity: _isOpen ? 1.0 : 0.0,

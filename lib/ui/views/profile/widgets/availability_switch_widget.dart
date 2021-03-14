@@ -6,6 +6,9 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 
 class AvailabilitySwitch extends StatefulWidget {
+  const AvailabilitySwitch({Key key})
+    : super(key: key); 
+
   @override
   State<StatefulWidget> createState() => _AvailabilitySwitchState();
 }
@@ -14,7 +17,7 @@ class _AvailabilitySwitchState extends State<AvailabilitySwitch> {
   ProfileViewModel _profileProvider;
 
   Widget _showAvailabilitySwitch() {
-    double paddingTop = Platform.isAndroid ? 15.0 : 10.0; 
+    final double paddingTop = Platform.isAndroid ? 15.0 : 10.0; 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -41,16 +44,14 @@ class _AvailabilitySwitchState extends State<AvailabilitySwitch> {
           activeColor: Colors.green,
         ),
         // iOS
-        if (Platform.isIOS) Container(
-          child: Transform.scale( 
-            scale: 0.8,
-            child: CupertinoSwitch(
-              value: _profileProvider.profile.user.isAvailable,
-              onChanged: (bool value){
-                _profileProvider.setIsAvailable(value);
-              }
-            )
-          ),
+        if (Platform.isIOS) Transform.scale( 
+          scale: 0.8,
+          child: CupertinoSwitch(
+            value: _profileProvider.profile.user.isAvailable,
+            onChanged: (bool value){
+              _profileProvider.setIsAvailable(value);
+            }
+          )
         )
       ],
     );

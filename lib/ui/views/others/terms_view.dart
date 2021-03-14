@@ -6,7 +6,8 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class TermsView extends StatefulWidget {
-  TermsView({this.auth});
+  const TermsView({Key key, this.auth})
+    : super(key: key);   
 
   final BaseAuth auth;
 

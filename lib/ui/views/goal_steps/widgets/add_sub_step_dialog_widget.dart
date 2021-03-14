@@ -140,7 +140,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
                 Navigator.pop(context);
               }
             },
-            child: Text('step_dialog.add_sub_step'.tr(), style: TextStyle(color: Colors.white))
+            child: Text('step_dialog.add_sub_step'.tr(), style: const TextStyle(color: Colors.white))
           )
         ]
       )

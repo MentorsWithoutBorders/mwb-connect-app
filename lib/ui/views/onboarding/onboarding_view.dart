@@ -16,7 +16,8 @@ import 'package:mwb_connect_app/ui/widgets/slide_swipe_widget.dart';
 import 'package:mwb_connect_app/ui/views/login_signup_view.dart';
 
 class OnboardingView extends StatefulWidget {
-  OnboardingView({this.auth, this.loginCallback});
+  const OnboardingView({Key key, this.auth, this.loginCallback})
+    : super(key: key);    
 
   final BaseAuth auth;
   final VoidCallback loginCallback;

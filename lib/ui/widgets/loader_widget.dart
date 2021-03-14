@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loader extends StatefulWidget {
+  const Loader({Key key})
+    : super(key: key); 
+
   @override
   State<StatefulWidget> createState() => _LoaderState();
 }

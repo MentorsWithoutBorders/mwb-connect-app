@@ -44,7 +44,8 @@ final BehaviorSubject<String> selectNotificationSubject =
 NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 class RootView extends StatefulWidget {
-  RootView({this.auth});
+  const RootView({Key key, this.auth})
+    : super(key: key);   
 
   final BaseAuth auth;
 
@@ -194,7 +195,7 @@ class _RootViewState extends State<RootView> {
     });
   }
   
-  Widget _showGoalsView(goalProvider) {
+  Widget _showGoalsView() {
     return GoalsView(
       auth: widget.auth,
       logoutCallback: logoutCallback,
@@ -289,7 +290,7 @@ class _RootViewState extends State<RootView> {
         break;
       case AuthStatus.LOGGED_IN:
         if (isNotEmpty(_userId)) {
-          return _showGoalsView(goalProvider);
+          return _showGoalsView();
         } else
           return _buildWaitingScreen();
         break;

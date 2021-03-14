@@ -5,6 +5,9 @@ import 'package:mwb_connect_app/ui/views/goal_steps/widgets/goal_dialog_widget.d
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class EditableGoal extends StatefulWidget {
+  const EditableGoal({Key key})
+    : super(key: key);  
+  
   @override
   State<StatefulWidget> createState() => _EditableGoalState();
 }

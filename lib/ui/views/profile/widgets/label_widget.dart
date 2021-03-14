@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class Label extends StatelessWidget {
+  const Label({Key key, @required this.text})
+    : super(key: key); 
+  
   final String text;
-
-  Label({@required this.text});
 
   Widget _showLabel() {
     return Padding(

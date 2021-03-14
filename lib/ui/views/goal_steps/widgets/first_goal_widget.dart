@@ -9,6 +9,9 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class FirstGoal extends StatefulWidget {
+  const FirstGoal({Key key})
+    : super(key: key);  
+
   @override
   State<StatefulWidget> createState() => _FirstGoalState();
 }

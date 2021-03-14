@@ -10,7 +10,8 @@ import 'package:mwb_connect_app/core/viewmodels/support_request_view_model.dart'
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class SupportView extends StatefulWidget {
-  SupportView({this.auth});
+  const SupportView({Key key, this.auth})
+    : super(key: key);   
 
   final BaseAuth auth;
 

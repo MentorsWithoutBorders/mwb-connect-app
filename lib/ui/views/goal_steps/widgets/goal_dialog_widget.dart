@@ -8,7 +8,8 @@ import 'package:mwb_connect_app/ui/views/goal_steps/widgets/update_goal_dialog_w
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalDialog extends StatefulWidget {
-  GoalDialog({@required this.context});
+  const GoalDialog({Key key, @required this.context})
+    : super(key: key);  
 
   final BuildContext context;  
 
@@ -64,13 +65,13 @@ class _GoalDialogState extends State<GoalDialog> {
                 Navigator.pop(context);
                 showDialog(
                   context: context,
-                  builder: (_) => AnimatedDialog(
+                  builder: (_) => const AnimatedDialog(
                     widgetInside: UpdateGoalDialog(),
                     hasInput: true,
                   ),
                 ); 
               },
-              child: Text('goal_dialog.update_goal'.tr(), style: TextStyle(color: Colors.white))
+              child: Text('goal_dialog.update_goal'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
           SizedBox(
@@ -92,7 +93,7 @@ class _GoalDialogState extends State<GoalDialog> {
                   ),
                 );                      
               },
-              child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white))
+              child: Text('goal_dialog.delete_goal'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
           Padding(
@@ -167,7 +168,7 @@ class _GoalDialogState extends State<GoalDialog> {
                   onPressed: () {
                     _deleteGoal();
                   },
-                  child: Text('goal_dialog.delete_goal'.tr(), style: TextStyle(color: Colors.white))
+                  child: Text('goal_dialog.delete_goal'.tr(), style: const TextStyle(color: Colors.white))
                 )
               ]
             )

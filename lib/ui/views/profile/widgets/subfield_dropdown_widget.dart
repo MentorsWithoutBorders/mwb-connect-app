@@ -6,7 +6,8 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
-  SubfieldDropdown({@required this.index});
+  const SubfieldDropdown({Key key, @required this.index})
+    : super(key: key); 
 
   final int index;
 
@@ -25,7 +26,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
       child: Row(
         children: [
           Expanded(
-            child: Dropdown(
+            child: Dropdown<Subfield>(
               key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
               dropdownMenuItemList: _buildSubfieldDropdown(),
               onTapped: _unfocus,
@@ -58,7 +59,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
     final List<DropdownMenuItem<Subfield>> items = [];
     for (final Subfield subfield in _profileProvider.getSubfields(widget.index)) {
-      items.add(DropdownMenuItem(
+      items.add(DropdownMenuItem<Subfield>(
         value: subfield,
         child: Text(subfield.name),
       ));

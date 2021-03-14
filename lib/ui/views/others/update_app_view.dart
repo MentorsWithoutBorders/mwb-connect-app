@@ -8,7 +8,8 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class UpdateAppView extends StatefulWidget {
-  UpdateAppView({this.isForced});
+  const UpdateAppView({Key key, this.isForced})
+    : super(key: key); 
 
   final bool isForced;
 

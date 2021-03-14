@@ -13,7 +13,8 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class Steps extends StatefulWidget {
-  const Steps({Key key}): super(key: key);
+  const Steps({Key key})
+    : super(key: key);  
 
   @override
   State<StatefulWidget> createState() => _StepsState();
@@ -74,7 +75,7 @@ class _StepsState extends State<Steps> {
   }
   
   Widget _showSteps() {
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot>(
       stream: _stepProvider.fetchStepsAsStream(goalId: _goalProvider.selectedGoal.id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
@@ -108,8 +109,8 @@ class _StepsState extends State<Steps> {
             )
           );
         } else {
-          return Padding(
-            padding: const EdgeInsets.only(top: 50.0),
+          return const Padding(
+            padding: EdgeInsets.only(top: 50.0),
             child: Loader()
           );
         }

@@ -7,7 +7,8 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/add_edit_availability_w
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityItem extends StatefulWidget {
-  AvailabilityItem({@required this.index});
+  const AvailabilityItem({Key key, this.index})
+    : super(key: key); 
 
   final int index;
 

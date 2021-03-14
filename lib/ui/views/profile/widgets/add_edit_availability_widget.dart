@@ -9,7 +9,8 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class AddAvailability extends StatefulWidget {
-  AddAvailability({this.availability});
+  const AddAvailability({Key key, this.availability})
+    : super(key: key); 
 
   final Availability availability;
 

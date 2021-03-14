@@ -6,6 +6,9 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 
 class Name extends StatefulWidget {
+  const Name({Key key})
+    : super(key: key);    
+
   @override
   State<StatefulWidget> createState() => _NameState();
 }

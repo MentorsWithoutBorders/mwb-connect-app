@@ -9,6 +9,9 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/add_edit_availability_w
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityList extends StatefulWidget {
+  const AvailabilityList({Key key})
+    : super(key: key); 
+
   @override
   State<StatefulWidget> createState() => _AvailabilityListState();
 }
@@ -95,7 +98,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   void _showAddEditAvailabilityDialog() {
     showDialog(
       context: context,
-      builder: (_) => AnimatedDialog(
+      builder: (_) => const AnimatedDialog(
         widgetInside: AddAvailability(),
         hasInput: true,
       ),
