@@ -17,7 +17,8 @@ class ApprovedUser extends User {
     goal = snapshot['goal'] ?? '';
   }
 
-  toJson() {
+  @override
+  Map<String, Object> toJson() {
     return {
       'name': name,
       'email': email,

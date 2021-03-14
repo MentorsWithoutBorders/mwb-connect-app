@@ -1,44 +1,45 @@
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
-import '../../../utils/firebase_auth_mocks.dart';
-import '../../../utils/test_app.dart';
-import '../../../utils/widget_loader.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/keys.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
-import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
-import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async {
+import '../../../utils/firebase_auth_mocks.dart';
+import '../../../utils/test_app.dart';
+import '../../../utils/widget_loader.dart';
+
+Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   setupFirebaseAuthMocks();  
   await Firebase.initializeApp();
   SharedPreferences.setMockInitialValues({});
   await EasyLocalization.ensureInitialized();  
   setupLocator();
-  final getIt = GetIt.instance;
+  final GetIt getIt = GetIt.instance;
   await getIt.allReady();
-  LocalStorageService storageService = locator<LocalStorageService>();
+  final LocalStorageService storageService = locator<LocalStorageService>();
   storageService.userId = 'test_user';  
 
   group('Subfield dropdown widget tests:', () {
-    var profileViewModel = locator<ProfileViewModel>();
-    Finder addSubfieldBtn = find.byKey(Key(AppKeys.addSubfieldBtn));
+    final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
+    final Finder addSubfieldBtn = find.byKey(const Key(AppKeys.addSubfieldBtn));
     String jsonFile;
 
     Widget createSubfieldsWidget() {
-      var widgetLoader = WidgetLoader();
+      final WidgetLoader widgetLoader = WidgetLoader();
       return widgetLoader.createLocalizedWidgetForTesting(
         child: TestApp(
           widget: Scaffold(
@@ -82,7 +83,7 @@ void main() async {
       jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
     });
 
-    testWidgets('Subfields widgets shows up test', (tester) async {
+    testWidgets('Subfields widgets shows up test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
@@ -90,7 +91,7 @@ void main() async {
       });
     });
 
-    testWidgets('Add subfield test', (tester) async {
+    testWidgets('Add subfield test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
@@ -98,7 +99,7 @@ void main() async {
       });
     });
 
-    testWidgets('Change subfield test', (tester) async {
+    testWidgets('Change subfield test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
@@ -108,7 +109,7 @@ void main() async {
       });
     });
     
-    testWidgets('Delete subfields test', (tester) async {
+    testWidgets('Delete subfields test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(createSubfieldsWidget());
         await tester.pump();
@@ -122,11 +123,12 @@ void main() async {
   });
 }
 
+// ignore: avoid_classes_with_only_static_members
 class SubfieldsWidgetTest {
-  static Finder addSubfieldBtn = find.byKey(Key(AppKeys.addSubfieldBtn));
-  static Finder subfieldDropdown0 = find.byKey(Key(AppKeys.subfieldDropdown + '0'));
-  static Finder subfieldDropdown1 = find.byKey(Key(AppKeys.subfieldDropdown + '1'));
-  static Finder deleteSubfieldBtn0 = find.byKey(Key(AppKeys.deleteSubfieldBtn + '0'));
+  static Finder addSubfieldBtn = find.byKey(const Key(AppKeys.addSubfieldBtn));
+  static Finder subfieldDropdown0 = find.byKey(const Key(AppKeys.subfieldDropdown + '0'));
+  static Finder subfieldDropdown1 = find.byKey(const Key(AppKeys.subfieldDropdown + '1'));
+  static Finder deleteSubfieldBtn0 = find.byKey(const Key(AppKeys.deleteSubfieldBtn + '0'));
   
   static Future<void> subfieldsWidgetShowsUpTest() async {
     expect(find.text('Subfields'), findsOneWidget);
@@ -135,10 +137,10 @@ class SubfieldsWidgetTest {
   static Future<void> addSubfieldTest(WidgetTester tester) async {
     await tester.tap(addSubfieldBtn.last);
     await tester.pump();
-    expect((((tester.widget(subfieldDropdown0.last) as DropdownButton).value) as Subfield).name, equals('Web Development'));
+    expect(((tester.widget(subfieldDropdown0.last) as DropdownButton).value as Subfield).name, equals('Web Development'));
     await tester.tap(addSubfieldBtn.last);
     await tester.pump();
-    expect((((tester.widget(subfieldDropdown1.last) as DropdownButton).value) as Subfield).name, equals('Mobile Development'));
+    expect(((tester.widget(subfieldDropdown1.last) as DropdownButton).value as Subfield).name, equals('Mobile Development'));
   }
 
   static Future<void> changeSubfieldTest(WidgetTester tester) async {
@@ -146,7 +148,7 @@ class SubfieldsWidgetTest {
     await tester.pump();
     await tester.tap(find.text('Game Development').last);
     await tester.pump();
-    expect((((tester.widget(subfieldDropdown0.last) as DropdownButton).value) as Subfield).name, equals('Game Development'));
+    expect(((tester.widget(subfieldDropdown0.last) as DropdownButton).value as Subfield).name, equals('Game Development'));
   }
 
   static Future<void> deleteSubfieldTest(WidgetTester tester) async {     

@@ -21,7 +21,7 @@ class FeedbackView extends StatefulWidget {
 class _FeedbackViewState extends State<FeedbackView> {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final PageController _controller = PageController(viewportFraction: 1, keepPage: true);
-  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
+  final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();

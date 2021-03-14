@@ -12,7 +12,7 @@ class Goal {
     index = snapshot['index'] ?? 0,
     dateTime = snapshot['dateTime']?.toDate();
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'text': text,
       'index': index,

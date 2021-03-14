@@ -116,7 +116,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                 scale: 0.8,
                 child: CupertinoSwitch(
                   value: _storageService.notificationsEnabled,
-                  onChanged: (value){
+                  onChanged: (bool value){
                     _updateNotificationsEnabled(value);
                   }
                 )

@@ -12,7 +12,7 @@ class Quiz {
     status = snapshot['status'] ?? '',
     dateTime = snapshot['dateTime']?.toDate();
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'number': number,
       'status': status,

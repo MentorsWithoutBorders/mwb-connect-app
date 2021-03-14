@@ -21,12 +21,12 @@ class _UpdateAppViewState extends State<UpdateAppView> {
   bool _isLoaded = false;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     _setAppDirectory();
   }
 
-  _setAppDirectory() async {
+  Future<void> _setAppDirectory() async {
     _appDocsDir = await getApplicationDocumentsDirectory();
     setState(() {
       _isLoaded = true;
@@ -34,8 +34,8 @@ class _UpdateAppViewState extends State<UpdateAppView> {
   }    
 
   Widget _showUpdateApp(BuildContext context) {
-    String updateTitle = 'update_app.title'.tr();
-    String updateText = 'update_app.text'.tr();
+    final String updateTitle = 'update_app.title'.tr();
+    final String updateText = 'update_app.text'.tr();
 
     return Container(
       width: double.infinity,
@@ -56,7 +56,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
                   padding: const EdgeInsets.only(top: 30.0),
                   child: Text(
                     updateTitle,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
                       fontWeight: FontWeight.bold
@@ -68,7 +68,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
                   child: Text(
                     updateText,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 13.0,
                       color: Colors.white,
                       height: 1.2
@@ -94,7 +94,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
                   onPressed: () {
                     _updateApp();
                   },
-                  child: Text(
+                  child: const Text(
                     'Update now', 
                     style: TextStyle(
                       fontSize: 14.0,
@@ -108,7 +108,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(                      
+                      child: const Center(                      
                         child: Text(
                           'Later', 
                           style: TextStyle(
@@ -132,7 +132,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
   }
 
   Widget _showUpdateImage() {
-    File fileDocsDir = _fileFromDocsDir('images/update_app.png');
+    final File fileDocsDir = _fileFromDocsDir('images/update_app.png');
     if (fileDocsDir.existsSync()) {
       return Image.file(fileDocsDir);
     } else {
@@ -141,7 +141,7 @@ class _UpdateAppViewState extends State<UpdateAppView> {
   }
 
   File _fileFromDocsDir(String filename) {
-    String pathName = p.join(_appDocsDir.path, filename);
+    final String pathName = p.join(_appDocsDir.path, filename);
     return File(pathName);
   }
 
@@ -153,17 +153,17 @@ class _UpdateAppViewState extends State<UpdateAppView> {
     if (!widget.isForced) {
       Navigator.of(context).pop(null);
     }
-    return Future.value(false);
+    return Future<bool>.value(false);
   }  
 
   Widget _showLeftIcon() {
     if (!widget.isForced) {
       return IconButton(
-        icon: Icon(Icons.close),
+        icon: const Icon(Icons.close),
         onPressed: () => Navigator.of(context).pop(null),
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 

@@ -79,7 +79,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
  List<DropdownMenuItem<String>> _buildDayOfWeekDropdown() {
-    List<DropdownMenuItem<String>> items = [];
+    final List<DropdownMenuItem<String>> items = [];
     for (final String dayOfWeek in Utils.daysOfWeek) {
       items.add(DropdownMenuItem(
         value: dayOfWeek,

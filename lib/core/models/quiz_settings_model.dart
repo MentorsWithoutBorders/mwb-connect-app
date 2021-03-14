@@ -14,7 +14,7 @@ class QuizSettings {
     timeBetweenRounds = snapshot['timeBetweenRounds'] ?? 0,
     showTimer = snapshot['showTimer'] ?? false;
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'count': count,
       'rounds': rounds,

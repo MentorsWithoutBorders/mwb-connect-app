@@ -30,7 +30,7 @@ class User {
   }
   
   List<Availability> _availabilityFromJson(List<Map<String, dynamic>> json) {
-    List<Availability> availabilityList = [];
+    final List<Availability> availabilityList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
         availabilityList.add(Availability(dayOfWeek: json[i]['dayOfWeek'], time: Time(from: json[i]['time']['from'], to: json[i]['time']['to'])));
@@ -47,7 +47,7 @@ class User {
     return lessonsAvailability;
   }
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'name': name,
       'email': email,

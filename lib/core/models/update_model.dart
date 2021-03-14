@@ -14,7 +14,7 @@ class Update {
     release = snapshot['release'],
     build = snapshot['build'];
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'major': major,
       'minor': minor,

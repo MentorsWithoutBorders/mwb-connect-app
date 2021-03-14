@@ -8,7 +8,7 @@ class Tutorial {
     id = id ?? '',
     sections = snapshot['sections']?.cast<String>() ?? [];
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'sections': sections
     };

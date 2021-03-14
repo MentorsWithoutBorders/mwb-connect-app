@@ -15,9 +15,9 @@ class TermsView extends StatefulWidget {
 }
 
 class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMixin {
-  ScrollController _controller = ScrollController();
-  GlobalKey _cardKey = GlobalKey();
-  GlobalKey _textKey = GlobalKey();
+  final ScrollController _controller = ScrollController();
+  final GlobalKey _cardKey = GlobalKey();
+  final GlobalKey _textKey = GlobalKey();
   final double _scrollThumbMinHeight = 20.0;
   double _scrollThumbHeight = 0;    
 
@@ -33,7 +33,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
     _controller.dispose();
   }  
 
-  _afterLayout(_) {
+  void _afterLayout(_) {
     final RenderBox textBox = _textKey.currentContext.findRenderObject();
     final RenderBox cardBox = _cardKey.currentContext.findRenderObject();
     double height = cardBox.size.height / textBox.size.height * 100;
@@ -44,10 +44,10 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
   }   
 
   Widget _showTerms(BuildContext context) {
-    String termsTitle = 'terms.text_title'.tr();
-    String termsLastUpdatedLabel = 'terms.last_updated_label'.tr();
-    String termsLastUpdated = 'terms.last_updated'.tr();
-    String termsText = 'terms.text'.tr();
+    final String termsTitle = 'terms.text_title'.tr();
+    final String termsLastUpdatedLabel = 'terms.last_updated_label'.tr();
+    final String termsLastUpdated = 'terms.last_updated'.tr();
+    final String termsText = 'terms.text'.tr();
     
     return Container(
       width: double.infinity,
@@ -64,7 +64,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
               padding: const EdgeInsets.only(top: 0.0),
               controller: _controller,
               itemCount: 1,
-              itemBuilder: (context, index) {
+              itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 15.0),
                   key: _textKey,
@@ -73,7 +73,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
                     children: <Widget>[
                       Text(
                         termsTitle,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16.0,
                           color: AppColors.ALLPORTS
                         ),
@@ -83,7 +83,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
                         child: Text(
                           termsLastUpdatedLabel + ' ' + termsLastUpdated,
                           textAlign: TextAlign.justify,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14.0,
                             color: Colors.grey
                           ),
@@ -94,7 +94,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
                         child: Text(
                           termsText,
                           textAlign: TextAlign.justify,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14.0
                           ),
                         ),
@@ -150,7 +150,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
             backgroundColor: Colors.transparent,          
             elevation: 0.0,
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(null),
             )
           ),

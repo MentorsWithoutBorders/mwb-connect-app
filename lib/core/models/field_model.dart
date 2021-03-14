@@ -12,14 +12,14 @@ class Field {
   }
 
   List<Subfield> _subfieldsFromJson(List<String> subfields) {
-    List<Subfield> subfieldsList = [];
+    final List<Subfield> subfieldsList = [];
     for (int i = 0; i < subfields.length; i++) {
       subfieldsList.add(Subfield(name: subfields[i]));
     }
     return subfieldsList;
   }
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'name': name,
       'subfields': _subfieldsToJson(subfields)
@@ -27,7 +27,7 @@ class Field {
   }
 
   List<String> _subfieldsToJson(List<Subfield> subfields) {
-    List<String> subfieldsList = [];
+    final List<String> subfieldsList = [];
     for (int i = 0; i < subfields.length; i++) {
       subfieldsList.add(subfields[i].name);
     }

@@ -12,7 +12,7 @@ class QuizStatus {
     lastSolved = snapshot['lastSolved']?.toDate(),
     roundsSolved = snapshot['roundsSolved'] ?? 0;
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'solved': solved,
       'lastSolved': lastSolved,

@@ -189,7 +189,7 @@ class _SupportViewState extends State<SupportView> {
       try {
         // Just a delay effect for the send request
         await Future<void>.delayed(const Duration(milliseconds: 300));
-        _sendRequest(_supportText);
+        await _sendRequest(_supportText);
       } catch (e) {
         print('Error: $e');
       }

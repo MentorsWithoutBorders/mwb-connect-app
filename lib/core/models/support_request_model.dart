@@ -15,7 +15,7 @@ class SupportRequest {
     userName = snapshot['userName'] ?? '',
     userEmail = snapshot['userEmail'] ?? '';
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'text': text,
       'userId': userId,

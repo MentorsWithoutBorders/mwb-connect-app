@@ -10,7 +10,7 @@ class NotificationSettings {
     enabled = snapshot['enabled'] ?? true,
     time = snapshot['time'];
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'enabled': enabled,
       'time': time

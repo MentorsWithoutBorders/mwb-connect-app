@@ -16,7 +16,7 @@ class StepModel {
     index = snapshot['index'] ?? 0,
     dateTime = snapshot['dateTime']?.toDate();
 
-  toJson() {
+  Map<String, Object> toJson() {
     return {
       'parent': parent,
       'text': text,
