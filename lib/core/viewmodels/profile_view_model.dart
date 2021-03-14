@@ -26,9 +26,9 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void setFields(List<Field> fields) {
-    for (final Field field in fields) {
+    fields.forEach((Field field) {
       _profileService.addField(field);
-    }
+    });    
   }    
 
   void setUserDetails(User user) {

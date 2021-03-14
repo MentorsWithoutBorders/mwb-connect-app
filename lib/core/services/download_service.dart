@@ -216,7 +216,6 @@ class DownloadService {
     files.forEach((FileSystemEntity file) {
       print(file);
     });
-
   }
 
 }

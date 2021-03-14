@@ -44,7 +44,7 @@ class GoalsViewModel extends ChangeNotifier {
   }
 
   void _removeGoalFromList(String goalId) {
-    goals.removeWhere((goal) => goal.id == goalId);
+    goals.removeWhere((Goal goal) => goal.id == goalId);
     notifyListeners();
   }  
 
@@ -55,9 +55,9 @@ class GoalsViewModel extends ChangeNotifier {
 
   int getCurrentIndex(List<Goal> goals) {
     int index = -1;
-    goals.forEach((goal) {
+    for (final Goal goal in goals) {
       index = max(index, goal.index);
-    });
+    }
     return index;
   }  
 
