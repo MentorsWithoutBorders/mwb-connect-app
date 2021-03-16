@@ -211,7 +211,38 @@ Future<void> main() async {
       expect(availabilities[0].dayOfWeek, 'Saturday');
       expect(availabilities[0].time.from, '10am');
       expect(availabilities[0].time.to, '5pm');      
-    });      
+    });
+    
+    test('Availability should be valid', () {
+      Availability availability = Availability(
+        dayOfWeek: 'Monday',
+        time: Time(from: '8pm', to: '10pm')
+      );
+      expect(profileViewModel.isAvailabilityValid(availability), true);
+      availability = Availability(
+        dayOfWeek: 'Saturday',
+        time: Time(from: '10am', to: '10am')
+      );
+      expect(profileViewModel.isAvailabilityValid(availability), false);       
+      availability = Availability(
+        dayOfWeek: 'Thursday',
+        time: Time(from: '5pm', to: '3pm')
+      );
+      expect(profileViewModel.isAvailabilityValid(availability), false);    
+    });
+    
+    test('Availability should be deleted', () {
+      Availability availability = Availability(
+        dayOfWeek: 'Thursday',
+        time: Time(from: '7pm', to: '10pm')
+      );
+      profileViewModel.addAvailability(availability);
+      profileViewModel.deleteAvailability(0);
+      List<Availability> availabilities = profileViewModel.profile.user.availabilities;
+      expect(availabilities[0].dayOfWeek, 'Saturday');
+      expect(availabilities[0].time.from, '10am');
+      expect(availabilities[0].time.to, '2pm');
+    });     
 
   });
 }
