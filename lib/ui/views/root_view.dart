@@ -16,7 +16,6 @@ import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
-import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
@@ -267,7 +266,6 @@ class _RootViewState extends State<RootView> {
 
   @override
   Widget build(BuildContext context) {
-    final GoalsViewModel goalProvider = Provider.of<GoalsViewModel>(context);
     final NotificationsViewModel notificationProvider = Provider.of<NotificationsViewModel>(context);
 
     if (notificationProvider.notificationSettingsUpdated) {

@@ -8,36 +8,23 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
-class AddAvailability extends StatefulWidget {
-  const AddAvailability({Key key, this.availability})
+class EditAvailability extends StatefulWidget {
+  const EditAvailability({Key key, this.index})
     : super(key: key); 
 
-  final Availability availability;
+  final int index;
 
   @override
-  State<StatefulWidget> createState() => _AddAvailabilityState();
+  State<StatefulWidget> createState() => _EditAvailabilityState();
 }
 
-class _AddAvailabilityState extends State<AddAvailability> {
+class _EditAvailabilityState extends State<EditAvailability> {
   ProfileViewModel _profileProvider;
   Availability _availability;
   bool _shouldShowError = false;
-  final String _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
-  final String _defaultTimeFrom = '10am';
-  final String _defaultTimeTo = '2pm';
+  bool _isInit = false;
 
-  @override
-  @protected
-  void initState() {
-    super.initState();
-    if (widget.availability != null) {
-      _availability = widget.availability;
-    } else {
-      _availability = Availability(dayOfWeek: _defaultDayOfWeek, time: Time(from: _defaultTimeFrom, to: _defaultTimeTo));
-    }    
-  }
-
-  Widget _showAddAvailabilityDialog() {
+  Widget _showEditAvailabilityDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -55,7 +42,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   Widget _showTitle() {
     return Center(
       child: Text(
-        widget.availability == null ? 'Add availability' : 'Edit availability',
+        'Edit availability',
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
@@ -215,10 +202,10 @@ class _AddAvailabilityState extends State<AddAvailability> {
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ), 
             onPressed: () {
-              widget.availability == null ? _addAvailability() : _updateAvailability();
+              _updateAvailability();
             },
             child: Text(
-              widget.availability == null ? 'Add' : 'Update',
+              'Update',
               style: const TextStyle(
                 color: Colors.white
               )
@@ -229,10 +216,10 @@ class _AddAvailabilityState extends State<AddAvailability> {
     ); 
   }
 
-  void _addAvailability() {
+  void _updateAvailability() {
     if (_profileProvider.isAvailabilityValid(_availability)) {
       Navigator.pop(context, true);
-      _profileProvider.addAvailability(_availability);
+      _profileProvider.updateAvailability(widget.index, _availability);
     } else {
       setState(() {
         _shouldShowError = true;
@@ -240,21 +227,21 @@ class _AddAvailabilityState extends State<AddAvailability> {
     }
   }
 
-  void _updateAvailability() {
-    if (_profileProvider.isAvailabilityValid(_availability)) {
-      Navigator.pop(context, true);
-      _profileProvider.updateAvailability(widget.availability, _availability);
+  void _initAvalability() {
+    if (!_isInit) {
+      _availability = _profileProvider.profile.user.availabilities[widget.index];
     } else {
       setState(() {
-        _shouldShowError = true;
+        _isInit = true;
       });
     }
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
-    _profileProvider = Provider.of<ProfileViewModel>(context);      
+    _profileProvider = Provider.of<ProfileViewModel>(context);
+    _initAvalability();
 
-    return _showAddAvailabilityDialog();
+    return _showEditAvailabilityDialog();
   }
 }

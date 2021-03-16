@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class JsonAssetLoader {
-  var jsonFile;
+  String jsonFile;
 
   JsonAssetLoader({json}):
     jsonFile = json;

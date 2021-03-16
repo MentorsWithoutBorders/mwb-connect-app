@@ -137,26 +137,26 @@ class ProfileViewModel extends ChangeNotifier {
   
   void addAvailability(Availability availability) {
     profile.user.availabilities.add(availability);
-    sortAvailabilities();
-    mergeAvailabilityTimes();
+    _sortAvailabilities();
+    _mergeAvailabilityTimes();
     setUserDetails(profile.user);
     notifyListeners();
   }
 
-  void updateAvailability(Availability oldAvailability, Availability newAvailability) {
-    profile.user.availabilities[profile.user.availabilities.indexWhere((Availability element) => element == oldAvailability)] = newAvailability;
-    sortAvailabilities();
-    mergeAvailabilityTimes();
+  void updateAvailability(int index, Availability newAvailability) {
+    profile.user.availabilities[index] = newAvailability;
+    _sortAvailabilities();
+    _mergeAvailabilityTimes();
     setUserDetails(profile.user);
     notifyListeners();
-  }  
+  }
 
-  void sortAvailabilities() {
+  void _sortAvailabilities() {
     profile.user.availabilities.sort((a, b) => Utils.convertTime12to24(a.time.from).compareTo(Utils.convertTime12to24(b.time.from)));
     profile.user.availabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek)));
   }
 
-  void mergeAvailabilityTimes() {
+  void _mergeAvailabilityTimes() {
     final List<Availability> availabilities = [];
     for (final String dayOfWeek in Utils.daysOfWeek) {
       final List<Availability> dayAvailabilities = [];

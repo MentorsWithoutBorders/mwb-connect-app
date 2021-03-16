@@ -13,9 +13,9 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../utils/firebase_auth_mocks.dart';
-import '../../../utils/test_app.dart';
-import '../../../utils/widget_loader.dart';
+import '../../../../utils/firebase_auth_mocks.dart';
+import '../../../../utils/test_app.dart';
+import '../../../../utils/easy_localization_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -27,14 +27,14 @@ Future<void> main() async {
   final getIt = GetIt.instance;
   await getIt.allReady();
   LocalStorageService storageService = locator<LocalStorageService>();
-  storageService.userId = 'test_user';    
+  storageService.userId = 'test_user';
+  final String jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');  
 
   group('Name widget tests:', () {
-    var profileViewModel = locator<ProfileViewModel>();
-    String jsonFile;
+    final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
 
     Widget createNameWidget() {
-      var widgetLoader = WidgetLoader();
+      final EasyLocalizationLoader widgetLoader = EasyLocalizationLoader();
       return widgetLoader.createLocalizedWidgetForTesting(
         child: TestApp(
           widget: Scaffold(
@@ -50,7 +50,6 @@ Future<void> main() async {
       profileViewModel.profile.user = User(
         name: 'Bob'
       );
-      jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
     });   
 
     testWidgets('Name widget shows up test', (tester) async {

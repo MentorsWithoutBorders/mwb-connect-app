@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/add_edit_availability_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/edit_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityItem extends StatefulWidget {
@@ -50,7 +50,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
             ),
           ),
           onTap: () {
-            _showAddAvailabilityDialog(availability);
+            _showEditAvailabilityDialog(availability);
           },
         ),
         _showDeleteItem()
@@ -58,15 +58,32 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
     );
   }
 
-  void _showAddAvailabilityDialog(Availability availability) {
+  void _showEditAvailabilityDialog(Availability availability) {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: AddAvailability(availability: availability),
+        widgetInside: EditAvailability(index: widget.index),
         hasInput: true,
       )
-    );     
+    ).then((shouldShowToast) {
+      if (shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {
+        _showToast(context);
+        _profileProvider.resetAvailabilityMergedMessage();
+      }
+    });     
   }
+
+  void _showToast(BuildContext context) {
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(_profileProvider.availabilityMergedMessage),
+        action: SnackBarAction(
+          label: 'Close', onPressed: scaffold.hideCurrentSnackBar
+        ),
+      ),
+    );
+  }  
 
   Widget _showDeleteItem() {
     return InkWell(

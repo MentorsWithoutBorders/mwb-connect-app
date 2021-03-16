@@ -17,9 +17,9 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../utils/firebase_auth_mocks.dart';
-import '../../../utils/test_app.dart';
-import '../../../utils/widget_loader.dart';
+import '../../../../utils/firebase_auth_mocks.dart';
+import '../../../../utils/test_app.dart';
+import '../../../../utils/easy_localization_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -31,15 +31,15 @@ Future<void> main() async {
   final GetIt getIt = GetIt.instance;
   await getIt.allReady();
   final LocalStorageService storageService = locator<LocalStorageService>();
-  storageService.userId = 'test_user';  
+  storageService.userId = 'test_user';
+  final String jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');  
 
   group('Subfield dropdown widget tests:', () {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
     final Finder addSubfieldBtn = find.byKey(const Key(AppKeys.addSubfieldBtn));
-    String jsonFile;
 
     Widget createSubfieldsWidget() {
-      final WidgetLoader widgetLoader = WidgetLoader();
+      final EasyLocalizationLoader widgetLoader = EasyLocalizationLoader();
       return widgetLoader.createLocalizedWidgetForTesting(
         child: TestApp(
           widget: Scaffold(
@@ -80,7 +80,6 @@ Future<void> main() async {
           ]
         ),
       ];
-      jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
     });
 
     testWidgets('Subfields widgets shows up test', (WidgetTester tester) async {

@@ -17,9 +17,9 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widge
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../ui/utils/test_app.dart';
-import '../../../ui/utils/widget_loader.dart';
-import '../../utils/firebase_auth_mocks.dart';
+import '../../../utils/test_app.dart';
+import '../../../utils/easy_localization_loader.dart';
+import '../../../utils/firebase_auth_mocks.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -32,14 +32,14 @@ Future<void> main() async {
   await getIt.allReady();
   final LocalStorageService storageService = locator<LocalStorageService>();
   storageService.userId = 'test_user';
+  final String jsonFile = await rootBundle.loadString('assets/i18n/en-US.json'); 
 
   group('Profile view tests:', () {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
-    String jsonFile;
     final Profile profile = Profile();
 
     Widget createProfileWidget({bool isMentor}) {
-      final WidgetLoader widgetLoader = WidgetLoader();
+      final EasyLocalizationLoader widgetLoader = EasyLocalizationLoader();
       return widgetLoader.createLocalizedWidgetForTesting(
         child: TestApp(
           widget: ProfileView(isMentor: true)
@@ -76,7 +76,6 @@ Future<void> main() async {
         ),
       ];
       profileViewModel.setFields(fields);
-      jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
     });  
 
     testWidgets('Profile widgets show up for mentor test', (WidgetTester tester) async {
