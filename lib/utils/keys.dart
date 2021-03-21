@@ -1,4 +1,7 @@
 class AppKeys {
+  // Common
+  static const String submitBtn = 'submitBtn';
+  static const String cancelBtn = 'cancelBtn';
   // Onboarding
   static const String goToLoginBtn = 'goToLoginBtn';
   static const String goToSignupBtn = 'goToSignupBtn';
@@ -21,5 +24,8 @@ class AppKeys {
   static const String addAvailabilityBtn = 'addAvailabilityBtn';  
   static const String availabilityItem = 'availabilityItem';
   static const String deleteAvailabilityBtn = 'deleteAvailabilityBtn';  
-
+  // Add/edit availability
+  static const String dayOfWeekDropdown = 'dayOfWeekDropdown';
+  static const String timeFromDropdown = 'timeFromDropdown';
+  static const String timeToDropdown = 'timeToDropdown';
 }

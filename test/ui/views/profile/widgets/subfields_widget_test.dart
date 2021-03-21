@@ -18,8 +18,7 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/firebase_auth_mocks.dart';
-import '../../../../utils/test_app.dart';
-import '../../../../utils/easy_localization_loader.dart';
+import '../../../../utils/widget_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -36,24 +35,15 @@ Future<void> main() async {
 
   group('Subfield dropdown widget tests:', () {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
-    final Finder addSubfieldBtn = find.byKey(const Key(AppKeys.addSubfieldBtn));
-
-    Widget createSubfieldsWidget() {
-      final EasyLocalizationLoader widgetLoader = EasyLocalizationLoader();
-      return widgetLoader.createLocalizedWidgetForTesting(
-        child: TestApp(
-          widget: Scaffold(
-            body: Wrap(
-              children: [
-                FieldDropdown(),
-                Subfields()
-              ],
-            )
-          )
-        ),
-        jsonFile: jsonFile
-      );
-    }    
+    final WidgetLoader widgetLoader = WidgetLoader();
+    final Widget wrapWidget = Wrap(
+      children: [
+        FieldDropdown(),
+        Subfields()
+      ],
+    );
+    final Widget subfieldsWidget = widgetLoader.createWidget(widget: wrapWidget, jsonFile: jsonFile);    
+    final Finder addSubfieldBtn = find.byKey(const Key(AppKeys.addSubfieldBtn)); 
 
     setUp(() async {
       profileViewModel.profile = Profile();
@@ -84,7 +74,7 @@ Future<void> main() async {
 
     testWidgets('Subfields widgets shows up test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createSubfieldsWidget());
+        await tester.pumpWidget(subfieldsWidget);
         await tester.pump();
         await SubfieldsWidgetTest.subfieldsWidgetShowsUpTest();
       });
@@ -92,7 +82,7 @@ Future<void> main() async {
 
     testWidgets('Add subfield test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createSubfieldsWidget());
+        await tester.pumpWidget(subfieldsWidget);
         await tester.pump();
         await SubfieldsWidgetTest.addSubfieldTest(tester);       
       });
@@ -100,7 +90,7 @@ Future<void> main() async {
 
     testWidgets('Change subfield test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createSubfieldsWidget());
+        await tester.pumpWidget(subfieldsWidget);
         await tester.pump();
         await tester.tap(addSubfieldBtn.last);
         await tester.pump();        
@@ -110,7 +100,7 @@ Future<void> main() async {
     
     testWidgets('Delete subfields test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createSubfieldsWidget());
+        await tester.pumpWidget(subfieldsWidget);
         await tester.pump();
         await tester.tap(addSubfieldBtn.last);
         await tester.pump();

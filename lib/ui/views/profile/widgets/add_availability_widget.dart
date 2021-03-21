@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -9,10 +10,8 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class AddAvailability extends StatefulWidget {
-  const AddAvailability({Key key, this.index})
+  const AddAvailability({Key key})
     : super(key: key); 
-
-  final int index;
 
   @override
   State<StatefulWidget> createState() => _AddAvailabilityState();
@@ -70,6 +69,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
         height: 30,
         margin: const EdgeInsets.only(top: 20.0),
         child: Dropdown(
+          key: Key(AppKeys.dayOfWeekDropdown),
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
           value: _availability.dayOfWeek
@@ -138,6 +138,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
       height: 30,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
+        key: Key(AppKeys.timeFromDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeFrom,
@@ -164,6 +165,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
       height: 30,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
+        key: Key(AppKeys.timeToDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeTo,
@@ -197,6 +199,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
+            key: Key(AppKeys.submitBtn),
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
               child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
@@ -206,6 +209,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
             },
           ),
           ElevatedButton(
+            key: Key(AppKeys.cancelBtn),
             style: ElevatedButton.styleFrom(
               primary: AppColors.MONZA,
               shape: RoundedRectangleBorder(

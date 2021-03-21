@@ -19,8 +19,7 @@ import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../utils/test_app.dart';
-import '../../../utils/easy_localization_loader.dart';
+import '../../../utils/widget_loader.dart';
 import '../../../utils/firebase_auth_mocks.dart';
 
 Future<void> main() async {
@@ -37,21 +36,13 @@ Future<void> main() async {
   final String jsonFile = await rootBundle.loadString('assets/i18n/en-US.json'); 
 
   group('Profile view tests:', () {
-    final EasyLocalizationLoader easyLocalizationLoader = EasyLocalizationLoader();
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
     final Profile profile = Profile();
-
-    Widget createProfileWidget({bool isMentor}) {
-      return easyLocalizationLoader.createLocalizedWidgetForTesting(
-        child: TestApp(
-          widget: ProfileView(isMentor: true)
-        ),
-        jsonFile: jsonFile
-      );
-    }   
+    final WidgetLoader widgetLoader = WidgetLoader();
+    final Widget profileWidget = widgetLoader.createWidget(widget: ProfileView(isMentor: true), jsonFile: jsonFile);
 
     setUp(() async {
-      final EasyLocalizationController easyLocalizationController = easyLocalizationLoader.createEasyLocalizationController(jsonFile: jsonFile);
+      final EasyLocalizationController easyLocalizationController = widgetLoader.createEasyLocalizationController(jsonFile: jsonFile);
       await easyLocalizationController.loadTranslations();
       Localization.load(Locale('en', 'US'), translations: easyLocalizationController.translations);
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
@@ -100,7 +91,7 @@ Future<void> main() async {
       await tester.runAsync(() async {
         profile.user.isMentor = true;
         profileViewModel.setUserDetails(profile.user);        
-        await tester.pumpWidget(createProfileWidget(isMentor: true));
+        await tester.pumpWidget(profileWidget);
         await tester.pumpAndSettle();
         expect(find.text('Name'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.nameField)).last, findsOneWidget);

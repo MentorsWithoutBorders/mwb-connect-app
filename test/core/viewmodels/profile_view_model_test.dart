@@ -17,7 +17,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/firebase_auth_mocks.dart';
-import '../../utils/easy_localization_loader.dart';
+import '../../utils/widget_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -33,11 +33,11 @@ Future<void> main() async {
   String jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');
 
   group('Profile view model tests', () {
-    final EasyLocalizationLoader easyLocalizationLoader = EasyLocalizationLoader();
+    final WidgetLoader widgetLoader = WidgetLoader();
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
 
     setUp(() async {
-      final EasyLocalizationController easyLocalizationController = easyLocalizationLoader.createEasyLocalizationController(jsonFile: jsonFile);
+      final EasyLocalizationController easyLocalizationController = widgetLoader.createEasyLocalizationController(jsonFile: jsonFile);
       await easyLocalizationController.loadTranslations();
       Localization.load(Locale('en', 'US'), translations: easyLocalizationController.translations);
 

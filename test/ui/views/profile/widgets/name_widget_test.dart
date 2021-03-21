@@ -14,8 +14,7 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/firebase_auth_mocks.dart';
-import '../../../../utils/test_app.dart';
-import '../../../../utils/easy_localization_loader.dart';
+import '../../../../utils/widget_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -32,18 +31,8 @@ Future<void> main() async {
 
   group('Name widget tests:', () {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
-
-    Widget createNameWidget() {
-      final EasyLocalizationLoader widgetLoader = EasyLocalizationLoader();
-      return widgetLoader.createLocalizedWidgetForTesting(
-        child: TestApp(
-          widget: Scaffold(
-            body: Name()
-          )
-        ),
-        jsonFile: jsonFile
-      );
-    }   
+    final WidgetLoader widgetLoader = WidgetLoader();
+    final Widget nameWidget = widgetLoader.createWidget(widget: Name(), jsonFile: jsonFile);
 
     setUp(() async {
       profileViewModel.profile = Profile();
@@ -54,7 +43,7 @@ Future<void> main() async {
 
     testWidgets('Name widget shows up test', (tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createNameWidget());
+        await tester.pumpWidget(nameWidget);
         await tester.pump();
         await NameWidgetTest.nameShowsUpTest();
       });
@@ -62,7 +51,7 @@ Future<void> main() async {
 
     testWidgets('Initial name test', (tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createNameWidget());
+        await tester.pumpWidget(nameWidget);
         await tester.pump();
         await NameWidgetTest.initialNameTest(tester);
       });
@@ -70,7 +59,7 @@ Future<void> main() async {
 
     testWidgets('Name change test', (tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createNameWidget());
+        await tester.pumpWidget(nameWidget);
         await tester.pump();
         await NameWidgetTest.nameChangeTest(tester);
       });

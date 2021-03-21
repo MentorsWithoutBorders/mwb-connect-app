@@ -15,8 +15,7 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/firebase_auth_mocks.dart';
-import '../../../../utils/test_app.dart';
-import '../../../../utils/easy_localization_loader.dart';
+import '../../../../utils/widget_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -33,18 +32,8 @@ Future<void> main() async {
 
   group('Field dropdown widget tests:', () {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
-
-    Widget createFieldDropdownWidget() {
-      final EasyLocalizationLoader widgetLoader = EasyLocalizationLoader();
-      return widgetLoader.createLocalizedWidgetForTesting(
-        child: TestApp(
-          widget: Scaffold(
-            body: FieldDropdown()
-          )
-        ),
-        jsonFile: jsonFile
-      );
-    }    
+    final WidgetLoader widgetLoader = WidgetLoader();
+    final Widget fieldDropdownWidget = widgetLoader.createWidget(widget: FieldDropdown(), jsonFile: jsonFile);
 
     setUp(() async {
       profileViewModel.profile = Profile();
@@ -64,7 +53,7 @@ Future<void> main() async {
 
     testWidgets('Field dropdown shows up test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createFieldDropdownWidget());
+        await tester.pumpWidget(fieldDropdownWidget);
         await tester.pump();
         await FieldDropdownWidgetTest.fieldShowsUpTest();
       });
@@ -72,7 +61,7 @@ Future<void> main() async {
 
     testWidgets('Initial field test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createFieldDropdownWidget());
+        await tester.pumpWidget(fieldDropdownWidget);
         await tester.pump();
         await FieldDropdownWidgetTest.initialFieldTest(tester);
       });
@@ -80,7 +69,7 @@ Future<void> main() async {
     
     testWidgets('Change field test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(createFieldDropdownWidget());
+        await tester.pumpWidget(fieldDropdownWidget);
         await tester.pump();
         await FieldDropdownWidgetTest.changeFieldTest(tester);
       });
@@ -94,7 +83,6 @@ class FieldDropdownWidgetTest {
 
   static Future<void> fieldShowsUpTest() async {
     expect(find.text('Field'), findsOneWidget);
-    expect(find.byType(FieldDropdown), findsOneWidget);
     expect(fieldDropdown.last, findsOneWidget); 
   }
 
