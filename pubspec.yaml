@@ -19,16 +19,16 @@ dependencies:
   cloud_firestore: ^1.0.1
   cloud_firestore_mocks: ^0.7.0
   firebase_storage: ^8.0.0
-  flutuate_mixpanel: ^1.1.7
+  flutuate_mixpanel: ^1.1.8
   firebase_analytics: ^7.1.1
   provider: ^5.0.0
   path_provider: ^2.0.1
   get_it: ^6.0.0
-  shared_preferences: ^2.0.4
+  shared_preferences: ^2.0.5
   easy_localization: ^3.0.0
   flutter_segment: ^3.0.0
   flutter_phoenix: ^1.0.0
-  devicelocale: ^0.4.0
+  devicelocale: ^0.4.1
   cupertino_icons: ^1.0.2
   google_fonts: ^2.0.0
   flutter_native_timezone: ^1.0.10
@@ -42,7 +42,7 @@ dependencies:
   draggable_scrollbar: ^0.0.4
   package_info: ^2.0.0
   rxdart: ^0.26.0
-  enum_to_string: ^1.0.14
+  enum_to_string: ^2.0.1
 
 dependency_overrides:
   plugin_platform_interface: ^2.0.0

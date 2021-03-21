@@ -1,7 +1,7 @@
-import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 
@@ -17,7 +17,8 @@ class _AvailabilitySwitchState extends State<AvailabilitySwitch> {
   ProfileViewModel _profileProvider;
 
   Widget _showAvailabilitySwitch() {
-    final double paddingTop = Platform.isAndroid ? 15.0 : 10.0; 
+    final TargetPlatform platform = Theme.of(context).platform;
+    final double paddingTop = platform == TargetPlatform.android ? 15.0 : 10.0; 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -35,18 +36,20 @@ class _AvailabilitySwitchState extends State<AvailabilitySwitch> {
           )
         ),
         // Android
-        if (Platform.isAndroid) Switch(
+        if (platform == TargetPlatform.android) Switch(
+          key: Key(AppKeys.isAvailableSwitchAndroid),
           value: _profileProvider.profile.user.isAvailable,
           onChanged: (bool value){
             _profileProvider.setIsAvailable(value);
           },
           activeTrackColor: Colors.lightGreenAccent,
-          activeColor: Colors.green,
+          activeColor: Colors.green
         ),
         // iOS
-        if (Platform.isIOS) Transform.scale( 
+        if (platform == TargetPlatform.iOS) Transform.scale( 
           scale: 0.8,
           child: CupertinoSwitch(
+            key: Key(AppKeys.isAvailableSwitchiOS),            
             value: _profileProvider.profile.user.isAvailable,
             onChanged: (bool value){
               _profileProvider.setIsAvailable(value);

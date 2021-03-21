@@ -11,10 +11,15 @@ class AppKeys {
   static const String nameField = 'nameField';
   // Field
   static const String fieldDropdown = 'fieldDropdown';
-  // Subfield
-  static const String subfieldDropdown = 'subfieldDropdown';
-  static const String deleteSubfieldBtn = 'deleteSubfieldBtn';
   // Subfields
   static const String addSubfieldBtn = 'addSubfieldBtn';
+  static const String subfieldDropdown = 'subfieldDropdown';
+  static const String deleteSubfieldBtn = 'deleteSubfieldBtn';
+  // Availability
+  static const String isAvailableSwitchAndroid = 'isAvailableSwitchAndroid';
+  static const String isAvailableSwitchiOS = 'isAvailableSwitchiOS';
+  static const String addAvailabilityBtn = 'addAvailabilityBtn';  
+  static const String availabilityItem = 'availabilityItem';
+  static const String deleteAvailabilityBtn = 'deleteAvailabilityBtn';  
 
 }

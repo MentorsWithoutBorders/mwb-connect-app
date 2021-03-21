@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -28,11 +29,12 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
       children: [
         InkWell(
           child: Container(
+            key: Key(AppKeys.availabilityItem + widget.index.toString()),
             width: 190.0,
             child: Row(
               children: [
                 Container(
-                  width: 90,
+                  width: 90.0,
                   child: Text(
                     '$dayOfWeek:',
                     style: const TextStyle(
@@ -40,11 +42,14 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
                     )
                   ),
                 ),
-                Text(
-                  '$timeFrom - $timeTo',
-                  style: const TextStyle(
-                    color: AppColors.DOVE_GRAY
-                  )
+                Container(
+                  width: 100.0,
+                  child: Text(
+                    '$timeFrom - $timeTo',
+                    style: const TextStyle(
+                      color: AppColors.DOVE_GRAY
+                    )
+                  ),
                 )
               ],
             ),
@@ -57,6 +62,20 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
       ]
     );
   }
+
+  Widget _showDeleteItem() {
+    return InkWell(
+      key: Key(AppKeys.deleteAvailabilityBtn + widget.index.toString()),
+      child: Container(
+        width: 30.0,
+        height: 30.0,
+        child: Image.asset(
+          'assets/images/delete_icon.png'
+        ),
+      ),
+      onTap: () => _profileProvider.deleteAvailability(widget.index)
+    );
+  }  
 
   void _showEditAvailabilityDialog(Availability availability) {
     showDialog(
@@ -84,19 +103,6 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
       ),
     );
   }  
-
-  Widget _showDeleteItem() {
-    return InkWell(
-      child: Container(
-        width: 30.0,
-        height: 30.0,
-        child: Image.asset(
-          'assets/images/delete_icon.png'
-        ),
-      ),
-      onTap: () => _profileProvider.deleteAvailability(widget.index)
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

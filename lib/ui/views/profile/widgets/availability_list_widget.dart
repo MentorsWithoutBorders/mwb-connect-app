@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -79,6 +80,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   Widget _showAddAvailabilityButton() {
     return Center(
       child: ElevatedButton(
+        key: const Key(AppKeys.addAvailabilityBtn),
         style: ElevatedButton.styleFrom(
           elevation: 1.0,
           primary: AppColors.MONZA,
