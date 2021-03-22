@@ -70,9 +70,9 @@ class _LoginSignupViewState extends State<LoginSignupView> {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
     _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
+    super.dispose();
   }
 
   Widget _showForm() {

@@ -70,8 +70,8 @@ class _TutorialViewState extends State<TutorialView> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }  
 
   Future<void> _setAppDirectory() async {

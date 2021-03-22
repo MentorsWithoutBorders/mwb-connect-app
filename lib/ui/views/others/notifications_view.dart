@@ -47,8 +47,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
   
   Widget _showNotifications() {

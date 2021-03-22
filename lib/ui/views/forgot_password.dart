@@ -47,9 +47,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
     _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
+    super.dispose();
   }
 
   Widget _showForgotPassword(BuildContext context) {

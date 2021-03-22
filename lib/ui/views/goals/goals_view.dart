@@ -75,9 +75,9 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
   
   void _afterLayout(_) {

@@ -42,8 +42,8 @@ class _StepsState extends State<Steps> {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
+    super.dispose();
   }  
 
   void _setShouldShowTutorialChevrons() {

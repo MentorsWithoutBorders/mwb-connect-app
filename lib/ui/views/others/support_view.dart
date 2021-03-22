@@ -50,9 +50,9 @@ class _SupportViewState extends State<SupportView> {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
     _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
+    super.dispose();
   }
 
   Widget _showSupport() {

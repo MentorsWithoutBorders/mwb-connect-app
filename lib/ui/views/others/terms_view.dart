@@ -30,8 +30,8 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }  
 
   void _afterLayout(_) {

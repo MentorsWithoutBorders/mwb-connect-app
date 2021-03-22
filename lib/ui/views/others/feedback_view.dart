@@ -50,9 +50,9 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
     _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
+    super.dispose();
   }
 
   Widget _showFeedback(BuildContext context) {

@@ -43,8 +43,8 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }   
 
   void _sendScreenNameAnalytics() {

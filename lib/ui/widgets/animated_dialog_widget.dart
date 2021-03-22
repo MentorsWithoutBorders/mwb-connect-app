@@ -38,8 +38,8 @@ class AnimatedDialogState extends State<AnimatedDialog>
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
   
   Widget _showDialog() {
