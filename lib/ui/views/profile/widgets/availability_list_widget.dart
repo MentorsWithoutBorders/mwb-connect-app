@@ -116,6 +116,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
+        key: Key(AppKeys.toast),
         content: Text(_profileProvider.availabilityMergedMessage),
         action: SnackBarAction(
           label: 'Close', onPressed: scaffold.hideCurrentSnackBar

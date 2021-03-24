@@ -8,6 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/profile_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/add_availability_widget.dart';
 
 import '../../../../utils/firebase_auth_mocks.dart';
@@ -28,13 +31,23 @@ Future<void> main() async {
 
   group('Add availability widget tests:', () {
     final WidgetLoader widgetLoader = WidgetLoader();
-    final Widget addAvailabilityWidget = widgetLoader.createWidget(widget: AddAvailability(), jsonFile: jsonFile);  
+    final Widget addAvailabilityWidget = widgetLoader.createWidget(widget: AddAvailability(), jsonFile: jsonFile);
+    final ProfileViewModel profileViewModel = locator<ProfileViewModel>();    
+    
+   setUp(() async {
+      profileViewModel.profile = Profile();
+      profileViewModel.profile.user = User(
+        isMentor: true,
+        isAvailable: true,
+        availabilities: []    
+      );
+    });       
 
     testWidgets('Add availability widget shows up test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(addAvailabilityWidget);
         await tester.pump();
-        await AddAvailabilityWidgetTest.widgetShowsUpTest();
+        await AddAvailabilityWidgetTest.widgetShowsUpTest(tester);
       });
     });
 
@@ -52,50 +65,49 @@ Future<void> main() async {
         await tester.pump();
         await AddAvailabilityWidgetTest.changeValuesTest(tester);
       });
-    });    
+    });
+        
   });
 }
 
 // ignore: avoid_classes_with_only_static_members
 class AddAvailabilityWidgetTest {
-  static Finder dayOfWeekDropdown = find.byKey(const Key(AppKeys.dayOfWeekDropdown));
-  static Finder timeFromDropdown = find.byKey(const Key(AppKeys.timeFromDropdown));
-  static Finder timeToDropdown = find.byKey(const Key(AppKeys.timeToDropdown));
+  static Finder dayOfWeekDropdown = find.byKey(const Key(AppKeys.dayOfWeekDropdown)).last;
+  static Finder timeFromDropdown = find.byKey(const Key(AppKeys.timeFromDropdown)).last;
+  static Finder timeToDropdown = find.byKey(const Key(AppKeys.timeToDropdown)).last;
   static Finder addAvailabilityBtn = find.byKey(const Key(AppKeys.submitBtn));
   static Finder cancelBtn = find.byKey(const Key(AppKeys.cancelBtn));
 
-  static Future<void> widgetShowsUpTest() async {
-    expect(find.text('Add availability'), findsOneWidget);
-    expect(dayOfWeekDropdown.last, findsOneWidget);
-    expect(timeFromDropdown.last, findsOneWidget);
-    expect(timeToDropdown.last, findsOneWidget);
-    expect(addAvailabilityBtn.last, findsOneWidget);
-    expect(cancelBtn.last, findsOneWidget);
+  static Future<void> widgetShowsUpTest(WidgetTester tester) async {
+    expect(dayOfWeekDropdown, findsOneWidget);
+    expect(timeFromDropdown, findsOneWidget);
+    expect(timeToDropdown, findsOneWidget);
+    expect(addAvailabilityBtn, findsOneWidget);
+    expect(cancelBtn, findsOneWidget);
   }
 
   static Future<void> initialValuesTest(WidgetTester tester) async {
-    expect(((tester.widget(dayOfWeekDropdown.last) as DropdownButton).value as String), equals('Saturday'));
-    expect(((tester.widget(timeFromDropdown.last) as DropdownButton).value as String), equals('10am'));
-    expect(((tester.widget(timeToDropdown.last) as DropdownButton).value as String), equals('2pm'));
+    expect(((tester.widget(dayOfWeekDropdown) as DropdownButton).value as String), equals('Saturday'));
+    expect(((tester.widget(timeFromDropdown) as DropdownButton).value as String), equals('10am'));
+    expect(((tester.widget(timeToDropdown) as DropdownButton).value as String), equals('2pm')); 
   }  
 
   static Future<void> changeValuesTest(WidgetTester tester) async {
-    await tester.tap(dayOfWeekDropdown.last);
+    await tester.tap(dayOfWeekDropdown);
     await tester.pump();
-    await tester.tap(find.text('Sunday').last);
+    await tester.tap(find.text('Wednesday').last);
     await tester.pump();
-    expect(((tester.widget(dayOfWeekDropdown.last) as DropdownButton).value as String), equals('Sunday'));
-    await tester.tap(timeFromDropdown.last);
+    expect(((tester.widget(dayOfWeekDropdown) as DropdownButton).value as String), equals('Wednesday'));
+    await tester.tap(timeFromDropdown);
     await tester.pump();
-    await tester.tap(find.text('11am').last);
+    await tester.tap(find.text('4pm').last);
     await tester.pump();
-    expect(((tester.widget(timeFromDropdown.last) as DropdownButton).value as String), equals('11am'));
-    await tester.tap(timeToDropdown.last);
+    expect(((tester.widget(timeFromDropdown) as DropdownButton).value as String), equals('4pm'));
+    await tester.tap(timeToDropdown);
     await tester.pump();
-    await tester.tap(find.text('3pm').last);
+    await tester.tap(find.text('6pm').last);
     await tester.pump();
-    expect(((tester.widget(timeToDropdown.last) as DropdownButton).value as String), equals('3pm'));
-    await tester.tap(addAvailabilityBtn.last);
-    await tester.pump();
+    expect(((tester.widget(timeToDropdown) as DropdownButton).value as String), equals('6pm'));
   }
+
 }

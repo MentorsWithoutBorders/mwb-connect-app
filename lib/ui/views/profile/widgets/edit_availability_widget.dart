@@ -54,8 +54,8 @@ class _EditAvailabilityState extends State<EditAvailability> {
   Widget _showDayOfWeekDropdown() {
     return Center(
       child: Container(
-        width: 150,
-        height: 30,
+        width: 150.0,
+        height: 30.0,
         margin: const EdgeInsets.only(top: 20.0),
         child: Dropdown(
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
@@ -122,8 +122,8 @@ class _EditAvailabilityState extends State<EditAvailability> {
   
   Widget _showTimeFromDropdown() {
     return Container(
-      width: 80,
-      height: 30,
+      width: 80.0,
+      height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
         dropdownMenuItemList: _buildTimeDropdown(),
@@ -148,8 +148,8 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   Widget _showTimeToDropdown() {
     return Container(
-      width: 80,
-      height: 30,
+      width: 80.0,
+      height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
         dropdownMenuItemList: _buildTimeDropdown(),

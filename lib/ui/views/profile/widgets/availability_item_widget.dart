@@ -96,6 +96,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
     final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
+        key: Key(AppKeys.toast),
         content: Text(_profileProvider.availabilityMergedMessage),
         action: SnackBarAction(
           label: 'Close', onPressed: scaffold.hideCurrentSnackBar

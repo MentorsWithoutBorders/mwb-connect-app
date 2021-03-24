@@ -65,8 +65,8 @@ class _AddAvailabilityState extends State<AddAvailability> {
   Widget _showDayOfWeekDropdown() {
     return Center(
       child: Container(
-        width: 150,
-        height: 30,
+        width: 150.0,
+        height: 30.0,
         margin: const EdgeInsets.only(top: 20.0),
         child: Dropdown(
           key: Key(AppKeys.dayOfWeekDropdown),
@@ -119,23 +119,10 @@ class _AddAvailabilityState extends State<AddAvailability> {
     );
   }
 
-  Widget _showError() {
-    return const Padding(
-      padding: EdgeInsets.only(bottom: 5.0),
-      child: Text(
-        '"From" time cannot be equal to or after "to" time',
-        style: TextStyle(
-          fontSize: 13.0,
-          color: AppColors.MONZA
-        )
-      )
-    );
-  }
-  
   Widget _showTimeFromDropdown() {
     return Container(
-      width: 80,
-      height: 30,
+      width: 80.0,
+      height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
         key: Key(AppKeys.timeFromDropdown),
@@ -145,24 +132,18 @@ class _AddAvailabilityState extends State<AddAvailability> {
         value: _availability.time.from
       ),
     );
-  }
-
-  void _hideError() {
-    setState(() {
-      _shouldShowError = false;
-    });
-  }
+  }  
 
   void _setTimeFrom(String time) {
     setState(() {
       _availability.time.from = time;
     });
-  }    
-
+  } 
+  
   Widget _showTimeToDropdown() {
     return Container(
-      width: 80,
-      height: 30,
+      width: 80.0,
+      height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
         key: Key(AppKeys.timeToDropdown),
@@ -178,7 +159,26 @@ class _AddAvailabilityState extends State<AddAvailability> {
     setState(() {
       _availability.time.to = time;
     });
-  }    
+  }     
+
+  Widget _showError() {
+    return const Padding(
+      padding: EdgeInsets.only(bottom: 5.0),
+      child: Text(
+        '"From" time cannot be equal to or after "to" time',
+        style: TextStyle(
+          fontSize: 13.0,
+          color: AppColors.MONZA
+        )
+      )
+    );
+  }
+
+  void _hideError() {
+    setState(() {
+      _shouldShowError = false;
+    });
+  }   
   
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
     final List<String> times = Utils.buildHoursList();
@@ -199,7 +199,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
-            key: Key(AppKeys.submitBtn),
+            key: Key(AppKeys.cancelBtn),
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
               child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
@@ -209,7 +209,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
             },
           ),
           ElevatedButton(
-            key: Key(AppKeys.cancelBtn),
+            key: Key(AppKeys.submitBtn),
             style: ElevatedButton.styleFrom(
               primary: AppColors.MONZA,
               shape: RoundedRectangleBorder(

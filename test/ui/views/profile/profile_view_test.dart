@@ -85,12 +85,13 @@ Future<void> main() async {
         ),
       ];
       profileViewModel.setFields(fields);
+      profileViewModel.profile = profile;
     });  
 
     testWidgets('Profile widgets show up for mentor test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         profile.user.isMentor = true;
-        profileViewModel.setUserDetails(profile.user);        
+        profileViewModel.setUserDetails(profile.user); 
         await tester.pumpWidget(profileWidget);
         await tester.pumpAndSettle();
         expect(find.text('Name'), findsOneWidget);

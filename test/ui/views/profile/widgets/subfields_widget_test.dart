@@ -72,7 +72,7 @@ Future<void> main() async {
       ];
     });
 
-    testWidgets('Subfields widgets shows up test', (WidgetTester tester) async {
+    testWidgets('Subfields widget shows up test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(subfieldsWidget);
         await tester.pump();
@@ -92,7 +92,7 @@ Future<void> main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(subfieldsWidget);
         await tester.pump();
-        await tester.tap(addSubfieldBtn.last);
+        await tester.tap(addSubfieldBtn);
         await tester.pump();        
         await SubfieldsWidgetTest.changeSubfieldTest(tester);
       });
@@ -102,9 +102,9 @@ Future<void> main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(subfieldsWidget);
         await tester.pump();
-        await tester.tap(addSubfieldBtn.last);
+        await tester.tap(addSubfieldBtn);
         await tester.pump();
-        await tester.tap(addSubfieldBtn.last);
+        await tester.tap(addSubfieldBtn);
         await tester.pump();           
         await SubfieldsWidgetTest.deleteSubfieldTest(tester);      
       });
@@ -121,13 +121,15 @@ class SubfieldsWidgetTest {
   
   static Future<void> subfieldsWidgetShowsUpTest() async {
     expect(find.text('Subfields'), findsOneWidget);
+    expect(find.text('Add subfield'), findsOneWidget);
+    expect(addSubfieldBtn, findsOneWidget);
   }
 
   static Future<void> addSubfieldTest(WidgetTester tester) async {
-    await tester.tap(addSubfieldBtn.last);
+    await tester.tap(addSubfieldBtn);
     await tester.pump();
     expect(((tester.widget(subfieldDropdown0.last) as DropdownButton).value as Subfield).name, equals('Web Development'));
-    await tester.tap(addSubfieldBtn.last);
+    await tester.tap(addSubfieldBtn);
     await tester.pump();
     expect(((tester.widget(subfieldDropdown1.last) as DropdownButton).value as Subfield).name, equals('Mobile Development'));
   }

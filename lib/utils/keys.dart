@@ -2,6 +2,7 @@ class AppKeys {
   // Common
   static const String submitBtn = 'submitBtn';
   static const String cancelBtn = 'cancelBtn';
+  static const String toast = 'toast';
   // Onboarding
   static const String goToLoginBtn = 'goToLoginBtn';
   static const String goToSignupBtn = 'goToSignupBtn';

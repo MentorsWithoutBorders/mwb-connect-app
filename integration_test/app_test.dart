@@ -5,13 +5,14 @@ import 'package:mwb_connect_app/main.dart' as app;
 import '../test/ui/views/profile/widgets/name_widget_test.dart';
 import '../test/ui/views/profile/widgets/field_dropdown_widget_test.dart';
 import '../test/ui/views/profile/widgets/subfields_widget_test.dart';
+import '../test/ui/views/profile/widgets/availability_list_widget_test.dart';
 
 void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   
   testWidgets("App test", (WidgetTester tester) async {
     app.main(); 
-    await tester.pumpAndSettle(Duration(seconds: 1));
+    await tester.pumpAndSettle(Duration(seconds: 2));
     
     // Login test
     // final Finder loginEmailField = find.byKey(Key(AppKeys.loginEmailField));
@@ -47,6 +48,10 @@ void main() async {
     await SubfieldsWidgetTest.addSubfieldTest(tester);
     await SubfieldsWidgetTest.changeSubfieldTest(tester);
     await SubfieldsWidgetTest.deleteSubfieldTest(tester);
+    // Availability test
+    await AvailabilityListWidgetTest.widgetShowsUpTest();
+    await AvailabilityListWidgetTest.addItemsTest(tester);
+    await AvailabilityListWidgetTest.addItemWithMergeTest(tester);
     await tester.pumpAndSettle(Duration(seconds: 1));    
   });  
 }
