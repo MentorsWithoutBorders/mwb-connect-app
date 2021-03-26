@@ -75,14 +75,14 @@ class AddAvailabilityWidgetTest {
   static Finder dayOfWeekDropdown = find.byKey(const Key(AppKeys.dayOfWeekDropdown)).last;
   static Finder timeFromDropdown = find.byKey(const Key(AppKeys.timeFromDropdown)).last;
   static Finder timeToDropdown = find.byKey(const Key(AppKeys.timeToDropdown)).last;
-  static Finder addAvailabilityBtn = find.byKey(const Key(AppKeys.submitBtn));
+  static Finder submitBtn = find.byKey(const Key(AppKeys.submitBtn));
   static Finder cancelBtn = find.byKey(const Key(AppKeys.cancelBtn));
 
   static Future<void> widgetShowsUpTest(WidgetTester tester) async {
     expect(dayOfWeekDropdown, findsOneWidget);
     expect(timeFromDropdown, findsOneWidget);
     expect(timeToDropdown, findsOneWidget);
-    expect(addAvailabilityBtn, findsOneWidget);
+    expect(submitBtn, findsOneWidget);
     expect(cancelBtn, findsOneWidget);
   }
 

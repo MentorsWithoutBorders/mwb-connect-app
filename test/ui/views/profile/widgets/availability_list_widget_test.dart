@@ -36,7 +36,7 @@ Future<void> main() async {
     final Widget availabilityListWidget = widgetLoader.createWidget(widget: AvailabilityList(), jsonFile: jsonFile);
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
 
-    setUp(() async {
+    setUpAll(() async {
       final EasyLocalizationController easyLocalizationController = widgetLoader.createEasyLocalizationController(jsonFile: jsonFile);
       await easyLocalizationController.loadTranslations();
       Localization.load(Locale('en', 'US'), translations: easyLocalizationController.translations);
@@ -69,10 +69,9 @@ Future<void> main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(availabilityListWidget);
         await tester.pump();
-        await AvailabilityListWidgetTest.addBaseItems(tester);
         await AvailabilityListWidgetTest.addItemWithMergeTest(tester);
       });
-    });    
+    });
     
     testWidgets('Delete availability item test', (WidgetTester tester) async {
       await tester.runAsync(() async {
@@ -105,38 +104,34 @@ class AvailabilityListWidgetTest {
   }
 
   static Future<void> addItemsTest(WidgetTester tester) async {
-    await addBaseItems(tester);
+    await tester.tap(addAvailabilityBtn);
+    await tester.pumpAndSettle();    
+    Availability availability = Availability(dayOfWeek: 'Friday', time: Time(from: '3pm', to: '5pm'));
+    await _submitItem(tester, availability);
+    await tester.tap(addAvailabilityBtn);
+    await tester.pumpAndSettle();    
+    availability = Availability(dayOfWeek: 'Wednesday', time: Time(from: '11am', to: '3pm'));
+    await _submitItem(tester, availability);      
     expect(find.text('Wednesday:'), findsOneWidget);
-    expect(find.text('3pm - 5pm'), findsOneWidget);
-    expect(find.text('Saturday:'), findsOneWidget);
-    expect(find.text('10am - 2pm'), findsOneWidget);      
+    expect(find.text('11am - 3pm'), findsOneWidget);
+    expect(find.text('Friday:'), findsOneWidget);
+    expect(find.text('3pm - 5pm'), findsOneWidget);      
   }
 
   static Future<void> addItemWithMergeTest(WidgetTester tester) async {
     await tester.tap(addAvailabilityBtn);
     await tester.pumpAndSettle();
-    Availability availability = Availability(dayOfWeek: 'Saturday', time: Time(from: '12pm', to: '3pm'));
-    await addItem(tester, availability);
+    Availability availability = Availability(dayOfWeek: 'Friday', time: Time(from: '1pm', to: '4pm'));
+    await _submitItem(tester, availability);
     expect(find.text('Wednesday:'), findsOneWidget);
-    expect(find.text('3pm - 5pm'), findsOneWidget);
-    expect(find.text('Saturday:'), findsOneWidget);
-    expect(find.text('10am - 3pm'), findsOneWidget);
+    expect(find.text('11am - 3pm'), findsOneWidget);
+    expect(find.text('Friday:'), findsOneWidget);
+    expect(find.text('1pm - 5pm'), findsOneWidget);
     expect(toast, findsOneWidget);
-    expect(find.text('The following availabilities have been merged:\nSaturday from 10am to 2pm\nSaturday from 12pm to 3pm\n'), findsOneWidget);
-  }  
-
- static Future<void> addBaseItems(WidgetTester tester) async {
-    await tester.tap(addAvailabilityBtn);
-    await tester.pumpAndSettle();
-    await tester.tap(submitBtn);
-    await tester.pump();
-    await tester.tap(addAvailabilityBtn);
-    await tester.pumpAndSettle();    
-    Availability availability = Availability(dayOfWeek: 'Wednesday', time: Time(from: '3pm', to: '5pm'));
-    await addItem(tester, availability);  
-  }  
+    expect(find.text('The following availabilities have been merged:\nFriday from 1pm to 4pm\nFriday from 3pm to 5pm\n'), findsOneWidget);
+  }
   
-  static Future<void> addItem(WidgetTester tester, Availability availability) async {
+  static Future<void> _submitItem(WidgetTester tester, Availability availability) async {
     await tester.tap(dayOfWeekDropdown);
     await tester.pump();
     await tester.tap(find.text(availability.dayOfWeek).last);
@@ -155,12 +150,10 @@ class AvailabilityListWidgetTest {
 
   static Future<void> deleteItemTest(WidgetTester tester) async {
     await tester.tap(deleteAvailabilityBtn0);
-    await tester.pump();
-    expect(availabilityItem0, findsOneWidget); 
-    expect(find.text('Saturday:'), findsOneWidget);
-    expect(find.text('10am - 2pm'), findsOneWidget);
+    await tester.pump(Duration(seconds: 1));
     await tester.tap(deleteAvailabilityBtn0);
-    await tester.pump();
-    expect(find.text('Saturday:'), findsNothing);
+    await tester.pump(Duration(seconds: 1));
+    expect(availabilityItem0, findsNothing); 
+    expect(availabilityItem1, findsNothing); 
   }  
 }

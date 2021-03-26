@@ -205,7 +205,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
               child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pop(context, false);
             },
           ),
           ElevatedButton(
