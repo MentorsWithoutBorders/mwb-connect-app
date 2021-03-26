@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -9,7 +10,7 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class EditAvailability extends StatefulWidget {
-  const EditAvailability({Key key, this.index})
+  const EditAvailability({Key key, @required this.index})
     : super(key: key); 
 
   final int index;
@@ -22,8 +23,22 @@ class _EditAvailabilityState extends State<EditAvailability> {
   ProfileViewModel _profileProvider;
   Availability _availability;
   bool _shouldShowError = false;
-  bool _isInit = false;
+  bool _isInit = true;
 
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {  
+      _profileProvider = Provider.of<ProfileViewModel>(context);
+      _initAvalability();
+      _isInit = false;
+    }
+    super.didChangeDependencies();
+  }
+
+  void _initAvalability() {
+    _availability = _profileProvider.profile.user.availabilities[widget.index];
+  }
+  
   Widget _showEditAvailabilityDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
@@ -58,6 +73,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
         height: 30.0,
         margin: const EdgeInsets.only(top: 20.0),
         child: Dropdown(
+          key: Key(AppKeys.dayOfWeekDropdown),
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
           value: _availability.dayOfWeek
@@ -126,6 +142,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
       height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
+        key: Key(AppKeys.timeFromDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeFrom,
@@ -152,6 +169,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
       height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
+        key: Key(AppKeys.timeToDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeTo,
@@ -185,15 +203,17 @@ class _EditAvailabilityState extends State<EditAvailability> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
+            key: Key(AppKeys.cancelBtn),
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
               child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pop(context, false);
             },
           ),
           ElevatedButton(
+            key: Key(AppKeys.submitBtn),
             style: ElevatedButton.styleFrom(
               primary: AppColors.MONZA,
               shape: RoundedRectangleBorder(
@@ -227,20 +247,8 @@ class _EditAvailabilityState extends State<EditAvailability> {
     }
   }
 
-  void _initAvalability() {
-    if (!_isInit) {
-      _availability = _profileProvider.profile.user.availabilities[widget.index];
-    } else {
-      setState(() {
-        _isInit = true;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    _profileProvider = Provider.of<ProfileViewModel>(context);
-    _initAvalability();
 
     return _showEditAvailabilityDialog();
   }

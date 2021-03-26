@@ -52,6 +52,8 @@ void main() async {
     await AvailabilityListWidgetTest.widgetShowsUpTest();
     await AvailabilityListWidgetTest.addItemsTest(tester);
     await AvailabilityListWidgetTest.addItemWithMergeTest(tester);
+    await AvailabilityListWidgetTest.editItemTest(tester);
+    await AvailabilityListWidgetTest.editItemWithMergeTest(tester);
     await AvailabilityListWidgetTest.deleteItemTest(tester);
     await tester.pumpAndSettle(Duration(seconds: 1));    
   });  
