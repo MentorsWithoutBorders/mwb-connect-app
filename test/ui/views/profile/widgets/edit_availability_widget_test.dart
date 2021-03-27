@@ -77,7 +77,14 @@ Future<void> main() async {
         await EditAvailabilityWidgetTest.changeValuesTest(tester);
       });
     });
-        
+
+    testWidgets('"To" time before "from" test', (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        await tester.pumpWidget(editAvailabilityWidget);
+        await tester.pump();
+        await EditAvailabilityWidgetTest.toTimeBeforeFromTest(tester);
+      });
+    });      
   });
 }
 
@@ -121,4 +128,17 @@ class EditAvailabilityWidgetTest {
     expect(((tester.widget(timeToDropdown) as DropdownButton).value as String), equals('6pm'));
   }
 
+  static Future<void> toTimeBeforeFromTest(WidgetTester tester) async {
+    await tester.tap(timeFromDropdown);
+    await tester.pump();
+    await tester.tap(find.text('5pm').last);
+    await tester.pump();
+    await tester.tap(timeToDropdown);
+    await tester.pump();
+    await tester.tap(find.text('3pm').last);
+    await tester.pump();
+    await tester.tap(submitBtn);
+    await tester.pumpAndSettle();
+    expect(find.text('"From" time cannot be equal to or after "to" time'), findsOneWidget);
+  }
 }
