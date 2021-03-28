@@ -139,7 +139,7 @@ class AvailabilityListWidgetTest {
     await tester.pumpAndSettle();
     Availability availability = Availability(dayOfWeek: 'Friday', time: Time(from: '1pm', to: '4pm'));
     await _submitItem(tester, availability);
-    await tester.pumpAndSettle(Duration(seconds: 1));
+    await tester.pumpAndSettle(Duration(seconds: 2));
     expect(find.text('Wednesday:'), findsOneWidget);
     expect(find.text('11am - 3pm'), findsOneWidget);
     expect(find.text('Friday:'), findsOneWidget);
