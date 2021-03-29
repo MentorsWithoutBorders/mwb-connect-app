@@ -215,7 +215,18 @@ class ProfileViewModel extends ChangeNotifier {
     profile.user.availabilities.removeAt(index);
     setUserDetails(profile.user);
     notifyListeners();
-  }  
+  }
+  
+  LessonsAvailability getLessonsAvailability() {
+    return profile.user.lessonsAvailability;
+  }
+  
+  void updateLessonsAvailability(LessonsAvailability lessonsAvailability) {
+    profile.user.lessonsAvailability = lessonsAvailability;
+    setUserDetails(profile.user);
+    notifyListeners();
+  }
+    
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

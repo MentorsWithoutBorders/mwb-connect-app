@@ -27,7 +27,7 @@ class DownloadService {
   }
 
   Future<void> downloadLocales() async {
-    await _downloadLocaleFile('en-US');
+    // await _downloadLocaleFile('en-US');
     // String currentLocale = await Devicelocale.currentLocale;
     // if (currentLocale.indexOf('_') > -1) {
     //   await _downloadLocaleFile(currentLocale.split('_')[0]);

@@ -82,7 +82,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
     );
   }
 
- List<DropdownMenuItem<String>> _buildDayOfWeekDropdown() {
+  List<DropdownMenuItem<String>> _buildDayOfWeekDropdown() {
     final List<DropdownMenuItem<String>> items = [];
     for (final String dayOfWeek in Utils.daysOfWeek) {
       items.add(DropdownMenuItem(

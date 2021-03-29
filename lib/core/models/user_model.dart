@@ -40,10 +40,10 @@ class User {
   }
 
   LessonsAvailability _lessonsAvailabilityFromJson(Map<String, dynamic> json) {
-    LessonsAvailability lessonsAvailability = LessonsAvailability();
-    if (json != null) {
-      lessonsAvailability = LessonsAvailability(maxNumber: json['maxNumber'], maxNumberUnit: json['maxNumberUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
+    if (json == null) {
+      return null;
     }
+    LessonsAvailability lessonsAvailability = LessonsAvailability(maxLessons: json['maxLessons'], maxLessonsUnit: json['maxLessonsUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
     return lessonsAvailability;
   }
 
@@ -81,8 +81,8 @@ class User {
   Map<String, dynamic> _lessonsAvailabilityToJson(LessonsAvailability lessonsAvailability) {
     if (lessonsAvailability != null) {
       return {
-        'maxNumber': lessonsAvailability.maxNumber, 
-        'maxNumberUnit': lessonsAvailability.maxNumberUnit, 
+        'maxLessons': lessonsAvailability.maxLessons, 
+        'maxLessonsUnit': lessonsAvailability.maxLessonsUnit, 
         'minInterval': lessonsAvailability.minInterval,
         'minIntervalUnit': lessonsAvailability.minIntervalUnit
       };
@@ -93,12 +93,22 @@ class User {
 }
 
 class LessonsAvailability {
-  int maxNumber;
-  String maxNumberUnit;
+  int maxLessons;
+  String maxLessonsUnit;
   int minInterval;
   String minIntervalUnit;
 
-  LessonsAvailability({this.maxNumber, this.maxNumberUnit, this.minInterval, this.minIntervalUnit});
+  LessonsAvailability({this.maxLessons, this.maxLessonsUnit, this.minInterval, this.minIntervalUnit}) {
+    if (maxLessonsUnit != null) {
+      maxLessonsUnit = Utils.translatePeriodUnitFromEng(maxLessonsUnit);
+    }
+    if (minIntervalUnit != null) {
+      minIntervalUnit = Utils.translatePeriodUnitFromEng(minIntervalUnit);
+    }
+  }
+
+  String get maxLessonsUnitToEng => Utils.translatePeriodUnitToEng(maxLessonsUnit);  
+  String get minIntervalUnitToEng => Utils.translatePeriodUnitToEng(minIntervalUnit);  
 }
 
 class Availability {

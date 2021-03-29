@@ -1,6 +1,7 @@
 class AppConstants {
   static const String mixpanelToken = '81cc871cb3dbe7ba070c1fb7b523645c';
   static const List<String> daysOfWeekEng = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  static const List<String> periodUnitsEng = ['day', 'week', 'month', 'year'];
   static const List<String> onboarding = [
     'mental_process_goal_steps_onboarding',
     'relaxation_method_onboarding',

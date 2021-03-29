@@ -15,7 +15,7 @@ class Label extends StatelessWidget {
         style: const TextStyle(
           fontSize: 12.0,
           color: AppColors.DOVE_GRAY
-        ),
+        )
       )
     );
   }  

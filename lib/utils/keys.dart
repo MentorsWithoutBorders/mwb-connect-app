@@ -29,4 +29,9 @@ class AppKeys {
   static const String dayOfWeekDropdown = 'dayOfWeekDropdown';
   static const String timeFromDropdown = 'timeFromDropdown';
   static const String timeToDropdown = 'timeToDropdown';
+  // Lessons
+  static const String maxLessonsDropdown = 'maxLessonsDropdown';
+  static const String maxLessonsUnitDropdown = 'maxLessonsUnitDropdown';
+  static const String minIntervalDropdown = 'minIntervalDropdown';
+  static const String minIntervalUnitDropdown = 'minIntervalUnitDropdown';
 }

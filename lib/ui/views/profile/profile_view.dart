@@ -10,6 +10,7 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.d
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_switch_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/lessons_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -36,45 +37,72 @@ class _ProfileViewState extends State<ProfileView> {
         padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 55.0, 15.0, 20.0), 
         child: Column(
           children: [
-            Card(
-              elevation: 5,
-              margin: const EdgeInsets.only(bottom: 15.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ), 
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: const EdgeInsets.all(16.0),
-                child: Wrap(
-                  children: [
-                    Name(),
-                    FieldDropdown(),
-                    Subfields()
-                  ],
-                )
-              ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ), 
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: const EdgeInsets.all(16.0),
-                child: Wrap(
-                  children: [
-                    AvailabilitySwitch(),
-                    AvailabilityList(),
-                  ],
-                )
-              ),
-            ), 
+            _showPrimaryCard(),
+            _showAvailabilityCard(),
+            _showLessonsCard()
           ],
         ),
       ),
     );
   }
+
+  Widget _showPrimaryCard() {
+    return Card(
+      elevation: 5,
+      margin: const EdgeInsets.only(bottom: 15.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ), 
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.all(16.0),
+        child: Wrap(
+          children: [
+            Name(),
+            FieldDropdown(),
+            Subfields()
+          ],
+        )
+      ),
+    );
+  }
+
+  Widget _showAvailabilityCard() {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ), 
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.all(16.0),
+        child: Wrap(
+          children: [
+            AvailabilitySwitch(),
+            AvailabilityList(),
+          ],
+        )
+      ),
+    );
+  }
+
+ Widget _showLessonsCard() {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ), 
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.all(16.0),
+        child: Wrap(
+          children: [
+            Lessons(),
+          ],
+        )
+      ),
+    );
+  }  
   
   Widget _showTitle() {
     return Container(

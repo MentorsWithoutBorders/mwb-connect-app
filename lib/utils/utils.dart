@@ -3,7 +3,8 @@ import 'package:mwb_connect_app/utils/constants.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Utils {
-  static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');  
+  static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');
+  static List<String> get periodUnits => 'common.period_units'.tr().split(', ');  
 
   static String translateDayOfWeekToEng(String dayOfWeek) {
     return AppConstants.daysOfWeekEng[daysOfWeek.indexOf(dayOfWeek)];
@@ -11,7 +12,15 @@ class Utils {
 
   static String translateDayOfWeekFromEng(String dayOfWeek) {
     return daysOfWeek[AppConstants.daysOfWeekEng.indexOf(dayOfWeek)];
-  }  
+  }
+
+  static String translatePeriodUnitToEng(String periodUnit) {
+    return AppConstants.periodUnitsEng[periodUnits.indexOf(periodUnit)];
+  }
+
+  static String translatePeriodUnitFromEng(String periodUnit) {
+    return periodUnits[AppConstants.periodUnitsEng.indexOf(periodUnit)];
+  }   
 
   static int convertTime12to24(String time12h) {
     int hours = int.parse(time12h.replaceAll(RegExp(r'[^0-9]'),''));
