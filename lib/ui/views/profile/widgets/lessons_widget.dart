@@ -18,10 +18,7 @@ class Lessons extends StatefulWidget {
 
 class _LessonsState extends State<Lessons> {
   ProfileViewModel _profileProvider;
-  int _selectedMaxLessons;
-  int _selectedMinInterval;
-  String _selectedMaxLessonsUnit;
-  String _selectedMinIntervalUnit;
+  LessonsAvailability _lessonsAvailability;
 
   Widget _showLessons() {
     return Wrap(
@@ -57,7 +54,7 @@ class _LessonsState extends State<Lessons> {
               dropdownMenuItemList: _buildNumbers(),
               onTapped: _unfocus,
               onChanged: _changeMaxLessons,
-              value: _selectedMaxLessons
+              value: _lessonsAvailability.maxLessons
             ),
           ),
           const Padding(
@@ -71,7 +68,7 @@ class _LessonsState extends State<Lessons> {
             )
           ),
           Container(
-            width: 90.0,
+            width: 130.0,
             height: 45.0,
             padding: const EdgeInsets.only(bottom: 15),
             child: Dropdown(
@@ -79,7 +76,7 @@ class _LessonsState extends State<Lessons> {
               dropdownMenuItemList: _buildPeriodUnitsDropdown(),
               onTapped: _unfocus,
               onChanged: _changeMaxLessonsUnit,
-              value: _selectedMaxLessonsUnit
+              value: _lessonsAvailability.maxLessonsUnit
             ),
           ),
         ]
@@ -116,7 +113,7 @@ class _LessonsState extends State<Lessons> {
   
   void _setSelectedMaxLessons(int i) {
     setState(() {
-      _selectedMaxLessons = i;
+      _lessonsAvailability.maxLessons = i;
     });
   }
 
@@ -127,7 +124,7 @@ class _LessonsState extends State<Lessons> {
   
   void _setSelectedMaxLessonsUnit(unit) {
     setState(() {
-      _selectedMaxLessonsUnit = unit;
+      _lessonsAvailability.maxLessonsUnit = unit;
     });
   }
 
@@ -144,14 +141,14 @@ class _LessonsState extends State<Lessons> {
             dropdownMenuItemList: _buildNumbers(),
             onTapped: _unfocus,
             onChanged: _changeMinInterval,
-            value: _selectedMinInterval
+            value: _lessonsAvailability.minInterval
           ),
         ),
         const Padding(
           padding: EdgeInsets.only(left: 10.0)
         ),
         Container(
-          width: 100.0,
+          width: 130.0,
           height: 45.0,
           padding: const EdgeInsets.only(bottom: 15),
           child: Dropdown(
@@ -159,7 +156,7 @@ class _LessonsState extends State<Lessons> {
             dropdownMenuItemList: _buildPeriodUnitsDropdown(),
             onTapped: _unfocus,
             onChanged: _changeMinIntervalUnit,
-            value: _selectedMinIntervalUnit
+            value: _lessonsAvailability.minIntervalUnit
           ),
         ),
       ]
@@ -173,7 +170,7 @@ class _LessonsState extends State<Lessons> {
   
   void _setSelectedMinInterval(int i) {
     setState(() {
-      _selectedMinInterval = i;
+      _lessonsAvailability.minInterval = i;
     });
   }
   
@@ -184,7 +181,7 @@ class _LessonsState extends State<Lessons> {
   
   void _setSelecteddMinIntervalUnit(unit) {
     setState(() {
-      _selectedMinIntervalUnit = unit;
+      _lessonsAvailability.minIntervalUnit = unit;
     });
   }  
 
@@ -205,29 +202,20 @@ class _LessonsState extends State<Lessons> {
     );
   }
   
-  void _setSelectedValues(LessonsAvailability lessonsAvailability) {
+  void _setLessonsAvailability() {
     setState(() {
-      _selectedMaxLessons = lessonsAvailability.maxLessons;
-      _selectedMaxLessonsUnit = lessonsAvailability.maxLessonsUnit;
-      _selectedMinInterval = lessonsAvailability.minInterval;
-      _selectedMinIntervalUnit = lessonsAvailability.minIntervalUnit;
+      _lessonsAvailability = _profileProvider.getLessonsAvailability();
     });
   }
 
   void _updateLessonsAvailability() {
-    LessonsAvailability lessonsAvailability = LessonsAvailability(
-      maxLessons: _selectedMaxLessons,
-      maxLessonsUnit: _selectedMaxLessonsUnit,
-      minInterval: _selectedMinInterval,
-      minIntervalUnit: _selectedMinIntervalUnit
-    );
-    _profileProvider.updateLessonsAvailability(lessonsAvailability);
+    _profileProvider.updateLessonsAvailability(_lessonsAvailability);
   }
 
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
-    _setSelectedValues(_profileProvider.getLessonsAvailability());
+    _setLessonsAvailability();
 
     return _showLessons();
   }

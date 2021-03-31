@@ -82,9 +82,9 @@ class User {
     if (lessonsAvailability != null) {
       return {
         'maxLessons': lessonsAvailability.maxLessons, 
-        'maxLessonsUnit': lessonsAvailability.maxLessonsUnit, 
+        'maxLessonsUnit': lessonsAvailability.maxLessonsUnitToEng, 
         'minInterval': lessonsAvailability.minInterval,
-        'minIntervalUnit': lessonsAvailability.minIntervalUnit
+        'minIntervalUnit': lessonsAvailability.minIntervalUnitToEng
       };
     } else {
       return Map();

@@ -27,7 +27,7 @@ class DownloadService {
   }
 
   Future<void> downloadLocales() async {
-    // await _downloadLocaleFile('en-US');
+    await _downloadLocaleFile('en-US');
     // String currentLocale = await Devicelocale.currentLocale;
     // if (currentLocale.indexOf('_') > -1) {
     //   await _downloadLocaleFile(currentLocale.split('_')[0]);
@@ -90,7 +90,7 @@ class DownloadService {
 
   Future<void> _getFileFromCloudstore(ref, String fileAppDirPath) async {
     final String url = await ref.getDownloadURL();
-    final http.Response downloadData = await http.get(Uri.dataFromString(url));
+    final http.Response downloadData = await http.get(Uri.parse(url));
     final File file = File(fileAppDirPath);
     file.writeAsString(utf8.decode(downloadData.bodyBytes));
   }

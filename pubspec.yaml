@@ -5,6 +5,8 @@ version: 1.0.0+1
 environment:
   sdk: '>=2.9.0 <3.0.0'
 
+publish_to: none  
+
 dependencies:
   flutter:
     sdk: flutter
@@ -25,7 +27,6 @@ dependencies:
   path_provider: ^2.0.1
   get_it: ^6.0.0
   shared_preferences: ^2.0.5
-  easy_localization: ^3.0.0
   flutter_segment: ^3.0.0
   flutter_phoenix: ^1.0.0
   devicelocale: ^0.4.1
@@ -43,6 +44,10 @@ dependencies:
   package_info: ^2.0.0
   rxdart: ^0.26.0
   enum_to_string: ^2.0.1
+
+  easy_localization:
+    git:
+      url: git://github.com/MentorsWithoutBorders/easy_localization.git
 
 dependency_overrides:
   plugin_platform_interface: ^2.0.0

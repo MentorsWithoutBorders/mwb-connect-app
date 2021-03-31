@@ -1,5 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
@@ -29,12 +32,12 @@ Future<void> main() async {
   await _signInAnonymously();
   await _initAppDirectory();
 
-  //Directory directory = await getApplicationDocumentsDirectory();
+  Directory directory = await getApplicationDocumentsDirectory();
   runApp(
     Phoenix(
       child: EasyLocalization(
         supportedLocales: [Locale('en', 'US')],
-        path: 'assets/i18n',
+        path: directory.path+'/i18n',
         fallbackLocale: const Locale('en', 'US'),
         child: MWBConnectApp(AppConstants.mixpanelToken)
       ),
