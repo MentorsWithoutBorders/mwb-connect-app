@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -48,7 +48,7 @@ class _LessonsState extends State<Lessons> {
             width: 50.0,
             height: 45.0,
             margin: const EdgeInsets.only(left: 2.0),
-            padding: const EdgeInsets.only(bottom: 15),
+            padding: const EdgeInsets.only(bottom: 15.0),
             child: Dropdown(
               key: const Key(AppKeys.maxLessonsDropdown),
               dropdownMenuItemList: _buildNumbers(),
@@ -70,10 +70,10 @@ class _LessonsState extends State<Lessons> {
           Container(
             width: 130.0,
             height: 45.0,
-            padding: const EdgeInsets.only(bottom: 15),
+            padding: const EdgeInsets.only(bottom: 15.0),
             child: Dropdown(
               key: const Key(AppKeys.maxLessonsUnitDropdown),
-              dropdownMenuItemList: _buildPeriodUnitsDropdown(),
+              dropdownMenuItemList: _buildMaxLessonsUnitsDropdown(),
               onTapped: _unfocus,
               onChanged: _changeMaxLessonsUnit,
               value: _lessonsAvailability.maxLessonsUnit
@@ -95,12 +95,12 @@ class _LessonsState extends State<Lessons> {
     return items;
   }
 
-  List<DropdownMenuItem<String>> _buildPeriodUnitsDropdown() {
+  List<DropdownMenuItem<String>> _buildMaxLessonsUnitsDropdown() {
     final List<DropdownMenuItem<String>> items = [];
     for (final String periodUnit in Utils.periodUnits) {
       items.add(DropdownMenuItem(
         value: periodUnit,
-        child: Text(periodUnit),
+        child: Text(periodUnit)
       ));
     }
     return items;
@@ -153,35 +153,46 @@ class _LessonsState extends State<Lessons> {
           padding: const EdgeInsets.only(bottom: 15),
           child: Dropdown(
             key: const Key(AppKeys.minIntervalUnitDropdown),
-            dropdownMenuItemList: _buildPeriodUnitsDropdown(),
+            dropdownMenuItemList: _buildMinIntervalUnitsDropdown(),
             onTapped: _unfocus,
             onChanged: _changeMinIntervalUnit,
-            value: _lessonsAvailability.minIntervalUnit
+            value: _profileProvider.getPeriodUnitPlural(_lessonsAvailability.minIntervalUnit, _lessonsAvailability.minInterval)
           ),
         ),
       ]
     );
-  } 
+  }
   
-  void _changeMinInterval(int i) {
-    _setSelectedMinInterval(i);
+  List<DropdownMenuItem<String>> _buildMinIntervalUnitsDropdown() {
+    final List<DropdownMenuItem<String>> items = [];
+    for (final String periodUnit in Utils.periodUnits) {
+      items.add(DropdownMenuItem(
+        value: _profileProvider.getPeriodUnitPlural(periodUnit, _lessonsAvailability.minInterval),
+        child: Text(_profileProvider.getPeriodUnitPlural(periodUnit, _lessonsAvailability.minInterval)))
+      );
+    }
+    return items;
+  }
+  
+  void _changeMinInterval(int interval) {
+    _setSelectedMinInterval(interval);
     _updateLessonsAvailability();
   }
   
-  void _setSelectedMinInterval(int i) {
+  void _setSelectedMinInterval(int interval) {
     setState(() {
-      _lessonsAvailability.minInterval = i;
+      _lessonsAvailability.minInterval = interval;
     });
   }
   
   void _changeMinIntervalUnit(String unit) {
-    _setSelecteddMinIntervalUnit(unit);
+    _setSelectedMinIntervalUnit(unit);
     _updateLessonsAvailability();
   }
   
-  void _setSelecteddMinIntervalUnit(unit) {
+  void _setSelectedMinIntervalUnit(unit) {
     setState(() {
-      _lessonsAvailability.minIntervalUnit = unit;
+      _lessonsAvailability.minIntervalUnit = _profileProvider.getPeriodUnitPlural(unit, _lessonsAvailability.minInterval);
     });
   }  
 
@@ -209,6 +220,7 @@ class _LessonsState extends State<Lessons> {
   }
 
   void _updateLessonsAvailability() {
+    _lessonsAvailability.minIntervalUnit = _profileProvider.getPeriodUnitSingular(_lessonsAvailability.minIntervalUnit, _lessonsAvailability.minInterval);
     _profileProvider.updateLessonsAvailability(_lessonsAvailability);
   }
 

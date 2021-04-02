@@ -1,40 +1,40 @@
 {
-	"day": {
-		"zero": "days",
-		"one": "day",
-		"two": "days",
-		"few": "days",			
-		"many": "days",
-		"other": "days"
+	"zi": {
+		"zero": "zile",
+		"one": "zi",
+		"two": "zile",
+		"few": "zile",			
+		"many": "zile",
+		"other": "zile"
 	},
-	"week": {
-		"zero": "weeks",
-		"one": "week",
-		"two": "weeks",
-		"few": "weeks",			
-		"many": "weeks",
-		"other": "weeks"
+	"saptamana": {
+		"zero": "saptamani",
+		"one": "saptamana",
+		"two": "saptamani",
+		"few": "saptamani",			
+		"many": "saptamani",
+		"other": "saptamani"
 	},
-	"month": {
-		"zero": "months",
-		"one": "month",
-		"two": "months",
-		"few": "months",
-		"many": "months",
-		"other": "months"
+	"luna": {
+		"zero": "luni",
+		"one": "luna",
+		"two": "luni",
+		"few": "luni",
+		"many": "luni",
+		"other": "luni"
 	},
-	"year": {
-		"zero": "years",
-		"one": "year",
-		"two": "years",
-		"few": "years",			
-		"many": "years",
-		"other": "years"
+	"an": {
+		"zero": "ani",
+		"one": "an",
+		"two": "ani",
+		"few": "ani",			
+		"many": "ani",
+		"other": "ani"
 	},
 	"common": {
 		"cancel": "Cancel",
-		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
-		"period_units": "day, week, month, year"				
+		"days_of_week": "Luni, Marti, Miercuri, Joi, Vineri, Sambata, Duminica",
+		"period_units": "zi, saptamana, luna, an"				
 	},
 	"onboarding": {
 		"mental_process_goal_steps_onboarding": {

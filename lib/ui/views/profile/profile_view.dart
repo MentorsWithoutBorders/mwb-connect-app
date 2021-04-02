@@ -70,6 +70,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _showAvailabilityCard() {
     return Card(
       elevation: 5,
+      margin: const EdgeInsets.only(bottom: 12.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ), 

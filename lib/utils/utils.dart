@@ -4,7 +4,15 @@ import 'package:mwb_connect_app/utils/constants.dart';
 // ignore: avoid_classes_with_only_static_members
 class Utils {
   static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');
-  static List<String> get periodUnits => 'common.period_units'.tr().split(', ');  
+  static List<String> get periodUnits => 'common.period_units'.tr().split(', ');
+  
+  static List<String> getPeriodUnitsPlural() {
+    List<String> periodUnitsPlural = [];
+    for (final String periodUnit in Utils.periodUnits) {
+      periodUnitsPlural.add(plural(periodUnit, 2));
+    }
+    return periodUnitsPlural;
+  }    
 
   static String translateDayOfWeekToEng(String dayOfWeek) {
     return AppConstants.daysOfWeekEng[daysOfWeek.indexOf(dayOfWeek)];
