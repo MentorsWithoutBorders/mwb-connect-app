@@ -148,7 +148,7 @@ class _LessonsState extends State<Lessons> {
           padding: EdgeInsets.only(left: 10.0)
         ),
         Container(
-          width: 130.0,
+          width: 100.0,
           height: 45.0,
           padding: const EdgeInsets.only(bottom: 15),
           child: Dropdown(
@@ -215,7 +215,7 @@ class _LessonsState extends State<Lessons> {
   
   void _setLessonsAvailability() {
     setState(() {
-      _lessonsAvailability = _profileProvider.getLessonsAvailability();
+      _lessonsAvailability = _profileProvider.profile.user.lessonsAvailability;
     });
   }
 

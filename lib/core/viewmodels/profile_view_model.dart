@@ -218,10 +218,6 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  LessonsAvailability getLessonsAvailability() {
-    return profile.user.lessonsAvailability;
-  }
-  
   void updateLessonsAvailability(LessonsAvailability lessonsAvailability) {
     profile.user.lessonsAvailability = lessonsAvailability;
     setUserDetails(profile.user);

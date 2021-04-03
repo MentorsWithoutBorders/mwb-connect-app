@@ -55,7 +55,13 @@ Future<void> main() async {
             dayOfWeek: 'Saturday',
             time: Time(from: '10am', to: '2pm')
           )
-        ]
+        ],
+        lessonsAvailability: LessonsAvailability(
+          maxLessons: 2,
+          maxLessonsUnit: 'month',
+          minInterval: 2,
+          minIntervalUnit: 'week'
+        )
       );
       profileViewModel.profile.fields = [
         Field(
@@ -242,7 +248,36 @@ Future<void> main() async {
       expect(availabilities[0].dayOfWeek, 'Saturday');
       expect(availabilities[0].time.from, '10am');
       expect(availabilities[0].time.to, '2pm');
-    });     
+    });
+
+    test('Lessons availability should be updated', () {
+      LessonsAvailability lessonsAvailability = LessonsAvailability(
+        maxLessons: 3,
+        maxLessonsUnit: 'year',
+        minInterval: 4,
+        minIntervalUnit: 'month'
+      );
+      profileViewModel.updateLessonsAvailability(lessonsAvailability);
+      lessonsAvailability = profileViewModel.profile.user.lessonsAvailability;      
+      expect(lessonsAvailability.maxLessons, 3);
+      expect(lessonsAvailability.maxLessonsUnit, 'year');
+      expect(lessonsAvailability.minInterval, 4);
+      expect(lessonsAvailability.minIntervalUnit, 'month');
+    });
+
+    test('Period unit plural should be correct', () {
+      String periodUnit = profileViewModel.getPeriodUnitPlural('month', 3);      
+      expect(periodUnit, 'months');
+      periodUnit = profileViewModel.getPeriodUnitPlural('week', 1);
+      expect(periodUnit, 'week');
+    });
+    
+    test('Period unit singular should be correct', () {
+      String periodUnit = profileViewModel.getPeriodUnitSingular('months', 3);      
+      expect(periodUnit, 'month');
+      periodUnit = profileViewModel.getPeriodUnitSingular('week', 1);
+      expect(periodUnit, 'week');
+    });      
 
   });
 }
