@@ -181,12 +181,14 @@ class AvailabilityListWidgetTest {
     await tester.pumpAndSettle();
     Availability availability = Availability(dayOfWeek: 'Wednesday', time: Time(from: '2pm', to: '5pm'));
     await _submitItem(tester, availability);
+    await tester.pumpAndSettle(Duration(seconds: 2));
     expect(find.text('Wednesday:'), findsOneWidget);
     expect(find.text('11am - 5pm'), findsOneWidget);
     expect(find.text('Thursday:'), findsNothing);
     expect(find.text('4pm - 6pm'), findsNothing);     
     expect(toast, findsOneWidget);
     expect(find.text('The following availabilities have been merged:\nWednesday from 11am to 3pm\nWednesday from 2pm to 5pm\n'), findsOneWidget);
+    await tester.pump(Duration(seconds: 4));
   }  
 
   static Future<void> deleteItemTest(WidgetTester tester) async {

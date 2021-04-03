@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/main.dart' as app;
 import '../test/ui/views/profile/widgets/name_widget_test.dart';
 import '../test/ui/views/profile/widgets/field_dropdown_widget_test.dart';
 import '../test/ui/views/profile/widgets/subfields_widget_test.dart';
 import '../test/ui/views/profile/widgets/availability_switch_widget_test.dart';
 import '../test/ui/views/profile/widgets/availability_list_widget_test.dart';
+import '../test/ui/views/profile/widgets/lessons_widget_test.dart';
 
 void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,7 @@ void main() async {
     await tester.tap(find.text('My profile'));
     await tester.pumpAndSettle();
     // Name test
+    // Initial value: name = 'Bob'
     await NameWidgetTest.nameShowsUpTest();
     await NameWidgetTest.initialNameTest(tester);
     await NameWidgetTest.nameChangeTest(tester);
@@ -54,12 +57,19 @@ void main() async {
     await AvailabilitySwitchWidgetTest.initialValueTest(tester);
     await AvailabilitySwitchWidgetTest.changeValueTest(tester);
     // Availability test
+    // Initial values: isAvailable = true; availabilities list has to be empty
     await AvailabilityListWidgetTest.widgetShowsUpTest();
     await AvailabilityListWidgetTest.addItemsTest(tester);
     await AvailabilityListWidgetTest.addItemWithMergeTest(tester);
     await AvailabilityListWidgetTest.editItemTest(tester);
     await AvailabilityListWidgetTest.editItemWithMergeTest(tester);
     await AvailabilityListWidgetTest.deleteItemTest(tester);
+    // Lessons availability test
+    // Initial values: maxLessons = 2 months; minInterval = 2 weeks
+    await LessonsWidgetTest.widgetShowsUpTest();
+    await LessonsWidgetTest.initialValuesTest(tester);
+    await LessonsWidgetTest.changeMaxLessonsTest(tester);
+    await LessonsWidgetTest.changeMinIntervalTest(tester);
     await tester.pumpAndSettle(Duration(seconds: 1));    
   });  
 }

@@ -58,7 +58,7 @@ Future<void> main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(editAvailabilityWidget);
         await tester.pump();
-        await EditAvailabilityWidgetTest.widgetShowsUpTest(tester);
+        await EditAvailabilityWidgetTest.widgetShowsUpTest();
       });
     });
 
@@ -96,7 +96,7 @@ class EditAvailabilityWidgetTest {
   static Finder submitBtn = find.byKey(const Key(AppKeys.submitBtn));
   static Finder cancelBtn = find.byKey(const Key(AppKeys.cancelBtn));
 
-  static Future<void> widgetShowsUpTest(WidgetTester tester) async {
+  static Future<void> widgetShowsUpTest() async {
     expect(dayOfWeekDropdown, findsOneWidget);
     expect(timeFromDropdown, findsOneWidget);
     expect(timeToDropdown, findsOneWidget);

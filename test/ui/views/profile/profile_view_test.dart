@@ -64,7 +64,13 @@ Future<void> main() async {
             dayOfWeek: 'Saturday',
             time: Time(from: '10am', to: '2pm')
           )
-        ]        
+        ],
+        lessonsAvailability: LessonsAvailability(
+          maxLessons: 2,
+          maxLessonsUnit: 'month',
+          minInterval: 2,
+          minIntervalUnit: 'week'
+        )
       );
       final List<Field> fields = [
         Field(
@@ -101,19 +107,26 @@ Future<void> main() async {
         expect(find.text('Subfields'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.subfieldDropdown + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.subfieldDropdown + '1')).last, findsOneWidget);        
-        expect(find.byKey(const Key(AppKeys.deleteSubfieldBtn + '0')).last, findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.deleteSubfieldBtn + '1')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.deleteSubfieldBtn + '0')), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.deleteSubfieldBtn + '1')), findsOneWidget);
         expect(find.text('Add subfield'), findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.addSubfieldBtn)).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.addSubfieldBtn)), findsOneWidget);
         expect(find.text('I\'m currently available'), findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.isAvailableSwitchAndroid)).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.isAvailableSwitchAndroid)), findsOneWidget);
         expect(find.text('Availability'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '0')).last, findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '1')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '0')), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '1')), findsOneWidget);
         expect(find.text('Add availability'), findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.addAvailabilityBtn)).last, findsOneWidget);        
+        expect(find.byKey(const Key(AppKeys.addAvailabilityBtn)), findsOneWidget);
+        expect(find.text('Lessons'), findsOneWidget);
+        expect(find.text('I want to do a maximum of:'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.maxLessonsDropdown)).last, findsOneWidget);
+        expect(find.text('lessons per'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.maxLessonsUnitDropdown)).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.minIntervalDropdown)).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.minIntervalUnitDropdown)).last, findsOneWidget);
         debugDefaultTargetPlatformOverride = null;
       });
     });

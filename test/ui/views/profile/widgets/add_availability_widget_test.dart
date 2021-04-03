@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -47,7 +47,7 @@ Future<void> main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(addAvailabilityWidget);
         await tester.pump();
-        await AddAvailabilityWidgetTest.widgetShowsUpTest(tester);
+        await AddAvailabilityWidgetTest.widgetShowsUpTest();
       });
     });
 
@@ -85,7 +85,7 @@ class AddAvailabilityWidgetTest {
   static Finder submitBtn = find.byKey(const Key(AppKeys.submitBtn));
   static Finder cancelBtn = find.byKey(const Key(AppKeys.cancelBtn));
 
-  static Future<void> widgetShowsUpTest(WidgetTester tester) async {
+  static Future<void> widgetShowsUpTest() async {
     expect(dayOfWeekDropdown, findsOneWidget);
     expect(timeFromDropdown, findsOneWidget);
     expect(timeToDropdown, findsOneWidget);

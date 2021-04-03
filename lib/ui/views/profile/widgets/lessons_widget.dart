@@ -137,7 +137,7 @@ class _LessonsState extends State<Lessons> {
           margin: const EdgeInsets.only(left: 2.0),            
           padding: const EdgeInsets.only(bottom: 15.0),
           child: Dropdown(
-            key: const Key(AppKeys.maxLessonsDropdown),
+            key: const Key(AppKeys.minIntervalDropdown),
             dropdownMenuItemList: _buildNumbers(),
             onTapped: _unfocus,
             onChanged: _changeMinInterval,
