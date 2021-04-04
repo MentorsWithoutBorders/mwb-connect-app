@@ -68,7 +68,7 @@ class _LessonsState extends State<Lessons> {
             )
           ),
           Container(
-            width: 130.0,
+            width: 95.0,
             height: 45.0,
             padding: const EdgeInsets.only(bottom: 15.0),
             child: Dropdown(

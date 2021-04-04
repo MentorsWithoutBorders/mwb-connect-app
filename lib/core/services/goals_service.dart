@@ -29,7 +29,7 @@ class GoalsService {
     return ;
   }
 
-  Future<void>  updateGoal(Goal goal, String id) async {
+  Future<void> updateGoal(Goal goal, String id) async {
     await _api.updateDocument(path: 'goals', isForUser: true, data: goal.toJson(), id: id);
     return ;
   }  

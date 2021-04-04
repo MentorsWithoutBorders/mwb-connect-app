@@ -17,8 +17,9 @@ class _NameState extends State<Name> {
   ProfileViewModel _profileProvider;  
 
   Widget _showName() {
+    final double marginBottom = _profileProvider.profile.user.isMentor ? 15.0 : 5.0;
     return Container(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.only(bottom: marginBottom),
       child: InputBox(
         key: const Key(AppKeys.nameField),
         autofocus: false, 

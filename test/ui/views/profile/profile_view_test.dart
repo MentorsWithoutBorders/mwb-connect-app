@@ -39,7 +39,7 @@ Future<void> main() async {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
     final Profile profile = Profile();
     final WidgetLoader widgetLoader = WidgetLoader();
-    final Widget profileWidget = widgetLoader.createWidget(widget: ProfileView(isMentor: true), jsonFile: jsonFile);
+    final Widget profileWidget = widgetLoader.createWidget(widget: ProfileView(), jsonFile: jsonFile);
 
     setUp(() async {
       final EasyLocalizationController easyLocalizationController = widgetLoader.createEasyLocalizationController(jsonFile: jsonFile);
@@ -127,6 +127,25 @@ Future<void> main() async {
         expect(find.byKey(const Key(AppKeys.maxLessonsUnitDropdown)).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.minIntervalDropdown)).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.minIntervalUnitDropdown)).last, findsOneWidget);
+        debugDefaultTargetPlatformOverride = null;
+      });
+    });      
+
+    testWidgets('Profile widgets show up for student test', (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        profile.user.isMentor = false;
+        profileViewModel.setUserDetails(profile.user); 
+        await tester.pumpWidget(profileWidget);
+        await tester.pumpAndSettle();
+        expect(find.text('Name'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.nameField)).last, findsOneWidget);
+        expect(find.text('Availability'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '0')), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '1')), findsOneWidget);
+        expect(find.text('Add availability'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.addAvailabilityBtn)), findsOneWidget);
         debugDefaultTargetPlatformOverride = null;
       });
     });

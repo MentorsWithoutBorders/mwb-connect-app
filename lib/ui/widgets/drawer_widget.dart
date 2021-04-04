@@ -90,7 +90,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text('drawer.profile'.tr()),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView(isMentor: isMentor)));
+              Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
             },
           ),
           ListTile(

@@ -15,10 +15,8 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class ProfileView extends StatefulWidget {
-  ProfileView({@required this.isMentor});
+  ProfileView();
 
-  final bool isMentor;
-  
   @override
   State<StatefulWidget> createState() => _ProfileViewState();
 }
@@ -34,12 +32,12 @@ class _ProfileViewState extends State<ProfileView> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 55.0, 15.0, 20.0), 
+        padding: EdgeInsets.fromLTRB(20.0, statusBarHeight + 55.0, 20.0, 20.0), 
         child: Column(
           children: [
             _showPrimaryCard(),
             _showAvailabilityCard(),
-            _showLessonsCard()
+            if (_profileProvider.profile.user.isMentor) _showLessonsCard()
           ],
         ),
       ),
@@ -54,13 +52,12 @@ class _ProfileViewState extends State<ProfileView> {
         borderRadius: BorderRadius.circular(10.0),
       ), 
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
           children: [
             Name(),
-            FieldDropdown(),
-            Subfields()
+            if (_profileProvider.profile.user.isMentor) FieldDropdown(),
+            if (_profileProvider.profile.user.isMentor) Subfields()
           ],
         )
       ),
@@ -70,12 +67,11 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _showAvailabilityCard() {
     return Card(
       elevation: 5,
-      margin: const EdgeInsets.only(bottom: 12.0),
+      margin: const EdgeInsets.only(bottom: 15.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ), 
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
           children: [
@@ -90,15 +86,15 @@ class _ProfileViewState extends State<ProfileView> {
  Widget _showLessonsCard() {
     return Card(
       elevation: 5,
+      margin: const EdgeInsets.only(bottom: 12.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ), 
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
           children: [
-            Lessons(),
+            Lessons()
           ],
         )
       ),

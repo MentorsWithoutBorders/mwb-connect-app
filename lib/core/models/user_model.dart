@@ -25,7 +25,7 @@ class User {
     subfields = snapshot['subfields']?.cast<String>() ?? [];
     availabilities = _availabilityFromJson(snapshot['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
-    lessonsAvailability = _lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? LessonsAvailability();
+    lessonsAvailability = _lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? null;
     registeredOn = snapshot['registeredOn']?.toDate();
   }
   
@@ -48,7 +48,7 @@ class User {
   }
 
   Map<String, Object> toJson() {
-    return {
+    Map<String, Object> userMap = {
       'name': name,
       'email': email,
       'isMentor': isMentor,
@@ -57,9 +57,12 @@ class User {
       'subfields': subfields,
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
-      'lessonsAvailability': _lessonsAvailabilityToJson(lessonsAvailability),
       'registeredOn': registeredOn
     };
+    if (_lessonsAvailabilityToJson(lessonsAvailability) != null) {
+      userMap.putIfAbsent('lessonsAvailability', () => _lessonsAvailabilityToJson(lessonsAvailability));
+    }
+    return userMap;
   }
 
   List<Map<String, dynamic>> _availabilityToJson(List<Availability> availabilities) {
@@ -87,7 +90,7 @@ class User {
         'minIntervalUnit': lessonsAvailability.minIntervalUnitToEng
       };
     } else {
-      return Map();
+      return null;
     }
   }  
 }
