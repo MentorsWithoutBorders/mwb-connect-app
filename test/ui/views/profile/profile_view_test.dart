@@ -114,6 +114,8 @@ Future<void> main() async {
         expect(find.text('Availability'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.editAvailabilityIcon + '0')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.editAvailabilityIcon + '1')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '0')), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '1')), findsOneWidget);
         expect(find.text('Add availability'), findsOneWidget);
@@ -137,6 +139,8 @@ Future<void> main() async {
         expect(find.text('Availability'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.editAvailabilityIcon + '0')).last, findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.editAvailabilityIcon + '1')).last, findsOneWidget);        
         expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '0')), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '1')), findsOneWidget);
         expect(find.text('Add availability'), findsOneWidget);

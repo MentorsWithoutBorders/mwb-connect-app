@@ -104,7 +104,6 @@ class AvailabilityListWidgetTest {
   static Finder availabilityItem0 = find.byKey(const Key(AppKeys.availabilityItem + '0'));
   static Finder availabilityItem1 = find.byKey(const Key(AppKeys.availabilityItem + '1'));
   static Finder deleteAvailabilityBtn0 = find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '0'));
-  static Finder deleteAvailabilityBtn1 = find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '1'));
   static Finder addAvailabilityBtn = find.byKey(const Key(AppKeys.addAvailabilityBtn));
   static Finder dayOfWeekDropdown = find.byKey(const Key(AppKeys.dayOfWeekDropdown)).last;
   static Finder timeFromDropdown = find.byKey(const Key(AppKeys.timeFromDropdown)).last;

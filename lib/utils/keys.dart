@@ -24,6 +24,7 @@ class AppKeys {
   static const String isAvailableSwitchiOS = 'isAvailableSwitchiOS';
   static const String addAvailabilityBtn = 'addAvailabilityBtn';  
   static const String availabilityItem = 'availabilityItem';
+  static const String editAvailabilityIcon = 'editAvailabilityIcon';  
   static const String deleteAvailabilityBtn = 'deleteAvailabilityBtn';  
   // Add/edit availability
   static const String dayOfWeekDropdown = 'dayOfWeekDropdown';

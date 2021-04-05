@@ -30,7 +30,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
         InkWell(
           child: Container(
             key: Key(AppKeys.availabilityItem + widget.index.toString()),
-            width: 190.0,
+            width: 220.0,
             child: Row(
               children: [
                 Container(
@@ -50,7 +50,8 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
                       color: AppColors.DOVE_GRAY
                     )
                   ),
-                )
+                ),
+                _showEditItem()
               ],
             ),
           ),
@@ -62,6 +63,17 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
       ]
     );
   }
+
+  Widget _showEditItem() {
+    return Container(
+      key: Key(AppKeys.editAvailabilityIcon + widget.index.toString()),
+      width: 22.0,
+      height: 22.0,
+      child: Image.asset(
+        'assets/images/edit_icon.png'
+      ),
+    );
+  }   
 
   Widget _showDeleteItem() {
     return InkWell(
