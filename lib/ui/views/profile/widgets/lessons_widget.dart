@@ -28,8 +28,6 @@ class _LessonsState extends State<Lessons> {
           padding: const EdgeInsets.only(left: 3.0),
           child: Wrap(
             children: [
-              Label(text: 'I want to do a maximum of:'),
-              _showMaxLessons(),
               Label(text: 'Minimum interval between lessons:'),
               _showMinInterval()
             ]
@@ -39,102 +37,12 @@ class _LessonsState extends State<Lessons> {
     );
   }
 
-  Widget _showMaxLessons() {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        children: [
-          Container(
-            width: 50.0,
-            height: 45.0,
-            margin: const EdgeInsets.only(left: 2.0),
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Dropdown(
-              key: const Key(AppKeys.maxLessonsDropdown),
-              dropdownMenuItemList: _buildNumbers(),
-              onTapped: _unfocus,
-              onChanged: _changeMaxLessons,
-              value: _lessonsAvailability.maxLessons
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
-            child: Text(
-              'lessons per',
-              style: const TextStyle(
-                fontSize: 13.0,
-                color: AppColors.DOVE_GRAY
-              )
-            )
-          ),
-          Container(
-            width: 95.0,
-            height: 45.0,
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Dropdown(
-              key: const Key(AppKeys.maxLessonsUnitDropdown),
-              dropdownMenuItemList: _buildMaxLessonsUnitsDropdown(),
-              onTapped: _unfocus,
-              onChanged: _changeMaxLessonsUnit,
-              value: _lessonsAvailability.maxLessonsUnit
-            ),
-          ),
-        ]
-      )
-    );
-  }
-
-  List<DropdownMenuItem<int>> _buildNumbers() {
-    final List<DropdownMenuItem<int>> items = [];
-    for (int i = 1; i < 10; i++) {
-      items.add(DropdownMenuItem(
-        value: i,
-        child: Text(i.toString()),
-      ));
-    }
-    return items;
-  }
-
-  List<DropdownMenuItem<String>> _buildMaxLessonsUnitsDropdown() {
-    final List<DropdownMenuItem<String>> items = [];
-    for (final String periodUnit in Utils.periodUnits) {
-      items.add(DropdownMenuItem(
-        value: periodUnit,
-        child: Text(periodUnit)
-      ));
-    }
-    return items;
-  }
-
-  void _changeMaxLessons(int i) {
-    _setSelectedMaxLessons(i);
-    _updateLessonsAvailability();
-  }
-  
-  void _setSelectedMaxLessons(int i) {
-    setState(() {
-      _lessonsAvailability.maxLessons = i;
-    });
-  }
-
-  void _changeMaxLessonsUnit(String unit) {
-    _setSelectedMaxLessonsUnit(unit);
-    _updateLessonsAvailability();
-  }
-  
-  void _setSelectedMaxLessonsUnit(unit) {
-    setState(() {
-      _lessonsAvailability.maxLessonsUnit = unit;
-    });
-  }
-
   Widget _showMinInterval() {
     return Row(
       children: [
         Container(
           width: 50.0,
           height: 45.0,
-          margin: const EdgeInsets.only(left: 2.0),            
           padding: const EdgeInsets.only(bottom: 15.0),
           child: Dropdown(
             key: const Key(AppKeys.minIntervalDropdown),
@@ -150,7 +58,7 @@ class _LessonsState extends State<Lessons> {
         Container(
           width: 100.0,
           height: 45.0,
-          padding: const EdgeInsets.only(bottom: 15),
+          padding: const EdgeInsets.only(bottom: 15.0),
           child: Dropdown(
             key: const Key(AppKeys.minIntervalUnitDropdown),
             dropdownMenuItemList: _buildMinIntervalUnitsDropdown(),
@@ -161,6 +69,17 @@ class _LessonsState extends State<Lessons> {
         ),
       ]
     );
+  }
+
+  List<DropdownMenuItem<int>> _buildNumbers() {
+    final List<DropdownMenuItem<int>> items = [];
+    for (int i = 1; i < 10; i++) {
+      items.add(DropdownMenuItem(
+        value: i,
+        child: Text(i.toString()),
+      ));
+    }
+    return items;
   }
   
   List<DropdownMenuItem<String>> _buildMinIntervalUnitsDropdown() {
@@ -174,14 +93,14 @@ class _LessonsState extends State<Lessons> {
     return items;
   }
   
-  void _changeMinInterval(int interval) {
-    _setSelectedMinInterval(interval);
+  void _changeMinInterval(int number) {
+    _setSelectedMinInterval(number);
     _updateLessonsAvailability();
   }
   
-  void _setSelectedMinInterval(int interval) {
+  void _setSelectedMinInterval(int number) {
     setState(() {
-      _lessonsAvailability.minInterval = interval;
+      _lessonsAvailability.minInterval = number;
     });
   }
   
@@ -194,7 +113,7 @@ class _LessonsState extends State<Lessons> {
     setState(() {
       _lessonsAvailability.minIntervalUnit = _profileProvider.getPeriodUnitPlural(unit, _lessonsAvailability.minInterval);
     });
-  }  
+  }
 
   void _unfocus() {
     _profileProvider.shouldUnfocus = true;

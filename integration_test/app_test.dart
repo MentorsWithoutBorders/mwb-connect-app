@@ -65,10 +65,9 @@ void main() async {
     await AvailabilityListWidgetTest.editItemWithMergeTest(tester);
     await AvailabilityListWidgetTest.deleteItemTest(tester);
     // Lessons availability test
-    // Initial values: maxLessons = 2 months; minInterval = 2 weeks
+    // Initial value: minInterval = 2 weeks
     await LessonsWidgetTest.widgetShowsUpTest();
     await LessonsWidgetTest.initialValuesTest(tester);
-    await LessonsWidgetTest.changeMaxLessonsTest(tester);
     await LessonsWidgetTest.changeMinIntervalTest(tester);
     await tester.pumpAndSettle(Duration(seconds: 1));    
   });  

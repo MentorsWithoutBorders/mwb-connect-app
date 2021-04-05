@@ -57,8 +57,6 @@ Future<void> main() async {
           )
         ],
         lessonsAvailability: LessonsAvailability(
-          maxLessons: 2,
-          maxLessonsUnit: 'month',
           minInterval: 2,
           minIntervalUnit: 'week'
         )
@@ -252,15 +250,11 @@ Future<void> main() async {
 
     test('Lessons availability should be updated', () {
       LessonsAvailability lessonsAvailability = LessonsAvailability(
-        maxLessons: 3,
-        maxLessonsUnit: 'year',
         minInterval: 4,
         minIntervalUnit: 'month'
       );
       profileViewModel.updateLessonsAvailability(lessonsAvailability);
       lessonsAvailability = profileViewModel.profile.user.lessonsAvailability;      
-      expect(lessonsAvailability.maxLessons, 3);
-      expect(lessonsAvailability.maxLessonsUnit, 'year');
       expect(lessonsAvailability.minInterval, 4);
       expect(lessonsAvailability.minIntervalUnit, 'month');
     });

@@ -43,7 +43,7 @@ class User {
     if (json == null) {
       return null;
     }
-    LessonsAvailability lessonsAvailability = LessonsAvailability(maxLessons: json['maxLessons'], maxLessonsUnit: json['maxLessonsUnit'], minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
+    LessonsAvailability lessonsAvailability = LessonsAvailability(minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
     return lessonsAvailability;
   }
 
@@ -84,8 +84,6 @@ class User {
   Map<String, dynamic> _lessonsAvailabilityToJson(LessonsAvailability lessonsAvailability) {
     if (lessonsAvailability != null) {
       return {
-        'maxLessons': lessonsAvailability.maxLessons, 
-        'maxLessonsUnit': lessonsAvailability.maxLessonsUnitToEng, 
         'minInterval': lessonsAvailability.minInterval,
         'minIntervalUnit': lessonsAvailability.minIntervalUnitToEng
       };
@@ -96,21 +94,15 @@ class User {
 }
 
 class LessonsAvailability {
-  int maxLessons;
-  String maxLessonsUnit;
   int minInterval;
   String minIntervalUnit;
 
-  LessonsAvailability({this.maxLessons, this.maxLessonsUnit, this.minInterval, this.minIntervalUnit}) {
-    if (maxLessonsUnit != null) {
-      maxLessonsUnit = Utils.translatePeriodUnitFromEng(maxLessonsUnit);
-    }
+  LessonsAvailability({this.minInterval, this.minIntervalUnit}) {
     if (minIntervalUnit != null) {
       minIntervalUnit = Utils.translatePeriodUnitFromEng(minIntervalUnit);
     }
   }
 
-  String get maxLessonsUnitToEng => Utils.translatePeriodUnitToEng(maxLessonsUnit);  
   String get minIntervalUnitToEng => Utils.translatePeriodUnitToEng(minIntervalUnit);  
 }
 

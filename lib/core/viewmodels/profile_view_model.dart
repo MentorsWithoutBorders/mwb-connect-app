@@ -217,7 +217,7 @@ class ProfileViewModel extends ChangeNotifier {
     setUserDetails(profile.user);
     notifyListeners();
   }
-  
+
   void updateLessonsAvailability(LessonsAvailability lessonsAvailability) {
     profile.user.lessonsAvailability = lessonsAvailability;
     setUserDetails(profile.user);

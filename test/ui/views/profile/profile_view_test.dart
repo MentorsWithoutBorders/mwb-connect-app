@@ -66,8 +66,6 @@ Future<void> main() async {
           )
         ],
         lessonsAvailability: LessonsAvailability(
-          maxLessons: 2,
-          maxLessonsUnit: 'month',
           minInterval: 2,
           minIntervalUnit: 'week'
         )
@@ -121,10 +119,7 @@ Future<void> main() async {
         expect(find.text('Add availability'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.addAvailabilityBtn)), findsOneWidget);
         expect(find.text('Lessons'), findsOneWidget);
-        expect(find.text('I want to do a maximum of:'), findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.maxLessonsDropdown)).last, findsOneWidget);
-        expect(find.text('lessons per'), findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.maxLessonsUnitDropdown)).last, findsOneWidget);
+        expect(find.text('Minimum interval between lessons:'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.minIntervalDropdown)).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.minIntervalUnitDropdown)).last, findsOneWidget);
         debugDefaultTargetPlatformOverride = null;

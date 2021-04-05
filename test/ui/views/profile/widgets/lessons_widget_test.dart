@@ -45,8 +45,6 @@ Future<void> main() async {
       profileViewModel.profile.user = User(
         isMentor: true,
         lessonsAvailability: LessonsAvailability(
-          maxLessons: 2,
-          maxLessonsUnit: 'month',
           minInterval: 2,
           minIntervalUnit: 'week'
         )
@@ -69,14 +67,6 @@ Future<void> main() async {
       });
     });
     
-    testWidgets('Change max lessons test', (WidgetTester tester) async {
-      await tester.runAsync(() async {
-        await tester.pumpWidget(lessonsAvailabilityWidget);
-        await tester.pump();
-        await LessonsWidgetTest.changeMaxLessonsTest(tester);
-      });
-    });
-    
     testWidgets('Change min interval test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(lessonsAvailabilityWidget);
@@ -89,39 +79,20 @@ Future<void> main() async {
 
 // ignore: avoid_classes_with_only_static_members
 class LessonsWidgetTest {
-  static Finder maxLessonsDropdown = find.byKey(const Key(AppKeys.maxLessonsDropdown)).last;
-  static Finder maxLessonsUnitDropdown = find.byKey(const Key(AppKeys.maxLessonsUnitDropdown)).last;
   static Finder minIntervalDropdown = find.byKey(const Key(AppKeys.minIntervalDropdown)).last;
   static Finder minIntervalUnitDropdown = find.byKey(const Key(AppKeys.minIntervalUnitDropdown)).last;
 
   static Future<void> widgetShowsUpTest() async {
-    expect(maxLessonsDropdown, findsOneWidget);
-    expect(maxLessonsUnitDropdown, findsOneWidget);
     expect(minIntervalDropdown, findsOneWidget);
     expect(minIntervalUnitDropdown, findsOneWidget);
   }
 
   static Future<void> initialValuesTest(WidgetTester tester) async {
-    expect(((tester.widget(maxLessonsDropdown) as DropdownButton).value as int), equals(2));
-    expect(((tester.widget(maxLessonsUnitDropdown) as DropdownButton).value as String), equals('month'));
     expect(((tester.widget(minIntervalDropdown) as DropdownButton).value as int), equals(2));
     expect(((tester.widget(minIntervalUnitDropdown) as DropdownButton).value as String), equals('weeks')); 
   }  
 
-  static Future<void> changeMaxLessonsTest(WidgetTester tester) async {
-    await tester.tap(maxLessonsDropdown);
-    await tester.pump();
-    await tester.tap(find.text('3').last);
-    await tester.pump();
-    expect(((tester.widget(maxLessonsDropdown) as DropdownButton).value as int), equals(3));
-    await tester.tap(maxLessonsUnitDropdown);
-    await tester.pump();
-    await tester.tap(find.text('year').last);
-    await tester.pump();
-    expect(((tester.widget(maxLessonsUnitDropdown) as DropdownButton).value as String), equals('year'));
-  }
-
- static Future<void> changeMinIntervalTest(WidgetTester tester) async {
+  static Future<void> changeMinIntervalTest(WidgetTester tester) async {
     await tester.tap(minIntervalDropdown);
     await tester.pump();
     await tester.tap(find.text('3').last);
