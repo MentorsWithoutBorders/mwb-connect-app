@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/availability_switch_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/availability_start_date_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/lessons_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -75,7 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
           children: [
-            AvailabilitySwitch(),
+            AvailabilityStartDate(),
             AvailabilityList(),
           ],
         )

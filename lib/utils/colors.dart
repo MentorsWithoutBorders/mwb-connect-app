@@ -13,4 +13,5 @@ class AppColors {
   static const Color BOTTICELLI = Color(0xffdae4f0);
   static const Color TURQUOISE = Color(0xff49e99b);
   static const Color CINNABAR = Color(0xffe0491b); 
+  static const Color WILD_SAND = Color(0xfff6f6f6); 
 }

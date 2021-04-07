@@ -21,31 +21,21 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   ProfileViewModel _profileProvider;
 
   Widget _showAvailability() {
-    final bool isAvailable = _profileProvider.profile.user.isAvailable;
-    return AnimatedSize(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.fastOutSlowIn,
-      child: Container(
-        child: !isAvailable ?
-          null 
-          : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _showDivider(),
-            _showTitle(),
-            _showAvailabilityList(),
-            _showAddAvailabilityButton()
-          ]
-        ),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _showDivider(),
+        _showTitle(),
+        _showAvailabilityList(),
+        _showAddAvailabilityButton()
+      ]
     );
   }
 
   Widget _showDivider() {
     return Container(
       height: 1,
-      margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+      margin: const EdgeInsets.only(bottom: 20.0),
       color: AppColors.BOTTICELLI
     );
   }  
@@ -54,7 +44,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: const Text(
-        'Availability',
+        'Available days/times',
         style: TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold

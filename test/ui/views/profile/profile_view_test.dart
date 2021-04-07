@@ -109,9 +109,9 @@ Future<void> main() async {
         expect(find.byKey(const Key(AppKeys.deleteSubfieldBtn + '1')), findsOneWidget);
         expect(find.text('Add subfield'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.addSubfieldBtn)), findsOneWidget);
-        expect(find.text('I\'m currently available'), findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.isAvailableSwitchAndroid)), findsOneWidget);
         expect(find.text('Availability'), findsOneWidget);
+        expect(find.text('I\'m currently available'), findsOneWidget);
+        expect(find.text('Available days/times'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.editAvailabilityIcon + '0')).last, findsOneWidget);

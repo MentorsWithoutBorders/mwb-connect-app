@@ -37,6 +37,19 @@ class _LessonsState extends State<Lessons> {
     );
   }
 
+  Widget _showTitle() {
+    return Container(
+      margin: const EdgeInsets.only(left: 5.0, bottom: 18.0),
+      child: const Text(
+        'Lessons',
+        style: TextStyle(
+          color: AppColors.TANGO,
+          fontWeight: FontWeight.bold
+        )
+      ),
+    );
+  }  
+
   Widget _showMinInterval() {
     return Row(
       children: [
@@ -117,19 +130,6 @@ class _LessonsState extends State<Lessons> {
 
   void _unfocus() {
     _profileProvider.shouldUnfocus = true;
-  }
-
-  Widget _showTitle() {
-    return Container(
-      margin: const EdgeInsets.only(left: 5.0, bottom: 18.0),
-      child: const Text(
-        'Lessons',
-        style: TextStyle(
-          color: AppColors.TANGO,
-          fontWeight: FontWeight.bold
-        )
-      ),
-    );
   }
   
   void _setLessonsAvailability() {

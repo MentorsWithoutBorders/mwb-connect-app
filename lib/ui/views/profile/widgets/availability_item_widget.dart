@@ -27,48 +27,54 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
     final String timeTo = availability.time.to;
     return Row(
       children: [
-        InkWell(
-          child: Container(
-            key: Key(AppKeys.availabilityItem + widget.index.toString()),
-            width: 220.0,
+        Expanded(
+          child: InkWell(
+            key: Key(AppKeys.availabilityItem + widget.index.toString()),              
             child: Row(
               children: [
-                Container(
-                  width: 90.0,
-                  child: Text(
-                    '$dayOfWeek:',
-                    style: const TextStyle(
-                      color: AppColors.DOVE_GRAY
-                    )
-                  ),
-                ),
-                Container(
-                  width: 100.0,
-                  child: Text(
-                    '$timeFrom - $timeTo',
-                    style: const TextStyle(
-                      color: AppColors.DOVE_GRAY
-                    )
-                  ),
-                ),
+                _showDayOfWeek(dayOfWeek),
+                _showTimes(timeFrom, timeTo),
                 _showEditItem()
               ],
             ),
-          ),
-          onTap: () {
-            _showEditAvailabilityDialog(availability);
-          },
+            onTap: () {
+              _showEditAvailabilityDialog(availability);
+            }
+          )
         ),
         _showDeleteItem()
       ]
     );
   }
 
+  Widget _showDayOfWeek(String dayOfWeek) {
+    return Container(
+      width: 90.0,
+      child: Text(
+        '$dayOfWeek:',
+        style: const TextStyle(
+          color: AppColors.DOVE_GRAY
+        )
+      ),
+    );
+  }
+
+  Widget _showTimes(String timeFrom, String timeTo) {
+    return Expanded(
+      child: Text(
+        '$timeFrom - $timeTo',
+        style: const TextStyle(
+          color: AppColors.DOVE_GRAY
+        )
+      ),
+    );
+  }
+
   Widget _showEditItem() {
     return Container(
       key: Key(AppKeys.editAvailabilityIcon + widget.index.toString()),
-      width: 22.0,
       height: 22.0,
+      padding: const EdgeInsets.only(right: 5.0),
       child: Image.asset(
         'assets/images/edit_icon.png'
       ),

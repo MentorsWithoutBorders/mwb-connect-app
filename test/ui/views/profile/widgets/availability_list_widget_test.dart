@@ -113,7 +113,7 @@ class AvailabilityListWidgetTest {
   static Finder toast = find.byKey(const Key(AppKeys.toast));
 
   static Future<void> widgetShowsUpTest() async {
-    expect(find.text('Availability'), findsOneWidget);
+    expect(find.text('Available days/times'), findsOneWidget);
     expect(find.text('Add availability'), findsOneWidget);
     expect(addAvailabilityBtn, findsOneWidget);
   }

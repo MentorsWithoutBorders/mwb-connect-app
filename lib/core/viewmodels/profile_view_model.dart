@@ -133,6 +133,12 @@ class ProfileViewModel extends ChangeNotifier {
   void setIsAvailable(bool isAvailable) {
     profile.user.isAvailable = isAvailable;
     setUserDetails(profile.user);
+    notifyListeners();    
+  }
+
+  void setAvailableFrom(DateTime availableFrom) {
+    profile.user.availableFrom = availableFrom;
+    setUserDetails(profile.user);
     notifyListeners();
   }
   

@@ -10,10 +10,11 @@ class User {
   List<String> subfields;
   List<Availability> availabilities;
   bool isAvailable;
+  DateTime availableFrom;
   LessonsAvailability lessonsAvailability;
   DateTime registeredOn;
 
-  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.availabilities, this.isAvailable, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromMap(Map snapshot, String id) {
     this.id = id;
@@ -25,6 +26,7 @@ class User {
     subfields = snapshot['subfields']?.cast<String>() ?? [];
     availabilities = _availabilityFromJson(snapshot['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
+    availableFrom = snapshot['availableFrom']?.toDate();
     lessonsAvailability = _lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? null;
     registeredOn = snapshot['registeredOn']?.toDate();
   }
@@ -57,6 +59,7 @@ class User {
       'subfields': subfields,
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
+      'availableFrom': availableFrom,
       'registeredOn': registeredOn
     };
     if (_lessonsAvailabilityToJson(lessonsAvailability) != null) {

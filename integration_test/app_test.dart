@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/main.dart' as app;
 import '../test/ui/views/profile/widgets/name_widget_test.dart';
 import '../test/ui/views/profile/widgets/field_dropdown_widget_test.dart';
 import '../test/ui/views/profile/widgets/subfields_widget_test.dart';
-import '../test/ui/views/profile/widgets/availability_switch_widget_test.dart';
+import '../test/ui/views/profile/widgets/availability_start_date_widget_test.dart';
 import '../test/ui/views/profile/widgets/availability_list_widget_test.dart';
 import '../test/ui/views/profile/widgets/lessons_widget_test.dart';
 
@@ -52,10 +52,10 @@ void main() async {
     await SubfieldsWidgetTest.addSubfieldTest(tester);
     await SubfieldsWidgetTest.changeSubfieldTest(tester);
     await SubfieldsWidgetTest.deleteSubfieldTest(tester);
-    // Availability switch test
-    await AvailabilitySwitchWidgetTest.widgetShowsUpTest();    
-    await AvailabilitySwitchWidgetTest.initialValueTest(tester);
-    await AvailabilitySwitchWidgetTest.changeValueTest(tester);
+    // Availability start date test
+    await AvailabilityStartDateWidgetTest.widgetShowsUpTest();    
+    await AvailabilityStartDateWidgetTest.initialValueTest(tester);
+    await AvailabilityStartDateWidgetTest.changeValueTest(tester);
     // Availability test
     // Initial values: isAvailable = true; availabilities list has to be empty
     await AvailabilityListWidgetTest.widgetShowsUpTest();
