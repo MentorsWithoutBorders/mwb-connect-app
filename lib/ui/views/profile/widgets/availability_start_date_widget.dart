@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -5,9 +6,9 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/string_extension.dart';
+import 'package:mwb_connect_app/utils/availability_start.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
-
-enum Start { now, later }
 
 class AvailabilityStartDate extends StatefulWidget {
   const AvailabilityStartDate({Key key})
@@ -19,24 +20,20 @@ class AvailabilityStartDate extends StatefulWidget {
 
 class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   ProfileViewModel _profileProvider;
-  Start _start;
+  AvailabilityStart _start;
   final DateTime _now = DateTime.now();
-  bool _isInit = true;
+  final String defaultLocale = Platform.localeName;
 
   @override
-  void didChangeDependencies() {
-    if (_isInit) {  
-      _profileProvider = Provider.of<ProfileViewModel>(context);
-      _initSelectedDate();
-      _isInit = false;
-    }
-    super.didChangeDependencies();
-  }
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_initSelectedDate);
+  }  
 
-  void _initSelectedDate() {
+  void _initSelectedDate(_) {
     User user = _profileProvider.profile.user;
     setState(() {
-      _start = user.isAvailable ? Start.now : Start.later;
+      _start = user.isAvailable ? AvailabilityStart.now : AvailabilityStart.later;
     });
     if (user.availableFrom == null || user.availableFrom.isBefore(DateTime.now())) {
       _setAvailableFrom(DateTime.now());
@@ -44,7 +41,11 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }  
 
   Widget _showAvailabilityStartDate() {
-    final dateFormat = new DateFormat('MMMM dd, yyyy');
+    final DateFormat dateFormat = DateFormat('MMM dd, yyyy', defaultLocale);
+    String date = DateTime.now().toString().capitalize();
+    if (_profileProvider.profile.user.availableFrom != null) {
+      date = dateFormat.format(_profileProvider.profile.user.availableFrom).capitalize();
+    }
     return Wrap(
       children: [
         _showTitle(),
@@ -57,18 +58,20 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                   SizedBox(
                     width: 40.0,
                     height: 35.0,                      
-                    child: Radio<Start>(
-                      value: Start.now,
+                    child: Radio<AvailabilityStart>(
+                      key: Key(AppKeys.currentlyAvailableRadio),
+                      value: AvailabilityStart.now,
                       groupValue: _start,
-                      onChanged: (Start value) {
+                      onChanged: (AvailabilityStart value) {
                         _setIsAvailable(value);
                       },
                     ),
                   ),
                   InkWell(
+                    key: Key(AppKeys.currentlyAvailableText),
                     child: Text('I\'m currently available'),
                     onTap: () {
-                      _setIsAvailable(Start.now);
+                      _setIsAvailable(AvailabilityStart.now);
                     }
                   )
                 ],
@@ -79,10 +82,11 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                   SizedBox(
                     width: 40.0,
                     height: 35.0,                      
-                    child: Radio<Start>(
-                      value: Start.later,
+                    child: Radio<AvailabilityStart>(
+                      key: Key(AppKeys.availableFromRadio),
+                      value: AvailabilityStart.later,
                       groupValue: _start,
-                      onChanged: (Start value) {
+                      onChanged: (AvailabilityStart value) {
                         _setIsAvailable(value);
                       },
                     ),
@@ -93,9 +97,10 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                       Container(
                         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                         child: InkWell(
+                          key: Key(AppKeys.availableFromText),
                           child: Text('I\'m available starting from:'),
                           onTap: () {
-                            _setIsAvailable(Start.later);
+                            _setIsAvailable(AvailabilityStart.later);
                           }
                         ),
                       ),
@@ -103,7 +108,8 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                         child: Row(
                           children: [
                             Text(
-                              dateFormat.format(_profileProvider.profile.user.availableFrom),
+                              date,
+                              key: Key(AppKeys.availableFromDate),
                               style: TextStyle(
                                 fontSize: 14, 
                                 fontWeight: FontWeight.bold,
@@ -114,7 +120,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                           ],
                         ),
                         onTap: () {
-                          _setIsAvailable(Start.later);  
+                          _setIsAvailable(AvailabilityStart.later);  
                           _selectDate(context);
                         }                        
                       )
@@ -131,7 +137,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
 
   Widget _showEditCalendarIcon() {
     return Container(
-      key: Key(AppKeys.editAvailabilityStartDateIcon),
+      key: Key(AppKeys.editCalendarIcon),
       height: 18.0,
       padding: const EdgeInsets.only(left: 8.0),
       child: Image.asset(
@@ -140,8 +146,8 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     );
   }
   
-  void _setIsAvailable(Start value) {
-    bool isAvailable = value == Start.now ? true : false;
+  void _setIsAvailable(AvailabilityStart value) {
+    bool isAvailable = value == AvailabilityStart.now ? true : false;
     _profileProvider.setIsAvailable(isAvailable);
     setState(() {
       _start = value;
@@ -161,6 +167,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     DateTime availableFrom = _profileProvider.profile.user.availableFrom;
     final DateTime picked = await showDatePicker(
       context: context,
+      locale: Locale(defaultLocale.split('_')[0], defaultLocale.split('_')[1]),
       initialDate: availableFrom,
       firstDate: _now,
       lastDate: DateTime(_now.year + 4),
@@ -242,7 +249,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
 
   @override
   Widget build(BuildContext context) {
-    _profileProvider = Provider.of<ProfileViewModel>(context);      
+    _profileProvider = Provider.of<ProfileViewModel>(context);
 
     return _showAvailabilityStartDate();
   }

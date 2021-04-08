@@ -303,6 +303,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
+  - flutter_native_timezone (0.0.1):
+    - Flutter
   - flutter_segment (0.0.1):
     - Analytics (= 3.7.0)
     - Flutter
@@ -397,6 +399,7 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - flutter_segment (from `.symlinks/plugins/flutter_segment/ios`)
   - flutuate_mixpanel (from `.symlinks/plugins/flutuate_mixpanel/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
@@ -449,6 +452,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_native_timezone:
+    :path: ".symlinks/plugins/flutter_native_timezone/ios"
   flutter_segment:
     :path: ".symlinks/plugins/flutter_segment/ios"
   flutuate_mixpanel:
@@ -485,6 +490,7 @@ SPEC CHECKSUMS:
   FirebaseStorage: 5002b1895bfe74a5ce92ad54f966e6162d0da2e5
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
   flutter_segment: f20a38d465030de0f1b2aa9325cef9c1442b0721
   flutuate_mixpanel: 7c8aff85f458a7d7fc0cd0452465cf36ffbee6a2
   GoogleAppMeasurement: 8d3c0aeede16ab7764144b5a4ca8e1d4323841b7

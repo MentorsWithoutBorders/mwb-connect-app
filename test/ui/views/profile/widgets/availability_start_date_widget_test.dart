@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:mwb_connect_app/utils/availability_start.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -33,8 +34,7 @@ Future<void> main() async {
   group('Availability start date widget tests:', () {
     final WidgetLoader widgetLoader = WidgetLoader();
     final Widget availabilityStartDateWidget = widgetLoader.createWidget(widget: AvailabilityStartDate(), jsonFile: jsonFile);
-    final ProfileViewModel profileViewModel = locator<ProfileViewModel>();  
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;  
+    final ProfileViewModel profileViewModel = locator<ProfileViewModel>();   
     
     setUp(() async {
       profileViewModel.profile = Profile();
@@ -44,7 +44,7 @@ Future<void> main() async {
       );
     });       
 
-    testWidgets('Availability switch widget shows up test', (WidgetTester tester) async {
+    testWidgets('Availability start date widget shows up test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(availabilityStartDateWidget);
         await tester.pump();
@@ -52,7 +52,7 @@ Future<void> main() async {
       });
     });
 
-    testWidgets('Initial value test', (WidgetTester tester) async {
+    testWidgets('Initial values test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(availabilityStartDateWidget);
         await tester.pump();
@@ -60,36 +60,99 @@ Future<void> main() async {
       });
     });
     
-    testWidgets('Change value test', (WidgetTester tester) async {
+    testWidgets('Change option test', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(availabilityStartDateWidget);
         await tester.pump();
-        await AvailabilityStartDateWidgetTest.changeValueTest(tester);
+        await AvailabilityStartDateWidgetTest.changeOptionTest(tester);
       });
     });
+
+    testWidgets('Change date test', (WidgetTester tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android; 
+      await tester.runAsync(() async {
+        await tester.pumpWidget(availabilityStartDateWidget);
+        await tester.pump();
+        await AvailabilityStartDateWidgetTest.changeDateTest(tester);
+      });
+    });    
   });
 }
 
 // ignore: avoid_classes_with_only_static_members
 class AvailabilityStartDateWidgetTest {
-  // static Finder availabilityStartDate = find.byKey(const Key(AppKeys.isAvailableSwitchAndroid));
+  static Finder currentlyAvailableRadio = find.byKey(const Key(AppKeys.currentlyAvailableRadio));
+  static Finder currentlyAvailableText = find.byKey(const Key(AppKeys.currentlyAvailableText));
+  static Finder availableFromRadio = find.byKey(const Key(AppKeys.availableFromRadio));
+  static Finder availableFromText = find.byKey(const Key(AppKeys.availableFromText));
+  static Finder availableFromDate = find.byKey(const Key(AppKeys.availableFromDate));
+  static Finder editCalendarIcon = find.byKey(const Key(AppKeys.editCalendarIcon));
+  static DateFormat dateFormat = DateFormat('MMM dd, yyyy');
 
   static Future<void> widgetShowsUpTest() async {
-    // expect(availabilityStartDate, findsOneWidget);
     expect(find.text('I\'m currently available'), findsOneWidget);
-    debugDefaultTargetPlatformOverride = null;    
+    expect(currentlyAvailableRadio, findsOneWidget);    
+    expect(currentlyAvailableText, findsOneWidget);    
+    expect(find.text('I\'m available starting from:'), findsOneWidget);
+    expect(availableFromRadio, findsOneWidget);
+    expect(availableFromText, findsOneWidget);
+    expect(availableFromDate, findsOneWidget);
+    expect(editCalendarIcon, findsOneWidget);
   }
 
   static Future<void> initialValueTest(WidgetTester tester) async {
-    // expect(((tester.widget(availabilityStartDate) as Switch).value as bool), equals(true));
+    await tester.pumpAndSettle(Duration(seconds: 1));
+    expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.now));
+    expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.now));
+    expect(find.text(dateFormat.format(DateTime.now())), findsOneWidget);
   }  
 
-  static Future<void> changeValueTest(WidgetTester tester) async {
-    // await tester.tap(availabilityStartDate);
-    await tester.pumpAndSettle(Duration(seconds: 1));
-    // expect(((tester.widget(availabilityStartDate) as Switch).value as bool), equals(false));
-    // await tester.tap(availabilityStartDate);
+  static Future<void> changeOptionTest(WidgetTester tester) async {
+    await tester.tap(availableFromRadio);
+    await tester.pump();
+    expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    await tester.tap(currentlyAvailableRadio);
+    await tester.pump();
+    expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.now));
+    expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.now));    
+    await tester.tap(availableFromText);
+    await tester.pump();
+    expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    await tester.tap(currentlyAvailableText);
+    await tester.pump();
+    expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.now));
+    expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.now));    
+  } 
+
+  static Future<void> changeDateTest(WidgetTester tester) async {
+    await tester.tap(currentlyAvailableRadio);
+    await tester.pump();    
+    await tester.tap(editCalendarIcon);
     await tester.pumpAndSettle();
-    // expect(((tester.widget(availabilityStartDate) as Switch).value as bool), equals(true));
+    await tester.tap(find.text('15'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    DateTime now = DateTime.now();
+    String nowFormatted = dateFormat.format(now);
+    String date = nowFormatted.replaceAll(now.day.toString().padLeft(2, '0'), '15');
+    expect(find.text(date), findsOneWidget);
+    await tester.tap(currentlyAvailableRadio);
+    await tester.pump();   
+    await tester.tap(availableFromDate);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('20'));
+    await tester.pumpAndSettle();    
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();    
+    expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
+    date = nowFormatted.replaceAll(now.day.toString().padLeft(2, '0'), '20');
+    expect(find.text(date), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
   } 
 }

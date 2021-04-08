@@ -156,6 +156,13 @@ Future<void> main() async {
       expect(profileViewModel.profile.user.isAvailable, true);         
     });
 
+    test('User available from date should be set correctly', () {
+      profileViewModel.setAvailableFrom(DateTime.now());
+      expect(profileViewModel.profile.user.availableFrom.hour, DateTime.now().hour);
+      expect(profileViewModel.profile.user.availableFrom.minute, DateTime.now().minute);
+      expect(profileViewModel.profile.user.availableFrom.second, DateTime.now().second);
+    });    
+
     test('New availability should be added', () {
       Availability availability = Availability(
         dayOfWeek: 'Wednesday',

@@ -249,7 +249,6 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   @override
   Widget build(BuildContext context) {
-
     return _showEditAvailabilityDialog();
   }
 }

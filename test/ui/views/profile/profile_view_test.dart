@@ -45,7 +45,6 @@ Future<void> main() async {
       final EasyLocalizationController easyLocalizationController = widgetLoader.createEasyLocalizationController(jsonFile: jsonFile);
       await easyLocalizationController.loadTranslations();
       Localization.load(Locale('en', 'US'), translations: easyLocalizationController.translations);
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
       profile.user = User(
         name: 'Bob',
@@ -110,7 +109,14 @@ Future<void> main() async {
         expect(find.text('Add subfield'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.addSubfieldBtn)), findsOneWidget);
         expect(find.text('Availability'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.currentlyAvailableRadio)), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.currentlyAvailableText)), findsOneWidget);
         expect(find.text('I\'m currently available'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.availableFromRadio)), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.availableFromText)), findsOneWidget);
+        expect(find.text('I\'m available starting from:'), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.availableFromDate)), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.editCalendarIcon)), findsOneWidget);
         expect(find.text('Available days/times'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
@@ -145,7 +151,6 @@ Future<void> main() async {
         expect(find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '1')), findsOneWidget);
         expect(find.text('Add availability'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.addAvailabilityBtn)), findsOneWidget);
-        debugDefaultTargetPlatformOverride = null;
       });
     });
   });

@@ -53,11 +53,13 @@ void main() async {
     await SubfieldsWidgetTest.changeSubfieldTest(tester);
     await SubfieldsWidgetTest.deleteSubfieldTest(tester);
     // Availability start date test
+    // Initial values: isAvailable = true; availableFrom = null
     await AvailabilityStartDateWidgetTest.widgetShowsUpTest();    
     await AvailabilityStartDateWidgetTest.initialValueTest(tester);
-    await AvailabilityStartDateWidgetTest.changeValueTest(tester);
+    await AvailabilityStartDateWidgetTest.changeOptionTest(tester);
+    await AvailabilityStartDateWidgetTest.changeDateTest(tester);
     // Availability test
-    // Initial values: isAvailable = true; availabilities list has to be empty
+    // Initial values: isAvailable = true; availabilities list = empty
     await AvailabilityListWidgetTest.widgetShowsUpTest();
     await AvailabilityListWidgetTest.addItemsTest(tester);
     await AvailabilityListWidgetTest.addItemWithMergeTest(tester);

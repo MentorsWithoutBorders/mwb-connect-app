@@ -47,8 +47,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isMentor = _storageService.isMentor;
-    
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,

@@ -20,7 +20,12 @@ class AppKeys {
   static const String subfieldDropdown = 'subfieldDropdown';
   static const String deleteSubfieldBtn = 'deleteSubfieldBtn';
   // Availability
-  static const String editAvailabilityStartDateIcon = 'editDateIcon';
+  static const String currentlyAvailableRadio = 'currentlyAvailableRadio';
+  static const String currentlyAvailableText = 'currentlyAvailableText';
+  static const String availableFromRadio = 'availableFromRadio';
+  static const String availableFromText = 'availableFromText';
+  static const String availableFromDate = 'availableFromDate';
+  static const String editCalendarIcon = 'editCalendarIcon';
   static const String addAvailabilityBtn = 'addAvailabilityBtn';  
   static const String availabilityItem = 'availabilityItem';
   static const String editAvailabilityIcon = 'editAvailabilityIcon';  

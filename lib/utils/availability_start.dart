@@ -1,0 +1,4 @@
+enum AvailabilityStart { 
+  now, 
+  later 
+}
