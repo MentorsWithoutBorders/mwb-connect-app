@@ -147,6 +147,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }
   
   void _setIsAvailable(AvailabilityStart value) {
+    _unfocus();
     bool isAvailable = value == AvailabilityStart.now ? true : false;
     _profileProvider.setIsAvailable(isAvailable);
     setState(() {
@@ -155,6 +156,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }
 
   void _selectDate(BuildContext context) async {
+    _unfocus();
     final TargetPlatform platform = Theme.of(context).platform;
     if (platform == TargetPlatform.iOS) {
       return _showDatePickerIOS(context);
@@ -245,6 +247,10 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
         )
       ),
     );
+  }
+  
+  void _unfocus() {
+    _profileProvider.shouldUnfocus = true;
   }  
 
   @override

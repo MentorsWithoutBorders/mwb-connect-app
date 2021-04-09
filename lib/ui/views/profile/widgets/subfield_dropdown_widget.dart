@@ -47,13 +47,20 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
                     'assets/images/delete_icon.png'
                   ),
                 ),
-                onTap: () => _profileProvider.deleteSubfield(widget.index)                
+                onTap: () {
+                  _deleteSubfield();
+                }                 
               )
             ], 
           )
         ],
       )
     );
+  }
+
+  void _deleteSubfield() {
+    _unfocus();
+    _profileProvider.deleteSubfield(widget.index);
   }
 
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {

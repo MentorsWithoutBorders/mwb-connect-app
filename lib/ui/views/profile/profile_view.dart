@@ -24,10 +24,6 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel _profileProvider;
 
-  void _unfocus() {
-    FocusScope.of(context).unfocus();    
-  }
-
   Widget _showProfileCard(Profile profile) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return SingleChildScrollView(
@@ -122,7 +118,11 @@ class _ProfileViewState extends State<ProfileView> {
     final User user = await _profileProvider.getUserDetails();
     final List<Field> fields = await _profileProvider.getFields();
     return Profile(user: user, fields: fields);
-  }  
+  }
+
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }    
 
   @override
   Widget build(BuildContext context) {

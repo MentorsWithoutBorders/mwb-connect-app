@@ -88,6 +88,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   void _showAddAvailabilityDialog() {
+    _unfocus();
     showDialog(
       context: context,
       builder: (_) => const AnimatedDialog(
@@ -113,7 +114,12 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
         ),
       ),
     );
-  }     
+  }
+
+  void _unfocus() {
+    _profileProvider.shouldUnfocus = true;
+  }   
+
 
   @override
   Widget build(BuildContext context) {

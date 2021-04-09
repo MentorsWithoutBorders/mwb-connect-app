@@ -44,10 +44,21 @@ class _SubfieldsState extends State<Subfields> {
           padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0)
         ), 
         child: const Text('Add subfield', style: TextStyle(color: Colors.white)),
-        onPressed: () => _profileProvider.addSubfield()
+        onPressed: () {
+          _addSubfield();
+        }
       ),
     );
-  } 
+  }
+
+  void _addSubfield() {
+    _unfocus();
+    _profileProvider.addSubfield();    
+  }
+
+  void _unfocus() {
+    _profileProvider.shouldUnfocus = true;
+  }   
 
   @override
   Widget build(BuildContext context) {

@@ -91,11 +91,19 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
           'assets/images/delete_icon.png'
         ),
       ),
-      onTap: () => _profileProvider.deleteAvailability(widget.index)
+      onTap: () {
+        _deleteAvailability();
+      } 
     );
-  }  
+  }
+  
+  void _deleteAvailability() {
+    _unfocus();
+    _profileProvider.deleteAvailability(widget.index);    
+  }
 
   void _showEditAvailabilityDialog(Availability availability) {
+    _unfocus();
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
@@ -121,7 +129,11 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
         ),
       ),
     );
-  }  
+  }
+  
+  void _unfocus() {
+    _profileProvider.shouldUnfocus = true;
+  }   
 
   @override
   Widget build(BuildContext context) {
