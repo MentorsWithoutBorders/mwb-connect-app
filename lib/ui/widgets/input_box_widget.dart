@@ -18,7 +18,12 @@ class InputBox extends StatelessWidget {
   }) : super(key: key);  
 
   Widget _showInput() {
-    inputController.text = text;
+    inputController.value = TextEditingValue(
+      text: text,
+      selection: TextSelection(
+        baseOffset: text.length,
+        extentOffset: text.length)
+    );
     return TextFormField(
       key: key,
       controller: inputController,
