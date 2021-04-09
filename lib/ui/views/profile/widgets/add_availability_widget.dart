@@ -53,7 +53,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   Widget _showTitle() {
     return Center(
       child: Text(
-        'Add availability',
+        'profile.add_availability'.tr(),
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
@@ -102,14 +102,14 @@ class _AddAvailabilityState extends State<AddAvailability> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 4.0, right: 3.0),
-              child: Text('From')
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0, right: 3.0),
+              child: Text('profile.availability_from'.tr())
             ),
             _showTimeFromDropdown(),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(5.0, 4.0, 5.0, 0.0),
-              child: Text('to')
+            Padding(
+              padding: const EdgeInsets.fromLTRB(5.0, 4.0, 5.0, 0.0),
+              child: Text('profile.availability_to'.tr())
             ),
             _showTimeToDropdown()
           ]
@@ -162,10 +162,10 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }     
 
   Widget _showError() {
-    return const Padding(
-      padding: EdgeInsets.only(bottom: 5.0),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
       child: Text(
-        '"From" time cannot be equal to or after "to" time',
+        'profile.availability_error'.tr(),
         style: TextStyle(
           fontSize: 13.0,
           color: AppColors.MONZA
@@ -221,7 +221,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
               _addAvailability();
             },
             child: Text(
-              'Add',
+              'common.add'.tr(),
               style: const TextStyle(
                 color: Colors.white
               )

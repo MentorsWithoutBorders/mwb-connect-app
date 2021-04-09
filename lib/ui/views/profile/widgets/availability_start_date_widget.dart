@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
@@ -69,7 +70,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                   ),
                   InkWell(
                     key: Key(AppKeys.currentlyAvailableText),
-                    child: Text('I\'m currently available'),
+                    child: Text('profile.currently_available'.tr()),
                     onTap: () {
                       _setIsAvailable(AvailabilityStart.now);
                     }
@@ -98,7 +99,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                         child: InkWell(
                           key: Key(AppKeys.availableFromText),
-                          child: Text('I\'m available starting from:'),
+                          child: Text('profile.available_starting_from'.tr()),
                           onTap: () {
                             _setIsAvailable(AvailabilityStart.later);
                           }
@@ -203,7 +204,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                   child: Text(
-                    'Done',
+                    'common.done'.tr(),
                     style: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.blue
@@ -239,8 +240,8 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   Widget _showTitle() {
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
-      child: const Text(
-        'Availability',
+      child: Text(
+        'profile.availability'.tr(),
         style: TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold

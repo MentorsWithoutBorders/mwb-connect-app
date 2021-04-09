@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -65,7 +66,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
 
     return Wrap(
       children: [
-        Label(text: 'Field'),
+        Label(text: 'profile.field'.tr()),
         _showFieldDropdown()
       ],
     );

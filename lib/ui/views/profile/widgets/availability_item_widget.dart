@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -125,7 +126,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
         key: Key(AppKeys.toast),
         content: Text(_profileProvider.availabilityMergedMessage),
         action: SnackBarAction(
-          label: 'Close', onPressed: scaffold.hideCurrentSnackBar
+          label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
       ),
     );

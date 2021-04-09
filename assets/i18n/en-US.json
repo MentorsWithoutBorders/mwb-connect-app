@@ -33,6 +33,10 @@
 	},
 	"common": {
 		"cancel": "Cancel",
+		"close": "Close",
+		"add": "Add",
+		"done": "Done",
+		"update": "Update",
 		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
 		"period_units": "day, week, month, year"				
 	},
@@ -67,7 +71,8 @@
 		"title": "Get started",
 		"full_name": "Full name",
 		"action": "Create account",
-		"login": "Have an account? Sign in"
+		"login": "Have an account? Sign in",
+		"not_approved": "You have to be a student from one of our partner NGOs or an employee of one of our partner companies."		
 	},
 	"forgot_password": {
 		"title": "Forgot password",
@@ -87,7 +92,23 @@
 		"logout": "Logout"
 	},
 	"profile": {
-		"title": "My profile"
+		"title": "My profile",
+		"availability": "Availability",
+		"add_availability": "Add availability",
+		"edit_availability": "Edit availability",
+		"availability_from": "From",
+		"availability_to": "to",
+		"availability_error": "\"From\" time cannot be equal to or after \"to\" time",
+		"available_days_times": "Available days/times",
+		"currently_available": "I'm currently available",
+		"available_starting_from": "I'm available starting from:",
+		"field": "Field",
+		"lessons": "Lessons",
+		"min_interval_lessons": "Minimum interval between lessons:",
+		"name": "Name",
+		"name_placeholder": "Enter name",
+		"subfields": "Subfields",
+		"add_subfield": "Add subfield"
 	},	
 	"goals": {
 		"my_goals": "My goals",

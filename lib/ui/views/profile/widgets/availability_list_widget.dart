@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -43,8 +44,8 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   Widget _showTitle() {
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
-      child: const Text(
-        'Available days/times',
+      child: Text(
+        'profile.available_days_times'.tr(),
         style: TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
@@ -79,7 +80,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
           ),
           padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
         ), 
-        child: const Text('Add availability', style: TextStyle(color: Colors.white)),
+        child: Text('profile.add_availability'.tr(), style: TextStyle(color: Colors.white)),
         onPressed: () {
           _showAddAvailabilityDialog();
         }
@@ -110,7 +111,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
         key: Key(AppKeys.toast),
         content: Text(_profileProvider.availabilityMergedMessage),
         action: SnackBarAction(
-          label: 'Close', onPressed: scaffold.hideCurrentSnackBar
+          label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
       ),
     );

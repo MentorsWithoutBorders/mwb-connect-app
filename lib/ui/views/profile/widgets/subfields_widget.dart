@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -20,7 +21,7 @@ class _SubfieldsState extends State<Subfields> {
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
     final List<String> selectedSubfields = _profileProvider.profile.user.subfields;
-    subfieldWidgets.add(const Label(text: 'Subfields'));
+    subfieldWidgets.add(Label(text: 'profile.subfields'.tr()));
     if (selectedSubfields != null) {
       for (int i = 0; i < selectedSubfields.length; i++) {
         final Widget subfield = SubfieldDropdown(index: i);
@@ -43,7 +44,7 @@ class _SubfieldsState extends State<Subfields> {
           ),
           padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0)
         ), 
-        child: const Text('Add subfield', style: TextStyle(color: Colors.white)),
+        child: Text('profile.add_subfield'.tr(), style: TextStyle(color: Colors.white)),
         onPressed: () {
           _addSubfield();
         }
