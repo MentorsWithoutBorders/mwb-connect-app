@@ -37,6 +37,8 @@
 		"add": "Add",
 		"done": "Done",
 		"update": "Update",
+		"from": "from",
+		"to": "to",
 		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
 		"period_units": "day, week, month, year"				
 	},
@@ -102,6 +104,7 @@
 		"available_days_times": "Available days/times",
 		"currently_available": "I'm currently available",
 		"available_starting_from": "I'm available starting from:",
+		"availabilities_merged": "The following availabilities have been merged:",
 		"field": "Field",
 		"lessons": "Lessons",
 		"min_interval_lessons": "Minimum interval between lessons:",

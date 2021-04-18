@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/skills_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
@@ -21,40 +22,47 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   Widget _showSubfieldDropdown() {
     return Container(
-      height: 50.0,
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Dropdown<Subfield>(
-              key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
-              dropdownMenuItemList: _buildSubfieldDropdown(),
-              onTapped: _unfocus,
-              onChanged: _changeSubfield,
-              value: _selectedSubfield
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                key: Key(AppKeys.deleteSubfieldBtn + widget.index.toString()),
-                child: Container(
-                  width: 30.0,
-                  height: 40.0,
-                  child: Image.asset(
-                    'assets/images/delete_icon.png'
+            child: Column(
+              children: [
+                Container(
+                height: 50.0,
+                padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Dropdown<Subfield>(
+                    key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
+                    dropdownMenuItemList: _buildSubfieldDropdown(),
+                    onTapped: _unfocus,
+                    onChanged: _changeSubfield,
+                    value: _selectedSubfield
                   ),
                 ),
-                onTap: () {
-                  _deleteSubfield();
-                }                 
-              )
-            ], 
-          )
+                Skills()
+              ],
+            ),
+          ),
+          _showDeleteSubfield()
         ],
       )
+    );
+  }
+
+  Widget _showDeleteSubfield() {
+    return InkWell(
+      key: Key(AppKeys.deleteSubfieldBtn + widget.index.toString()),
+      child: Container(
+        width: 30.0,
+        height: 40.0,
+        child: Image.asset(
+          'assets/images/delete_icon.png'
+        ),
+      ),
+      onTap: () {
+        _deleteSubfield();
+      }                 
     );
   }
 

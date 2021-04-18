@@ -17,6 +17,8 @@ class ProfileViewModel extends ChangeNotifier {
   String availabilityMergedMessage = '';
   bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
+  bool shouldScroll = false;
+  double scrollOffset = 0.0;
 
   Future<User> getUserDetails() async {
     return _userService.getUserDetails();
@@ -123,6 +125,15 @@ class ProfileViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void setScrollOffset(double positionDy) {
+    if (positionDy >= 350) {
+      scrollOffset = 130;
+    } else {
+      scrollOffset = positionDy - 200;
+    }
+    shouldScroll = true;
+  }
   
   void deleteSubfield(int index) {
     profile.user.subfields.removeAt(index);
@@ -199,13 +210,13 @@ class ProfileViewModel extends ChangeNotifier {
 
   void _setAvailabilityMergedMessage(Availability availability, List<Availability> merged) {
     if (availabilityMergedMessage.isEmpty) {
-      availabilityMergedMessage = 'The following availabilities have been merged:\n';
+      availabilityMergedMessage = 'profile.availabilities_merged'.tr() + '\n';
     }    
     if (!_mergedAvailabilityLastShown) {
-      availabilityMergedMessage += merged.last.dayOfWeek + ' from ' + merged.last.time.from + ' to ' + merged.last.time.to + '\n';
+      availabilityMergedMessage += merged.last.dayOfWeek + ' ' + 'common.from'.tr() + ' ' + merged.last.time.from + ' ' + 'common.to'.tr() + ' ' + merged.last.time.to + '\n';
       _mergedAvailabilityLastShown = true;
     }
-    availabilityMergedMessage += availability.dayOfWeek + ' from ' + availability.time.from + ' to ' + availability.time.to + '\n';    
+    availabilityMergedMessage += availability.dayOfWeek + ' ' + 'common.from'.tr() + ' ' + availability.time.from + ' ' + 'common.to'.tr() + ' ' + availability.time.to + '\n';    
   }
 
   void resetAvailabilityMergedMessage() {

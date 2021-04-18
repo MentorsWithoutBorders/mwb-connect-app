@@ -23,21 +23,37 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel _profileProvider;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }  
 
   Widget _showProfileCard(Profile profile) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.fromLTRB(20.0, statusBarHeight + 55.0, 20.0, 20.0), 
-        child: Column(
-          children: [
-            _showPrimaryCard(),
-            _showAvailabilityCard(),
-            if (_profileProvider.profile.user.isMentor) _showLessonsCard()
-          ],
-        ),
-      ),
+    return Container(
+      padding: EdgeInsets.fromLTRB(20.0, statusBarHeight - 20, 20.0, 0.0), 
+      child: ListView(
+        controller: _scrollController,
+        children: [
+          _showPrimaryCard(),
+          _showAvailabilityCard(),
+          if (_profileProvider.profile.user.isMentor) _showLessonsCard()
+        ]
+      )
     );
+  }
+
+  void _scrollToPosition(double offset) {
+    Future<void>.delayed(const Duration(milliseconds: 300), () {
+      _scrollController.animateTo(
+        _scrollController.position.pixels + offset,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
+    });
   }
 
   Widget _showPrimaryCard() {
@@ -131,6 +147,11 @@ class _ProfileViewState extends State<ProfileView> {
     if (_profileProvider.shouldUnfocus) {
       _unfocus();
       _profileProvider.shouldUnfocus = false;
+    }
+
+    if (_profileProvider.shouldScroll) {
+      _scrollToPosition(_profileProvider.scrollOffset);
+      _profileProvider.shouldScroll = false;
     }
 
     return FutureBuilder<Profile>(

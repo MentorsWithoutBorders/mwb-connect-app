@@ -22,7 +22,8 @@ class InputBox extends StatelessWidget {
       text: text,
       selection: TextSelection(
         baseOffset: text.length,
-        extentOffset: text.length)
+        extentOffset: text.length
+      )
     );
     return TextFormField(
       key: key,

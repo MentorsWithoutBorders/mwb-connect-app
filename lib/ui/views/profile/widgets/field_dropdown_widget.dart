@@ -21,8 +21,8 @@ class _FieldDropdownState extends State<FieldDropdown> {
 
   Widget _showFieldDropdown() {
     return Container(
-      height: 55,
-      padding: const EdgeInsets.only(bottom: 15),
+      height: 55.0,
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: Dropdown(
         key: const Key(AppKeys.fieldDropdown),
         dropdownMenuItemList: _buildFieldDropdown(),

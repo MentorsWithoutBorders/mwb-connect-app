@@ -131,7 +131,7 @@ class AvailabilityStartDateWidgetTest {
     await tester.pump();    
     await tester.tap(editCalendarIcon);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('15'));
+    await tester.tap(find.text('29'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('OK'));
     await tester.pumpAndSettle();
@@ -139,19 +139,19 @@ class AvailabilityStartDateWidgetTest {
     expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
     DateTime now = DateTime.now();
     String nowFormatted = dateFormat.format(now);
-    String date = nowFormatted.replaceAll(now.day.toString().padLeft(2, '0'), '15');
+    String date = nowFormatted.replaceAll(now.day.toString().padLeft(2, '0'), '29');
     expect(find.text(date), findsOneWidget);
     await tester.tap(currentlyAvailableRadio);
     await tester.pump();   
     await tester.tap(availableFromDate);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('20'));
+    await tester.tap(find.text('30'));
     await tester.pumpAndSettle();    
     await tester.tap(find.text('OK'));
     await tester.pumpAndSettle();    
     expect(((tester.widget(currentlyAvailableRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
     expect(((tester.widget(availableFromRadio) as Radio).groupValue as AvailabilityStart), equals(AvailabilityStart.later));
-    date = nowFormatted.replaceAll(now.day.toString().padLeft(2, '0'), '20');
+    date = nowFormatted.replaceAll(now.day.toString().padLeft(2, '0'), '30');
     expect(find.text(date), findsOneWidget);
     debugDefaultTargetPlatformOverride = null;
   } 

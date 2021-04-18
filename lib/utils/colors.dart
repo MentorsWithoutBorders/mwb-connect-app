@@ -14,4 +14,6 @@ class AppColors {
   static const Color TURQUOISE = Color(0xff49e99b);
   static const Color CINNABAR = Color(0xffe0491b); 
   static const Color WILD_SAND = Color(0xfff6f6f6); 
+  static const Color LINEN = Color(0xfff9efe5); 
+  static const Color TAN_HIDE = Color(0xfffa985b); 
 }
