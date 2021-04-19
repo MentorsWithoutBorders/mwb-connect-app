@@ -132,7 +132,9 @@ class _SkillsState extends State<Skills> {
     matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     final RenderBox renderBoxTypeahead = _keyTypeahead.currentContext.findRenderObject();
     final positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
-    _profileProvider.setScrollOffset(positionTypeahead.dy); 
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    _profileProvider.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
     return matches;
   }  
   

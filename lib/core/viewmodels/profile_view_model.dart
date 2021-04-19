@@ -17,8 +17,7 @@ class ProfileViewModel extends ChangeNotifier {
   String availabilityMergedMessage = '';
   bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
-  bool shouldScroll = false;
-  double scrollOffset = 0.0;
+  double scrollOffset = 0;
 
   Future<User> getUserDetails() async {
     return _userService.getUserDetails();
@@ -126,13 +125,13 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setScrollOffset(double positionDy) {
-    if (positionDy >= 350) {
-      scrollOffset = 130;
+  void setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {
+    final double height = screenHeight - statusBarHeight - 340;
+    if (positionDy >= height) {
+      scrollOffset = 100;
     } else {
-      scrollOffset = positionDy - 200;
+      scrollOffset = positionDy - height;
     }
-    shouldScroll = true;
   }
   
   void deleteSubfield(int index) {

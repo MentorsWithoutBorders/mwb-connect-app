@@ -34,9 +34,10 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _showProfileCard(Profile profile) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
-      padding: EdgeInsets.fromLTRB(20.0, statusBarHeight - 20, 20.0, 0.0), 
+      margin: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 0.0), 
       child: ListView(
         controller: _scrollController,
+        padding: const EdgeInsets.only(top: 0.0),
         children: [
           _showPrimaryCard(),
           _showAvailabilityCard(),
@@ -47,7 +48,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   void _scrollToPosition(double offset) {
-    Future<void>.delayed(const Duration(milliseconds: 300), () {
+    Future<void>.delayed(const Duration(milliseconds: 1000), () {
       _scrollController.animateTo(
         _scrollController.position.pixels + offset,
         curve: Curves.easeOut,
@@ -149,9 +150,9 @@ class _ProfileViewState extends State<ProfileView> {
       _profileProvider.shouldUnfocus = false;
     }
 
-    if (_profileProvider.shouldScroll) {
+    if (_profileProvider.scrollOffset != 0) {
       _scrollToPosition(_profileProvider.scrollOffset);
-      _profileProvider.shouldScroll = false;
+      _profileProvider.scrollOffset = 0;
     }
 
     return FutureBuilder<Profile>(
