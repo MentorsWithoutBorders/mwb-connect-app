@@ -1,5 +1,6 @@
 class Subfield {
   String name;
+  List<String> skills;
 
-  Subfield({this.name});
+  Subfield({this.name, this.skills});
 }

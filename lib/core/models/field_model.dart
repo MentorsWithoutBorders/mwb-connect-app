@@ -8,13 +8,15 @@ class Field {
 
   Field.fromMap(Map snapshot) {
     name = snapshot['name'] ?? '';
-    subfields = _subfieldsFromJson(snapshot['subfields']?.cast<String>()) ?? [];
+    subfields = _subfieldsFromJson(snapshot['subfields']?.cast<Map<String,dynamic>>()) ?? [];
   }
 
-  List<Subfield> _subfieldsFromJson(List<String> subfields) {
+  List<Subfield> _subfieldsFromJson(List<Map<String, dynamic>> json) {
     final List<Subfield> subfieldsList = [];
-    for (int i = 0; i < subfields.length; i++) {
-      subfieldsList.add(Subfield(name: subfields[i]));
+    if (json != null) {
+      for (int i = 0; i < json.length; i++) {
+        subfieldsList.add(Subfield(name: json[i]['name'], skills: json[i]['skills']?.cast<String>()));
+      }
     }
     return subfieldsList;
   }
@@ -26,10 +28,15 @@ class Field {
     };
   }
 
-  List<String> _subfieldsToJson(List<Subfield> subfields) {
-    final List<String> subfieldsList = [];
-    for (int i = 0; i < subfields.length; i++) {
-      subfieldsList.add(subfields[i].name);
+  List<Map<String,dynamic>> _subfieldsToJson(List<Subfield> subfields) {
+    List<Map<String,dynamic>> subfieldsList = [];
+    if (subfields != null) {
+      for (int i = 0; i < subfields.length; i++) {
+        subfieldsList.add({
+          'name': subfields[i].name, 
+          'skills': subfields[i].skills
+        });      
+      }
     }
     return subfieldsList;    
   }

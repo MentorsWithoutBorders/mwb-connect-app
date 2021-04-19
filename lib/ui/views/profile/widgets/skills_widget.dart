@@ -5,12 +5,15 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
 
 class Skills extends StatefulWidget {
-  const Skills({Key key})
-    : super(key: key); 
+  const Skills({Key key, @required this.index})
+    : super(key: key);
+    
+  final int index;    
 
   @override
   State<StatefulWidget> createState() => _SkillsState();
@@ -22,6 +25,21 @@ class _SkillsState extends State<Skills> {
   GlobalKey _keyTypeahead = GlobalKey();
 
   Widget _showSkills() {
+    final List<Widget> skillWidgets = [];
+    final List<String> skills = _profileProvider.profile.user.subfields[widget.index].skills;
+    if (skills != null) {
+      for (int i = 0; i < skills.length; i++) {
+        final Widget skill = Padding(
+          padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
+          child: Tag(
+            color: AppColors.TAN_HIDE,
+            text: skills[i],
+            deleteImg: 'assets/images/delete_circle_icon.png',
+          ),
+        );
+        skillWidgets.add(skill);
+      }
+    }
     return Column(
       children: [
         Container(
@@ -32,40 +50,7 @@ class _SkillsState extends State<Skills> {
             borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))
           ),
           child: Wrap(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
-                child: Tag(
-                  color: AppColors.TAN_HIDE,
-                  text: 'HTML',
-                  deleteImg: 'assets/images/delete_circle_icon.png',
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
-                child: Tag(
-                  color: AppColors.TAN_HIDE,
-                  text: 'CSS',
-                  deleteImg: 'assets/images/delete_circle_icon.png',
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
-                child: Tag(
-                  color: AppColors.TAN_HIDE,
-                  text: 'JavaScript',
-                  deleteImg: 'assets/images/delete_circle_icon.png',
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
-                child: Tag(
-                  color: AppColors.TAN_HIDE,
-                  text: 'Python',
-                  deleteImg: 'assets/images/delete_circle_icon.png',
-                ),
-              )
-            ],
+            children: skillWidgets,
           )
         ),
         Container(
@@ -114,21 +99,10 @@ class _SkillsState extends State<Skills> {
     );
   }
 
-  static final List<String> skills = [
-    'HTML',
-    'CSS',
-    'JavaScript',
-    'Python',
-    'Flask',
-    'Django',
-    'Java',
-    'Spring',
-    'Hibernate'
-  ];
-
   List<String> _getSuggestions(String query) {
     List<String> matches = [];
-    matches.addAll(skills);
+    Subfield subfield = _profileProvider.getSelectedSubfield(widget.index);
+    matches.addAll(subfield.skills);
     matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     final RenderBox renderBoxTypeahead = _keyTypeahead.currentContext.findRenderObject();
     final positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);

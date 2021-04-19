@@ -40,7 +40,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
                     value: _selectedSubfield
                   ),
                 ),
-                Skills()
+                Skills(index: widget.index)
               ],
             ),
           ),
@@ -84,7 +84,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   void _changeSubfield(Subfield subfield) {
     _setSelectedSubfield(subfield);
-    _profileProvider.setSubfield(subfield.name, widget.index);
+    _profileProvider.setSubfield(Subfield(name: subfield.name), widget.index);
   }
   
   void _setSelectedSubfield(Subfield subfield) {

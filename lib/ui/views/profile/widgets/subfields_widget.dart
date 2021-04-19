@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widget.dart';
@@ -20,10 +21,10 @@ class _SubfieldsState extends State<Subfields> {
 
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<String> selectedSubfields = _profileProvider.profile.user.subfields;
+    final List<Subfield> userSubfields = _profileProvider.profile.user.subfields;
     subfieldWidgets.add(Label(text: 'profile.subfields'.tr()));
-    if (selectedSubfields != null) {
-      for (int i = 0; i < selectedSubfields.length; i++) {
+    if (userSubfields != null) {
+      for (int i = 0; i < userSubfields.length; i++) {
         final Widget subfield = SubfieldDropdown(index: i);
         subfieldWidgets.add(subfield);
       }

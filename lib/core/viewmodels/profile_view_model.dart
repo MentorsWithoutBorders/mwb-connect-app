@@ -69,7 +69,7 @@ class ProfileViewModel extends ChangeNotifier {
     return selectedField;
   }   
 
-  void setSubfield(String subfield, int index) {
+  void setSubfield(Subfield subfield, int index) {
     if (index < profile.user.subfields.length) {
       profile.user.subfields[index] = subfield;
     } else {
@@ -81,12 +81,12 @@ class ProfileViewModel extends ChangeNotifier {
 
   List<Subfield> getSubfields(int index) {
     final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<String> selectedSubfields = profile.user.subfields;
+    final List<Subfield> userSubfields = profile.user.subfields;
     final List<Subfield> filteredSubfields = [];
     if (subfields != null) {
       for (final Subfield subfield in subfields) {
-        if (!selectedSubfields.contains(subfield.name) || 
-            subfield.name == selectedSubfields[index]) {
+        if (!_containsSubfield(userSubfields, subfield) || 
+            subfield.name == userSubfields[index].name) {
           filteredSubfields.add(subfield);
         }
       }
@@ -99,13 +99,24 @@ class ProfileViewModel extends ChangeNotifier {
     final String selectedField = profile.user.field;
     return fields.indexWhere((Field field) => field.name == selectedField);
   }
+
+  bool _containsSubfield(List<Subfield> subfields, Subfield subfield) {
+    bool contains = false;
+    for (int i = 0; i < subfields.length; i++) {
+      if (subfield.name == subfields[i].name) {
+        contains = true;
+        break;
+      }
+    }
+    return contains;
+  }
   
   Subfield getSelectedSubfield(int index) {
     Subfield selectedSubfield;
     final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<String> selectedSubfields = profile.user.subfields;
+    final List<Subfield> userSubfields = profile.user.subfields;
     for (final Subfield subfield in subfields) {
-      if (subfield.name == selectedSubfields[index]) {
+      if (subfield.name == userSubfields[index].name) {
         selectedSubfield = subfield;
         break;
       }
@@ -115,10 +126,10 @@ class ProfileViewModel extends ChangeNotifier {
 
   void addSubfield() {
     final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<String> selectedSubfields = profile.user.subfields;
+    final List<Subfield> userSubfields = profile.user.subfields;
     for (final Subfield subfield in subfields) {
-      if (!selectedSubfields.contains(subfield.name)) {
-        setSubfield(subfield.name, selectedSubfields.length+1);
+      if (!_containsSubfield(userSubfields, subfield)) {
+        setSubfield(Subfield(name: subfield.name), userSubfields.length+1);
         break;
       }
     }

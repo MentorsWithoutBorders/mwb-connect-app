@@ -1,4 +1,5 @@
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 class User {
   String id;
@@ -7,7 +8,7 @@ class User {
   bool isMentor;
   String organization;
   String field;
-  List<String> subfields;
+  List<Subfield> subfields;
   List<Availability> availabilities;
   bool isAvailable;
   DateTime availableFrom;
@@ -23,13 +24,23 @@ class User {
     isMentor = snapshot['isMentor'] ?? false;
     organization = snapshot['organization'].toString() ?? '';
     field = snapshot['field'].toString() ?? '';
-    subfields = snapshot['subfields']?.cast<String>() ?? [];
+    subfields = subfieldsFromJson(snapshot['subfields']?.cast<Map<String,dynamic>>()) ?? [];
     availabilities = _availabilityFromJson(snapshot['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
     availableFrom = snapshot['availableFrom']?.toDate();
     lessonsAvailability = _lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? null;
     registeredOn = snapshot['registeredOn']?.toDate();
   }
+
+  List<Subfield> subfieldsFromJson(List<Map<String, dynamic>> json) {
+    final List<Subfield> subfieldsList = [];
+    if (json != null) {
+      for (int i = 0; i < json.length; i++) {
+        subfieldsList.add(Subfield(name: json[i]['name'], skills: json[i]['skills']?.cast<String>()));
+      }
+    }
+    return subfieldsList;
+  }  
   
   List<Availability> _availabilityFromJson(List<Map<String, dynamic>> json) {
     final List<Availability> availabilityList = [];
@@ -56,7 +67,7 @@ class User {
       'isMentor': isMentor,
       'organization': organization,
       'field': field,
-      'subfields': subfields,
+      'subfields': _subfieldsToJson(subfields),
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
       'availableFrom': availableFrom,
@@ -66,6 +77,19 @@ class User {
       userMap.putIfAbsent('lessonsAvailability', () => _lessonsAvailabilityToJson(lessonsAvailability));
     }
     return userMap;
+  }
+
+  List<Map<String,dynamic>> _subfieldsToJson(List<Subfield> subfields) {
+    List<Map<String,dynamic>> subfieldsList = [];
+    if (subfields != null) {
+      for (int i = 0; i < subfields.length; i++) {
+        subfieldsList.add({
+          'name': subfields[i].name, 
+          'skills': subfields[i].skills
+        });      
+      }
+    }
+    return subfieldsList;    
   }
 
   List<Map<String, dynamic>> _availabilityToJson(List<Availability> availabilities) {
