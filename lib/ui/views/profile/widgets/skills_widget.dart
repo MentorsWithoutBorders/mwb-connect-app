@@ -35,14 +35,17 @@ class _SkillsState extends State<Skills> {
             color: AppColors.TAN_HIDE,
             text: skills[i],
             deleteImg: 'assets/images/delete_circle_icon.png',
+            tagDeletedCallback: _deleteSkill
           ),
         );
         skillWidgets.add(skill);
       }
     }
+    double inputBorderRadiusTop = skillWidgets.length > 0 ? 0.0 : 10.0;
+    double inputHeight = skillWidgets.length > 0 ? 35.0 : 40.0;
     return Column(
       children: [
-        Container(
+        if (skillWidgets.length > 0) Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 2.0),
           decoration: BoxDecoration(
@@ -54,7 +57,7 @@ class _SkillsState extends State<Skills> {
           )
         ),
         Container(
-          height: 35.0,
+          height: inputHeight,
           child: TypeAheadField(
             key: _keyTypeahead,
             textFieldConfiguration: TextFieldConfiguration(
@@ -62,11 +65,11 @@ class _SkillsState extends State<Skills> {
                 filled: true,
                 fillColor: AppColors.LINEN,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(inputBorderRadiusTop), topRight: Radius.circular(inputBorderRadiusTop), bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
                   borderSide: BorderSide.none,
                 ),
                 contentPadding: const EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 5.0),
-                hintText: 'Add skill (e.g. HTML, CSS, JavaScript, etc.)',
+                hintText: _profileProvider.getSkillHintText(widget.index),
                 hintStyle: const TextStyle(
                   fontSize: 14.0,
                   color: AppColors.SILVER
@@ -76,12 +79,15 @@ class _SkillsState extends State<Skills> {
                 fontSize: 14.0,
               ),
               controller: _typeAheadController,
+              onSubmitted: (skill) {
+                _addSkill(skill);
+              },
             ),
             suggestionsCallback: (pattern) async {
-              return _getSuggestions(pattern);
+              _doScroll();
+              return _profileProvider.getSkillSuggestions(pattern, widget.index);
             },
-            transitionBuilder:
-                (context, suggestionsBox, controller) {
+            transitionBuilder: (context, suggestionsBox, controller) {
               return suggestionsBox;
             },
             itemBuilder: (context, suggestion) {
@@ -90,27 +96,31 @@ class _SkillsState extends State<Skills> {
                 child: Text(suggestion),
               );
             },
-            onSuggestionSelected: (suggestion) {
-              _typeAheadController.text = suggestion;
-            }
+            onSuggestionSelected: (skill) {
+              _addSkill(skill);
+            }         
           ),
         )
       ]
     );
   }
 
-  List<String> _getSuggestions(String query) {
-    List<String> matches = [];
-    Subfield subfield = _profileProvider.getSelectedSubfield(widget.index);
-    matches.addAll(subfield.skills);
-    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+  void _doScroll() {
     final RenderBox renderBoxTypeahead = _keyTypeahead.currentContext.findRenderObject();
     final positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     _profileProvider.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
-    return matches;
   }  
+
+  void _addSkill(String skill) {
+    _typeAheadController.text = '';
+    _profileProvider.addSkill(skill, widget.index);
+  }
+  
+  void _deleteSkill(String skill) {
+    _profileProvider.deleteSkill(skill, widget.index);
+  }   
   
   void _unfocus() {
     _profileProvider.shouldUnfocus = true;

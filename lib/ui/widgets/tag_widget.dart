@@ -43,7 +43,9 @@ class Tag extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 7.0),
                   child: Image.asset(this.deleteImg)
                 ),
-                onTap: () => this.tagDeletedCallback
+                onTap: () {
+                 this.tagDeletedCallback(this.text); 
+                }
               )
             ],
           )

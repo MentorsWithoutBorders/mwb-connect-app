@@ -83,9 +83,13 @@ class User {
     List<Map<String,dynamic>> subfieldsList = [];
     if (subfields != null) {
       for (int i = 0; i < subfields.length; i++) {
+        List<String> skills = subfields[i].skills;
+        if (skills == null) {
+          skills = [];
+        }
         subfieldsList.add({
           'name': subfields[i].name, 
-          'skills': subfields[i].skills
+          'skills': skills
         });      
       }
     }

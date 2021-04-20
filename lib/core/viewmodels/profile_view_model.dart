@@ -135,21 +135,84 @@ class ProfileViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  void setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {
-    final double height = screenHeight - statusBarHeight - 340;
-    if (positionDy >= height) {
-      scrollOffset = 100;
-    } else {
-      scrollOffset = positionDy - height;
-    }
-  }
   
   void deleteSubfield(int index) {
     profile.user.subfields.removeAt(index);
     setUserDetails(profile.user);
     notifyListeners();
   }
+
+  void setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {
+    final double height = screenHeight - statusBarHeight - 340;
+    print(positionDy);
+    if (positionDy > height) {
+      scrollOffset = 100;
+    } else if (positionDy < height - 100) {
+      scrollOffset = positionDy - height;
+    }
+  }  
+
+  String getSkillHintText(int index) {
+    Subfield subfield = getSelectedSubfield(index);
+    String hint = 'Add skill (e.g. ';
+    for (int i = 0; i < 3; i++) {
+      hint += subfield.skills[i] + ', ';
+    }
+    hint += 'etc.)';
+    return hint;
+  }
+
+  List<String> getSkillSuggestions(String query, int index) {
+    List<String> matches = [];
+    Subfield subfield = getSelectedSubfield(index);
+    for (final String skill in subfield.skills) {
+      bool shouldAdd = true;
+      for (final String userSkill in profile.user.subfields[index].skills) {
+        if (skill == userSkill) {
+          shouldAdd = false;
+          break;
+        }
+      }
+      if (shouldAdd) {
+        matches.add(skill);
+      }
+    }
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+
+  void addSkill(String skill, int index) {
+    String skillToAdd = _setSkillToAdd(skill, index);
+    if (skillToAdd != null) {
+      profile.user.subfields[index].skills.add(skillToAdd);
+      setUserDetails(profile.user);
+      notifyListeners();
+    }
+  }
+
+  String _setSkillToAdd(String skill, int index) {
+    String skillToAdd;
+    List<String> skills = profile.user.subfields[index].skills;
+    for (int i = 0; i < skills.length; i++) {
+      if (skill.toLowerCase() == skills[i].toLowerCase()) {
+        return null;
+      }
+    }
+    Subfield subfield = getSelectedSubfield(index);
+    for (int i = 0; i < subfield.skills.length; i++) {
+      if (skill.toLowerCase() == subfield.skills[i].toLowerCase()) {
+        skillToAdd = subfield.skills[i];
+        break;
+      }
+    }
+    return skillToAdd;
+  }
+
+  void deleteSkill(String skill, int index) {
+    profile.user.subfields[index].skills.remove(skill);
+    setUserDetails(profile.user);
+    notifyListeners();
+  }  
 
   void setIsAvailable(bool isAvailable) {
     profile.user.isAvailable = isAvailable;
