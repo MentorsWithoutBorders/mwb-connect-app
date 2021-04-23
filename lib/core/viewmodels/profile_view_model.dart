@@ -147,37 +147,48 @@ class ProfileViewModel extends ChangeNotifier {
     print(positionDy);
     if (positionDy > height) {
       scrollOffset = 100;
-    } else if (positionDy < height - 100) {
+    } else if (positionDy < height - 50) {
       scrollOffset = positionDy - height;
     }
   }  
 
   String getSkillHintText(int index) {
     Subfield subfield = getSelectedSubfield(index);
-    String hint = 'Add skill (e.g. ';
-    for (int i = 0; i < 3; i++) {
-      hint += subfield.skills[i] + ', ';
+    String hint = '';
+    if (subfield.skills != null) {
+      hint = 'Add skill (e.g. ';
+      int hintsNumber = 3;
+      if (subfield.skills.length < 3) {
+        hintsNumber = subfield.skills.length;
+      }
+      for (int i = 0; i < hintsNumber; i++) {
+        hint += subfield.skills[i] + ', ';
+      }
+      hint += 'etc.)';
     }
-    hint += 'etc.)';
     return hint;
   }
 
   List<String> getSkillSuggestions(String query, int index) {
     List<String> matches = [];
     Subfield subfield = getSelectedSubfield(index);
-    for (final String skill in subfield.skills) {
-      bool shouldAdd = true;
-      for (final String userSkill in profile.user.subfields[index].skills) {
-        if (skill == userSkill) {
-          shouldAdd = false;
-          break;
+    List<String> subfieldSkills = subfield.skills;
+    List<String> userSkills = profile.user.subfields[index]?.skills;
+    if (userSkills != null) {
+      for (final String skill in subfieldSkills) {
+        bool shouldAdd = true;
+        for (final String userSkill in userSkills) {
+          if (skill == userSkill) {
+            shouldAdd = false;
+            break;
+          }
+        }
+        if (shouldAdd) {
+          matches.add(skill);
         }
       }
-      if (shouldAdd) {
-        matches.add(skill);
-      }
+      matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     }
-    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     return matches;
   }
 

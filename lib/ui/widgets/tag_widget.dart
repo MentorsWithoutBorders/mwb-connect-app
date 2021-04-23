@@ -22,7 +22,7 @@ class Tag extends StatelessWidget {
         Container(
           height: 30,
           decoration: BoxDecoration(
-            color: this.color,
+            color: color,
             borderRadius: BorderRadius.all(Radius.circular(15.0))
           ),
           child: Row(
@@ -30,7 +30,7 @@ class Tag extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 15.0),
                 child: Text(
-                  this.text,
+                  text,
                   style: TextStyle(
                     fontSize: 12, 
                     color: Colors.white
@@ -41,10 +41,10 @@ class Tag extends StatelessWidget {
                 child: Container(
                   height: 18.0,
                   padding: const EdgeInsets.only(right: 7.0),
-                  child: Image.asset(this.deleteImg)
+                  child: Image.asset(deleteImg)
                 ),
                 onTap: () {
-                 this.tagDeletedCallback(this.text); 
+                 tagDeletedCallback(text); 
                 }
               )
             ],

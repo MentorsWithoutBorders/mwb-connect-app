@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/typeahead_field_widget.dart';
 
 class Skills extends StatefulWidget {
   const Skills({Key key, @required this.index})
@@ -22,12 +19,13 @@ class Skills extends StatefulWidget {
 class _SkillsState extends State<Skills> {
   ProfileViewModel _profileProvider;
   final TextEditingController _typeAheadController = TextEditingController();
-  GlobalKey _keyTypeahead = GlobalKey();
+  final GlobalKey _keyTypeAhead = GlobalKey();
+  String _query = '';
 
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
     final List<String> skills = _profileProvider.profile.user.subfields[widget.index].skills;
-    if (skills != null) {
+    if (skills != null && skills.length > 0) {
       for (int i = 0; i < skills.length; i++) {
         final Widget skill = Padding(
           padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
@@ -59,42 +57,31 @@ class _SkillsState extends State<Skills> {
         Container(
           height: inputHeight,
           child: TypeAheadField(
-            key: _keyTypeahead,
-            textFieldConfiguration: TextFieldConfiguration(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColors.LINEN,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(inputBorderRadiusTop), topRight: Radius.circular(inputBorderRadiusTop), bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 5.0),
-                hintText: _profileProvider.getSkillHintText(widget.index),
-                hintStyle: const TextStyle(
-                  fontSize: 14.0,
-                  color: AppColors.SILVER
-                ),
+            key: _keyTypeAhead,
+            options: _profileProvider.getSkillSuggestions(_query, widget.index),
+            inputDecoration: InputDecoration(
+              filled: true,
+              fillColor: AppColors.LINEN,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(inputBorderRadiusTop), topRight: Radius.circular(inputBorderRadiusTop), bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+                borderSide: BorderSide.none,
               ),
-              style: TextStyle(
+              contentPadding: const EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 5.0),
+              hintText: _profileProvider.getSkillHintText(widget.index),
+              hintStyle: const TextStyle(
                 fontSize: 14.0,
+                color: AppColors.SILVER
               ),
-              controller: _typeAheadController,
-              onSubmitted: (skill) {
-                _addSkill(skill);
-              },
             ),
-            suggestionsCallback: (pattern) async {
+            inputController: _typeAheadController,
+            onFocusCallback: () {
               _doScroll();
-              return _profileProvider.getSkillSuggestions(pattern, widget.index);
             },
-            transitionBuilder: (context, suggestionsBox, controller) {
-              return suggestionsBox;
-            },
-            itemBuilder: (context, suggestion) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
-                child: Text(suggestion),
-              );
+            onChangedCallback: (query) {
+              _changeQuery(query);
+            },            
+            onSubmittedCallback: (skill) {
+              _addSkill(skill);
             },
             onSuggestionSelected: (skill) {
               _addSkill(skill);
@@ -105,8 +92,14 @@ class _SkillsState extends State<Skills> {
     );
   }
 
+  void _changeQuery(String query) {
+    setState(() {
+      _query = query;
+    });
+  }
+
   void _doScroll() {
-    final RenderBox renderBoxTypeahead = _keyTypeahead.currentContext.findRenderObject();
+    final RenderBox renderBoxTypeahead = _keyTypeAhead.currentContext.findRenderObject();
     final positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -114,17 +107,26 @@ class _SkillsState extends State<Skills> {
   }  
 
   void _addSkill(String skill) {
-    _typeAheadController.text = '';
     _profileProvider.addSkill(skill, widget.index);
+    _resetInputText();
+  }
+
+  void _resetInputText() {
+    _typeAheadController.value = TextEditingValue(
+      text: '',
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: 0),
+      )
+    );
+    setState(() {
+      _query = '';
+    });    
   }
   
   void _deleteSkill(String skill) {
     _profileProvider.deleteSkill(skill, widget.index);
-  }   
-  
-  void _unfocus() {
-    _profileProvider.shouldUnfocus = true;
-  } 
+    _resetInputText();   
+  }
 
   @override
   Widget build(BuildContext context) {

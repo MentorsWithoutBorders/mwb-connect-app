@@ -7,8 +7,8 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -25,7 +25,7 @@ class TutorialView extends StatefulWidget {
 }
 
 class _TutorialViewState extends State<TutorialView> {
-  final ScrollController _controller = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final double _pageIndicatorHeight = 30.0;
   Directory _appDocsDir;  
   final Map<String, bool> _imageExists = {};
@@ -70,7 +70,7 @@ class _TutorialViewState extends State<TutorialView> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }  
 
@@ -130,10 +130,10 @@ class _TutorialViewState extends State<TutorialView> {
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 20.0),
       child: DraggableScrollbar(
-        controller: _controller,
+        controller: _scrollController,
         child: ListView.builder(
           padding: const EdgeInsets.only(top: 0.0),
-          controller: _controller,
+          controller: _scrollController,
           itemCount: 1,
           itemBuilder: (BuildContext context, int index) {
             return Column(
