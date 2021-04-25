@@ -308,10 +308,10 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
                 fontWeight: FontWeight.bold
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
-                // if (_isOpen) Phoenix.rebirth(context);
-                if (_isOpen) {
-                  Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: item)));
-                }
+                if (_isOpen) Phoenix.rebirth(context);
+                // if (_isOpen) {
+                //   Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: item)));
+                // }
               },
             )
           ],
