@@ -48,9 +48,6 @@ dependencies:
     git:
       url: git://github.com/MentorsWithoutBorders/easy_localization.git
 
-dependency_overrides:
-  plugin_platform_interface: ^2.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
