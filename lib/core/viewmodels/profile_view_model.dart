@@ -144,7 +144,6 @@ class ProfileViewModel extends ChangeNotifier {
 
   void setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {
     final double height = screenHeight - statusBarHeight - 340;
-    print(positionDy);
     if (positionDy > height) {
       scrollOffset = 100;
     } else if (positionDy < height - 50) {
@@ -156,7 +155,7 @@ class ProfileViewModel extends ChangeNotifier {
     Subfield subfield = getSelectedSubfield(index);
     String hint = '';
     if (subfield.skills != null) {
-      hint = 'Add skill (e.g. ';
+      hint = 'Add skills (e.g. ';
       int hintsNumber = 3;
       if (subfield.skills.length < 3) {
         hintsNumber = subfield.skills.length;
@@ -192,12 +191,15 @@ class ProfileViewModel extends ChangeNotifier {
     return matches;
   }
 
-  void addSkill(String skill, int index) {
+  bool addSkill(String skill, int index) {
     String skillToAdd = _setSkillToAdd(skill, index);
     if (skillToAdd != null) {
       profile.user.subfields[index].skills.add(skillToAdd);
       setUserDetails(profile.user);
       notifyListeners();
+      return true;
+    } else {
+      return false;
     }
   }
 

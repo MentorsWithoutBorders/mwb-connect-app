@@ -33,7 +33,7 @@ Future<void> main() async {
   storageService.userId = 'test_user';
   final String jsonFile = await rootBundle.loadString('assets/i18n/en-US.json');  
 
-  group('Subfield dropdown widget tests:', () {
+  group('Subfield dropdown widgets tests:', () {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
     final WidgetLoader widgetLoader = WidgetLoader();
     final Widget wrapWidget = Wrap(

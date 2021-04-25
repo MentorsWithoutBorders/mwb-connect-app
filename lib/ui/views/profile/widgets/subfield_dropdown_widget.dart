@@ -23,28 +23,32 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   Widget _showSubfieldDropdown() {
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                height: 50.0,
-                padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Dropdown<Subfield>(
-                    key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
-                    dropdownMenuItemList: _buildSubfieldDropdown(),
-                    onTapped: _unfocus,
-                    onChanged: _changeSubfield,
-                    value: _selectedSubfield
-                  ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                    height: 50.0,
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Dropdown<Subfield>(
+                        key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
+                        dropdownMenuItemList: _buildSubfieldDropdown(),
+                        onTapped: _unfocus,
+                        onChanged: _changeSubfield,
+                        value: _selectedSubfield
+                      ),
+                    ),
+                    Skills(index: widget.index)
+                  ],
                 ),
-                Skills(index: widget.index)
-              ],
-            ),
-          ),
-          _showDeleteSubfield()
+              ),
+              _showDeleteSubfield()
+            ],
+          )
         ],
       )
     );

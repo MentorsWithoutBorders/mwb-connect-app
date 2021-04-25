@@ -30,9 +30,12 @@ class _SkillsState extends State<Skills> {
         final Widget skill = Padding(
           padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
           child: Tag(
+            key: Key(AppKeys.skillTag + i.toString()),
             color: AppColors.TAN_HIDE,
             text: skills[i],
+            textKey: Key(AppKeys.skillText + i.toString()),
             deleteImg: 'assets/images/delete_circle_icon.png',
+            deleteKey: Key(AppKeys.deleteSkillBtn + i.toString()),
             tagDeletedCallback: _deleteSkill
           ),
         );
@@ -59,6 +62,7 @@ class _SkillsState extends State<Skills> {
           child: TypeAheadField(
             key: _keyTypeAhead,
             options: _profileProvider.getSkillSuggestions(_query, widget.index),
+            inputKey: Key(AppKeys.addSkillsField),
             inputDecoration: InputDecoration(
               filled: true,
               fillColor: AppColors.LINEN,
@@ -107,8 +111,9 @@ class _SkillsState extends State<Skills> {
   }  
 
   void _addSkill(String skill) {
-    _profileProvider.addSkill(skill, widget.index);
-    _resetInputText();
+    if (_profileProvider.addSkill(skill, widget.index)) {
+      _resetInputText();
+    }
   }
 
   void _resetInputText() {
@@ -125,7 +130,6 @@ class _SkillsState extends State<Skills> {
   
   void _deleteSkill(String skill) {
     _profileProvider.deleteSkill(skill, widget.index);
-    _resetInputText();   
   }
 
   @override

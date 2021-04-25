@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/main.dart' as app;
 import '../test/ui/views/profile/widgets/name_widget_test.dart';
 import '../test/ui/views/profile/widgets/field_dropdown_widget_test.dart';
 import '../test/ui/views/profile/widgets/subfields_widget_test.dart';
+import '../test/ui/views/profile/widgets/skills_widget_test.dart';
 import '../test/ui/views/profile/widgets/availability_start_date_widget_test.dart';
 import '../test/ui/views/profile/widgets/availability_list_widget_test.dart';
 import '../test/ui/views/profile/widgets/lessons_widget_test.dart';
@@ -52,6 +53,9 @@ void main() async {
     await SubfieldsWidgetTest.addSubfieldTest(tester);
     await SubfieldsWidgetTest.changeSubfieldTest(tester);
     await SubfieldsWidgetTest.deleteSubfieldTest(tester);
+    // Skills test
+    await SkillsWidgetTest.skillsWidgetShowsUpTest();
+    await SkillsWidgetTest.addSkillsTest(tester);
     // Availability start date test
     // Initial values: isAvailable = true; availableFrom = null
     await AvailabilityStartDateWidgetTest.widgetShowsUpTest();    

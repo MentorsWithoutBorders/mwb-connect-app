@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
+import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
@@ -33,9 +34,10 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget _showProfileCard(Profile profile) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return Container(
-      margin: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 0.0), 
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
       child: ListView(
+        key: const Key(AppKeys.profileListView),
         controller: _scrollController,
         padding: const EdgeInsets.only(top: 0.0),
         children: [
@@ -58,58 +60,67 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _showPrimaryCard() {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.only(bottom: 15.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ), 
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Wrap(
-          children: [
-            Name(),
-            if (_profileProvider.profile.user.isMentor) FieldDropdown(),
-            if (_profileProvider.profile.user.isMentor) Subfields()
-          ],
-        )
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+      child: Card(
+        elevation: 3.0,
+        margin: const EdgeInsets.only(bottom: 15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ), 
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Wrap(
+            children: [
+              Name(),
+              if (_profileProvider.profile.user.isMentor) FieldDropdown(),
+              if (_profileProvider.profile.user.isMentor) Subfields()
+            ],
+          )
+        ),
       ),
     );
   }
 
   Widget _showAvailabilityCard() {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.only(bottom: 15.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ), 
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Wrap(
-          children: [
-            AvailabilityStartDate(),
-            AvailabilityList(),
-          ],
-        )
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+      child: Card(
+        elevation: 3.0,
+        margin: const EdgeInsets.only(bottom: 15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ), 
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Wrap(
+            children: [
+              AvailabilityStartDate(),
+              AvailabilityList(),
+            ],
+          )
+        ),
       ),
     );
   }
 
  Widget _showLessonsCard() {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.only(bottom: 12.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ), 
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Wrap(
-          children: [
-            Lessons()
-          ],
-        )
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+      child: Card(
+        elevation: 3.0,
+        margin: const EdgeInsets.only(bottom: 20.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ), 
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Wrap(
+            children: [
+              Lessons()
+            ],
+          )
+        ),
       ),
     );
   }  
@@ -139,7 +150,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   void _unfocus() {
     FocusScope.of(context).unfocus();
-  }    
+  }
 
   @override
   Widget build(BuildContext context) {

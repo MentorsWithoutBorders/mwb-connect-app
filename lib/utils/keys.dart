@@ -11,6 +11,7 @@ class AppKeys {
   static const String loginPasswordField = 'loginPasswordField';
   static const String loginSignupPrimaryBtn = 'loginSignupPrimaryBtn';
   // Profile
+  static const String profileListView = 'profileListView';
   // Name
   static const String nameField = 'nameField';
   // Field
@@ -19,6 +20,12 @@ class AppKeys {
   static const String addSubfieldBtn = 'addSubfieldBtn';
   static const String subfieldDropdown = 'subfieldDropdown';
   static const String deleteSubfieldBtn = 'deleteSubfieldBtn';
+  // Skills
+  static const String addSkillsField = 'addSkillsField';
+  static const String skillTag = 'skillTag';
+  static const String skillText = 'skillText';  
+  static const String deleteSkillBtn = 'deleteSkillBtn';  
+  static const String addSkillsHint = 'addSkillsHint';  
   // Availability
   static const String currentlyAvailableRadio = 'currentlyAvailableRadio';
   static const String currentlyAvailableText = 'currentlyAvailableText';

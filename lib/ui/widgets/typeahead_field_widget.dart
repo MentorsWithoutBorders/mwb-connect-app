@@ -7,6 +7,7 @@ class TypeAheadField extends StatefulWidget {
   const TypeAheadField({
     Key key,
     this.options,
+    this.inputKey, 
     this.inputController, 
     this.inputDecoration,
     this.onFocusCallback,
@@ -16,6 +17,7 @@ class TypeAheadField extends StatefulWidget {
   }) : super(key: key);   
 
   final List<String> options;
+  final Key inputKey;
   final TextEditingController inputController;
   final InputDecoration inputDecoration;
   final Function() onFocusCallback;
@@ -49,7 +51,7 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
 
   OverlayEntry _createOverlayEntry() {
     final List<Widget> optionWidgets = [];
-    if (widget.options != null) {
+    if (widget.options != null && widget.options.length > 0) {
       for (int i = 0; i < widget.options.length; i++) {
         final Widget option = InkWell(
           child: Padding(
@@ -62,10 +64,18 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
         );
         optionWidgets.add(option);
       }
+    } else {
+      final Widget noItemsFound = Padding(
+        padding: const EdgeInsets.only(top: 6.0),
+        child: Center(
+          child: Text('No items found')
+        )
+      );
+      optionWidgets.add(noItemsFound);
     }
     double height = 160.0;
-    if (widget.options.length < 5) {
-      height = widget.options.length * 32.0;
+    if (optionWidgets.length < 5) {
+      height = optionWidgets.length * 32.0;
     }
     double heightScrollThumb = 150.0 / (widget.options.length / 5);
 
@@ -132,6 +142,7 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
       link: _layerLink,
       child: TextFormField(
         focusNode: _focusNode,
+        key: widget.inputKey,
         controller: widget.inputController,
         decoration: widget.inputDecoration,
         onChanged: widget.onChangedCallback,

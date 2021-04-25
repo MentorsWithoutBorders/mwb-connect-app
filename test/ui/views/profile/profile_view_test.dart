@@ -50,8 +50,17 @@ Future<void> main() async {
         name: 'Bob',
         field: 'Programming',
         subfields: [
-          'Web Development',
-          'Mobile Development'
+          Subfield(
+            name: 'Web Development',
+            skills: [
+              'HTML',
+              'CSS'
+            ]
+          ),
+          Subfield(
+            name: 'Mobile Development',
+            skills: []
+          )
         ],
         isAvailable: true,
         availabilities: [
@@ -73,17 +82,24 @@ Future<void> main() async {
         Field(
           name: 'Programming',
           subfields: [
-            Subfield(name: 'Web Development'),
-            Subfield(name: 'Mobile Development'),
-            Subfield(name: 'Game Development'),
+            Subfield(
+              name: 'Web Development', 
+              skills: [
+                'HTML',
+                'CSS',
+                'JavaScript'
+              ]
+            ),
+            Subfield(name: 'Mobile Development', skills: []),
+            Subfield(name: 'Game Development', skills: []),
           ]
         ),
         Field(
           name: 'Graphic Design',
           subfields: [
-            Subfield(name: 'Visual Identity'),
-            Subfield(name: 'Marketing & Advertising'),
-            Subfield(name: 'User Interface'),
+            Subfield(name: 'Visual Identity', skills: []),
+            Subfield(name: 'Marketing & Advertising', skills: []),
+            Subfield(name: 'User Interface', skills: []),
           ]
         ),
       ];
@@ -103,11 +119,18 @@ Future<void> main() async {
         expect(find.byKey(const Key(AppKeys.fieldDropdown)).last, findsOneWidget);
         expect(find.text('Subfields'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.subfieldDropdown + '0')).last, findsOneWidget);
-        expect(find.byKey(const Key(AppKeys.subfieldDropdown + '1')).last, findsOneWidget);        
+        expect(find.byKey(const Key(AppKeys.subfieldDropdown + '1')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.deleteSubfieldBtn + '0')), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.deleteSubfieldBtn + '1')), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.skillTag + '0')), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.skillTag + '1')), findsOneWidget);        
+        expect(find.byKey(const Key(AppKeys.deleteSkillBtn + '0')), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.deleteSkillBtn + '1')), findsOneWidget);
+        expect(find.byKey(const Key(AppKeys.addSkillsField)), findsNWidgets(2));
         expect(find.text('Add subfield'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.addSubfieldBtn)), findsOneWidget);
+        await tester.drag(find.byKey(Key(AppKeys.profileListView)), const Offset(0.0, -500));
+        await tester.pump();        
         expect(find.text('Availability'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.currentlyAvailableRadio)), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.currentlyAvailableText)), findsOneWidget);

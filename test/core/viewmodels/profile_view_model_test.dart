@@ -46,8 +46,14 @@ Future<void> main() async {
         name: 'Bob', 
         field: 'Graphic Design',
         subfields: [
-          'User Interface',
-          'Marketing & Advertising'
+          Subfield(
+            name: 'User Interface',
+            skills: []
+          ),
+          Subfield(
+            name: 'Marketing & Advertising',
+            skills: []
+          )
         ],
         isAvailable: true,
         availabilities: [
@@ -65,7 +71,16 @@ Future<void> main() async {
         Field(
           name: 'Programming',
           subfields: [
-            Subfield(name: 'Web Development'),
+            Subfield(
+              name: 'Web Development',
+              skills: [
+                'HTML',
+                'CSS',
+                'JavaScript',
+                'Python',
+                'Java'
+              ]
+            ),
             Subfield(name: 'Mobile Development'),
             Subfield(name: 'Game Development'),
           ]
@@ -73,9 +88,16 @@ Future<void> main() async {
         Field(
           name: 'Graphic Design',
           subfields: [
+            Subfield(
+              name: 'User Interface',
+              skills: [
+                'Adobe Photoshop',
+                'Adobe Illustrator',
+                'Sketch'
+              ]
+            ),
             Subfield(name: 'Visual Identity'),
-            Subfield(name: 'Marketing & Advertising'),
-            Subfield(name: 'User Interface'),
+            Subfield(name: 'Marketing & Advertising')
           ]
         ),
       ];
@@ -111,19 +133,19 @@ Future<void> main() async {
     });
     
     test('Subfield should be changed', () async {
-      const String subfield = 'Visual Identity';
+      Subfield subfield = Subfield(name: 'Visual Identity');
       profileViewModel.setSubfield(subfield, 0);
-      expect(profileViewModel.profile.user.subfields[0], subfield);
+      expect(profileViewModel.profile.user.subfields[0].name, subfield.name);
       final User user = await profileViewModel.getUserDetails();
-      expect(user.subfields[0], subfield);
+      expect(user.subfields[0].name, subfield.name);
     });
     
     test('Subfield should be added', () async {
-      const String subfield = 'Visual Identity';
+      Subfield subfield = Subfield(name: 'Visual Identity');
       profileViewModel.setSubfield(subfield, 2);
-      expect(profileViewModel.profile.user.subfields[2], subfield);
+      expect(profileViewModel.profile.user.subfields[2].name, subfield.name);
       final User user = await profileViewModel.getUserDetails();
-      expect(user.subfields[2], subfield);      
+      expect(user.subfields[2].name, subfield.name);
     });
     
     test('Subfields should be filtered', () {
@@ -139,15 +161,52 @@ Future<void> main() async {
     
     test('Added default subfield should be correct', () async {
       profileViewModel.addSubfield();
-      expect(profileViewModel.profile.user.subfields[2], 'Visual Identity');   
+      expect(profileViewModel.profile.user.subfields[2].name, 'Visual Identity');   
     });
     
     test('Subfields list should be correct after delete subfield', () {
       profileViewModel.deleteSubfield(1);
-      final List<String> subfields = profileViewModel.profile.user.subfields;
-      expect(subfields[0], 'User Interface');   
+      final List<Subfield> subfields = profileViewModel.profile.user.subfields;
+      expect(subfields[0].name, 'User Interface');   
       expect(subfields.asMap().containsKey(1), false);   
     });
+
+    test('Scroll offset should be set correctly', () {
+      profileViewModel.setScrollOffset(250, 640, 60);
+      expect(profileViewModel.scrollOffset, 100);
+      profileViewModel.setScrollOffset(150, 640, 60);
+      expect(profileViewModel.scrollOffset, -90);
+      profileViewModel.setScrollOffset(220, 640, 60);
+      expect(profileViewModel.scrollOffset, -90);
+    });
+    
+    test('Skills hint should be set correctly', () {
+      String hint = profileViewModel.getSkillHintText(0);
+      expect(hint, 'Add skills (e.g. Adobe Photoshop, Adobe Illustrator, Sketch, etc.)');
+    });
+    
+    test('Skill suggestions list should be set correctly', () {
+      List<String> skillSugestions = profileViewModel.getSkillSuggestions('ado', 0);
+      expect(skillSugestions, ['Adobe Photoshop', 'Adobe Illustrator']);
+      skillSugestions = profileViewModel.getSkillSuggestions('abd', 0);
+      expect(skillSugestions, []);      
+    });
+    
+    test('Skill should be added', () {
+      profileViewModel.addSkill('Adobe Photoshop', 0);
+      List<String> userSkills = profileViewModel.profile.user.subfields[0].skills;
+      profileViewModel.addSkill('Sketch', 0);
+      expect(userSkills, ['Adobe Photoshop', 'Sketch']);
+      profileViewModel.addSkill('Adobe Photoshop', 0);
+      expect(userSkills, ['Adobe Photoshop', 'Sketch']);      
+    });
+
+    test('Skill should be deleted', () {
+      profileViewModel.addSkill('Adobe Photoshop', 0);
+      profileViewModel.deleteSkill('Adobe Photoshop', 0);
+      List<String> userSkills = profileViewModel.profile.user.subfields[0].skills;
+      expect(userSkills, []);
+    });      
 
     test('User availability should be set correctly', () {
       profileViewModel.setIsAvailable(false);
