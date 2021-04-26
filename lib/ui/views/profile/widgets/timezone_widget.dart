@@ -15,12 +15,12 @@ class UserTimezone extends StatefulWidget {
 class _UserTimezoneState extends State<UserTimezone> {
   ProfileViewModel _profileProvider;   
 
-  Widget _showTimezone() {
+  Widget _showTimeZone() {
     DateTime now = DateTime.now();
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 12.0),
       child: Text(
-        'All times are in ' + now.timeZoneName + ' timezone.',
+        'profile.availability_timezone'.tr(args: [now.timeZoneName]),
         style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.DOVE_GRAY,
@@ -36,7 +36,7 @@ class _UserTimezoneState extends State<UserTimezone> {
 
     return Column(
       children: [
-        if (_profileProvider.profile.user.availabilities.length > 0) _showTimezone(),
+        if (_profileProvider.profile.user.availabilities.length > 0) _showTimeZone(),
       ],
     );
   }
