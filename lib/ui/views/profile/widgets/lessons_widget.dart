@@ -43,7 +43,7 @@ class _LessonsState extends State<Lessons> {
       margin: const EdgeInsets.only(left: 5.0, bottom: 18.0),
       child: Text(
         'profile.lessons'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
         )
@@ -123,7 +123,7 @@ class _LessonsState extends State<Lessons> {
     _updateLessonsAvailability();
   }
   
-  void _setSelectedMinIntervalUnit(unit) {
+  void _setSelectedMinIntervalUnit(String unit) {
     setState(() {
       _lessonsAvailability.minIntervalUnit = _profileProvider.getPeriodUnitPlural(unit, _lessonsAvailability.minInterval);
     });

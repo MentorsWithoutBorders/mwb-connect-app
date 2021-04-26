@@ -73,7 +73,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
         height: 30.0,
         margin: const EdgeInsets.only(top: 20.0),
         child: Dropdown(
-          key: Key(AppKeys.dayOfWeekDropdown),
+          key: const Key(AppKeys.dayOfWeekDropdown),
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
           value: _availability.dayOfWeek
@@ -105,7 +105,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 4.0, right: 3.0),
               child: Text('profile.availability_from'.tr())
@@ -128,7 +128,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
       padding: const EdgeInsets.only(bottom: 5.0),
       child: Text(
         'profile.availability_error'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.MONZA
         )
@@ -142,7 +142,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
       height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
-        key: Key(AppKeys.timeFromDropdown),
+        key: const Key(AppKeys.timeFromDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeFrom,
@@ -169,7 +169,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
       height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
-        key: Key(AppKeys.timeToDropdown),
+        key: const Key(AppKeys.timeToDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeTo,
@@ -203,7 +203,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
-            key: Key(AppKeys.cancelBtn),
+            key: const Key(AppKeys.cancelBtn),
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
               child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
@@ -213,7 +213,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
             },
           ),
           ElevatedButton(
-            key: Key(AppKeys.submitBtn),
+            key: const Key(AppKeys.submitBtn),
             style: ElevatedButton.styleFrom(
               primary: AppColors.MONZA,
               shape: RoundedRectangleBorder(

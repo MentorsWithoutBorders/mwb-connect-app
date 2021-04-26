@@ -72,9 +72,9 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
             children: [
-              Name(),
-              if (_profileProvider.profile.user.isMentor) FieldDropdown(),
-              if (_profileProvider.profile.user.isMentor) Subfields()
+              const Name(),
+              if (_profileProvider.profile.user.isMentor) const FieldDropdown(),
+              if (_profileProvider.profile.user.isMentor) const Subfields()
             ],
           )
         ),
@@ -138,7 +138,7 @@ class _ProfileViewState extends State<ProfileView> {
     if (hasData) {
       return _showProfileCard(profile);
     } else {
-      return Loader();
+      return const Loader();
     }
   }
 
@@ -176,7 +176,7 @@ class _ProfileViewState extends State<ProfileView> {
           },
           child: Stack(
             children: <Widget>[
-              BackgroundGradient(),
+              const BackgroundGradient(),
               Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(

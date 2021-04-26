@@ -70,7 +70,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
         height: 30.0,
         margin: const EdgeInsets.only(top: 20.0),
         child: Dropdown(
-          key: Key(AppKeys.dayOfWeekDropdown),
+          key: const Key(AppKeys.dayOfWeekDropdown),
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
           value: _availability.dayOfWeek
@@ -98,7 +98,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   Widget _showTimeDropdowns() {
     return Column(
-      children: [
+      children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -126,7 +126,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
       height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
-        key: Key(AppKeys.timeFromDropdown),
+        key: const Key(AppKeys.timeFromDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeFrom,
@@ -147,7 +147,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
       height: 30.0,
       margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
-        key: Key(AppKeys.timeToDropdown),
+        key: const Key(AppKeys.timeToDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeTo,
@@ -200,7 +200,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           InkWell(
-            key: Key(AppKeys.cancelBtn),
+            key: const Key(AppKeys.cancelBtn),
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
               child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
@@ -210,7 +210,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
             },
           ),
           ElevatedButton(
-            key: Key(AppKeys.submitBtn),
+            key: const Key(AppKeys.submitBtn),
             style: ElevatedButton.styleFrom(
               primary: AppColors.MONZA,
               shape: RoundedRectangleBorder(

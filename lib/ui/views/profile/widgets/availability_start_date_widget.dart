@@ -32,7 +32,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }  
 
   void _initSelectedDate(_) {
-    User user = _profileProvider.profile.user;
+    final User user = _profileProvider.profile.user;
     setState(() {
       _start = user.isAvailable ? AvailabilityStart.now : AvailabilityStart.later;
     });
@@ -60,7 +60,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                     width: 40.0,
                     height: 35.0,                      
                     child: Radio<AvailabilityStart>(
-                      key: Key(AppKeys.currentlyAvailableRadio),
+                      key: const Key(AppKeys.currentlyAvailableRadio),
                       value: AvailabilityStart.now,
                       groupValue: _start,
                       onChanged: (AvailabilityStart value) {
@@ -69,7 +69,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                     ),
                   ),
                   InkWell(
-                    key: Key(AppKeys.currentlyAvailableText),
+                    key: const Key(AppKeys.currentlyAvailableText),
                     child: Text('profile.currently_available'.tr()),
                     onTap: () {
                       _setIsAvailable(AvailabilityStart.now);
@@ -84,7 +84,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                     width: 40.0,
                     height: 35.0,                      
                     child: Radio<AvailabilityStart>(
-                      key: Key(AppKeys.availableFromRadio),
+                      key: const Key(AppKeys.availableFromRadio),
                       value: AvailabilityStart.later,
                       groupValue: _start,
                       onChanged: (AvailabilityStart value) {
@@ -98,7 +98,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                       Container(
                         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                         child: InkWell(
-                          key: Key(AppKeys.availableFromText),
+                          key: const Key(AppKeys.availableFromText),
                           child: Text('profile.available_starting_from'.tr()),
                           onTap: () {
                             _setIsAvailable(AvailabilityStart.later);
@@ -110,8 +110,8 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                           children: [
                             Text(
                               date,
-                              key: Key(AppKeys.availableFromDate),
-                              style: TextStyle(
+                              key: const Key(AppKeys.availableFromDate),
+                              style: const TextStyle(
                                 fontSize: 14, 
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.DOVE_GRAY
@@ -138,7 +138,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
 
   Widget _showEditCalendarIcon() {
     return Container(
-      key: Key(AppKeys.editCalendarIcon),
+      key: const Key(AppKeys.editCalendarIcon),
       height: 18.0,
       padding: const EdgeInsets.only(left: 8.0),
       child: Image.asset(
@@ -149,14 +149,14 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   
   void _setIsAvailable(AvailabilityStart value) {
     _unfocus();
-    bool isAvailable = value == AvailabilityStart.now ? true : false;
+    final bool isAvailable = value == AvailabilityStart.now ? true : false;
     _profileProvider.setIsAvailable(isAvailable);
     setState(() {
       _start = value;
     });    
   }
 
-  void _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     _unfocus();
     final TargetPlatform platform = Theme.of(context).platform;
     if (platform == TargetPlatform.iOS) {
@@ -166,15 +166,15 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     }
   }
 
-  void _showDatePickerAndroid(BuildContext context) async {
-    DateTime availableFrom = _profileProvider.profile.user.availableFrom;
+  Future<void> _showDatePickerAndroid(BuildContext context) async {
+    final DateTime availableFrom = _profileProvider.profile.user.availableFrom;
     final DateTime picked = await showDatePicker(
       context: context,
       locale: Locale(defaultLocale.split('_')[0], defaultLocale.split('_')[1]),
       initialDate: availableFrom,
       firstDate: _now,
       lastDate: DateTime(_now.year + 4),
-      builder: (context, child) {
+      builder: (BuildContext context, Widget child) {
         return Theme(
           data: ThemeData.light(),
           child: child,
@@ -191,7 +191,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }
 
   void _showDatePickerIOS(BuildContext context) {
-    DateTime availableFrom = _profileProvider.profile.user.availableFrom;
+    final DateTime availableFrom = _profileProvider.profile.user.availableFrom;
     showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {
@@ -221,7 +221,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
               color: Colors.white,
               child: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (picked) {
+                onDateTimeChanged: (DateTime picked) {
                   if (picked != null && picked != availableFrom) {
                     _setAvailableFrom(picked);
                   }
@@ -242,7 +242,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
       margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
       child: Text(
         'profile.availability'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
         )

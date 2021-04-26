@@ -25,7 +25,7 @@ class _SkillsState extends State<Skills> {
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
     final List<String> skills = _profileProvider.profile.user.subfields[widget.index].skills;
-    if (skills != null && skills.length > 0) {
+    if (skills != null && skills.isNotEmpty) {
       for (int i = 0; i < skills.length; i++) {
         final Widget skill = Padding(
           padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
@@ -42,14 +42,14 @@ class _SkillsState extends State<Skills> {
         skillWidgets.add(skill);
       }
     }
-    double inputBorderRadiusTop = skillWidgets.length > 0 ? 0.0 : 10.0;
-    double inputHeight = skillWidgets.length > 0 ? 35.0 : 40.0;
+    final double inputBorderRadiusTop = skillWidgets.isNotEmpty ? 0.0 : 10.0;
+    final double inputHeight = skillWidgets.isNotEmpty ? 35.0 : 40.0;
     return Column(
-      children: [
-        if (skillWidgets.length > 0) Container(
+      children: <Widget>[
+        if (skillWidgets.isNotEmpty) Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 2.0),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.LINEN,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))
           ),
@@ -62,7 +62,7 @@ class _SkillsState extends State<Skills> {
           child: TypeAheadField(
             key: _keyTypeAhead,
             options: _profileProvider.getSkillSuggestions(_query, widget.index),
-            inputKey: Key(AppKeys.addSkillsField),
+            inputKey: const Key(AppKeys.addSkillsField),
             inputDecoration: InputDecoration(
               filled: true,
               fillColor: AppColors.LINEN,
@@ -81,13 +81,13 @@ class _SkillsState extends State<Skills> {
             onFocusCallback: () {
               _doScroll();
             },
-            onChangedCallback: (query) {
+            onChangedCallback: (String query) {
               _changeQuery(query);
             },            
-            onSubmittedCallback: (skill) {
+            onSubmittedCallback: (String skill) {
               _addSkill(skill);
             },
-            onSuggestionSelected: (skill) {
+            onSuggestionSelected: (String skill) {
               _addSkill(skill);
             }         
           ),
@@ -104,7 +104,7 @@ class _SkillsState extends State<Skills> {
 
   void _doScroll() {
     final RenderBox renderBoxTypeahead = _keyTypeAhead.currentContext.findRenderObject();
-    final positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
+    final Offset positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     _profileProvider.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
@@ -120,7 +120,7 @@ class _SkillsState extends State<Skills> {
     _typeAheadController.value = TextEditingValue(
       text: '',
       selection: TextSelection.fromPosition(
-        TextPosition(offset: 0),
+        const TextPosition(offset: 0),
       )
     );
     setState(() {

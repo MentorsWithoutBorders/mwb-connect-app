@@ -48,7 +48,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
         'profile.available_days_times'.tr(),
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
         )
@@ -57,7 +57,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   Widget _showTimezone() {
-    return UserTimezone();
+    return const UserTimezone();
   }
 
   Widget _showAvailabilityList() {
@@ -86,7 +86,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
           ),
           padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
         ), 
-        child: Text('profile.add_availability'.tr(), style: TextStyle(color: Colors.white)),
+        child: Text('profile.add_availability'.tr(), style: const TextStyle(color: Colors.white)),
         onPressed: () {
           _showAddAvailabilityDialog();
         }
@@ -114,7 +114,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        key: Key(AppKeys.toast),
+        key: const Key(AppKeys.toast),
         content: Text(_profileProvider.availabilityMergedMessage),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar

@@ -151,7 +151,7 @@ class DownloadService {
     final Reference ref = FirebaseStorage.instance.ref().child('images').child(image + '.png');
     final String url = await ref.getDownloadURL();
     final String localImage = directory.path +'/images/' + image + '.png';    
-    ref.getMetadata().then((FullMetadata value) async {
+    await ref.getMetadata().then((FullMetadata value) async {
       final int remoteImageSize = value.size;
       int localImageSize = 0;
       final File localImageFile = File(localImage);
@@ -159,7 +159,7 @@ class DownloadService {
         localImageSize = await localImageFile.length();
       }
       if (localImageSize != remoteImageSize) {
-        _downloadImage(url, localImageFile);
+        await _downloadImage(url, localImageFile);
       }
     }); 
   }
@@ -189,7 +189,9 @@ class DownloadService {
         throw Exception('NetworkImage is an empty file: $resolved');
       }
 
-      if (file != null) file.writeAsBytes(bytes, flush: true);
+      if (file != null) {
+        file.writeAsBytes(bytes, flush: true);
+      }
     } finally {
       chunkEvents.close();
     }

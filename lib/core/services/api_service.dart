@@ -49,17 +49,17 @@ class Api {
     }); 
   }  
 
-  Future<DocumentReference> addDocument({String path, bool isForUser = false, Map data}) {
+  Future<DocumentReference> addDocument({String path, bool isForUser = false, Map<String, dynamic> data}) {
     _setRef(path, isForUser);     
     return _ref.add(data);
   }
 
-  Future<void> setDocument({String path, bool isForUser = false, Map data, String id}) {
+  Future<void> setDocument({String path, bool isForUser = false, Map<String, dynamic> data, String id}) {
     _setRef(path, isForUser);
     return _ref.doc(id).set(data);
   }  
   
-  Future<void> updateDocument({String path, bool isForUser = false, Map data, String id}) {
+  Future<void> updateDocument({String path, bool isForUser = false, Map<String, dynamic> data, String id}) {
     _setRef(path, isForUser);     
     return _ref.doc(id).update(data);
   }

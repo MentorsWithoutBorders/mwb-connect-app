@@ -35,7 +35,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   }
   
   Future<void> _getFormHeight() async {
-    RenderBox box = _formKey.currentContext.findRenderObject();
+    final RenderBox box = _formKey.currentContext.findRenderObject();
     _commonProvider.setDialogInputHeight(box.size.height);
   }  
 

@@ -16,7 +16,7 @@ class _UserTimezoneState extends State<UserTimezone> {
   ProfileViewModel _profileProvider;   
 
   Widget _showTimeZone() {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 12.0),
       child: Text(
@@ -36,7 +36,7 @@ class _UserTimezoneState extends State<UserTimezone> {
 
     return Column(
       children: [
-        if (_profileProvider.profile.user.availabilities.length > 0) _showTimeZone(),
+        if (_profileProvider.profile.user.availabilities.isNotEmpty) _showTimeZone(),
       ],
     );
   }
