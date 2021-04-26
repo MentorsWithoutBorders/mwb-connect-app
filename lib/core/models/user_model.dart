@@ -1,5 +1,8 @@
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/time_model.dart';
+import 'package:mwb_connect_app/core/models/timezone_model.dart';
 
 class User {
   String id;
@@ -9,13 +12,14 @@ class User {
   String organization;
   String field;
   List<Subfield> subfields;
+  TimeZoneModel timezone;
   List<Availability> availabilities;
   bool isAvailable;
   DateTime availableFrom;
   LessonsAvailability lessonsAvailability;
   DateTime registeredOn;
 
-  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.timezone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromMap(Map snapshot, String id) {
     this.id = id;
@@ -25,6 +29,7 @@ class User {
     organization = snapshot['organization'].toString() ?? '';
     field = snapshot['field'].toString() ?? '';
     subfields = subfieldsFromJson(snapshot['subfields']?.cast<Map<String,dynamic>>()) ?? [];
+    timezone = _timezoneFromJson(snapshot['timezone']) ?? null;
     availabilities = _availabilityFromJson(snapshot['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = snapshot['isAvailable'] ?? true;
     availableFrom = snapshot['availableFrom']?.toDate();
@@ -40,6 +45,14 @@ class User {
       }
     }
     return subfieldsList;
+  }
+  
+  TimeZoneModel _timezoneFromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    TimeZoneModel timezone = TimeZoneModel(name: json['name'], abbreviation: json['abbreviation'], offset: json['offset']);
+    return timezone;
   }  
   
   List<Availability> _availabilityFromJson(List<Map<String, dynamic>> json) {
@@ -68,6 +81,7 @@ class User {
       'organization': organization,
       'field': field,
       'subfields': _subfieldsToJson(subfields),
+      'timezone': _timezoneToJson(timezone),
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
       'availableFrom': availableFrom,
@@ -110,7 +124,19 @@ class User {
       }
     }
     return availabilityList;
-  }   
+  }
+  
+  Map<String, dynamic> _timezoneToJson(TimeZoneModel timezone) {
+    if (timezone != null) {
+      return {
+        'name': timezone.name,
+        'abbreviation': timezone.abbreviation,
+        'offset': timezone.offset
+      };
+    } else {
+      return null;
+    }
+  }    
 
   Map<String, dynamic> _lessonsAvailabilityToJson(LessonsAvailability lessonsAvailability) {
     if (lessonsAvailability != null) {
@@ -135,22 +161,4 @@ class LessonsAvailability {
   }
 
   String get minIntervalUnitToEng => Utils.translatePeriodUnitToEng(minIntervalUnit);  
-}
-
-class Availability {
-  String dayOfWeek;
-  Time time;
-
-  Availability({this.dayOfWeek, this.time}) {
-    dayOfWeek = Utils.translateDayOfWeekFromEng(dayOfWeek);
-  }
-
-  String get dayOfWeekToEng => Utils.translateDayOfWeekToEng(dayOfWeek);
-}
-
-class Time {
-  String from;
-  String to;
-
-  Time({this.from, this.to});
 }

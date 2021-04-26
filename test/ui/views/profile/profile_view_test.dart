@@ -12,6 +12,8 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -141,6 +143,8 @@ Future<void> main() async {
         expect(find.byKey(const Key(AppKeys.availableFromDate)), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.editCalendarIcon)), findsOneWidget);
         expect(find.text('Available days/times'), findsOneWidget);
+        DateTime now = DateTime.now();
+        expect(find.text('All times are in ' + now.timeZoneName + ' timezone.'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.editAvailabilityIcon + '0')).last, findsOneWidget);

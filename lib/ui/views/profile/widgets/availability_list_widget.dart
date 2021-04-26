@@ -4,8 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/timezone_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_item_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/add_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
@@ -27,6 +28,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
       children: [
         _showDivider(),
         _showTitle(),
+        _showTimezone(),
         _showAvailabilityList(),
         _showAddAvailabilityButton()
       ]
@@ -52,6 +54,10 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
         )
       ),
     );
+  }
+
+  Widget _showTimezone() {
+    return UserTimezone();
   }
 
   Widget _showAvailabilityList() {
