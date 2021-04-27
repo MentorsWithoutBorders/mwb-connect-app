@@ -3,19 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:quiver/strings.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/timezone.dart';
-import 'package:mwb_connect_app/core/models/received_notification_model.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
-import 'package:mwb_connect_app/core/services/user_service.dart';
-import 'package:mwb_connect_app/core/services/download_service.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/analytics_service.dart';
+import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
@@ -30,18 +20,6 @@ enum AuthStatus {
   LOGGED_IN,
 }
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-// Streams are created so that app can respond to notification-related events since the plugin is initialised in the `main` function
-final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
-    BehaviorSubject<ReceivedNotification>();
-
-final BehaviorSubject<String> selectNotificationSubject =
-    BehaviorSubject<String>();
-
-NotificationAppLaunchDetails notificationAppLaunchDetails;
-
 class RootView extends StatefulWidget {
   const RootView({Key key, this.auth})
     : super(key: key);   
@@ -53,38 +31,22 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
-  final LocalStorageService _storageService = locator<LocalStorageService>();
-  final UserService _userService = locator<UserService>();
-  final DownloadService _downloadService = locator<DownloadService>();
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  NotificationsViewModel _notificationsProvider;
+  RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
-  dynamic _location;
   String _userId = '';
 
   @override
-  void initState() {
-    super.initState();
-    _setPreferences();
-    //_downloadService.getImages();
+  void didChangeDependencies() {
+    _rootProvider = Provider.of<RootViewModel>(context);
+    _setCurrentUser();    
     _setUserStorage();
-    _setCurrentUser();
-    _setLocalNotifications().then((value) {
-      _requestIOSPermissions();
-      _configureDidReceiveLocalNotificationSubject();
-      _configureSelectNotificationSubject();      
-    });
+    _setPreferences();
+    // _getImages();
+    _setLocalNotifications();
+    super.didChangeDependencies();
   }
-
-  void _setPreferences() {
-    _downloadService.downloadLocales().then((value) {
-      _downloadService.setPreferences();
-    });    
-  }
-
-  Future<void> _setUserStorage() async {
-    await _userService.setUserStorage();
-  }      
-
+  
   void _setCurrentUser() {
     widget.auth.getCurrentUser().then((User user) {
       setState(() {
@@ -95,87 +57,36 @@ class _RootViewState extends State<RootView> {
           user?.isAnonymous == true || user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
     });    
+  }    
+
+  void _setPreferences() {
+    _rootProvider.setPreferences();   
   }
 
-  Future<void> _setLocalNotifications() async {
-    notificationAppLaunchDetails =
-        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  Future<void> _setUserStorage() async {
+    await _rootProvider.setUserStorage();
+  }
 
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
-    // of the `IOSFlutterLocalNotificationsPlugin` class
-    final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
-        requestAlertPermission: false,
-        requestBadgePermission: false,
-        requestSoundPermission: false,
-        onDidReceiveLocalNotification:
-            (int id, String title, String body, String payload) async {
-          didReceiveLocalNotificationSubject.add(ReceivedNotification(
-              id: id, title: title, body: body, payload: payload));
-        });
-    final InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String payload) async {
-      if (payload != null) {
-        debugPrint('notification payload: ' + payload);
-      }
-      selectNotificationSubject.add(payload);
+  void _getImages() {
+    _rootProvider.getImages();    
+  }
+
+  void _setLocalNotifications() {
+    _rootProvider.setLocalNotifications().then((value) {
+      _rootProvider.requestIOSPermissions();
+      _rootProvider.configureDidReceiveLocalNotificationSubject(context);
+      _rootProvider.configureSelectNotificationSubject();      
     });    
-  }
-  
-  void _requestIOSPermissions() {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-  }
-
-  void _configureDidReceiveLocalNotificationSubject() {
-    didReceiveLocalNotificationSubject.stream
-        .listen((ReceivedNotification receivedNotification) async {
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != null
-              ? Text(receivedNotification.title)
-              : null,
-          content: receivedNotification.body != null
-              ? Text(receivedNotification.body)
-              : null,
-          actions: [
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              child: const Text('Ok'),
-              onPressed: () async {
-                Navigator.of(context, rootNavigator: true).pop();
-                print(receivedNotification.payload);
-              },
-            )
-          ],
-        ),
-      );
-    });
-  }
-
-  void _configureSelectNotificationSubject() {
-    selectNotificationSubject.stream.listen((String payload) async {
-      print(payload);
-    });
   }
 
   @override
   void dispose() {
-    didReceiveLocalNotificationSubject.close();
-    selectNotificationSubject.close();
+    _rootProvider.didReceiveLocalNotificationSubject.close();
+    _rootProvider.selectNotificationSubject.close();
     super.dispose();
   }  
 
-  void loginCallback() {
+  void _loginCallback() {
     widget.auth.getCurrentUser().then((User user) {
       setState(() {
         _userId = user.uid.toString();
@@ -187,7 +98,7 @@ class _RootViewState extends State<RootView> {
     _setPreferences();
   }
 
-  void logoutCallback() {
+  void _logoutCallback() {
     setState(() {
       _authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = "";
@@ -197,7 +108,7 @@ class _RootViewState extends State<RootView> {
   Widget _showGoalsView() {
     return GoalsView(
       auth: widget.auth,
-      logoutCallback: logoutCallback,
+      logoutCallback: _logoutCallback,
     );
   }
 
@@ -210,71 +121,16 @@ class _RootViewState extends State<RootView> {
     );
   }
 
-  Future<void> _showDailyAtTime() async {
-    if (_storageService.notificationsEnabled) {
-      final String notificationTitle = 'daily_notification.title'.tr();
-      const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-          'MWB Connect',
-          'MWB Connect notifications',
-          'Your MWB Connect daily reminders');
-      const IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
-      const NotificationDetails platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        notificationTitle,
-        null,
-        await _nextInstanceOfNotificationsTime(),
-        platformChannelSpecifics,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time);            
-    } else {
-      await flutterLocalNotificationsPlugin.cancelAll();
-    }
-  }
-
-  Future<tz.TZDateTime> _nextInstanceOfNotificationsTime() async {
-    final List<String> notificationsTime = _storageService.notificationsTime.split(':');
-    final Time time = Time(int.parse(notificationsTime[0]), int.parse(notificationsTime[1]), 0);
-    await _setTimeZone();
-    final tz.TZDateTime now = tz.TZDateTime.now(_location);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(_location, now.year, now.month, now.day, time.hour, time.minute);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    return scheduledDate;
-  }
-  
-  Future<void> _setTimeZone() async {
-    final TimeZone timeZone = TimeZone();
-    final String timeZoneName = await timeZone.getTimeZoneName();
-    _location = await timeZone.getLocation(timeZoneName);    
-  } 
-
-  void _sendAnalyticsEvent() {
-    _analyticsService.sendEvent(
-      eventName: 'root',
-      properties: {
-        'p1': 'property1',
-        'p2': 'property2'
-      }
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final NotificationsViewModel notificationProvider = Provider.of<NotificationsViewModel>(context);
+    _notificationsProvider = Provider.of<NotificationsViewModel>(context);
 
-    if (notificationProvider.notificationSettingsUpdated) {
-      _showDailyAtTime();
+    if (_notificationsProvider.notificationSettingsUpdated) {
+      _rootProvider.showDailyAtTime();
     }
     print('this is rootview');
-    //_downloadService.showFiles();
 
-    _sendAnalyticsEvent();
+    _rootProvider.sendAnalyticsEvent();
 
     switch (_authStatus) {
       case AuthStatus.NOT_DETERMINED:
@@ -283,7 +139,7 @@ class _RootViewState extends State<RootView> {
       case AuthStatus.NOT_LOGGED_IN:
         return OnboardingView(
           auth: widget.auth,
-          loginCallback: loginCallback,
+          loginCallback: _loginCallback,
         );
         break;
       case AuthStatus.LOGGED_IN:
