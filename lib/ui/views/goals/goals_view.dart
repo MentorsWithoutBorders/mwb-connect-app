@@ -225,11 +225,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
           BackgroundGradient(),
           _showContent()
         ]
-      ),
-      drawer: _goalProvider.goals != null ? DrawerWidget(
-        auth: widget.auth,
-        logoutCallback: widget.logoutCallback
-      ) : const SizedBox.shrink()
+      )
     );
   }
 }

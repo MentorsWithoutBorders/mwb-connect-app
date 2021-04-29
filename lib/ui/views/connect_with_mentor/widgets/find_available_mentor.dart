@@ -5,8 +5,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_mentor_dialog.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class FindAvailableMentor extends StatefulWidget {
   const FindAvailableMentor({Key key})
@@ -193,7 +195,13 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> {
           ), 
           child: Text('connect_with_mentor.find_mentor'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            print('Find mentor');
+            showDialog(
+              context: context,
+              builder: (_) => AnimatedDialog(
+                widgetInside: FindMentorDialog(),
+                hasInput: true,
+              ),
+            );
           }
         ),
       ),
