@@ -132,7 +132,8 @@
 		"interval_between_lessons": "Please keep in mind that there has to be an interval of at least 1 week between 2 consecutive lessons.",
 		"skills_text": "I would like to learn one or more of the following:",
 		"find_mentor": "Find mentor",
-		"conditions_find_mentor": "In order to connect with a mentor for the next lesson, you’ll have to do the following first:"
+		"conditions_find_mentor": "In order to connect with a mentor for the next lesson, you’ll have to do the following first:",
+		"finding_available_mentor": "Finding an available mentor for the next lesson..."
 	},
 	"goals": {
 		"my_goals": "My goals",

@@ -46,21 +46,17 @@ class _FindMentorDialogState extends State<FindMentorDialog> with TickerProvider
   }
 
   Widget _showConditionsText() {
-    return Wrap(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: Text(
-            'connect_with_mentor.conditions_find_mentor'.tr(),
-            textAlign: TextAlign.justify,
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.DOVE_GRAY,
-              height: 1.2
-            )
-          ),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Text(
+        'connect_with_mentor.conditions_find_mentor'.tr(),
+        textAlign: TextAlign.justify,
+        style: const TextStyle(
+          fontSize: 12,
+          color: AppColors.DOVE_GRAY,
+          height: 1.2
+        )
+      ),
     );
   }
   
