@@ -39,8 +39,14 @@
 		"update": "Update",
 		"from": "from",
 		"to": "to",
+		"go": "Go",
 		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
-		"period_units": "day, week, month, year"				
+		"period_units": "day, week, month, year",
+		"and": "and",
+		"or": "or",
+		"mental_process_goal_steps": "Mental process goal/steps",
+		"relaxation_method": "Relaxation method",
+		"super_focus_method": "Super-focus method"
 	},
 	"onboarding": {
 		"mental_process_goal_steps_onboarding": {
@@ -105,7 +111,7 @@
 		"add_skills": "Add skills {}",
 		"availability": "Availability",
 		"available_days_times": "Available days/times",
-		"availability_timezone": "All available times are in {} timezone.",
+		"availability_timezone": "All times are in {} time zone.",
 		"add_availability": "Add availability",
 		"edit_availability": "Edit availability",
 		"availability_from": "From",
@@ -114,7 +120,14 @@
 		"currently_available": "I'm currently available",
 		"available_starting_from": "I'm available starting from:",
 		"availabilities_merged": "The following availabilities have been merged:"		
-	},	
+	},
+	"connect_with_mentor": {
+		"solve_quiz_add_step": "Solve quiz and add step",
+		"conditions_certificate": "In order to receive the MWB certificate on {} and connect with a mentor for the next lesson, you’ll have to do the following once a week:",
+		"solve_quiz": "solve a quiz from the ",
+		"add_step": "add at least one new step for achieving your goal",
+		"next_deadline": "Next deadline: "
+	},
 	"goals": {
 		"my_goals": "My goals",
 		"first_goal": "First goal",

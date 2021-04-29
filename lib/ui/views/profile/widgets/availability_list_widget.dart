@@ -26,7 +26,6 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _showDivider(),
         _showTitle(),
         _showTimezone(),
         _showAvailabilityList(),
@@ -35,19 +34,12 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     );
   }
 
-  Widget _showDivider() {
-    return Container(
-      height: 1,
-      margin: const EdgeInsets.only(bottom: 20.0),
-      color: AppColors.BOTTICELLI
-    );
-  }  
-
   Widget _showTitle() {
+    String title = _profileProvider.profile.user.isMentor ? 'profile.available_days_times'.tr() : 'profile.availability'.tr();
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
-        'profile.available_days_times'.tr(),
+        title,
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
