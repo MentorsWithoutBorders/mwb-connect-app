@@ -52,7 +52,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   Widget _showTitle() {
     return Container(
-      margin: const EdgeInsets.only(left: 5.0, bottom: 18.0),
+      margin: const EdgeInsets.only(left: 3.0, bottom: 15.0),
       child: Text(
         'Solve quiz and add step',
         style: const TextStyle(
