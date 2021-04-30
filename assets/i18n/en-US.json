@@ -44,6 +44,7 @@
 		"period_units": "day, week, month, year",
 		"and": "and",
 		"or": "or",
+		"at": "at",
 		"mental_process_goal_steps": "Mental process goal/steps",
 		"relaxation_method": "Relaxation method",
 		"super_focus_method": "Super-focus method"
@@ -133,7 +134,8 @@
 		"skills_text": "I would like to learn one or more of the following:",
 		"find_mentor": "Find mentor",
 		"conditions_find_mentor": "In order to connect with a mentor for the next lesson, you’ll have to do the following first:",
-		"finding_available_mentor": "Finding an available mentor for the next lesson..."
+		"finding_available_mentor": "Finding an available mentor for the next lesson...",
+		"scheduled_lesson": "{} has accepted the request to do a {} lesson with you on {}, {} at {} {} and you’ll use the following Google Meet link:"
 	},
 	"goals": {
 		"my_goals": "My goals",
