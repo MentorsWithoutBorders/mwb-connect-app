@@ -13,7 +13,7 @@ class FindMentorDialog extends StatefulWidget {
   State<StatefulWidget> createState() => _FindMentorDialogState();
 }
 
-class _FindMentorDialogState extends State<FindMentorDialog> with TickerProviderStateMixin {
+class _FindMentorDialogState extends State<FindMentorDialog> {
 
   Widget _showFindMentorDialog() {
     return Container(

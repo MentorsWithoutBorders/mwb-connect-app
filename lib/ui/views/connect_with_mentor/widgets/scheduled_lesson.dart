@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_lesson_dialog.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class ScheduledLesson extends StatefulWidget {
   const ScheduledLesson({Key key})
@@ -81,7 +83,16 @@ class _ScheduledLessonState extends State<ScheduledLesson> {
                   text: thirdPart
                 ),
                 TextSpan(
-                  text: dayOfWeek + ', ' + date + ' ' + at + ' ' + time + ' ' + timeZone,
+                  text: dayOfWeek + ', ' + date,
+                  style: const TextStyle(
+                    color: AppColors.TANGO
+                  ) 
+                ),
+                TextSpan(
+                  text: ' ' + at + ' '
+                ),
+                TextSpan(
+                  text: time + ' ' + timeZone,
                   style: const TextStyle(
                     color: AppColors.TANGO
                   ) 
@@ -126,7 +137,13 @@ class _ScheduledLessonState extends State<ScheduledLesson> {
           ), 
           child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            print('Cancel');
+            showDialog(
+              context: context,
+              builder: (_) => AnimatedDialog(
+                widgetInside: CancelLessonDialog(),
+                hasInput: true,
+              ),
+            );
           }
         ),
       ),
