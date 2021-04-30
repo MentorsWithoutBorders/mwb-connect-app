@@ -3,35 +3,33 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
-import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/standing_by.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
-class ConnectWithMentorView extends StatefulWidget {
-  ConnectWithMentorView({Key key, this.auth, this.logoutCallback})
+class LessonRequestView extends StatefulWidget {
+  LessonRequestView({Key key, this.auth, this.logoutCallback})
     : super(key: key);  
 
   final BaseAuth auth;
   final VoidCallback logoutCallback;
 
   @override
-  State<StatefulWidget> createState() => _ConnectWithMentorViewState();
+  State<StatefulWidget> createState() => _LessonRequestViewState();
 }
 
-class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
+class _LessonRequestViewState extends State<LessonRequestView> {
+  LessonRequestViewModel _lessonRequestProvider;
 
-  Widget _showConnectWithMentor() {
+  Widget _showLessonRequest() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          SolveQuizAddStep(),
-          FindAvailableMentor()
+          StandingBy()
         ]
       )
     );
@@ -41,14 +39,14 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('connect_with_mentor.title'.tr()),
+        child: Text('lesson_request.title'.tr()),
       )
     );
   }  
 
   @override
   Widget build(BuildContext context) {
-    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
    return Scaffold(
       appBar: AppBar(      
@@ -61,7 +59,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
       body: Stack(
         children: <Widget>[
           BackgroundGradient(),
-          _showConnectWithMentor()
+          _showLessonRequest()
         ]
       ),
       drawer: DrawerWidget(

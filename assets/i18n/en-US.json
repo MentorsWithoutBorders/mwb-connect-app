@@ -49,6 +49,7 @@
 		"on": "on",
 		"yes_cancel": "Yes, cancel",
 		"no_abort": "No, abort",
+		"your_profile": "your profile",
 		"mental_process_goal_steps": "Mental process goal/steps",
 		"relaxation_method": "Relaxation method",
 		"super_focus_method": "Super-focus method"
@@ -127,13 +128,13 @@
 		"availabilities_merged": "The following availabilities have been merged:"		
 	},
 	"connect_with_mentor": {
+		"title": "Connect with a mentor",
 		"solve_quiz_add_step": "Solve quiz and add step",
 		"conditions_certificate": "In order to receive the MWB certificate on {} and connect with a mentor for the next lesson, you’ll have to do the following once a week:",
 		"solve_quiz": "solve a quiz from the ",
 		"add_step": "add at least one new step for achieving your goal",
 		"next_deadline": "Next deadline: ",
 		"next_lesson": "For your next lesson, we will look for an available mentor in accordance with what you have learned so far and the availability from ",
-		"your_profile": "your profile",
 		"interval_between_lessons": "Please keep in mind that there has to be an interval of at least 1 week between 2 consecutive lessons.",
 		"skills_text": "I would like to learn one or more of the following:",
 		"find_mentor": "Find mentor",
@@ -145,6 +146,11 @@
 		"learned_today": "What I learned today",
 		"learned_today_text": "In order to connect you with an appropriate mentor for the next lesson, please select from the following list what you learned from today’s mentor:",
 		"mentor_not_present": "The mentor didn't show up for the lesson"
+	},
+	"lesson_request": {
+		"title": "Lesson request",
+		"standing_by": "Standing by for a lesson request",
+		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization and availability that you’ve specified in "
 	},
 	"goals": {
 		"my_goals": "My goals",

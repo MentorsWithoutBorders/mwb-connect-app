@@ -84,7 +84,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> {
                   text: 'connect_with_mentor.next_lesson'.tr(),             
                 ),
                 TextSpan(
-                  text: 'connect_with_mentor.your_profile'.tr(),
+                  text: 'common.your_profile'.tr(),
                   style: const TextStyle(
                     decoration: TextDecoration.underline
                   ),
