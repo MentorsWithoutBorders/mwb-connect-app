@@ -37,6 +37,7 @@
 		"add": "Add",
 		"done": "Done",
 		"update": "Update",
+		"submit": "Submit",
 		"from": "from",
 		"to": "to",
 		"go": "Go",
@@ -140,7 +141,10 @@
 		"finding_available_mentor": "Finding an available mentor for the next lesson...",
 		"scheduled_lesson": "{} has accepted the request to do a {} lesson with you on {}, {} at {} {} and you’ll use the following Google Meet link:",
 		"cancel_lesson": "Cancel lesson",
-		"cancel_lesson_text": "Are you sure you want to cancel the {} lesson with {} on {}, {} at {} {} ?"
+		"cancel_lesson_text": "Are you sure you want to cancel the {} lesson with {} on {}, {} at {} {} ?",
+		"learned_today": "What I learned today",
+		"learned_today_text": "In order to connect you with an appropriate mentor for the next lesson, please select from the following list what you learned from today’s mentor:",
+		"mentor_not_present": "The mentor didn't show up for the lesson"
 	},
 	"goals": {
 		"my_goals": "My goals",

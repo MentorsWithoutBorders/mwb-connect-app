@@ -117,7 +117,7 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
                       color: backgroundColor,
                     ),
                   );
-                }                 
+                }
               ),
             ),
           ),
