@@ -49,7 +49,7 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
     String date = 'Jun 7th';
     String time = '11:00 AM';
     String timeZone = 'GMT';
-    String at = 'at'.tr();
+    String at = 'common.at'.tr();
     String text = 'connect_with_mentor.cancel_lesson_text'.tr(args: [subfield, name, dayOfWeek, date, time, timeZone]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
@@ -69,13 +69,13 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
               text: firstPart
             ),
             TextSpan(
-              text: ' ' + subfield + ' '
+              text: subfield
             ),
             TextSpan(
               text: secondPart
             ),
             TextSpan(
-              text: ' ' + name + ' ',
+              text: name,
               style: const TextStyle(
                 color: AppColors.TANGO
               ) 

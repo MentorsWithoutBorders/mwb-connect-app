@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 
 class FindMentorDialog extends StatefulWidget {
