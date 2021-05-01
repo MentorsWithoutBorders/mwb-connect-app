@@ -40,6 +40,7 @@
 		"submit": "Submit",
 		"accept": "Accept",
 		"reject": "Reject",
+		"send": "Send",
 		"from": "from",
 		"to": "to",
 		"go": "Go",
@@ -152,8 +153,10 @@
 	"lesson_request": {
 		"title": "Lesson request",
 		"standing_by": "Standing by for a lesson request",
-		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization and availability that you’ve specified in ",
-		"lesson_request_text": "{} from {} would like to do a {} lesson on {}, {} at {} {}"
+		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills and availability that you’ve specified in ",
+		"lesson_request_text": "{} from {} would like to do a {} lesson on {}, {} at {} {}",
+		"send_link": "Send {} link",
+		"paste_link": "Please paste the link here:"
 	},
 	"goals": {
 		"my_goals": "My goals",
