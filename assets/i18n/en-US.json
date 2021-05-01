@@ -51,6 +51,7 @@
 		"at": "at",
 		"on": "on",
 		"yes_cancel": "Yes, cancel",
+		"yes_reject": "Yes, reject",
 		"no_abort": "No, abort",
 		"your_profile": "your profile",
 		"mental_process_goal_steps": "Mental process goal/steps",
@@ -156,7 +157,10 @@
 		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills and availability that you’ve specified in ",
 		"lesson_request_text": "{} from {} would like to do a {} lesson on {}, {} at {} {}",
 		"send_link": "Send {} link",
-		"paste_link": "Please paste the link here:"
+		"paste_link": "Please paste the link here:",
+		"cancel_lesson": "{} lesson",
+		"cancel_lesson_text": "Are you sure you want to {} the {} lesson with {} from {} on {}, {} at {} {} ?\n(the student will be assigned to another mentor)",
+		"link_sent": ""
 	},
 	"goals": {
 		"my_goals": "My goals",
