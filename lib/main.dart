@@ -14,6 +14,7 @@ import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
@@ -107,6 +108,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
           return MultiProvider(
             providers: [
               ChangeNotifierProvider<CommonViewModel>.value(value: locator<CommonViewModel>()),
+              ChangeNotifierProvider<RootViewModel>.value(value: locator<RootViewModel>()),
               ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
               ChangeNotifierProvider<GoalsViewModel>.value(value: locator<GoalsViewModel>()),
               ChangeNotifierProvider<StepsViewModel>.value(value: locator<StepsViewModel>()),
