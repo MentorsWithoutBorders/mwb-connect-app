@@ -30,11 +30,12 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
   }
 
   Widget _showTitle() {
+    String title = widget.action == 'Cancel' ? 'lesson_request.cancel_lesson'.tr() : 'lesson_request.reject_lesson'.tr();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
         child: Text(
-          'lesson_request.cancel_lesson'.tr(args: [widget.action]),
+          title,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold

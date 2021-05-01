@@ -8,18 +8,18 @@ import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_lesson_di
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/send_link_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
-class LessonRequest extends StatefulWidget {
-  const LessonRequest({Key key})
+class LinkSent extends StatefulWidget {
+  const LinkSent({Key key})
     : super(key: key); 
 
   @override
-  State<StatefulWidget> createState() => _LessonRequestState();
+  State<StatefulWidget> createState() => _LinkSentState();
 }
 
-class _LessonRequestState extends State<LessonRequest> {
+class _LinkSentState extends State<LinkSent> {
   ConnectWithMentorViewModel _lessonRequestProvider;
 
-  Widget _showLessonRequestCard() {
+  Widget _showLinkSentCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -42,23 +42,27 @@ class _LessonRequestState extends State<LessonRequest> {
   }
 
   Widget _showText() {
+    String linkType = 'Google Meet';
+    String subfield = 'Web Development'.toLowerCase();
     String name = 'Noel Makwetu';
     String from = 'common.from'.tr();
     String organization = 'Education for All Children Kenya';
-    String subfield = 'Web Development'.toLowerCase();
     String dayOfWeek = 'Saturday';
     String date = 'Jun 7th';
     String at = 'common.at'.tr();
     String time = '11:00 AM';
     String timeZone = 'GMT';
-    String text = 'lesson_request.lesson_request_text'.tr(args: [name, organization, subfield, dayOfWeek, date, time, timeZone]);
-    String secondPart = text.substring(text.indexOf(organization) + organization.length, text.indexOf(subfield));
-    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(dayOfWeek));
+    String text = 'lesson_request.link_sent'.tr(args: [linkType, subfield, name, organization, dayOfWeek, date, time, timeZone]);
+    String firstPart = text.substring(0, text.indexOf(linkType));
+    String secondPart = text.substring(text.indexOf(linkType) + linkType.length, text.indexOf(subfield));
+    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
+    String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
+    String link = "https://meet.google.com/mbc-cvoz-owv";
 
     return Wrap(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
+          padding: const EdgeInsets.only(bottom: 15.0),
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
@@ -68,6 +72,21 @@ class _LessonRequestState extends State<LessonRequest> {
                 height: 1.5
               ),
               children: <TextSpan>[
+                TextSpan(
+                  text: firstPart + ' '
+                ),
+                TextSpan(
+                  text: linkType
+                ),
+                TextSpan(
+                  text: secondPart
+                ),
+                TextSpan(
+                  text: subfield
+                ),
+               TextSpan(
+                  text: thirdPart + ' '
+                ), 
                 TextSpan(
                   text: name,
                   style: const TextStyle(
@@ -84,13 +103,7 @@ class _LessonRequestState extends State<LessonRequest> {
                   ) 
                 ),
                 TextSpan(
-                  text: secondPart
-                ),
-                TextSpan(
-                  text: subfield
-                ),
-                TextSpan(
-                  text: thirdPart
+                  text: ' ' + 'common.on'.tr() + ' '
                 ),
                 TextSpan(
                   text: dayOfWeek + ', ' + date,
@@ -107,14 +120,27 @@ class _LessonRequestState extends State<LessonRequest> {
                     color: AppColors.TANGO
                   ) 
                 ),
-               TextSpan(
-                  text: '.'
+                TextSpan(
+                  text: fourthPart
                 ),
               ],
             )
           ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 30.0),
+          child: Center(
+            child: Text(
+              link,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline
+              )
+            ),
+          ),
         )
-      ],
+      ]
     );
   }
 
@@ -136,12 +162,12 @@ class _LessonRequestState extends State<LessonRequest> {
                 ),
                 padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
               ), 
-              child: Text('common.reject'.tr(), style: const TextStyle(color: Colors.white)),
+              child: Text('lesson_request.cancel_lesson'.tr(), style: const TextStyle(color: Colors.white)),
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: CancelLessonDialog(action: 'Reject'),
+                    widgetInside: CancelLessonDialog(action: 'Cancel'),
                     hasInput: true,
                   ),
                 );
@@ -160,7 +186,7 @@ class _LessonRequestState extends State<LessonRequest> {
                 ),
                 padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
               ), 
-              child: Text('common.accept'.tr(), style: const TextStyle(color: Colors.white)),
+              child: Text('lesson_request.change_link'.tr(), style: const TextStyle(color: Colors.white)),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -181,6 +207,6 @@ class _LessonRequestState extends State<LessonRequest> {
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<ConnectWithMentorViewModel>(context);
 
-    return _showLessonRequestCard();
+    return _showLinkSentCard();
   }
 }

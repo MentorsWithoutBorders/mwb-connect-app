@@ -158,9 +158,11 @@
 		"lesson_request_text": "{} from {} would like to do a {} lesson on {}, {} at {} {}",
 		"send_link": "Send {} link",
 		"paste_link": "Please paste the link here:",
-		"cancel_lesson": "{} lesson",
+		"cancel_lesson": "Cancel lesson",
+		"reject_lesson": "Reject lesson",
 		"cancel_lesson_text": "Are you sure you want to {} the {} lesson with {} from {} on {}, {} at {} {} ?\n(the student will be assigned to another mentor)",
-		"link_sent": ""
+		"link_sent": "The {} link for the {} lesson with {} from {} on {}, {} at {} {} has been sent:",
+		"change_link": "Change link"
 	},
 	"goals": {
 		"my_goals": "My goals",
