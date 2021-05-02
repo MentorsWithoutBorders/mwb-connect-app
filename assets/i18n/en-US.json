@@ -162,7 +162,10 @@
 		"reject_lesson": "Reject lesson",
 		"cancel_lesson_text": "Are you sure you want to {} the {} lesson with {} from {} on {}, {} at {} {} ?\n(the student will be assigned to another mentor)",
 		"link_sent": "The {} link for the {} lesson with {} from {} on {}, {} at {} {} has been sent:",
-		"change_link": "Change link"
+		"change_link": "Change link",
+		"taught_today": "What I taught today",
+		"taught_today_text": "In order for us to connect {} with an appropriate mentor for the next lesson, please select from the following list what you have taught him/her today:",
+		"student_not_present": "The student didn't show up for the lesson"
 	},
 	"goals": {
 		"my_goals": "My goals",

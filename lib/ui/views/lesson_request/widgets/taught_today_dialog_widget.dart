@@ -3,18 +3,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
-class LearnedTodayDialog extends StatefulWidget {
-  const LearnedTodayDialog({Key key})
+class TaughtTodayDialog extends StatefulWidget {
+  const TaughtTodayDialog({Key key})
     : super(key: key);  
 
   @override
-  State<StatefulWidget> createState() => _LearnedTodayDialogState();
+  State<StatefulWidget> createState() => _TaughtTodayDialogState();
 }
 
-class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
+class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   final ScrollController _scrollController = ScrollController();  
   List<bool> _skillCheckBoxes = [];
-  bool _mentorCheckBox = false;
+  bool _studentCheckBox = false;
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
     _skillCheckBoxes = [false, false, false, false, false, false, false, false];
   }
 
-  Widget _showLearnedTodayDialog() {
+  Widget _showTaughtTodayDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -32,7 +32,7 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
           _showText(),
           _showSkillsList(),
           _showDivider(),
-          _showMentorPresence(),
+          _showStudentPresence(),
           _showSubmitButton()
         ]
       )
@@ -44,7 +44,7 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
         child: Text(
-          'connect_with_mentor.learned_today'.tr(),
+          'lesson_request.taught_today'.tr(),
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold
@@ -55,10 +55,11 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
   }
 
   Widget _showText() {
+    String student = 'Noel';
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
-        'connect_with_mentor.learned_today_text'.tr(),
+        'lesson_request.taught_today_text'.tr(args: [student]),
         textAlign: TextAlign.justify,
         style: const TextStyle(
           fontSize: 12,
@@ -150,7 +151,7 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
     );
   }
   
-  Widget _showMentorPresence() {
+  Widget _showStudentPresence() {
     return Padding(
       padding: const EdgeInsets.only(left: 5.0, bottom: 20.0),
       child: Row(
@@ -160,22 +161,22 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
             height: 35.0,                      
             child: Checkbox(
               activeColor: AppColors.TANGO,
-              value: _mentorCheckBox,
+              value: _studentCheckBox,
               onChanged: (value) {
-                _setMentorCheckBox();
+                _setStudentCheckBox();
               },
             ),
           ),
           InkWell(
             child: Text(
-              'connect_with_mentor.mentor_not_present'.tr(),
+              'lesson_request.student_not_present'.tr(),
               style: TextStyle(
                 fontSize: 12.0,
                 color: AppColors.DOVE_GRAY
               )
             ),
             onTap: () {
-              _setMentorCheckBox();
+              _setStudentCheckBox();
             }
           )
         ]
@@ -189,9 +190,9 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
     });
   }
 
-  void _setMentorCheckBox() {
+  void _setStudentCheckBox() {
     setState(() {
-      _mentorCheckBox = !_mentorCheckBox;
+      _studentCheckBox = !_studentCheckBox;
     });    
   }
   
@@ -220,6 +221,6 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
   
   @override
   Widget build(BuildContext context) {
-    return _showLearnedTodayDialog();
+    return _showTaughtTodayDialog();
   }
 }
