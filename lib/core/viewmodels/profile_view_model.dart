@@ -156,7 +156,7 @@ class ProfileViewModel extends ChangeNotifier {
     Subfield subfield = getSelectedSubfield(index);
     String hint = '';
     if (subfield.skills != null) {
-      hint = ' (e.g. ';
+      hint = '(e.g. ';
       int hintsNumber = 3;
       if (subfield.skills.length < 3) {
         hintsNumber = subfield.skills.length;

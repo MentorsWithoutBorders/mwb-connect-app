@@ -144,7 +144,7 @@ Future<void> main() async {
         expect(find.byKey(const Key(AppKeys.editCalendarIcon)), findsOneWidget);
         expect(find.text('Available days/times'), findsOneWidget);
         DateTime now = DateTime.now();
-        expect(find.text('All times are in ' + now.timeZoneName + ' timezone.'), findsOneWidget);
+        expect(find.text('All times are in ' + now.timeZoneName + ' time zone.'), findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '0')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.availabilityItem + '1')).last, findsOneWidget);
         expect(find.byKey(const Key(AppKeys.editAvailabilityIcon + '0')).last, findsOneWidget);

@@ -9,6 +9,8 @@ import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/connect_with_mentor_view.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/lesson_request_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -112,6 +114,20 @@ class _RootViewState extends State<RootView> {
     );
   }
 
+  Widget _showConnectWithMentorView() {
+    return ConnectWithMentorView(
+      auth: widget.auth,
+      logoutCallback: _logoutCallback,
+    );
+  }
+  
+  Widget _showLessonRequestView() {
+    return LessonRequestView(
+      auth: widget.auth,
+      logoutCallback: _logoutCallback,
+    );
+  }    
+
   Widget _buildWaitingScreen() {
     return Stack(
       children: <Widget>[
@@ -144,7 +160,11 @@ class _RootViewState extends State<RootView> {
         break;
       case AuthStatus.LOGGED_IN:
         if (isNotEmpty(_userId)) {
-          return _showGoalsView();
+          if (_rootProvider.isMentor()) {
+            return _showLessonRequestView();
+          } else {
+            return _showConnectWithMentorView();
+          }
         } else
           return _buildWaitingScreen();
         break;

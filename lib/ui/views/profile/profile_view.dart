@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
@@ -32,7 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
     super.dispose();
   }  
 
-  Widget _showProfileCard(Profile profile) {
+  Widget _showProfile(Profile profile) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
@@ -95,7 +96,8 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
             children: [
-              AvailabilityStartDate(),
+              if (_profileProvider.profile.user.isMentor) AvailabilityStartDate(),
+              if (_profileProvider.profile.user.isMentor) _showDivider(),
               AvailabilityList(),
             ],
           )
@@ -104,7 +106,15 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
- Widget _showLessonsCard() {
+  Widget _showDivider() {
+    return Container(
+      height: 1,
+      margin: const EdgeInsets.only(bottom: 20.0),
+      color: AppColors.BOTTICELLI
+    );
+  }    
+
+  Widget _showLessonsCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -136,7 +146,7 @@ class _ProfileViewState extends State<ProfileView> {
   
   Widget _showContent(bool hasData, Profile profile) {
     if (hasData) {
-      return _showProfileCard(profile);
+      return _showProfile(profile);
     } else {
       return const Loader();
     }
