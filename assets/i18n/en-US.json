@@ -165,7 +165,9 @@
 		"change_link": "Change link",
 		"taught_today": "What I taught today",
 		"taught_today_text": "In order for us to connect {} with an appropriate mentor for the next lesson, please select from the following list what you have taught him/her today:",
-		"student_not_present": "The student didn't show up for the lesson"
+		"student_not_present": "The student didn't show up for the lesson",
+		"student_connected": "We're sorry but the student has already been connected with a mentor.",
+		"request_canceled": "We're sorry but the student has canceled the lesson request."
 	},
 	"goals": {
 		"my_goals": "My goals",
