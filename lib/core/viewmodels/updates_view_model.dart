@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:package_info/package_info.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/api_service.dart';
+import 'package:mwb_connect_app/core/services/api_service_old.dart';
 import 'package:mwb_connect_app/core/models/update_model.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 

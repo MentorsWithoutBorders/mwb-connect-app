@@ -1,67 +1,70 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore_mocks/cloud_firestore_mocks.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:dio/dio.dart';
 
-class Api {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final MockFirestoreInstance _dbTest = MockFirestoreInstance();
-  CollectionReference _ref;
-  String userId;
+class ApiService {
+  static final String baseUrl = 'http://104.131.124.125:3000/api/v1';
+  static BaseOptions opts = BaseOptions(
+    responseType: ResponseType.json,
+    connectTimeout: 30000,
+    receiveTimeout: 30000,
+  );
 
-  void _setRef(String path, bool isForUser) {
-    final LocalStorageService storageService = locator<LocalStorageService>();
-    userId = storageService.userId;
-    if (userId != 'test_user') {
-      _ref = isForUser ? _db.collection('users').doc(userId).collection(path) : _db.collection(path);
-    } else {
-      _ref = isForUser ? _dbTest.collection('users').doc(userId).collection(path) : _dbTest.collection(path);
+  static Dio createDio() {
+    return Dio(opts);
+  }
+
+  static Dio addInterceptors(Dio dio) {
+    return dio
+      ..interceptors.add(
+        InterceptorsWrapper(
+            onRequest: (RequestOptions options, RequestInterceptorHandler handler) => requestInterceptor(handler, options),
+            onError: (DioError e, ErrorInterceptorHandler handler) async {
+              return e.response.data;
+            }),
+      );
+  }
+
+  static dynamic requestInterceptor(RequestInterceptorHandler handler, RequestOptions options) async {
+    const token = '';
+    options.headers.addAll({"Authorization": "Bearer: $token"});
+    return handler.next(options);
+  }
+
+  static final dio = createDio();
+  static final baseAPI = addInterceptors(dio);
+
+  Future<Response> getHTTP(String url) async {
+    try {
+      Response response = await baseAPI.get(url);
+      return response;
+    } on DioError catch(e) {
+      // Handle error
     }
   }
 
-  Future<QuerySnapshot> getDataCollection({String path, bool isForUser = false}) {
-    _setRef(path, isForUser);      
-    return _ref.get();
+  Future<Response> postHTTP(String url, dynamic data) async {
+    try {
+      Response response = await baseAPI.post(baseUrl + url, data: data);
+      return response;
+    } on DioError catch(e) {
+      print(e);
+    }
   }
 
-  Stream<QuerySnapshot> streamDataCollection({String path, bool isForUser = false}) {
-    _setRef(path, isForUser);    
-    return _ref.snapshots();
+  Future<Response> putHTTP(String url, dynamic data) async {
+    try {
+      Response response = await baseAPI.put(url, data: data);
+      return response;
+    } on DioError catch(e) {
+      // Handle error
+    }
   }
-
-  Future<DocumentSnapshot> getDocumentById({String path, bool isForUser = false, String id}) {
-    _setRef(path, isForUser);
-    return _ref.doc(id).get();
-  }
-
-  Future<void> removeDocument({String path, bool isForUser = false, String id}){
-    _setRef(path, isForUser);   
-    return _ref.doc(id).delete();
-  }
-
-  Future<void> removeSubCollection({String path, bool isForUser = false}){
-    _setRef(path, isForUser);   
-    return _ref.get().then((QuerySnapshot snapshot) {
-      for (final DocumentSnapshot ds in snapshot.docs) {
-        ds.reference.delete();
-      }
-    }); 
-  }  
-
-  Future<DocumentReference> addDocument({String path, bool isForUser = false, Map<String, dynamic> data}) {
-    _setRef(path, isForUser);     
-    return _ref.add(data);
-  }
-
-  Future<void> setDocument({String path, bool isForUser = false, Map<String, dynamic> data, String id}) {
-    _setRef(path, isForUser);
-    return _ref.doc(id).set(data);
-  }  
   
-  Future<void> updateDocument({String path, bool isForUser = false, Map<String, dynamic> data, String id}) {
-    _setRef(path, isForUser);     
-    return _ref.doc(id).update(data);
+  Future<Response> deleteHTTP(String url) async {
+    try {
+      Response response = await baseAPI.delete(url);
+      return response;
+    } on DioError catch(e) {
+      // Handle error
+    }
   }
-
 }

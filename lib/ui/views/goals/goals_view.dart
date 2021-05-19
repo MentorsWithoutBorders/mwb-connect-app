@@ -5,7 +5,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
-import 'package:mwb_connect_app/core/services/authentication_service.dart';
+import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';

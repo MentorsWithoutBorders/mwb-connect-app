@@ -10,11 +10,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/core/services/authentication_service.dart';
+import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
@@ -111,6 +112,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
             providers: [
               ChangeNotifierProvider<CommonViewModel>.value(value: locator<CommonViewModel>()),
               ChangeNotifierProvider<RootViewModel>.value(value: locator<RootViewModel>()),
+              ChangeNotifierProvider<LoginSignupViewModel>.value(value: locator<LoginSignupViewModel>()),
               ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
               ChangeNotifierProvider<ConnectWithMentorViewModel>.value(value: locator<ConnectWithMentorViewModel>()),
               ChangeNotifierProvider<LessonRequestViewModel>.value(value: locator<LessonRequestViewModel>()),

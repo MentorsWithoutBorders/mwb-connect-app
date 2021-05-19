@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/services/authentication_service.dart';
+import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 

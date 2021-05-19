@@ -8,6 +8,7 @@ class User {
   String id;
   String name;
   String email;
+  String password;
   bool isMentor;
   String organization;
   String field;
@@ -19,12 +20,13 @@ class User {
   LessonsAvailability lessonsAvailability;
   DateTime registeredOn;
 
-  User({this.id, this.name, this.email, this.isMentor, this.organization, this.field, this.subfields, this.timezone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timezone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromMap(Map snapshot, String id) {
     this.id = id;
     name = snapshot['name'].toString() ?? '';
     email = snapshot['email'].toString() ?? '';
+    password = snapshot['password'].toString() ?? '';
     isMentor = snapshot['isMentor'] ?? false;
     organization = snapshot['organization'].toString() ?? '';
     field = snapshot['field'].toString() ?? '';
@@ -77,6 +79,7 @@ class User {
     Map<String, Object> userMap = {
       'name': name,
       'email': email,
+      'password': password,
       'isMentor': isMentor,
       'organization': organization,
       'field': field,

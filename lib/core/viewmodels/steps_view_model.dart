@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/api_service.dart';
+import 'package:mwb_connect_app/core/services/api_service_old.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 
 class StepsViewModel extends ChangeNotifier {

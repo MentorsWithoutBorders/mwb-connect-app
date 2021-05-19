@@ -22,6 +22,7 @@ dependencies:
   flutuate_mixpanel: ^1.1.8
   firebase_analytics: ^8.0.1
   provider: ^5.0.0
+  dio: ^4.0.0
   path_provider: ^2.0.1
   get_it: ^6.1.1
   shared_preferences: ^2.0.5
@@ -42,6 +43,7 @@ dependencies:
   draggable_scrollbar: ^0.1.0
   package_info: ^2.0.0
   rxdart: ^0.26.0
+  uuid: ^3.0.4
   enum_to_string: ^2.0.1
 
   easy_localization:
@@ -51,6 +53,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.0.3
 
 flutter:
 

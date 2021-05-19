@@ -13,7 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/quiz_settings_model.dart';
-import 'package:mwb_connect_app/core/services/api_service.dart';
+import 'package:mwb_connect_app/core/services/api_service_old.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class DownloadService { 

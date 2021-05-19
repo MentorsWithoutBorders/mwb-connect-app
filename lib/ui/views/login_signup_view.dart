@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
@@ -6,11 +7,12 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/timezone.dart';
-import 'package:mwb_connect_app/core/services/authentication_service.dart';
+import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
+import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/timezone_model.dart';
 import 'package:mwb_connect_app/core/models/approved_user_model.dart';
@@ -36,6 +38,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   final UserService _userService = locator<UserService>();  
   final GoalsService _goalsService = locator<GoalsService>();  
   final AnalyticsService _analyticsService = locator<AnalyticsService>();  
+  LoginSignupViewModel _loginSignupProvider;
   final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
   final ScrollController _scrollController = ScrollController();
@@ -93,7 +96,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             _showErrorMessage(),
             _showPrimaryButton(),
             _showSecondaryButton(),
-            if (_isLoginForm) _showTertiaryButton()
+            // if (_isLoginForm) _showTertiaryButton()
           ],
         )
       )
@@ -481,18 +484,8 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           await _setUserStorage(userId: userId, email: _email);
           print('Signed in: $userId');
         } else {
-          await _signInAnonymously();
-          final ApprovedUser approvedUser = await _userService.checkApprovedUser(_email);
-          if (approvedUser != null) {
-            userId = await widget.auth.signUp(_name, _email, _password);
-            //widget.auth.sendEmailVerification();
-            //_showVerifyEmailSentDialog();
-            await _setUserStorage(userId: userId, name: _name, email: _email);
-            _addUser(approvedUser);          
-            print('Signed up user: $userId');
-          } else {
-            throw Exception('sign_up.not_approved'.tr());
-          }
+          User user = User(name: _name, email: _email, password: _password);
+          userId = await _loginSignupProvider.signUp(user);
         }
         setState(() {
           _isLoading = false;
@@ -522,10 +515,6 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     }
     return false;
   }
-
-  Future<void> _signInAnonymously() async {
-    await widget.auth.signInAnonymously();
-  }  
 
   Future<void> _setUserStorage({String userId, String name, String email}) async {
     final User user = User(id: userId, name: name, email: email);
@@ -580,6 +569,8 @@ class _LoginSignupViewState extends State<LoginSignupView> {
 
   @override
   Widget build(BuildContext context) {
+    _loginSignupProvider = Provider.of<LoginSignupViewModel>(context);
+
     return Stack(
       children: <Widget>[
         BackgroundGradient(),
