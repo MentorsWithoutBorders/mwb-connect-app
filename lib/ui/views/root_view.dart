@@ -89,15 +89,15 @@ class _RootViewState extends State<RootView> {
   }  
 
   void _loginCallback() {
-    widget.auth.getCurrentUser().then((User user) {
-      setState(() {
-        _userId = user.uid.toString();
-      });
-    });
+    // widget.auth.getCurrentUser().then((User user) {
+    //   setState(() {
+    //     _userId = user.uid.toString();
+    //   });
+    // });
     setState(() {
       _authStatus = AuthStatus.LOGGED_IN;
     });
-    _setPreferences();
+    //_setPreferences();
   }
 
   void _logoutCallback() {

@@ -18,6 +18,12 @@ class LocalStorageService {
   String get userName => _getFromDisk('userName');
   set userName(String value) => _saveToDisk('userName', value);
 
+  String get accessToken => _getFromDisk('accessToken');
+  set accessToken(String value) => _saveToDisk('accessToken', value);
+  
+  String get refreshToken => _getFromDisk('refreshToken');
+  set refreshToken(String value) => _saveToDisk('refreshToken', value);    
+
   bool get isMentor => _getFromDisk('isMentor');
   set isMentor(bool value) => _saveToDisk('isMentor', value);
 

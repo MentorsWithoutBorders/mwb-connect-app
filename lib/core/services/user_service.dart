@@ -17,23 +17,26 @@ class UserService {
     if (user?.id != null) {
       _storageService.userId = user.id;
       _storageService.userEmail = user.email;
-      final User userDetails = await getUserDetails();
-      if (isNotEmpty(userDetails.name)) {
-        _storageService.userName = userDetails.name;
-      }
-      if (userDetails.isMentor != null) {
-        _storageService.isMentor = userDetails.isMentor;
-      } else {
-        _storageService.isMentor = false;
-      }
-      // Get notifications settings
-      final NotificationSettings notificationSettings = await _notificationsService.getNotificationSettings();
-      if (notificationSettings != null) {
-        _storageService.notificationsEnabled = notificationSettings.enabled;
-      }
-      if (notificationSettings != null && notificationSettings.time != null) {
-        _storageService.notificationsTime = notificationSettings.time;
-      }
+      if (isNotEmpty(user.name)) {
+        _storageService.userName = user.name;
+      }      
+      // final User userDetails = await getUserDetails();
+      // if (isNotEmpty(userDetails.name)) {
+      //   _storageService.userName = userDetails.name;
+      // }
+      // if (userDetails.isMentor != null) {
+      //   _storageService.isMentor = userDetails.isMentor;
+      // } else {
+      //   _storageService.isMentor = false;
+      // }
+      // // Get notifications settings
+      // final NotificationSettings notificationSettings = await _notificationsService.getNotificationSettings();
+      // if (notificationSettings != null) {
+      //   _storageService.notificationsEnabled = notificationSettings.enabled;
+      // }
+      // if (notificationSettings != null && notificationSettings.time != null) {
+      //   _storageService.notificationsTime = notificationSettings.time;
+      // }
     }
   }
   

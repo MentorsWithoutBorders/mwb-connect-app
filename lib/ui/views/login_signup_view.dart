@@ -43,6 +43,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   int _keyboardVisibilitySubscriberId;
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  User _user;
   String _name;
   String _email;
   String _password;
@@ -477,15 +478,15 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       _isLoading = true;
     });
     if (_validateAndSave()) {
-      String userId = "";
+      String userId = '';
       try {
         if (_isLoginForm) {
-          userId = await widget.auth.signIn(_email, _password);
-          await _setUserStorage(userId: userId, email: _email);
+          _user = User(email: _email, password: _password);
+          userId = await _loginSignupProvider.login(_user);
           print('Signed in: $userId');
         } else {
-          User user = User(name: _name, email: _email, password: _password);
-          userId = await _loginSignupProvider.signUp(user);
+          _user = User(name: _name, email: _email, password: _password);
+          userId = await _loginSignupProvider.signUp(_user);
         }
         setState(() {
           _isLoading = false;
@@ -514,11 +515,6 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       return true;
     }
     return false;
-  }
-
-  Future<void> _setUserStorage({String userId, String name, String email}) async {
-    final User user = User(id: userId, name: name, email: email);
-    await _userService.setUserStorage(user: user);
   }
 
   Future<void> _addUser(ApprovedUser approvedUser) async {

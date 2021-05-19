@@ -18,4 +18,8 @@ class LoginSignupViewModel extends ChangeNotifier {
     //   throw Exception('sign_up.not_approved'.tr());
     // }    
   }
+
+  Future<String> login(User user) async {
+    return await _authService.login(user);
+  }  
 }
