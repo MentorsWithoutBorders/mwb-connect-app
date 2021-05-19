@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/analytics_service.dart';
+import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_view.dart';
@@ -13,10 +10,9 @@ import 'package:mwb_connect_app/ui/views/others/feedback_view.dart';
 import 'package:mwb_connect_app/ui/views/others/terms_view.dart';
 
 class DrawerWidget extends StatefulWidget {
-  const DrawerWidget({Key key, this.auth, this.logoutCallback})
+  const DrawerWidget({Key key, this.logoutCallback})
     : super(key: key);   
 
-  final BaseAuth auth;
   final VoidCallback logoutCallback;
 
   @override
@@ -24,26 +20,12 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  final LocalStorageService _storageService = locator<LocalStorageService>();
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();  
+  final AuthService _authService = locator<AuthService>();
 
-  Future<void> _signOut() async {
-    try {
-      await widget.auth.signOut();
-      _resetAll();
-      widget.logoutCallback();
-    } catch (e) {
-      print(e);
-    }
+  Future<void> _logout() async {
+    widget.logoutCallback();
+    await _authService.logout();
   }
-
-  void _resetAll() {
-    _storageService.userId = null;
-    _storageService.quizNumber = 1;
-    _storageService.notificationsEnabled = AppConstants.notificationsEnabled;
-    _storageService.notificationsTime = AppConstants.notificationsTime;
-    _analyticsService.resetUser();
-  }  
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +153,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
             title: Text('drawer.logout'.tr()),
             onTap: () {
-              _signOut();
+              _logout();
               Navigator.pop(context);
             },
           ),

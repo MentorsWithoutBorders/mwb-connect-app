@@ -63,7 +63,6 @@ class _LessonRequestViewState extends State<LessonRequestView> {
         ]
       ),
       drawer: DrawerWidget(
-        auth: widget.auth,
         logoutCallback: widget.logoutCallback
       )
     );

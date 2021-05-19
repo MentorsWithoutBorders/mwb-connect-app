@@ -77,6 +77,7 @@ class User {
 
   Map<String, Object> toJson() {
     Map<String, Object> userMap = {
+      'id': id,
       'name': name,
       'email': email,
       'password': password,

@@ -41,25 +41,12 @@ class _RootViewState extends State<RootView> {
   @override
   void didChangeDependencies() {
     _rootProvider = Provider.of<RootViewModel>(context);
-    _setCurrentUser();    
     _setUserStorage();
     _setPreferences();
     // _getImages();
     _setLocalNotifications();
     super.didChangeDependencies();
-  }
-  
-  void _setCurrentUser() {
-    widget.auth.getCurrentUser().then((User user) {
-      setState(() {
-        if (user != null) {
-          _userId = user?.uid;
-        }
-        _authStatus =
-          user?.isAnonymous == true || user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
-      });
-    });    
-  }    
+  } 
 
   void _setPreferences() {
     _rootProvider.setPreferences();   
@@ -89,11 +76,7 @@ class _RootViewState extends State<RootView> {
   }  
 
   void _loginCallback() {
-    // widget.auth.getCurrentUser().then((User user) {
-    //   setState(() {
-    //     _userId = user.uid.toString();
-    //   });
-    // });
+    _userId = _rootProvider.getUserId();
     setState(() {
       _authStatus = AuthStatus.LOGGED_IN;
     });

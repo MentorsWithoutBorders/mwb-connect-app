@@ -155,6 +155,10 @@ class RootViewModel extends ChangeNotifier {
   void getImages() {
     _downloadService.getImages();    
   }
+
+  String getUserId() {
+    return _storageService.userId;
+  }  
   
   bool isMentor() {
     return _storageService.isMentor;

@@ -65,7 +65,6 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
         ]
       ),
       drawer: DrawerWidget(
-        auth: widget.auth,
         logoutCallback: widget.logoutCallback
       )
     );
