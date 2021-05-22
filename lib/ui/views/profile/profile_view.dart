@@ -74,7 +74,7 @@ class _ProfileViewState extends State<ProfileView> {
           child: Wrap(
             children: [
               const Name(),
-              // if (_profileProvider.profile.user.isMentor) const FieldDropdown(),
+              if (_profileProvider.profile.user.isMentor) const FieldDropdown(),
               // if (_profileProvider.profile.user.isMentor) const Subfields()
             ],
           )

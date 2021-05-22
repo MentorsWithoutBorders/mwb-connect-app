@@ -6,9 +6,9 @@ class Field {
 
   Field({this.name, this.subfields});
 
-  Field.fromMap(Map snapshot) {
-    name = snapshot['name'] ?? '';
-    subfields = _subfieldsFromJson(snapshot['subfields']?.cast<Map<String,dynamic>>()) ?? [];
+  Field.fromJson(Map<String, dynamic> json) {
+    name = json['name'] ?? '';
+    subfields = _subfieldsFromJson(json['subfields']?.cast<Map<String,dynamic>>()) ?? [];
   }
 
   List<Subfield> _subfieldsFromJson(List<Map<String, dynamic>> json) {
