@@ -33,7 +33,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-  await _signInAnonymously();
+  // await _signInAnonymously();
   await _initAppDirectory();
 
   Directory directory = await getApplicationDocumentsDirectory();

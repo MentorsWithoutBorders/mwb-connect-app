@@ -518,23 +518,23 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   }
 
   Future<void> _addUser(ApprovedUser approvedUser) async {
-    final DateTime now = DateTime.now();
-    final User defaultUser = await _userService.getDefaultUserDetails();
-    final User user = User(id: approvedUser.id, name: approvedUser.name, email: approvedUser.email, isMentor: approvedUser.isMentor, 
-        organization: approvedUser.organization, field: approvedUser.field, subfields: approvedUser.subfields, 
-        availabilities: defaultUser.availabilities, registeredOn: now, availableFrom: now);
-    if (approvedUser.isMentor) {
-      user.isAvailable = defaultUser.isAvailable;
-      user.lessonsAvailability = defaultUser.lessonsAvailability;
-    }
-    final TimeZone timeZone = TimeZone();
-    final String timeZoneName = await timeZone.getTimeZoneName();
-    final List<String> offset = now.timeZoneOffset.toString().split(':');
-    user.timezone = TimeZoneModel(name: timeZoneName, abbreviation: now.timeZoneName, offset: offset[0] + ':' + offset[1]);
-    _userService.setUserDetails(user);
-    if (!approvedUser.isMentor && isNotEmpty(approvedUser.goal)) {
-      _addGoal(approvedUser.goal);
-    }
+    // final DateTime now = DateTime.now();
+    // final User defaultUser = await _userService.getDefaultUserDetails();
+    // final User user = User(id: approvedUser.id, name: approvedUser.name, email: approvedUser.email, isMentor: approvedUser.isMentor, 
+    //     organization: approvedUser.organization, field: approvedUser.field, subfields: approvedUser.subfields, 
+    //     availabilities: defaultUser.availabilities, registeredOn: now, availableFrom: now);
+    // if (approvedUser.isMentor) {
+    //   user.isAvailable = defaultUser.isAvailable;
+    //   user.lessonsAvailability = defaultUser.lessonsAvailability;
+    // }
+    // final TimeZone timeZone = TimeZone();
+    // final String timeZoneName = await timeZone.getTimeZoneName();
+    // final List<String> offset = now.timeZoneOffset.toString().split(':');
+    // user.timezone = TimeZoneModel(name: timeZoneName, abbreviation: now.timeZoneName, offset: offset[0] + ':' + offset[1]);
+    // _userService.setUserDetails(user);
+    // if (!approvedUser.isMentor && isNotEmpty(approvedUser.goal)) {
+    //   _addGoal(approvedUser.goal);
+    // }
   }
 
   void _addGoal(String goalText) {

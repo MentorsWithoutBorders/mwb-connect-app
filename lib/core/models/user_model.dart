@@ -22,21 +22,21 @@ class User {
 
   User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timezone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
-  User.fromMap(Map snapshot, String id) {
-    this.id = id;
-    name = snapshot['name'].toString() ?? '';
-    email = snapshot['email'].toString() ?? '';
-    password = snapshot['password'].toString() ?? '';
-    isMentor = snapshot['isMentor'] ?? false;
-    organization = snapshot['organization'].toString() ?? '';
-    field = snapshot['field'].toString() ?? '';
-    subfields = subfieldsFromJson(snapshot['subfields']?.cast<Map<String,dynamic>>()) ?? [];
-    timezone = _timezoneFromJson(snapshot['timezone']) ?? null;
-    availabilities = _availabilityFromJson(snapshot['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
-    isAvailable = snapshot['isAvailable'] ?? true;
-    availableFrom = snapshot['availableFrom']?.toDate();
-    lessonsAvailability = _lessonsAvailabilityFromJson(snapshot['lessonsAvailability']) ?? null;
-    registeredOn = snapshot['registeredOn']?.toDate();
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'].toString() ?? '';
+    name = json['name'].toString() ?? '';
+    email = json['email'].toString() ?? '';
+    password = json['password'].toString() ?? '';
+    isMentor = json['is_mentor'] ?? false;
+    organization = json['organization'].toString() ?? '';
+    field = json['field'].toString() ?? '';
+    subfields = subfieldsFromJson(json['subfields']?.cast<Map<String,dynamic>>()) ?? [];
+    timezone = _timezoneFromJson(json['timezone']) ?? null;
+    availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
+    isAvailable = json['isAvailable'] ?? true;
+    availableFrom = json['availableFrom']?.toDate();
+    lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']) ?? null;
+    registeredOn = json['registeredOn']?.toDate();
   }
 
   List<Subfield> subfieldsFromJson(List<Map<String, dynamic>> json) {

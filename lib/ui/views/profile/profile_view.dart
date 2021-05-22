@@ -43,8 +43,8 @@ class _ProfileViewState extends State<ProfileView> {
         padding: const EdgeInsets.only(top: 0.0),
         children: [
           _showPrimaryCard(),
-          _showAvailabilityCard(),
-          if (_profileProvider.profile.user.isMentor) _showLessonsCard()
+          // _showAvailabilityCard(),
+          // if (_profileProvider.profile.user.isMentor) _showLessonsCard()
         ]
       )
     );
@@ -74,8 +74,8 @@ class _ProfileViewState extends State<ProfileView> {
           child: Wrap(
             children: [
               const Name(),
-              if (_profileProvider.profile.user.isMentor) const FieldDropdown(),
-              if (_profileProvider.profile.user.isMentor) const Subfields()
+              // if (_profileProvider.profile.user.isMentor) const FieldDropdown(),
+              // if (_profileProvider.profile.user.isMentor) const Subfields()
             ],
           )
         ),

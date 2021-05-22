@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
@@ -33,40 +34,11 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
+  ProfileViewModel _profileProvider;
   NotificationsViewModel _notificationsProvider;
   RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
-
-  @override
-  void didChangeDependencies() {
-    _rootProvider = Provider.of<RootViewModel>(context);
-    _setUserStorage();
-    _setPreferences();
-    // _getImages();
-    _setLocalNotifications();
-    super.didChangeDependencies();
-  } 
-
-  void _setPreferences() {
-    _rootProvider.setPreferences();   
-  }
-
-  Future<void> _setUserStorage() async {
-    await _rootProvider.setUserStorage();
-  }
-
-  void _getImages() {
-    _rootProvider.getImages();    
-  }
-
-  void _setLocalNotifications() {
-    _rootProvider.setLocalNotifications().then((value) {
-      _rootProvider.requestIOSPermissions();
-      _rootProvider.configureDidReceiveLocalNotificationSubject(context);
-      _rootProvider.configureSelectNotificationSubject();      
-    });    
-  }
 
   @override
   void dispose() {
@@ -76,8 +48,8 @@ class _RootViewState extends State<RootView> {
   }  
 
   void _loginCallback() {
-    _userId = _rootProvider.getUserId();
     setState(() {
+      _userId = _rootProvider.getUserId();
       _authStatus = AuthStatus.LOGGED_IN;
     });
     //_setPreferences();
@@ -86,7 +58,7 @@ class _RootViewState extends State<RootView> {
   void _logoutCallback() {
     setState(() {
       _authStatus = AuthStatus.NOT_LOGGED_IN;
-      _userId = "";
+      _userId = '';
     });
   }
   
@@ -120,8 +92,54 @@ class _RootViewState extends State<RootView> {
     );
   }
 
+  void _setCurrentUser() {
+    setState(() {
+      _userId = _rootProvider.getUserId();
+      _authStatus = _userId == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+    });
+  }    
+
+  void _setPreferences() {
+    _rootProvider.setPreferences();   
+  }
+
+  Future<User> _getUserDetails() async {
+    User user;
+    if (_rootProvider.getUserId() != null) {
+      user = await _profileProvider.getUserDetails();
+    }    
+    return user;
+  }  
+
+  void _setUserStorage(User user) {
+    _rootProvider.setUserStorage(user);
+  }
+
+  void _getImages() {
+    _rootProvider.getImages();    
+  }
+
+  void _setLocalNotifications() {
+    _rootProvider.setLocalNotifications().then((value) {
+      _rootProvider.requestIOSPermissions();
+      _rootProvider.configureDidReceiveLocalNotificationSubject(context);
+      _rootProvider.configureSelectNotificationSubject();      
+    });    
+  }
+  
+  Future<User> _init() async {
+    _setCurrentUser();   
+    final User user = await _getUserDetails();
+    _setPreferences();
+    // _getImages();
+    _setLocalNotifications();
+    return user;
+  }  
+
   @override
   Widget build(BuildContext context) {
+    _rootProvider = Provider.of<RootViewModel>(context);
+    _profileProvider = Provider.of<ProfileViewModel>(context);
     _notificationsProvider = Provider.of<NotificationsViewModel>(context);
 
     if (_notificationsProvider.notificationSettingsUpdated) {
@@ -131,28 +149,35 @@ class _RootViewState extends State<RootView> {
 
     _rootProvider.sendAnalyticsEvent();
 
-    switch (_authStatus) {
-      case AuthStatus.NOT_DETERMINED:
-        return _buildWaitingScreen();
-        break;
-      case AuthStatus.NOT_LOGGED_IN:
-        return OnboardingView(
-          auth: widget.auth,
-          loginCallback: _loginCallback,
-        );
-        break;
-      case AuthStatus.LOGGED_IN:
-        if (isNotEmpty(_userId)) {
-          if (_rootProvider.isMentor()) {
-            return _showLessonRequestView();
-          } else {
-            return _showConnectWithMentorView();
-          }
-        } else
-          return _buildWaitingScreen();
-        break;
-      default:
-        return _buildWaitingScreen();
-    }
+    return FutureBuilder<User>(
+      future: _init(),
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        switch (_authStatus) {
+          case AuthStatus.NOT_DETERMINED:
+            return _buildWaitingScreen();
+            break;
+          case AuthStatus.NOT_LOGGED_IN:
+            return OnboardingView(
+              auth: widget.auth,
+              loginCallback: _loginCallback,
+            );
+            break;
+          case AuthStatus.LOGGED_IN:
+            if (snapshot.hasData) {
+              final User user = snapshot.data;
+              _setUserStorage(user);
+              if (user.isMentor) {
+                return _showLessonRequestView();
+              } else {
+                return _showConnectWithMentorView();
+              }
+            } else
+              return _buildWaitingScreen();
+            break;              
+          default:
+            return _buildWaitingScreen();            
+        }
+      }
+    );
   }
 }

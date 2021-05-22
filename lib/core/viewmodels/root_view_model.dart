@@ -6,6 +6,7 @@ import 'package:rxdart/subjects.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/timezone.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/received_notification_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
@@ -27,8 +28,8 @@ class RootViewModel extends ChangeNotifier {
   NotificationAppLaunchDetails notificationAppLaunchDetails;
   dynamic _location; 
 
-  Future<void> setUserStorage() async {
-    await _userService.setUserStorage();
+  void setUserStorage(User user) {
+    _userService.setUserStorage(user: user);
   }
   
   void setPreferences() {

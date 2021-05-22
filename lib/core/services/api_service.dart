@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class ApiService {
+  static final LocalStorageService _storageService = locator<LocalStorageService>();
   static final String baseUrl = 'http://104.131.124.125:3000/api/v1';
   static BaseOptions opts = BaseOptions(
     responseType: ResponseType.json,
@@ -24,24 +27,24 @@ class ApiService {
   }
 
   static dynamic requestInterceptor(RequestInterceptorHandler handler, RequestOptions options) async {
-    const token = '';
-    options.headers.addAll({"Authorization": "Bearer: $token"});
+    String token = _storageService.accessToken;
+    options.headers.addAll({"Authorization": "$token"});
     return handler.next(options);
   }
 
   static final dio = createDio();
   static final baseAPI = addInterceptors(dio);
 
-  Future<Response> getHTTP(String url) async {
+  Future<Response> getHTTP({String url}) async {
     try {
-      Response response = await baseAPI.get(url);
+      Response response = await baseAPI.get(baseUrl + url);
       return response;
     } on DioError catch(e) {
       // Handle error
     }
   }
 
-  Future<Response> postHTTP(String url, dynamic data) async {
+  Future<Response> postHTTP({String url, dynamic data}) async {
     try {
       Response response = await baseAPI.post(baseUrl + url, data: data);
       return response;

@@ -10,10 +10,11 @@ import 'package:mwb_connect_app/utils/constants.dart';
 
 class AuthService {
   final ApiService _api = locator<ApiService>();
+  final UserService _userService = locator<UserService>();    
   final LocalStorageService _storageService = locator<LocalStorageService>();
 
   Future<String> signUp(User user) async {
-    Response response = await _api.postHTTP('/signup', user.toJson());
+    Response response = await _api.postHTTP(url: '/signup', data: user.toJson());
     Tokens tokens = Tokens.fromJson(response.data);
     user.id = tokens.userId;
     _setUserStorage(user);
@@ -22,7 +23,7 @@ class AuthService {
   }
 
   Future<String> login(User user) async {
-    Response response = await _api.postHTTP('/login', user.toJson());
+    Response response = await _api.postHTTP(url: '/login', data: user.toJson());
     Tokens tokens = Tokens.fromJson(response.data);
     user.id = tokens.userId;
     _setUserStorage(user);
@@ -31,7 +32,6 @@ class AuthService {
   }
   
   Future<void> _setUserStorage(User user) async {
-    final UserService _userService = locator<UserService>();  
     await _userService.setUserStorage(user: user);
   }  
 
@@ -42,12 +42,15 @@ class AuthService {
 
   Future<void> logout() async {
     User user = User(id: _storageService.userId);
-    await _api.postHTTP('/logout', user.toJson());
     _resetStorage();
+    await _api.postHTTP(url: '/logout', data: user.toJson());
   }
 
   void _resetStorage() {
     _storageService.userId = null;
+    _storageService.userEmail = null;
+    _storageService.userName = '';
+    _storageService.isMentor = false;
     _storageService.quizNumber = 1;
     _storageService.notificationsEnabled = AppConstants.notificationsEnabled;
     _storageService.notificationsTime = AppConstants.notificationsTime;       
