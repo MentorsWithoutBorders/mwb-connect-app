@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/tokens_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 
 class ApiService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
@@ -30,6 +31,8 @@ class ApiService {
     } else if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
+      throw(Exception(_getError(response)));
+    } else if (response.statusCode == 401) {
       await _refreshToken();
       return getHTTP(url: url);
     }
@@ -44,6 +47,8 @@ class ApiService {
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
+      throw(Exception(_getError(response)));
+    } else if (response.statusCode == 401) {
       await _refreshToken();
       return await postHTTP(url: url, data: data);
     }   
@@ -58,6 +63,8 @@ class ApiService {
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
+      throw(Exception(_getError(response)));
+    } else if (response.statusCode == 401) {
       await _refreshToken();
       return await putHTTP(url: url, data: data);
     }  
@@ -72,10 +79,18 @@ class ApiService {
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
+      throw(Exception(_getError(response)));
+    } else if (response.statusCode == 401) {
       await _refreshToken();
       return await deleteHTTP(url: url, data: data);
     }
   }
+
+  String _getError(http.Response response) {
+    var json = jsonDecode(response.body);
+    ErrorModel error = ErrorModel.fromJson(json);
+    return error.message;
+  }  
 
   Future<void> _refreshToken() async {
     String userId = _storageService.userId;

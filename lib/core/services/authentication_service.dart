@@ -15,7 +15,12 @@ class AuthService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
 
   Future<String> signUp(User user) async {
-    http.Response response = await _api.postHTTP(url: '/signup', data: user.toJson());
+    http.Response response;
+    try {    
+      response = await _api.postHTTP(url: '/signup', data: user.toJson());
+    } catch(error) {
+      throw(error);
+    }      
     var json = jsonDecode(response.body);
     Tokens tokens = Tokens.fromJson(json);
     user.id = tokens.userId;
@@ -25,13 +30,18 @@ class AuthService {
   }
 
   Future<String> login(User user) async {
-    http.Response response = await _api.postHTTP(url: '/login', data: user.toJson());
+    http.Response response;
+    try {
+      response = await _api.postHTTP(url: '/login', data: user.toJson());
+    } catch(error) {
+      throw(error);
+    }
     var json = jsonDecode(response.body);
     Tokens tokens = Tokens.fromJson(json);
     user.id = tokens.userId;
     _setUserStorage(user);
     _setTokens(tokens);
-    return tokens.userId;
+    return tokens.userId;    
   }
   
   Future<void> _setUserStorage(User user) async {

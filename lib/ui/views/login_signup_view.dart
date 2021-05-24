@@ -201,7 +201,10 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           hintStyle: const TextStyle(color: Colors.white),
           hintText: 'sign_up.full_name'.tr(),
           errorStyle: const TextStyle(
-            color: Colors.orange
+            fontSize: 13.0,
+            color: AppColors.SOLITUDE,
+            height: 1.0,
+            fontWeight: FontWeight.w400
           )
         ), 
         validator: (String value) {
@@ -278,7 +281,10 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           hintStyle: const TextStyle(color: Colors.white),
           hintText: 'login_sign_up.email'.tr(),
           errorStyle: const TextStyle(
-            color: Colors.orange
+            fontSize: 13.0,
+            color: AppColors.SOLITUDE,
+            height: 1.0,
+            fontWeight: FontWeight.w400
           )
         ), 
         validator: (String value) {
@@ -356,7 +362,10 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           hintStyle: const TextStyle(color: Colors.white),
           hintText: 'login_sign_up.password'.tr(),
           errorStyle: const TextStyle(
-            color: Colors.orange
+            fontSize: 13.0,
+            color: AppColors.SOLITUDE,
+            height: 1.0,
+            fontWeight: FontWeight.w400
           )
         ),
         validator: (String value) {
@@ -497,11 +506,10 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           Navigator.pop(context);
           widget.loginCallback();
         }
-      } catch (e) {
-        print('Error: $e');
+      } catch (error) {
         setState(() {
           _isLoading = false;
-          _errorMessage = e.message;
+          _errorMessage = error.message;
         });
       }
     }

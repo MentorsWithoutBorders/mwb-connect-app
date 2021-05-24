@@ -13,13 +13,21 @@ class LoginSignupViewModel extends ChangeNotifier {
     // if (approvedUser != null) {
       Uuid uuid = Uuid();
       user.id = uuid.v4();
-      return await _authService.signUp(user);
+      try {
+        return await _authService.signUp(user);
+      } catch(error) {
+        throw(error);
+      }
     // } else {
     //   throw Exception('sign_up.not_approved'.tr());
     // }    
   }
 
   Future<String> login(User user) async {
-    return await _authService.login(user);
+    try {
+      return await _authService.login(user);
+    } catch(error) {
+      throw(error);
+    }
   }  
 }
