@@ -17,7 +17,8 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class ProfileView extends StatefulWidget {
-  ProfileView();
+  const ProfileView({Key key})
+    : super(key: key);   
 
   @override
   State<StatefulWidget> createState() => _ProfileViewState();
@@ -152,20 +153,15 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
-  Future<Profile> _getProfile() async {
-    final User user = await _profileProvider.getUserDetails();
-    final List<Field> fields = await _profileProvider.getFields();
-    return Profile(user: user, fields: fields);
-  }
-
   void _unfocus() {
     FocusScope.of(context).unfocus();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _profileProvider = Provider.of<ProfileViewModel>(context);
+  void _logout() {
+    Navigator.pop(context);
+  }  
 
+  void _afterLayout(_) {
     if (_profileProvider.shouldUnfocus) {
       _unfocus();
       _profileProvider.shouldUnfocus = false;
@@ -175,6 +171,23 @@ class _ProfileViewState extends State<ProfileView> {
       _scrollToPosition(_profileProvider.scrollOffset);
       _profileProvider.scrollOffset = 0;
     }
+
+    if (_profileProvider.shouldLogout) {
+      _logout();
+    }    
+  }
+
+   Future<Profile> _getProfile() async {
+    final User user = await _profileProvider.getUserDetails();
+    final List<Field> fields = await _profileProvider.getFields();
+    return Profile(user: user, fields: fields);
+  } 
+
+  @override
+  Widget build(BuildContext context) {
+    _profileProvider = Provider.of<ProfileViewModel>(context);
+
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return FutureBuilder<Profile>(
       future: _getProfile(),

@@ -3,6 +3,7 @@ import 'package:quiver/strings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
 import 'package:mwb_connect_app/core/models/profile_model.dart';
@@ -12,20 +13,34 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
+  final LocalStorageService _storageService = locator<LocalStorageService>();
   final UserService _userService = locator<UserService>();
   final ProfileService _profileService = locator<ProfileService>();
   Profile profile;
   String availabilityMergedMessage = '';
   bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
+  bool _shouldLogout = false;
   double scrollOffset = 0;
 
   Future<User> getUserDetails() async {
-    return _userService.getUserDetails();
+    User user = await _userService.getUserDetails();
+    _checkUserId();
+    return user;
   }
 
   Future<List<Field>> getFields() async {
-    return _profileService.getFields();
+    List<Field> fields = await _profileService.getFields();
+    // _checkUserId();
+    return fields;
+  }
+
+  void _checkUserId() {
+    if (_storageService.userId == null) {
+      shouldLogout = true;
+    } else {
+      shouldLogout = false;
+    }
   }
 
   void setFields(List<Field> fields) {
@@ -363,4 +378,12 @@ class ProfileViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  bool get shouldLogout => _shouldLogout;
+  set shouldLogout(bool logout) {
+    _shouldLogout = logout;
+    if (shouldLogout) {
+      notifyListeners();
+    }
+  }  
 }

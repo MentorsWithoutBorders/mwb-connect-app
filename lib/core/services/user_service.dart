@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -42,8 +43,12 @@ class UserService {
 
   Future<User> getUserDetails() async {
     String userId = _storageService.userId;
-    Response response = await _api.getHTTP(url: '/users/$userId');
-    User user = User.fromJson(response.data[0]);
+    http.Response response = await _api.getHTTP(url: '/users/$userId');
+    User user;
+    if (response != null) {
+      var json = jsonDecode(response.body);
+      user = User.fromJson(json);
+    }
     return user;
 
     // final DocumentSnapshot doc = await _api.getDocumentById(path: 'profile', isForUser: true, id: 'details');

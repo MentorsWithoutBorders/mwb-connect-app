@@ -22,7 +22,7 @@ dependencies:
   flutuate_mixpanel: ^1.1.8
   firebase_analytics: ^8.0.1
   provider: ^5.0.0
-  dio: ^4.0.0
+  http: ^0.13.3
   path_provider: ^2.0.1
   get_it: ^6.1.1
   shared_preferences: ^2.0.5
