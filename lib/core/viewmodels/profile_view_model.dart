@@ -11,6 +11,7 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
@@ -58,8 +59,8 @@ class ProfileViewModel extends ChangeNotifier {
     setUserDetails(profile.user);
   }
   
-  void setField(String field) {
-    if (profile.user.field != field) {
+  void setField(Field field) {
+    if (profile.user.field.id != field.id) {
       profile.user.field = field;
       profile.user.subfields = [];
       setUserDetails(profile.user);
@@ -68,20 +69,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Field getSelectedField() {
-    Field selectedField;
-    String selectedFieldName;
-    final List<Field> fields = profile.fields;
-    if (isNotEmpty(profile.user.field)) {
-      selectedFieldName = profile.user.field;
-    } else {
-      selectedFieldName = fields[0].name;
-    }
-    for (final Field field in fields) {
-      if (field.name == selectedFieldName) {
-        selectedField = field;
-        break;
-      }
-    }
+    Field selectedField = profile.fields.firstWhere((field) => field.id == profile.user.field.id);
     return selectedField;
   }   
 
@@ -112,8 +100,8 @@ class ProfileViewModel extends ChangeNotifier {
 
   int _getSelectedFieldIndex() {
     final List<Field> fields = profile.fields;
-    final String selectedField = profile.user.field;
-    return fields.indexWhere((Field field) => field.name == selectedField);
+    final Field selectedField = profile.user.field;
+    return fields.indexWhere((Field field) => field.id == selectedField.id);
   }
 
   bool _containsSubfield(List<Subfield> subfields, Subfield subfield) {
@@ -177,7 +165,7 @@ class ProfileViewModel extends ChangeNotifier {
         hintsNumber = subfield.skills.length;
       }
       for (int i = 0; i < hintsNumber; i++) {
-        hint += subfield.skills[i] + ', ';
+        hint += subfield.skills[i].name + ', ';
       }
       hint += 'etc.)';
       hint = 'profile.add_skills'.tr(args: [hint]);
@@ -188,19 +176,19 @@ class ProfileViewModel extends ChangeNotifier {
   List<String> getSkillSuggestions(String query, int index) {
     List<String> matches = [];
     Subfield subfield = getSelectedSubfield(index);
-    List<String> subfieldSkills = subfield.skills;
-    List<String> userSkills = profile.user.subfields[index]?.skills;
+    List<Skill> subfieldSkills = subfield.skills;
+    List<Skill> userSkills = profile.user.subfields[index]?.skills;
     if (userSkills != null) {
-      for (final String skill in subfieldSkills) {
+      for (final Skill skill in subfieldSkills) {
         bool shouldAdd = true;
-        for (final String userSkill in userSkills) {
-          if (skill == userSkill) {
+        for (final Skill userSkill in userSkills) {
+          if (skill.id == userSkill.id) {
             shouldAdd = false;
             break;
           }
         }
         if (shouldAdd) {
-          matches.add(skill);
+          matches.add(skill.name);
         }
       }
       matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
@@ -209,7 +197,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   bool addSkill(String skill, int index) {
-    String skillToAdd = _setSkillToAdd(skill, index);
+    Skill skillToAdd = _setSkillToAdd(skill, index);
     if (skillToAdd != null) {
       profile.user.subfields[index].skills.add(skillToAdd);
       setUserDetails(profile.user);
@@ -220,17 +208,17 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  String _setSkillToAdd(String skill, int index) {
-    String skillToAdd;
-    List<String> skills = profile.user.subfields[index].skills;
+  Skill _setSkillToAdd(String skill, int index) {
+    Skill skillToAdd;
+    List<Skill> skills = profile.user.subfields[index].skills;
     for (int i = 0; i < skills.length; i++) {
-      if (skill.toLowerCase() == skills[i].toLowerCase()) {
+      if (skill.toLowerCase() == skills[i].name.toLowerCase()) {
         return null;
       }
     }
     Subfield subfield = getSelectedSubfield(index);
     for (int i = 0; i < subfield.skills.length; i++) {
-      if (skill.toLowerCase() == subfield.skills[i].toLowerCase()) {
+      if (skill.toLowerCase() == subfield.skills[i].name.toLowerCase()) {
         skillToAdd = subfield.skills[i];
         break;
       }

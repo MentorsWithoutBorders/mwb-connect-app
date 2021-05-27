@@ -76,7 +76,7 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               const Name(),
               if (_profileProvider.profile.user.isMentor) const FieldDropdown(),
-              // if (_profileProvider.profile.user.isMentor) const Subfields()
+              if (_profileProvider.profile.user.isMentor) const Subfields()
             ],
           )
         ),
@@ -177,7 +177,7 @@ class _ProfileViewState extends State<ProfileView> {
     }    
   }
 
-   Future<Profile> _getProfile() async {
+  Future<Profile> _getProfile() async {
     final User user = await _profileProvider.getUserDetails();
     final List<Field> fields = await _profileProvider.getFields();
     return Profile(user: user, fields: fields);

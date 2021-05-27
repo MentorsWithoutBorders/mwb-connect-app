@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/typeahead_field_widget.dart';
 
@@ -24,22 +25,22 @@ class _SkillsState extends State<Skills> {
 
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
-    final List<String> skills = _profileProvider.profile.user.subfields[widget.index].skills;
+    final List<Skill> skills = _profileProvider.profile.user.subfields[widget.index].skills;
     if (skills != null && skills.isNotEmpty) {
       for (int i = 0; i < skills.length; i++) {
-        final Widget skill = Padding(
+        final Widget skillWidget = Padding(
           padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
           child: Tag(
             key: Key(AppKeys.skillTag + i.toString()),
             color: AppColors.TAN_HIDE,
-            text: skills[i],
+            text: skills[i].name,
             textKey: Key(AppKeys.skillText + i.toString()),
             deleteImg: 'assets/images/delete_circle_icon.png',
             deleteKey: Key(AppKeys.deleteSkillBtn + i.toString()),
             tagDeletedCallback: _deleteSkill
           ),
         );
-        skillWidgets.add(skill);
+        skillWidgets.add(skillWidget);
       }
     }
     final double inputBorderRadiusTop = skillWidgets.isNotEmpty ? 0.0 : 10.0;

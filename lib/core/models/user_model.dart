@@ -1,5 +1,7 @@
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/models/timezone_model.dart';
@@ -11,7 +13,7 @@ class User {
   String password;
   bool isMentor;
   String organization;
-  String field;
+  Field field;
   List<Subfield> subfields;
   TimeZoneModel timezone;
   List<Availability> availabilities;
@@ -27,9 +29,9 @@ class User {
     name = json['name'].toString() ?? '';
     email = json['email'].toString() ?? '';
     password = json['password'].toString() ?? '';
-    isMentor = json['is_mentor'] ?? false;
+    isMentor = json['isMentor'] ?? false;
     organization = json['organization'].toString() ?? '';
-    field = json['field'].toString() ?? '';
+    field = _fieldFromJson(json['field']) ?? null;;
     subfields = subfieldsFromJson(json['subfields']?.cast<Map<String,dynamic>>()) ?? [];
     timezone = _timezoneFromJson(json['timezone']) ?? null;
     availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
@@ -39,11 +41,19 @@ class User {
     registeredOn = json['registeredOn']?.toDate();
   }
 
+  Field _fieldFromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    Field field = Field(id: json['id'], name: json['name']);
+    return field;
+  }  
+
   List<Subfield> subfieldsFromJson(List<Map<String, dynamic>> json) {
     final List<Subfield> subfieldsList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
-        subfieldsList.add(Subfield(name: json[i]['name'], skills: json[i]['skills']?.cast<String>()));
+        subfieldsList.add(Subfield.fromJson(json[i]));
       }
     }
     return subfieldsList;
@@ -83,7 +93,7 @@ class User {
       'password': password,
       'isMentor': isMentor,
       'organization': organization,
-      'field': field,
+      'field': _fieldToJson(field),
       'subfields': _subfieldsToJson(subfields),
       'timezone': _timezoneToJson(timezone),
       'availabilities': _availabilityToJson(availabilities),
@@ -97,15 +107,27 @@ class User {
     return userMap;
   }
 
+  Map<String, dynamic> _fieldToJson(Field field) {
+    if (field != null) {
+      return {
+        'minInterval': field.id,
+        'minIntervalUnit': field.name
+      };
+    } else {
+      return null;
+    }
+  }   
+
   List<Map<String,dynamic>> _subfieldsToJson(List<Subfield> subfields) {
     List<Map<String,dynamic>> subfieldsList = [];
     if (subfields != null) {
       for (int i = 0; i < subfields.length; i++) {
-        List<String> skills = subfields[i].skills;
+        List<Skill> skills = subfields[i].skills;
         if (skills == null) {
           skills = [];
         }
         subfieldsList.add({
+          'id': subfields[i].id, 
           'name': subfields[i].name, 
           'skills': skills
         });      

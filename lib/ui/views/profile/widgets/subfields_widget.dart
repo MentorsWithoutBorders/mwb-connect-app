@@ -60,8 +60,8 @@ class _SubfieldsState extends State<Subfields> {
 
   void _unfocus() {
     _profileProvider.shouldUnfocus = true;
-  }   
-
+  }
+  
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);

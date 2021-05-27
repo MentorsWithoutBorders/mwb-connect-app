@@ -1,12 +1,14 @@
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 class Field {
+  String id;
   String name;
   List<Subfield> subfields;  
 
-  Field({this.name, this.subfields});
+  Field({this.id, this.name, this.subfields});
 
   Field.fromJson(Map<String, dynamic> json) {
+    id = json['id'] ?? '';
     name = json['name'] ?? '';
     subfields = _subfieldsFromJson(json['subfields']?.cast<Map<String,dynamic>>()) ?? [];
   }
@@ -15,7 +17,7 @@ class Field {
     final List<Subfield> subfieldsList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
-        subfieldsList.add(Subfield(name: json[i]['name'], skills: json[i]['skills']?.cast<String>()));
+        subfieldsList.add(Subfield.fromJson(json[i]));
       }
     }
     return subfieldsList;
@@ -23,6 +25,7 @@ class Field {
 
   Map<String, Object> toJson() {
     return {
+      'id': id,
       'name': name,
       'subfields': _subfieldsToJson(subfields)
     };
@@ -33,6 +36,7 @@ class Field {
     if (subfields != null) {
       for (int i = 0; i < subfields.length; i++) {
         subfieldsList.add({
+          'id': subfields[i].id, 
           'name': subfields[i].name, 
           'skills': subfields[i].skills
         });      

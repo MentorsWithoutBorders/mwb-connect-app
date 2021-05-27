@@ -46,7 +46,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
 
   void _changeField(Field field) {
     _setSelectedField(field);
-    _profileProvider.setField(field.name);
+    _profileProvider.setField(field);
   }
   
   void _setSelectedField(Field field) {
