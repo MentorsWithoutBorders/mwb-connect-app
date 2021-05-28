@@ -62,22 +62,21 @@ class ProfileViewModel extends ChangeNotifier {
   void setField(Field field) {
     if (profile.user.field.id != field.id) {
       profile.user.field = field;
-      profile.user.subfields = [];
+      profile.user.field.subfields = [];
       setUserDetails(profile.user);
       notifyListeners();
     }
   }
 
   Field getSelectedField() {
-    Field selectedField = profile.fields.firstWhere((field) => field.id == profile.user.field.id);
-    return selectedField;
-  }   
+    return profile.fields.firstWhere((field) => field.id == profile.user.field.id);
+  }
 
   void setSubfield(Subfield subfield, int index) {
-    if (index < profile.user.subfields.length) {
-      profile.user.subfields[index] = subfield;
+    if (index < profile.user.field.subfields.length) {
+      profile.user.field.subfields[index] = subfield;
     } else {
-      profile.user.subfields.add(subfield);
+      profile.user.field.subfields.add(subfield);
     }
     setUserDetails(profile.user);
     notifyListeners();
@@ -85,7 +84,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   List<Subfield> getSubfields(int index) {
     final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<Subfield> userSubfields = profile.user.subfields;
+    final List<Subfield> userSubfields = profile.user.field.subfields;
     final List<Subfield> filteredSubfields = [];
     if (subfields != null) {
       for (final Subfield subfield in subfields) {
@@ -118,7 +117,7 @@ class ProfileViewModel extends ChangeNotifier {
   Subfield getSelectedSubfield(int index) {
     Subfield selectedSubfield;
     final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<Subfield> userSubfields = profile.user.subfields;
+    final List<Subfield> userSubfields = profile.user.field.subfields;
     for (final Subfield subfield in subfields) {
       if (subfield.name == userSubfields[index].name) {
         selectedSubfield = subfield;
@@ -130,10 +129,10 @@ class ProfileViewModel extends ChangeNotifier {
 
   void addSubfield() {
     final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<Subfield> userSubfields = profile.user.subfields;
+    final List<Subfield> userSubfields = profile.user.field.subfields;
     for (final Subfield subfield in subfields) {
       if (!_containsSubfield(userSubfields, subfield)) {
-        setSubfield(Subfield(name: subfield.name), userSubfields.length+1);
+        setSubfield(Subfield(id: subfield.id, name: subfield.name), userSubfields.length+1);
         break;
       }
     }
@@ -141,7 +140,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
   
   void deleteSubfield(int index) {
-    profile.user.subfields.removeAt(index);
+    profile.user.field.subfields.removeAt(index);
     setUserDetails(profile.user);
     notifyListeners();
   }
@@ -177,7 +176,7 @@ class ProfileViewModel extends ChangeNotifier {
     List<String> matches = [];
     Subfield subfield = getSelectedSubfield(index);
     List<Skill> subfieldSkills = subfield.skills;
-    List<Skill> userSkills = profile.user.subfields[index]?.skills;
+    List<Skill> userSkills = profile.user.field.subfields[index]?.skills;
     if (userSkills != null) {
       for (final Skill skill in subfieldSkills) {
         bool shouldAdd = true;
@@ -199,7 +198,7 @@ class ProfileViewModel extends ChangeNotifier {
   bool addSkill(String skill, int index) {
     Skill skillToAdd = _setSkillToAdd(skill, index);
     if (skillToAdd != null) {
-      profile.user.subfields[index].skills.add(skillToAdd);
+      profile.user.field.subfields[index].skills.add(skillToAdd);
       setUserDetails(profile.user);
       notifyListeners();
       return true;
@@ -210,7 +209,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   Skill _setSkillToAdd(String skill, int index) {
     Skill skillToAdd;
-    List<Skill> skills = profile.user.subfields[index].skills;
+    List<Skill> skills = profile.user.field.subfields[index].skills;
     for (int i = 0; i < skills.length; i++) {
       if (skill.toLowerCase() == skills[i].name.toLowerCase()) {
         return null;
@@ -226,8 +225,9 @@ class ProfileViewModel extends ChangeNotifier {
     return skillToAdd;
   }
 
-  void deleteSkill(String skill, int index) {
-    profile.user.subfields[index].skills.remove(skill);
+  void deleteSkill(String skillText, int index) {
+    Skill skill = profile.user.field.subfields[index].skills.firstWhere((skill) => skill.name == skillText);
+    profile.user.field.subfields[index].skills.remove(skill);
     setUserDetails(profile.user);
     notifyListeners();
   }  

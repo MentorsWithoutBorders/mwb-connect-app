@@ -35,11 +35,6 @@ class UserService {
       // }
     }
   }
-  
-  Future<void> setUserDetails(User user) async {
-    // await _api.setDocument(path: 'profile', isForUser: true, data: user.toJson(), id: 'details');
-    // setUserStorage(user: user);
-  }
 
   Future<User> getUserDetails() async {
     String userId = _storageService.userId;
@@ -50,12 +45,10 @@ class UserService {
       user = User.fromJson(json);
     }
     return user;
-
-    // final DocumentSnapshot doc = await _api.getDocumentById(path: 'profile', isForUser: true, id: 'details');
-    // if (doc.exists) {
-    //   return User.fromMap(doc.data(), _storageService.userId);
-    // } else {
-    //   return User();
-    // }
   }
+
+  Future<void> setUserDetails(User user) async {
+    String userId = user.id;
+    await _api.putHTTP(url: '/users/$userId', data: user.toJson());
+  }  
 }

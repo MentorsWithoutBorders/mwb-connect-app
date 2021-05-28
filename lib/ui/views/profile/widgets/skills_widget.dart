@@ -25,7 +25,7 @@ class _SkillsState extends State<Skills> {
 
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
-    final List<Skill> skills = _profileProvider.profile.user.subfields[widget.index].skills;
+    final List<Skill> skills = _profileProvider.profile.user.field.subfields[widget.index].skills;
     if (skills != null && skills.isNotEmpty) {
       for (int i = 0; i < skills.length; i++) {
         final Widget skillWidget = Padding(
