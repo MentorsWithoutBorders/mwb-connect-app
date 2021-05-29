@@ -70,8 +70,9 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
     );
   }
 
-  void _deleteSubfield() {
+  void _deleteSubfield() async {
     _unfocus();
+    await Future<void>.delayed(const Duration(milliseconds: 20));
     _profileProvider.deleteSubfield(widget.index);
   }
 
