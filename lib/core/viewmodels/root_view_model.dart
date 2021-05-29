@@ -28,8 +28,14 @@ class RootViewModel extends ChangeNotifier {
   NotificationAppLaunchDetails notificationAppLaunchDetails;
   dynamic _location; 
 
-  void setUserStorage(User user) {
-    _userService.setUserStorage(user: user);
+  Future<bool> getIsMentor() async {
+    if (_storageService.userId != null && _storageService.isMentor == null) {
+      User user = await _userService.getUserDetails();
+      _userService.setUserStorage(user: user);
+      return user.isMentor;
+    } else {
+      return _storageService.isMentor;
+    }
   }
   
   void setPreferences() {
@@ -160,10 +166,6 @@ class RootViewModel extends ChangeNotifier {
   String getUserId() {
     return _storageService.userId;
   }  
-  
-  bool isMentor() {
-    return _storageService.isMentor;
-  }
 
   void sendAnalyticsEvent() {
     _analyticsService.sendEvent(

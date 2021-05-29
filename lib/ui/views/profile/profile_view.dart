@@ -27,6 +27,9 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel _profileProvider;
   final ScrollController _scrollController = ScrollController();
+  User user;
+  List<Field> fields;  
+  bool profileRetrieved = false;
 
   @override
   void dispose() {
@@ -178,8 +181,11 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<Profile> _getProfile() async {
-    final User user = await _profileProvider.getUserDetails();
-    final List<Field> fields = await _profileProvider.getFields();
+    if (!profileRetrieved) {
+      user = await _profileProvider.getUserDetails();
+      fields = await _profileProvider.getFields();
+      profileRetrieved = true;
+    }
     return Profile(user: user, fields: fields);
   } 
 

@@ -88,7 +88,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   void _changeSubfield(Subfield subfield) {
     _setSelectedSubfield(subfield);
-    _profileProvider.setSubfield(Subfield(name: subfield.name), widget.index);
+    _profileProvider.setSubfield(Subfield(id: subfield.id, name: subfield.name), widget.index);
   }
   
   void _setSelectedSubfield(Subfield subfield) {

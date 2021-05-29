@@ -10,6 +10,7 @@ import 'package:mwb_connect_app/core/models/error_model.dart';
 class ApiService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final String baseUrl = 'http://104.131.124.125:3000/api/v1';
+  bool refreshingToken = false;
   
   Map<String, String> getHeaders() {
     String accessToken = _storageService.accessToken;
@@ -33,7 +34,9 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      await _refreshToken();
+      if (!refreshingToken) {
+        await _refreshToken();
+      }
       return getHTTP(url: url);
     }
   }
@@ -49,7 +52,9 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      await _refreshToken();
+      if (!refreshingToken) {
+        await _refreshToken();
+      }
       return await postHTTP(url: url, data: data);
     }   
   }
@@ -65,7 +70,9 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      await _refreshToken();
+      if (!refreshingToken) {
+        await _refreshToken();
+      }
       return await putHTTP(url: url, data: data);
     }  
   }
@@ -81,7 +88,9 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      await _refreshToken();
+      if (!refreshingToken) {
+        await _refreshToken();
+      }
       return await deleteHTTP(url: url, data: data);
     }
   }
@@ -95,10 +104,12 @@ class ApiService {
   Future<void> _refreshToken() async {
     String userId = _storageService.userId;
     String refreshToken = _storageService.refreshToken;
+    refreshingToken = true;
     final response = await http.get(
       Uri.parse(baseUrl + '/access_token?userId=$userId&refreshToken=$refreshToken'),
       headers: getHeaders()
     );
+    refreshingToken = false;
     var json = jsonDecode(response.body);    
     Tokens tokens = Tokens.fromJson(json);
     _storageService.accessToken = tokens.accessToken;
@@ -115,7 +126,7 @@ class ApiService {
     _storageService.userId = null;
     _storageService.userEmail = null;
     _storageService.userName = '';
-    _storageService.isMentor = false;
+    _storageService.isMentor = null;
     _storageService.quizNumber = 1;
     _storageService.notificationsEnabled = AppConstants.notificationsEnabled;
     _storageService.notificationsTime = AppConstants.notificationsTime;

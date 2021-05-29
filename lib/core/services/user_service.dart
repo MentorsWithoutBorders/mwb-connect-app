@@ -22,8 +22,6 @@ class UserService {
       }      
       if (user.isMentor != null) {
         _storageService.isMentor = user.isMentor;
-      } else {
-        _storageService.isMentor = false;
       }
       // // Get notifications settings
       // final NotificationSettings notificationSettings = await _notificationsService.getNotificationSettings();
@@ -49,6 +47,6 @@ class UserService {
 
   Future<void> setUserDetails(User user) async {
     String userId = user.id;
-    await _api.putHTTP(url: '/users/$userId', data: user.toJson());
+    _api.putHTTP(url: '/users/$userId', data: user.toJson());
   }  
 }

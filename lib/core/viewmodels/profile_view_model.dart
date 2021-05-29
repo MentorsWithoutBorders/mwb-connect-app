@@ -61,8 +61,7 @@ class ProfileViewModel extends ChangeNotifier {
   
   void setField(Field field) {
     if (profile.user.field.id != field.id) {
-      profile.user.field = field;
-      profile.user.field.subfields = [];
+      profile.user.field = Field(id: field.id, name: field.name, subfields: []);
       setUserDetails(profile.user);
       notifyListeners();
     }
@@ -73,6 +72,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void setSubfield(Subfield subfield, int index) {
+    subfield.skills = [];
     if (index < profile.user.field.subfields.length) {
       profile.user.field.subfields[index] = subfield;
     } else {
