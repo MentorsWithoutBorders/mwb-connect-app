@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -24,6 +25,8 @@ class User {
   User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timezone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromJson(Map<String, dynamic> json) {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss'); 
+
     id = json['id'].toString() ?? '';
     name = json['name'].toString() ?? '';
     email = json['email'].toString() ?? '';
@@ -34,7 +37,7 @@ class User {
     timezone = _timezoneFromJson(json['timezone']) ?? null;
     availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = json['isAvailable'] ?? true;
-    availableFrom = json['availableFrom']?.toDate();
+    availableFrom = dateFormat.parse(json['availableFrom']);
     lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']) ?? null;
     registeredOn = json['registeredOn']?.toDate();
   }
@@ -74,6 +77,8 @@ class User {
   }
 
   Map<String, Object> toJson() {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss'); 
+
     Map<String, Object> userMap = {
       'id': id,
       'name': name,
@@ -85,7 +90,7 @@ class User {
       'timezone': _timezoneToJson(timezone),
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
-      'availableFrom': availableFrom,
+      'availableFrom': dateFormat.format(availableFrom),
       'registeredOn': registeredOn
     };
     if (_lessonsAvailabilityToJson(lessonsAvailability) != null) {

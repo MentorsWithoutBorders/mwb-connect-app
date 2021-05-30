@@ -47,7 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
         padding: const EdgeInsets.only(top: 0.0),
         children: [
           _showPrimaryCard(),
-          // _showAvailabilityCard(),
+          _showAvailabilityCard(),
           // if (_profileProvider.profile.user.isMentor) _showLessonsCard()
         ]
       )
