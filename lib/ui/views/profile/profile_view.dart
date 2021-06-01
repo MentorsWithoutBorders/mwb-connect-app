@@ -48,7 +48,7 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           _showPrimaryCard(),
           _showAvailabilityCard(),
-          // if (_profileProvider.profile.user.isMentor) _showLessonsCard()
+          if (_profileProvider.profile.user.isMentor) _showLessonsCard()
         ]
       )
     );

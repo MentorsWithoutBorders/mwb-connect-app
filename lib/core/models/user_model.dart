@@ -90,7 +90,7 @@ class User {
       'timezone': _timezoneToJson(timezone),
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
-      'availableFrom': dateFormat.format(availableFrom),
+      'availableFrom': availableFrom != null ? dateFormat.format(availableFrom) : null,
       'registeredOn': registeredOn
     };
     if (_lessonsAvailabilityToJson(lessonsAvailability) != null) {

@@ -147,8 +147,6 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
   void _updateGoal() {
     final Goal goal = _goalProvider.selectedGoal;
     goal.text = _goalText;
-    final DateTime now = DateTime.now();
-    goal.dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
     _goalProvider.updateGoal(goal, _goalProvider.selectedGoal.id);
   }
 

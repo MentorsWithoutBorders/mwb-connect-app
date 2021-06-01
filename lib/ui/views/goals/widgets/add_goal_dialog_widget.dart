@@ -162,13 +162,9 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
     setState(() {
       _isAddingGoal = true;
     });
-    final int index = _goalProvider.getCurrentIndex(_goalProvider.goals) + 1;
-    final DateTime now = DateTime.now();
-    final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
-    final Goal goal = Goal(text: _goalText, index: index, dateTime: dateTime);
+    final Goal goal = Goal(text: _goalText);
     final Goal addedGoal = await _goalProvider.addGoal(goal);
     _goalProvider.addGoalToList(addedGoal);
-    _goalProvider.sortGoalList();
     _goalProvider.setWasGoalAdded(true);
   }
 

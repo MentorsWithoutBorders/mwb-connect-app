@@ -1,22 +1,20 @@
+import 'package:mwb_connect_app/core/models/step_model.dart';
+
 class Goal {
   String id;
   String text;
-  int index;
-  DateTime dateTime;
+  List<StepModel> steps;
 
-  Goal({this.id, this.text, this.index, this.dateTime});
+  Goal({this.id, this.text});
 
-  Goal.fromMap(Map snapshot, String id) :
-    id = id,
-    text = snapshot['text'] ?? '',
-    index = snapshot['index'] ?? 0,
-    dateTime = snapshot['dateTime']?.toDate();
+  Goal.fromJson(Map<String, dynamic> json) :
+    id = json['id'] ?? '',
+    text = json['text'] ?? '';
 
   Map<String, Object> toJson() {
     return {
-      'text': text,
-      'index': index,
-      'dateTime': dateTime
+      'id': id,
+      'text': text
     };
   }
 }

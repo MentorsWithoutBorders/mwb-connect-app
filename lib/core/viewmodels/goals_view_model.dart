@@ -15,13 +15,9 @@ class GoalsViewModel extends ChangeNotifier {
   bool isTutorialPreviewsAnimationCompleted = false;
   bool shouldShowTutorialChevrons = false;
 
-  Future<List<Goal>> fetchGoals() async {
-    goals = await _goalsService.fetchGoals();
+  Future<List<Goal>> getGoals() async {
+    goals = await _goalsService.getGoals();
     return goals;
-  }
-
-  Stream<QuerySnapshot> fetchGoalsAsStream() {
-    return _goalsService.fetchGoalsAsStream();
   }
 
   Future<Goal> getGoalById(String id) async {
@@ -53,36 +49,13 @@ class GoalsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  int getCurrentIndex(List<Goal> goals) {
-    int index = -1;
-    for (final Goal goal in goals) {
-      index = max(index, goal.index);
-    }
-    return index;
-  }  
-
   void addGoalToList(Goal goal) {
     goals.add(goal);
-    notifyListeners();
-  }
-  
-  void sortGoalList() {
-    goals.sort((a, b) => a.index.compareTo(b.index));
     notifyListeners();
   }
 
   void setWasGoalAdded(bool wasAdded) {
     wasGoalAdded = wasAdded;
-  }
-
-  void updateIndexesAfterDeleteGoal(String goalId, List<Goal> goals, int index) {
-    for (int i = 0; i < goals.length; i++) {
-      if (goals[i].index > index) {
-        final Goal modifiedGoal = goals[i];
-        modifiedGoal.index--;
-        updateGoal(modifiedGoal, modifiedGoal.id);
-      }
-    }    
   }
 
   void setIsTutorialPreviewsAnimationCompleted(bool isCompleted) {

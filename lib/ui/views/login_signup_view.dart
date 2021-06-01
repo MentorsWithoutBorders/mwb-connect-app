@@ -522,13 +522,6 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     return false;
   }
 
-  void _addGoal(String goalText) {
-    final DateTime now = DateTime.now();
-    final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);    
-    final Goal goal = Goal(text: goalText, index: 0, dateTime: dateTime);
-    _goalsService.addGoal(goal);
-  }
-
   void _identifyUser() {
     final String userId = _storageService.userId;
     final String name = _storageService.userName;

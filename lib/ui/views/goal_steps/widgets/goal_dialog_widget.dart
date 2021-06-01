@@ -21,7 +21,6 @@ class _GoalDialogState extends State<GoalDialog> {
   GoalsViewModel _goalProvider;
   StepsViewModel _stepProvider;
 
-
   Widget _showGoalDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
@@ -180,7 +179,6 @@ class _GoalDialogState extends State<GoalDialog> {
 
   void _deleteGoal() {
     _goalProvider.deleteGoal(_goalProvider.selectedGoal.id);
-    _goalProvider.updateIndexesAfterDeleteGoal(_goalProvider.selectedGoal.id, _goalProvider.goals, _goalProvider.selectedGoal.index);
     Navigator.pop(widget.context);
     Navigator.pop(widget.context);
   }

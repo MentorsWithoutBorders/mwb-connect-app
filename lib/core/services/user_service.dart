@@ -38,7 +38,7 @@ class UserService {
     String userId = _storageService.userId;
     http.Response response = await _api.getHTTP(url: '/users/$userId');
     User user;
-    if (response != null) {
+    if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
       user = User.fromJson(json);
     }

@@ -176,7 +176,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
 
   void _getGoals() {
-    _goalProvider.fetchGoals().then((List<Goal> goals) {
+    _goalProvider.getGoals().then((List<Goal> goals) {
       setState(() {
         _isLoaded = true;
       });

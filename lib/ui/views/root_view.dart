@@ -151,6 +151,7 @@ class _RootViewState extends State<RootView> {
             if (snapshot.hasData) {
               bool isMentor = snapshot.data;
               if (isMentor) {
+                // return _showGoalsView();
                 return _showLessonRequestView();
               } else {
                 return _showConnectWithMentorView();
