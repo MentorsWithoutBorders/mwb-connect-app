@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 
 class AddStepDialog extends StatefulWidget {
   const AddStepDialog({Key key, this.steps})
@@ -19,8 +19,8 @@ class AddStepDialog extends StatefulWidget {
 
 class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
-  GoalsViewModel _goalProvider;
-  StepsViewModel _stepProvider;
+  GoalsViewModel _goalsProvider;
+  GoalStepsViewModel _goalStepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
@@ -148,19 +148,19 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   }
   
   void _addStep() {
-    final int index = _stepProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
+    final int index = _goalStepsProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
     final DateTime now = DateTime.now();
     final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
     final StepModel step = StepModel(text: _stepText, level: 0, index: index, dateTime: dateTime);
-    _stepProvider.setAddedStepIndex(widget.steps, step);
-    _stepProvider.addStep(goalId: _goalProvider.selectedGoal.id, data: step);
+    _goalStepsProvider.setAddedStepIndex(widget.steps, step);
+    _goalStepsProvider.addStep(_goalsProvider.selectedGoal.id, step);
   }
 
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
-    _goalProvider = Provider.of<GoalsViewModel>(context);
-    _stepProvider = Provider.of<StepsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
 
     return _showAddStepDialog();
   }

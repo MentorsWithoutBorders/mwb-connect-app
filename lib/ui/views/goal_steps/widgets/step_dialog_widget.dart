@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/update_step_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/add_sub_step_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
@@ -19,8 +19,8 @@ class StepDialog extends StatefulWidget {
 }
 
 class _StepDialogState extends State<StepDialog> {
-  GoalsViewModel _goalProvider;
-  StepsViewModel _stepProvider;
+  GoalsViewModel _goalsProvider;
+  GoalStepsViewModel _goalStepsProvider;
   
   Widget _showStepDialog() {
     return Container(
@@ -74,7 +74,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.update_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_stepProvider.selectedStep.level <= 1) SizedBox(
+          if (_goalStepsProvider.selectedStep.level <= 1) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -96,7 +96,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.add_sub_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_stepProvider.selectedStep.index > 0) SizedBox(
+          if (_goalStepsProvider.selectedStep.index > 0) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -112,7 +112,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.move_step_up'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_stepProvider.selectedStep.index < _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.parent)) SizedBox(
+          if (_goalStepsProvider.selectedStep.index < _goalStepsProvider.getCurrentIndex(steps: _goalStepsProvider.steps, parentId: _goalStepsProvider.selectedStep.parent)) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -171,15 +171,15 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _moveStepUp() {
-    _stepProvider.moveStepUp(_goalProvider.selectedGoal.id, _stepProvider.steps, _stepProvider.selectedStep);
+    _goalStepsProvider.moveStepUp(_goalsProvider.selectedGoal.id, _goalStepsProvider.steps, _goalStepsProvider.selectedStep);
   }
 
   void _moveStepDown() {
-    _stepProvider.moveStepDown(_goalProvider.selectedGoal.id, _stepProvider.steps, _stepProvider.selectedStep);
+    _goalStepsProvider.moveStepDown(_goalsProvider.selectedGoal.id, _goalStepsProvider.steps, _goalStepsProvider.selectedStep);
   }  
   
   Widget _showDeleteStepDialog() {
-    final List<String> subSteps = _stepProvider.getSubSteps(_stepProvider.selectedStep.id);
+    final List<String> subSteps = _goalStepsProvider.getSubSteps(_goalStepsProvider.selectedStep.id);
     return Container(
       width: MediaQuery.of(widget.context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -200,7 +200,7 @@ class _StepDialogState extends State<StepDialog> {
           Padding(
             padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
             child: Text(
-              _stepProvider.selectedStep.text,
+              _goalStepsProvider.selectedStep.text,
               style: const TextStyle(
                 fontSize: 14,
               )
@@ -242,11 +242,11 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _deleteStep(List<String> subSteps) {
-    _stepProvider.deleteStep(goalId: _goalProvider.selectedGoal.id, id: _stepProvider.selectedStep.id);
-    _stepProvider.updateIndexesAfterDeleteStep(_goalProvider.selectedGoal.id, _stepProvider.steps, _stepProvider.selectedStep);
+    _goalStepsProvider.deleteStep(_goalsProvider.selectedGoal.id, _goalStepsProvider.selectedStep.id);
+    _goalStepsProvider.updateIndexesAfterDeleteStep(_goalsProvider.selectedGoal.id, _goalStepsProvider.steps, _goalStepsProvider.selectedStep);
     if (subSteps.isNotEmpty) {
       subSteps.forEach((String stepId) { 
-        _stepProvider.deleteStep(goalId: _goalProvider.selectedGoal.id, id: stepId);
+        _goalStepsProvider.deleteStep(_goalsProvider.selectedGoal.id, stepId);
       });
     }
     Navigator.pop(widget.context);    
@@ -254,8 +254,8 @@ class _StepDialogState extends State<StepDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _goalProvider = Provider.of<GoalsViewModel>(context);
-    _stepProvider = Provider.of<StepsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
 
     return _showStepDialog();
   }

@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
@@ -12,8 +10,6 @@ class GoalsViewModel extends ChangeNotifier {
   List<Goal> goals;
   Goal selectedGoal;
   bool wasGoalAdded = false;
-  bool isTutorialPreviewsAnimationCompleted = false;
-  bool shouldShowTutorialChevrons = false;
 
   Future<List<Goal>> getGoals() async {
     goals = await _goalsService.getGoals();
@@ -57,15 +53,4 @@ class GoalsViewModel extends ChangeNotifier {
   void setWasGoalAdded(bool wasAdded) {
     wasGoalAdded = wasAdded;
   }
-
-  void setIsTutorialPreviewsAnimationCompleted(bool isCompleted) {
-    isTutorialPreviewsAnimationCompleted = isCompleted;
-    notifyListeners();
-  }   
-
-  void setShouldShowTutorialChevrons(bool showChevrons) {
-    shouldShowTutorialChevrons = showChevrons;
-    notifyListeners();
-  }
-
 }

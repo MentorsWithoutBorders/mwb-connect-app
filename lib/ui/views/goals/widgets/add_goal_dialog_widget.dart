@@ -17,7 +17,7 @@ class AddGoalDialog extends StatefulWidget {
 
 class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
-  GoalsViewModel _goalProvider;
+  GoalsViewModel _goalsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _goalText;  
   bool _isAddingGoal = false;
@@ -163,15 +163,15 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
       _isAddingGoal = true;
     });
     final Goal goal = Goal(text: _goalText);
-    final Goal addedGoal = await _goalProvider.addGoal(goal);
-    _goalProvider.addGoalToList(addedGoal);
-    _goalProvider.setWasGoalAdded(true);
+    final Goal addedGoal = await _goalsProvider.addGoal(goal);
+    _goalsProvider.addGoalToList(addedGoal);
+    _goalsProvider.setWasGoalAdded(true);
   }
 
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
-    _goalProvider = Provider.of<GoalsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
 
     return _showAddGoalDialog();
   }

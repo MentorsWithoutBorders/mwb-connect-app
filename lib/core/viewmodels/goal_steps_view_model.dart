@@ -1,56 +1,39 @@
 import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/api_service_old.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
+import 'package:mwb_connect_app/core/services/steps_service.dart';
 
-class StepsViewModel extends ChangeNotifier {
-  final Api _api = locator<Api>();
-
+class GoalStepsViewModel extends ChangeNotifier {
+  final StepsService _stepsService = locator<StepsService>();  
   List<StepModel> steps;
   StepModel selectedStep;
   int previousStepIndex = -1;
+  bool isTutorialPreviewsAnimationCompleted = false;
+  bool shouldShowTutorialChevrons = false;  
 
-  Future<List<StepModel>> fetchSteps({String goalId}) async {
-    final QuerySnapshot result = await _api.getDataCollection(path: 'goals/' + goalId + '/steps', isForUser: true);
-    steps = result.docs
-        .map((QueryDocumentSnapshot doc) => StepModel.fromMap(doc.data(), doc.id))
-        .toList();
+  Future<List<StepModel>> getSteps(String goalId) async {
+    steps = await _stepsService.getSteps();
     return steps;
   }
 
-  Stream<QuerySnapshot> fetchStepsAsStream({String goalId}) {
-    final Stream<QuerySnapshot> result = _api.streamDataCollection(path: 'goals/' + goalId + '/steps', isForUser: true);
-    return result;
+  Future<StepModel> getStepById(String id) async {
+    return _stepsService.getStepById(id);
   }
 
-  Future<StepModel> getStepById({String goalId, String id}) async {
-    final DocumentSnapshot doc = await _api.getDocumentById(path: 'goals/' + goalId + '/steps', isForUser: true, id: id);
-    return StepModel.fromMap(doc.data(), doc.id) ;
-  }
-
-  Future<void> deleteStep({String goalId, String id}) async {
-    await _api.removeDocument(path: 'goals/' + goalId + '/steps', isForUser: true, id: id);
+  Future<void> deleteStep(String goalId, String id) async {
+    await _stepsService.deleteStep(id);
     return ;
   }
 
-  Future<void> updateStep({String goalId, StepModel data, String id}) async {
-    await _api.updateDocument(path: 'goals/' + goalId + '/steps', isForUser: true, data: data.toJson(), id: id);
+  Future<void> updateStep(String goalId, StepModel step, String id) async {
+    await _stepsService.updateStep(step, id);
     return ;
   }
 
-  Future<StepModel> addStep({String goalId, StepModel data}) async {
-    final DocumentReference doc = await _api.addDocument(path: 'goals/' + goalId + '/steps', isForUser: true, data: data.toJson());
-    final StepModel step = await doc.get().then((DocumentSnapshot datasnapshot) {
-      if (datasnapshot.exists) {
-        return StepModel(id: doc.id, text: datasnapshot.data()['text']);
-      } else {
-        return StepModel();
-      }
-    });
-    return step;
+  Future<StepModel> addStep(String goalId, StepModel step) async {  
+    return _stepsService.addStep(step);
   }
 
   void setSelectedStep(StepModel step) {
@@ -170,7 +153,7 @@ class StepsViewModel extends ChangeNotifier {
           steps[i].index > step.index) {
         final StepModel modifiedStep = steps[i];
         modifiedStep.index--;
-        updateStep(goalId: goalId, data: modifiedStep, id: modifiedStep.id);
+        updateStep(goalId, modifiedStep, modifiedStep.id);
       }
     }    
   }
@@ -182,8 +165,8 @@ class StepsViewModel extends ChangeNotifier {
         final StepModel previousStep = steps[i];
         previousStep.index++;
         step.index--;
-        updateStep(goalId: goalId, data: previousStep, id: previousStep.id);
-        updateStep(goalId: goalId, data: step, id: step.id);
+        updateStep(goalId, previousStep, previousStep.id);
+        updateStep(goalId, step, step.id);
         break;
       }
     }
@@ -196,10 +179,20 @@ class StepsViewModel extends ChangeNotifier {
         final StepModel nextStep = steps[i];
         nextStep.index--;
         step.index++;
-        updateStep(goalId: goalId, data: nextStep, id: nextStep.id);
-        updateStep(goalId: goalId, data: step, id: step.id);
+        updateStep(goalId, nextStep, nextStep.id);
+        updateStep(goalId, step, step.id);
         break;
       }
     }
   }
+
+  void setIsTutorialPreviewsAnimationCompleted(bool isCompleted) {
+    isTutorialPreviewsAnimationCompleted = isCompleted;
+    notifyListeners();
+  }   
+
+  void setShouldShowTutorialChevrons(bool showChevrons) {
+    shouldShowTutorialChevrons = showChevrons;
+    notifyListeners();
+  }  
 }

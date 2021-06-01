@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 
 class AddSubStepDialog extends StatefulWidget {
   const AddSubStepDialog({Key key, this.steps})
@@ -19,8 +19,8 @@ class AddSubStepDialog extends StatefulWidget {
 
 class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
-  GoalsViewModel _goalProvider;
-  StepsViewModel _stepProvider;
+  GoalsViewModel _goalsProvider;
+  GoalStepsViewModel _goalStepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
@@ -148,18 +148,18 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
   }
 
   void _addSubStep() {
-    final int level = _stepProvider.selectedStep.level + 1;
-    final int index = _stepProvider.getCurrentIndex(steps: _stepProvider.steps, parentId: _stepProvider.selectedStep.id) + 1;
-    final StepModel step = StepModel(text: _stepText, level: level, index: index, parent: _stepProvider.selectedStep.id);
-    _stepProvider.setAddedStepIndex(_stepProvider.steps, step);
-    _stepProvider.addStep(goalId: _goalProvider.selectedGoal.id, data: step);
+    final int level = _goalStepsProvider.selectedStep.level + 1;
+    final int index = _goalStepsProvider.getCurrentIndex(steps: _goalStepsProvider.steps, parentId: _goalStepsProvider.selectedStep.id) + 1;
+    final StepModel step = StepModel(text: _stepText, level: level, index: index, parent: _goalStepsProvider.selectedStep.id);
+    _goalStepsProvider.setAddedStepIndex(_goalStepsProvider.steps, step);
+    _goalStepsProvider.addStep(_goalsProvider.selectedGoal.id, step);
   }
 
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
-    _goalProvider = Provider.of<GoalsViewModel>(context);
-    _stepProvider = Provider.of<StepsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
 
     return _showAddSubStepDialog(context);
   }

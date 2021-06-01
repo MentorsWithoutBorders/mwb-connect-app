@@ -13,7 +13,7 @@ class EditableGoal extends StatefulWidget {
 }
 
 class _EditableGoalState extends State<EditableGoal> {
-  GoalsViewModel _goalProvider;
+  GoalsViewModel _goalsProvider;
   bool _isVisible = false;
 
   Future<void> _animateElements() async {
@@ -60,7 +60,7 @@ class _EditableGoalState extends State<EditableGoal> {
               fontWeight: FontWeight.bold
             ),
           child: Text(
-            _goalProvider.selectedGoal != null && _goalProvider.selectedGoal.text != null ? _goalProvider.selectedGoal.text : ''
+            _goalsProvider.selectedGoal != null && _goalsProvider.selectedGoal.text != null ? _goalsProvider.selectedGoal.text : ''
           )
         )
       )
@@ -69,7 +69,7 @@ class _EditableGoalState extends State<EditableGoal> {
 
   @override
   Widget build(BuildContext context) {
-    _goalProvider = Provider.of<GoalsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
 
     return _showEditableGoal(context);
   }

@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/step_card_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/add_step_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -21,8 +21,8 @@ class Steps extends StatefulWidget {
 }
 
 class _StepsState extends State<Steps> {
-  GoalsViewModel _goalProvider;  
-  StepsViewModel _stepProvider;  
+  GoalsViewModel _goalsProvider;  
+  GoalStepsViewModel _goalStepsProvider;  
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();
   List<StepModel> _steps = [];
@@ -52,37 +52,35 @@ class _StepsState extends State<Steps> {
       final Offset position = addStepBox.localToGlobal(Offset.zero); 
       final double screenHeight = MediaQuery.of(context).size.height;
       if (screenHeight - position.dy < 80) {
-        if (!_goalProvider.shouldShowTutorialChevrons && _goalProvider.isTutorialPreviewsAnimationCompleted) {
-          _goalProvider.setShouldShowTutorialChevrons(true);
+        if (!_goalStepsProvider.shouldShowTutorialChevrons && _goalStepsProvider.isTutorialPreviewsAnimationCompleted) {
+          _goalStepsProvider.setShouldShowTutorialChevrons(true);
         }
       } else {
-        if (_goalProvider.shouldShowTutorialChevrons && _goalProvider.isTutorialPreviewsAnimationCompleted) {
-          _goalProvider.setShouldShowTutorialChevrons(false);
+        if (_goalStepsProvider.shouldShowTutorialChevrons && _goalStepsProvider.isTutorialPreviewsAnimationCompleted) {
+          _goalStepsProvider.setShouldShowTutorialChevrons(false);
         }
       }
     }
   }
 
   void _setSteps() {
-    _stepProvider.steps = _steps;
+    _goalStepsProvider.steps = _steps;
   }  
   
   void _scrollToStep() {
-    if (![-1,0].contains(_stepProvider.previousStepIndex)) {
-      _scrollController.scrollToIndex(_stepProvider.previousStepIndex, preferPosition: AutoScrollPosition.begin);
-      _stepProvider.previousStepIndex = -1;
+    if (![-1,0].contains(_goalStepsProvider.previousStepIndex)) {
+      _scrollController.scrollToIndex(_goalStepsProvider.previousStepIndex, preferPosition: AutoScrollPosition.begin);
+      _goalStepsProvider.previousStepIndex = -1;
     }
   }
   
   Widget _showSteps() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _stepProvider.fetchStepsAsStream(goalId: _goalProvider.selectedGoal.id),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    return FutureBuilder<List<StepModel>>(
+      future: _goalStepsProvider.getSteps(_goalsProvider.selectedGoal.id),
+      builder: (BuildContext context, AsyncSnapshot<List<StepModel>> snapshot) {
         if (snapshot.hasData) {
-          _steps = snapshot.data.docs
-              .map((QueryDocumentSnapshot doc) => StepModel.fromMap(doc.data(), doc.id))
-              .toList();
-          _steps = _stepProvider.sortSteps(_steps);               
+          _steps = snapshot.data;
+          _steps = _goalStepsProvider.sortSteps(_steps);               
           WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
           return Expanded(
             child: Column(
@@ -147,8 +145,8 @@ class _StepsState extends State<Steps> {
 
   @override
   Widget build(BuildContext context) {
-    _goalProvider = Provider.of<GoalsViewModel>(context);
-    _stepProvider = Provider.of<StepsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
 
     return _showSteps();
   }

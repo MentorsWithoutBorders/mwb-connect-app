@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/step_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
@@ -17,7 +17,7 @@ class StepCard extends StatefulWidget {
 }
 
 class _StepCardState extends State<StepCard> {
-  StepsViewModel _stepProvider;
+  GoalStepsViewModel _goalStepsProvider;
   
   Widget _showStepCard(BuildContext context) {
     return Padding(
@@ -76,11 +76,11 @@ class _StepCardState extends State<StepCard> {
 
   @override
   Widget build(BuildContext context) {
-    _stepProvider = Provider.of<StepsViewModel>(context);
+    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
 
     return GestureDetector(
       onTap: () {
-        _stepProvider.setSelectedStep(widget.step);
+        _goalStepsProvider.setSelectedStep(widget.step);
         showDialog(
           context: context,
           builder: (_) => AnimatedDialog(

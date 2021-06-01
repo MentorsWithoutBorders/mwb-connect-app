@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 
 class UpdateStepDialog extends StatefulWidget {
   const UpdateStepDialog({Key key})
@@ -17,8 +17,8 @@ class UpdateStepDialog extends StatefulWidget {
 
 class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
-  GoalsViewModel _goalProvider;
-  StepsViewModel _stepProvider;
+  GoalsViewModel _goalsProvider;
+  GoalStepsViewModel _goalStepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
@@ -88,7 +88,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
               color: Colors.orange
             )
           ),
-          initialValue: _stepProvider.selectedStep.text,
+          initialValue: _goalStepsProvider.selectedStep.text,
           validator: (value) {
             if (value.isEmpty) {
               return 'step_dialog.update_step_error'.tr();
@@ -147,18 +147,18 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   }
   
   void _updateStep() {
-    final StepModel step = _stepProvider.selectedStep;
+    final StepModel step = _goalStepsProvider.selectedStep;
     step.text = _stepText;
     final DateTime now = DateTime.now();
     step.dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
-    _stepProvider.updateStep(goalId: _goalProvider.selectedGoal.id, data: step, id: _stepProvider.selectedStep.id);
+    _goalStepsProvider.updateStep(_goalsProvider.selectedGoal.id, step, _goalStepsProvider.selectedStep.id);
   }
 
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
-    _goalProvider = Provider.of<GoalsViewModel>(context);
-    _stepProvider = Provider.of<StepsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
 
     return _showUpdateStepDialog(context);
   }

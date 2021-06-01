@@ -34,7 +34,7 @@ class GoalsView extends StatefulWidget {
 
 class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  GoalsViewModel _goalProvider;
+  GoalsViewModel _goalsProvider;
   QuizzesViewModel _quizProvider;
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();  
@@ -81,14 +81,14 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
   
   void _afterLayout(_) {
-    if (_goalProvider.wasGoalAdded) {
+    if (_goalsProvider.wasGoalAdded) {
       _scrollToLastGoal();
-      _goalProvider.setWasGoalAdded(false);
+      _goalsProvider.setWasGoalAdded(false);
     }
   }
 
   void _scrollToLastGoal() {
-    _scrollController.scrollToIndex(_goalProvider.goals.length);
+    _scrollController.scrollToIndex(_goalsProvider.goals.length);
   }
   
   Widget _showGoals() {
@@ -107,17 +107,17 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
                 scrollDirection: _scrollDirection,
                 controller: _scrollController,                
                 shrinkWrap: true,
-                itemCount: _goalProvider.goals.length,
+                itemCount: _goalsProvider.goals.length,
                 itemBuilder: (BuildContext buildContext, int index) =>
                   AutoScrollTag(
                     key: ValueKey<int>(index),
                     controller: _scrollController,
                     index: index,
-                    child: GoalCard(goal: _goalProvider.goals[index])
+                    child: GoalCard(goal: _goalsProvider.goals[index])
                   )
               ),
             ),
-            if (_goalProvider.goals.isNotEmpty) _showAddGoalButton()
+            if (_goalsProvider.goals.isNotEmpty) _showAddGoalButton()
           ]
         ),
       )
@@ -157,10 +157,10 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
 
   Widget _showTitle() {
     Widget title;
-    if (_goalProvider.goals == null) {
+    if (_goalsProvider.goals == null) {
       title = const Text('');
     } else {
-      if (_goalProvider.goals.isNotEmpty) {
+      if (_goalsProvider.goals.isNotEmpty) {
         title = Text('goals.my_goals'.tr());
       } else {
         title = Text('goals.first_goal'.tr());
@@ -176,7 +176,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
 
   void _getGoals() {
-    _goalProvider.getGoals().then((List<Goal> goals) {
+    _goalsProvider.getGoals().then((List<Goal> goals) {
       setState(() {
         _isLoaded = true;
       });
@@ -185,7 +185,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   
   Widget _showContent() {
     if (_isLoaded) {
-      if (_goalProvider.goals.isNotEmpty) {
+      if (_goalsProvider.goals.isNotEmpty) {
         // For opacity animation
         Future<void>.delayed(const Duration(milliseconds: 300), () {
           if (mounted && !_shouldShowGoals) {
@@ -205,7 +205,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   
   @override
   Widget build(BuildContext context) {
-    _goalProvider = Provider.of<GoalsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
     _quizProvider = Provider.of<QuizzesViewModel>(context);
 
     if (!_isLoaded) {

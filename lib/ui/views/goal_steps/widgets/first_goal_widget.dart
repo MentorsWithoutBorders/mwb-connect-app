@@ -17,7 +17,7 @@ class FirstGoal extends StatefulWidget {
 }
 
 class _FirstGoalState extends State<FirstGoal> {
-  GoalsViewModel _goalProvider;
+  GoalsViewModel _goalsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final int _inputContainerOpacityDuration = 500;
   final int _opacityDuration = 300;
@@ -170,10 +170,10 @@ class _FirstGoalState extends State<FirstGoal> {
     await Future<void>.delayed(const Duration(milliseconds: 350));
     final Goal goal = Goal(text: _goalText);
     _isAddingGoal = true;
-    final Goal addedGoal = await _goalProvider.addGoal(goal);
+    final Goal addedGoal = await _goalsProvider.addGoal(goal);
     _isAddingGoal = false;
-    _goalProvider.addGoalToList(addedGoal);
-    _goalProvider.setSelectedGoal(addedGoal);
+    _goalsProvider.addGoalToList(addedGoal);
+    _goalsProvider.setSelectedGoal(addedGoal);
     _goToGoalStepsView();
   }
   
@@ -192,7 +192,7 @@ class _FirstGoalState extends State<FirstGoal> {
   
   @override
   Widget build(BuildContext context) {
-    _goalProvider = Provider.of<GoalsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
 
     if (!_isAddingGoal) {
       return _showFirstGoal();

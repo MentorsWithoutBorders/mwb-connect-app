@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
 
 class TutorialPreviews extends StatefulWidget {
@@ -20,7 +20,7 @@ class TutorialPreviews extends StatefulWidget {
 }
 
 class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProviderStateMixin {
-  GoalsViewModel _goalProvider;  
+  GoalStepsViewModel _goalStepsProvider;
   final PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
   AnimationController _animationController;
   Animation<double> _animation;
@@ -49,11 +49,11 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
       })
       ..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
-          _goalProvider.setIsTutorialPreviewsAnimationCompleted(true);
-          if (!_goalProvider.shouldShowTutorialChevrons) {
-            _goalProvider.setShouldShowTutorialChevrons(false);
+          _goalStepsProvider.setIsTutorialPreviewsAnimationCompleted(true);
+          if (!_goalStepsProvider.shouldShowTutorialChevrons) {
+            _goalStepsProvider.setShouldShowTutorialChevrons(false);
           } else {
-            _goalProvider.setShouldShowTutorialChevrons(true);
+            _goalStepsProvider.setShouldShowTutorialChevrons(true);
           }
         }
       });
@@ -160,7 +160,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
 
   Widget _showChevron({bool isUp}) {
     return AnimatedOpacity(
-      opacity: _goalProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+      opacity: _goalStepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
       duration: Duration(milliseconds: _animationDuration),
       child: Transform(
         alignment: Alignment.center,
@@ -178,7 +178,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     setState(() {
       _isOpen = false;
     });
-    _goalProvider.setIsTutorialPreviewsAnimationCompleted(false);
+    _goalStepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
     _animationController.reverse();
   }  
 
@@ -199,7 +199,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
           ),
           Expanded(
             child: AnimatedOpacity(
-              opacity: _goalProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+              opacity: _goalStepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
               duration: Duration(milliseconds: _animationDuration),              
               child: Center(
                 child: GestureDetector(
@@ -240,7 +240,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     setState(() {
       _isOpen = true;
     });    
-    _goalProvider.setIsTutorialPreviewsAnimationCompleted(false);
+    _goalStepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
     _animationController.forward();
   }
 
@@ -322,7 +322,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
 
   @override
   Widget build(BuildContext context) {  
-    _goalProvider = Provider.of<GoalsViewModel>(context);
+    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
 
     return _showTutorialPreviews(context);
   }

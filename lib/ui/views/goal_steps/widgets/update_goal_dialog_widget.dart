@@ -16,7 +16,7 @@ class UpdateGoalDialog extends StatefulWidget {
 
 class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
-  GoalsViewModel _goalProvider;
+  GoalsViewModel _goalsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _goalText;
   
@@ -86,7 +86,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
               color: Colors.orange
             )
           ),
-          initialValue: _goalProvider.selectedGoal.text,
+          initialValue: _goalsProvider.selectedGoal.text,
           validator: (String value) {
             if (value.isEmpty) {
               return 'goal_dialog.update_goal_error'.tr();
@@ -145,15 +145,15 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
   }
   
   void _updateGoal() {
-    final Goal goal = _goalProvider.selectedGoal;
+    final Goal goal = _goalsProvider.selectedGoal;
     goal.text = _goalText;
-    _goalProvider.updateGoal(goal, _goalProvider.selectedGoal.id);
+    _goalsProvider.updateGoal(goal, _goalsProvider.selectedGoal.id);
   }
 
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
-    _goalProvider = Provider.of<GoalsViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
 
     return _showUpdateGoalDialog(context);
   }

@@ -20,7 +20,7 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/root_view.dart';
@@ -117,7 +117,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
               ChangeNotifierProvider<ConnectWithMentorViewModel>.value(value: locator<ConnectWithMentorViewModel>()),
               ChangeNotifierProvider<LessonRequestViewModel>.value(value: locator<LessonRequestViewModel>()),
               ChangeNotifierProvider<GoalsViewModel>.value(value: locator<GoalsViewModel>()),
-              ChangeNotifierProvider<StepsViewModel>.value(value: locator<StepsViewModel>()),
+              ChangeNotifierProvider<GoalStepsViewModel>.value(value: locator<GoalStepsViewModel>()),
               ChangeNotifierProvider<QuizzesViewModel>.value(value: locator<QuizzesViewModel>()),
               ChangeNotifierProvider<NotificationsViewModel>.value(value: locator<NotificationsViewModel>())
             ],

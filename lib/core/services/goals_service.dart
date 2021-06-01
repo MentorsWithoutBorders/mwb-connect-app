@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -22,18 +21,23 @@ class GoalsService {
   }
 
   Future<Goal> getGoalById(String id) async {
-    // final DocumentSnapshot doc = await _api.getDocumentById(path: 'goals', isForUser: true, id: id);
-    // return Goal.fromMap(doc.data(), doc.id);
+    String userId = _storageService.userId;
+    http.Response response = await _api.getHTTP(url: '/goals/$userId/$id');
+    Goal goal;
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      goal = Goal.fromJson(json);
+    }
+    return goal;
   }
 
   Future<void> deleteGoal(String id) async {
-    // await _api.removeSubCollection(path: 'goals/' + id + '/steps', isForUser: true);    
-    // await _api.removeDocument(path: 'goals', isForUser: true, id: id);
+    await _api.deleteHTTP(url: '/goals/$id');
     return ;
   }
 
   Future<void> updateGoal(Goal goal, String id) async {
-    // await _api.updateDocument(path: 'goals', isForUser: true, data: goal.toJson(), id: id);
+    await _api.putHTTP(url: '/goals/$id', data: goal.toJson());  
     return ;
   }  
 
