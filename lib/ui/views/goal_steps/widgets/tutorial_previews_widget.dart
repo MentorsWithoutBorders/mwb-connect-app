@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
 
 class TutorialPreviews extends StatefulWidget {
@@ -20,7 +20,7 @@ class TutorialPreviews extends StatefulWidget {
 }
 
 class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProviderStateMixin {
-  GoalStepsViewModel _goalStepsProvider;
+  StepsViewModel _goalStepsProvider;
   final PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
   AnimationController _animationController;
   Animation<double> _animation;
@@ -322,7 +322,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
 
   @override
   Widget build(BuildContext context) {  
-    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
+    _goalStepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showTutorialPreviews(context);
   }

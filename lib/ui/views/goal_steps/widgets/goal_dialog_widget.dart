@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/update_goal_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
@@ -19,7 +19,7 @@ class GoalDialog extends StatefulWidget {
 
 class _GoalDialogState extends State<GoalDialog> {
   GoalsViewModel _goalsProvider;
-  GoalStepsViewModel _goalStepsProvider;
+  StepsViewModel _goalStepsProvider;
 
   Widget _showGoalDialog() {
     return Container(
@@ -186,7 +186,7 @@ class _GoalDialogState extends State<GoalDialog> {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
+    _goalStepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showGoalDialog();
   }

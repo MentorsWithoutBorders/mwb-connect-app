@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/services/steps_service.dart';
 
-class GoalStepsViewModel extends ChangeNotifier {
+class StepsViewModel extends ChangeNotifier {
   final StepsService _stepsService = locator<StepsService>();  
   List<StepModel> steps;
   StepModel selectedStep;
@@ -34,6 +34,11 @@ class GoalStepsViewModel extends ChangeNotifier {
   Future<StepModel> addStep(String goalId, StepModel step) async {  
     return _stepsService.addStep(goalId, step);
   }
+
+  void addStepToList(StepModel step) {
+    steps.add(step);
+    notifyListeners();
+  }  
 
   void setSelectedStep(StepModel step) {
     selectedStep = step;

@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 
@@ -21,7 +21,7 @@ class TestApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: locator<CommonViewModel>()),
         ChangeNotifierProvider.value(value: locator<ProfileViewModel>()),
         ChangeNotifierProvider.value(value: locator<GoalsViewModel>()),
-        ChangeNotifierProvider.value(value: locator<GoalStepsViewModel>()),
+        ChangeNotifierProvider.value(value: locator<StepsViewModel>()),
         ChangeNotifierProvider.value(value: locator<QuizzesViewModel>()),
         ChangeNotifierProvider.value(value: locator<NotificationsViewModel>())
       ],

@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/step_card_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/add_step_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -22,7 +22,7 @@ class Steps extends StatefulWidget {
 
 class _StepsState extends State<Steps> {
   GoalsViewModel _goalsProvider;  
-  GoalStepsViewModel _goalStepsProvider;  
+  StepsViewModel _goalStepsProvider;  
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();
   List<StepModel> _steps = [];
@@ -146,7 +146,7 @@ class _StepsState extends State<Steps> {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
+    _goalStepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showSteps();
   }

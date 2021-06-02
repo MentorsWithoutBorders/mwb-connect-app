@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 
 class GoalCard extends StatefulWidget {
@@ -17,7 +17,7 @@ class GoalCard extends StatefulWidget {
 
 class _GoalCardState extends State<GoalCard> {
   GoalsViewModel _goalsProvider;
-  GoalStepsViewModel _goalStepsProvider;
+  StepsViewModel _goalStepsProvider;
 
   Widget _showGoalCard() {
     return Padding(
@@ -44,7 +44,7 @@ class _GoalCardState extends State<GoalCard> {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<GoalStepsViewModel>(context);
+    _goalStepsProvider = Provider.of<StepsViewModel>(context);
 
     return GestureDetector(
       onTap: (){

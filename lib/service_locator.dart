@@ -18,7 +18,7 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/goal_steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/support_request_view_model.dart';
@@ -47,7 +47,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => ConnectWithMentorViewModel());
   locator.registerLazySingleton(() => LessonRequestViewModel());
   locator.registerLazySingleton(() => GoalsViewModel());
-  locator.registerLazySingleton(() => GoalStepsViewModel());
+  locator.registerLazySingleton(() => StepsViewModel());
   locator.registerLazySingleton(() => QuizzesViewModel());
   locator.registerLazySingleton(() => NotificationsViewModel());
   locator.registerLazySingleton(() => SupportRequestViewModel());
