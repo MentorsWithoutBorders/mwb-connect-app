@@ -16,10 +16,6 @@ class GoalsViewModel extends ChangeNotifier {
     return goals;
   }
 
-  Future<Goal> getGoalById(String id) async {
-    return _goalsService.getGoalById(id);
-  }
-
   Future<void> deleteGoal(String id) async {
     _removeGoalFromList(id);
     await _goalsService.deleteGoal(id);

@@ -31,16 +31,6 @@ class GoalsService {
     return goal;
   }
 
-  Future<void> deleteGoal(String id) async {
-    await _api.deleteHTTP(url: '/goals/$id');
-    return ;
-  }
-
-  Future<void> updateGoal(Goal goal, String id) async {
-    await _api.putHTTP(url: '/goals/$id', data: goal.toJson());  
-    return ;
-  }  
-
   Future<Goal> addGoal(Goal goal) async {
     String userId = _storageService.userId;
     http.Response response = await _api.postHTTP(url: '/goals/$userId', data: goal.toJson());  
@@ -51,4 +41,14 @@ class GoalsService {
     }
     return addedGoal;
   }
+
+  Future<void> updateGoal(Goal goal, String id) async {
+    await _api.putHTTP(url: '/goals/$id', data: goal.toJson());  
+    return ;
+  }     
+
+  Future<void> deleteGoal(String id) async {
+    await _api.deleteHTTP(url: '/goals/$id');
+    return ;
+  } 
 }

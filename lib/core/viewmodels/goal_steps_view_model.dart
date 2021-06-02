@@ -12,17 +12,16 @@ class GoalStepsViewModel extends ChangeNotifier {
   int previousStepIndex = -1;
   bool isTutorialPreviewsAnimationCompleted = false;
   bool shouldShowTutorialChevrons = false;  
-
+  
   Future<List<StepModel>> getSteps(String goalId) async {
-    steps = await _stepsService.getSteps();
-    return steps;
+    return await _stepsService.getSteps(goalId);
   }
 
-  Future<StepModel> getStepById(String id) async {
-    return _stepsService.getStepById(id);
+  Future<StepModel> getStepById(String goalId, String id) async {
+    return await _stepsService.getStepById(goalId, id);
   }
 
-  Future<void> deleteStep(String goalId, String id) async {
+  Future<void> deleteStep(String id) async {
     await _stepsService.deleteStep(id);
     return ;
   }
@@ -33,7 +32,7 @@ class GoalStepsViewModel extends ChangeNotifier {
   }
 
   Future<StepModel> addStep(String goalId, StepModel step) async {  
-    return _stepsService.addStep(step);
+    return _stepsService.addStep(goalId, step);
   }
 
   void setSelectedStep(StepModel step) {
@@ -44,7 +43,7 @@ class GoalStepsViewModel extends ChangeNotifier {
   List<String> getSubSteps(String stepId) {
     final List<String> subSteps = [];
     for (final StepModel step in steps){
-      if (step.parent == stepId) {
+      if (step.parentId == stepId) {
         subSteps.add(step.id);
         if (step.level < 2) {
           final List<String> subSubSteps = getSubSteps(step.id);
@@ -85,7 +84,7 @@ class GoalStepsViewModel extends ChangeNotifier {
       // Get steps level 1
       List<StepModel> sortedStepsLevel1 = [];
       stepsLevel1.forEach((StepModel stepLevel1) {
-        if (stepLevel1.parent == sortedStepLevel0.id) {
+        if (stepLevel1.parentId == sortedStepLevel0.id) {
           sortedStepsLevel1.add(stepLevel1);
         }
       });
@@ -98,7 +97,7 @@ class GoalStepsViewModel extends ChangeNotifier {
         // Get steps level 2
         List<StepModel> sortedStepsLevel2 = [];
         stepsLevel2.forEach((StepModel stepLevel2) {
-          if (stepLevel2.parent == sortedStepLevel1.id) {
+          if (stepLevel2.parentId == sortedStepLevel1.id) {
             sortedStepsLevel2.add(stepLevel2);
           }
         });
@@ -123,7 +122,7 @@ class GoalStepsViewModel extends ChangeNotifier {
           index = max(index, step.index);
         }
       } else {
-        if (step.parent == parentId) {
+        if (step.parentId == parentId) {
           index = max(index, step.index);
         }
       }
@@ -149,7 +148,7 @@ class GoalStepsViewModel extends ChangeNotifier {
   
   void updateIndexesAfterDeleteStep(String goalId, List<StepModel> steps, StepModel step) {
     for (int i = 0; i < steps.length; i++) {
-      if (steps[i].parent == step.parent && 
+      if (steps[i].parentId == step.parentId && 
           steps[i].index > step.index) {
         final StepModel modifiedStep = steps[i];
         modifiedStep.index--;
@@ -160,7 +159,7 @@ class GoalStepsViewModel extends ChangeNotifier {
 
   void moveStepUp(String goalId, List<StepModel> steps, StepModel step) {
     for (int i = 0; i < steps.length; i++) {
-      if (steps[i].parent == step.parent &&
+      if (steps[i].parentId == step.parentId &&
           steps[i].index == step.index - 1) {
         final StepModel previousStep = steps[i];
         previousStep.index++;
@@ -174,7 +173,7 @@ class GoalStepsViewModel extends ChangeNotifier {
 
   void moveStepDown(String goalId, List<StepModel> steps, StepModel step) {
     for (int i = 0; i < steps.length; i++) {
-      if (steps[i].parent == step.parent &&
+      if (steps[i].parentId == step.parentId &&
           steps[i].index == step.index + 1) {
         final StepModel nextStep = steps[i];
         nextStep.index--;

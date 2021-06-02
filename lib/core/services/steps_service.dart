@@ -9,9 +9,8 @@ class StepsService {
   final ApiService _api = locator<ApiService>();
   final LocalStorageService _storageService = locator<LocalStorageService>();  
 
-  Future<List<StepModel>> getSteps() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/steps/$userId');
+  Future<List<StepModel>> getSteps(String goalId) async {
+    http.Response response = await _api.getHTTP(url: '/steps/$goalId');
     List<StepModel> steps = [];
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -20,9 +19,8 @@ class StepsService {
     return steps;
   }
 
-  Future<StepModel> getStepById(String id) async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/steps/$userId/$id');
+  Future<StepModel> getStepById(String goalId, String id) async {
+    http.Response response = await _api.getHTTP(url: '/steps/$goalId/$id');
     StepModel step;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -31,24 +29,24 @@ class StepsService {
     return step;
   }
 
-  Future<void> deleteStep(String id) async {
-    await _api.deleteHTTP(url: '/steps/$id');
-    return ;
-  }
-
-  Future<void> updateStep(StepModel step, String id) async {
-    await _api.putHTTP(url: '/steps/$id', data: step.toJson());  
-    return ;
-  }  
-
-  Future<StepModel> addStep(StepModel step) async {
+  Future<StepModel> addStep(String goalId, StepModel step) async {
     String userId = _storageService.userId;
-    http.Response response = await _api.postHTTP(url: '/steps/$userId', data: step.toJson());  
+    http.Response response = await _api.postHTTP(url: '/steps/$userId/$goalId', data: step.toJson());  
     StepModel addedStep;
     if (response != null) {
       var json = jsonDecode(response.body);
       addedStep = StepModel.fromJson(json);
     }
     return addedStep;
-  }
+  }  
+
+  Future<void> updateStep(StepModel step, String id) async {
+    await _api.putHTTP(url: '/steps/$id', data: step.toJson());  
+    return ;
+  }  
+
+  Future<void> deleteStep(String id) async {
+    await _api.deleteHTTP(url: '/steps/$id');
+    return ;
+  }  
 }

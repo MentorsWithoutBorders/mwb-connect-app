@@ -150,7 +150,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
   void _addSubStep() {
     final int level = _goalStepsProvider.selectedStep.level + 1;
     final int index = _goalStepsProvider.getCurrentIndex(steps: _goalStepsProvider.steps, parentId: _goalStepsProvider.selectedStep.id) + 1;
-    final StepModel step = StepModel(text: _stepText, level: level, index: index, parent: _goalStepsProvider.selectedStep.id);
+    final StepModel step = StepModel(text: _stepText, level: level, index: index, parentId: _goalStepsProvider.selectedStep.id);
     _goalStepsProvider.setAddedStepIndex(_goalStepsProvider.steps, step);
     _goalStepsProvider.addStep(_goalsProvider.selectedGoal.id, step);
   }

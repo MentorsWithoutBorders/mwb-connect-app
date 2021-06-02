@@ -112,7 +112,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.move_step_up'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_goalStepsProvider.selectedStep.index < _goalStepsProvider.getCurrentIndex(steps: _goalStepsProvider.steps, parentId: _goalStepsProvider.selectedStep.parent)) SizedBox(
+          if (_goalStepsProvider.selectedStep.index < _goalStepsProvider.getCurrentIndex(steps: _goalStepsProvider.steps, parentId: _goalStepsProvider.selectedStep.parentId)) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -242,11 +242,11 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _deleteStep(List<String> subSteps) {
-    _goalStepsProvider.deleteStep(_goalsProvider.selectedGoal.id, _goalStepsProvider.selectedStep.id);
+    _goalStepsProvider.deleteStep(_goalStepsProvider.selectedStep.id);
     _goalStepsProvider.updateIndexesAfterDeleteStep(_goalsProvider.selectedGoal.id, _goalStepsProvider.steps, _goalStepsProvider.selectedStep);
     if (subSteps.isNotEmpty) {
       subSteps.forEach((String stepId) { 
-        _goalStepsProvider.deleteStep(_goalsProvider.selectedGoal.id, stepId);
+        _goalStepsProvider.deleteStep(stepId);
       });
     }
     Navigator.pop(widget.context);    
