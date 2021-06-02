@@ -77,11 +77,10 @@ class ApiService {
     }  
   }
   
-  Future<http.Response> deleteHTTP({String url, dynamic data}) async {
+  Future<http.Response> deleteHTTP({String url}) async {
     final response = await http.delete(
       Uri.parse(baseUrl + url), 
-      headers: getHeaders(),
-      body: json.encode(data)
+      headers: getHeaders()
     );
     if (response.statusCode == 200) {
       return response;
@@ -91,7 +90,7 @@ class ApiService {
       if (!refreshingToken) {
         await _refreshToken();
       }
-      return await deleteHTTP(url: url, data: data);
+      return await deleteHTTP(url: url);
     }
   }
 

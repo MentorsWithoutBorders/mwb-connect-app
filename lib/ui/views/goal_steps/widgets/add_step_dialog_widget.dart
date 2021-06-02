@@ -149,9 +149,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   
   void _addStep() {
     final int index = _goalStepsProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
-    final DateTime now = DateTime.now();
-    final DateTime dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
-    final StepModel step = StepModel(text: _stepText, level: 0, index: index, dateTime: dateTime);
+    final StepModel step = StepModel(text: _stepText, level: 0, index: index);
     _goalStepsProvider.setAddedStepIndex(widget.steps, step);
     _goalStepsProvider.addStep(_goalsProvider.selectedGoal.id, step);
   }

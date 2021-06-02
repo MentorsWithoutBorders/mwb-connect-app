@@ -1,9 +1,6 @@
-import 'package:mwb_connect_app/core/models/step_model.dart';
-
 class Goal {
   String id;
   String text;
-  List<StepModel> steps;
 
   Goal({this.id, this.text});
 

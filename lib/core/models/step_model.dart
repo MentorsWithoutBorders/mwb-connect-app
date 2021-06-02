@@ -4,25 +4,22 @@ class StepModel {
   String text;
   int level;
   int index;
-  DateTime dateTime;
 
-  StepModel({this.id, this.parentId, this.text, this.level, this.index, this.dateTime});
+  StepModel({this.id, this.parentId, this.text, this.level, this.index});
 
   StepModel.fromJson(Map<String, dynamic> json) :
     id = json['id'],
-    parentId = json['parent'],
+    parentId = json['parentId'],
     text = json['text'] ?? '',
     level = json['level'] ?? 0,
-    index = json['index'] ?? 0,
-    dateTime = json['dateTime']?.toDate();
+    index = json['index'] ?? 0;
 
   Map<String, Object> toJson() {
     return {
-      'parent': parentId,
+      'parentId': parentId,
       'text': text,
       'level': level,
-      'index': index,
-      'dateTime': dateTime
+      'index': index
     };
   }
 }

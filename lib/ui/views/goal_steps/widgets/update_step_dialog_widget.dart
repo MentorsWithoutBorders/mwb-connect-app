@@ -149,8 +149,6 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   void _updateStep() {
     final StepModel step = _goalStepsProvider.selectedStep;
     step.text = _stepText;
-    final DateTime now = DateTime.now();
-    step.dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);      
     _goalStepsProvider.updateStep(_goalsProvider.selectedGoal.id, step, _goalStepsProvider.selectedStep.id);
   }
 
