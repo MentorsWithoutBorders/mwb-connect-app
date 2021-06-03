@@ -19,7 +19,7 @@ class GoalDialog extends StatefulWidget {
 
 class _GoalDialogState extends State<GoalDialog> {
   GoalsViewModel _goalsProvider;
-  StepsViewModel _goalStepsProvider;
+  StepsViewModel _stepsProvider;
 
   Widget _showGoalDialog() {
     return Container(
@@ -123,7 +123,7 @@ class _GoalDialogState extends State<GoalDialog> {
         children: <Widget>[
           Center(
             child: Text(
-              _goalStepsProvider.steps.isNotEmpty ? 
+              _stepsProvider.steps.isNotEmpty ? 
                 'goal_dialog.delete_goal_steps_message'.tr() :
                 'goal_dialog.delete_goal_message'.tr(),
               textAlign: TextAlign.center,
@@ -186,7 +186,7 @@ class _GoalDialogState extends State<GoalDialog> {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showGoalDialog();
   }

@@ -20,7 +20,7 @@ class AddStepDialog extends StatefulWidget {
 class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
   GoalsViewModel _goalsProvider;
-  StepsViewModel _goalStepsProvider;
+  StepsViewModel _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
@@ -148,17 +148,17 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   }
   
   void _addStep() {
-    final int index = _goalStepsProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
+    final int index = _stepsProvider.getCurrentIndex(steps: widget.steps, parentId: null) + 1;
     final StepModel step = StepModel(text: _stepText, level: 0, index: index);
-    _goalStepsProvider.setAddedStepIndex(widget.steps, step);
-    _goalStepsProvider.addStep(_goalsProvider.selectedGoal.id, step);
+    _stepsProvider.setAddedStepIndex(widget.steps, step);
+    _stepsProvider.addStep(_goalsProvider.selectedGoal.id, step);
   }
 
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showAddStepDialog();
   }

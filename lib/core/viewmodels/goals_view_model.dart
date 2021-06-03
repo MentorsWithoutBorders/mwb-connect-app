@@ -17,7 +17,7 @@ class GoalsViewModel extends ChangeNotifier {
   }
 
   Future<void> deleteGoal(String id) async {
-    _removeGoalFromList(id);
+    _deleteGoalFromList(id);
     await _goalsService.deleteGoal(id);
     return ;
   }
@@ -31,7 +31,7 @@ class GoalsViewModel extends ChangeNotifier {
     return _goalsService.addGoal(goal);
   }
 
-  void _removeGoalFromList(String goalId) {
+  void _deleteGoalFromList(String goalId) {
     goals.removeWhere((Goal goal) => goal.id == goalId);
     notifyListeners();
   }  

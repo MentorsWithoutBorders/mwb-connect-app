@@ -20,7 +20,7 @@ class TutorialPreviews extends StatefulWidget {
 }
 
 class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProviderStateMixin {
-  StepsViewModel _goalStepsProvider;
+  StepsViewModel _stepsProvider;
   final PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
   AnimationController _animationController;
   Animation<double> _animation;
@@ -49,11 +49,11 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
       })
       ..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
-          _goalStepsProvider.setIsTutorialPreviewsAnimationCompleted(true);
-          if (!_goalStepsProvider.shouldShowTutorialChevrons) {
-            _goalStepsProvider.setShouldShowTutorialChevrons(false);
+          _stepsProvider.setIsTutorialPreviewsAnimationCompleted(true);
+          if (!_stepsProvider.shouldShowTutorialChevrons) {
+            _stepsProvider.setShouldShowTutorialChevrons(false);
           } else {
-            _goalStepsProvider.setShouldShowTutorialChevrons(true);
+            _stepsProvider.setShouldShowTutorialChevrons(true);
           }
         }
       });
@@ -160,7 +160,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
 
   Widget _showChevron({bool isUp}) {
     return AnimatedOpacity(
-      opacity: _goalStepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+      opacity: _stepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
       duration: Duration(milliseconds: _animationDuration),
       child: Transform(
         alignment: Alignment.center,
@@ -178,7 +178,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     setState(() {
       _isOpen = false;
     });
-    _goalStepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
+    _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
     _animationController.reverse();
   }  
 
@@ -199,7 +199,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
           ),
           Expanded(
             child: AnimatedOpacity(
-              opacity: _goalStepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+              opacity: _stepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
               duration: Duration(milliseconds: _animationDuration),              
               child: Center(
                 child: GestureDetector(
@@ -240,7 +240,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     setState(() {
       _isOpen = true;
     });    
-    _goalStepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
+    _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
     _animationController.forward();
   }
 
@@ -322,7 +322,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
 
   @override
   Widget build(BuildContext context) {  
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showTutorialPreviews(context);
   }

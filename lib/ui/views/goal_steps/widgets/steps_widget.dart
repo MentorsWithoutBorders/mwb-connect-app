@@ -21,11 +21,10 @@ class Steps extends StatefulWidget {
 
 class _StepsState extends State<Steps> {
   GoalsViewModel _goalsProvider;  
-  StepsViewModel _goalStepsProvider;  
+  StepsViewModel _stepsProvider;  
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();
   Future<List<StepModel>> _getSteps;
-  List<StepModel> _steps = [];
   bool _isInit = true;
   final GlobalKey _addStepKey = GlobalKey();
 
@@ -33,8 +32,8 @@ class _StepsState extends State<Steps> {
   void didChangeDependencies() {
     if (_isInit) {  
       _goalsProvider = Provider.of<GoalsViewModel>(context);
-      _goalStepsProvider = Provider.of<StepsViewModel>(context);
-      _getSteps = _goalStepsProvider.getSteps(_goalsProvider.selectedGoal.id);
+      _stepsProvider = Provider.of<StepsViewModel>(context);
+      _getSteps = _stepsProvider.getSteps(_goalsProvider.selectedGoal.id);
       _isInit = false;
     }
     super.didChangeDependencies();
@@ -52,26 +51,25 @@ class _StepsState extends State<Steps> {
       final Offset position = addStepBox.localToGlobal(Offset.zero); 
       final double screenHeight = MediaQuery.of(context).size.height;
       if (screenHeight - position.dy < 80) {
-        if (!_goalStepsProvider.shouldShowTutorialChevrons && _goalStepsProvider.isTutorialPreviewsAnimationCompleted) {
-          _goalStepsProvider.setShouldShowTutorialChevrons(true);
+        if (!_stepsProvider.shouldShowTutorialChevrons && _stepsProvider.isTutorialPreviewsAnimationCompleted) {
+          _stepsProvider.setShouldShowTutorialChevrons(true);
         }
       } else {
-        if (_goalStepsProvider.shouldShowTutorialChevrons && _goalStepsProvider.isTutorialPreviewsAnimationCompleted) {
-          _goalStepsProvider.setShouldShowTutorialChevrons(false);
+        if (_stepsProvider.shouldShowTutorialChevrons && _stepsProvider.isTutorialPreviewsAnimationCompleted) {
+          _stepsProvider.setShouldShowTutorialChevrons(false);
         }
       }
     }
   }
 
-  void _setSteps(List<StepModel> steps) {
-    _steps = _goalStepsProvider.sortSteps(steps);
-    _goalStepsProvider.steps = _steps;
+  void _sortSteps(List<StepModel> steps) {
+     _stepsProvider.sortSteps(steps);
   }  
   
   void _scrollToStep() {
-    if (![-1,0].contains(_goalStepsProvider.previousStepIndex)) {
-      _scrollController.scrollToIndex(_goalStepsProvider.previousStepIndex, preferPosition: AutoScrollPosition.begin);
-      _goalStepsProvider.previousStepIndex = -1;
+    if (![-1,0].contains(_stepsProvider.previousStepIndex)) {
+      _scrollController.scrollToIndex(_stepsProvider.previousStepIndex, preferPosition: AutoScrollPosition.begin);
+      _stepsProvider.previousStepIndex = -1;
     }
   }
   
@@ -86,13 +84,13 @@ class _StepsState extends State<Steps> {
               scrollDirection: _scrollDirection,
               controller: _scrollController,
               shrinkWrap: true,
-              itemCount: _steps.length,
+              itemCount: _stepsProvider.steps.length,
               itemBuilder: (BuildContext buildContext, int index) =>
                 AutoScrollTag(
                   key: ValueKey<int>(index),
                   controller: _scrollController,
                   index: index,
-                  child: StepCard(step: _steps[index])
+                  child: StepCard(step: _stepsProvider.steps[index])
                 )
             )
           ),
@@ -121,7 +119,7 @@ class _StepsState extends State<Steps> {
           showDialog(
             context: context,
             builder: (_) => AnimatedDialog(
-              widgetInside: AddStepDialog(steps: _steps),
+              widgetInside: AddStepDialog(steps: _stepsProvider.steps),
               hasInput: true,
             ),
           );
@@ -141,7 +139,7 @@ class _StepsState extends State<Steps> {
       future: _getSteps,
       builder: (BuildContext context, AsyncSnapshot<List<StepModel>> snapshot) {
         if (snapshot.hasData) {
-          _setSteps(snapshot.data);
+          _sortSteps(snapshot.data);
           WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
           return _showSteps();
         } else {

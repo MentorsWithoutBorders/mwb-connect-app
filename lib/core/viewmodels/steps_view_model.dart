@@ -23,6 +23,7 @@ class StepsViewModel extends ChangeNotifier {
 
   Future<void> deleteStep(String id) async {
     await _stepsService.deleteStep(id);
+    _deleteStepFromList(id);
     return ;
   }
 
@@ -31,14 +32,21 @@ class StepsViewModel extends ChangeNotifier {
     return ;
   }
 
-  Future<StepModel> addStep(String goalId, StepModel step) async {  
-    return _stepsService.addStep(goalId, step);
+  Future<StepModel> addStep(String goalId, StepModel step) async { 
+    StepModel stepAdded = await _stepsService.addStep(goalId, step);
+    _addStepToList(stepAdded);
+    return stepAdded;
   }
 
-  void addStepToList(StepModel step) {
+  void _addStepToList(StepModel step) {
     steps.add(step);
     notifyListeners();
-  }  
+  }
+  
+  void _deleteStepFromList(String stepId) {
+    steps.removeWhere((StepModel step) => step.id == stepId);
+    notifyListeners();
+  }    
 
   void setSelectedStep(StepModel step) {
     selectedStep = step;
@@ -111,6 +119,7 @@ class StepsViewModel extends ChangeNotifier {
         sortedSteps.addAll(sortedStepsLevel2);    
       });      
     });
+    steps = sortedSteps;
     return sortedSteps;
   } 
 

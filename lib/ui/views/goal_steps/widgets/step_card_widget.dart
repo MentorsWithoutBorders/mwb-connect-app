@@ -17,7 +17,7 @@ class StepCard extends StatefulWidget {
 }
 
 class _StepCardState extends State<StepCard> {
-  StepsViewModel _goalStepsProvider;
+  StepsViewModel _stepsProvider;
   
   Widget _showStepCard(BuildContext context) {
     return Padding(
@@ -76,11 +76,11 @@ class _StepCardState extends State<StepCard> {
 
   @override
   Widget build(BuildContext context) {
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return GestureDetector(
       onTap: () {
-        _goalStepsProvider.setSelectedStep(widget.step);
+        _stepsProvider.setSelectedStep(widget.step);
         showDialog(
           context: context,
           builder: (_) => AnimatedDialog(

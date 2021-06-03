@@ -17,7 +17,7 @@ class GoalCard extends StatefulWidget {
 
 class _GoalCardState extends State<GoalCard> {
   GoalsViewModel _goalsProvider;
-  StepsViewModel _goalStepsProvider;
+  StepsViewModel _stepsProvider;
 
   Widget _showGoalCard() {
     return Padding(
@@ -44,13 +44,13 @@ class _GoalCardState extends State<GoalCard> {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return GestureDetector(
       onTap: (){
         _goalsProvider.setSelectedGoal(widget.goal);
-        _goalStepsProvider.setShouldShowTutorialChevrons(false);
-        _goalStepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
+        _stepsProvider.setShouldShowTutorialChevrons(false);
+        _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
         Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
       },
       child: _showGoalCard()

@@ -18,7 +18,7 @@ class UpdateStepDialog extends StatefulWidget {
 class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
   GoalsViewModel _goalsProvider;
-  StepsViewModel _goalStepsProvider;
+  StepsViewModel _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
   
@@ -88,7 +88,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
               color: Colors.orange
             )
           ),
-          initialValue: _goalStepsProvider.selectedStep.text,
+          initialValue: _stepsProvider.selectedStep.text,
           validator: (value) {
             if (value.isEmpty) {
               return 'step_dialog.update_step_error'.tr();
@@ -147,16 +147,16 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   }
   
   void _updateStep() {
-    final StepModel step = _goalStepsProvider.selectedStep;
+    final StepModel step = _stepsProvider.selectedStep;
     step.text = _stepText;
-    _goalStepsProvider.updateStep(_goalsProvider.selectedGoal.id, step, _goalStepsProvider.selectedStep.id);
+    _stepsProvider.updateStep(_goalsProvider.selectedGoal.id, step, _stepsProvider.selectedStep.id);
   }
 
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showUpdateStepDialog(context);
   }

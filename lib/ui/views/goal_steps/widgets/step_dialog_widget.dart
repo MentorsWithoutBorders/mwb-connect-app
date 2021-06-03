@@ -20,7 +20,7 @@ class StepDialog extends StatefulWidget {
 
 class _StepDialogState extends State<StepDialog> {
   GoalsViewModel _goalsProvider;
-  StepsViewModel _goalStepsProvider;
+  StepsViewModel _stepsProvider;
   
   Widget _showStepDialog() {
     return Container(
@@ -74,7 +74,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.update_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_goalStepsProvider.selectedStep.level <= 1) SizedBox(
+          if (_stepsProvider.selectedStep.level <= 1) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -96,7 +96,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.add_sub_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_goalStepsProvider.selectedStep.index > 0) SizedBox(
+          if (_stepsProvider.selectedStep.index > 0) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -112,7 +112,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.move_step_up'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_goalStepsProvider.selectedStep.index < _goalStepsProvider.getCurrentIndex(steps: _goalStepsProvider.steps, parentId: _goalStepsProvider.selectedStep.parentId)) SizedBox(
+          if (_stepsProvider.selectedStep.index < _stepsProvider.getCurrentIndex(steps: _stepsProvider.steps, parentId: _stepsProvider.selectedStep.parentId)) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -171,15 +171,15 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _moveStepUp() {
-    _goalStepsProvider.moveStepUp(_goalsProvider.selectedGoal.id, _goalStepsProvider.steps, _goalStepsProvider.selectedStep);
+    _stepsProvider.moveStepUp(_goalsProvider.selectedGoal.id, _stepsProvider.steps, _stepsProvider.selectedStep);
   }
 
   void _moveStepDown() {
-    _goalStepsProvider.moveStepDown(_goalsProvider.selectedGoal.id, _goalStepsProvider.steps, _goalStepsProvider.selectedStep);
+    _stepsProvider.moveStepDown(_goalsProvider.selectedGoal.id, _stepsProvider.steps, _stepsProvider.selectedStep);
   }  
   
   Widget _showDeleteStepDialog() {
-    final List<String> subSteps = _goalStepsProvider.getSubSteps(_goalStepsProvider.selectedStep.id);
+    final List<String> subSteps = _stepsProvider.getSubSteps(_stepsProvider.selectedStep.id);
     return Container(
       width: MediaQuery.of(widget.context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -200,7 +200,7 @@ class _StepDialogState extends State<StepDialog> {
           Padding(
             padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
             child: Text(
-              _goalStepsProvider.selectedStep.text,
+              _stepsProvider.selectedStep.text,
               style: const TextStyle(
                 fontSize: 14,
               )
@@ -242,11 +242,11 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _deleteStep(List<String> subSteps) {
-    _goalStepsProvider.deleteStep(_goalStepsProvider.selectedStep.id);
-    _goalStepsProvider.updateIndexesAfterDeleteStep(_goalsProvider.selectedGoal.id, _goalStepsProvider.steps, _goalStepsProvider.selectedStep);
+    _stepsProvider.deleteStep(_stepsProvider.selectedStep.id);
+    _stepsProvider.updateIndexesAfterDeleteStep(_goalsProvider.selectedGoal.id, _stepsProvider.steps, _stepsProvider.selectedStep);
     if (subSteps.isNotEmpty) {
       subSteps.forEach((String stepId) { 
-        _goalStepsProvider.deleteStep(stepId);
+        _stepsProvider.deleteStep(stepId);
       });
     }
     Navigator.pop(widget.context);    
@@ -255,7 +255,7 @@ class _StepDialogState extends State<StepDialog> {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showStepDialog();
   }
