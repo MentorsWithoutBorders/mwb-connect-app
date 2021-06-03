@@ -29,7 +29,7 @@ class _ProfileViewState extends State<ProfileView> {
   final ScrollController _scrollController = ScrollController();
   User user;
   List<Field> fields;  
-  bool profileRetrieved = false;
+  bool _profileRetrieved = false;
 
   @override
   void dispose() {
@@ -181,10 +181,10 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<Profile> _getProfile() async {
-    if (!profileRetrieved) {
+    if (!_profileRetrieved) {
       user = await _profileProvider.getUserDetails();
       fields = await _profileProvider.getFields();
-      profileRetrieved = true;
+      _profileRetrieved = true;
     }
     return Profile(user: user, fields: fields);
   } 

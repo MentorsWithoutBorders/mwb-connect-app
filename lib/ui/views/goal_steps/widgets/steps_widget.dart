@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -25,20 +24,21 @@ class _StepsState extends State<Steps> {
   StepsViewModel _goalStepsProvider;  
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();
+  Future<List<StepModel>> _getSteps;
   List<StepModel> _steps = [];
+  bool _isInit = true;
   final GlobalKey _addStepKey = GlobalKey();
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-  }
-
-  void _afterLayout(_) {
-    _setSteps();
-    _scrollToStep();
-    _setShouldShowTutorialChevrons();
-  }
+  void didChangeDependencies() {
+    if (_isInit) {  
+      _goalsProvider = Provider.of<GoalsViewModel>(context);
+      _goalStepsProvider = Provider.of<StepsViewModel>(context);
+      _getSteps = _goalStepsProvider.getSteps(_goalsProvider.selectedGoal.id);
+      _isInit = false;
+    }
+    super.didChangeDependencies();
+  }  
 
   @override
   void dispose() {
@@ -64,6 +64,7 @@ class _StepsState extends State<Steps> {
   }
 
   void _setSteps() {
+    _steps = _goalStepsProvider.sortSteps(_steps);
     _goalStepsProvider.steps = _steps;
   }  
   
@@ -75,45 +76,31 @@ class _StepsState extends State<Steps> {
   }
   
   Widget _showSteps() {
-    return FutureBuilder<List<StepModel>>(
-      future: _goalStepsProvider.getSteps(_goalsProvider.selectedGoal.id),
-      builder: (BuildContext context, AsyncSnapshot<List<StepModel>> snapshot) {
-        if (snapshot.hasData) {
-          _steps = snapshot.data;
-          _steps = _goalStepsProvider.sortSteps(_steps);               
-          WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-          return Expanded(
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(top: 0.0),
-                    scrollDirection: _scrollDirection,
-                    controller: _scrollController,
-                    shrinkWrap: true,
-                    itemCount: _steps.length,
-                    itemBuilder: (BuildContext buildContext, int index) =>
-                      AutoScrollTag(
-                        key: ValueKey<int>(index),
-                        controller: _scrollController,
-                        index: index,
-                        child: StepCard(step: _steps[index])
-                      )
-                  )
-                ),
-                _showAddStepButton()
-              ]
+    return Expanded(
+      child: Column(
+        children: <Widget>[
+          Flexible(
+            fit: FlexFit.loose,
+            child: ListView.builder(
+              padding: const EdgeInsets.only(top: 0.0),
+              scrollDirection: _scrollDirection,
+              controller: _scrollController,
+              shrinkWrap: true,
+              itemCount: _steps.length,
+              itemBuilder: (BuildContext buildContext, int index) =>
+                AutoScrollTag(
+                  key: ValueKey<int>(index),
+                  controller: _scrollController,
+                  index: index,
+                  child: StepCard(step: _steps[index])
+                )
             )
-          );
-        } else {
-          return const Padding(
-            padding: EdgeInsets.only(top: 50.0),
-            child: Loader()
-          );
-        }
-      }
+          ),
+          _showAddStepButton()
+        ]
+      )
     );
+
   }
 
   Widget _showAddStepButton() {
@@ -143,11 +130,28 @@ class _StepsState extends State<Steps> {
     );
   }
 
+  void _afterLayout(_) {
+    _setSteps();
+    _scrollToStep();
+    _setShouldShowTutorialChevrons();
+  }  
+
   @override
   Widget build(BuildContext context) {
-    _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _goalStepsProvider = Provider.of<StepsViewModel>(context);
-
-    return _showSteps();
+    return FutureBuilder<List<StepModel>>(
+      future: _getSteps,
+      builder: (BuildContext context, AsyncSnapshot<List<StepModel>> snapshot) {
+        if (snapshot.hasData) {
+          _steps = snapshot.data;             
+          WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+          return _showSteps();
+        } else {
+          return const Padding(
+            padding: EdgeInsets.only(top: 50.0),
+            child: Loader()
+          );
+        }
+      }
+    );
   }
 }
