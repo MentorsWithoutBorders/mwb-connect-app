@@ -63,8 +63,8 @@ class _StepsState extends State<Steps> {
     }
   }
 
-  void _setSteps() {
-    _steps = _goalStepsProvider.sortSteps(_steps);
+  void _setSteps(List<StepModel> steps) {
+    _steps = _goalStepsProvider.sortSteps(steps);
     _goalStepsProvider.steps = _steps;
   }  
   
@@ -131,7 +131,6 @@ class _StepsState extends State<Steps> {
   }
 
   void _afterLayout(_) {
-    _setSteps();
     _scrollToStep();
     _setShouldShowTutorialChevrons();
   }  
@@ -142,7 +141,7 @@ class _StepsState extends State<Steps> {
       future: _getSteps,
       builder: (BuildContext context, AsyncSnapshot<List<StepModel>> snapshot) {
         if (snapshot.hasData) {
-          _steps = snapshot.data;             
+          _setSteps(snapshot.data);
           WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
           return _showSteps();
         } else {
