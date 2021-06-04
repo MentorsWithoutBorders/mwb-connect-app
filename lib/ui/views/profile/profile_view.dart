@@ -27,8 +27,8 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel _profileProvider;
   final ScrollController _scrollController = ScrollController();
-  User user;
-  List<Field> fields;  
+  User _user;
+  List<Field> _fields;  
   bool _profileRetrieved = false;
 
   @override
@@ -37,7 +37,7 @@ class _ProfileViewState extends State<ProfileView> {
     super.dispose();
   }  
 
-  Widget _showProfile(Profile profile) {
+  Widget _showProfile() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
@@ -148,9 +148,9 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
   
-  Widget _showContent(bool hasData, Profile profile) {
+  Widget _showContent(bool hasData) {
     if (hasData) {
-      return _showProfile(profile);
+      return _showProfile();
     } else {
       return const Loader();
     }
@@ -182,11 +182,11 @@ class _ProfileViewState extends State<ProfileView> {
 
   Future<Profile> _getProfile() async {
     if (!_profileRetrieved) {
-      user = await _profileProvider.getUserDetails();
-      fields = await _profileProvider.getFields();
+      _user = await _profileProvider.getUserDetails();
+      _fields = await _profileProvider.getFields();
       _profileRetrieved = true;
     }
-    return Profile(user: user, fields: fields);
+    return Profile(user: _user, fields: _fields);
   } 
 
   @override
@@ -214,7 +214,7 @@ class _ProfileViewState extends State<ProfileView> {
                   elevation: 0.0
                 ),
                 extendBodyBehindAppBar: true,
-                body: _showContent(snapshot.hasData, _profileProvider.profile)
+                body: _showContent(snapshot.hasData)
               )
             ],
           )

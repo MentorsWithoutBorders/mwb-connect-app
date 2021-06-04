@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/step_card_widget.dart';
@@ -24,20 +23,9 @@ class _StepsState extends State<Steps> {
   StepsViewModel _stepsProvider;  
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();
-  Future<List<StepModel>> _getSteps;
-  bool _isInit = true;
+  bool _isRetrievingSteps = false;
+  bool _stepsRetrieved = false;
   final GlobalKey _addStepKey = GlobalKey();
-
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {  
-      _goalsProvider = Provider.of<GoalsViewModel>(context);
-      _stepsProvider = Provider.of<StepsViewModel>(context);
-      _getSteps = _stepsProvider.getSteps(_goalsProvider.selectedGoal.id);
-      _isInit = false;
-    }
-    super.didChangeDependencies();
-  }  
 
   @override
   void dispose() {
@@ -61,10 +49,6 @@ class _StepsState extends State<Steps> {
       }
     }
   }
-
-  void _sortSteps(List<StepModel> steps) {
-     _stepsProvider.sortSteps(steps);
-  }  
   
   void _scrollToStep() {
     if (![-1,0].contains(_stepsProvider.previousStepIndex)) {
@@ -131,24 +115,40 @@ class _StepsState extends State<Steps> {
   void _afterLayout(_) {
     _scrollToStep();
     _setShouldShowTutorialChevrons();
-  }  
+  }
+  
+  Widget _showContent() {
+    if (_stepsRetrieved) {  
+      WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+      return _showSteps();
+    } else {
+      return const Padding(
+        padding: EdgeInsets.only(top: 50.0),
+        child: Loader()
+      );
+    }
+  }
+  
+  Future<void> _getSteps() async {
+    if (!_isRetrievingSteps) { 
+      _isRetrievingSteps = true; 
+      await _stepsProvider.getSteps(_goalsProvider.selectedGoal.id);
+      setState(() {
+        _stepsRetrieved = true;
+      });
+    }    
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<StepModel>>(
-      future: _getSteps,
-      builder: (BuildContext context, AsyncSnapshot<List<StepModel>> snapshot) {
-        if (snapshot.hasData) {
-          _sortSteps(snapshot.data);
-          WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-          return _showSteps();
-        } else {
-          return const Padding(
-            padding: EdgeInsets.only(top: 50.0),
-            child: Loader()
-          );
-        }
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
+
+    return FutureBuilder<void>(
+      future: _getSteps(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return _showContent();
       }
-    );
+    );    
   }
 }

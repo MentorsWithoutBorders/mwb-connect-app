@@ -13,8 +13,10 @@ class StepsViewModel extends ChangeNotifier {
   bool isTutorialPreviewsAnimationCompleted = false;
   bool shouldShowTutorialChevrons = false;  
   
-  Future<List<StepModel>> getSteps(String goalId) async {
-    return await _stepsService.getSteps(goalId);
+  Future<void> getSteps(String goalId) async {
+    steps = await _stepsService.getSteps(goalId);
+    steps = sortSteps(steps);
+    return ;
   }
 
   Future<StepModel> getStepById(String goalId, String id) async {
@@ -23,7 +25,7 @@ class StepsViewModel extends ChangeNotifier {
 
   Future<void> deleteStep(String id) async {
     await _stepsService.deleteStep(id);
-    _deleteStepFromList(id);
+    deleteStepFromList(id);
     return ;
   }
 
@@ -34,16 +36,16 @@ class StepsViewModel extends ChangeNotifier {
 
   Future<StepModel> addStep(String goalId, StepModel step) async { 
     StepModel stepAdded = await _stepsService.addStep(goalId, step);
-    _addStepToList(stepAdded);
     return stepAdded;
   }
 
-  void _addStepToList(StepModel step) {
+  void addStepToList(StepModel step) {
     steps.add(step);
+    steps = sortSteps(steps);
     notifyListeners();
   }
   
-  void _deleteStepFromList(String stepId) {
+  void deleteStepFromList(String stepId) {
     steps.removeWhere((StepModel step) => step.id == stepId);
     notifyListeners();
   }    
@@ -119,7 +121,6 @@ class StepsViewModel extends ChangeNotifier {
         sortedSteps.addAll(sortedStepsLevel2);    
       });      
     });
-    steps = sortedSteps;
     return sortedSteps;
   } 
 
@@ -183,6 +184,7 @@ class StepsViewModel extends ChangeNotifier {
         break;
       }
     }
+    notifyListeners();
   } 
 
   void moveStepDown(String goalId, List<StepModel> steps, StepModel step) {
@@ -197,6 +199,7 @@ class StepsViewModel extends ChangeNotifier {
         break;
       }
     }
+    notifyListeners();
   }
 
   void setIsTutorialPreviewsAnimationCompleted(bool isCompleted) {
