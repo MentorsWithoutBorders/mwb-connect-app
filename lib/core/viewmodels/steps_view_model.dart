@@ -23,18 +23,15 @@ class StepsViewModel extends ChangeNotifier {
     return await _stepsService.getStepById(goalId, id);
   }
 
-  Future<void> addStep(String goalId, String stepText) async {
-    final int index = getCurrentIndex(steps: steps, parentId: null) + 1; 
-    final StepModel step = StepModel(text: stepText, level: 0, index: index);       
-    StepModel stepAdded = await _stepsService.addStep(goalId, step);
-    _addStepToList(stepAdded);
-    _setAddedStepIndex(stepAdded);
-  }
-
-  Future<void> addSubStep(String goalId, String stepText) async {
-    final int level = selectedStep.level + 1;
-    final int index = getCurrentIndex(steps: steps, parentId: selectedStep.id) + 1;
-    final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: selectedStep.id);
+  Future<void> addStep({String goalId, String stepText, bool isSubStep}) async {
+    int level = 0;
+    String parentId;
+    if (isSubStep) {
+      level = selectedStep.level + 1;
+      parentId = selectedStep.id;
+    }
+    final int index = getCurrentIndex(steps: steps, parentId: parentId) + 1; 
+    final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: parentId);       
     StepModel stepAdded = await _stepsService.addStep(goalId, step);
     _addStepToList(stepAdded);
     _setAddedStepIndex(stepAdded);

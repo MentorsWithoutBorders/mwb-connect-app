@@ -148,7 +148,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
   }
 
   void _addSubStep() {
-    _stepsProvider.addSubStep(_goalsProvider.selectedGoal.id, _stepText);
+    _stepsProvider.addStep(goalId: _goalsProvider.selectedGoal.id, stepText: _stepText, isSubStep: true);
   }
 
   @override
