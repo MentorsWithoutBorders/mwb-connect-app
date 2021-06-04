@@ -15,7 +15,7 @@ class StepsViewModel extends ChangeNotifier {
   
   Future<void> getSteps(String goalId) async {
     steps = await _stepsService.getSteps(goalId);
-    steps = sortSteps(steps);
+    sortSteps();
     return ;
   }
 
@@ -28,7 +28,7 @@ class StepsViewModel extends ChangeNotifier {
     final StepModel step = StepModel(text: stepText, level: 0, index: index);       
     StepModel stepAdded = await _stepsService.addStep(goalId, step);
     _addStepToList(stepAdded);
-    _setAddedStepIndex(steps, step);
+    _setAddedStepIndex(stepAdded);
   }
 
   Future<void> addSubStep(String goalId, String stepText) async {
@@ -37,12 +37,12 @@ class StepsViewModel extends ChangeNotifier {
     final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: selectedStep.id);
     StepModel stepAdded = await _stepsService.addStep(goalId, step);
     _addStepToList(stepAdded);
-    _setAddedStepIndex(steps, step);
+    _setAddedStepIndex(stepAdded);
   }
   
   void _addStepToList(StepModel step) {
     steps.add(step);
-    steps = sortSteps(steps);
+    sortSteps();
     notifyListeners();
   }
     
@@ -89,7 +89,7 @@ class StepsViewModel extends ChangeNotifier {
     return subSteps;
   }
 
-  List<StepModel> sortSteps(List<StepModel> steps) {
+  List<void> sortSteps() {
     final List<StepModel> stepsLevel0 = [];
     final List<StepModel> stepsLevel1 = [];
     final List<StepModel> stepsLevel2 = [];
@@ -141,7 +141,7 @@ class StepsViewModel extends ChangeNotifier {
         sortedSteps.addAll(sortedStepsLevel2);    
       });      
     });
-    return sortedSteps;
+    steps = sortedSteps;
   } 
 
   List<StepModel> _sortStepsByIndex(List<StepModel> steps) {
@@ -165,19 +165,14 @@ class StepsViewModel extends ChangeNotifier {
     return index;
   }
 
-  void _setAddedStepIndex(List<StepModel> steps, StepModel step) {
-    int index = 0;
-    List<StepModel> sortedSteps = [];
-    sortedSteps.addAll(steps);
-    sortedSteps.add(step);
-    sortedSteps = sortSteps(sortedSteps);
-    for (int i = 0; i < sortedSteps.length; i++) {
-      if (step.id == sortedSteps[i].id) {
-        index = i;
+  void _setAddedStepIndex(StepModel step) {
+    sortSteps();
+    for (int i = 0; i < steps.length; i++) {
+      if (step.id == steps[i].id) {
+        previousStepIndex = i;
         break;
       }
     }
-    previousStepIndex = index;
     notifyListeners();
   }
   
@@ -204,7 +199,7 @@ class StepsViewModel extends ChangeNotifier {
         break;
       }
     }
-    steps = sortSteps(steps);
+    sortSteps();
     notifyListeners();
   } 
 
@@ -220,7 +215,7 @@ class StepsViewModel extends ChangeNotifier {
         break;
       }
     }
-    steps = sortSteps(steps);
+    sortSteps();
     notifyListeners();
   }
 
