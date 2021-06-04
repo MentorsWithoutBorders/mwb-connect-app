@@ -61,7 +61,7 @@ class StepsViewModel extends ChangeNotifier {
     }
     await _stepsService.deleteStep(id);
     deleteStepFromList(id);
-    _updateIndexesAfterDeleteStep(goalId, steps, selectedStep);    
+    _updateIndexesAfterDeleteStep(goalId, selectedStep);    
     return ;
   }
 
@@ -181,7 +181,7 @@ class StepsViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  void _updateIndexesAfterDeleteStep(String goalId, List<StepModel> steps, StepModel step) {
+  void _updateIndexesAfterDeleteStep(String goalId, StepModel step) {
     for (int i = 0; i < steps.length; i++) {
       if (steps[i].parentId == step.parentId && 
           steps[i].index > step.index) {
@@ -204,6 +204,7 @@ class StepsViewModel extends ChangeNotifier {
         break;
       }
     }
+    steps = sortSteps(steps);
     notifyListeners();
   } 
 
@@ -219,6 +220,7 @@ class StepsViewModel extends ChangeNotifier {
         break;
       }
     }
+    steps = sortSteps(steps);
     notifyListeners();
   }
 
