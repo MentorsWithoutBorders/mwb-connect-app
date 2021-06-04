@@ -242,7 +242,7 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _deleteStep(List<String> subSteps) {
-    _stepsProvider.deleteStep(_stepsProvider.selectedStep.id, _goalsProvider.selectedGoal.id);
+    _stepsProvider.deleteStep(_stepsProvider.selectedStep.id);
     Navigator.pop(widget.context);    
   }
 

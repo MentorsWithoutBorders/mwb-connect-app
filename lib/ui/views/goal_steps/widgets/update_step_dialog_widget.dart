@@ -149,7 +149,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   void _updateStep() {
     final StepModel step = _stepsProvider.selectedStep;
     step.text = _stepText;
-    _stepsProvider.updateStep(_goalsProvider.selectedGoal.id, step, _stepsProvider.selectedStep.id);
+    _stepsProvider.updateStep(step, _stepsProvider.selectedStep.id);
   }
 
   @override

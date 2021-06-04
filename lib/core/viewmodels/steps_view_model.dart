@@ -15,7 +15,7 @@ class StepsViewModel extends ChangeNotifier {
   
   Future<void> getSteps(String goalId) async {
     steps = await _stepsService.getSteps(goalId);
-    sortSteps();
+    _sortSteps();
     return ;
   }
 
@@ -39,16 +39,26 @@ class StepsViewModel extends ChangeNotifier {
   
   void _addStepToList(StepModel step) {
     steps.add(step);
-    sortSteps();
+    _sortSteps();
     notifyListeners();
   }
+
+  void _setAddedStepIndex(StepModel step) {
+    for (int i = 0; i < steps.length; i++) {
+      if (step.id == steps[i].id) {
+        previousStepIndex = i;
+        break;
+      }
+    }
+    notifyListeners();
+  }  
     
-  Future<void> updateStep(String goalId, StepModel step, String id) async {
+  Future<void> updateStep(StepModel step, String id) async {
     await _stepsService.updateStep(step, id);
     return ;
   }
 
-  Future<void> deleteStep(String id, String goalId) async {
+  Future<void> deleteStep(String id) async {
     final List<String> subSteps = getSubSteps(id);
     if (subSteps.isNotEmpty) {
       subSteps.forEach((String subStepId) async { 
@@ -58,7 +68,7 @@ class StepsViewModel extends ChangeNotifier {
     }
     await _stepsService.deleteStep(id);
     deleteStepFromList(id);
-    _updateIndexesAfterDeleteStep(goalId, selectedStep);    
+    _updateIndexesAfterDeleteStep(selectedStep);    
     return ;
   }
 
@@ -86,7 +96,7 @@ class StepsViewModel extends ChangeNotifier {
     return subSteps;
   }
 
-  List<void> sortSteps() {
+  void _sortSteps() {
     final List<StepModel> stepsLevel0 = [];
     final List<StepModel> stepsLevel1 = [];
     final List<StepModel> stepsLevel2 = [];
@@ -161,25 +171,14 @@ class StepsViewModel extends ChangeNotifier {
     });
     return index;
   }
-
-  void _setAddedStepIndex(StepModel step) {
-    sortSteps();
-    for (int i = 0; i < steps.length; i++) {
-      if (step.id == steps[i].id) {
-        previousStepIndex = i;
-        break;
-      }
-    }
-    notifyListeners();
-  }
   
-  void _updateIndexesAfterDeleteStep(String goalId, StepModel step) {
+  void _updateIndexesAfterDeleteStep(StepModel step) {
     for (int i = 0; i < steps.length; i++) {
       if (steps[i].parentId == step.parentId && 
           steps[i].index > step.index) {
         final StepModel modifiedStep = steps[i];
         modifiedStep.index--;
-        updateStep(goalId, modifiedStep, modifiedStep.id);
+        updateStep(modifiedStep, modifiedStep.id);
       }
     }    
   }
@@ -191,12 +190,12 @@ class StepsViewModel extends ChangeNotifier {
         final StepModel previousStep = steps[i];
         previousStep.index++;
         step.index--;
-        updateStep(goalId, previousStep, previousStep.id);
-        updateStep(goalId, step, step.id);
+        updateStep(previousStep, previousStep.id);
+        updateStep(step, step.id);
         break;
       }
     }
-    sortSteps();
+    _sortSteps();
     notifyListeners();
   } 
 
@@ -207,12 +206,12 @@ class StepsViewModel extends ChangeNotifier {
         final StepModel nextStep = steps[i];
         nextStep.index--;
         step.index++;
-        updateStep(goalId, nextStep, nextStep.id);
-        updateStep(goalId, step, step.id);
+        updateStep(nextStep, nextStep.id);
+        updateStep(step, step.id);
         break;
       }
     }
-    sortSteps();
+    _sortSteps();
     notifyListeners();
   }
 
