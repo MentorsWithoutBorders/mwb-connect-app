@@ -26,7 +26,7 @@ class _StepsState extends State<Steps> {
   bool _isRetrievingSteps = false;
   bool _stepsRetrieved = false;
   final GlobalKey _addStepKey = GlobalKey();
-
+  
   @override
   void dispose() {
     _scrollController.dispose();
@@ -52,7 +52,7 @@ class _StepsState extends State<Steps> {
   
   void _scrollToStep() {
     if (![-1,0].contains(_stepsProvider.previousStepIndex)) {
-      _scrollController.scrollToIndex(_stepsProvider.previousStepIndex, preferPosition: AutoScrollPosition.begin);
+      _scrollController.scrollToIndex(_stepsProvider.previousStepIndex - 1, preferPosition: AutoScrollPosition.begin);
       _stepsProvider.previousStepIndex = -1;
     }
   }
@@ -81,8 +81,7 @@ class _StepsState extends State<Steps> {
           _showAddStepButton()
         ]
       )
-    );
-
+    ); 
   }
 
   Widget _showAddStepButton() {
@@ -113,8 +112,8 @@ class _StepsState extends State<Steps> {
   }
 
   void _afterLayout(_) {
-    _scrollToStep();
     _setShouldShowTutorialChevrons();
+    _scrollToStep();
   }
   
   Widget _showContent() {
@@ -142,9 +141,7 @@ class _StepsState extends State<Steps> {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _stepsProvider = Provider.of<StepsViewModel>(context);
-
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    _stepsProvider = Provider.of<StepsViewModel>(context);    
 
     return FutureBuilder<void>(
       future: _getSteps(),
