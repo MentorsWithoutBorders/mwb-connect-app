@@ -171,11 +171,11 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _moveStepUp() {
-    _stepsProvider.moveStepUp(_goalsProvider.selectedGoal.id, _stepsProvider.steps, _stepsProvider.selectedStep);
+    _stepsProvider.moveStepUp(_goalsProvider.selectedGoal.id, _stepsProvider.selectedStep);
   }
 
   void _moveStepDown() {
-    _stepsProvider.moveStepDown(_goalsProvider.selectedGoal.id, _stepsProvider.steps, _stepsProvider.selectedStep);
+    _stepsProvider.moveStepDown(_goalsProvider.selectedGoal.id, _stepsProvider.selectedStep);
   }  
   
   Widget _showDeleteStepDialog() {
@@ -242,13 +242,7 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _deleteStep(List<String> subSteps) {
-    _stepsProvider.deleteStep(_stepsProvider.selectedStep.id);
-    _stepsProvider.updateIndexesAfterDeleteStep(_goalsProvider.selectedGoal.id, _stepsProvider.steps, _stepsProvider.selectedStep);
-    if (subSteps.isNotEmpty) {
-      subSteps.forEach((String stepId) { 
-        _stepsProvider.deleteStep(stepId);
-      });
-    }
+    _stepsProvider.deleteStep(_stepsProvider.selectedStep.id, _goalsProvider.selectedGoal.id);
     Navigator.pop(widget.context);    
   }
 

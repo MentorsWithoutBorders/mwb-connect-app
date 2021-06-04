@@ -23,28 +23,48 @@ class StepsViewModel extends ChangeNotifier {
     return await _stepsService.getStepById(goalId, id);
   }
 
-  Future<void> deleteStep(String id) async {
-    await _stepsService.deleteStep(id);
-    deleteStepFromList(id);
-    return ;
+  Future<void> addStep(String goalId, String stepText) async {
+    final int index = getCurrentIndex(steps: steps, parentId: null) + 1; 
+    final StepModel step = StepModel(text: stepText, level: 0, index: index);       
+    _setAddedStepIndex(steps, step);
+    StepModel stepAdded = await _stepsService.addStep(goalId, step);
+    _addStepToList(stepAdded);
   }
 
+  Future<void> addSubStep(String goalId, String stepText) async {
+    final int level = selectedStep.level + 1;
+    final int index = getCurrentIndex(steps: steps, parentId: selectedStep.id) + 1;
+    final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: selectedStep.id);
+    _setAddedStepIndex(steps, step);
+    StepModel stepAdded = await _stepsService.addStep(goalId, step);
+    _addStepToList(stepAdded);
+  }
+  
+  void _addStepToList(StepModel step) {
+    steps.add(step);
+    steps = sortSteps(steps);
+    notifyListeners();
+  }
+    
   Future<void> updateStep(String goalId, StepModel step, String id) async {
     await _stepsService.updateStep(step, id);
     return ;
   }
 
-  Future<StepModel> addStep(String goalId, StepModel step) async { 
-    StepModel stepAdded = await _stepsService.addStep(goalId, step);
-    return stepAdded;
+  Future<void> deleteStep(String id, String goalId) async {
+    final List<String> subSteps = getSubSteps(id);
+    if (subSteps.isNotEmpty) {
+      subSteps.forEach((String subStepId) async { 
+        await _stepsService.deleteStep(subStepId);
+        deleteStepFromList(subStepId);
+      });
+    }
+    await _stepsService.deleteStep(id);
+    deleteStepFromList(id);
+    _updateIndexesAfterDeleteStep(goalId, steps, selectedStep);    
+    return ;
   }
 
-  void addStepToList(StepModel step) {
-    steps.add(step);
-    steps = sortSteps(steps);
-    notifyListeners();
-  }
-  
   void deleteStepFromList(String stepId) {
     steps.removeWhere((StepModel step) => step.id == stepId);
     notifyListeners();
@@ -145,7 +165,7 @@ class StepsViewModel extends ChangeNotifier {
     return index;
   }
 
-  void setAddedStepIndex(List<StepModel> steps, StepModel step) {
+  void _setAddedStepIndex(List<StepModel> steps, StepModel step) {
     int index = 0;
     List<StepModel> sortedSteps = [];
     sortedSteps.addAll(steps);
@@ -161,7 +181,7 @@ class StepsViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  void updateIndexesAfterDeleteStep(String goalId, List<StepModel> steps, StepModel step) {
+  void _updateIndexesAfterDeleteStep(String goalId, List<StepModel> steps, StepModel step) {
     for (int i = 0; i < steps.length; i++) {
       if (steps[i].parentId == step.parentId && 
           steps[i].index > step.index) {
@@ -172,7 +192,7 @@ class StepsViewModel extends ChangeNotifier {
     }    
   }
 
-  void moveStepUp(String goalId, List<StepModel> steps, StepModel step) {
+  void moveStepUp(String goalId, StepModel step) {
     for (int i = 0; i < steps.length; i++) {
       if (steps[i].parentId == step.parentId &&
           steps[i].index == step.index - 1) {
@@ -187,7 +207,7 @@ class StepsViewModel extends ChangeNotifier {
     notifyListeners();
   } 
 
-  void moveStepDown(String goalId, List<StepModel> steps, StepModel step) {
+  void moveStepDown(String goalId, StepModel step) {
     for (int i = 0; i < steps.length; i++) {
       if (steps[i].parentId == step.parentId &&
           steps[i].index == step.index + 1) {

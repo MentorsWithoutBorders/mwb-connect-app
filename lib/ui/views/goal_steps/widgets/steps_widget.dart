@@ -144,6 +144,8 @@ class _StepsState extends State<Steps> {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context);
 
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+
     return FutureBuilder<void>(
       future: _getSteps(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
