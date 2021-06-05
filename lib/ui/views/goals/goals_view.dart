@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
@@ -39,13 +38,14 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();  
   final int _opacityDuration = 300;
-  bool _isLoaded = false;
+  bool _isRetrievingGoals = false;
+  bool _goalsRetrieved = false;
   bool _shouldShowGoals = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout); 
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -175,16 +175,18 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     );
   }
 
-  void _getGoals() {
-    _goalsProvider.getGoals().then((List<Goal> goals) {
+  Future<void> _getGoals() async {
+    if (!_isRetrievingGoals) { 
+      _isRetrievingGoals = true; 
+      await _goalsProvider.getGoals();
       setState(() {
-        _isLoaded = true;
+        _goalsRetrieved = true;
       });
-    });
+    } 
   }
   
   Widget _showContent() {
-    if (_isLoaded) {
+    if (_goalsRetrieved) {
       if (_goalsProvider.goals.isNotEmpty) {
         // For opacity animation
         Future<void>.delayed(const Duration(milliseconds: 300), () {
@@ -194,6 +196,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
             });
           }
         });
+        WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
         return _showGoals();
       } else {
         return FirstGoal();
@@ -208,24 +211,26 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _quizProvider = Provider.of<QuizzesViewModel>(context);
 
-    if (!_isLoaded) {
-      _getGoals();
-    }
-
-    return Scaffold(
-      appBar: AppBar(      
-        title: _showTitle(),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-      ),
-      extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: <Widget>[
-          BackgroundGradient(),
-          _showContent()
-        ]
-      )
+    return FutureBuilder<void>(
+      future: _getGoals(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return Stack(
+          children: <Widget>[
+            const BackgroundGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                title: _showTitle(),
+                backgroundColor: Colors.transparent,          
+                elevation: 0.0
+              ),
+              extendBodyBehindAppBar: true,
+              resizeToAvoidBottomInset: false,                
+              body: _showContent()
+            )
+          ],
+        );
+      }
     );
-  }
+  }    
 }
