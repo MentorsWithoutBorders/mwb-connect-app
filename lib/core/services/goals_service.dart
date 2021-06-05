@@ -11,7 +11,7 @@ class GoalsService {
 
   Future<List<Goal>> getGoals() async {
     String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/goals/$userId');
+    http.Response response = await _api.getHTTP(url: '/$userId/goals');
     List<Goal> goals = [];
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -22,7 +22,7 @@ class GoalsService {
 
   Future<Goal> getGoalById(String id) async {
     String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/goals/$userId/$id');
+    http.Response response = await _api.getHTTP(url: '/$userId/goals/$id');
     Goal goal;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -33,7 +33,7 @@ class GoalsService {
 
   Future<Goal> addGoal(Goal goal) async {
     String userId = _storageService.userId;
-    http.Response response = await _api.postHTTP(url: '/goals/$userId', data: goal.toJson());  
+    http.Response response = await _api.postHTTP(url: '/$userId/goals', data: goal.toJson());  
     Goal addedGoal;
     if (response != null) {
       var json = jsonDecode(response.body);
