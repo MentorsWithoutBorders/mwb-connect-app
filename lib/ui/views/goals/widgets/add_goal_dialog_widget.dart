@@ -114,7 +114,6 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
       size: 18.0,
       controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1000)),
     );
-
     return Padding(
       padding: const EdgeInsets.only(top: 30.0),
       child: Row(
@@ -147,8 +146,9 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
             child: !_isAddingGoal ? Text(
               'goals.add_goal'.tr(), 
               style: const TextStyle(color: Colors.white)
-            ) : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            ) : SizedBox(
+              width: 56.0,
+              height: 16.0,
               child: loader,
             )
           )

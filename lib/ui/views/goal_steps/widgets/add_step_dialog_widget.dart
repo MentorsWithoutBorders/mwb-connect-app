@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
@@ -23,6 +24,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   StepsViewModel _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
+  bool _isAddingStep = false;  
   
   @override
   void initState() {
@@ -111,6 +113,11 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   }
 
   Widget _showButtons() {
+    final SpinKitThreeBounce loader = SpinKitThreeBounce(
+      color: Colors.white,
+      size: 18.0,
+      controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1000)),
+    );
     return Padding(
       padding: const EdgeInsets.only(top: 30.0),
       child: Row(
@@ -133,22 +140,32 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
               ),
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
             ),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
+            onPressed: () async {
+              if (_formKey.currentState.validate() && !_isAddingStep) {
                 _formKey.currentState.save();
-                _addStep();
+                await _addStep();
                 Navigator.pop(context);
               } 
             },
-            child: Text('steps.add_step'.tr(), style: const TextStyle(color: Colors.white))
+            child: !_isAddingStep ? Text(
+              'steps.add_step'.tr(), 
+              style: const TextStyle(color: Colors.white)
+            ) : SizedBox(
+              width: 56.0,
+              height: 16.0,
+              child: loader,
+            )
           )
         ]
       )
     ); 
   }
   
-  void _addStep() {
-    _stepsProvider.addStep(goalId: _goalsProvider.selectedGoal.id, stepText: _stepText, isSubStep: false);
+  Future<void> _addStep() async {
+    setState(() {
+      _isAddingStep = true;
+    });
+    await _stepsProvider.addStep(goalId: _goalsProvider.selectedGoal.id, stepText: _stepText, isSubStep: false);
   }
 
   @override

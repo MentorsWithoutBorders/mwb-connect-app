@@ -27,12 +27,12 @@ class GoalsViewModel extends ChangeNotifier {
     return ;
   }
 
-  Future<void> addGoal(String goalText) async {
+  Future<Goal> addGoal(String goalText) async {
     Goal goal = Goal(text: goalText);
     Goal addedGoal = await _goalsService.addGoal(goal);
     addGoalToList(addedGoal);
     setWasGoalAdded(true);    
-    return ;
+    return addedGoal;
   }
 
   void _deleteGoalFromList(String goalId) {

@@ -60,14 +60,14 @@ class StepsViewModel extends ChangeNotifier {
 
   Future<void> deleteStep(String id) async {
     final List<String> subSteps = getSubSteps(id);
+    deleteStepFromList(id);
     if (subSteps.isNotEmpty) {
       subSteps.forEach((String subStepId) async { 
-        await _stepsService.deleteStep(subStepId);
         deleteStepFromList(subStepId);
+        await _stepsService.deleteStep(subStepId);
       });
     }
     await _stepsService.deleteStep(id);
-    deleteStepFromList(id);
     _updateIndexesAfterDeleteStep(selectedStep);    
     return ;
   }

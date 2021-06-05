@@ -168,11 +168,9 @@ class _FirstGoalState extends State<FirstGoal> {
     _transitionToGoalSteps();
     // Needed for setState to not be called when FirstGoal is not part of the view
     await Future<void>.delayed(const Duration(milliseconds: 350));
-    final Goal goal = Goal(text: _goalText);
     _isAddingGoal = true;
-    final Goal addedGoal = await _goalsProvider.addGoal(goal);
+    final Goal addedGoal = await _goalsProvider.addGoal(_goalText);
     _isAddingGoal = false;
-    _goalsProvider.addGoalToList(addedGoal);
     _goalsProvider.setSelectedGoal(addedGoal);
     _goToGoalStepsView();
   }
