@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/models/goal_model.dart';
 
 class AddGoalDialog extends StatefulWidget {
   const AddGoalDialog({Key key})
@@ -162,10 +161,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
     setState(() {
       _isAddingGoal = true;
     });
-    final Goal goal = Goal(text: _goalText);
-    final Goal addedGoal = await _goalsProvider.addGoal(goal);
-    _goalsProvider.addGoalToList(addedGoal);
-    _goalsProvider.setWasGoalAdded(true);
+    await _goalsProvider.addGoal(_goalText);
   }
 
   @override
