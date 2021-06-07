@@ -6,7 +6,6 @@ import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_view.dart';
-import 'package:mwb_connect_app/ui/views/others/feedback_view.dart';
 import 'package:mwb_connect_app/ui/views/others/terms_view.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -105,23 +104,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
-            },
-          ),
-          ListTile(
-            leading: const Padding(
-              padding: EdgeInsets.only(left: 5.0),
-              child: IconTheme(
-                data: IconThemeData(
-                  color: AppColors.SILVER
-                ),
-                child: Icon(Icons.feedback),
-              )
-            ),
-            dense: true,
-            title: Text('drawer.feedback'.tr()),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute<FeedbackView>(builder: (_) => FeedbackView()));
             },
           ),
           ListTile(

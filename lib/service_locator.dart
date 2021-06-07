@@ -22,7 +22,6 @@ import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/support_request_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/feedback_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
 
 GetIt locator = GetIt.instance;
@@ -51,6 +50,5 @@ void setupLocator() {
   locator.registerLazySingleton(() => QuizzesViewModel());
   locator.registerLazySingleton(() => NotificationsViewModel());
   locator.registerLazySingleton(() => SupportRequestViewModel());
-  locator.registerLazySingleton(() => FeedbackViewModel());
   locator.registerLazySingleton(() => UpdatesViewModel());
 }
