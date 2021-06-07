@@ -23,14 +23,14 @@ class UserService {
       if (user.isMentor != null) {
         _storageService.isMentor = user.isMentor;
       }
-      // // Get notifications settings
-      // final NotificationSettings notificationSettings = await _notificationsService.getNotificationSettings();
-      // if (notificationSettings != null) {
-      //   _storageService.notificationsEnabled = notificationSettings.enabled;
-      // }
-      // if (notificationSettings != null && notificationSettings.time != null) {
-      //   _storageService.notificationsTime = notificationSettings.time;
-      // }
+      // Get notifications settings
+      final NotificationSettings notificationSettings = await _notificationsService.getNotificationSettings();
+      if (notificationSettings != null) {
+        _storageService.notificationsEnabled = notificationSettings.enabled;
+      }
+      if (notificationSettings != null && notificationSettings.time != null) {
+        _storageService.notificationsTime = notificationSettings.time;
+      }
     }
   }
 

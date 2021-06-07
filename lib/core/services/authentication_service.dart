@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/tokens_model.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 
 class AuthService {
   final ApiService _api = locator<ApiService>();

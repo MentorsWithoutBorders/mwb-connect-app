@@ -115,7 +115,7 @@ class _RootViewState extends State<RootView> {
   
   Future<bool> _init() async {
     _setCurrentUser();   
-    //_setPreferences();
+    _setPreferences();
     bool isMentor = await _rootProvider.getIsMentor();
     // _getImages();
     // _setLocalNotifications();

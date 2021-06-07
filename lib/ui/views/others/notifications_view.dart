@@ -105,8 +105,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
             // Android
             if (Platform.isAndroid) Switch(
               value: _storageService.notificationsEnabled,
-              onChanged: (bool value){
-                _updateNotificationsEnabled(value);
+              onChanged: (bool value) async {
+                await _updateNotificationsEnabled(value);
               },
               activeTrackColor: Colors.lightGreenAccent,
               activeColor: Colors.green,
@@ -118,8 +118,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                 scale: 0.8,
                 child: CupertinoSwitch(
                   value: _storageService.notificationsEnabled,
-                  onChanged: (bool value){
-                    _updateNotificationsEnabled(value);
+                  onChanged: (bool value) async {
+                    await _updateNotificationsEnabled(value);
                   }
                 )
               ),
@@ -150,7 +150,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
       setState(() {
         _isEnabled = true;
       });
-      _updateNotificationsEnabled(true);
+      await _updateNotificationsEnabled(true);
       _setPickedTimeAndroid(picked);
       _updateNotificationsTime(_pickedTime);
     }    
@@ -165,7 +165,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     _controller.forward();    
   }
 
-  void _updateNotificationsEnabled(bool value) {
+  Future<void> _updateNotificationsEnabled(bool value) async {
     if (value == false && Platform.isIOS) {
       _controller.reverse();
     }
@@ -174,7 +174,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     });    
     _storageService.notificationsEnabled = value;
     final NotificationSettings notificationSettings = NotificationSettings(enabled: value, time: _storageService.notificationsTime);
-    _notificationsViewModel.updateNotificationSettings(notificationSettings);
+    await _notificationsViewModel.updateNotificationSettings(notificationSettings);
   }
 
   void _updateNotificationsTime(String time) {
@@ -242,8 +242,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                       ), 
                     ),
                   ),
-                  onTap: () {
-                    _updateNotificationsEnabled(true);
+                  onTap: () async {
+                    await _updateNotificationsEnabled(true);
                     if (_pickedTime != null) {
                       _updateNotificationsTime(_pickedTime);
                     }

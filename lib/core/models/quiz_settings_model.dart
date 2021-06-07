@@ -1,14 +1,12 @@
 class QuizSettings {
-  String id;
   int count;
   int rounds;
   int timeBetweenRounds;
   bool showTimer;
 
-  QuizSettings({this.id, this.count, this.rounds, this.timeBetweenRounds, this.showTimer});
+  QuizSettings({this.count, this.rounds, this.timeBetweenRounds, this.showTimer});
 
-  QuizSettings.fromMap(Map snapshot, String id) :
-    id = id,
+  QuizSettings.fromJson(Map<String, dynamic> snapshot) :
     count = snapshot['count'] ?? 0,
     rounds = snapshot['rounds'] ?? 0,
     timeBetweenRounds = snapshot['timeBetweenRounds'] ?? 0,

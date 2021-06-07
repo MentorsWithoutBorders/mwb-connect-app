@@ -1,12 +1,10 @@
 class NotificationSettings {
-  String id;
   bool enabled;
   String time;
 
-  NotificationSettings({this.id, this.enabled, this.time});
+  NotificationSettings({this.enabled, this.time});
 
-  NotificationSettings.fromMap(Map snapshot, String id) :
-    id = id,
+  NotificationSettings.fromJson(Map<String, dynamic> snapshot) :
     enabled = snapshot['enabled'] ?? true,
     time = snapshot['time'];
 

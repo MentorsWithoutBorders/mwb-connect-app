@@ -7,17 +7,16 @@ import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/quiz_settings_model.dart';
-import 'package:mwb_connect_app/core/services/api_service_old.dart';
+import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class DownloadService { 
-  final Api _api = locator<Api>();
+  final ApiService _api = locator<ApiService>();
 
   Future<void> initAppDirectory() async {
     await _createDir('i18n');
@@ -98,12 +97,10 @@ class DownloadService {
   Future<void> setPreferences() async {
     final LocalStorageService storageService = locator<LocalStorageService>();
     // Set tutorial sections
-    final Tutorial previews = await _getTutorial('previews');
-    final List<String> sections = previews.sections;
+    final List<Tutorial> tutorialsList = await _getTutorials();
     final Map<String, List<String>> tutorials = {};
-    await Future.forEach(sections, (String section) async {
-      final Tutorial tutorial = await _getTutorial(section);
-      tutorials[section] = tutorial.sections;
+    tutorialsList.forEach((tutorial) { 
+      tutorials[tutorial.type] = tutorial.sections;
     });
     if (tutorials.isNotEmpty) {
       storageService.tutorials = tutorials;
@@ -197,14 +194,24 @@ class DownloadService {
     }
   }
 
-  Future<Tutorial> _getTutorial(String type) async {
-    final DocumentSnapshot doc = await _api.getDocumentById(path: 'tutorials', isForUser: false, id: type);
-    return Tutorial.fromMap(doc.data(), doc.id);    
+  Future<List<Tutorial>> _getTutorials() async {
+    http.Response response = await _api.getHTTP(url: '/tutorials');
+    List<Tutorial> tutorials = [];
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      tutorials = List<Tutorial>.from(json.map((model) => Tutorial.fromJson(model)));      
+    }
+    return tutorials;
   }
 
   Future<QuizSettings> _getQuizSettings() async {
-    final DocumentSnapshot doc = await _api.getDocumentById(path: 'quizzes', isForUser: false, id: 'settings');
-    return QuizSettings.fromMap(doc.data(), doc.id) ;
+    http.Response response = await _api.getHTTP(url: '/quizzes_settings');
+    QuizSettings quizSettings;
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      quizSettings = QuizSettings.fromJson(json);
+    }
+    return quizSettings;
   } 
 
   Future<void> showFiles() async {

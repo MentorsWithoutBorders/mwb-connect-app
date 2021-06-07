@@ -8,10 +8,10 @@ class NotificationsViewModel extends ChangeNotifier {
   final NotificationsService _notificationsService = locator<NotificationsService>();
   bool notificationSettingsUpdated = true;
 
-  Future<void> updateNotificationSettings(NotificationSettings data) async {
+  Future<void> updateNotificationSettings(NotificationSettings notificationSettings) async {
     notificationSettingsUpdated = true;
     notifyListeners();
-    await _notificationsService.updateNotificationSettings(data);
+    await _notificationsService.updateNotificationSettings(notificationSettings);
     return ;
   }
 
