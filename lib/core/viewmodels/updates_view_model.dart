@@ -1,21 +1,23 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:package_info/package_info.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/api_service_old.dart';
+import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/update_model.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 
 class UpdatesViewModel extends ChangeNotifier {
-  final Api _api = locator<Api>();
+  final ApiService _api = locator<ApiService>();
 
   Future<Update> _getCurrentVersion() async {
-    final DocumentSnapshot doc = await _api.getDocumentById(path: 'updates', isForUser: false, id: 'version');
-    if (doc.exists) {
-      return Update.fromMap(doc.data(), doc.id);
-    } else {
-      return Update();
+    http.Response response = await _api.getHTTP(url: '/updates');
+    Update update;
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      update = Update.fromJson(json);
     }
+    return update;
   }
   
   Future<UpdateStatus> getUpdateStatus() async {
