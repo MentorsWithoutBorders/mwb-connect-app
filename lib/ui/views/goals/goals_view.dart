@@ -53,12 +53,12 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   Future<void> reassemble() async {
     super.reassemble();
     //Show quiz
-    // await _quizProvider.getQuizNumber();
-    // if (_storageService.quizNumber != -1) {
+    // int quizNumber = await _quizProvider.getQuizNumber();
+    // if (quizNumber != 0) {
     //   showDialog(
     //     context: context,
     //     builder: (_) => AnimatedDialog(
-    //       widgetInside: QuizView(),
+    //       widgetInside: QuizView(quizNumber: quizNumber),
     //       hasInput: false
     //     ),
     //   );

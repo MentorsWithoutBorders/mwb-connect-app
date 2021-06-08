@@ -2,32 +2,29 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/utils/quiz_status.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
 
 class QuizView extends StatefulWidget {
-  const QuizView({Key key})
+  const QuizView({Key key, @required this.quizNumber})
     : super(key: key); 
   
+  final int quizNumber;
+
   @override
   State<StatefulWidget> createState() => _QuizState();
 }
 
 class _QuizState extends State<QuizView> {
-  final LocalStorageService _storageService = locator<LocalStorageService>();
   QuizzesViewModel _quizProvider;  
   final int _maxOptions = 3;
   int _selectedIndex = -1;
   bool _wasSelected = false;
   bool _closeWasPressed = false;
+  bool _isCorrect;
   String _answer;
-  String _status;
   Timer _timer;
   int _timerStart = 3;
 
@@ -38,7 +35,7 @@ class _QuizState extends State<QuizView> {
   }
 
   Widget _showQuiz() {
-    final int quizNumber = _storageService.quizNumber;
+    final int quizNumber = widget.quizNumber;
     final String question = 'quizzes.quiz$quizNumber.question'.tr();
     final List<String> options = [];
     for (int i = 1; i <= _maxOptions; i++) {
@@ -256,19 +253,13 @@ class _QuizState extends State<QuizView> {
   void _onSelected(int index, String answer) {
     _wasSelected = true;
     if ((index + 1).toString() == answer) {
-      _quizProvider.setQuizStatus(_quizProvider.quizStatus, _storageService.quizNumber);
-      _status = EnumToString.convertToString(QuizStatus.correct);
+      _isCorrect = true;
     } else {
-      _status = EnumToString.convertToString(QuizStatus.incorrect);
-    }
+      _isCorrect = false;
+    }    
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  DateTime _getCurrentDateTime() {
-    DateTime now = DateTime.now();
-    return DateTime(now.year, now.month, now.day, now.hour, now.minute);    
   }
 
   bool _checkIncorrectAnswer(int index, String answer) {
@@ -280,10 +271,10 @@ class _QuizState extends State<QuizView> {
   }
 
   Future<bool> _onWillPop() async {
-    _status ??= EnumToString.convertToString(QuizStatus.closed);
-    final Quiz quiz = Quiz(number: _storageService.quizNumber, status: _status, dateTime: _getCurrentDateTime());
+    bool isClosed = _isCorrect == null ? true : null;
+    final Quiz quiz = Quiz(number: widget.quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
 
-    if (_storageService.showQuizTimer && !_wasSelected && _timerStart > 0) {
+    if (_quizProvider.showQuizTimer && !_wasSelected && _timerStart > 0) {
       if (_timer == null) {
         setState(() {
           _selectedIndex = int.parse(_answer) - 1;
@@ -296,10 +287,9 @@ class _QuizState extends State<QuizView> {
     } else {
       _timer?.cancel();
       if (_closeWasPressed) {
-        _quizProvider.addQuiz(data: quiz);
+        _quizProvider.addQuiz(quiz);
         Navigator.pop(context);
       }
-      _quizProvider.setQuizNumber();
       return true;
     }
   }

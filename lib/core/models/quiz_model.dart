@@ -1,22 +1,20 @@
 class Quiz {
-  String id;
   int number;
-  String status;
-  DateTime dateTime;
+  bool isCorrect;
+  bool isClosed;
 
-  Quiz({this.id, this.number, this.status, this.dateTime});
+  Quiz({this.number, this.isCorrect, this.isClosed});
 
-  Quiz.fromMap(Map snapshot, String id) :
-    id = id,
+  Quiz.fromJson(Map<String, dynamic> snapshot) :
     number = snapshot['number'],
-    status = snapshot['status'] ?? '',
-    dateTime = snapshot['dateTime']?.toDate();
+    isCorrect = snapshot['isCorrect'] ?? null,
+    isClosed = snapshot['isClosed'] ?? null;
 
   Map<String, Object> toJson() {
     return {
       'number': number,
-      'status': status,
-      'dateTime': dateTime
+      'isCorrect': isCorrect,
+      'isClosed': isClosed
     };
   }
 }

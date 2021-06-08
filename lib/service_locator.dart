@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/core/services/profile_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/steps_service.dart';
+import 'package:mwb_connect_app/core/services/quizzes_service.dart';
 import 'package:mwb_connect_app/core/services/notifications_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
@@ -36,6 +37,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => GoalsService());
   locator.registerLazySingleton(() => StepsService());
+  locator.registerLazySingleton(() => QuizzesService());
   locator.registerLazySingleton(() => NotificationsService());
   locator.registerLazySingleton(() => DownloadService());
   locator.registerLazySingleton(() => AnalyticsService());
