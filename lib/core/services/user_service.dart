@@ -4,7 +4,7 @@ import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/models/notification_settings_model.dart';
+import 'package:mwb_connect_app/core/models/notifications_settings_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/notifications_service.dart';
 
@@ -24,12 +24,12 @@ class UserService {
         _storageService.isMentor = user.isMentor;
       }
       // Get notifications settings
-      final NotificationSettings notificationSettings = await _notificationsService.getNotificationSettings();
-      if (notificationSettings != null) {
-        _storageService.notificationsEnabled = notificationSettings.enabled;
+      final NotificationsSettings notificationsSettings = await _notificationsService.getNotificationsSettings();
+      if (notificationsSettings != null) {
+        _storageService.notificationsEnabled = notificationsSettings.enabled;
       }
-      if (notificationSettings != null && notificationSettings.time != null) {
-        _storageService.notificationsTime = notificationSettings.time;
+      if (notificationsSettings != null && notificationsSettings.time != null) {
+        _storageService.notificationsTime = notificationsSettings.time;
       }
     }
   }

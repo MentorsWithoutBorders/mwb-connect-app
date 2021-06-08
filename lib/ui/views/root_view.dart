@@ -118,7 +118,10 @@ class _RootViewState extends State<RootView> {
     _setPreferences();
     bool isMentor = await _rootProvider.getIsMentor();
     // _getImages();
-    // _setLocalNotifications();
+    _setLocalNotifications();
+    if (_notificationsProvider.notificationsSettingsUpdated) {
+      _rootProvider.showDailyAtTime();
+    }    
     return isMentor;
   }  
 
@@ -127,9 +130,6 @@ class _RootViewState extends State<RootView> {
     _rootProvider = Provider.of<RootViewModel>(context);
     _notificationsProvider = Provider.of<NotificationsViewModel>(context);
 
-    // if (_notificationsProvider.notificationSettingsUpdated) {
-    //   _rootProvider.showDailyAtTime();
-    // }
     print('this is rootview');
 
     _rootProvider.sendAnalyticsEvent();
@@ -151,8 +151,8 @@ class _RootViewState extends State<RootView> {
             if (snapshot.hasData) {
               bool isMentor = snapshot.data;
               if (isMentor) {
-                return _showGoalsView();
-                // return _showLessonRequestView();
+                // return _showGoalsView();
+                return _showLessonRequestView();
               } else {
                 return _showConnectWithMentorView();
               }

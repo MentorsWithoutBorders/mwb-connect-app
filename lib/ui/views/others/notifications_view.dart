@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/models/notification_settings_model.dart';
+import 'package:mwb_connect_app/core/models/notifications_settings_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
@@ -173,8 +173,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
       _isEnabled = value;
     });    
     _storageService.notificationsEnabled = value;
-    final NotificationSettings notificationSettings = NotificationSettings(enabled: value, time: _storageService.notificationsTime);
-    await _notificationsViewModel.updateNotificationSettings(notificationSettings);
+    final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: value, time: _storageService.notificationsTime);
+    await _notificationsViewModel.updateNotificationsSettings(notificationsSettings);
   }
 
   void _updateNotificationsTime(String time) {
@@ -182,8 +182,8 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
       _time = time;
     });
     _storageService.notificationsTime = time;
-    final NotificationSettings notificationSettings = NotificationSettings(enabled: _storageService.notificationsEnabled, time: time);
-    _notificationsViewModel.updateNotificationSettings(notificationSettings);
+    final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: _storageService.notificationsEnabled, time: time);
+    _notificationsViewModel.updateNotificationsSettings(notificationsSettings);
   }  
 
   Widget _showTitle() {

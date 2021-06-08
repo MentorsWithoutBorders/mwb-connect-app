@@ -8,12 +8,9 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/user_service.dart';
-import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/views/forgot_password.dart';
@@ -32,8 +29,6 @@ class LoginSignupView extends StatefulWidget {
 
 class _LoginSignupViewState extends State<LoginSignupView> {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final UserService _userService = locator<UserService>();  
-  final GoalsService _goalsService = locator<GoalsService>();  
   final AnalyticsService _analyticsService = locator<AnalyticsService>();  
   LoginSignupViewModel _loginSignupProvider;
   final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
@@ -100,29 +95,6 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       )
     );
   }
-
-//  void _showVerifyEmailSentDialog() {
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        // return object of type Dialog
-//        return AlertDialog(
-//          title: Text("Verify your account"),
-//          content:
-//              Text("Link to verify account has been sent to your email"),
-//          actions: <Widget>[
-//            FlatButton(
-//              child: Text("Dismiss"),
-//              onPressed: () {
-//                toggleFormMode();
-//                Navigator.of(context).pop();
-//              },
-//            ),
-//          ],
-//        );
-//      },
-//    );
-//  }
 
   Widget _showLogo() {
     return Hero(

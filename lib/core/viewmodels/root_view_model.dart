@@ -156,7 +156,7 @@ class RootViewModel extends ChangeNotifier {
   Future<void> _setTimeZone() async {
     final TimeZone timeZone = TimeZone();
     final String timeZoneName = await timeZone.getTimeZoneName();
-    _location = await timeZone.getLocation(timeZoneName);    
+    _location = await timeZone.getLocation(timeZoneName);
   }
 
   void getImages() {

@@ -15,14 +15,14 @@ class User {
   String organization;
   Field field;
   List<Subfield> subfields;
-  TimeZoneModel timezone;
+  TimeZoneModel timeZone;
   List<Availability> availabilities;
   bool isAvailable;
   DateTime availableFrom;
   LessonsAvailability lessonsAvailability;
   DateTime registeredOn;
 
-  User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timezone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss'); 
@@ -34,7 +34,7 @@ class User {
     isMentor = json['isMentor'] ?? false;
     organization = json['organization'].toString() ?? '';
     field = _fieldFromJson(json['field']) ?? null;;
-    timezone = _timezoneFromJson(json['timezone']) ?? null;
+    timeZone = _timeZoneFromJson(json['timeZone']) ?? null;
     availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = json['isAvailable'] ?? true;
     availableFrom = dateFormat.parse(json['availableFrom']);
@@ -50,7 +50,7 @@ class User {
     return field;
   }  
   
-  TimeZoneModel _timezoneFromJson(Map<String, dynamic> json) {
+  TimeZoneModel _timeZoneFromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;
     }
@@ -87,7 +87,7 @@ class User {
       'isMentor': isMentor,
       'organization': organization,
       'field': field?.toJson(),
-      'timezone': _timezoneToJson(timezone),
+      'timeZone': _timeZoneToJson(timeZone),
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
       'availableFrom': availableFrom != null ? dateFormat.format(availableFrom) : null,
@@ -115,7 +115,7 @@ class User {
     return availabilityList;
   }
   
-  Map<String, dynamic> _timezoneToJson(TimeZoneModel timezone) {
+  Map<String, dynamic> _timeZoneToJson(TimeZoneModel timezone) {
     if (timezone != null) {
       return {
         'name': timezone.name,
