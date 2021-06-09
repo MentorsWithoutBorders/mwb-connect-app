@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class ForgotPasswordView extends StatefulWidget {
-  const ForgotPasswordView({Key key, this.auth})
+  const ForgotPasswordView({Key key})
     : super(key: key); 
-
-  final BaseAuth auth;
 
   @override
   State<StatefulWidget> createState() => _ForgotPasswordViewState();
@@ -274,7 +271,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   }
   
   Future<void> _resetPassword(String email) async {
-    await widget.auth.sendPasswordResetEmail(email);
+    // await widget.auth.sendPasswordResetEmail(email);
     _goToConfirmation();
   }
 

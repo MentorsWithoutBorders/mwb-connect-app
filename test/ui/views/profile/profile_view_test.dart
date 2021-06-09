@@ -22,11 +22,9 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/widget_loader.dart';
-import '../../../utils/firebase_auth_mocks.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setupFirebaseAuthMocks();  
   await Firebase.initializeApp();
   SharedPreferences.setMockInitialValues({});
   await EasyLocalization.ensureInitialized();  

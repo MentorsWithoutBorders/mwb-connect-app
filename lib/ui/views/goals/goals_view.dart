@@ -5,8 +5,6 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
-import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
@@ -15,16 +13,14 @@ import 'package:mwb_connect_app/ui/views/quizzes/quiz_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/first_goal_widget.dart';
 import 'package:mwb_connect_app/ui/views/goals/widgets/goal_card_widget.dart';
 import 'package:mwb_connect_app/ui/views/goals/widgets/add_goal_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalsView extends StatefulWidget {
-  const GoalsView({Key key, this.auth, this.logoutCallback})
+  const GoalsView({Key key, this.logoutCallback})
     : super(key: key);  
 
-  final BaseAuth auth;
   final VoidCallback logoutCallback;
 
   @override
@@ -32,7 +28,6 @@ class GoalsView extends StatefulWidget {
 }
 
 class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
-  final LocalStorageService _storageService = locator<LocalStorageService>();
   GoalsViewModel _goalsProvider;
   QuizzesViewModel _quizProvider;
   final Axis _scrollDirection = Axis.vertical;  

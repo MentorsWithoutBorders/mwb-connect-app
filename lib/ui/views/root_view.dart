@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
-import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
@@ -23,10 +22,8 @@ enum AuthStatus {
 }
 
 class RootView extends StatefulWidget {
-  const RootView({Key key, this.auth})
+  const RootView({Key key})
     : super(key: key);   
-
-  final BaseAuth auth;
 
   @override
   State<StatefulWidget> createState() => _RootViewState();
@@ -62,21 +59,18 @@ class _RootViewState extends State<RootView> {
   
   Widget _showGoalsView() {
     return GoalsView(
-      auth: widget.auth,
       logoutCallback: _logoutCallback,
     );
   }
 
   Widget _showConnectWithMentorView() {
     return ConnectWithMentorView(
-      auth: widget.auth,
       logoutCallback: _logoutCallback,
     );
   }
   
   Widget _showLessonRequestView() {
     return LessonRequestView(
-      auth: widget.auth,
       logoutCallback: _logoutCallback,
     );
   }    
@@ -117,7 +111,7 @@ class _RootViewState extends State<RootView> {
     _setCurrentUser();   
     _setPreferences();
     bool isMentor = await _rootProvider.getIsMentor();
-    // _getImages();
+    _getImages();
     _setLocalNotifications();
     if (_notificationsProvider.notificationsSettingsUpdated) {
       _rootProvider.showDailyAtTime();
@@ -143,7 +137,6 @@ class _RootViewState extends State<RootView> {
             break;
           case AuthStatus.NOT_LOGGED_IN:
             return OnboardingView(
-              auth: widget.auth,
               loginCallback: _loginCallback,
             );
             break;
@@ -151,8 +144,8 @@ class _RootViewState extends State<RootView> {
             if (snapshot.hasData) {
               bool isMentor = snapshot.data;
               if (isMentor) {
-                // return _showGoalsView();
-                return _showLessonRequestView();
+                return _showGoalsView();
+                // return _showLessonRequestView();
               } else {
                 return _showConnectWithMentorView();
               }

@@ -43,7 +43,8 @@ class GoalsService {
   }
 
   Future<void> updateGoal(Goal goal, String id) async {
-    await _api.putHTTP(url: '/goals/$id', data: goal.toJson());  
+    String userId = _storageService.userId;
+    await _api.putHTTP(url: '/$userId/goals/$id', data: goal.toJson());  
     return ;
   }     
 

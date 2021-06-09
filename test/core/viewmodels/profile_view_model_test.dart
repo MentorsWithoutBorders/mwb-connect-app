@@ -18,12 +18,10 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../utils/firebase_auth_mocks.dart';
 import '../../utils/widget_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setupFirebaseAuthMocks();
   await Firebase.initializeApp();
   SharedPreferences.setMockInitialValues({});
   await EasyLocalization.ensureInitialized();

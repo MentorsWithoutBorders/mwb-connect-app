@@ -1,10 +1,4 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-
 class AnalyticsService {
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);  
 
   Future<void> identifyUser(String userId, String name, String email) async {
     // Segment.identify(
@@ -14,10 +8,6 @@ class AnalyticsService {
     //     'email': email
     //   }
     // );
-    // //Firebase Analytics
-    // await analytics.setUserId(userId);
-    // await analytics.setUserProperty(name: 'name', value: name);
-    // await analytics.setUserProperty(name: 'email', value: email);
   }
   
   void resetUser() {
@@ -30,10 +20,6 @@ class AnalyticsService {
     // Segment.screen(
     //   screenName: name
     // );
-    // //Firebase Analytics
-    // analytics.setCurrentScreen(
-    //   screenName: name
-    // );    
   }
 
   void sendEvent({String eventName, dynamic properties}) {
@@ -41,11 +27,6 @@ class AnalyticsService {
     //   eventName: eventName,
     //   properties: properties,
     // );
-    //Firebase Analytics
-    // analytics.logEvent(
-    //   name: eventName,
-    //   parameters: properties,
-    // );    
   }
 
 }

@@ -17,12 +17,10 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../utils/firebase_auth_mocks.dart';
 import '../../../../utils/widget_loader.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setupFirebaseAuthMocks();  
   await Firebase.initializeApp();
   SharedPreferences.setMockInitialValues({});
   await EasyLocalization.ensureInitialized();  

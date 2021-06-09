@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
@@ -10,7 +10,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
@@ -33,7 +32,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-  // await _signInAnonymously();
+  await _signInFirebaseAnonymously();
   await _initAppDirectory();
 
   Directory directory = await getApplicationDocumentsDirectory();
@@ -49,13 +48,8 @@ Future<void> main() async {
   );
 }
 
-Future<void> _signInAnonymously() async {
-  final BaseAuth auth = Auth();
-  auth.getCurrentUser().then((User user) async {
-    if (user == null) {
-      await auth.signInAnonymously();
-    }
-  });  
+Future<void> _signInFirebaseAnonymously() async {
+  await FirebaseAuth.instance.signInAnonymously();
 }
 
 Future<void> _initAppDirectory() async {
@@ -129,7 +123,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
               supportedLocales: context.supportedLocales,
               locale: context.locale,                
               theme: ThemeData(),
-              home: RootView(auth: Auth())
+              home: RootView()
             )
           );
         } else {

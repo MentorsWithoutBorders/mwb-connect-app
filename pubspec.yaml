@@ -10,17 +10,13 @@ publish_to: none
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^1.0.4
   integration_test: ^1.0.2+3
   flutter_localizations:
     sdk: flutter
 
   firebase_auth: ^1.1.1
-  cloud_firestore: ^1.0.6
-  cloud_firestore_mocks: ^0.8.2
   firebase_storage: ^8.0.4
   flutuate_mixpanel: ^1.1.8
-  firebase_analytics: ^8.0.1
   provider: ^5.0.0
   http: ^0.13.3
   path_provider: ^2.0.1

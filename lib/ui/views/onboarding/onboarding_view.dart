@@ -8,7 +8,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -16,10 +15,9 @@ import 'package:mwb_connect_app/ui/widgets/slide_swipe_widget.dart';
 import 'package:mwb_connect_app/ui/views/login_signup_view.dart';
 
 class OnboardingView extends StatefulWidget {
-  const OnboardingView({Key key, this.auth, this.loginCallback})
+  const OnboardingView({Key key, this.loginCallback})
     : super(key: key);    
 
-  final BaseAuth auth;
   final VoidCallback loginCallback;
 
   @override
@@ -272,7 +270,6 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
     _resetController();
     Navigator.push(context, MaterialPageRoute<LoginSignupView>(builder: (_) => LoginSignupView(
-      auth: widget.auth,
       loginCallback: widget.loginCallback,
       isLoginForm: true
     ))); 
@@ -292,7 +289,6 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
     _resetController();
     Navigator.push(context, MaterialPageRoute<LoginSignupView>(builder: (_) => LoginSignupView(
-      auth: widget.auth,
       loginCallback: widget.loginCallback,
       isLoginForm: false
     ))); 

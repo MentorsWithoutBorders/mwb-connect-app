@@ -6,7 +6,6 @@ import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/services/authentication_service_old.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
@@ -16,10 +15,9 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/views/forgot_password.dart';
 
 class LoginSignupView extends StatefulWidget {
-  const LoginSignupView({Key key, this.auth, this.loginCallback, this.isLoginForm})
+  const LoginSignupView({Key key, this.loginCallback, this.isLoginForm})
     : super(key: key); 
 
-  final BaseAuth auth;
   final VoidCallback loginCallback;
   final bool isLoginForm;
 
@@ -446,7 +444,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   }
 
   void _goToForgotPassword() {
-    Navigator.push(context, MaterialPageRoute<ForgotPasswordView>(builder: (_) => ForgotPasswordView(auth: widget.auth)));
+    Navigator.push(context, MaterialPageRoute<ForgotPasswordView>(builder: (_) => ForgotPasswordView()));
   }
 
   // Perform login or sign_up

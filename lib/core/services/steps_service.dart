@@ -41,7 +41,8 @@ class StepsService {
   }  
 
   Future<void> updateStep(StepModel step, String id) async {
-    await _api.putHTTP(url: '/steps/$id', data: step.toJson());  
+    String userId = _storageService.userId;
+    await _api.putHTTP(url: '/$userId/steps/$id', data: step.toJson());  
     return ;
   }  
 
