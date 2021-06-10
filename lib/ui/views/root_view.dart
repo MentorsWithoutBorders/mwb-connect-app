@@ -111,7 +111,7 @@ class _RootViewState extends State<RootView> {
     _setCurrentUser();   
     _setPreferences();
     bool isMentor = await _rootProvider.getIsMentor();
-    _getImages();
+    // _getImages();
     _setLocalNotifications();
     if (_notificationsProvider.notificationsSettingsUpdated) {
       _rootProvider.showDailyAtTime();
@@ -144,8 +144,8 @@ class _RootViewState extends State<RootView> {
             if (snapshot.hasData) {
               bool isMentor = snapshot.data;
               if (isMentor) {
-                return _showGoalsView();
-                // return _showLessonRequestView();
+                // return _showGoalsView();
+                return _showLessonRequestView();
               } else {
                 return _showConnectWithMentorView();
               }

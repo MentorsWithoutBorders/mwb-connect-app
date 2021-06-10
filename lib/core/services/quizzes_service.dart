@@ -10,12 +10,12 @@ class QuizzesService {
 
   Future<int> getQuizNumber() async {
     String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/$userId/quiz_number');
+    http.Response response = await _api.getHTTP(url: '/users/$userId/quiz_number');
     return int.parse(response.body);
   }
 
   Future<void> addQuiz(Quiz quiz) async {
     String userId = _storageService.userId;
-    await _api.postHTTP(url: '/$userId/quizzes', data: quiz.toJson());  
+    await _api.postHTTP(url: '/users/$userId/quizzes', data: quiz.toJson());  
   }
 }

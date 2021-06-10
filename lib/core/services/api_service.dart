@@ -105,7 +105,7 @@ class ApiService {
     String refreshToken = _storageService.refreshToken;
     refreshingToken = true;
     final response = await http.get(
-      Uri.parse(baseUrl + '/access_token?userId=$userId&refreshToken=$refreshToken'),
+      Uri.parse(baseUrl + '/users/$userId/access_token?refreshToken=$refreshToken'),
       headers: getHeaders()
     );
     refreshingToken = false;
@@ -116,9 +116,9 @@ class ApiService {
   }
   
   Future<void> _logout() async {
-    User user = User(id: _storageService.userId);
+    String userId = _storageService.userId;
     resetStorage();
-    await postHTTP(url: '/logout', data: user.toJson());
+    await postHTTP(url: '/users/$userId/logout', data: {});
   }
 
   void resetStorage() {

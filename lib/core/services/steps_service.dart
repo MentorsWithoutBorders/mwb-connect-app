@@ -10,7 +10,7 @@ class StepsService {
   final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<List<StepModel>> getSteps(String goalId) async {
-    http.Response response = await _api.getHTTP(url: '/$goalId/steps');
+    http.Response response = await _api.getHTTP(url: '/goals/$goalId/steps');
     List<StepModel> steps = [];
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -20,7 +20,7 @@ class StepsService {
   }
 
   Future<StepModel> getStepById(String goalId, String id) async {
-    http.Response response = await _api.getHTTP(url: '/$goalId/steps/$id');
+    http.Response response = await _api.getHTTP(url: '/steps/$id');
     StepModel step;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -31,7 +31,7 @@ class StepsService {
 
   Future<StepModel> addStep(String goalId, StepModel step) async {
     String userId = _storageService.userId;
-    http.Response response = await _api.postHTTP(url: '/$userId/$goalId/steps', data: step.toJson());  
+    http.Response response = await _api.postHTTP(url: '/users/$userId/goals/$goalId/steps', data: step.toJson());  
     StepModel addedStep;
     if (response != null) {
       var json = jsonDecode(response.body);
@@ -42,7 +42,7 @@ class StepsService {
 
   Future<void> updateStep(StepModel step, String id) async {
     String userId = _storageService.userId;
-    await _api.putHTTP(url: '/$userId/steps/$id', data: step.toJson());  
+    await _api.putHTTP(url: '/users/$userId/steps/$id', data: step.toJson());  
     return ;
   }  
 

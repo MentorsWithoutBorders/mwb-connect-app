@@ -185,7 +185,7 @@ class _SupportViewState extends State<SupportView> {
       try {
         // Just a delay effect for the send request
         await Future<void>.delayed(const Duration(milliseconds: 300));
-        await _sendRequest(_supportText);
+        _sendRequest(_supportText);
       } catch (e) {
         print('Error: $e');
       }
@@ -202,7 +202,7 @@ class _SupportViewState extends State<SupportView> {
     return false;
   }
   
-  Future<void> _sendRequest(String text) async {
+  void _sendRequest(String text) {
     final SupportRequestViewModel supportRequestProvider = locator<SupportRequestViewModel>();
     final SupportRequest supportRequest = SupportRequest(
       text: text

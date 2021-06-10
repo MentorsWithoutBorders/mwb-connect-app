@@ -53,8 +53,8 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    User user = User(id: _storageService.userId);
+    String userId = _storageService.userId;
     _api.resetStorage();
-    await _api.postHTTP(url: '/logout', data: user.toJson());
+    await _api.postHTTP(url: '/users/$userId/logout', data: {});
   }
 } 
