@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
@@ -17,6 +19,7 @@ class ProfileViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final UserService _userService = locator<UserService>();
   final ProfileService _profileService = locator<ProfileService>();
+  final String _defaultLocale = Platform.localeName;
   Profile profile;
   String availabilityMergedMessage = '';
   bool _mergedAvailabilityLastShown = false;
@@ -230,6 +233,15 @@ class ProfileViewModel extends ChangeNotifier {
     profile.user.field.subfields[index].skills.remove(skill);
     setUserDetails(profile.user);
     notifyListeners();
+  }
+
+  String getAvailabilityStartDate() {
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
+    String date = DateTime.now().toString().capitalize();
+    if (profile.user.availableFrom != null) {
+      date = dateFormat.format(profile.user.availableFrom).capitalize();
+    }
+    return date;
   }  
 
   void setIsAvailable(bool isAvailable) {

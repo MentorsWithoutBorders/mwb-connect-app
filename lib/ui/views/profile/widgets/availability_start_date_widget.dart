@@ -1,14 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/utils/availability_start.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 
 class AvailabilityStartDate extends StatefulWidget {
@@ -23,7 +21,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   ProfileViewModel _profileProvider;
   AvailabilityStart _start;
   final DateTime _now = DateTime.now();
-  final String defaultLocale = Platform.localeName;
+  final String _defaultLocale = Platform.localeName;
 
   @override
   void initState() {
@@ -42,11 +40,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }  
 
   Widget _showAvailabilityStartDate() {
-    final DateFormat dateFormat = DateFormat('MMM dd, yyyy', defaultLocale);
-    String date = DateTime.now().toString().capitalize();
-    if (_profileProvider.profile.user.availableFrom != null) {
-      date = dateFormat.format(_profileProvider.profile.user.availableFrom).capitalize();
-    }
+    String date = _profileProvider.getAvailabilityStartDate();
     return Wrap(
       children: [
         _showTitle(),
@@ -170,7 +164,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     final DateTime availableFrom = _profileProvider.profile.user.availableFrom;
     final DateTime picked = await showDatePicker(
       context: context,
-      locale: Locale(defaultLocale.split('_')[0], defaultLocale.split('_')[1]),
+      locale: Locale(_defaultLocale.split('_')[0], _defaultLocale.split('_')[1]),
       initialDate: availableFrom,
       firstDate: _now,
       lastDate: DateTime(_now.year + 4),

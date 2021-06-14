@@ -17,16 +17,16 @@ class Lesson {
   Lesson({this.id, this.student, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.isStudentPresent, this.isMentorPresent, this.isCanceled});
 
   Lesson.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     id = json['id'] ?? '';
     student = _userFromJson(json['student']) ?? null;
     mentor = _userFromJson(json['mentor']) ?? null;
     subfield = _subfieldFromJson(json['subfield']) ?? null;
     dateTime = dateFormat.parse(json['dateTime']);
     meetingUrl = json['meetingUrl'] ?? '';    
-    isStudentPresent = json['isStudentPresent'] ?? '';
-    isMentorPresent = json['isMentorPresent'] ?? '';
-    isCanceled = json['isCanceled'] ?? '';
+    isStudentPresent = json['isStudentPresent'] ?? null;
+    isMentorPresent = json['isMentorPresent'] ?? null;
+    isCanceled = json['isCanceled'] ?? null;
   }
 
   User _userFromJson(Map<String, dynamic> json) {
@@ -46,7 +46,7 @@ class Lesson {
   }    
 
   Map<String, Object> toJson() {
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormat);     
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);     
     return {
       'id': id,
       'student': student.toJson(),

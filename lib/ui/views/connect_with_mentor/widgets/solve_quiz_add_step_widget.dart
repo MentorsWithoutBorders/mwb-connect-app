@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
@@ -16,8 +20,10 @@ class SolveQuizAddStep extends StatefulWidget {
 
 class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   ConnectWithMentorViewModel _connectWithMentorProvider;
+  final String defaultLocale = Platform.localeName;
 
   Widget _showSolveQuizAddStepCard() {
+    DateTime deadline = _connectWithMentorProvider.getDeadline();
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -38,7 +44,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
                     _showTopText(),
                     ConditionsList(),
                     _showNextDeadline(),
-                    _showGoButton()
+                    if (!_connectWithMentorProvider.isBeforeToday(deadline)) _showGoButton()
                   ]
                 )
               )
@@ -63,7 +69,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }   
 
   Widget _showTopText() {
-    String text = 'connect_with_mentor.conditions_certificate'.tr(args: ['Jun 15, 2021']);
+    String text = 'connect_with_mentor.conditions_certificate'.tr(args: [_connectWithMentorProvider.getCertificateDate()]);
     String and = 'common.and'.tr();
     String firstPart = text.substring(0, text.indexOf(and));
     String secondPart = text.substring(text.indexOf(and) + and.length, text.length);
@@ -97,6 +103,9 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
   
   Widget _showNextDeadline() {
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, defaultLocale);
+    DateTime deadline = _connectWithMentorProvider.getDeadline();
+    Color deadlineColor = !_connectWithMentorProvider.isBeforeToday(deadline) ? AppColors.TANGO : AppColors.MONZA;
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: RichText(
@@ -112,14 +121,36 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
               text: 'connect_with_mentor.next_deadline'.tr(),             
             ),
             TextSpan(
-              text: 'May 20, 2021',
-              style: const TextStyle(
-                color: AppColors.TANGO
+              text: dateFormat.format(deadline),
+              style: TextStyle(
+                color: deadlineColor
               )
             ),
-          ],
+            if (_connectWithMentorProvider.isBeforeToday(deadline)) TextSpan(
+              text: ' (overdue, please ',
+              style: TextStyle(
+                color: AppColors.MONZA
+              )
+            ),
+            if (_connectWithMentorProvider.isBeforeToday(deadline)) TextSpan(
+              text: 'contact support',
+              style: const TextStyle(
+                decoration: TextDecoration.underline,
+                color: AppColors.MONZA
+              ),
+              recognizer: TapGestureRecognizer()..onTap = () {
+                Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
+              }                      
+            ),
+            if (_connectWithMentorProvider.isBeforeToday(deadline)) TextSpan(
+              text: ')',
+              style: TextStyle(
+                color: AppColors.MONZA
+              )
+            )
+          ]
         )
-      ),
+      )
     );
   }
 

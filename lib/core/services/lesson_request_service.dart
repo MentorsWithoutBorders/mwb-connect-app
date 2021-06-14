@@ -47,7 +47,18 @@ class LessonRequestService {
   Future<void> cancelLesson(String id) async {
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson');  
     return ;
-  }
+  }  
+
+  Future<Lesson> getPreviousLesson() async {
+    String userId = _storageService.userId;
+    http.Response response = await _api.getHTTP(url: '/users/$userId/previous_lesson');
+    Lesson previousLesson;
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      previousLesson = Lesson.fromJson(json);
+    }
+    return previousLesson;
+  }    
 
   Future<List<Skill>> getSkills(String subfieldId) async {
     String userId = _storageService.userId;

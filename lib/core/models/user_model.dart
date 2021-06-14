@@ -27,7 +27,7 @@ class User {
   User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     id = json['id'].toString() ?? '';
     name = json['name'].toString() ?? '';
     email = json['email'].toString() ?? '';
@@ -38,9 +38,9 @@ class User {
     timeZone = _timeZoneFromJson(json['timeZone']) ?? null;
     availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = json['isAvailable'] ?? true;
-    availableFrom = dateFormat.parse(json['availableFrom']);
+    availableFrom = json['availableFrom'] != null ? dateFormat.parse(json['availableFrom']) : null;
     lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']) ?? null;
-    registeredOn = dateFormat.parse(json['registeredOn']);
+    registeredOn = json['registeredOn'] != null ? dateFormat.parse(json['registeredOn']) : null;
   }
 
   Organization _organizationFromJson(Map<String, dynamic> json) {
@@ -86,7 +86,7 @@ class User {
   }
 
   Map<String, Object> toJson() {
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     Map<String, Object> userMap = {
       'id': id,
       'name': name,
@@ -99,7 +99,7 @@ class User {
       'availabilities': _availabilityToJson(availabilities),
       'isAvailable': isAvailable,
       'availableFrom': availableFrom != null ? dateFormat.format(availableFrom) : null,
-      'registeredOn': registeredOn
+      'registeredOn': registeredOn != null ? dateFormat.format(registeredOn) : null,
     };
     if (_lessonsAvailabilityToJson(lessonsAvailability) != null) {
       userMap.putIfAbsent('lessonsAvailability', () => _lessonsAvailabilityToJson(lessonsAvailability));

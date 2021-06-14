@@ -54,4 +54,8 @@ class Utils {
     }    
     return hoursList;
   }
+
+  static DateTime resetTime(DateTime dateTime) {
+    return dateTime.subtract(Duration(hours: dateTime.hour, minutes: dateTime.minute, seconds: dateTime.second, milliseconds: dateTime.millisecond, microseconds: dateTime.microsecond));
+  }  
 }

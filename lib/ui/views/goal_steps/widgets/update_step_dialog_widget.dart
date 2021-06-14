@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 
 class UpdateStepDialog extends StatefulWidget {
@@ -17,7 +16,6 @@ class UpdateStepDialog extends StatefulWidget {
 
 class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProviderStateMixin {
   CommonViewModel _commonProvider;
-  GoalsViewModel _goalsProvider;
   StepsViewModel _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
@@ -155,7 +153,6 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   @override
   Widget build(BuildContext context) {
     _commonProvider = Provider.of<CommonViewModel>(context);
-    _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showUpdateStepDialog(context);

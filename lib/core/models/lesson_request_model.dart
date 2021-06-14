@@ -15,7 +15,7 @@ class LessonRequestModel {
     student = _userFromJson(json['student']) ?? null;
     mentor = _userFromJson(json['mentor']) ?? null;
     subfield = _subfieldFromJson(json['subfield']) ?? null;
-    isCanceled = json['isCanceled'] ?? '';
+    isCanceled = json['isCanceled'] ?? null;
   }
 
   User _userFromJson(Map<String, dynamic> json) {

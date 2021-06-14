@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.d
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class ConnectWithMentorView extends StatefulWidget {
@@ -20,6 +21,7 @@ class ConnectWithMentorView extends StatefulWidget {
 
 class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
   ConnectWithMentorViewModel _connectWithMentorProvider;
+  bool _isInit = false;
 
   Widget _showConnectWithMentor() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -42,29 +44,53 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
         child: Text('connect_with_mentor.title'.tr()),
       )
     );
+  }
+
+  Widget _showContent() {
+    if (_isInit) {
+      return _showConnectWithMentor();
+    } else {
+      return const Loader();
+    }
   }  
+  
+  Future<void> _init() async {
+    if (!_isInit) {
+      await _connectWithMentorProvider.getLastStepAdded();
+      await _connectWithMentorProvider.getLessonRequest();
+      await _connectWithMentorProvider.getNextLesson();
+      await _connectWithMentorProvider.getSkills();
+      _isInit = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
 
-   return Scaffold(
-      appBar: AppBar(      
-        title: _showTitle(),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-      ),
-      extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: <Widget>[
-          BackgroundGradient(),
-          _showConnectWithMentor()
-        ]
-      ),
-      drawer: DrawerWidget(
-        logoutCallback: widget.logoutCallback
-      )
+    return FutureBuilder<void>(
+      future: _init(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return Stack(
+          children: <Widget>[
+            const BackgroundGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                title: _showTitle(),
+                backgroundColor: Colors.transparent,          
+                elevation: 0.0
+              ),
+              extendBodyBehindAppBar: true,
+              resizeToAvoidBottomInset: false,
+              body: _showContent(),
+              drawer: DrawerWidget(
+                logoutCallback: widget.logoutCallback
+              )
+            )
+          ],
+        );
+      }
     );
   }
 }
