@@ -18,4 +18,5 @@ class AppConstants {
   static const bool showQuizTimer = false;
   static const bool notificationsEnabled = true;
   static const String notificationsTime = '21:00';
+  static const String dateFormat = 'yyyy-MM-dd HH:mm:ss';
 }

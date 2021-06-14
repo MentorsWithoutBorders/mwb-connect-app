@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/core/models/organization_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
@@ -12,7 +14,7 @@ class User {
   String email;
   String password;
   bool isMentor;
-  String organization;
+  Organization organization;
   Field field;
   List<Subfield> subfields;
   TimeZoneModel timeZone;
@@ -25,22 +27,29 @@ class User {
   User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss'); 
-
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormat); 
     id = json['id'].toString() ?? '';
     name = json['name'].toString() ?? '';
     email = json['email'].toString() ?? '';
     password = json['password'].toString() ?? '';
     isMentor = json['isMentor'] ?? false;
-    organization = json['organization'].toString() ?? '';
-    field = _fieldFromJson(json['field']) ?? null;;
+    organization = _organizationFromJson(json['organization']) ?? null;
+    field = _fieldFromJson(json['field']) ?? null;
     timeZone = _timeZoneFromJson(json['timeZone']) ?? null;
     availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = json['isAvailable'] ?? true;
     availableFrom = dateFormat.parse(json['availableFrom']);
     lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']) ?? null;
-    registeredOn = json['registeredOn']?.toDate();
+    registeredOn = dateFormat.parse(json['registeredOn']);
   }
+
+  Organization _organizationFromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    Organization organization = Organization.fromJson(json);
+    return organization;
+  }   
 
   Field _fieldFromJson(Map<String, dynamic> json) {
     if (json == null) {
@@ -77,15 +86,14 @@ class User {
   }
 
   Map<String, Object> toJson() {
-    DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss'); 
-
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormat); 
     Map<String, Object> userMap = {
       'id': id,
       'name': name,
       'email': email,
       'password': password,
       'isMentor': isMentor,
-      'organization': organization,
+      'organization': organization?.toJson(),
       'field': field?.toJson(),
       'timeZone': _timeZoneToJson(timeZone),
       'availabilities': _availabilityToJson(availabilities),

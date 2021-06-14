@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import "package:yaml/yaml.dart";
 
 main() async {
-  File file = new File('./pubspec.yaml');
+  File file = File('./pubspec.yaml');
   String yamlString = file.readAsStringSync();
   Map yaml = loadYaml(yamlString);
   YamlMap dependencies = yaml['dependencies'];

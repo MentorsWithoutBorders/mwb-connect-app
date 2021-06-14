@@ -102,7 +102,7 @@ class ConditionsList extends StatelessWidget {
     return Container(
       width: 8.0,
       height: 8.0,
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.SILVER,
         shape: BoxShape.circle,
       )

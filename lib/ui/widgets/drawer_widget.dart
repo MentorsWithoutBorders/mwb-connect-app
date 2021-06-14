@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
-import 'package:mwb_connect_app/ui/views/others/support_view.dart';
+import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 import 'package:mwb_connect_app/ui/views/others/terms_view.dart';
 
 class DrawerWidget extends StatefulWidget {

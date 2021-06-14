@@ -147,7 +147,8 @@ class _RootViewState extends State<RootView> {
                 // return _showGoalsView();
                 return _showLessonRequestView();
               } else {
-                return _showConnectWithMentorView();
+                return _showGoalsView();
+                // return _showConnectWithMentorView();
               }
             } else
               return _buildWaitingScreen();

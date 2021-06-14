@@ -22,7 +22,13 @@ class UserService {
       }      
       if (user.isMentor != null) {
         _storageService.isMentor = user.isMentor;
-      }
+        if (!user.isMentor && user.field.subfields[0] != null) {
+          _storageService.subfieldId = user.field.subfields[0].id;
+        }
+      }        
+      if (user.registeredOn != null) {
+        _storageService.registeredOn = user.registeredOn.toString();
+      }      
       // Get notifications settings
       final NotificationsSettings notificationsSettings = await _notificationsService.getNotificationsSettings();
       if (notificationsSettings != null) {
