@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
@@ -37,11 +35,10 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     skills = await _connectWithMentorService.getSkills();
   }  
 
-  String getCertificateDate() {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, defaultLocale);
-    String date;
+  DateTime getCertificateDate() {
+    DateTime date;
     if (_storageService.registeredOn != null) {
-      date = dateFormat.format(Jiffy(DateTime.parse(_storageService.registeredOn)).add(months: 3).dateTime);
+      date = Jiffy(DateTime.parse(_storageService.registeredOn)).add(months: 3).dateTime;
     }
     return date;
   }
@@ -62,12 +59,22 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
         i++;
       }
     }
+    if (deadline.dateTime.difference(dateLastStepAdded).inDays < 7) {
+      deadline = Jiffy(deadline).add(weeks: 1);
+    }
     return deadline.dateTime;
   }
 
-  bool isBeforeToday(DateTime dateTime) {
+  bool isOverdue() {
     DateTime now = Utils.resetTime(DateTime.now());
-    return now.difference(dateTime).inDays > 0;
+    DateTime deadLine = Utils.resetTime(getDeadline());
+    return now.difference(deadLine).inDays > 0;
+  }
+
+  bool shouldReceiveCertificate() {
+    DateTime certificateDate = Utils.resetTime(getCertificateDate());
+    DateTime deadLine = Utils.resetTime(getDeadline());
+    return certificateDate.difference(deadLine).inDays <= 0;
   }
 
 }

@@ -43,8 +43,9 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
                   children: [
                     _showTopText(),
                     ConditionsList(),
-                    _showNextDeadline(),
-                    if (!_connectWithMentorProvider.isBeforeToday(deadline)) _showGoButton()
+                    if (!_connectWithMentorProvider.shouldReceiveCertificate()) _showNextDeadline(),
+                    if (_connectWithMentorProvider.shouldReceiveCertificate()) _showReceiveCertificate(),
+                    if (!_connectWithMentorProvider.isOverdue()) _showGoButton()
                   ]
                 )
               )
@@ -69,7 +70,9 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }   
 
   Widget _showTopText() {
-    String text = 'connect_with_mentor.conditions_certificate'.tr(args: [_connectWithMentorProvider.getCertificateDate()]);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, defaultLocale);
+    String certificateDate = dateFormat.format(_connectWithMentorProvider.getCertificateDate());
+    String text = 'connect_with_mentor.conditions_certificate'.tr(args: [certificateDate]);
     String and = 'common.and'.tr();
     String firstPart = text.substring(0, text.indexOf(and));
     String secondPart = text.substring(text.indexOf(and) + and.length, text.length);
@@ -105,7 +108,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   Widget _showNextDeadline() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, defaultLocale);
     DateTime deadline = _connectWithMentorProvider.getDeadline();
-    Color deadlineColor = !_connectWithMentorProvider.isBeforeToday(deadline) ? AppColors.TANGO : AppColors.MONZA;
+    Color deadlineColor = !_connectWithMentorProvider.isOverdue() ? AppColors.TANGO : AppColors.MONZA;
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: RichText(
@@ -118,34 +121,38 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           ),
           children: <TextSpan>[
             TextSpan(
-              text: 'connect_with_mentor.next_deadline'.tr(),             
+              text: 'connect_with_mentor.next_deadline'.tr(),
             ),
             TextSpan(
               text: dateFormat.format(deadline),
               style: TextStyle(
-                color: deadlineColor
+                color: deadlineColor,
+                fontWeight: FontWeight.bold
               )
             ),
-            if (_connectWithMentorProvider.isBeforeToday(deadline)) TextSpan(
+            if (_connectWithMentorProvider.isOverdue()) TextSpan(
               text: ' (overdue, please ',
               style: TextStyle(
-                color: AppColors.MONZA
+                color: AppColors.MONZA,
+                fontWeight: FontWeight.bold
               )
             ),
-            if (_connectWithMentorProvider.isBeforeToday(deadline)) TextSpan(
+            if (_connectWithMentorProvider.isOverdue()) TextSpan(
               text: 'contact support',
               style: const TextStyle(
                 decoration: TextDecoration.underline,
-                color: AppColors.MONZA
+                color: AppColors.MONZA,
+                fontWeight: FontWeight.bold
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
                 Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
               }                      
             ),
-            if (_connectWithMentorProvider.isBeforeToday(deadline)) TextSpan(
+            if (_connectWithMentorProvider.isOverdue()) TextSpan(
               text: ')',
               style: TextStyle(
-                color: AppColors.MONZA
+                color: AppColors.MONZA,
+                fontWeight: FontWeight.bold
               )
             )
           ]
@@ -153,6 +160,20 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
       )
     );
   }
+
+
+  Widget _showReceiveCertificate() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+        child: Text(
+        'Congratulations, you will soon receive your MWB certificate!',
+        style: const TextStyle(
+          color: AppColors.EMERALD,
+          fontWeight: FontWeight.bold
+        )
+      ),
+    );
+  }  
 
   Widget _showGoButton() {
     return Center(
