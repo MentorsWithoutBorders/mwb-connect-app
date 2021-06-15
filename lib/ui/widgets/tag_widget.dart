@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class Tag extends StatelessWidget {
   final Color color;
+  final String id;
   final String text;
   final Key textKey;
   final String deleteImg;
@@ -12,6 +13,7 @@ class Tag extends StatelessWidget {
   Tag({
     Key key,
     this.color,
+    this.id,
     this.text,
     this.textKey,
     this.deleteImg,
@@ -50,7 +52,7 @@ class Tag extends StatelessWidget {
                   child: Image.asset(deleteImg)
                 ),
                 onTap: () {
-                  tagDeletedCallback(text); 
+                  tagDeletedCallback(id); 
                 }
               )
             ],

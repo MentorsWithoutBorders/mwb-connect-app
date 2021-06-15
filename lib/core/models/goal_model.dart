@@ -5,7 +5,7 @@ class Goal {
   Goal({this.id, this.text});
 
   Goal.fromJson(Map<String, dynamic> json) :
-    id = json['id'] ?? '',
+    id = json['id'],
     text = json['text'] ?? '';
 
   Map<String, Object> toJson() {

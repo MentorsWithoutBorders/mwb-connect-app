@@ -33,6 +33,7 @@ class _SkillsState extends State<Skills> {
           child: Tag(
             key: Key(AppKeys.skillTag + i.toString()),
             color: AppColors.TAN_HIDE,
+            id: skills[i].id,
             text: skills[i].name,
             textKey: Key(AppKeys.skillText + i.toString()),
             deleteImg: 'assets/images/delete_circle_icon.png',
@@ -129,8 +130,8 @@ class _SkillsState extends State<Skills> {
     });    
   }
   
-  void _deleteSkill(String skill) {
-    _profileProvider.deleteSkill(skill, widget.index);
+  void _deleteSkill(String skillId) {
+    _profileProvider.deleteSkill(skillId, widget.index);
   }
 
   @override

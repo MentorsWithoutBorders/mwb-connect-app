@@ -34,10 +34,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     nextLesson = await _connectWithMentorService.getNextLesson();
   }
 
-  Future<List<Skill>> getSkills() async {
-    skills = await _connectWithMentorService.getSkills();
-  }  
-
   DateTime getCertificateDate() {
     DateTime date;
     if (_storageService.registeredOn != null) {

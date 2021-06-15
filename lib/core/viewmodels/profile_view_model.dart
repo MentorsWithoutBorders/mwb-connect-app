@@ -228,8 +228,8 @@ class ProfileViewModel extends ChangeNotifier {
     return skillToAdd;
   }
 
-  void deleteSkill(String skillText, int index) {
-    Skill skill = profile.user.field.subfields[index].skills.firstWhere((skill) => skill.name == skillText);
+  void deleteSkill(String skillId, int index) {
+    Skill skill = profile.user.field.subfields[index].skills.firstWhere((skill) => skill.id == skillId);
     profile.user.field.subfields[index].skills.remove(skill);
     setUserDetails(profile.user);
     notifyListeners();

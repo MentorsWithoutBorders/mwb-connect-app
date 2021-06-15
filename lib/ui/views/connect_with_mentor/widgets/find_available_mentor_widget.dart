@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_mentor_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
@@ -40,8 +41,6 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> {
                 child: Wrap(
                   children: [
                     _showTopText(),
-                    _showDivider(),
-                    _showSkills(),
                     _showFindMentorButton()
                   ]
                 )
@@ -100,7 +99,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 15.0),
+          padding: const EdgeInsets.only(bottom: 20.0),
           child: Text(
             'connect_with_mentor.interval_between_lessons'.tr(),
             textAlign: TextAlign.justify,
@@ -114,70 +113,6 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> {
       ],
     );
   }
-
-  Widget _showDivider() {
-    return Container(
-      height: 1,
-      margin: const EdgeInsets.only(bottom: 15.0),
-      color: AppColors.BOTTICELLI
-    );
-  }
-
-  Widget _showSkills() {
-    final List<Widget> skillWidgets = [];
-    final List<String> skills = ['HTML', 'CSS', 'JavaScript', 'Python'];
-    if (skills != null && skills.isNotEmpty) {
-      for (int i = 0; i < skills.length; i++) {
-        final Widget skill = Padding(
-          padding: const EdgeInsets.only(right: 5.0, bottom: 7.0),
-          child: Tag(
-            key: Key(AppKeys.skillTag + i.toString()),
-            color: AppColors.TAN_HIDE,
-            text: skills[i],
-            textKey: Key(AppKeys.skillText + i.toString()),
-            deleteImg: 'assets/images/delete_circle_icon.png',
-            deleteKey: Key(AppKeys.deleteSkillBtn + i.toString()),
-            tagDeletedCallback: _deleteSkill
-          ),
-        );
-        skillWidgets.add(skill);
-      }
-    }
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Wrap(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Text(
-              'connect_with_mentor.skills_text'.tr(),
-              textAlign: TextAlign.justify,
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.DOVE_GRAY,
-                height: 1.2
-              )
-            ),
-          ),
-          if (skillWidgets.isNotEmpty) Container(
-            width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 4.0),
-            decoration: const BoxDecoration(
-              color: AppColors.LINEN,
-              borderRadius: BorderRadius.all(Radius.circular(10.0))
-            ),
-            child: Wrap(
-              children: skillWidgets,
-            )
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _deleteSkill(String skill) {
-    print('Delete skill');
-  }  
 
   Widget _showFindMentorButton() {
     return Center(

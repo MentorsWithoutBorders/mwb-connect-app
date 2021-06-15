@@ -60,7 +60,6 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
       await _connectWithMentorProvider.getGoal();
       await _connectWithMentorProvider.getLessonRequest();
       await _connectWithMentorProvider.getNextLesson();
-      await _connectWithMentorProvider.getSkills();
       _isInit = true;
     }
     if (_connectWithMentorProvider.shouldReload) {

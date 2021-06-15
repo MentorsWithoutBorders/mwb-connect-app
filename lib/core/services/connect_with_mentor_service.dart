@@ -23,18 +23,6 @@ class ConnectWithMentorService {
     return step;
   }
 
-  Future<List<Skill>> getSkills() async {
-    String userId = _storageService.userId;
-    String subfieldId = _storageService.subfieldId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/subfields/$subfieldId/skills');
-    List<Skill> skills = [];
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      skills = List<Skill>.from(json.map((model) => Skill.fromJson(model)));      
-    }
-    return skills;
-  }
-
   Future<LessonRequestModel> getLessonRequest() async {
     String userId = _storageService.userId;
     http.Response response = await _api.getHTTP(url: '/users/$userId/lesson_request');
@@ -89,13 +77,6 @@ class ConnectWithMentorService {
     return skills;
   }
   
-  Future<void> addSkills(List<String> skills) async {
-    String userId = _storageService.userId;
-    String subfieldId = _storageService.subfieldId;
-    await _api.putHTTP(url: '/users/$userId/subfields/$subfieldId/skills', data: jsonEncode(skills));  
-    return ;
-  }
-
   Future<void> setMentorPresence(String id, bool isPresent) async {
     Lesson lesson = Lesson(isMentorPresent: isPresent);
     await _api.putHTTP(url: '/lessons/$id/mentor_presence', data: lesson.toJson());  
