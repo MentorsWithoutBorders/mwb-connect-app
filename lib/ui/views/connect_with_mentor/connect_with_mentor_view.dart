@@ -57,11 +57,18 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
   Future<void> _init() async {
     if (!_isInit) {
       await _connectWithMentorProvider.getLastStepAdded();
+      await _connectWithMentorProvider.getGoal();
       await _connectWithMentorProvider.getLessonRequest();
       await _connectWithMentorProvider.getNextLesson();
       await _connectWithMentorProvider.getSkills();
       _isInit = true;
     }
+    if (_connectWithMentorProvider.shouldReload) {
+      _isInit = false;
+      await _connectWithMentorProvider.getLastStepAdded();
+      _connectWithMentorProvider.shouldReload = false;
+      _isInit = true;
+    }    
   }
 
   @override

@@ -1,13 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
+import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
 
 class SolveQuizAddStep extends StatefulWidget {
@@ -20,10 +24,11 @@ class SolveQuizAddStep extends StatefulWidget {
 
 class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   ConnectWithMentorViewModel _connectWithMentorProvider;
-  final String defaultLocale = Platform.localeName;
+  GoalsViewModel _goalsProvider;
+  StepsViewModel _stepsProvider;
+  final String _defaultLocale = Platform.localeName;
 
   Widget _showSolveQuizAddStepCard() {
-    DateTime deadline = _connectWithMentorProvider.getDeadline();
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -45,7 +50,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
                     ConditionsList(),
                     if (!_connectWithMentorProvider.shouldReceiveCertificate()) _showNextDeadline(),
                     if (_connectWithMentorProvider.shouldReceiveCertificate()) _showReceiveCertificate(),
-                    if (!_connectWithMentorProvider.isOverdue()) _showGoButton()
+                    _showGoButton()
                   ]
                 )
               )
@@ -70,7 +75,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }   
 
   Widget _showTopText() {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, defaultLocale);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
     String certificateDate = dateFormat.format(_connectWithMentorProvider.getCertificateDate());
     String text = 'connect_with_mentor.conditions_certificate'.tr(args: [certificateDate]);
     String and = 'common.and'.tr();
@@ -106,7 +111,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
   
   Widget _showNextDeadline() {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, defaultLocale);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
     DateTime deadline = _connectWithMentorProvider.getDeadline();
     Color deadlineColor = !_connectWithMentorProvider.isOverdue() ? AppColors.TANGO : AppColors.MONZA;
     return Padding(
@@ -191,7 +196,10 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           ), 
           child: Text('common.go'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            print('Go');
+            _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
+            _stepsProvider.setShouldShowTutorialChevrons(false);
+            _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
+            Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _connectWithMentorProvider.shouldReload = true);
           }
         ),
       ),
@@ -201,6 +209,8 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   @override
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
 
     return _showSolveQuizAddStepCard();
   }

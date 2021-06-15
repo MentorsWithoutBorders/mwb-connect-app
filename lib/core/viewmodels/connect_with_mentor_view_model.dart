@@ -1,23 +1,26 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
+import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 
 class ConnectWithMentorViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final ConnectWithMentorService _connectWithMentorService = locator<ConnectWithMentorService>();
-  final String defaultLocale = Platform.localeName;
+  final GoalsService _goalsService = locator<GoalsService>(); 
+  Goal goal;
   StepModel lastStepAdded;
   LessonRequestModel lessonRequest;
   Lesson nextLesson;
   List<Skill> skills;
+  bool _shouldReload = false;
 
   Future<void> getLastStepAdded() async {
     lastStepAdded = await _connectWithMentorService.getLastStepAdded();
@@ -45,22 +48,26 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   DateTime getDeadline() {
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn));
-    DateTime dateLastStepAdded = Utils.resetTime(lastStepAdded.dateTime);
     Jiffy deadline;
-    Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
-    int i = 1;
-    bool found = false;
-    while (!found) {
-      deadline = Jiffy(registeredOn).add(weeks: i);
-      if (deadline.dateTime.difference(dateLastStepAdded).inDays > 7 ||
-          deadline.isSameOrAfter(now, Units.DAY)) {
-        found = true;
-      } else {
-        i++;
+    if (lastStepAdded != null && lastStepAdded.dateTime != null) {
+      DateTime dateLastStepAdded = Utils.resetTime(lastStepAdded.dateTime);
+      Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
+      int i = 1;
+      bool found = false;
+      while (!found) {
+        deadline = Jiffy(registeredOn).add(weeks: i);
+        if (deadline.dateTime.difference(dateLastStepAdded).inDays > 7 ||
+            deadline.isSameOrAfter(now, Units.DAY)) {
+          found = true;
+        } else {
+          i++;
+        }
       }
-    }
-    if (deadline.dateTime.difference(dateLastStepAdded).inDays < 7) {
-      deadline = Jiffy(deadline).add(weeks: 1);
+      if (deadline.dateTime.difference(dateLastStepAdded).inDays < 7) {
+        deadline = Jiffy(deadline).add(weeks: 1);
+      }
+    } else {
+      deadline = Jiffy(registeredOn).add(weeks: 1);
     }
     return deadline.dateTime;
   }
@@ -77,4 +84,16 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     return certificateDate.difference(deadLine).inDays <= 0;
   }
 
+  Future<void> getGoal() async {
+    List<Goal> goals = await _goalsService.getGoals();
+    goal = goals[0];
+  }
+
+  bool get shouldReload => _shouldReload;
+  set shouldReload(bool logout) {
+    _shouldReload = logout;
+    if (shouldReload) {
+      notifyListeners();
+    }
+  }   
 }

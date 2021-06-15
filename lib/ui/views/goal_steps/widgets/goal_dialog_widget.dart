@@ -73,28 +73,28 @@ class _GoalDialogState extends State<GoalDialog> {
               child: Text('goal_dialog.update_goal'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: AppColors.MONZA,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)
-                )
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                showDialog(
-                  context: context,
-                  builder: (_) => AnimatedDialog(
-                    widgetInside: _showDeleteGoalDialog(),
-                    hasInput: false,
-                  ),
-                );                      
-              },
-              child: Text('goal_dialog.delete_goal'.tr(), style: const TextStyle(color: Colors.white))
-            )
-          ),
+          // SizedBox(
+          //   width: double.infinity,
+          //   child: ElevatedButton(
+          //     style: ElevatedButton.styleFrom(
+          //       primary: AppColors.MONZA,
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(20.0)
+          //       )
+          //     ),
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //       showDialog(
+          //         context: context,
+          //         builder: (_) => AnimatedDialog(
+          //           widgetInside: _showDeleteGoalDialog(),
+          //           hasInput: false,
+          //         ),
+          //       );                      
+          //     },
+          //     child: Text('goal_dialog.delete_goal'.tr(), style: const TextStyle(color: Colors.white))
+          //   )
+          // ),
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: InkWell(
