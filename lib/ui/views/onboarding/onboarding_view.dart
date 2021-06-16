@@ -142,7 +142,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         style: const TextStyle(
           fontFamily: 'LatoRegular',
           color: Colors.white,
-          fontSize: 15
+          fontSize: 15.0
         )
       )
     );
@@ -166,7 +166,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         style: const TextStyle(
           fontFamily: 'LatoRegular',
           color: AppColors.ALLPORTS,
-          fontSize: 15
+          fontSize: 15.0
         )
       )
     );

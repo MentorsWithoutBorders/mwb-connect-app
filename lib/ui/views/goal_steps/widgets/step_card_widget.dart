@@ -44,7 +44,7 @@ class _StepCardState extends State<StepCard> {
                       widget.step.text,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 15
+                        fontSize: 15.0
                       ),
                       overflow: TextOverflow.clip
                     )

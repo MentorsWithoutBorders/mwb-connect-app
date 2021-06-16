@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_lesson_request_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class FindingAvailableMentor extends StatefulWidget {
   const FindingAvailableMentor({Key key})
@@ -69,7 +71,13 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
           ), 
           child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            _connectWithMentorProvider.cancelLessonRequest();
+            showDialog(
+              context: context,
+              builder: (_) => const AnimatedDialog(
+                widgetInside: CancelLessonRequestDialog(),
+                hasInput: true,
+              ),
+            ); 
           }
         ),
       ),

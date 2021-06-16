@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AddStepDialog extends StatefulWidget {
   const AddStepDialog({Key key, this.steps})
@@ -113,11 +113,6 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
   }
 
   Widget _showButtons() {
-    final SpinKitThreeBounce loader = SpinKitThreeBounce(
-      color: Colors.white,
-      size: 18.0,
-      controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1000)),
-    );
     return Padding(
       padding: const EdgeInsets.only(top: 30.0),
       child: Row(
@@ -153,7 +148,7 @@ class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateM
             ) : SizedBox(
               width: 56.0,
               height: 16.0,
-              child: loader,
+              child: ButtonLoader(),
             )
           )
         ]
