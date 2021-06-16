@@ -101,7 +101,6 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
   Future<void> _cancelLessonRequest() async {  
     _setIsCancelingLessonRequest(true);
     await _connectWithMentorProvider.cancelLessonRequest();
-    _setIsCancelingLessonRequest(false);
   }
   
   void _setIsCancelingLessonRequest(bool isCanceling) {

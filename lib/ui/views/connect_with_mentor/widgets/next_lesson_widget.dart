@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_lesson_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_next_lesson_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class NextLesson extends StatefulWidget {
@@ -145,7 +145,7 @@ class _NextLessonState extends State<NextLesson> {
             showDialog(
               context: context,
               builder: (_) => AnimatedDialog(
-                widgetInside: CancelLessonDialog(),
+                widgetInside: CancelNextLessonDialog(),
                 hasInput: true,
               ),
             );

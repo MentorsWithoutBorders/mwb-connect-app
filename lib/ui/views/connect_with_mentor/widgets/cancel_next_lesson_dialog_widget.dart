@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class CancelLessonDialog extends StatefulWidget {
-  const CancelLessonDialog({Key key})
+class CancelNextLessonDialog extends StatefulWidget {
+  const CancelNextLessonDialog({Key key})
     : super(key: key);  
 
   @override
-  State<StatefulWidget> createState() => _CancelLessonDialogState();
+  State<StatefulWidget> createState() => _CancelNextLessonDialogState();
 }
 
-class _CancelLessonDialogState extends State<CancelLessonDialog> {
+class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
+  ConnectWithMentorViewModel _connectWithMentorProvider;
+  bool _isCancelingNextLesson = false;
 
-  Widget _showCancelLessonDialog() {
+  Widget _showCancelNextLessonDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -42,14 +49,17 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
   }
 
   Widget _showText() {
-    String subfield = 'Web Development'.toLowerCase();
-    String name = 'Edmond Pruteanu';
-    String dayOfWeek = 'Saturday';
-    String date = 'Jun 7th';
-    String time = '11:00 AM';
-    String timeZone = 'GMT';
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateTime now = DateTime.now();
+    Lesson nextLesson = _connectWithMentorProvider.nextLesson;
+    String name = nextLesson.mentor.name;
+    String subfield = nextLesson.subfield.name.toLowerCase();
+    String date = dateFormat.format(nextLesson.dateTime);
+    String time = timeFormat.format(nextLesson.dateTime);
+    String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.cancel_lesson_text'.tr(args: [subfield, name, dayOfWeek, date, time, timeZone]);
+    String text = 'connect_with_mentor.cancel_lesson_text'.tr(args: [subfield, name, date, time, timeZone]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
 
@@ -83,7 +93,7 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
               text: ' ' + 'common.on'.tr() + ' '
             ),
             TextSpan(
-              text: dayOfWeek + ', ' + date,
+              text: date,
               style: const TextStyle(
                 color: AppColors.TANGO
               ) 
@@ -127,17 +137,37 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          onPressed: () {
-            print('Cancel lesson');
+          child: !_isCancelingNextLesson ? Text(
+            'common.yes_cancel'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 70.0,
+            child: ButtonLoader(),
+          ),
+          onPressed: () async {
+            await _cancelNextLesson();
+            Navigator.pop(context);
           },
-          child: Text('common.yes_cancel'.tr(), style: const TextStyle(color: Colors.white))
         )
       ]
     );
-  } 
+  }
+  
+  Future<void> _cancelNextLesson() async {  
+    _setIsCancelingNextLesson(true);
+    await _connectWithMentorProvider.cancelNextLesson();
+  }
+  
+  void _setIsCancelingNextLesson(bool isCanceling) {
+    setState(() {
+      _isCancelingNextLesson = isCanceling;
+    });  
+  }    
   
   @override
   Widget build(BuildContext context) {
-    return _showCancelLessonDialog();
+    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+
+    return _showCancelNextLessonDialog();
   }
 }

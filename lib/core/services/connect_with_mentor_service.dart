@@ -61,8 +61,8 @@ class ConnectWithMentorService {
     return nextLesson;
   }   
 
-  Future<void> cancelLesson(String id) async {
-    await _api.putHTTP(url: '/lessons/$id/cancel_lesson');  
+  Future<void> cancelNextLesson(String id) async {
+    await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: {});  
     return ;
   }
 
