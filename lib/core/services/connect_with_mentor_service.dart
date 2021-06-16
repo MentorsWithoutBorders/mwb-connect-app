@@ -77,8 +77,7 @@ class ConnectWithMentorService {
     return previousLesson;
   }   
 
-  Future<List<Skill>> getMentorSkills(String mentorId) async {
-    String subfieldId = _storageService.subfieldId;
+  Future<List<Skill>> getMentorSkills(String mentorId, String subfieldId) async {
     http.Response response = await _api.getHTTP(url: '/users/$mentorId/subfields/$subfieldId/skills');
     List<Skill> skills = [];
     if (response != null && response.body != null) {
@@ -87,6 +86,12 @@ class ConnectWithMentorService {
     }
     return skills;
   }
+
+  Future<void> addSkills(List<String> skillIds, String subfieldId) async {
+    String userId = _storageService.userId;
+    await _api.postHTTP(url: '/users/$userId/subfields/$subfieldId/skills', data: skillIds);  
+    return ;
+  }  
   
   Future<void> setMentorPresence(String id, bool isPresent) async {
     Lesson lesson = Lesson(isMentorPresent: isPresent);

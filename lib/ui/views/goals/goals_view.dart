@@ -47,7 +47,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   @override
   Future<void> reassemble() async {
     super.reassemble();
-    //Show quiz
+    // Show quiz
     // int quizNumber = await _quizProvider.getQuizNumber();
     // if (quizNumber != 0) {
     //   showDialog(

@@ -19,7 +19,8 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   StepModel lastStepAdded;
   LessonRequestModel lessonRequest;
   Lesson nextLesson;
-  List<Skill> skills;
+  Lesson previousLesson;
+  List<Skill> mentorSkills;
   bool _shouldReload = false;
 
   Future<void> getLastStepAdded() async {
@@ -45,11 +46,34 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     nextLesson = await _connectWithMentorService.getNextLesson();
   }
 
-   Future<void> cancelNextLesson() async {
+  Future<void> cancelNextLesson() async {
     await _connectWithMentorService.cancelNextLesson(nextLesson.id);
     nextLesson.isCanceled = true;
     notifyListeners();
+  }
+
+  Future<void> getPreviousLesson() async {
+    previousLesson = await _connectWithMentorService.getPreviousLesson();
   }  
+  
+  Future<void> getMentorSkills() async {
+    await getPreviousLesson();
+    mentorSkills = await _connectWithMentorService.getMentorSkills(previousLesson.mentor.id, previousLesson.subfield.id);
+  }
+  
+  Future<void> addSkills(List<bool> selectedSkills) async {
+    List<String> skillIds = [];
+    for (int i = 0; i < selectedSkills.length; i++) {
+      if (selectedSkills[i]) {
+        skillIds.add(mentorSkills[i].id);
+      }
+    }
+    await _connectWithMentorService.addSkills(skillIds, previousLesson.subfield.id);
+  }
+
+  Future<void> setMentorPresence(bool isMentorPresent) async {
+    await _connectWithMentorService.setMentorPresence(previousLesson.id, isMentorPresent);
+  }
 
   bool getIsNextLesson() {
     return nextLesson.id != null && nextLesson.isCanceled != true;

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class LearnedTodayDialog extends StatefulWidget {
   const LearnedTodayDialog({Key key})
@@ -12,15 +17,12 @@ class LearnedTodayDialog extends StatefulWidget {
 }
 
 class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
+  ConnectWithMentorViewModel _connectWithMentorProvider;  
   final ScrollController _scrollController = ScrollController();  
-  List<bool> _skillCheckBoxes = [];
-  bool _mentorCheckBox = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _skillCheckBoxes = [false, false, false, false, false, false, false, false];
-  }
+  List<bool> _selectedSkills = [];
+  bool _isMentorAbsent = false;
+  bool _areMentorSkillsRetrieved = false;
+  bool _isSubmitting = false;
 
   Widget _showLearnedTodayDialog() {
     return Container(
@@ -30,7 +32,7 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
         children: <Widget>[
           _showTitle(),
           _showText(),
-          _showSkillsList(),
+          _showSkills(),
           _showDivider(),
           _showMentorPresence(),
           _showSubmitButton()
@@ -69,8 +71,9 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
     );
   }
 
-  Widget _showSkillsList() {
-    List<String> skills = ['HTML', 'CSS', 'JavaScript', 'Python', 'Django', 'Java', 'Spring','C#'];
+  Widget _showSkills() {
+    List<Skill> skills = _connectWithMentorProvider.mentorSkills != null ? _connectWithMentorProvider.mentorSkills : [];
+    _initSkillCheckBoxes(skills);
     List<Widget> skillWidgets = [];
     for (int i = 0; i < skills.length; i++) {
       Widget skillWidget = Row(
@@ -80,23 +83,23 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
             height: 35.0,                      
             child: Checkbox(
               activeColor: AppColors.TANGO,
-              value: _skillCheckBoxes[i],
+              value: _selectedSkills[i],
               onChanged: (value) {
-                _setSkillCheckBox(i);
+                _setSelectedSkills(i);
               },
             ),
           ),
           InkWell(
             child: Text(
-              skills[i],
+              skills[i].name,
               style: TextStyle(
                 fontSize: 12.0,
-                color: _skillCheckBoxes[i] ? Colors.black : AppColors.DOVE_GRAY
+                color: _selectedSkills[i] ? Colors.black : AppColors.DOVE_GRAY
               )
             ),
             onTap: () {
               setState(() {
-                _setSkillCheckBox(i);
+                _setSelectedSkills(i);
               });
             }
           )
@@ -110,36 +113,49 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
     }
     double heightScrollThumb = 250.0 / (skillWidgets.length / 6);
 
-    return Container(
-      height: height,
-      padding: const EdgeInsets.only(left: 50.0, bottom: 10.0),
-      child: DraggableScrollbar(
-        controller: _scrollController,
-        child: ListView(
+    if (_areMentorSkillsRetrieved) {
+      return Container(
+        height: height,
+        padding: const EdgeInsets.only(left: 50.0, bottom: 10.0),
+        child: DraggableScrollbar(
           controller: _scrollController,
-          children: skillWidgets
-        ),
-        heightScrollThumb: heightScrollThumb,
-        backgroundColor: AppColors.SILVER,
-        scrollThumbBuilder: (
-          Color backgroundColor,
-          Animation<double> thumbAnimation,
-          Animation<double> labelAnimation,
-          double height, {
-          Text labelText,
-          BoxConstraints labelConstraints
-        }) {
-          return FadeTransition(
-            opacity: thumbAnimation,
-            child: Container(
-              height: height,
-              width: 5.0,
-              color: backgroundColor,
-            ),
-          );
-        }        
-      )
-    );
+          child: ListView(
+            controller: _scrollController,
+            children: skillWidgets
+          ),
+          heightScrollThumb: heightScrollThumb,
+          backgroundColor: AppColors.SILVER,
+          scrollThumbBuilder: (
+            Color backgroundColor,
+            Animation<double> thumbAnimation,
+            Animation<double> labelAnimation,
+            double height, {
+            Text labelText,
+            BoxConstraints labelConstraints
+          }) {
+            return FadeTransition(
+              opacity: thumbAnimation,
+              child: Container(
+                height: height,
+                width: 5.0,
+                color: backgroundColor,
+              ),
+            );
+          }        
+        )
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(top: 30.0, bottom: 50.0),
+        child: Loader(color: AppColors.DOVE_GRAY)
+      );
+    }
+  }
+
+  void _initSkillCheckBoxes(List<Skill> skills) {
+    for (int i = 0; i < skills.length; i++) {
+      _selectedSkills.add(false);
+    }
   }
 
   Widget _showDivider() {
@@ -160,9 +176,9 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
             height: 35.0,                      
             child: Checkbox(
               activeColor: AppColors.TANGO,
-              value: _mentorCheckBox,
+              value: _isMentorAbsent,
               onChanged: (value) {
-                _setMentorCheckBox();
+                _setIsMentorPresent();
               },
             ),
           ),
@@ -175,7 +191,7 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
               )
             ),
             onTap: () {
-              _setMentorCheckBox();
+              _setIsMentorPresent();
             }
           )
         ]
@@ -183,15 +199,15 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
     ); 
   }
 
-  void _setSkillCheckBox(int index) {
+  void _setSelectedSkills(int index) {
     setState(() {
-      _skillCheckBoxes[index] = !_skillCheckBoxes[index];
+      _selectedSkills[index] = !_selectedSkills[index];
     });
   }
 
-  void _setMentorCheckBox() {
+  void _setIsMentorPresent() {
     setState(() {
-      _mentorCheckBox = !_mentorCheckBox;
+      _isMentorAbsent = !_isMentorAbsent;
     });    
   }
   
@@ -209,17 +225,50 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(50.0, 3.0, 50.0, 3.0),
           ), 
-          child: Text('common.submit'.tr(), style: const TextStyle(color: Colors.white)),
-          onPressed: () {
+          child: !_isSubmitting ? Text(
+            'common.submit'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 50.0,
+            child: ButtonLoader(),
+          ),
+          onPressed: () async {
+            await _submitLearnedToday();
             Navigator.pop(context);
           }
         ),
       ),
     );
-  } 
+  }
+
+  Future<void> _submitLearnedToday() async {
+    _setIsSubmitting(true);
+    await _connectWithMentorProvider.addSkills(_selectedSkills);
+    await _connectWithMentorProvider.setMentorPresence(!_isMentorAbsent);
+  }
+
+  void _setIsSubmitting(bool isSubmitting) {
+    setState(() {
+      _isSubmitting = isSubmitting;
+    });  
+  }    
+  
+  Future<void> _getMentorSkills() async {
+    if (!_areMentorSkillsRetrieved) {
+      await _connectWithMentorProvider.getMentorSkills();
+      _areMentorSkillsRetrieved = true;
+    }
+  }  
   
   @override
   Widget build(BuildContext context) {
-    return _showLearnedTodayDialog();
+    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+
+   return FutureBuilder<void>(
+      future: _getMentorSkills(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return _showLearnedTodayDialog();
+      }
+   );
   }
 }

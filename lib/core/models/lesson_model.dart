@@ -22,7 +22,7 @@ class Lesson {
     student = _userFromJson(json['student']);
     mentor = _userFromJson(json['mentor']);
     subfield = _subfieldFromJson(json['subfield']);
-    dateTime = dateFormat.parse(json['dateTime']);
+    dateTime = json['dateTime'] != null ? dateFormat.parse(json['dateTime']) : null;
     meetingUrl = json['meetingUrl'] ?? '';    
     isStudentPresent = json['isStudentPresent'];
     isMentorPresent = json['isMentorPresent'];
@@ -49,9 +49,9 @@ class Lesson {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);     
     return {
       'id': id,
-      'student': student.toJson(),
-      'mentor': mentor.toJson(),
-      'subfield': subfield.toJson(),
+      'student': student?.toJson(),
+      'mentor': mentor?.toJson(),
+      'subfield': subfield?.toJson(),
       'dateTime': dateTime != null ? dateFormat.format(dateTime) : null,
       'meetingUrl': meetingUrl,
       'isStudentPresent': isStudentPresent,
