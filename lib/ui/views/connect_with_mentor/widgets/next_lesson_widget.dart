@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_lesson_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
-class ScheduledLesson extends StatefulWidget {
-  const ScheduledLesson({Key key})
+class NextLesson extends StatefulWidget {
+  const NextLesson({Key key})
     : super(key: key); 
 
   @override
-  State<StatefulWidget> createState() => _ScheduledLessonState();
+  State<StatefulWidget> createState() => _NextLessonState();
 }
 
-class _ScheduledLessonState extends State<ScheduledLesson> {
+class _NextLessonState extends State<NextLesson> {
   ConnectWithMentorViewModel _connectWithMentorProvider;
 
-  Widget _showScheduledLessonCard() {
+  Widget _showNextLessonCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -41,16 +43,19 @@ class _ScheduledLessonState extends State<ScheduledLesson> {
   }
 
   Widget _showText() {
-    String name = 'Edmond Pruteanu';
-    String subfield = 'Web Development'.toLowerCase();
-    String dayOfWeek = 'Saturday';
-    String date = 'Jun 7th';
-    String time = '11:00 AM';
-    String timeZone = 'GMT';
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateTime now = DateTime.now();
+    Lesson nextLesson = _connectWithMentorProvider.nextLesson;
+    String name = nextLesson.mentor.name;
+    String subfield = nextLesson.subfield.name.toLowerCase();
+    String date = dateFormat.format(nextLesson.dateTime);
+    String time = timeFormat.format(nextLesson.dateTime);
+    String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, subfield, dayOfWeek, date, time, timeZone]);
+    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, subfield, date, time, timeZone]);
     String secondPart = text.substring(name.length, text.indexOf(subfield));
-    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(dayOfWeek));
+    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
     String link = "https://meet.google.com/mbc-cvoz-owv";
 
@@ -83,7 +88,7 @@ class _ScheduledLessonState extends State<ScheduledLesson> {
                   text: thirdPart
                 ),
                 TextSpan(
-                  text: dayOfWeek + ', ' + date,
+                  text: date,
                   style: const TextStyle(
                     color: AppColors.TANGO
                   ) 
@@ -154,6 +159,6 @@ class _ScheduledLessonState extends State<ScheduledLesson> {
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
 
-    return _showScheduledLessonCard();
+    return _showNextLessonCard();
   }
 }

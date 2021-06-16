@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/scheduled_lesson_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
@@ -33,7 +33,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
         padding: const EdgeInsets.only(top: 0.0),
         children: [
           SolveQuizAddStep(),
-          if (_connectWithMentorProvider.getIsNextLesson()) ScheduledLesson(),
+          if (_connectWithMentorProvider.getIsNextLesson()) NextLesson(),
           if (!_connectWithMentorProvider.getIsNextLesson() && !_connectWithMentorProvider.getIsLessonRequest()) FindAvailableMentor(),
           if (_connectWithMentorProvider.getIsLessonRequest()) FindingAvailableMentor()
         ]
