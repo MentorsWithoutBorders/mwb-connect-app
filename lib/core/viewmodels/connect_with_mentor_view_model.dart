@@ -29,9 +29,28 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   Future<void> getLessonRequest() async {
     lessonRequest = await _connectWithMentorService.getLessonRequest();
   }
+
+  Future<void> sendLessonRequest() async {
+    lessonRequest = await _connectWithMentorService.sendLessonRequest();
+    notifyListeners();
+  }  
+
+  Future<void> cancelLessonRequest() async {
+    lessonRequest.isCanceled = true;
+    notifyListeners();
+    await _connectWithMentorService.cancelLessonRequest(lessonRequest.id);
+  } 
   
   Future<void> getNextLesson() async {
     nextLesson = await _connectWithMentorService.getNextLesson();
+  }
+
+  bool getIsNextLesson() {
+    return nextLesson.id != null && nextLesson.isCanceled != true;
+  }
+
+  bool getIsLessonRequest() {
+    return !getIsNextLesson() && lessonRequest.id != null && lessonRequest.isCanceled != true;
   }
 
   DateTime getCertificateDate() {

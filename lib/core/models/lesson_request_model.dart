@@ -11,11 +11,11 @@ class LessonRequestModel {
   LessonRequestModel({this.id, this.student, this.mentor, this.subfield, this.isCanceled});
 
   LessonRequestModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'] ?? '';
-    student = _userFromJson(json['student']) ?? null;
-    mentor = _userFromJson(json['mentor']) ?? null;
-    subfield = _subfieldFromJson(json['subfield']) ?? null;
-    isCanceled = json['isCanceled'] ?? null;
+    id = json['id'];
+    student = _userFromJson(json['student']);
+    mentor = _userFromJson(json['mentor']);
+    subfield = _subfieldFromJson(json['subfield']);
+    isCanceled = json['isCanceled'];
   }
 
   User _userFromJson(Map<String, dynamic> json) {

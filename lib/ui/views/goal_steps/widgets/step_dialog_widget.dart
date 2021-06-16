@@ -44,7 +44,7 @@ class _StepDialogState extends State<StepDialog> {
           fontWeight: FontWeight.bold
         )
       )
-    );    
+    );
   }
 
   Widget _showOptions() {

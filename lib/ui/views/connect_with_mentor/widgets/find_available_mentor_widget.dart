@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_mentor_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
-import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class FindAvailableMentor extends StatefulWidget {
   const FindAvailableMentor({Key key})
@@ -19,8 +16,9 @@ class FindAvailableMentor extends StatefulWidget {
   State<StatefulWidget> createState() => _FindAvailableMentorState();
 }
 
-class _FindAvailableMentorState extends State<FindAvailableMentor> {
+class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerProviderStateMixin {
   ConnectWithMentorViewModel _connectWithMentorProvider;
+  bool _isSendingLessonRequest = false;
 
   Widget _showFindAvailableMentorCard() {
     return Padding(
@@ -115,6 +113,11 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> {
   }
 
   Widget _showFindMentorButton() {
+    final SpinKitThreeBounce loader = SpinKitThreeBounce(
+      color: Colors.white,
+      size: 18.0,
+      controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1000)),
+    );
     return Center(
       child: Container(
         height: 30.0,
@@ -127,21 +130,34 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> {
               borderRadius: BorderRadius.circular(20.0)
             ),
             padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-          ), 
-          child: Text('connect_with_mentor.find_mentor'.tr(), style: const TextStyle(color: Colors.white)),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (_) => AnimatedDialog(
-                widgetInside: FindMentorDialog(),
-                hasInput: true,
-              ),
-            );
+          ),
+          child: !_isSendingLessonRequest ? Text(
+            'connect_with_mentor.find_mentor'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 56.0,
+            height: 16.0,
+            child: loader,
+          ),
+          onPressed: () async {
+            await _sendLessonRequest();
           }
         ),
       ),
     );
-  }  
+  }
+  
+  Future<void> _sendLessonRequest() async {  
+    _setIsSendingLessonRequest(true);
+    await _connectWithMentorProvider.sendLessonRequest();
+    _setIsSendingLessonRequest(false);
+  }
+
+  void _setIsSendingLessonRequest(bool isSending) {
+    setState(() {
+      _isSendingLessonRequest = isSending;
+    });  
+  }
 
   @override
   Widget build(BuildContext context) {

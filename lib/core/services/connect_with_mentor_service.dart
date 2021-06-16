@@ -34,8 +34,19 @@ class ConnectWithMentorService {
     return lessonRequest;
   }
 
+  Future<LessonRequestModel> sendLessonRequest() async {
+    String userId = _storageService.userId;
+    http.Response response = await _api.postHTTP(url: '/users/$userId/lesson_requests', data: {});
+    LessonRequestModel lessonRequest;
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      lessonRequest = LessonRequestModel.fromJson(json);
+    }
+    return lessonRequest;
+  }  
+
   Future<void> cancelLessonRequest(String id) async {
-    await _api.putHTTP(url: '/lesson_requests/$id/cancel_lesson_request');  
+    await _api.putHTTP(url: '/lesson_requests/$id/cancel_lesson_request', data: {});  
     return ;
   }  
   

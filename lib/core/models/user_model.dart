@@ -33,13 +33,13 @@ class User {
     email = json['email'].toString() ?? '';
     password = json['password'].toString() ?? '';
     isMentor = json['isMentor'] ?? false;
-    organization = _organizationFromJson(json['organization']) ?? null;
-    field = _fieldFromJson(json['field']) ?? null;
-    timeZone = _timeZoneFromJson(json['timeZone']) ?? null;
+    organization = _organizationFromJson(json['organization']);
+    field = _fieldFromJson(json['field']);
+    timeZone = _timeZoneFromJson(json['timeZone']);
     availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = json['isAvailable'] ?? true;
     availableFrom = json['availableFrom'] != null ? dateFormat.parse(json['availableFrom']) : null;
-    lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']) ?? null;
+    lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']);
     registeredOn = json['registeredOn'] != null ? dateFormat.parse(json['registeredOn']) : null;
   }
 

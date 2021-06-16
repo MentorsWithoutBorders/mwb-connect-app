@@ -18,15 +18,15 @@ class Lesson {
 
   Lesson.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
-    id = json['id'] ?? '';
-    student = _userFromJson(json['student']) ?? null;
-    mentor = _userFromJson(json['mentor']) ?? null;
-    subfield = _subfieldFromJson(json['subfield']) ?? null;
+    id = json['id'];
+    student = _userFromJson(json['student']);
+    mentor = _userFromJson(json['mentor']);
+    subfield = _subfieldFromJson(json['subfield']);
     dateTime = dateFormat.parse(json['dateTime']);
     meetingUrl = json['meetingUrl'] ?? '';    
-    isStudentPresent = json['isStudentPresent'] ?? null;
-    isMentorPresent = json['isMentorPresent'] ?? null;
-    isCanceled = json['isCanceled'] ?? null;
+    isStudentPresent = json['isStudentPresent'];
+    isMentorPresent = json['isMentorPresent'];
+    isCanceled = json['isCanceled'];
   }
 
   User _userFromJson(Map<String, dynamic> json) {

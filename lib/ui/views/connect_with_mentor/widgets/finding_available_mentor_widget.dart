@@ -69,7 +69,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
           ), 
           child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            print('Cancel');
+            _connectWithMentorProvider.cancelLessonRequest();
           }
         ),
       ),

@@ -7,8 +7,8 @@ class Quiz {
 
   Quiz.fromJson(Map<String, dynamic> snapshot) :
     number = snapshot['number'],
-    isCorrect = snapshot['isCorrect'] ?? null,
-    isClosed = snapshot['isClosed'] ?? null;
+    isCorrect = snapshot['isCorrect'],
+    isClosed = snapshot['isClosed'];
 
   Map<String, Object> toJson() {
     return {
