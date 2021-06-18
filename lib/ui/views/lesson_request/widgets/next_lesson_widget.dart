@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_reject_lesson_dialog_widget.dart';
+import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/send_link_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
@@ -17,7 +19,7 @@ class NextLesson extends StatefulWidget {
 }
 
 class _NextLessonState extends State<NextLesson> {
-  ConnectWithMentorViewModel _lessonRequestProvider;
+  LessonRequestViewModel _lessonRequestProvider;
 
   Widget _showNextLessonCard() {
     return Padding(
@@ -43,21 +45,24 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showText() {
     String linkType = 'Google Meet';
-    String subfield = 'Web Development'.toLowerCase();
-    String name = 'Noel Makwetu';
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateTime now = DateTime.now();
+    Lesson nextLesson = _lessonRequestProvider.nextLesson;
+    String name = nextLesson.student.name;
+    String organization = nextLesson.student.organization.name;
+    String subfield = nextLesson.subfield.name.toLowerCase();
+    String date = dateFormat.format(nextLesson.dateTime);
+    String time = timeFormat.format(nextLesson.dateTime);
+    String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
-    String organization = 'Education for All Children Kenya';
-    String dayOfWeek = 'Saturday';
-    String date = 'Jun 7th';
     String at = 'common.at'.tr();
-    String time = '11:00 AM';
-    String timeZone = 'GMT';
-    String text = 'lesson_request.link_sent'.tr(args: [linkType, subfield, name, organization, dayOfWeek, date, time, timeZone]);
+    String text = 'lesson_request.link_sent'.tr(args: [linkType, subfield, name, organization, date, time, timeZone]);
     String firstPart = text.substring(0, text.indexOf(linkType));
     String secondPart = text.substring(text.indexOf(linkType) + linkType.length, text.indexOf(subfield));
     String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
     String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    String link = "https://meet.google.com/mbc-cvoz-owv";
+    String link = nextLesson.meetingUrl;
 
     return Wrap(
       children: [
@@ -106,7 +111,7 @@ class _NextLessonState extends State<NextLesson> {
                   text: ' ' + 'common.on'.tr() + ' '
                 ),
                 TextSpan(
-                  text: dayOfWeek + ', ' + date,
+                  text: date,
                   style: const TextStyle(
                     color: AppColors.TANGO
                   ) 
@@ -167,7 +172,7 @@ class _NextLessonState extends State<NextLesson> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: CancelLessonDialog(action: 'Cancel'),
+                    widgetInside: CancelNextLessonDialog(),
                     hasInput: true,
                   ),
                 );
@@ -205,7 +210,7 @@ class _NextLessonState extends State<NextLesson> {
 
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
     return _showNextLessonCard();
   }

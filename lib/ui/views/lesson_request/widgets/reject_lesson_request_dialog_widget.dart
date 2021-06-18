@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class CancelLessonDialog extends StatefulWidget {
-  const CancelLessonDialog({Key key, this.action})
+class RejectLessonRequestDialog extends StatefulWidget {
+  const RejectLessonRequestDialog({Key key})
     : super(key: key);
     
-  final String action;
-
   @override
-  State<StatefulWidget> createState() => _CancelLessonDialogState();
+  State<StatefulWidget> createState() => _RejectLessonRequestDialogState();
 }
 
-class _CancelLessonDialogState extends State<CancelLessonDialog> {
+class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
+  LessonRequestViewModel _lessonRequestProvider;
+  bool _isRejectingLessonRequest = false;  
 
-  Widget _showCancelLessonDialog() {
+  Widget _showRejectLessonRequestDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -30,7 +34,7 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
   }
 
   Widget _showTitle() {
-    String title = widget.action == 'Cancel' ? 'lesson_request.cancel_lesson'.tr() : 'lesson_request.reject_lesson'.tr();
+    String title = 'lesson_request.reject_lesson_request'.tr();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
@@ -46,17 +50,20 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
   }
 
   Widget _showText() {
-    String action = widget.action.toLowerCase();
-    String subfield = 'Web Development'.toLowerCase();
-    String name = 'Noel Makwetu';
+    String action = 'reject';
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateTime now = DateTime.now();
+    LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
+    String name = lessonRequest.student.name;
+    String organization = lessonRequest.student.organization.name;
+    String subfield = lessonRequest.subfield.name.toLowerCase();
+    String date = dateFormat.format(lessonRequest.lessonDateTime);
+    String time = timeFormat.format(lessonRequest.lessonDateTime);
+    String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
-    String organization = 'Education for All Children Kenya';
-    String dayOfWeek = 'Saturday';
-    String date = 'Jun 7th';
-    String time = '11:00 AM';
     String at = 'common.at'.tr();
-    String timeZone = 'GMT';
-    String text = 'lesson_request.cancel_lesson_text'.tr(args: [action, subfield, name, organization, dayOfWeek, date, time, timeZone]);
+    String text = 'lesson_request.cancel_lesson_text'.tr(args: [action, subfield, name, organization, date, time, timeZone]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);
@@ -100,7 +107,7 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
               text: ' ' + 'common.on'.tr() + ' '
             ),
             TextSpan(
-              text: dayOfWeek + ', ' + date,
+              text: date,
               style: const TextStyle(
                 color: AppColors.TANGO
               ) 
@@ -124,7 +131,6 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
   }
   
   Widget _showButtons() {
-    String actionText = widget.action == 'Cancel' ? 'common.yes_cancel'.tr() : 'common.yes_reject'.tr();
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -145,17 +151,37 @@ class _CancelLessonDialogState extends State<CancelLessonDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          onPressed: () {
-            print('Cancel lesson');
+          child: !_isRejectingLessonRequest ? Text(
+            'common.yes_reject'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 70.0,
+            child: ButtonLoader(),
+          ),
+          onPressed: () async {
+            await _rejectLessonRequest();
+            Navigator.pop(context);
           },
-          child: Text(actionText, style: const TextStyle(color: Colors.white))
         )
       ]
     );
   } 
+
+  Future<void> _rejectLessonRequest() async {  
+    _setIsRejectingLessonRequest(true);
+    await _lessonRequestProvider.rejectLessonRequest();
+  }
+  
+  void _setIsRejectingLessonRequest(bool isRejecting) {
+    setState(() {
+      _isRejectingLessonRequest = isRejecting;
+    });  
+  }    
   
   @override
   Widget build(BuildContext context) {
-    return _showCancelLessonDialog();
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+
+    return _showRejectLessonRequestDialog();
   }
 }

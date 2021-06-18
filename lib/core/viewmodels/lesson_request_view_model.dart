@@ -65,7 +65,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   bool getIsLessonRequest() {
-    return !getIsNextLesson() && lessonRequest.id != null && lessonRequest.isCanceled != true;
+    return !getIsNextLesson() && lessonRequest.id != null && lessonRequest.isRejected != true;
   }  
 
 }

@@ -33,7 +33,7 @@ class LessonRequestService {
   }  
 
   Future<void> rejectLessonRequest(String id) async {
-    await _api.putHTTP(url: '/lesson_requests/$id/reject_lesson_request');  
+    await _api.putHTTP(url: '/lesson_requests/$id/reject_lesson_request', data: {});  
     return ;
   }  
   

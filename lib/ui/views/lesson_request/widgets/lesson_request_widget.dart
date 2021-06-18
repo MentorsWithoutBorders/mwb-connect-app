@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_reject_lesson_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/reject_lesson_request_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/send_link_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
@@ -146,7 +146,7 @@ class _LessonRequestState extends State<LessonRequest> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: CancelLessonDialog(action: 'Reject'),
+                    widgetInside: RejectLessonRequestDialog(),
                     hasInput: true,
                   ),
                 );
