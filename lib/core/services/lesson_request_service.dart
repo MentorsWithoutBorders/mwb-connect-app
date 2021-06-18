@@ -51,7 +51,13 @@ class LessonRequestService {
   Future<void> cancelNextLesson(String id) async {
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson');  
     return ;
-  }  
+  }
+  
+  Future<void> changeLessonLink(String id, String meetingUrl) async {
+    Lesson lesson = Lesson(meetingUrl: meetingUrl);
+    await _api.putHTTP(url: '/lessons/$id/change_meeting_url', data: lesson.toJson());  
+    return ;
+  } 
 
   Future<Lesson> getPreviousLesson() async {
     String userId = _storageService.userId;

@@ -37,6 +37,12 @@ class LessonRequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> changeLessonLink(String meetingUrl) async {
+    await _lessonRequestService.changeLessonLink(nextLesson.id, meetingUrl);
+    nextLesson.meetingUrl = meetingUrl;
+    notifyListeners();
+  }  
+
   Future<void> getPreviousLesson() async {
     previousLesson = await _lessonRequestService.getPreviousLesson();
   }  

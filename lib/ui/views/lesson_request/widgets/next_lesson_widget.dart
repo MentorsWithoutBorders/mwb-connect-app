@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/send_link_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/change_link_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class NextLesson extends StatefulWidget {
@@ -20,6 +20,7 @@ class NextLesson extends StatefulWidget {
 
 class _NextLessonState extends State<NextLesson> {
   LessonRequestViewModel _lessonRequestProvider;
+  String _link = '';
 
   Widget _showNextLessonCard() {
     return Padding(
@@ -62,7 +63,7 @@ class _NextLessonState extends State<NextLesson> {
     String secondPart = text.substring(text.indexOf(linkType) + linkType.length, text.indexOf(subfield));
     String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
     String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    String link = nextLesson.meetingUrl;
+    _link = nextLesson.meetingUrl;
 
     return Wrap(
       children: [
@@ -136,7 +137,7 @@ class _NextLessonState extends State<NextLesson> {
           padding: const EdgeInsets.only(bottom: 30.0),
           child: Center(
             child: Text(
-              link,
+              _link,
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -196,7 +197,7 @@ class _NextLessonState extends State<NextLesson> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: SendLinkDialog(),
+                    widgetInside: ChangeLinkDialog(link: _link),
                     hasInput: true,
                   ),
                 );
