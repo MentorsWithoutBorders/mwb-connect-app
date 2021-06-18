@@ -49,7 +49,7 @@ class LessonRequestService {
   }
 
   Future<void> cancelNextLesson(String id) async {
-    await _api.putHTTP(url: '/lessons/$id/cancel_lesson');  
+    await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: {});  
     return ;
   }
   

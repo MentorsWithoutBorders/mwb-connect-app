@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelNextLessonDialog extends StatefulWidget {
   const CancelNextLessonDialog({Key key})
@@ -11,6 +16,8 @@ class CancelNextLessonDialog extends StatefulWidget {
 }
 
 class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
+  LessonRequestViewModel _nextLessonProvider;
+  bool _isCancellingLesson = false;  
 
   Widget _showCancelNextLessonDialog() {
     return Container(
@@ -27,7 +34,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showTitle() {
-    String title = 'lesson_request.cancel_lesson'.tr();
+    String title = 'lesson_request.cancel_next_lesson'.tr();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
@@ -43,17 +50,20 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showText() {
-    String action = 'Cancel';
-    String subfield = 'Web Development'.toLowerCase();
-    String name = 'Noel Makwetu';
+    String action = 'cancel';
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateTime now = DateTime.now();
+    Lesson nextLesson = _nextLessonProvider.nextLesson;
+    String name = nextLesson.student.name;
+    String organization = nextLesson.student.organization.name;
+    String subfield = nextLesson.subfield.name.toLowerCase();
+    String date = dateFormat.format(nextLesson.dateTime);
+    String time = timeFormat.format(nextLesson.dateTime);
+    String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
-    String organization = 'Education for All Children Kenya';
-    String dayOfWeek = 'Saturday';
-    String date = 'Jun 7th';
-    String time = '11:00 AM';
     String at = 'common.at'.tr();
-    String timeZone = 'GMT';
-    String text = 'lesson_request.cancel_lesson_text'.tr(args: [action, subfield, name, organization, dayOfWeek, date, time, timeZone]);
+    String text = 'lesson_request.cancel_lesson_text'.tr(args: [action, subfield, name, organization, date, time, timeZone]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);
@@ -97,7 +107,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
               text: ' ' + 'common.on'.tr() + ' '
             ),
             TextSpan(
-              text: dayOfWeek + ', ' + date,
+              text: date,
               style: const TextStyle(
                 color: AppColors.TANGO
               ) 
@@ -121,7 +131,6 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
   
   Widget _showButtons() {
-    String actionText = 'common.yes_cancel'.tr();
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -142,17 +151,37 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          onPressed: () {
-            print('Cancel lesson');
+          child: !_isCancellingLesson ? Text(
+            'common.yes_cancel'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 70.0,
+            child: ButtonLoader(),
+          ),
+          onPressed: () async {
+            await _cancelNextLesson();
+            Navigator.pop(context);
           },
-          child: Text(actionText, style: const TextStyle(color: Colors.white))
         )
       ]
     );
   } 
+
+  Future<void> _cancelNextLesson() async {  
+    _setIsCancellingLesson(true);
+    await _nextLessonProvider.cancelNextLesson();
+  }
+  
+  void _setIsCancellingLesson(bool isCanceling) {
+    setState(() {
+      _isCancellingLesson = isCanceling;
+    });  
+  }    
   
   @override
   Widget build(BuildContext context) {
+    _nextLessonProvider = Provider.of<LessonRequestViewModel>(context);
+
     return _showCancelNextLessonDialog();
   }
 }
