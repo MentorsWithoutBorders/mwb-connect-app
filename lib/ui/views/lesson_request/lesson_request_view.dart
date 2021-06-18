@@ -6,9 +6,11 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/standing_by_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/next_lesson_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/taught_today_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class LessonRequestView extends StatefulWidget {
   LessonRequestView({Key key, this.logoutCallback})
@@ -22,7 +24,20 @@ class LessonRequestView extends StatefulWidget {
 
 class _LessonRequestViewState extends State<LessonRequestView> {
   LessonRequestViewModel _lessonRequestProvider;
-  bool _isInit = false;  
+  bool _isInit = false;
+  
+  @override
+  Future<void> reassemble() async {
+    super.reassemble();
+    // Show learned today
+    // showDialog(
+    //   context: context,
+    //   builder: (_) => AnimatedDialog(
+    //     widgetInside: TaughtTodayDialog(),
+    //     hasInput: false
+    //   ),
+    // );
+  }      
 
   Widget _showLessonRequest() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;

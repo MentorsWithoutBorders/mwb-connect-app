@@ -82,7 +82,7 @@ class LessonRequestService {
   }
   
   Future<void> addStudentSkills(String studentId, String subfieldId, List<String> skills) async {
-    await _api.putHTTP(url: '/users/$studentId/subfields/$subfieldId/skills', data: jsonEncode(skills));  
+    await _api.postHTTP(url: '/users/$studentId/subfields/$subfieldId/skills', data: skills);
     return ;
   }    
 

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class TaughtTodayDialog extends StatefulWidget {
   const TaughtTodayDialog({Key key})
@@ -12,15 +17,12 @@ class TaughtTodayDialog extends StatefulWidget {
 }
 
 class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
+  LessonRequestViewModel _lessonRequestProvider;  
   final ScrollController _scrollController = ScrollController();  
-  List<bool> _skillCheckBoxes = [];
-  bool _studentCheckBox = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _skillCheckBoxes = [false, false, false, false, false, false, false, false];
-  }
+  List<bool> _selectedSkills = [];
+  bool _isStudentAbsent = false;
+  bool _areSkillsRetrieved = false;
+  bool _isSubmitting = false;
 
   Widget _showTaughtTodayDialog() {
     return Container(
@@ -30,7 +32,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
         children: <Widget>[
           _showTitle(),
           _showText(),
-          _showSkillsList(),
+          _showSkills(),
           _showDivider(),
           _showStudentPresence(),
           _showSubmitButton()
@@ -55,7 +57,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   }
 
   Widget _showText() {
-    String student = 'Noel';
+    String student = _lessonRequestProvider.previousLesson.student.name;
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
@@ -70,8 +72,9 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     );
   }
 
-  Widget _showSkillsList() {
-    List<String> skills = ['HTML', 'CSS', 'JavaScript', 'Python', 'Django', 'Java', 'Spring','C#'];
+  Widget _showSkills() {
+    List<Skill> skills = _lessonRequestProvider.skills != null ? _lessonRequestProvider.skills : [];
+    _initSkillCheckBoxes(skills);
     List<Widget> skillWidgets = [];
     for (int i = 0; i < skills.length; i++) {
       Widget skillWidget = Row(
@@ -81,23 +84,23 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
             height: 35.0,                      
             child: Checkbox(
               activeColor: AppColors.TANGO,
-              value: _skillCheckBoxes[i],
+              value: _selectedSkills[i],
               onChanged: (value) {
-                _setSkillCheckBox(i);
+                _setSelectedSkills(i);
               },
             ),
           ),
           InkWell(
             child: Text(
-              skills[i],
+              skills[i].name,
               style: TextStyle(
                 fontSize: 12.0,
-                color: _skillCheckBoxes[i] ? Colors.black : AppColors.DOVE_GRAY
+                color: _selectedSkills[i] ? Colors.black : AppColors.DOVE_GRAY
               )
             ),
             onTap: () {
               setState(() {
-                _setSkillCheckBox(i);
+                _setSelectedSkills(i);
               });
             }
           )
@@ -111,36 +114,49 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     }
     double heightScrollThumb = 250.0 / (skillWidgets.length / 6);
 
-    return Container(
-      height: height,
-      padding: const EdgeInsets.only(left: 50.0, bottom: 10.0),
-      child: DraggableScrollbar(
-        controller: _scrollController,
-        child: ListView(
+    if (_areSkillsRetrieved) {
+      return Container(
+        height: height,
+        padding: const EdgeInsets.only(left: 50.0, bottom: 10.0),
+        child: DraggableScrollbar(
           controller: _scrollController,
-          children: skillWidgets
-        ),
-        heightScrollThumb: heightScrollThumb,
-        backgroundColor: AppColors.SILVER,
-        scrollThumbBuilder: (
-          Color backgroundColor,
-          Animation<double> thumbAnimation,
-          Animation<double> labelAnimation,
-          double height, {
-          Text labelText,
-          BoxConstraints labelConstraints
-        }) {
-          return FadeTransition(
-            opacity: thumbAnimation,
-            child: Container(
-              height: height,
-              width: 5.0,
-              color: backgroundColor,
-            ),
-          );
-        }        
-      )
-    );
+          child: ListView(
+            controller: _scrollController,
+            children: skillWidgets
+          ),
+          heightScrollThumb: heightScrollThumb,
+          backgroundColor: AppColors.SILVER,
+          scrollThumbBuilder: (
+            Color backgroundColor,
+            Animation<double> thumbAnimation,
+            Animation<double> labelAnimation,
+            double height, {
+            Text labelText,
+            BoxConstraints labelConstraints
+          }) {
+            return FadeTransition(
+              opacity: thumbAnimation,
+              child: Container(
+                height: height,
+                width: 5.0,
+                color: backgroundColor,
+              ),
+            );
+          }        
+        )
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(top: 30.0, bottom: 50.0),
+        child: Loader(color: AppColors.DOVE_GRAY)
+      );
+    }
+  }
+
+  void _initSkillCheckBoxes(List<Skill> skills) {
+    for (int i = 0; i < skills.length; i++) {
+      _selectedSkills.add(false);
+    }
   }
 
   Widget _showDivider() {
@@ -161,9 +177,9 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
             height: 35.0,                      
             child: Checkbox(
               activeColor: AppColors.TANGO,
-              value: _studentCheckBox,
+              value: _isStudentAbsent,
               onChanged: (value) {
-                _setStudentCheckBox();
+                _setIsStudentPresent();
               },
             ),
           ),
@@ -176,7 +192,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
               )
             ),
             onTap: () {
-              _setStudentCheckBox();
+              _setIsStudentPresent();
             }
           )
         ]
@@ -184,15 +200,15 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     ); 
   }
 
-  void _setSkillCheckBox(int index) {
+  void _setSelectedSkills(int index) {
     setState(() {
-      _skillCheckBoxes[index] = !_skillCheckBoxes[index];
+      _selectedSkills[index] = !_selectedSkills[index];
     });
   }
 
-  void _setStudentCheckBox() {
+  void _setIsStudentPresent() {
     setState(() {
-      _studentCheckBox = !_studentCheckBox;
+      _isStudentAbsent = !_isStudentAbsent;
     });    
   }
   
@@ -210,17 +226,50 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(50.0, 3.0, 50.0, 3.0),
           ), 
-          child: Text('common.submit'.tr(), style: const TextStyle(color: Colors.white)),
-          onPressed: () {
+          child: !_isSubmitting ? Text(
+            'common.submit'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 50.0,
+            child: ButtonLoader(),
+          ),
+          onPressed: () async {
+            await _submitTaughtToday();
             Navigator.pop(context);
           }
         ),
       ),
     );
-  } 
+  }
+
+  Future<void> _submitTaughtToday() async {
+    _setIsSubmitting(true);
+    await _lessonRequestProvider.addStudentSkills(_selectedSkills);
+    await _lessonRequestProvider.setStudentPresence(!_isStudentAbsent);
+  }
+
+  void _setIsSubmitting(bool isSubmitting) {
+    setState(() {
+      _isSubmitting = isSubmitting;
+    });  
+  }    
+  
+  Future<void> _getSkills() async {
+    if (!_areSkillsRetrieved) {
+      await _lessonRequestProvider.getSkills();
+      _areSkillsRetrieved = true;
+    }
+  }  
   
   @override
   Widget build(BuildContext context) {
-    return _showTaughtTodayDialog();
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+
+   return FutureBuilder<void>(
+      future: _getSkills(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return _showTaughtTodayDialog();
+      }
+   );
   }
 }
