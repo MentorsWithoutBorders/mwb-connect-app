@@ -6,20 +6,20 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class SendLinkDialog extends StatefulWidget {
-  const SendLinkDialog({Key key})
+class AcceptLessonRequestDialog extends StatefulWidget {
+  const AcceptLessonRequestDialog({Key key})
     : super(key: key);  
 
   @override
-  State<StatefulWidget> createState() => _SendLinkDialogState();
+  State<StatefulWidget> createState() => _AcceptLessonRequestDialogState();
 }
 
-class _SendLinkDialogState extends State<SendLinkDialog> {
+class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   LessonRequestViewModel _lessonRequestProvider;
   String _link = '';
   bool _isAcceptingLessonRequest = false;
 
-  Widget _showSendLinkDialog() {
+  Widget _showAcceptLessonRequestDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -133,6 +133,6 @@ class _SendLinkDialogState extends State<SendLinkDialog> {
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
-    return _showSendLinkDialog();
+    return _showAcceptLessonRequestDialog();
   }
 }

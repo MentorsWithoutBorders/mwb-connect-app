@@ -18,6 +18,7 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   Future<void> acceptLessonRequest(String meetingUrl) async {
     nextLesson = await _lessonRequestService.acceptLessonRequest(lessonRequest.id, meetingUrl);
+    lessonRequest = null;
     notifyListeners();
   }  
 
@@ -67,11 +68,11 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   bool getIsNextLesson() {
-    return nextLesson.id != null && nextLesson.isCanceled != true;
+    return nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
   }
 
   bool getIsLessonRequest() {
-    return !getIsNextLesson() && lessonRequest.id != null && lessonRequest.isRejected != true;
+    return !getIsNextLesson() && lessonRequest != null && lessonRequest.id != null && lessonRequest.isRejected != true;
   }  
 
 }
