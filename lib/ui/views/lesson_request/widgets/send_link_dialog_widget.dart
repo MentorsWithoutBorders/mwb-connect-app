@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class SendLinkDialog extends StatefulWidget {
   const SendLinkDialog({Key key})
@@ -12,6 +15,9 @@ class SendLinkDialog extends StatefulWidget {
 }
 
 class _SendLinkDialogState extends State<SendLinkDialog> {
+  LessonRequestViewModel _lessonRequestProvider;
+  String _link = '';
+  bool _isAcceptingLessonRequest = false;
 
   Widget _showSendLinkDialog() {
     return Container(
@@ -29,7 +35,7 @@ class _SendLinkDialogState extends State<SendLinkDialog> {
   }
 
   Widget _showTitle() {
-    String appName = 'Google Meet';
+    String appName = 'Google Meet/Zoom';
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
@@ -58,20 +64,21 @@ class _SendLinkDialogState extends State<SendLinkDialog> {
   }
 
   Widget _showInput() {
-    String link = 'https://meet.google.com/mbc-cvoz-owv';
     return Container(
       padding: EdgeInsets.only(bottom: 15.0),
       child: InputBox(
         autofocus: false, 
         hint: '',
-        text: link, 
+        text: _link, 
         inputChangedCallback: _changeLink
       )
     ); 
   }
 
   void _changeLink(String link) {
-    print(link);
+    setState(() {
+      _link = link;
+    });
   }
   
   Widget _showButtons() {
@@ -95,17 +102,37 @@ class _SendLinkDialogState extends State<SendLinkDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          onPressed: () {
-            print('Send');
-          },
-          child: Text('common.send'.tr(), style: const TextStyle(color: Colors.white))
+          child: !_isAcceptingLessonRequest ? Text(
+            'common.send'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 40.0,
+            child: ButtonLoader(),
+          ),
+          onPressed: () async {
+            await _acceptLessonRequest();
+            Navigator.pop(context);
+          }
         )
       ]
     );
   } 
+
+  Future<void> _acceptLessonRequest() async {  
+    _setIsAcceptingLessonRequest(true);
+    await _lessonRequestProvider.acceptLessonRequest(_link);
+  }
+  
+  void _setIsAcceptingLessonRequest(bool isAccepting) {
+    setState(() {
+      _isAcceptingLessonRequest = isAccepting;
+    });  
+  }    
   
   @override
   Widget build(BuildContext context) {
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+
     return _showSendLinkDialog();
   }
 }

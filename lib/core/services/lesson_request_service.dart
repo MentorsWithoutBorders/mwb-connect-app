@@ -24,7 +24,7 @@ class LessonRequestService {
 
   Future<Lesson> acceptLessonRequest(String id, String meetingUrl) async {
     Lesson lesson = Lesson(meetingUrl: meetingUrl);
-    http.Response response = await _api.putHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: lesson.toJson());  
+    http.Response response = await _api.postHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: lesson.toJson());  
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
       lesson = Lesson.fromJson(json);
