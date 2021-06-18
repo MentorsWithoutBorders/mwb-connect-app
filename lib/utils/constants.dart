@@ -21,5 +21,5 @@ class AppConstants {
   static const String dateTimeFormat = 'yyyy-MM-dd HH:mm:ss';
   static const String dateFormat = 'MMM dd, yyyy';
   static const String dateFormatLesson = 'EEEE, MMM dd';
-  static const String timeFormatLesson = 'HH:mm a';
+  static const String timeFormatLesson = 'HH:mm';
 }

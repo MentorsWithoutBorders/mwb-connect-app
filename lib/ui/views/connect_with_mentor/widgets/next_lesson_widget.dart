@@ -57,7 +57,7 @@ class _NextLessonState extends State<NextLesson> {
     String secondPart = text.substring(name.length, text.indexOf(subfield));
     String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    String link = "https://meet.google.com/mbc-cvoz-owv";
+    String link = nextLesson.meetingUrl;
 
     return Wrap(
       children: [

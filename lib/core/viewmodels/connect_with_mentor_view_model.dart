@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
-import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
+import 'package:mwb_connect_app/core/services/goals_service.dart';
 
 class ConnectWithMentorViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();

@@ -8,18 +8,18 @@ import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_reject_le
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/send_link_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
-class LinkSent extends StatefulWidget {
-  const LinkSent({Key key})
+class NextLesson extends StatefulWidget {
+  const NextLesson({Key key})
     : super(key: key); 
 
   @override
-  State<StatefulWidget> createState() => _LinkSentState();
+  State<StatefulWidget> createState() => _NextLessonState();
 }
 
-class _LinkSentState extends State<LinkSent> {
+class _NextLessonState extends State<NextLesson> {
   ConnectWithMentorViewModel _lessonRequestProvider;
 
-  Widget _showLinkSentCard() {
+  Widget _showNextLessonCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -207,6 +207,6 @@ class _LinkSentState extends State<LinkSent> {
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<ConnectWithMentorViewModel>(context);
 
-    return _showLinkSentCard();
+    return _showNextLessonCard();
   }
 }

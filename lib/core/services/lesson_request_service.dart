@@ -22,10 +22,14 @@ class LessonRequestService {
     return lessonRequest;
   }
 
-  Future<void> acceptLessonRequest(String id, String meetingUrl) async {
+  Future<Lesson> acceptLessonRequest(String id, String meetingUrl) async {
     Lesson lesson = Lesson(meetingUrl: meetingUrl);
-    await _api.putHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: lesson.toJson());  
-    return ;
+    http.Response response = await _api.putHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: lesson.toJson());  
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      lesson = Lesson.fromJson(json);
+    }
+    return lesson;
   }  
 
   Future<void> rejectLessonRequest(String id) async {
@@ -44,7 +48,7 @@ class LessonRequestService {
     return nextLesson;
   }
 
-  Future<void> cancelLesson(String id) async {
+  Future<void> cancelNextLesson(String id) async {
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson');  
     return ;
   }  

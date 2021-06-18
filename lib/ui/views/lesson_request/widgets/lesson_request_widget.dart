@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_reject_lesson_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/send_link_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
@@ -17,7 +19,7 @@ class LessonRequest extends StatefulWidget {
 }
 
 class _LessonRequestState extends State<LessonRequest> {
-  ConnectWithMentorViewModel _lessonRequestProvider;
+  LessonRequestViewModel _lessonRequestProvider;
 
   Widget _showLessonRequestCard() {
     return Padding(
@@ -42,18 +44,21 @@ class _LessonRequestState extends State<LessonRequest> {
   }
 
   Widget _showText() {
-    String name = 'Noel Makwetu';
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateTime now = DateTime.now();
+    LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
+    String name = lessonRequest.student.name;
+    String organization = lessonRequest.student.organization.name;
+    String subfield = lessonRequest.subfield.name.toLowerCase();
+    String date = dateFormat.format(lessonRequest.lessonDateTime);
+    String time = timeFormat.format(lessonRequest.lessonDateTime);
+    String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
-    String organization = 'Education for All Children Kenya';
-    String subfield = 'Web Development'.toLowerCase();
-    String dayOfWeek = 'Saturday';
-    String date = 'Jun 7th';
     String at = 'common.at'.tr();
-    String time = '11:00 AM';
-    String timeZone = 'GMT';
-    String text = 'lesson_request.lesson_request_text'.tr(args: [name, organization, subfield, dayOfWeek, date, time, timeZone]);
+    String text = 'lesson_request.lesson_request_text'.tr(args: [name, organization, subfield, date, time, timeZone]);
     String secondPart = text.substring(text.indexOf(organization) + organization.length, text.indexOf(subfield));
-    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(dayOfWeek));
+    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
 
     return Wrap(
       children: [
@@ -93,7 +98,7 @@ class _LessonRequestState extends State<LessonRequest> {
                   text: thirdPart
                 ),
                 TextSpan(
-                  text: dayOfWeek + ', ' + date,
+                  text: date,
                   style: const TextStyle(
                     color: AppColors.TANGO
                   ) 
@@ -179,7 +184,7 @@ class _LessonRequestState extends State<LessonRequest> {
 
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
     return _showLessonRequestCard();
   }
