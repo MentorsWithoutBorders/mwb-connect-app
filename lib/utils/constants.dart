@@ -22,4 +22,5 @@ class AppConstants {
   static const String dateFormat = 'MMM dd, yyyy';
   static const String dateFormatLesson = 'EEEE, MMM dd';
   static const String timeFormatLesson = 'HH:mm';
+  static const String meetingUrlType = 'Google Meet/Zoom';
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
@@ -16,6 +17,7 @@ class AcceptLessonRequestDialog extends StatefulWidget {
 
 class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   LessonRequestViewModel _lessonRequestProvider;
+  String urlType = AppConstants.meetingUrlType;
   String _url = '';
   bool _shouldShowError = false;
   bool _isAcceptingLessonRequest = false;
@@ -36,12 +38,11 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   }
 
   Widget _showTitle() {
-    String appName = 'Google Meet/Zoom';
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'lesson_request.send_url'.tr(args: [appName]),
+          'lesson_request.send_url'.tr(args: [urlType]),
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold
@@ -89,7 +90,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
     return Padding(
       padding: const EdgeInsets.only(left: 5.0),
       child: Text(
-        'Please enter a valid Google Meet/Zoom URL',
+        'lesson_request.send_url_error'.tr(args: [urlType]),
         style: const TextStyle(
           fontSize: 12.0,
           color: Colors.red
@@ -161,11 +162,18 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
     setState(() {
       _isAcceptingLessonRequest = isAccepting;
     });  
-  }    
+  }
+
+  void _setInitialUrl() {
+    if (_url == '' && _lessonRequestProvider != null && _lessonRequestProvider.previousLesson != null) {
+      _changeUrl(_lessonRequestProvider.previousLesson.meetingUrl);
+    }    
+  }  
   
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _setInitialUrl();
 
     return _showAcceptLessonRequestDialog();
   }

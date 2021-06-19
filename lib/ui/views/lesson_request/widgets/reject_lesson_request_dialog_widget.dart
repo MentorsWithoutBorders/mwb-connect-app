@@ -50,7 +50,6 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
   }
 
   Widget _showText() {
-    String action = 'reject';
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
@@ -63,7 +62,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
     String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
     String at = 'common.at'.tr();
-    String text = 'lesson_request.cancel_lesson_text'.tr(args: [action, subfield, name, organization, date, time, timeZone]);
+    String text = 'lesson_request.reject_lesson_request_text'.tr(args: [subfield, name, organization, date, time, timeZone]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);

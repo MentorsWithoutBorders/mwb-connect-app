@@ -77,6 +77,7 @@ class _LessonRequestViewState extends State<LessonRequestView> {
     if (!_isInit) {
       await _lessonRequestProvider.getLessonRequest();
       await _lessonRequestProvider.getNextLesson();
+      await _lessonRequestProvider.getPreviousLesson();
       _isInit = true;
     }
   }  

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
@@ -45,7 +45,6 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showText() {
-    String urlType = 'Google Meet';
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
@@ -58,11 +57,10 @@ class _NextLessonState extends State<NextLesson> {
     String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
     String at = 'common.at'.tr();
-    String text = 'lesson_request.link_sent'.tr(args: [urlType, subfield, name, organization, date, time, timeZone]);
-    String firstPart = text.substring(0, text.indexOf(urlType));
-    String secondPart = text.substring(text.indexOf(urlType) + urlType.length, text.indexOf(subfield));
-    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
-    String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
+    String text = 'lesson_request.lesson_scheduled'.tr(args: [subfield, name, organization, date, time, timeZone]);
+    String firstPart = text.substring(0, text.indexOf(subfield));
+    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
+    String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
     _url = nextLesson.meetingUrl;
 
     return Wrap(
@@ -79,19 +77,13 @@ class _NextLessonState extends State<NextLesson> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: firstPart + ' '
-                ),
-                TextSpan(
-                  text: urlType
-                ),
-                TextSpan(
-                  text: secondPart
+                  text: firstPart
                 ),
                 TextSpan(
                   text: subfield
                 ),
                TextSpan(
-                  text: thirdPart + ' '
+                  text: secondPart
                 ), 
                 TextSpan(
                   text: name,
@@ -127,7 +119,7 @@ class _NextLessonState extends State<NextLesson> {
                   ) 
                 ),
                 TextSpan(
-                  text: fourthPart
+                  text: thirdPart
                 ),
               ],
             )
@@ -168,7 +160,7 @@ class _NextLessonState extends State<NextLesson> {
                 ),
                 padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
               ), 
-              child: Text('lesson_request.cancel_lesson'.tr(), style: const TextStyle(color: Colors.white)),
+              child: Text('lesson_request.cancel_next_lesson'.tr(), style: const TextStyle(color: Colors.white)),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -186,13 +178,13 @@ class _NextLessonState extends State<NextLesson> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 1.0,
-                primary: AppColors.JAPANESE_LAUREL,
+                primary: AppColors.ALLPORTS,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 ),
                 padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
               ), 
-              child: Text('lesson_request.change_link'.tr(), style: const TextStyle(color: Colors.white)),
+              child: Text('lesson_request.change_url'.tr(), style: const TextStyle(color: Colors.white)),
               onPressed: () {
                 showDialog(
                   context: context,
