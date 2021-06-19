@@ -7,7 +7,6 @@ class InputBox extends StatelessWidget {
   final String hint;
   final String text;
   final Function(String) inputChangedCallback;
-  final TextEditingController inputController = TextEditingController();
 
   InputBox({
     Key key,
@@ -18,21 +17,14 @@ class InputBox extends StatelessWidget {
   }) : super(key: key);  
 
   Widget _showInput() {
-    inputController.value = TextEditingValue(
-      text: text,
-      selection: TextSelection(
-        baseOffset: text.length,
-        extentOffset: text.length
-      )
-    );
     return TextFormField(
       key: key,
-      controller: inputController,
       autofocus: autofocus,
       textCapitalization: TextCapitalization.sentences,
       style: const TextStyle(
         fontSize: 14.0,
       ),
+      initialValue: text,
       decoration: InputDecoration(
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
