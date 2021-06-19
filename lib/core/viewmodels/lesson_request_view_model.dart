@@ -55,7 +55,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   bool checkValidUrl(String url) {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
   }
-  
+
   Future<void> getSkills() async {
     await getPreviousLesson();
     skills = await _lessonRequestService.getSkills(previousLesson.subfield.id);
