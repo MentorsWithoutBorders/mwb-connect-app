@@ -46,9 +46,9 @@ class _LessonRequestViewState extends State<LessonRequestView> {
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (!_lessonRequestProvider.getIsNextLesson() && !_lessonRequestProvider.getIsLessonRequest()) StandingBy(),
-          if (_lessonRequestProvider.getIsLessonRequest()) LessonRequest(),
-          if (_lessonRequestProvider.getIsNextLesson()) NextLesson()
+          if (!_lessonRequestProvider.isNextLesson && !_lessonRequestProvider.isLessonRequest) StandingBy(),
+          if (_lessonRequestProvider.isLessonRequest) LessonRequest(),
+          if (_lessonRequestProvider.isNextLesson) NextLesson()
         ]
       )
     );

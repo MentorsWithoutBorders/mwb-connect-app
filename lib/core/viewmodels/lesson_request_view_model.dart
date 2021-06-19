@@ -38,15 +38,23 @@ class LessonRequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeLessonLink(String meetingUrl) async {
-    await _lessonRequestService.changeLessonLink(nextLesson.id, meetingUrl);
+  Future<void> changeLessonUrl(String meetingUrl) async {
+    await _lessonRequestService.changeLessonUrl(nextLesson.id, meetingUrl);
     nextLesson.meetingUrl = meetingUrl;
     notifyListeners();
   }  
 
   Future<void> getPreviousLesson() async {
     previousLesson = await _lessonRequestService.getPreviousLesson();
-  }  
+  }
+  
+  bool get isNextLesson => nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
+
+  bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isRejected != true;
+  
+  bool checkValidUrl(String url) {
+    return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
+  }
   
   Future<void> getSkills() async {
     await getPreviousLesson();
@@ -66,13 +74,5 @@ class LessonRequestViewModel extends ChangeNotifier {
   Future<void> setStudentPresence(bool isStudentPresent) async {
     await _lessonRequestService.setStudentPresence(previousLesson.id, isStudentPresent);
   }
-
-  bool getIsNextLesson() {
-    return nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
-  }
-
-  bool getIsLessonRequest() {
-    return !getIsNextLesson() && lessonRequest != null && lessonRequest.id != null && lessonRequest.isRejected != true;
-  }  
 
 }

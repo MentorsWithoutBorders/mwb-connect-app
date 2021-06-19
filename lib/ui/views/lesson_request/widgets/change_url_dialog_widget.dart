@@ -6,28 +6,29 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class ChangeLinkDialog extends StatefulWidget {
-  const ChangeLinkDialog({Key key, this.link})
+class ChangeUrlDialog extends StatefulWidget {
+  const ChangeUrlDialog({Key key, this.url})
     : super(key: key);  
 
-  final String link;
+  final String url;
 
   @override
-  State<StatefulWidget> createState() => _ChangeLinkDialogState();
+  State<StatefulWidget> createState() => _ChangeUrlDialogState();
 }
 
-class _ChangeLinkDialogState extends State<ChangeLinkDialog> {
+class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
   LessonRequestViewModel _lessonRequestProvider;
-  String _link;
-  bool _isUpdatingLessonLink = false;
+  String _url;
+  bool _shouldShowError = false;
+  bool _isUpdatingLessonUrl = false;
 
   @override
   void initState() {
     super.initState();
-    _link = widget.link != null ? widget.link : '';
+    _url = widget.url != null ? widget.url : '';
   }  
 
-  Widget _showChangeLinkDialog() {
+  Widget _showChangeUrlDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -48,7 +49,7 @@ class _ChangeLinkDialogState extends State<ChangeLinkDialog> {
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'lesson_request.send_link'.tr(args: [appName]),
+          'lesson_request.send_url'.tr(args: [appName]),
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold
@@ -62,7 +63,7 @@ class _ChangeLinkDialogState extends State<ChangeLinkDialog> {
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 8.0),
       child: Text(
-        'lesson_request.paste_link'.tr(),
+        'lesson_request.paste_url'.tr(),
         style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.DOVE_GRAY
@@ -74,20 +75,49 @@ class _ChangeLinkDialogState extends State<ChangeLinkDialog> {
   Widget _showInput() {
     return Container(
       padding: EdgeInsets.only(bottom: 15.0),
-      child: InputBox(
-        autofocus: false, 
-        hint: '',
-        text: _link, 
-        inputChangedCallback: _changeLink
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: InputBox(
+              autofocus: true, 
+              hint: '',
+              text: _url, 
+              inputChangedCallback: _changeUrl
+            ),
+          ),
+          if (_shouldShowError) _showError()
+        ],
       )
     ); 
   }
 
-  void _changeLink(String link) {
+  Widget _showError() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 5.0),
+      child: Text(
+        'Please enter a valid Google Meet/Zoom URL',
+        style: const TextStyle(
+          fontSize: 12.0,
+          color: Colors.red
+        )
+      ),
+    );
+  }  
+
+  void _changeUrl(String url) {
     setState(() {
-      _link = link;
+      _url = url;
     });
+    _setShouldShowError(false);    
   }
+
+  void _setShouldShowError(bool showError) {
+    setState(() {
+      _shouldShowError = showError;
+    });
+  }  
   
   Widget _showButtons() {
     return Row(
@@ -110,7 +140,7 @@ class _ChangeLinkDialogState extends State<ChangeLinkDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isUpdatingLessonLink ? Text(
+          child: !_isUpdatingLessonUrl ? Text(
             'common.send'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -118,22 +148,26 @@ class _ChangeLinkDialogState extends State<ChangeLinkDialog> {
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _changeLessonLink();
-            Navigator.pop(context);
+            await _changeLessonUrl();
           }
         )
       ]
     );
   } 
 
-  Future<void> _changeLessonLink() async {  
-    _setIsUpdatingLessonLink(true);
-    await _lessonRequestProvider.changeLessonLink(_link);
+  Future<void> _changeLessonUrl() async {
+    if (!_lessonRequestProvider.checkValidUrl(_url)) {
+      _setShouldShowError(true);
+      return ;
+    }    
+    _setIsUpdatingLessonUrl(true);
+    await _lessonRequestProvider.changeLessonUrl(_url);
+    Navigator.pop(context);
   }
   
-  void _setIsUpdatingLessonLink(bool isUpdating) {
+  void _setIsUpdatingLessonUrl(bool isUpdating) {
     setState(() {
-      _isUpdatingLessonLink = isUpdating;
+      _isUpdatingLessonUrl = isUpdating;
     });  
   }    
   
@@ -141,6 +175,6 @@ class _ChangeLinkDialogState extends State<ChangeLinkDialog> {
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
-    return _showChangeLinkDialog();
+    return _showChangeUrlDialog();
   }
 }

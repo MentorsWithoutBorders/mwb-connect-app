@@ -16,7 +16,8 @@ class AcceptLessonRequestDialog extends StatefulWidget {
 
 class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   LessonRequestViewModel _lessonRequestProvider;
-  String _link = '';
+  String _url = '';
+  bool _shouldShowError = false;
   bool _isAcceptingLessonRequest = false;
 
   Widget _showAcceptLessonRequestDialog() {
@@ -40,7 +41,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'lesson_request.send_link'.tr(args: [appName]),
+          'lesson_request.send_url'.tr(args: [appName]),
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold
@@ -54,7 +55,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 8.0),
       child: Text(
-        'lesson_request.paste_link'.tr(),
+        'lesson_request.paste_url'.tr(),
         style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.DOVE_GRAY
@@ -64,22 +65,51 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   }
 
   Widget _showInput() {
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(bottom: 15.0),
-      child: InputBox(
-        autofocus: false, 
-        hint: '',
-        text: _link, 
-        inputChangedCallback: _changeLink
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: InputBox(
+              autofocus: true, 
+              hint: '',
+              text: _url, 
+              inputChangedCallback: _changeUrl
+            ),
+          ),
+          if (_shouldShowError) _showError()
+        ],
       )
     ); 
   }
 
-  void _changeLink(String link) {
-    setState(() {
-      _link = link;
-    });
+  Widget _showError() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 5.0),
+      child: Text(
+        'Please enter a valid Google Meet/Zoom URL',
+        style: const TextStyle(
+          fontSize: 12.0,
+          color: Colors.red
+        )
+      ),
+    );
   }
+
+  void _changeUrl(String url) {
+    setState(() {
+      _url = url;
+    });
+    _setShouldShowError(false);
+  }
+
+  void _setShouldShowError(bool showError) {
+    setState(() {
+      _shouldShowError = showError;
+    });
+  }  
   
   Widget _showButtons() {
     return Row(
@@ -111,16 +141,20 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
           ),
           onPressed: () async {
             await _acceptLessonRequest();
-            Navigator.pop(context);
           }
         )
       ]
     );
   } 
 
-  Future<void> _acceptLessonRequest() async {  
+  Future<void> _acceptLessonRequest() async {
+    if (!_lessonRequestProvider.checkValidUrl(_url)) {
+      _setShouldShowError(true);
+      return ;
+    }
     _setIsAcceptingLessonRequest(true);
-    await _lessonRequestProvider.acceptLessonRequest(_link);
+    await _lessonRequestProvider.acceptLessonRequest(_url);
+    Navigator.pop(context);
   }
   
   void _setIsAcceptingLessonRequest(bool isAccepting) {

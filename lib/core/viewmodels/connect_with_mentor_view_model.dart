@@ -75,13 +75,9 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     await _connectWithMentorService.setMentorPresence(previousLesson.id, isMentorPresent);
   }
 
-  bool getIsNextLesson() {
-    return nextLesson.id != null && nextLesson.isCanceled != true;
-  }
+  bool get isNextLesson => nextLesson.id != null && nextLesson.isCanceled != true;
 
-  bool getIsLessonRequest() {
-    return !getIsNextLesson() && lessonRequest.id != null && lessonRequest.isCanceled != true;
-  }
+  bool get isLessonRequest => !isNextLesson && lessonRequest.id != null && lessonRequest.isCanceled != true;
 
   DateTime getCertificateDate() {
     DateTime date;

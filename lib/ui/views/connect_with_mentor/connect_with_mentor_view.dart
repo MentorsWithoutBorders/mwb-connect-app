@@ -48,9 +48,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
         padding: const EdgeInsets.only(top: 0.0),
         children: [
           SolveQuizAddStep(),
-          if (_connectWithMentorProvider.getIsNextLesson()) NextLesson(),
-          if (!_connectWithMentorProvider.getIsNextLesson() && !_connectWithMentorProvider.getIsLessonRequest()) FindAvailableMentor(),
-          if (_connectWithMentorProvider.getIsLessonRequest()) FindingAvailableMentor()
+          if (_connectWithMentorProvider.isNextLesson) NextLesson(),
+          if (!_connectWithMentorProvider.isNextLesson && !_connectWithMentorProvider.isLessonRequest) FindAvailableMentor(),
+          if (_connectWithMentorProvider.isLessonRequest) FindingAvailableMentor()
         ]
       )
     );

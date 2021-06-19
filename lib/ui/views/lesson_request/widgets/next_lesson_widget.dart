@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/change_link_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/change_url_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class NextLesson extends StatefulWidget {
@@ -20,7 +20,7 @@ class NextLesson extends StatefulWidget {
 
 class _NextLessonState extends State<NextLesson> {
   LessonRequestViewModel _lessonRequestProvider;
-  String _link = '';
+  String _url = '';
 
   Widget _showNextLessonCard() {
     return Padding(
@@ -45,7 +45,7 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showText() {
-    String linkType = 'Google Meet';
+    String urlType = 'Google Meet';
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
@@ -58,12 +58,12 @@ class _NextLessonState extends State<NextLesson> {
     String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
     String at = 'common.at'.tr();
-    String text = 'lesson_request.link_sent'.tr(args: [linkType, subfield, name, organization, date, time, timeZone]);
-    String firstPart = text.substring(0, text.indexOf(linkType));
-    String secondPart = text.substring(text.indexOf(linkType) + linkType.length, text.indexOf(subfield));
+    String text = 'lesson_request.link_sent'.tr(args: [urlType, subfield, name, organization, date, time, timeZone]);
+    String firstPart = text.substring(0, text.indexOf(urlType));
+    String secondPart = text.substring(text.indexOf(urlType) + urlType.length, text.indexOf(subfield));
     String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
     String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    _link = nextLesson.meetingUrl;
+    _url = nextLesson.meetingUrl;
 
     return Wrap(
       children: [
@@ -82,7 +82,7 @@ class _NextLessonState extends State<NextLesson> {
                   text: firstPart + ' '
                 ),
                 TextSpan(
-                  text: linkType
+                  text: urlType
                 ),
                 TextSpan(
                   text: secondPart
@@ -137,7 +137,7 @@ class _NextLessonState extends State<NextLesson> {
           padding: const EdgeInsets.only(bottom: 30.0),
           child: Center(
             child: Text(
-              _link,
+              _url,
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -197,7 +197,7 @@ class _NextLessonState extends State<NextLesson> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: ChangeLinkDialog(link: _link),
+                    widgetInside: ChangeUrlDialog(url: _url),
                     hasInput: true,
                   ),
                 );

@@ -53,7 +53,7 @@ class LessonRequestService {
     return ;
   }
   
-  Future<void> changeLessonLink(String id, String meetingUrl) async {
+  Future<void> changeLessonUrl(String id, String meetingUrl) async {
     Lesson lesson = Lesson(meetingUrl: meetingUrl);
     await _api.putHTTP(url: '/lessons/$id/change_meeting_url', data: lesson.toJson());  
     return ;
