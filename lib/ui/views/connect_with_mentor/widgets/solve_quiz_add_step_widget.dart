@@ -64,7 +64,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
     return Container(
       margin: const EdgeInsets.only(left: 3.0, bottom: 15.0),
       child: Text(
-        'Solve quiz and add step',
+        'connect_with_mentor.solve_quiz_add_step'.tr(),
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
@@ -135,14 +135,14 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
               )
             ),
             if (_connectWithMentorProvider.isOverdue()) TextSpan(
-              text: ' (overdue, please ',
+              text: ' (' + 'connect_with_mentor.overdue'.tr() + ' ',
               style: TextStyle(
                 color: AppColors.MONZA,
                 fontWeight: FontWeight.bold
               )
             ),
             if (_connectWithMentorProvider.isOverdue()) TextSpan(
-              text: 'contact support',
+              text: 'connect_with_mentor.contact_support'.tr(),
               style: const TextStyle(
                 decoration: TextDecoration.underline,
                 color: AppColors.MONZA,
@@ -170,7 +170,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
         child: Text(
-        'Congratulations, you will soon receive your MWB certificate!',
+        'connect_with_mentor.congratulations_certificate'.tr(),
         style: const TextStyle(
           color: AppColors.EMERALD,
           fontWeight: FontWeight.bold

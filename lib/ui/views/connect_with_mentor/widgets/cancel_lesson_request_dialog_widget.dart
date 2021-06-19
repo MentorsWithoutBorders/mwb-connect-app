@@ -36,7 +36,7 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
         child: Text(
-          'Cancel lesson request',
+          'connect_with_mentor.cancel_lesson_request'.tr(),
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold
@@ -50,7 +50,7 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Text(
-        'Are you sure you want to cancel the lesson request?',
+        'connect_with_mentor.cancel_lesson_request_text'.tr(),
         style: const TextStyle(
           fontSize: 15.0,
           color: AppColors.DOVE_GRAY,

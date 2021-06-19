@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
@@ -52,8 +53,9 @@ class _NextLessonState extends State<NextLesson> {
     String date = dateFormat.format(nextLesson.dateTime);
     String time = timeFormat.format(nextLesson.dateTime);
     String timeZone = now.timeZoneName;
+    String urlType = Utils.getUrlType(nextLesson.meetingUrl);
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, subfield, date, time, timeZone]);
+    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, subfield, date, time, timeZone, urlType]);
     String secondPart = text.substring(name.length, text.indexOf(subfield));
     String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);

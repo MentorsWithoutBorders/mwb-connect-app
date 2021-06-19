@@ -57,5 +57,15 @@ class Utils {
 
   static DateTime resetTime(DateTime dateTime) {
     return dateTime.subtract(Duration(hours: dateTime.hour, minutes: dateTime.minute, seconds: dateTime.second, milliseconds: dateTime.millisecond, microseconds: dateTime.microsecond));
-  }  
+  }
+  
+  static String getUrlType(String url) {
+    if (url.contains('meet')) {
+      return 'Google Meet';
+    } else if (url.contains('zoom')) {
+      return 'Zoom';
+    } else {
+      return '';
+    }
+  }
 }

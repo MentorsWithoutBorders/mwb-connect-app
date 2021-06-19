@@ -83,7 +83,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.JAPANESE_LAUREL,
+            primary: AppColors.MONZA,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

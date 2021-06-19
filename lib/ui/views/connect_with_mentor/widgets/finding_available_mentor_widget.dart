@@ -16,7 +16,6 @@ class FindingAvailableMentor extends StatefulWidget {
 }
 
 class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
 
   Widget _showFindingAvailableMentorCard() {
     return Padding(
@@ -86,8 +85,6 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
 
   @override
   Widget build(BuildContext context) {
-    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
-
     return _showFindingAvailableMentorCard();
   }
 }
