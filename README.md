@@ -20,16 +20,9 @@
 <a href="https://github.com/MentorsWithoutBorders/mwb_connect_app/graphs/contributors">
 <img alt="Contributors" src="https://img.shields.io/github/contributors/MentorsWithoutBorders/mwb_connect_app?style=plastic&color=f0f&label=Contributors"> </a>
 
-<!-- <h2>Connecting mentors with mentees</h2>
-
-<figure>
-  <img src= "https://raw.githubusercontent.com/MentorsWithoutBorders/mwb_connect_app/master/images/screenshot.jpg" alt="MWB Connect App Screenshot" style="width:100%">
-  <figcaption>MWB Connect App Screenshot</figcaption>
-</figure> -->
+</div>
 
 This mobile app allows us to connect mentors with students from our <a href="https://www.mentorswithoutborders.net/partners.php" target="_blank">partner NGOs</a> for one-off lessons.
-
-</div>
 
 The architecture is similar to the one from this [tutorial](https://medium.com/flutter-community/flutter-firebase-realtime-database-crud-operations-using-provider-c242a01f6a10).
 
