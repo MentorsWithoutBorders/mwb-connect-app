@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
+import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class ConditionsList extends StatelessWidget {
   const ConditionsList({Key key})
@@ -17,7 +18,7 @@ class ConditionsList extends StatelessWidget {
             children: <Widget>[
               Container(
                 width: 40.0,
-                child: _showCircle()
+                child: BulletPoint()
               ),
               Expanded(
                 child: RichText(
@@ -78,7 +79,7 @@ class ConditionsList extends StatelessWidget {
             children: <Widget>[
               Container(
                 width: 40.0,
-                child: _showCircle()
+                child: BulletPoint()
               ),
               Expanded(
                 child: Text(
@@ -95,17 +96,6 @@ class ConditionsList extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-
-  Widget _showCircle() {
-    return Container(
-      width: 8.0,
-      height: 8.0,
-      decoration: BoxDecoration(
-        color: AppColors.SILVER,
-        shape: BoxShape.circle,
-      )
     );
   }
 

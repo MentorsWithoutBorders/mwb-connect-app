@@ -85,10 +85,4 @@ class LessonRequestService {
     await _api.postHTTP(url: '/users/$studentId/subfields/$subfieldId/skills', data: skills);
     return ;
   }    
-
-  Future<void> setStudentPresence(String id, bool isPresent) async {
-    Lesson lesson = Lesson(isStudentPresent: isPresent);
-    await _api.putHTTP(url: '/lessons/$id/student_presence', data: lesson.toJson());  
-    return ;
-  }
 }

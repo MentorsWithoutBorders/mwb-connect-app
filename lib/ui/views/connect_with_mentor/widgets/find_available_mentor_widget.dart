@@ -91,8 +91,8 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
                 ),
                 TextSpan(
                   text: '.'
-                ),
-              ],
+                )
+              ]
             )
           ),
         ),

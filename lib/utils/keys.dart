@@ -44,4 +44,5 @@ class AppKeys {
   // Lessons
   static const String minIntervalDropdown = 'minIntervalDropdown';
   static const String minIntervalUnitDropdown = 'minIntervalUnitDropdown';
+  static const String maxStudentsDropdown = 'maxStudentsDropdown';
 }

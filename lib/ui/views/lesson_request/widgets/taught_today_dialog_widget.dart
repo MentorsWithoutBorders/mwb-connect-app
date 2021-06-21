@@ -20,7 +20,6 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   LessonRequestViewModel _lessonRequestProvider;  
   final ScrollController _scrollController = ScrollController();  
   List<bool> _selectedSkills = [];
-  bool _isStudentAbsent = false;
   bool _areSkillsRetrieved = false;
   bool _isSubmitting = false;
 
@@ -33,8 +32,6 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
           _showTitle(),
           _showText(),
           _showSkills(),
-          _showDivider(),
-          _showStudentPresence(),
           _showSubmitButton()
         ]
       )
@@ -57,7 +54,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   }
 
   Widget _showText() {
-    String student = _lessonRequestProvider.previousLesson.student.name;
+    String student = _lessonRequestProvider.previousLesson.students[0].name;
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
@@ -159,57 +156,10 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     }
   }
 
-  Widget _showDivider() {
-    return Container(
-      height: 1,
-      margin: const EdgeInsets.only(bottom: 10.0),
-      color: AppColors.BOTTICELLI
-    );
-  }
-  
-  Widget _showStudentPresence() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 5.0, bottom: 20.0),
-      child: Row(
-        children: <Widget>[
-          SizedBox(
-            width: 35.0,
-            height: 35.0,                      
-            child: Checkbox(
-              activeColor: AppColors.TANGO,
-              value: _isStudentAbsent,
-              onChanged: (value) {
-                _setIsStudentPresent();
-              },
-            ),
-          ),
-          InkWell(
-            child: Text(
-              'lesson_request.student_not_present'.tr(),
-              style: TextStyle(
-                fontSize: 12.0,
-                color: AppColors.DOVE_GRAY
-              )
-            ),
-            onTap: () {
-              _setIsStudentPresent();
-            }
-          )
-        ]
-      ),
-    ); 
-  }
-
   void _setSelectedSkills(int index) {
     setState(() {
       _selectedSkills[index] = !_selectedSkills[index];
     });
-  }
-
-  void _setIsStudentPresent() {
-    setState(() {
-      _isStudentAbsent = !_isStudentAbsent;
-    });    
   }
   
   Widget _showSubmitButton() {
@@ -245,7 +195,6 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   Future<void> _submitTaughtToday() async {
     _setIsSubmitting(true);
     await _lessonRequestProvider.addStudentSkills(_selectedSkills);
-    await _lessonRequestProvider.setStudentPresence(!_isStudentAbsent);
   }
 
   void _setIsSubmitting(bool isSubmitting) {

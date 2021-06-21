@@ -30,7 +30,9 @@ class _LessonsState extends State<Lessons> {
           child: Wrap(
             children: [
               Label(text: 'profile.min_interval_lessons'.tr()),
-              _showMinInterval()
+              _showMinInterval(),
+              Label(text: 'profile.max_students_lessons'.tr()),
+              _showMaxStudents()
             ]
           )
         )
@@ -52,6 +54,43 @@ class _LessonsState extends State<Lessons> {
   }  
 
   Widget _showMinInterval() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 7.0),
+      child: Row(
+        children: [
+          Container(
+            width: 50.0,
+            height: 45.0,
+            padding: const EdgeInsets.only(bottom: 15.0),
+            child: Dropdown(
+              key: const Key(AppKeys.minIntervalDropdown),
+              dropdownMenuItemList: _buildNumbers(),
+              onTapped: _unfocus,
+              onChanged: _changeMinInterval,
+              value: _lessonsAvailability.minInterval
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0)
+          ),
+          Container(
+            width: 100.0,
+            height: 45.0,
+            padding: const EdgeInsets.only(bottom: 15.0),
+            child: Dropdown(
+              key: const Key(AppKeys.minIntervalUnitDropdown),
+              dropdownMenuItemList: _buildMinIntervalUnitsDropdown(),
+              onTapped: _unfocus,
+              onChanged: _changeMinIntervalUnit,
+              value: _profileProvider.getPeriodUnitPlural(_lessonsAvailability.minIntervalUnit, _lessonsAvailability.minInterval)
+            ),
+          ),
+        ]
+      ),
+    );
+  }
+
+ Widget _showMaxStudents() {
     return Row(
       children: [
         Container(
@@ -59,31 +98,16 @@ class _LessonsState extends State<Lessons> {
           height: 45.0,
           padding: const EdgeInsets.only(bottom: 15.0),
           child: Dropdown(
-            key: const Key(AppKeys.minIntervalDropdown),
+            key: const Key(AppKeys.maxStudentsDropdown),
             dropdownMenuItemList: _buildNumbers(),
             onTapped: _unfocus,
-            onChanged: _changeMinInterval,
-            value: _lessonsAvailability.minInterval
+            onChanged: _changeMaxStudents,
+            value: _lessonsAvailability.maxStudents
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(left: 10.0)
-        ),
-        Container(
-          width: 100.0,
-          height: 45.0,
-          padding: const EdgeInsets.only(bottom: 15.0),
-          child: Dropdown(
-            key: const Key(AppKeys.minIntervalUnitDropdown),
-            dropdownMenuItemList: _buildMinIntervalUnitsDropdown(),
-            onTapped: _unfocus,
-            onChanged: _changeMinIntervalUnit,
-            value: _profileProvider.getPeriodUnitPlural(_lessonsAvailability.minIntervalUnit, _lessonsAvailability.minInterval)
-          ),
-        ),
+        )
       ]
     );
-  }
+  }  
 
   List<DropdownMenuItem<int>> _buildNumbers() {
     final List<DropdownMenuItem<int>> items = [];
@@ -128,6 +152,17 @@ class _LessonsState extends State<Lessons> {
       _lessonsAvailability.minIntervalUnit = _profileProvider.getPeriodUnitPlural(unit, _lessonsAvailability.minInterval);
     });
   }
+
+  void _changeMaxStudents(int number) {
+    _setSelectedMaxStudents(number);
+    _updateLessonsAvailability();
+  }
+
+  void _setSelectedMaxStudents(int number) {
+    setState(() {
+      _lessonsAvailability.maxStudents = number;
+    });
+  }  
 
   void _unfocus() {
     _profileProvider.shouldUnfocus = true;

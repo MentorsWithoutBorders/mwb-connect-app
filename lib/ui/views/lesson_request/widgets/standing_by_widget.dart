@@ -85,8 +85,8 @@ class _StandingByState extends State<StandingBy> {
             ),
             TextSpan(
               text: '.'
-            ),
-          ],
+            )
+          ]
         )
       ),
     );

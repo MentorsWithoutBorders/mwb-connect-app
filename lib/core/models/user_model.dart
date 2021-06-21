@@ -36,7 +36,7 @@ class User {
     organization = _organizationFromJson(json['organization']);
     field = _fieldFromJson(json['field']);
     timeZone = _timeZoneFromJson(json['timeZone']);
-    availabilities = _availabilityFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
+    availabilities = _availabilitiesFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = json['isAvailable'] ?? true;
     availableFrom = json['availableFrom'] != null ? dateFormat.parse(json['availableFrom']) : null;
     lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']);
@@ -67,7 +67,7 @@ class User {
     return timezone;
   }  
   
-  List<Availability> _availabilityFromJson(List<Map<String, dynamic>> json) {
+  List<Availability> _availabilitiesFromJson(List<Map<String, dynamic>> json) {
     final List<Availability> availabilityList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
@@ -81,7 +81,7 @@ class User {
     if (json == null) {
       return null;
     }
-    LessonsAvailability lessonsAvailability = LessonsAvailability(minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit']);
+    LessonsAvailability lessonsAvailability = LessonsAvailability(minInterval: json['minInterval'], minIntervalUnit: json['minIntervalUnit'], maxStudents: json['maxStudents']);
     return lessonsAvailability;
   }
 
@@ -96,7 +96,7 @@ class User {
       'organization': organization?.toJson(),
       'field': field?.toJson(),
       'timeZone': _timeZoneToJson(timeZone),
-      'availabilities': _availabilityToJson(availabilities),
+      'availabilities': _availabilitiesToJson(availabilities),
       'isAvailable': isAvailable,
       'availableFrom': availableFrom != null ? dateFormat.format(availableFrom) : null,
       'registeredOn': registeredOn != null ? dateFormat.format(registeredOn) : null,
@@ -107,7 +107,7 @@ class User {
     return userMap;
   } 
 
-  List<Map<String, dynamic>> _availabilityToJson(List<Availability> availabilities) {
+  List<Map<String, dynamic>> _availabilitiesToJson(List<Availability> availabilities) {
     List<Map<String,dynamic>> availabilityList = [];
     if (availabilities != null) {
       for (int i = 0; i < availabilities.length; i++) {
@@ -139,7 +139,8 @@ class User {
     if (lessonsAvailability != null) {
       return {
         'minInterval': lessonsAvailability.minInterval,
-        'minIntervalUnit': lessonsAvailability.minIntervalUnitToEng
+        'minIntervalUnit': lessonsAvailability.minIntervalUnitToEng,
+        'maxStudents': lessonsAvailability.maxStudents,
       };
     } else {
       return null;
@@ -150,8 +151,9 @@ class User {
 class LessonsAvailability {
   int minInterval;
   String minIntervalUnit;
+  int maxStudents;
 
-  LessonsAvailability({this.minInterval, this.minIntervalUnit}) {
+  LessonsAvailability({this.minInterval, this.minIntervalUnit, this.maxStudents}) {
     if (minIntervalUnit != null) {
       minIntervalUnit = Utils.translatePeriodUnitFromEng(minIntervalUnit);
     }

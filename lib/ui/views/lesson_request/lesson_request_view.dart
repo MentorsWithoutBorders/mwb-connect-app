@@ -30,7 +30,7 @@ class _LessonRequestViewState extends State<LessonRequestView> {
   @override
   Future<void> reassemble() async {
     super.reassemble();
-    // Show learned today
+    // Show taught today
     // showDialog(
     //   context: context,
     //   builder: (_) => AnimatedDialog(

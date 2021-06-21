@@ -5,31 +5,39 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 
 class Lesson {
   String id;
-  User student;
+  List<User> students;
   User mentor;
   Subfield subfield;
   DateTime dateTime;
   String meetingUrl;
-  bool isStudentPresent;
   bool isMentorPresent;
   bool isCanceled;
 
-  Lesson({this.id, this.student, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.isStudentPresent, this.isMentorPresent, this.isCanceled});
+  Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.isMentorPresent, this.isCanceled});
 
   Lesson.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     id = json['id'];
-    student = _userFromJson(json['student']);
-    mentor = _userFromJson(json['mentor']);
+    students = _studentsFromJson(json['students']?.cast<Map<String,dynamic>>()) ?? [];
+    mentor = _mentorFromJson(json['mentor']);
     subfield = _subfieldFromJson(json['subfield']);
     dateTime = json['dateTime'] != null ? dateFormat.parse(json['dateTime']) : null;
     meetingUrl = json['meetingUrl'] ?? '';    
-    isStudentPresent = json['isStudentPresent'];
     isMentorPresent = json['isMentorPresent'];
     isCanceled = json['isCanceled'];
   }
 
-  User _userFromJson(Map<String, dynamic> json) {
+  List<User> _studentsFromJson(List<Map<String, dynamic>> json) {
+    final List<User> studentsList = [];
+    if (json != null) {
+      for (int i = 0; i < json.length; i++) {
+        studentsList.add(User.fromJson(json[i]));
+      }
+    }
+    return studentsList;
+  }  
+
+  User _mentorFromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;
     }
@@ -49,14 +57,23 @@ class Lesson {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);     
     return {
       'id': id,
-      'student': student?.toJson(),
+      'student': _studentsToJson(students),
       'mentor': mentor?.toJson(),
       'subfield': subfield?.toJson(),
       'dateTime': dateTime != null ? dateFormat.format(dateTime) : null,
       'meetingUrl': meetingUrl,
-      'isStudentPresent': isStudentPresent,
       'isMentorPresent': isMentorPresent,
       'isCanceled': isCanceled
     };
   }
+
+  List<Map<String, dynamic>> _studentsToJson(List<User> students) {
+    List<Map<String,dynamic>> studentsList = [];
+    if (students != null) {
+      for (int i = 0; i < students.length; i++) {
+        studentsList.add(students[i].toJson());
+      }
+    }
+    return studentsList;
+  }  
 }

@@ -54,17 +54,15 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
     Lesson nextLesson = _nextLessonProvider.nextLesson;
-    String name = nextLesson.student.name;
-    String organization = nextLesson.student.organization.name;
     String subfield = nextLesson.subfield.name.toLowerCase();
     String date = dateFormat.format(nextLesson.dateTime);
     String time = timeFormat.format(nextLesson.dateTime);
     String timeZone = now.timeZoneName;
-    String from = 'common.from'.tr();
     String at = 'common.at'.tr();
-    String text = 'lesson_request.cancel_next_lesson_text'.tr(args: [subfield, name, organization, date, time, timeZone]);
+    String studentPlural = plural('student', nextLesson.students.length);
+    String text = 'lesson_request.cancel_next_lesson_text'.tr(args: [subfield, date, time, timeZone, studentPlural]);
     String firstPart = text.substring(0, text.indexOf(subfield));
-    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
+    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);
 
     return Padding(
@@ -86,24 +84,6 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
             ),
             TextSpan(
               text: secondPart
-            ),
-            TextSpan(
-              text: name,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: ' ' + from + ' '
-            ),
-            TextSpan(
-              text: organization,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: ' ' + 'common.on'.tr() + ' '
             ),
             TextSpan(
               text: date,

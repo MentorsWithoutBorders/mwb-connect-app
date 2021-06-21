@@ -68,11 +68,6 @@ class LessonRequestViewModel extends ChangeNotifier {
         skillIds.add(skills[i].id);
       }
     }
-    await _lessonRequestService.addStudentSkills(previousLesson.student.id, previousLesson.subfield.id, skillIds);
+    await _lessonRequestService.addStudentSkills(previousLesson.students[0].id, previousLesson.subfield.id, skillIds);
   }
-
-  Future<void> setStudentPresence(bool isStudentPresent) async {
-    await _lessonRequestService.setStudentPresence(previousLesson.id, isStudentPresent);
-  }
-
 }

@@ -31,6 +31,14 @@
 		"many": "years",
 		"other": "years"
 	},
+	"student": {
+		"zero": "students",
+		"one": "student",
+		"two": "students",
+		"few": "students",			
+		"many": "students",
+		"other": "students"
+	},  
 	"common": {
 		"cancel": "Cancel",
 		"close": "Close",
@@ -113,7 +121,8 @@
 		"title": "My profile",
 		"field": "Field",
 		"lessons": "Lessons",
-		"min_interval_lessons": "Minimum interval between lessons:",
+		"min_interval_lessons": "Minimum interval between lesson requests:",
+		"max_students_lessons": "Maximum number of students per lesson:",
 		"name": "Name",
 		"name_placeholder": "Enter name",
 		"subfields": "Subfields",
@@ -169,9 +178,9 @@
     "send_url_error": "Please enter a valid {} URL",
 		"cancel_next_lesson": "Cancel lesson",
 		"reject_lesson_request": "Reject lesson request",
-		"cancel_next_lesson_text": "Are you sure you want to cancel the {} lesson with {} from {} on {} at {} {} ?\n(the student will be assigned to another mentor)",
+		"cancel_next_lesson_text": "Are you sure you want to cancel the {} lesson from {} at {} {} ?\n(the {} will be assigned to another mentor)",
 		"reject_lesson_request_text": "Are you sure you want to reject the {} lesson with {} from {} on {} at {} {} ?\n(the student will be assigned to another mentor)",    
-		"lesson_scheduled": "The {} lesson with {} from {} on {} at {} {} has been scheduled and the link is:",
+		"lesson_scheduled": "You have scheduled a {} lesson {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",
 		"change_url": "Change link",
 		"taught_today": "What I taught today",
 		"taught_today_text": "In order for us to connect {} with an appropriate mentor for the next lesson, please select from the following list what you have taught him/her today:",

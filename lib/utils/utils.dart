@@ -8,7 +8,7 @@ class Utils {
   
   static List<String> getPeriodUnitsPlural() {
     List<String> periodUnitsPlural = [];
-    for (final String periodUnit in Utils.periodUnits) {
+    for (final String periodUnit in periodUnits) {
       periodUnitsPlural.add(plural(periodUnit, 2));
     }
     return periodUnitsPlural;
