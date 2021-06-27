@@ -44,14 +44,15 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showText() {
+    Lesson nextLesson = _connectWithMentorProvider.nextLesson;
+    DateTime nextLessonDateTime = nextLesson.dateTime.toLocal();   
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    Lesson nextLesson = _connectWithMentorProvider.nextLesson;
     String name = nextLesson.mentor.name;
     String subfield = nextLesson.subfield.name.toLowerCase();
-    String date = dateFormat.format(nextLesson.dateTime);
-    String time = timeFormat.format(nextLesson.dateTime);
+    String date = dateFormat.format(nextLessonDateTime);
+    String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
     String urlType = Utils.getUrlType(nextLesson.meetingUrl);
     String at = 'common.at'.tr();

@@ -80,31 +80,35 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isCanceled != true;
 
   DateTime getCertificateDate() {
+    DateTime registeredOn = DateTime.parse(_storageService.registeredOn).toLocal();
+    registeredOn = Utils.resetTime(registeredOn);
     DateTime date;
     if (_storageService.registeredOn != null) {
-      date = Jiffy(DateTime.parse(_storageService.registeredOn)).add(months: 3).dateTime;
+      date = Jiffy(registeredOn).add(months: 3).dateTime;
     }
     return date;
   }
 
   DateTime getDeadline() {
-    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn));
+    DateTime registeredOn = DateTime.parse(_storageService.registeredOn).toLocal();
+    registeredOn = Utils.resetTime(registeredOn);
     Jiffy deadline;
     if (lastStepAdded != null && lastStepAdded.dateTime != null) {
-      DateTime dateLastStepAdded = Utils.resetTime(lastStepAdded.dateTime);
+      DateTime lastStepAddedDateTime = lastStepAdded.dateTime.toLocal();
+      lastStepAddedDateTime = Utils.resetTime(lastStepAddedDateTime);
       Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
       int i = 1;
       bool found = false;
       while (!found) {
         deadline = Jiffy(registeredOn).add(weeks: i);
-        if (deadline.dateTime.difference(dateLastStepAdded).inDays > 7 ||
+        if (deadline.dateTime.difference(lastStepAddedDateTime).inDays > 7 ||
             deadline.isSameOrAfter(now, Units.DAY)) {
           found = true;
         } else {
           i++;
         }
       }
-      if (deadline.dateTime.difference(dateLastStepAdded).inDays < 7) {
+      if (deadline.dateTime.difference(lastStepAddedDateTime).inDays < 7) {
         deadline = Jiffy(deadline).add(weeks: 1);
       }
     } else {
@@ -136,5 +140,5 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     if (shouldReload) {
       notifyListeners();
     }
-  }   
+  }
 }

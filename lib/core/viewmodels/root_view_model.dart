@@ -143,7 +143,7 @@ class RootViewModel extends ChangeNotifier {
   Future<tz.TZDateTime> _nextInstanceOfNotificationsTime() async {
     final List<String> notificationsTime = _storageService.notificationsTime.split(':');
     final Time time = Time(int.parse(notificationsTime[0]), int.parse(notificationsTime[1]), 0);
-    await _setTimeZone();
+    await _setLocation();
     final tz.TZDateTime now = tz.TZDateTime.now(_location);
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(_location, now.year, now.month, now.day, time.hour, time.minute);
@@ -153,7 +153,7 @@ class RootViewModel extends ChangeNotifier {
     return scheduledDate;
   }
   
-  Future<void> _setTimeZone() async {
+  Future<void> _setLocation() async {
     final TimeZone timeZone = TimeZone();
     final String timeZoneName = await timeZone.getTimeZoneName();
     _location = await timeZone.getLocation(timeZoneName);

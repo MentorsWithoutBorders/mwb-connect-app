@@ -44,15 +44,16 @@ class _LessonRequestState extends State<LessonRequest> {
   }
 
   Widget _showText() {
+    LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
+    DateTime lessonRequestDateTime = lessonRequest.lessonDateTime.toLocal();
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
     String name = lessonRequest.student.name;
     String organization = lessonRequest.student.organization.name;
     String subfield = lessonRequest.subfield.name.toLowerCase();
-    String date = dateFormat.format(lessonRequest.lessonDateTime);
-    String time = timeFormat.format(lessonRequest.lessonDateTime);
+    String date = dateFormat.format(lessonRequestDateTime);
+    String time = timeFormat.format(lessonRequestDateTime);
     String timeZone = now.timeZoneName;
     String from = 'common.from'.tr();
     String at = 'common.at'.tr();

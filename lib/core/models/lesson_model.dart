@@ -21,7 +21,7 @@ class Lesson {
     students = _studentsFromJson(json['students']?.cast<Map<String,dynamic>>()) ?? [];
     mentor = _mentorFromJson(json['mentor']);
     subfield = _subfieldFromJson(json['subfield']);
-    dateTime = json['dateTime'] != null ? dateFormat.parse(json['dateTime']) : null;
+    dateTime = json['dateTime'] != null ? dateFormat.parse(json['dateTime'], true) : null;
     meetingUrl = json['meetingUrl'] ?? '';    
     isMentorPresent = json['isMentorPresent'];
     isCanceled = json['isCanceled'];

@@ -38,9 +38,9 @@ class User {
     timeZone = _timeZoneFromJson(json['timeZone']);
     availabilities = _availabilitiesFromJson(json['availabilities']?.cast<Map<String,dynamic>>()) ?? [];
     isAvailable = json['isAvailable'] ?? true;
-    availableFrom = json['availableFrom'] != null ? dateFormat.parse(json['availableFrom']) : null;
+    availableFrom = json['availableFrom'] != null ? dateFormat.parse(json['availableFrom'], true) : null;
     lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability']);
-    registeredOn = json['registeredOn'] != null ? dateFormat.parse(json['registeredOn']) : null;
+    registeredOn = json['registeredOn'] != null ? dateFormat.parse(json['registeredOn'], true) : null;
   }
 
   Organization _organizationFromJson(Map<String, dynamic> json) {

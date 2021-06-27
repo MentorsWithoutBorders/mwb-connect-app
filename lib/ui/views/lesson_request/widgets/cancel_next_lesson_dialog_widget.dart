@@ -16,7 +16,7 @@ class CancelNextLessonDialog extends StatefulWidget {
 }
 
 class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
-  LessonRequestViewModel _nextLessonProvider;
+  LessonRequestViewModel _lessonRequestProvider;
   bool _isCancellingLesson = false;  
 
   Widget _showCancelNextLessonDialog() {
@@ -50,13 +50,14 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showText() {
+    Lesson nextLesson = _lessonRequestProvider.nextLesson;
+    DateTime nextLessonDateTime = nextLesson.dateTime.toLocal();
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    Lesson nextLesson = _nextLessonProvider.nextLesson;
     String subfield = nextLesson.subfield.name.toLowerCase();
-    String date = dateFormat.format(nextLesson.dateTime);
-    String time = timeFormat.format(nextLesson.dateTime);
+    String date = dateFormat.format(nextLessonDateTime);
+    String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
     String studentPlural = plural('student', nextLesson.students.length);
@@ -148,7 +149,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
 
   Future<void> _cancelNextLesson() async {  
     _setIsCancellingLesson(true);
-    await _nextLessonProvider.cancelNextLesson();
+    await _lessonRequestProvider.cancelNextLesson();
   }
   
   void _setIsCancellingLesson(bool isCanceling) {
@@ -159,7 +160,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   
   @override
   Widget build(BuildContext context) {
-    _nextLessonProvider = Provider.of<LessonRequestViewModel>(context);
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
     return _showCancelNextLessonDialog();
   }

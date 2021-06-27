@@ -34,7 +34,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     setState(() {
       _start = user.isAvailable ? AvailabilityStart.now : AvailabilityStart.later;
     });
-    if (user.availableFrom == null || user.availableFrom.isBefore(DateTime.now())) {
+    if (user.availableFrom == null || user.availableFrom.toLocal().isBefore(DateTime.now())) {
       _setAvailableFrom(DateTime.now());
     }
   }  
@@ -161,7 +161,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }
 
   Future<void> _showDatePickerAndroid(BuildContext context) async {
-    final DateTime availableFrom = _profileProvider.profile.user.availableFrom;
+    final DateTime availableFrom = _profileProvider.profile.user.availableFrom.toLocal();
     final DateTime picked = await showDatePicker(
       context: context,
       locale: Locale(_defaultLocale.split('_')[0], _defaultLocale.split('_')[1]),
@@ -185,7 +185,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }
 
   void _showDatePickerIOS(BuildContext context) {
-    final DateTime availableFrom = _profileProvider.profile.user.availableFrom;
+    final DateTime availableFrom = _profileProvider.profile.user.availableFrom.toLocal();
     showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {
