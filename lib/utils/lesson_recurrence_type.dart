@@ -1,0 +1,4 @@
+enum LessonRecurrenceType { 
+  lessons,
+  date
+}

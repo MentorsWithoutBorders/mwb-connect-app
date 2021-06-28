@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/availability_start.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -19,9 +19,7 @@ class AvailabilityStartDate extends StatefulWidget {
 
 class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   ProfileViewModel _profileProvider;
-  AvailabilityStart _start;
-  final DateTime _now = DateTime.now();
-  final String _defaultLocale = Platform.localeName;
+  AvailabilityStart _availabilityStart;
 
   @override
   void initState() {
@@ -32,7 +30,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   void _initSelectedDate(_) {
     final User user = _profileProvider.profile.user;
     setState(() {
-      _start = user.isAvailable ? AvailabilityStart.now : AvailabilityStart.later;
+      _availabilityStart = user.isAvailable ? AvailabilityStart.now : AvailabilityStart.later;
     });
     if (user.availableFrom == null || user.availableFrom.toLocal().isBefore(DateTime.now())) {
       _setAvailableFrom(DateTime.now());
@@ -56,7 +54,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                     child: Radio<AvailabilityStart>(
                       key: const Key(AppKeys.currentlyAvailableRadio),
                       value: AvailabilityStart.now,
-                      groupValue: _start,
+                      groupValue: _availabilityStart,
                       onChanged: (AvailabilityStart value) {
                         _setIsAvailable(value);
                       },
@@ -80,7 +78,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                     child: Radio<AvailabilityStart>(
                       key: const Key(AppKeys.availableFromRadio),
                       value: AvailabilityStart.later,
-                      groupValue: _start,
+                      groupValue: _availabilityStart,
                       onChanged: (AvailabilityStart value) {
                         _setIsAvailable(value);
                       },
@@ -146,90 +144,24 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     final bool isAvailable = value == AvailabilityStart.now ? true : false;
     _profileProvider.setIsAvailable(isAvailable);
     setState(() {
-      _start = value;
+      _availabilityStart = value;
     });    
   }
 
   Future<void> _selectDate(BuildContext context) async {
     _unfocus();
     final TargetPlatform platform = Theme.of(context).platform;
-    if (platform == TargetPlatform.iOS) {
-      return _showDatePickerIOS(context);
-    } else {
-      return _showDatePickerAndroid(context);
-    }
-  }
-
-  Future<void> _showDatePickerAndroid(BuildContext context) async {
     final DateTime availableFrom = _profileProvider.profile.user.availableFrom.toLocal();
-    final DateTime picked = await showDatePicker(
-      context: context,
-      locale: Locale(_defaultLocale.split('_')[0], _defaultLocale.split('_')[1]),
-      initialDate: availableFrom,
-      firstDate: _now,
-      lastDate: DateTime(_now.year + 4),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.light(),
-          child: child,
-        );
-      },      
-    );
-    if (picked != null && picked != availableFrom) {
-      _setAvailableFrom(picked);
+    if (platform == TargetPlatform.iOS) {
+      return Utils.showDatePickerIOS(context, availableFrom, _setAvailableFrom);
+    } else {
+      return Utils.showDatePickerAndroid(context, availableFrom, _setAvailableFrom);
     }
   }
 
   void _setAvailableFrom(DateTime picked) {
     _profileProvider.setAvailableFrom(picked);
   }
-
-  void _showDatePickerIOS(BuildContext context) {
-    final DateTime availableFrom = _profileProvider.profile.user.availableFrom.toLocal();
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext builder) {
-        return Wrap(
-          children: [
-            Container(
-              color: AppColors.WILD_SAND,
-              height: 40.0,
-              child: InkWell(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                  child: Text(
-                    'common.done'.tr(),
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.blue
-                    ), 
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ),
-            Container(
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-              color: Colors.white,
-              child: CupertinoDatePicker(
-                mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (DateTime picked) {
-                  if (picked != null && picked != availableFrom) {
-                    _setAvailableFrom(picked);
-                  }
-                },
-                initialDateTime: availableFrom,
-                minimumYear: _now.year,
-                maximumYear: _now.year + 4,
-              ),
-            ),
-          ],
-        );
-      }
-    );
-  }    
 
   Widget _showTitle() {
     return Container(

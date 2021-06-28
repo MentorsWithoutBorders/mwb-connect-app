@@ -89,19 +89,19 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
               },
             ),
           ),
-          InkWell(
-            child: Text(
-              skills[i].name,
-              style: TextStyle(
-                fontSize: 12.0,
-                color: _selectedSkills[i] ? Colors.black : AppColors.DOVE_GRAY
-              )
-            ),
-            onTap: () {
-              setState(() {
+          Expanded(
+            child: InkWell(
+              child: Text(
+                skills[i].name,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: _selectedSkills[i] ? Colors.black : AppColors.DOVE_GRAY
+                )
+              ),
+              onTap: () {
                 _setSelectedSkills(i);
-              });
-            }
+              }
+            ),
           )
         ]
       );

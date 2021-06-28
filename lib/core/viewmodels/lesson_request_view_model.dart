@@ -11,6 +11,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   Lesson nextLesson;
   Lesson previousLesson;
   List<Skill> skills;
+  bool _shouldUnfocus = false;
 
   Future<void> getLessonRequest() async {
     lessonRequest = await _lessonRequestService.getLessonRequest();
@@ -70,4 +71,12 @@ class LessonRequestViewModel extends ChangeNotifier {
     }
     await _lessonRequestService.addStudentSkills(previousLesson.students[0].id, previousLesson.subfield.id, skillIds);
   }
+
+  bool get shouldUnfocus => _shouldUnfocus;
+  set shouldUnfocus(bool unfocus) {
+    _shouldUnfocus = unfocus;
+    if (shouldUnfocus) {
+      notifyListeners();
+    }
+  }  
 }

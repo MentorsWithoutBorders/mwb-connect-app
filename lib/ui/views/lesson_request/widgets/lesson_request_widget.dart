@@ -58,8 +58,8 @@ class _LessonRequestState extends State<LessonRequest> {
     String from = 'common.from'.tr();
     String at = 'common.at'.tr();
     String text = 'lesson_request.lesson_request_text'.tr(args: [name, organization, subfield, date, time, timeZone]);
-    String secondPart = text.substring(text.indexOf(organization) + organization.length, text.indexOf(subfield));
-    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
+    String firstPart = text.substring(text.indexOf(organization) + organization.length, text.indexOf(subfield));
+    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
 
     return Wrap(
       children: [
@@ -90,13 +90,13 @@ class _LessonRequestState extends State<LessonRequest> {
                   ) 
                 ),
                 TextSpan(
-                  text: secondPart
+                  text: firstPart
                 ),
                 TextSpan(
                   text: subfield
                 ),
                 TextSpan(
-                  text: thirdPart
+                  text: secondPart
                 ),
                 TextSpan(
                   text: date,

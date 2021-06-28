@@ -90,7 +90,7 @@ class _LessonsState extends State<Lessons> {
     );
   }
 
- Widget _showMaxStudents() {
+  Widget _showMaxStudents() {
     return Row(
       children: [
         Container(

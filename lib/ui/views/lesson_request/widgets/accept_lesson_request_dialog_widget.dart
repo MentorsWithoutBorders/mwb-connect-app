@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
@@ -31,6 +32,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
           _showTitle(),
           _showText(),
           _showInput(),
+          LessonRecurrence(),
           _showButtons()
         ]
       )
@@ -67,7 +69,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
 
   Widget _showInput() {
     return Padding(
-      padding: EdgeInsets.only(bottom: 15.0),
+      padding: EdgeInsets.only(bottom: 5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -168,13 +170,31 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
     if (_url == '' && _lessonRequestProvider != null && _lessonRequestProvider.previousLesson != null) {
       _changeUrl(_lessonRequestProvider.previousLesson.meetingUrl);
     }    
-  }  
+  }
+  
+  void _afterLayout(_) {
+    if (_lessonRequestProvider.shouldUnfocus) {
+      _unfocus();
+      _lessonRequestProvider.shouldUnfocus = false;
+    }  
+  }
+  
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }    
   
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);    
     _setInitialUrl();
 
-    return _showAcceptLessonRequestDialog();
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        _unfocus();
+      },
+      child: _showAcceptLessonRequestDialog()
+    );
   }
 }

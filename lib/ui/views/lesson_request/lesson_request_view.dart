@@ -71,7 +71,7 @@ class _LessonRequestViewState extends State<LessonRequestView> {
     } else {
       return const Loader();
     }
-  }    
+  }
   
   Future<void> _init() async {
     if (!_isInit) {

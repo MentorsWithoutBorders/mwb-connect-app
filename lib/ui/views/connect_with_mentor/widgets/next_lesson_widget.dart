@@ -57,9 +57,9 @@ class _NextLessonState extends State<NextLesson> {
     String urlType = Utils.getUrlType(nextLesson.meetingUrl);
     String at = 'common.at'.tr();
     String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, subfield, date, time, timeZone, urlType]);
-    String secondPart = text.substring(name.length, text.indexOf(subfield));
-    String thirdPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
-    String fourthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
+    String firstPart = text.substring(name.length, text.indexOf(subfield));
+    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
+    String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
     String link = nextLesson.meetingUrl;
 
     return Wrap(
@@ -82,13 +82,13 @@ class _NextLessonState extends State<NextLesson> {
                   ) 
                 ),
                 TextSpan(
-                  text: secondPart
+                  text: firstPart
                 ),
                 TextSpan(
                   text: subfield
                 ),
                 TextSpan(
-                  text: thirdPart
+                  text: secondPart
                 ),
                 TextSpan(
                   text: date,
@@ -106,7 +106,7 @@ class _NextLessonState extends State<NextLesson> {
                   ) 
                 ),
                 TextSpan(
-                  text: fourthPart
+                  text: thirdPart
                 )
               ],
             )
