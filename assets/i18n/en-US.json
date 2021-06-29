@@ -173,7 +173,7 @@
 		"standing_by": "Standing by for a lesson request",
 		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills and availability that you’ve specified in ",
 		"lesson_request_text": "{} from {} would like to do a {} lesson on {} at {} {}",
-    "lesson_recurrence_text": "Schedule recurrent lesson every {} at {} {} (can also be done after the single lesson is scheduled)",
+    "lesson_recurrence_text": "Schedule recurring lesson every {} at {} {} (can also be done after the single lesson is scheduled)",
 		"send_url": "Send Google Meet/Zoom link",
 		"paste_url": "Please paste the link here:",
     "send_url_error": "Please enter a valid {} URL",

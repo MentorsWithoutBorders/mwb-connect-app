@@ -4,6 +4,8 @@ import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 
 class LessonRequestViewModel extends ChangeNotifier {
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
@@ -56,6 +58,54 @@ class LessonRequestViewModel extends ChangeNotifier {
   bool checkValidUrl(String url) {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
   }
+
+  DateTime setEndRecurrenceDate({DateTime picked, int lessonsNumber}) {
+    DateTime endRecurrenceDate;
+    if (picked != null) {
+      endRecurrenceDate = picked;
+    } else {
+      if (lessonRequest != null) {
+        int duration = (lessonsNumber - 1) * 7;
+        endRecurrenceDate = lessonRequest.lessonDateTime.toLocal().add(Duration(days: duration));
+      } else if (nextLesson != null) {
+        int duration = (lessonsNumber - 1) * 7;
+        endRecurrenceDate = nextLesson.dateTime.toLocal().add(Duration(days: duration));
+      }
+    }
+    return endRecurrenceDate;
+  }
+
+  DateTime getMinRecurrenceDate() {
+    DateTime minRecurrenceDate;
+    if (lessonRequest != null) {
+      minRecurrenceDate = lessonRequest.lessonDateTime.toLocal().add(Duration(days: 7));
+    } else if (nextLesson != null) {
+      minRecurrenceDate = nextLesson.dateTime.toLocal().add(Duration(days: 7));
+    }
+    return minRecurrenceDate;
+  }
+
+  DateTime getMaxRecurrenceDate() {
+    DateTime maxRecurrenceDate;
+    if (lessonRequest != null) {
+      maxRecurrenceDate = lessonRequest.lessonDateTime.toLocal().add(Duration(days: 133));
+    } else if (nextLesson != null) {
+      maxRecurrenceDate = nextLesson.dateTime.toLocal().add(Duration(days: 133));
+    }
+    return maxRecurrenceDate;
+  }  
+
+  int calculateLessonsNumber(DateTime endRecurrenceDate) {
+    int lessonsNumber = AppConstants.minLessonsNumberRecurrence;
+    if (endRecurrenceDate != null) {
+      if (lessonRequest != null) {
+        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(lessonRequest.lessonDateTime.toLocal())).inDays ~/ 7 + 1;
+      } else if (nextLesson != null) {
+        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(nextLesson.dateTime.toLocal())).inDays ~/ 7 + 1;
+      }
+    }
+    return lessonsNumber;
+  }  
 
   Future<void> getSkills() async {
     await getPreviousLesson();

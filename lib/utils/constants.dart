@@ -23,4 +23,5 @@ class AppConstants {
   static const String dateFormatLesson = 'EEEE, MMM dd';
   static const String timeFormatLesson = 'HH:mm';
   static const String meetingUrlType = 'Google Meet/Zoom';
+  static const int minLessonsNumberRecurrence = 2;
 }

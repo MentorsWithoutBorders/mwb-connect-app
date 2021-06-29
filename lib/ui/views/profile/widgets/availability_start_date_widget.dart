@@ -153,9 +153,9 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     final TargetPlatform platform = Theme.of(context).platform;
     final DateTime availableFrom = _profileProvider.profile.user.availableFrom.toLocal();
     if (platform == TargetPlatform.iOS) {
-      return Utils.showDatePickerIOS(context, availableFrom, _setAvailableFrom);
+      return Utils.showDatePickerIOS(context: context, initialDate: availableFrom, setDate: _setAvailableFrom);
     } else {
-      return Utils.showDatePickerAndroid(context, availableFrom, _setAvailableFrom);
+      return Utils.showDatePickerAndroid(context: context, initialDate: availableFrom, setDate: _setAvailableFrom);
     }
   }
 

@@ -75,27 +75,27 @@ class Utils {
     }
   }
 
-  static Future<void> showDatePickerAndroid(BuildContext context, DateTime initialDate, Function setDate) async {
+  static Future<void> showDatePickerAndroid({BuildContext context, DateTime initialDate, DateTime firstDate, DateTime lastDate, Function setDate}) async {
     final DateTime now = DateTime.now();
     final DateTime picked = await showDatePicker(
       context: context,
       locale: Locale(_defaultLocale.split('_')[0], _defaultLocale.split('_')[1]),
       initialDate: initialDate,
-      firstDate: now,
-      lastDate: DateTime(now.year + 4),
+      firstDate: firstDate != null ? firstDate : now,
+      lastDate: lastDate != null ? lastDate : DateTime(now.year + 4),
       builder: (BuildContext context, Widget child) {
         return Theme(
           data: ThemeData.light(),
           child: child,
         );
-      },      
+      }
     );
     if (picked != null && picked != initialDate) {
       setDate(picked);
     }
   }
 
-  static void showDatePickerIOS(BuildContext context, DateTime initialDate, Function setDate) {
+  static void showDatePickerIOS({BuildContext context, DateTime initialDate, DateTime firstDate, DateTime lastDate, Function setDate}) async {
     final DateTime now = DateTime.now();
     showModalBottomSheet(
       context: context,
@@ -132,8 +132,8 @@ class Utils {
                   }
                 },
                 initialDateTime: initialDate,
-                minimumYear: now.year,
-                maximumYear: now.year + 4,
+                minimumDate: firstDate != null ? firstDate : now,
+                maximumDate: lastDate != null ? lastDate : DateTime(now.year + 4),
               ),
             ),
           ],

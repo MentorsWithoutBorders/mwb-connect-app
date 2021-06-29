@@ -25,14 +25,17 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   LessonRequestViewModel _lessonRequestProvider;
   LessonRecurrenceType _lessonRecurrenceType;
   final String _defaultLocale = Platform.localeName;
-  bool _hasRecurrence = false;
   int _lessonsNumber;
+  DateTime _endRecurrenceDate;
+  bool _hasRecurrence = false;
 
   @override
-  void initState() {
-    super.initState();
-    _setSelectedLessonsNumber(2);
-    _setLessonRecurrenceType(LessonRecurrenceType.lessons);    
+  void didChangeDependencies() {
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _setLessonRecurrenceType(LessonRecurrenceType.lessons);
+    _setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
+    _setEndRecurrenceDate(null);
+    super.didChangeDependencies();
   }  
 
   Widget _showLessonRecurrence() {
@@ -133,7 +136,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   
   Widget _showRecurrenceTypes() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String date = dateFormat.format(DateTime.now()).capitalize();
+    String date = dateFormat.format(_endRecurrenceDate).capitalize();
     return IgnorePointer(
       ignoring: !_hasRecurrence,
       child: Opacity(
@@ -210,7 +213,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     onTap: () {
                       _unfocus();
                       _setLessonRecurrenceType(LessonRecurrenceType.date);  
-                      _selectDate(context);
+                      _selectDate();
                     }                        
                   )
                 ],
@@ -242,6 +245,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
 
   void _changeLessonsNumber(int number) {
     _setSelectedLessonsNumber(number);
+    _setEndRecurrenceDate(null);
   }
 
   void _setSelectedLessonsNumber(int number) {
@@ -252,7 +256,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
 
   List<DropdownMenuItem<int>> _buildNumbers() {
     final List<DropdownMenuItem<int>> items = [];
-    for (int i = 1; i <= 10; i++) {
+    for (int i = AppConstants.minLessonsNumberRecurrence; i <= 20; i++) {
       items.add(DropdownMenuItem(
         value: i,
         child: Text(i.toString()),
@@ -278,28 +282,32 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     });    
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate() async {
     final TargetPlatform platform = Theme.of(context).platform;
-    final DateTime endRecurrenceDate = DateTime.now();
+    DateTime minRecurrenceDate = _lessonRequestProvider.getMinRecurrenceDate();
+    DateTime maxRecurrenceDate = _lessonRequestProvider.getMaxRecurrenceDate();
     if (platform == TargetPlatform.iOS) {
-      return Utils.showDatePickerIOS(context, endRecurrenceDate, _setEndRecurrenceDate);
+      return Utils.showDatePickerIOS(context: context, initialDate: _endRecurrenceDate, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     } else {
-      return Utils.showDatePickerAndroid(context, endRecurrenceDate, _setEndRecurrenceDate);
+      return Utils.showDatePickerAndroid(context: context, initialDate: _endRecurrenceDate, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     }
   }
 
   void _setEndRecurrenceDate(DateTime picked) {
-    print(picked);
+    setState(() {
+      _endRecurrenceDate = _lessonRequestProvider.setEndRecurrenceDate(picked: picked, lessonsNumber: _lessonsNumber);
+    });
+    if (picked != null) {
+      _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_endRecurrenceDate));
+    }
   }
 
   void _unfocus() {
-    _lessonRequestProvider.shouldUnfocus = true;
+    FocusScope.of(context).unfocus();
   }  
 
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
-
     return _showLessonRecurrence();
   }
 }
