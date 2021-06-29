@@ -251,7 +251,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void setAvailableFrom(DateTime availableFrom) {
-    profile.user.availableFrom = availableFrom.toUtc();
+    profile.user.availableFrom = availableFrom;
     setUserDetails(profile.user);
     notifyListeners();
   }

@@ -98,8 +98,8 @@ class User {
       'timeZone': _timeZoneToJson(timeZone),
       'availabilities': _availabilitiesToJson(availabilities),
       'isAvailable': isAvailable,
-      'availableFrom': availableFrom != null ? dateFormat.format(availableFrom) : null,
-      'registeredOn': registeredOn != null ? dateFormat.format(registeredOn) : null,
+      'availableFrom': availableFrom != null ? dateFormat.format(availableFrom.toUtc()) : null,
+      'registeredOn': registeredOn != null ? dateFormat.format(registeredOn.toUtc()) : null,
     };
     if (_lessonsAvailabilityToJson(lessonsAvailability) != null) {
       userMap.putIfAbsent('lessonsAvailability', () => _lessonsAvailabilityToJson(lessonsAvailability));

@@ -28,7 +28,7 @@ class StepModel {
       'text': text,
       'level': level,
       'index': index,
-      'dateTime': dateTime != null ? dateFormat.format(dateTime) : null,
+      'dateTime': dateTime != null ? dateFormat.format(dateTime.toUtc()) : null,
     };
   }
 }

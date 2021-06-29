@@ -48,7 +48,7 @@ class LessonRequestModel {
       'student': student.toJson(),
       'mentor': mentor.toJson(),
       'subfield': subfield.toJson(),
-      'lessonDateTime': lessonDateTime != null ? dateFormat.format(lessonDateTime) : null,
+      'lessonDateTime': lessonDateTime != null ? dateFormat.format(lessonDateTime.toUtc()) : null,
       'isCanceled': isCanceled,
       'isRejected': isRejected
     };
