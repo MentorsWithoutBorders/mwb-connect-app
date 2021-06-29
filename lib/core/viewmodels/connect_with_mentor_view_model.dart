@@ -80,7 +80,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isCanceled != true;
 
   DateTime getCertificateDate() {
-    DateTime registeredOn = DateTime.parse(_storageService.registeredOn).toLocal();
+    DateTime registeredOn = DateTime.parse(_storageService.registeredOn);
     registeredOn = Utils.resetTime(registeredOn);
     DateTime date;
     if (_storageService.registeredOn != null) {
@@ -90,11 +90,11 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   }
 
   DateTime getDeadline() {
-    DateTime registeredOn = DateTime.parse(_storageService.registeredOn).toLocal();
+    DateTime registeredOn = DateTime.parse(_storageService.registeredOn);
     registeredOn = Utils.resetTime(registeredOn);
     Jiffy deadline;
     if (lastStepAdded != null && lastStepAdded.dateTime != null) {
-      DateTime lastStepAddedDateTime = lastStepAdded.dateTime.toLocal();
+      DateTime lastStepAddedDateTime = lastStepAdded.dateTime;
       lastStepAddedDateTime = Utils.resetTime(lastStepAddedDateTime);
       Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
       int i = 1;

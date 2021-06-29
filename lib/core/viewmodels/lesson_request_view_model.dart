@@ -66,10 +66,10 @@ class LessonRequestViewModel extends ChangeNotifier {
     } else {
       if (lessonRequest != null) {
         int duration = (lessonsNumber - 1) * 7;
-        endRecurrenceDate = lessonRequest.lessonDateTime.toLocal().add(Duration(days: duration));
+        endRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: duration));
       } else if (nextLesson != null) {
         int duration = (lessonsNumber - 1) * 7;
-        endRecurrenceDate = nextLesson.dateTime.toLocal().add(Duration(days: duration));
+        endRecurrenceDate = nextLesson.dateTime.add(Duration(days: duration));
       }
     }
     return endRecurrenceDate;
@@ -78,9 +78,9 @@ class LessonRequestViewModel extends ChangeNotifier {
   DateTime getMinRecurrenceDate() {
     DateTime minRecurrenceDate;
     if (lessonRequest != null) {
-      minRecurrenceDate = lessonRequest.lessonDateTime.toLocal().add(Duration(days: 7));
+      minRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: 7));
     } else if (nextLesson != null) {
-      minRecurrenceDate = nextLesson.dateTime.toLocal().add(Duration(days: 7));
+      minRecurrenceDate = nextLesson.dateTime.add(Duration(days: 7));
     }
     return minRecurrenceDate;
   }
@@ -88,9 +88,9 @@ class LessonRequestViewModel extends ChangeNotifier {
   DateTime getMaxRecurrenceDate() {
     DateTime maxRecurrenceDate;
     if (lessonRequest != null) {
-      maxRecurrenceDate = lessonRequest.lessonDateTime.toLocal().add(Duration(days: 133));
+      maxRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: 133));
     } else if (nextLesson != null) {
-      maxRecurrenceDate = nextLesson.dateTime.toLocal().add(Duration(days: 133));
+      maxRecurrenceDate = nextLesson.dateTime.add(Duration(days: 133));
     }
     return maxRecurrenceDate;
   }  
@@ -99,9 +99,9 @@ class LessonRequestViewModel extends ChangeNotifier {
     int lessonsNumber = AppConstants.minLessonsNumberRecurrence;
     if (endRecurrenceDate != null) {
       if (lessonRequest != null) {
-        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(lessonRequest.lessonDateTime.toLocal())).inDays ~/ 7 + 1;
+        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(lessonRequest.lessonDateTime)).inDays ~/ 7 + 1;
       } else if (nextLesson != null) {
-        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(nextLesson.dateTime.toLocal())).inDays ~/ 7 + 1;
+        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(nextLesson.dateTime)).inDays ~/ 7 + 1;
       }
     }
     return lessonsNumber;

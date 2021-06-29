@@ -20,7 +20,7 @@ class LessonRequestModel {
     student = _userFromJson(json['student']);
     mentor = _userFromJson(json['mentor']);
     subfield = _subfieldFromJson(json['subfield']);
-    lessonDateTime = json['lessonDateTime'] != null ? dateFormat.parseUTC(json['lessonDateTime']) : null;
+    lessonDateTime = json['lessonDateTime'] != null ? dateFormat.parseUTC(json['lessonDateTime']).toLocal() : null;
     isCanceled = json['isCanceled'];
     isRejected = json['isRejected'];
   }

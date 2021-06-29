@@ -51,7 +51,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
 
   Widget _showText() {
     Lesson nextLesson = _lessonRequestProvider.nextLesson;
-    DateTime nextLessonDateTime = nextLesson.dateTime.toLocal();
+    DateTime nextLessonDateTime = nextLesson.dateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();

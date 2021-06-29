@@ -51,7 +51,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
 
   Widget _showText() {
     LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
-    DateTime lessonRequestDateTime = lessonRequest.lessonDateTime.toLocal();
+    DateTime lessonRequestDateTime = lessonRequest.lessonDateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();

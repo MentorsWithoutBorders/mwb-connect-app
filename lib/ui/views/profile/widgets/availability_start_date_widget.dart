@@ -32,7 +32,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     setState(() {
       _availabilityStart = user.isAvailable ? AvailabilityStart.now : AvailabilityStart.later;
     });
-    if (user.availableFrom == null || user.availableFrom.toLocal().isBefore(DateTime.now())) {
+    if (user.availableFrom == null || user.availableFrom.isBefore(DateTime.now())) {
       _setAvailableFrom(DateTime.now());
     }
   }  
@@ -151,7 +151,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   Future<void> _selectDate(BuildContext context) async {
     _unfocus();
     final TargetPlatform platform = Theme.of(context).platform;
-    final DateTime availableFrom = _profileProvider.profile.user.availableFrom.toLocal();
+    final DateTime availableFrom = _profileProvider.profile.user.availableFrom;
     if (platform == TargetPlatform.iOS) {
       return Utils.showDatePickerIOS(context: context, initialDate: availableFrom, setDate: _setAvailableFrom);
     } else {

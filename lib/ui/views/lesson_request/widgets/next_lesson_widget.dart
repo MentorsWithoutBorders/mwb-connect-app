@@ -52,7 +52,7 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showText() {
     Lesson nextLesson = _lessonRequestProvider.nextLesson;
-    DateTime nextLessonDateTime = nextLesson.dateTime.toLocal();
+    DateTime nextLessonDateTime = nextLesson.dateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();

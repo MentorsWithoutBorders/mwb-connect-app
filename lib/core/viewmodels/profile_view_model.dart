@@ -239,7 +239,7 @@ class ProfileViewModel extends ChangeNotifier {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
     String date = dateFormat.format(DateTime.now()).capitalize();
     if (profile.user.availableFrom != null) {
-      date = dateFormat.format(profile.user.availableFrom.toLocal()).capitalize();
+      date = dateFormat.format(profile.user.availableFrom).capitalize();
     }
     return date;
   }  

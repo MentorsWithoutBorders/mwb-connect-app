@@ -18,7 +18,7 @@ class StepModel {
     text = json['text'] ?? '';
     level = json['level'] ?? 0;
     index = json['index'] ?? 0;
-    dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']) : null;
+    dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']).toLocal() : null;
   }
 
   Map<String, Object> toJson() {
