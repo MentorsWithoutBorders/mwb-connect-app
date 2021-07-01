@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 
 class LessonRequestViewModel extends ChangeNotifier {
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
@@ -20,8 +21,9 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   Future<void> acceptLessonRequest(String meetingUrl) async {
-    nextLesson = await _lessonRequestService.acceptLessonRequest(lessonRequest.id, meetingUrl);
-    lessonRequest = null;
+    nextLesson.meetingUrl = meetingUrl;
+    nextLesson = await _lessonRequestService.acceptLessonRequest(lessonRequest.id, nextLesson);
+    lessonRequest.id = null;
     notifyListeners();
   }  
 
@@ -59,20 +61,29 @@ class LessonRequestViewModel extends ChangeNotifier {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
   }
 
-  DateTime setEndRecurrenceDate({DateTime picked, int lessonsNumber}) {
-    DateTime endRecurrenceDate;
+  void initLessonRecurrence() {
+    if (nextLesson == null || nextLesson.isRecurrent == null) {
+      nextLesson = Lesson(isRecurrent: false, endRecurrenceDateTime: DateTime.now());
+    }       
+  }
+
+  void setEndRecurrenceDate({DateTime picked, int lessonsNumber}) {
     if (picked != null) {
-      endRecurrenceDate = picked;
+      nextLesson.endRecurrenceDateTime = picked;
+      if (lessonRequest != null) {
+        nextLesson.endRecurrenceDateTime = nextLesson.endRecurrenceDateTime.copyWith(hour: lessonRequest.lessonDateTime.hour);
+      } else if (nextLesson != null) {
+        nextLesson.endRecurrenceDateTime = nextLesson.endRecurrenceDateTime.copyWith(hour: nextLesson.dateTime.hour);
+      }      
     } else {
       if (lessonRequest != null) {
         int duration = (lessonsNumber - 1) * 7;
-        endRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: duration));
+        nextLesson.endRecurrenceDateTime = lessonRequest.lessonDateTime.add(Duration(days: duration));
       } else if (nextLesson != null) {
         int duration = (lessonsNumber - 1) * 7;
-        endRecurrenceDate = nextLesson.dateTime.add(Duration(days: duration));
+        nextLesson.endRecurrenceDateTime = nextLesson.dateTime.add(Duration(days: duration));
       }
     }
-    return endRecurrenceDate;
   }
 
   DateTime getMinRecurrenceDate() {
@@ -105,7 +116,12 @@ class LessonRequestViewModel extends ChangeNotifier {
       }
     }
     return lessonsNumber;
-  }  
+  }
+  
+  void setIsLessonRecurrent() {
+    nextLesson.isRecurrent = !nextLesson.isRecurrent;
+    notifyListeners();
+  }
 
   Future<void> getSkills() async {
     await getPreviousLesson();

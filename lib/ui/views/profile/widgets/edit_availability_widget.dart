@@ -23,14 +23,14 @@ class _EditAvailabilityState extends State<EditAvailability> {
   ProfileViewModel _profileProvider;
   Availability _availability;
   bool _shouldShowError = false;
-  bool _isInit = true;
+  bool _isInit = false;
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {  
+    if (!_isInit) {  
       _profileProvider = Provider.of<ProfileViewModel>(context);
       _initAvalability();
-      _isInit = false;
+      _isInit = true;
     }
     super.didChangeDependencies();
   }

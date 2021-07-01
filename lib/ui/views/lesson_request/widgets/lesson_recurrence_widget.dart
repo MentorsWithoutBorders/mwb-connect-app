@@ -10,6 +10,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/utils/lesson_recurrence_type.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
@@ -26,17 +27,24 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   LessonRecurrenceType _lessonRecurrenceType;
   final String _defaultLocale = Platform.localeName;
   int _lessonsNumber;
-  DateTime _endRecurrenceDate;
-  bool _hasRecurrence = false;
+  bool _isInit = false;
 
   @override
   void didChangeDependencies() {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
-    _setLessonRecurrenceType(LessonRecurrenceType.lessons);
-    _setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
-    _setEndRecurrenceDate(null);
+    _lessonRequestProvider.initLessonRecurrence();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     super.didChangeDependencies();
-  }  
+  }
+  
+  void _afterLayout(_) {
+    if (!_isInit) {
+      _setLessonRecurrenceType(LessonRecurrenceType.lessons);
+      _setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
+      _setEndRecurrenceDate(null);
+      _isInit = true;
+    }
+  }
 
   Widget _showLessonRecurrence() {
     return Padding(
@@ -75,9 +83,9 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 width: 40.0,
                 height: 35.0,                      
                 child: Checkbox(
-                  value: _hasRecurrence,
+                  value: _lessonRequestProvider.nextLesson.isRecurrent,
                   onChanged: (value) {
-                    _setHasRecurrence();
+                    _setIsRecurrent();
                   },
                 ),
               ),
@@ -116,7 +124,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     )
                   ),
                   onTap: () {
-                    _setHasRecurrence();
+                    _setIsRecurrent();
                   }
                 ),
               )
@@ -127,20 +135,19 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     );
   }
 
-  void _setHasRecurrence() {
+  void _setIsRecurrent() {
     _unfocus();
-    setState(() {
-      _hasRecurrence = !_hasRecurrence;
-    });
+    _lessonRequestProvider.setIsLessonRecurrent();
   }
   
   Widget _showRecurrenceTypes() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String date = dateFormat.format(_endRecurrenceDate).capitalize();
+    String date = dateFormat.format(_lessonRequestProvider.nextLesson.endRecurrenceDateTime).capitalize();
+    bool isRecurrent = _lessonRequestProvider.nextLesson.isRecurrent;
     return IgnorePointer(
-      ignoring: !_hasRecurrence,
+      ignoring: !isRecurrent,
       child: Opacity(
-        opacity: _hasRecurrence ? 1.0 : 0.3,
+        opacity: isRecurrent ? 1.0 : 0.3,
         child: Container(
           margin: const EdgeInsets.only(top: 5.0, left: 30.0, bottom: 15.0),
           child: Column(
@@ -286,25 +293,24 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     final TargetPlatform platform = Theme.of(context).platform;
     DateTime minRecurrenceDate = _lessonRequestProvider.getMinRecurrenceDate();
     DateTime maxRecurrenceDate = _lessonRequestProvider.getMaxRecurrenceDate();
+    DateTime endRecurrenceDateTime = _lessonRequestProvider.nextLesson.endRecurrenceDateTime;
     if (platform == TargetPlatform.iOS) {
-      return Utils.showDatePickerIOS(context: context, initialDate: _endRecurrenceDate, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
+      return Utils.showDatePickerIOS(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     } else {
-      return Utils.showDatePickerAndroid(context: context, initialDate: _endRecurrenceDate, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
+      return Utils.showDatePickerAndroid(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     }
   }
 
   void _setEndRecurrenceDate(DateTime picked) {
-    setState(() {
-      _endRecurrenceDate = _lessonRequestProvider.setEndRecurrenceDate(picked: picked, lessonsNumber: _lessonsNumber);
-    });
+    _lessonRequestProvider.setEndRecurrenceDate(picked: picked, lessonsNumber: _lessonsNumber);
     if (picked != null) {
-      _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_endRecurrenceDate));
+      _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_lessonRequestProvider.nextLesson.endRecurrenceDateTime));
     }
   }
 
   void _unfocus() {
     FocusScope.of(context).unfocus();
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {

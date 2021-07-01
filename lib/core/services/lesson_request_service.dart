@@ -22,14 +22,13 @@ class LessonRequestService {
     return lessonRequest;
   }
 
-  Future<Lesson> acceptLessonRequest(String id, String meetingUrl) async {
-    Lesson lesson = Lesson(meetingUrl: meetingUrl);
-    http.Response response = await _api.postHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: lesson.toJson());  
+  Future<Lesson> acceptLessonRequest(String id, Lesson nextLesson) async {
+    http.Response response = await _api.postHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: nextLesson.toJson());  
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
-      lesson = Lesson.fromJson(json);
+      nextLesson = Lesson.fromJson(json);
     }
-    return lesson;
+    return nextLesson;
   }  
 
   Future<void> rejectLessonRequest(String id) async {
