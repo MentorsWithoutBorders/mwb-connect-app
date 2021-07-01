@@ -22,6 +22,23 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   String _url = '';
   bool _shouldShowError = false;
   bool _isAcceptingLessonRequest = false;
+  bool _isInit = false;
+
+  @override
+  void didChangeDependencies() {
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _setInitialUrl();
+    super.didChangeDependencies();
+  }
+  
+  void _setInitialUrl() {
+    if (!_isInit) {
+      if (_url == '' && _lessonRequestProvider != null && _lessonRequestProvider.previousLesson != null) {
+        _changeUrl(_lessonRequestProvider.previousLesson.meetingUrl);
+      }   
+      _isInit = true;
+    }
+  }
 
   Widget _showAcceptLessonRequestDialog() {
     return Container(
@@ -166,12 +183,6 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
     });  
   }
 
-  void _setInitialUrl() {
-    if (_url == '' && _lessonRequestProvider != null && _lessonRequestProvider.previousLesson != null) {
-      _changeUrl(_lessonRequestProvider.previousLesson.meetingUrl);
-    }    
-  }
-  
   void _afterLayout(_) {
     if (_lessonRequestProvider.shouldUnfocus) {
       _unfocus();
@@ -185,9 +196,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);    
-    _setInitialUrl();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
