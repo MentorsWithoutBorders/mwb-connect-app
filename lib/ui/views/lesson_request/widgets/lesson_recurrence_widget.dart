@@ -142,7 +142,10 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   
   Widget _showRecurrenceTypes() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String date = dateFormat.format(_lessonRequestProvider.nextLesson.endRecurrenceDateTime).capitalize();
+    String date = '';
+    if (_lessonRequestProvider.nextLesson.endRecurrenceDateTime != null) {
+      date = dateFormat.format(_lessonRequestProvider.nextLesson.endRecurrenceDateTime).capitalize();
+    }
     bool isRecurrent = _lessonRequestProvider.nextLesson.isRecurrent;
     return IgnorePointer(
       ignoring: !isRecurrent,
