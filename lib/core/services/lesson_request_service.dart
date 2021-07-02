@@ -52,6 +52,21 @@ class LessonRequestService {
     await _api.putHTTP(url: '/users/$userId/lessons/$id/cancel_lesson', data: {});  
     return ;
   }
+
+  Future<void> updateLessonRecurrence(Lesson nextLesson) async {
+    Lesson lesson = Lesson(
+      isRecurrent: nextLesson.isRecurrent,
+      endRecurrenceDateTime: nextLesson.endRecurrenceDateTime,
+      isRecurrenceDateSelected: nextLesson.isRecurrenceDateSelected
+    );
+    if (!lesson.isRecurrent) {
+      lesson.isRecurrent = true;
+      lesson.endRecurrenceDateTime = nextLesson.dateTime;
+    }
+    String id = nextLesson.id;
+    await _api.putHTTP(url: '/lessons/$id/update_recurrence', data: lesson.toJson());  
+    return ;
+  }    
   
   Future<void> changeLessonUrl(String id, String meetingUrl) async {
     Lesson lesson = Lesson(meetingUrl: meetingUrl);

@@ -18,7 +18,7 @@ class AddStepDialog extends StatefulWidget {
   State<StatefulWidget> createState() => _AddStepDialogState();
 }
 
-class _AddStepDialogState extends State<AddStepDialog> with TickerProviderStateMixin {
+class _AddStepDialogState extends State<AddStepDialog> {
   CommonViewModel _commonProvider;
   GoalsViewModel _goalsProvider;
   StepsViewModel _stepsProvider;

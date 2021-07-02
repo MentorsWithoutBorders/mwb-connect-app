@@ -277,7 +277,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
 
   List<DropdownMenuItem<int>> _buildNumbers() {
     final List<DropdownMenuItem<int>> items = [];
-    for (int i = AppConstants.minLessonsNumberRecurrence; i <= 20; i++) {
+    for (int i = AppConstants.minLessonsNumberRecurrence; i <= AppConstants.maxLessonsNumberRecurrence; i++) {
       items.add(DropdownMenuItem(
         value: i,
         child: Text(i.toString()),

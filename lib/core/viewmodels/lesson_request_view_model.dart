@@ -44,6 +44,10 @@ class LessonRequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateLessonRecurrence() async {
+    await _lessonRequestService.updateLessonRecurrence(nextLesson);
+  }    
+
   Future<void> changeLessonUrl(String meetingUrl) async {
     await _lessonRequestService.changeLessonUrl(nextLesson.id, meetingUrl);
     nextLesson.meetingUrl = meetingUrl;
@@ -118,10 +122,11 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   DateTime getMaxRecurrenceDate() {
     DateTime maxRecurrenceDate;
+    int maxDays = AppConstants.maxLessonsNumberRecurrence * 7 - 7;
     if (isLessonRequest) {
-      maxRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: 133));
+      maxRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: maxDays));
     } else if (isNextLesson) {
-      maxRecurrenceDate = nextLesson.dateTime.add(Duration(days: 133));
+      maxRecurrenceDate = nextLesson.dateTime.add(Duration(days: maxDays));
     }
     return maxRecurrenceDate;
   }  

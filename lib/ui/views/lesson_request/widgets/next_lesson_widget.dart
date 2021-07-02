@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
@@ -11,9 +10,9 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/change_url_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class NextLesson extends StatefulWidget {
   const NextLesson({Key key})
@@ -26,6 +25,7 @@ class NextLesson extends StatefulWidget {
 class _NextLessonState extends State<NextLesson> {
   LessonRequestViewModel _lessonRequestProvider;
   String _url = '';
+  bool _isUpdatingRecurrence = false;
 
   Widget _showNextLessonCard() {
     return Padding(
@@ -224,58 +224,85 @@ class _NextLessonState extends State<NextLesson> {
   Widget _showButtons() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: 30.0,
-            margin: const EdgeInsets.only(bottom: 5.0, right: 15.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 1.0,
-                primary: AppColors.MONZA,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)
-                ),
-                padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-              ), 
-              child: Text('lesson_request.cancel_next_lesson'.tr(), style: const TextStyle(color: Colors.white)),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AnimatedDialog(
-                    widgetInside: CancelNextLessonDialog(),
-                    hasInput: true,
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+              height: 30.0,
+              margin: const EdgeInsets.only(bottom: 15.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 1.0,
+                  primary: AppColors.ALLPORTS,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)
                   ),
-                );
-              }
+                  padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+                ), 
+                onPressed: () async {
+                  if (!_isUpdatingRecurrence) {
+                    await _updateLessonRecurrence();
+                  }
+                },
+                child: !_isUpdatingRecurrence ? Text(
+                  'Update lesson recurrence', 
+                  style: const TextStyle(color: Colors.white)
+                ) : SizedBox(
+                  width: 161.0,
+                  height: 16.0,
+                  child: ButtonLoader(),
+                )
+              ),
             ),
-          ),
-          Container(
-            height: 30.0,
-            margin: const EdgeInsets.only(bottom: 5.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 1.0,
-                primary: AppColors.ALLPORTS,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)
-                ),
-                padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-              ), 
-              child: Text('lesson_request.change_url'.tr(), style: const TextStyle(color: Colors.white)),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AnimatedDialog(
-                    widgetInside: ChangeUrlDialog(url: _url),
-                    hasInput: true,
+            Container(
+              height: 30.0,
+              margin: const EdgeInsets.only(bottom: 5.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 1.0,
+                  primary: AppColors.MONZA,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)
                   ),
-                );
-              }
-            ),
-          ),
-        ]
+                  padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+                ), 
+                child: Text('Cancel lesson', style: const TextStyle(color: Colors.white)),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AnimatedDialog(
+                      widgetInside: CancelNextLessonDialog(),
+                      hasInput: true,
+                    ),
+                  );
+                }
+              )
+            )
+          ]
+        ),
+      ),
+    );
+  }
+  
+  Future<void> _updateLessonRecurrence() async {
+    setState(() {
+      _isUpdatingRecurrence = true;
+    });    
+    await _lessonRequestProvider.updateLessonRecurrence();
+    _showToast();
+    setState(() {
+      _isUpdatingRecurrence = false;
+    });     
+  }
+
+  void _showToast() {
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text('Lesson recurrence has been updated'),
+        action: SnackBarAction(
+          label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
+        ),
       ),
     );
   }  
