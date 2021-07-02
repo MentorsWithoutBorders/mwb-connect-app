@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
@@ -42,6 +43,7 @@ class _NextLessonState extends State<NextLesson> {
               _showText(),
               _showStudents(),
               _showLink(),
+              LessonRecurrence(),
               _showButtons()
             ]
           )
@@ -70,7 +72,7 @@ class _NextLessonState extends State<NextLesson> {
     _url = nextLesson.meetingUrl;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
@@ -140,8 +142,12 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showStudents() {
     List<User> students = _lessonRequestProvider.nextLesson.students;
-    return Padding(
-      padding: const EdgeInsets.only(left: 3.0, right: 20.0, bottom: 15.0),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
+      padding: const EdgeInsets.fromLTRB(5.0, 15.0, 5.0, 5.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.SILVER)
+      ), 
       child: ListView.builder(
         padding: const EdgeInsets.all(0),
         shrinkWrap: true,
@@ -199,7 +205,7 @@ class _NextLessonState extends State<NextLesson> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
+          padding: const EdgeInsets.only(bottom: 10.0),
           child: Center(
             child: Text(
               _url,

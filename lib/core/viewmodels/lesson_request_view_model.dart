@@ -3,6 +3,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
+import 'package:mwb_connect_app/utils/lesson_recurrence_type.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
@@ -70,27 +71,46 @@ class LessonRequestViewModel extends ChangeNotifier {
   void setEndRecurrenceDate({DateTime picked, int lessonsNumber}) {
     if (picked != null) {
       nextLesson.endRecurrenceDateTime = picked;
-      if (lessonRequest != null) {
+      if (isLessonRequest) {
         nextLesson.endRecurrenceDateTime = nextLesson.endRecurrenceDateTime.copyWith(hour: lessonRequest.lessonDateTime.hour);
-      } else if (nextLesson != null) {
+      } else if (isNextLesson) {
         nextLesson.endRecurrenceDateTime = nextLesson.endRecurrenceDateTime.copyWith(hour: nextLesson.dateTime.hour);
       }      
     } else {
-      if (lessonRequest != null) {
+      if (isLessonRequest) {
         int duration = (lessonsNumber - 1) * 7;
         nextLesson.endRecurrenceDateTime = lessonRequest.lessonDateTime.add(Duration(days: duration));
-      } else if (nextLesson != null) {
+      } else if (isNextLesson) {
         int duration = (lessonsNumber - 1) * 7;
         nextLesson.endRecurrenceDateTime = nextLesson.dateTime.add(Duration(days: duration));
       }
     }
   }
 
+  void setLessonRecurrenceType(LessonRecurrenceType recurrenceType) {
+    if (recurrenceType == LessonRecurrenceType.date) {
+      nextLesson.isRecurrenceDateSelected = true;
+    } else if (recurrenceType == LessonRecurrenceType.lessons) {
+      nextLesson.isRecurrenceDateSelected = false;
+    }
+    notifyListeners();
+  }
+
+  LessonRecurrenceType getLessonRecurrenceType() {
+    if (nextLesson.isRecurrenceDateSelected != null) {
+      if (nextLesson.isRecurrenceDateSelected) {
+        return LessonRecurrenceType.date;
+      } else {
+        return LessonRecurrenceType.lessons;
+      }
+    }
+  }  
+
   DateTime getMinRecurrenceDate() {
     DateTime minRecurrenceDate;
-    if (lessonRequest != null) {
+    if (isLessonRequest) {
       minRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: 7));
-    } else if (nextLesson != null) {
+    } else if (isNextLesson) {
       minRecurrenceDate = nextLesson.dateTime.add(Duration(days: 7));
     }
     return minRecurrenceDate;
@@ -98,9 +118,9 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   DateTime getMaxRecurrenceDate() {
     DateTime maxRecurrenceDate;
-    if (lessonRequest != null) {
+    if (isLessonRequest) {
       maxRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: 133));
-    } else if (nextLesson != null) {
+    } else if (isNextLesson) {
       maxRecurrenceDate = nextLesson.dateTime.add(Duration(days: 133));
     }
     return maxRecurrenceDate;
@@ -109,9 +129,9 @@ class LessonRequestViewModel extends ChangeNotifier {
   int calculateLessonsNumber(DateTime endRecurrenceDate) {
     int lessonsNumber = AppConstants.minLessonsNumberRecurrence;
     if (endRecurrenceDate != null) {
-      if (lessonRequest != null) {
+      if (isLessonRequest) {
         lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(lessonRequest.lessonDateTime)).inDays ~/ 7 + 1;
-      } else if (nextLesson != null) {
+      } else if (isNextLesson) {
         lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(nextLesson.dateTime)).inDays ~/ 7 + 1;
       }
     }
