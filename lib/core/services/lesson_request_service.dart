@@ -47,23 +47,20 @@ class LessonRequestService {
     return nextLesson;
   }
 
-  Future<void> cancelNextLesson(String id) async {
+  Future<void> cancelNextLesson(Lesson lesson, bool isSingleLesson) async {
     String userId = _storageService.userId;
-    await _api.putHTTP(url: '/users/$userId/lessons/$id/cancel_lesson', data: {});  
+    dynamic data = {};
+    if (isSingleLesson && lesson.isRecurrent) {
+      Lesson lessonData = Lesson(dateTime: lesson.dateTime);
+      data = lessonData.toJson();
+    }
+    String id = lesson.id;
+    await _api.putHTTP(url: '/users/$userId/lessons/$id/cancel_lesson', data: data);  
     return ;
   }
 
-  Future<void> updateLessonRecurrence(Lesson nextLesson) async {
-    Lesson lesson = Lesson(
-      isRecurrent: nextLesson.isRecurrent,
-      endRecurrenceDateTime: nextLesson.endRecurrenceDateTime,
-      isRecurrenceDateSelected: nextLesson.isRecurrenceDateSelected
-    );
-    if (!lesson.isRecurrent) {
-      lesson.isRecurrent = true;
-      lesson.endRecurrenceDateTime = nextLesson.dateTime;
-    }
-    String id = nextLesson.id;
+  Future<void> updateLessonRecurrence(Lesson lesson) async {
+    String id = lesson.id;
     await _api.putHTTP(url: '/lessons/$id/update_recurrence', data: lesson.toJson());  
     return ;
   }    

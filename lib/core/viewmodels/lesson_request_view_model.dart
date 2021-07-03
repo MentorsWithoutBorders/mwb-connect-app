@@ -38,14 +38,26 @@ class LessonRequestViewModel extends ChangeNotifier {
     nextLesson = await _lessonRequestService.getNextLesson();
   }
 
-  Future<void> cancelNextLesson() async {
-    await _lessonRequestService.cancelNextLesson(nextLesson.id);
-    nextLesson.isCanceled = true;
+  Future<void> cancelNextLesson({bool isSingleLesson}) async {
+    await _lessonRequestService.cancelNextLesson(nextLesson, isSingleLesson);
+    await getNextLesson();
     notifyListeners();
   }
 
   Future<void> updateLessonRecurrence() async {
-    await _lessonRequestService.updateLessonRecurrence(nextLesson);
+    if (isNextLesson) {
+      Lesson lesson = Lesson(
+        id: nextLesson.id,
+        isRecurrent: nextLesson.isRecurrent,
+        endRecurrenceDateTime: nextLesson.endRecurrenceDateTime,
+        isRecurrenceDateSelected: nextLesson.isRecurrenceDateSelected
+      );
+      if (!lesson.isRecurrent) {
+        lesson.isRecurrent = true;
+        lesson.endRecurrenceDateTime = nextLesson.dateTime;
+      }    
+      await _lessonRequestService.updateLessonRecurrence(lesson);
+    }
   }    
 
   Future<void> changeLessonUrl(String meetingUrl) async {
@@ -67,9 +79,12 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   void initLessonRecurrence() {
-    if (nextLesson == null || nextLesson.isRecurrent == null) {
+    if (nextLesson == null) {
       nextLesson = Lesson(isRecurrent: false, endRecurrenceDateTime: DateTime.now());
-    }       
+    } else if (nextLesson.isRecurrent == null) {
+      nextLesson.isRecurrent = false;
+      nextLesson.endRecurrenceDateTime = DateTime.now();
+    }
   }
 
   void setEndRecurrenceDate({DateTime picked, int lessonsNumber}) {
@@ -97,7 +112,6 @@ class LessonRequestViewModel extends ChangeNotifier {
     } else if (recurrenceType == LessonRecurrenceType.lessons) {
       nextLesson.isRecurrenceDateSelected = false;
     }
-    notifyListeners();
   }
 
   LessonRecurrenceType getLessonRecurrenceType() {

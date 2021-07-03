@@ -26,7 +26,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   LessonRequestViewModel _lessonRequestProvider;
   final String _defaultLocale = Platform.localeName;
   int _lessonsNumber;
-  bool _isInit = false;
+  LessonRecurrenceType _lessonRecurrenceType;
 
   @override
   void didChangeDependencies() {
@@ -37,16 +37,13 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
   
   void _afterLayout(_) {
-    if (!_isInit) {
-      _isInit = true;
-      if (_lessonRequestProvider.isNextLesson && _lessonRequestProvider.nextLesson.isRecurrent) {
-        _lessonRequestProvider.setLessonRecurrenceType(_lessonRequestProvider.getLessonRecurrenceType());
-        _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_lessonRequestProvider.nextLesson.endRecurrenceDateTime));
-      } else {
-        _setLessonRecurrenceType(LessonRecurrenceType.lessons);
-        _setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
-        _setEndRecurrenceDate(null);
-      }
+    if (_lessonRequestProvider.isNextLesson && _lessonRequestProvider.nextLesson.isRecurrent) {
+      _setLessonRecurrenceType(_lessonRequestProvider.getLessonRecurrenceType());
+      _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_lessonRequestProvider.nextLesson.endRecurrenceDateTime));
+    } else {
+      _setLessonRecurrenceType(LessonRecurrenceType.lessons);
+      _setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
+      _setEndRecurrenceDate(null);
     }
   }
 
@@ -156,7 +153,6 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     if (_lessonRequestProvider.nextLesson.endRecurrenceDateTime != null) {
       date = dateFormat.format(_lessonRequestProvider.nextLesson.endRecurrenceDateTime).capitalize();
     }
-    LessonRecurrenceType lessonRecurrenceType = _lessonRequestProvider.getLessonRecurrenceType();
     bool isRecurrent = _lessonRequestProvider.nextLesson.isRecurrent;
     return IgnorePointer(
       ignoring: !isRecurrent,
@@ -173,7 +169,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     height: 35.0,                      
                     child: Radio<LessonRecurrenceType>(
                       value: LessonRecurrenceType.lessons,
-                      groupValue: lessonRecurrenceType,
+                      groupValue: _lessonRecurrenceType,
                       onChanged: (LessonRecurrenceType value) {
                         _unfocus();
                         _setLessonRecurrenceType(value);
@@ -203,7 +199,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     height: 35.0,                      
                     child: Radio<LessonRecurrenceType>(
                       value: LessonRecurrenceType.date,
-                      groupValue: lessonRecurrenceType,
+                      groupValue: _lessonRecurrenceType,
                       onChanged: (LessonRecurrenceType value) {
                         _unfocus();
                         _setLessonRecurrenceType(value);
@@ -298,6 +294,9 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
   
   void _setLessonRecurrenceType(LessonRecurrenceType recurrenceType) {
+    setState(() {
+      _lessonRecurrenceType = recurrenceType;
+    });
     _lessonRequestProvider.setLessonRecurrenceType(recurrenceType);  
   }
 

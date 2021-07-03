@@ -69,8 +69,8 @@ class Lesson {
       'dateTime': dateTime != null ? dateFormat.format(dateTime.toUtc()) : null,
       'meetingUrl': meetingUrl,
       'isRecurrent': isRecurrent,
-      'isRecurrenceDateSelected': isRecurrent ? isRecurrenceDateSelected : null,
-      'endRecurrenceDateTime': isRecurrent && endRecurrenceDateTime != null ? dateFormat.format(endRecurrenceDateTime.toUtc()) : null,
+      'isRecurrenceDateSelected': isRecurrent != null && isRecurrent ? isRecurrenceDateSelected : null,
+      'endRecurrenceDateTime': isRecurrent != null && isRecurrent && endRecurrenceDateTime != null ? dateFormat.format(endRecurrenceDateTime.toUtc()) : null,
       'isMentorPresent': isMentorPresent,
       'isCanceled': isCanceled
     };

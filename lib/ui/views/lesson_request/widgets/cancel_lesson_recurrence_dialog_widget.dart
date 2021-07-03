@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class CancelNextLessonDialog extends StatefulWidget {
-  const CancelNextLessonDialog({Key key})
+class CancelLessonRecurrenceDialog extends StatefulWidget {
+  const CancelLessonRecurrenceDialog({Key key})
     : super(key: key);
     
   @override
-  State<StatefulWidget> createState() => _CancelNextLessonDialogState();
+  State<StatefulWidget> createState() => _CancelLessonRecurrenceDialogState();
 }
 
-class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
+class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDialog> {
   LessonRequestViewModel _lessonRequestProvider;
   bool _isCancellingLesson = false;  
 
-  Widget _showCancelNextLessonDialog() {
+  Widget _showCancelLessonRecurrenceDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -34,7 +33,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showTitle() {
-    String title = 'lesson_request.cancel_next_lesson'.tr();
+    String title = 'Cancel lesson recurrence';
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
@@ -50,66 +49,20 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showText() {
-    if (!_lessonRequestProvider.isNextLesson) {
-      return SizedBox.shrink();
-    }
     Lesson nextLesson = _lessonRequestProvider.nextLesson;
-    DateTime nextLessonDateTime = nextLesson.dateTime;
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
-    DateTime now = DateTime.now();
-    String subfield = nextLesson.subfield.name.toLowerCase();
-    String date = dateFormat.format(nextLessonDateTime);
-    String time = timeFormat.format(nextLessonDateTime);
-    String timeZone = now.timeZoneName;
-    String at = 'common.at'.tr();
     String studentPlural = plural('student', nextLesson.students.length);
-    String text = 'lesson_request.cancel_next_lesson_text'.tr(args: [subfield, date, time, timeZone, studentPlural]);
-    String firstPart = text.substring(0, text.indexOf(subfield));
-    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
-    String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);
+    String text = 'lesson_request.cancel_lesson_recurrence_text'.tr(args: [studentPlural]);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
-      child: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          style: const TextStyle(
-            fontSize: 12,
-            color: AppColors.DOVE_GRAY,
-            height: 1.5
-          ),
-          children: <TextSpan>[
-            TextSpan(
-              text: firstPart
-            ),
-            TextSpan(
-              text: subfield
-            ),
-            TextSpan(
-              text: secondPart
-            ),
-            TextSpan(
-              text: date,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: ' ' + at + ' '
-            ),
-            TextSpan(
-              text: time + ' ' + timeZone,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: thirdPart
-            ),
-          ],
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 12,
+          color: AppColors.DOVE_GRAY,
+          height: 1.5
         )
-      ),
+      )
     );
   }
   
@@ -142,7 +95,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _cancelNextLesson();
+            await _cancelLessonRecurrence();
             Navigator.pop(context);
           },
         )
@@ -150,9 +103,9 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     );
   } 
 
-  Future<void> _cancelNextLesson() async {  
+  Future<void> _cancelLessonRecurrence() async {  
     _setIsCancellingLesson(true);
-    await _lessonRequestProvider.cancelNextLesson(isSingleLesson: true);
+    await _lessonRequestProvider.cancelNextLesson(isSingleLesson: false);
   }
   
   void _setIsCancellingLesson(bool isCanceling) {
@@ -165,6 +118,6 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
-    return _showCancelNextLessonDialog();
+    return _showCancelLessonRecurrenceDialog();
   }
 }

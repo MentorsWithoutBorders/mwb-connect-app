@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -9,7 +9,8 @@ import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_options_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
@@ -43,7 +44,7 @@ class _NextLessonState extends State<NextLesson> {
               _showText(),
               _showStudents(),
               _showLink(),
-              LessonRecurrence(),
+              if (_lessonRequestProvider.isNextLesson) LessonRecurrence(),
               _showButtons()
             ]
           )
@@ -53,6 +54,9 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showText() {
+    if (!_lessonRequestProvider.isNextLesson) {
+      return SizedBox.shrink();
+    }
     Lesson nextLesson = _lessonRequestProvider.nextLesson;
     DateTime nextLessonDateTime = nextLesson.dateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
@@ -268,13 +272,7 @@ class _NextLessonState extends State<NextLesson> {
                 ), 
                 child: Text('Cancel lesson', style: const TextStyle(color: Colors.white)),
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AnimatedDialog(
-                      widgetInside: CancelNextLessonDialog(),
-                      hasInput: true,
-                    ),
-                  );
+                  _showCancelLessonDialog();
                 }
               )
             )
@@ -283,16 +281,34 @@ class _NextLessonState extends State<NextLesson> {
       ),
     );
   }
+
+  void _showCancelLessonDialog() {
+    Widget cancelLessonWidget;
+    if (_lessonRequestProvider.nextLesson.isRecurrent) {
+      cancelLessonWidget = CancelNextLessonOptionsDialog(context: context);
+    } else {
+      cancelLessonWidget = CancelNextLessonDialog();
+    }
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: cancelLessonWidget,
+        hasInput: true,
+      ),
+    );    
+  }
   
   Future<void> _updateLessonRecurrence() async {
-    setState(() {
-      _isUpdatingRecurrence = true;
-    });    
+    _setIsUpdatingRecurrence(true);   
     await _lessonRequestProvider.updateLessonRecurrence();
     _showToast();
+    _setIsUpdatingRecurrence(false);
+  }
+
+  void _setIsUpdatingRecurrence(bool isUpdating) {
     setState(() {
-      _isUpdatingRecurrence = false;
-    });     
+      _isUpdatingRecurrence = isUpdating;
+    });      
   }
 
   void _showToast() {
