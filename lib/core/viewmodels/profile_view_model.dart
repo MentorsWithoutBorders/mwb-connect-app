@@ -45,13 +45,7 @@ class ProfileViewModel extends ChangeNotifier {
     } else {
       shouldLogout = false;
     }
-  }
-
-  void setFields(List<Field> fields) {
-    fields.forEach((Field field) {
-      _profileService.addField(field);
-    });    
-  }    
+  }  
 
   void setUserDetails(User user) {
     _userService.setUserDetails(user);

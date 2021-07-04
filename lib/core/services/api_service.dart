@@ -116,9 +116,8 @@ class ApiService {
   }
   
   Future<void> _logout() async {
-    String userId = _storageService.userId;
     resetStorage();
-    await postHTTP(url: '/users/$userId/logout', data: {});
+    await postHTTP(url: '/logout', data: {});
   }
 
   void resetStorage() {

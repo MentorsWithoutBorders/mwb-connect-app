@@ -30,8 +30,7 @@ class StepsService {
   }
 
   Future<StepModel> addStep(String goalId, StepModel step) async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.postHTTP(url: '/users/$userId/goals/$goalId/steps', data: step.toJson());  
+    http.Response response = await _api.postHTTP(url: '/goals/$goalId/steps', data: step.toJson());  
     StepModel addedStep;
     if (response != null) {
       var json = jsonDecode(response.body);
@@ -41,8 +40,7 @@ class StepsService {
   }  
 
   Future<void> updateStep(StepModel step, String id) async {
-    String userId = _storageService.userId;
-    await _api.putHTTP(url: '/users/$userId/steps/$id', data: step.toJson());  
+    await _api.putHTTP(url: '/steps/$id', data: step.toJson());  
     return ;
   }  
 

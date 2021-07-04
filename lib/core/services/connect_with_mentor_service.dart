@@ -13,8 +13,7 @@ class ConnectWithMentorService {
   final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<StepModel> getLastStepAdded() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/last_step_added');
+    http.Response response = await _api.getHTTP(url: '/last_step_added');
     StepModel step;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -24,8 +23,7 @@ class ConnectWithMentorService {
   }
 
   Future<LessonRequestModel> getLessonRequest() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/lesson_request');
+    http.Response response = await _api.getHTTP(url: '/lesson_request');
     LessonRequestModel lessonRequest;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -35,8 +33,7 @@ class ConnectWithMentorService {
   }
 
   Future<LessonRequestModel> sendLessonRequest() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.postHTTP(url: '/users/$userId/lesson_requests', data: {});
+    http.Response response = await _api.postHTTP(url: '/lesson_requests', data: {});
     LessonRequestModel lessonRequest;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -51,8 +48,7 @@ class ConnectWithMentorService {
   }  
   
   Future<Lesson> getNextLesson() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/next_lesson');
+    http.Response response = await _api.getHTTP(url: '/next_lesson');
     Lesson nextLesson;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -62,14 +58,12 @@ class ConnectWithMentorService {
   }   
 
   Future<void> cancelNextLesson(String id) async {
-    String userId = _storageService.userId;
-    await _api.putHTTP(url: '/users/$userId/lessons/$id/cancel_lesson', data: {});  
+    await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: {});  
     return ;
   }
 
   Future<Lesson> getPreviousLesson() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/previous_lesson');
+    http.Response response = await _api.getHTTP(url: '/previous_lesson');
     Lesson previousLesson;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -89,8 +83,7 @@ class ConnectWithMentorService {
   }
 
   Future<void> addSkills(List<String> skillIds, String subfieldId) async {
-    String userId = _storageService.userId;
-    await _api.postHTTP(url: '/users/$userId/subfields/$subfieldId/skills', data: skillIds);  
+    await _api.postHTTP(url: '/subfields/$subfieldId/skills', data: skillIds);  
     return ;
   }  
   

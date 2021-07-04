@@ -10,8 +10,7 @@ class GoalsService {
   final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<List<Goal>> getGoals() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/goals');
+    http.Response response = await _api.getHTTP(url: '/goals');
     List<Goal> goals = [];
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -31,8 +30,7 @@ class GoalsService {
   }
 
   Future<Goal> addGoal(Goal goal) async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.postHTTP(url: '/users/$userId/goals', data: goal.toJson());  
+    http.Response response = await _api.postHTTP(url: '/goals', data: goal.toJson());  
     Goal addedGoal;
     if (response != null) {
       var json = jsonDecode(response.body);
@@ -42,8 +40,7 @@ class GoalsService {
   }
 
   Future<void> updateGoal(Goal goal, String id) async {
-    String userId = _storageService.userId;
-    await _api.putHTTP(url: '/users/$userId/goals/$id', data: goal.toJson());  
+    await _api.putHTTP(url: '/goals/$id', data: goal.toJson());  
     return ;
   }     
 

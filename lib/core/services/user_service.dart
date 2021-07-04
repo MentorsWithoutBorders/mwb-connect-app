@@ -52,7 +52,6 @@ class UserService {
   }
 
   Future<void> setUserDetails(User user) async {
-    String userId = user.id;
-    _api.putHTTP(url: '/users/$userId', data: user.toJson());
+    _api.putHTTP(url: '/user', data: user.toJson());
   }  
 }

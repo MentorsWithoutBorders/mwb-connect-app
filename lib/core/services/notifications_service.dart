@@ -11,8 +11,7 @@ class NotificationsService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
 
   Future<NotificationsSettings> getNotificationsSettings() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/notifications_settings');
+    http.Response response = await _api.getHTTP(url: '/notifications_settings');
     NotificationsSettings notificationsSettings;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -22,8 +21,7 @@ class NotificationsService {
   }
 
   Future updateNotificationsSettings(NotificationsSettings notificationsSettings) async {
-    String userId = _storageService.userId;    
-    await _api.putHTTP(url: '/users/$userId/notifications_settings', data: notificationsSettings.toJson());  
+    await _api.putHTTP(url: '/notifications_settings', data: notificationsSettings.toJson());  
     return ;
   }
 

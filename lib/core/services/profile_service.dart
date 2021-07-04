@@ -17,8 +17,4 @@ class ProfileService {
     }
     return fields;
   }
-
-  Future<void> addField(Field field) async {
-    // await _api.addDocument(path: 'fields', isForUser: false, data: field.toJson());
-  }
 }

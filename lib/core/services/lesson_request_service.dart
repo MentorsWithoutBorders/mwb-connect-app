@@ -12,8 +12,7 @@ class LessonRequestService {
   final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<LessonRequestModel> getLessonRequest() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/lesson_request');
+    http.Response response = await _api.getHTTP(url: '/lesson_request');
     LessonRequestModel lessonRequest;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -37,8 +36,7 @@ class LessonRequestService {
   }  
   
   Future<Lesson> getNextLesson() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/next_lesson');
+    http.Response response = await _api.getHTTP(url: '/next_lesson');
     Lesson nextLesson;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -48,14 +46,13 @@ class LessonRequestService {
   }
 
   Future<void> cancelNextLesson(Lesson lesson, bool isSingleLesson) async {
-    String userId = _storageService.userId;
     dynamic data = {};
     if (isSingleLesson && lesson.isRecurrent) {
       Lesson lessonData = Lesson(dateTime: lesson.dateTime);
       data = lessonData.toJson();
     }
     String id = lesson.id;
-    await _api.putHTTP(url: '/users/$userId/lessons/$id/cancel_lesson', data: data);  
+    await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: data);  
     return ;
   }
 
@@ -72,8 +69,7 @@ class LessonRequestService {
   } 
 
   Future<Lesson> getPreviousLesson() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/previous_lesson');
+    http.Response response = await _api.getHTTP(url: '/previous_lesson');
     Lesson previousLesson;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
@@ -83,8 +79,7 @@ class LessonRequestService {
   }    
 
   Future<List<Skill>> getSkills(String subfieldId) async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/subfields/$subfieldId/skills');
+    http.Response response = await _api.getHTTP(url: '/subfields/$subfieldId/skills');
     List<Skill> skills = [];
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
