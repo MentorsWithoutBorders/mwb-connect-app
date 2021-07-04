@@ -76,7 +76,12 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     String time = timeFormat.format(lessonDateTime);
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
-    String text = 'lesson_request.lesson_recurrence_text'.tr(args: [date, time, timeZone]);
+    String text = '';
+    if (_lessonRequestProvider.isLessonRequest) {
+      text = 'lesson_request.lesson_request_recurrence_text'.tr(args: [date, time, timeZone]);
+    } else if (_lessonRequestProvider.isNextLesson) {
+      text = 'lesson_request.next_lesson_recurrence_text'.tr(args: [date, time, timeZone]);
+    }    
     String firstPart = text.substring(0, text.indexOf(date));
     String secondPart = text.substring(text.indexOf(timeZone) + timeZone.length);
 
