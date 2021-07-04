@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';

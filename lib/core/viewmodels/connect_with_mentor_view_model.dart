@@ -134,6 +134,17 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     goal = goals[0];
   }
 
+  DateTime getCorrectEndRecurrenceDate() {
+    int days = 0;
+    if (isNextLesson) {
+      days = nextLesson.endRecurrenceDateTime.difference(nextLesson.dateTime).inDays;
+      if (days % 7 != 0) {
+        days = days - days % 7;
+      }
+    }
+    return Jiffy(nextLesson.dateTime).add(days: days).dateTime;
+  }
+
   bool get shouldReload => _shouldReload;
   set shouldReload(bool logout) {
     _shouldReload = logout;
