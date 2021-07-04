@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_next_lesson_options_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_next_lesson_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
@@ -43,6 +44,9 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showText() {
+    if (!_connectWithMentorProvider.isNextLesson) {
+      return SizedBox.shrink();
+    }    
     Lesson nextLesson = _connectWithMentorProvider.nextLesson;
     if (!nextLesson.isRecurrent) {
       return _showSingleLessonText(nextLesson);
@@ -238,20 +242,30 @@ class _NextLessonState extends State<NextLesson> {
             ),
             padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
           ), 
-          child: Text('Cancel lesson', style: const TextStyle(color: Colors.white)),
+          child: Text('connect_with_mentor.cancel_lesson'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (_) => AnimatedDialog(
-                widgetInside: CancelNextLessonDialog(),
-                hasInput: true,
-              ),
-            );
+            _showCancelLessonDialog();
           }
         ),
       ),
     );
-  }  
+  } 
+
+  void _showCancelLessonDialog() {
+    Widget cancelLessonWidget;
+    if (_connectWithMentorProvider.nextLesson.isRecurrent) {
+      cancelLessonWidget = CancelNextLessonOptionsDialog(context: context);
+    } else {
+      cancelLessonWidget = CancelNextLessonDialog();
+    }
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: cancelLessonWidget,
+        hasInput: true,
+      ),
+    );    
+  }   
 
   @override
   Widget build(BuildContext context) {

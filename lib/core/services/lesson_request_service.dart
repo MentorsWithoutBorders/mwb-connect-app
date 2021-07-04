@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
@@ -9,7 +8,6 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 
 class LessonRequestService {
   final ApiService _api = locator<ApiService>();
-  final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<LessonRequestModel> getLessonRequest() async {
     http.Response response = await _api.getHTTP(url: '/lesson_request');

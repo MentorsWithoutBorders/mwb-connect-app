@@ -201,7 +201,7 @@ class _NextLessonState extends State<NextLesson> {
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
-            'The link for the lesson is:',
+            'lesson_request.lesson_link'.tr(),
             style: const TextStyle(
               fontSize: 12,
               color: AppColors.DOVE_GRAY
@@ -249,7 +249,7 @@ class _NextLessonState extends State<NextLesson> {
                   }
                 },
                 child: !_isUpdatingRecurrence ? Text(
-                  'Update lesson recurrence', 
+                  'lesson_request.update_lesson_recurrence'.tr(),
                   style: const TextStyle(color: Colors.white)
                 ) : SizedBox(
                   width: 161.0,
@@ -270,7 +270,7 @@ class _NextLessonState extends State<NextLesson> {
                   ),
                   padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
                 ), 
-                child: Text('Cancel lesson', style: const TextStyle(color: Colors.white)),
+                child: Text('lesson_request.cancel_next_lesson'.tr(), style: const TextStyle(color: Colors.white)),
                 onPressed: () {
                   _showCancelLessonDialog();
                 }
@@ -315,7 +315,7 @@ class _NextLessonState extends State<NextLesson> {
     final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        content: Text('Lesson recurrence has been updated'),
+        content: Text('lesson_request.lesson_recurrence_updated'.tr()),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),

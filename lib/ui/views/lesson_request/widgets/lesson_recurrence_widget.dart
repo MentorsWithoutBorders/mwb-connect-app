@@ -179,7 +179,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                   _showLessonsNumber(),
                   InkWell(
                     child: Text(
-                      'lessons',
+                      plural('lesson', 2),
                       style: const TextStyle(
                         fontSize: 12.0, 
                         color: AppColors.DOVE_GRAY
@@ -210,7 +210,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     child: Row(
                       children: [
                         Text(
-                          'Until: ',
+                          'lesson_request.lesson_recurrence_until'.tr(),
                           style: const TextStyle(
                             fontSize: 12.0, 
                             color: AppColors.DOVE_GRAY

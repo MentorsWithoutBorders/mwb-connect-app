@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_lesson_recurrence_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_lesson_recurrence_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_next_lesson_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class CancelNextLessonOptionsDialog extends StatefulWidget {
@@ -99,7 +99,7 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Center(                      
-                  child: Text('common.abort'.tr(), style: const TextStyle(color: Colors.grey))
+                  child: Text('common.abort', style: const TextStyle(color: Colors.grey))
                 )
               ),
               onTap: () {

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelLessonRecurrenceDialog extends StatefulWidget {
@@ -15,7 +15,7 @@ class CancelLessonRecurrenceDialog extends StatefulWidget {
 }
 
 class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  ConnectWithMentorViewModel _connectWithMentorProvider;
   bool _isCancellingLesson = false;  
 
   Widget _showCancelLessonRecurrenceDialog() {
@@ -49,9 +49,9 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
   }
 
   Widget _showText() {
-    Lesson nextLesson = _lessonRequestProvider.nextLesson;
+    Lesson nextLesson = _connectWithMentorProvider.nextLesson;
     String studentPlural = plural('student', nextLesson.students.length);
-    String text = 'lesson_request.cancel_lesson_recurrence_text'.tr(args: [studentPlural]);
+    String text = 'connect_with_mentor.cancel_lesson_recurrence_text'.tr(args: [studentPlural]);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
@@ -105,7 +105,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
 
   Future<void> _cancelLessonRecurrence() async {  
     _setIsCancellingLesson(true);
-    await _lessonRequestProvider.cancelNextLesson(isSingleLesson: false);
+    await _connectWithMentorProvider.cancelNextLesson(isSingleLesson: false);
   }
   
   void _setIsCancellingLesson(bool isCanceling) {
@@ -116,7 +116,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
   
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
 
     return _showCancelLessonRecurrenceDialog();
   }

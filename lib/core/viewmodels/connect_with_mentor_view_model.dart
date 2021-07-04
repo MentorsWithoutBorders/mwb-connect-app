@@ -46,9 +46,9 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     nextLesson = await _connectWithMentorService.getNextLesson();
   }
 
-  Future<void> cancelNextLesson() async {
-    await _connectWithMentorService.cancelNextLesson(nextLesson.id);
-    nextLesson.isCanceled = true;
+  Future<void> cancelNextLesson({bool isSingleLesson}) async {
+    await _connectWithMentorService.cancelNextLesson(nextLesson, isSingleLesson);
+    await getNextLesson();
     notifyListeners();
   }
 

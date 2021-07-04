@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
@@ -10,7 +9,6 @@ import 'package:mwb_connect_app/core/models/lesson_model.dart';
 
 class ConnectWithMentorService {
   final ApiService _api = locator<ApiService>();
-  final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<StepModel> getLastStepAdded() async {
     http.Response response = await _api.getHTTP(url: '/last_step_added');
@@ -57,8 +55,14 @@ class ConnectWithMentorService {
     return nextLesson;
   }   
 
-  Future<void> cancelNextLesson(String id) async {
-    await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: {});  
+  Future<void> cancelNextLesson(Lesson lesson, bool isSingleLesson) async {
+    dynamic data = {};
+    if (isSingleLesson && lesson.isRecurrent) {
+      Lesson lessonData = Lesson(dateTime: lesson.dateTime);
+      data = lessonData.toJson();
+    }
+    String id = lesson.id;    
+    await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: data);  
     return ;
   }
 

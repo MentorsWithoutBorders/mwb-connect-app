@@ -49,6 +49,9 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showText() {
+    if (!_connectWithMentorProvider.isNextLesson) {
+      return SizedBox.shrink();
+    }    
     Lesson nextLesson = _connectWithMentorProvider.nextLesson;
     DateTime nextLessonDateTime = nextLesson.dateTime;  
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
@@ -109,7 +112,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
               ) 
             ),
             TextSpan(
-              text: ' ?'
+              text: '?'
             ),
           ],
         )
@@ -156,7 +159,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   
   Future<void> _cancelNextLesson() async {  
     _setIsCancelingNextLesson(true);
-    await _connectWithMentorProvider.cancelNextLesson();
+    await _connectWithMentorProvider.cancelNextLesson(isSingleLesson: true);
   }
   
   void _setIsCancelingNextLesson(bool isCanceling) {
