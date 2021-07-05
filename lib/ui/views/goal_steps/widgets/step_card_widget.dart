@@ -84,8 +84,7 @@ class _StepCardState extends State<StepCard> {
         showDialog(
           context: context,
           builder: (_) => AnimatedDialog(
-            widgetInside: StepDialog(context: context),
-            hasInput: false,
+            widgetInside: StepDialog(context: context)
           ),
         ); 
       },

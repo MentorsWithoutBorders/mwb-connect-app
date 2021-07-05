@@ -102,8 +102,7 @@ class _StepsState extends State<Steps> {
           showDialog(
             context: context,
             builder: (_) => AnimatedDialog(
-              widgetInside: AddStepDialog(steps: _stepsProvider.steps),
-              hasInput: true,
+              widgetInside: AddStepDialog(steps: _stepsProvider.steps)
             ),
           );
         }        

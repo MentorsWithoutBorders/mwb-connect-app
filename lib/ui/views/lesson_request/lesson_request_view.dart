@@ -30,13 +30,14 @@ class _LessonRequestViewState extends State<LessonRequestView> {
   Future<void> reassemble() async {
     super.reassemble();
     // Show taught today
-    // showDialog(
-    //   context: context,
-    //   builder: (_) => AnimatedDialog(
-    //     widgetInside: TaughtTodayDialog(),
-    //     hasInput: false
-    //   ),
-    // );
+    showDialog(
+      context: context,
+      builder: (_) => Center(
+        child: AnimatedDialog(
+          widgetInside: TaughtTodayDialog()
+        ),
+      ),
+    );
   }      
 
   Widget _showLessonRequest() {

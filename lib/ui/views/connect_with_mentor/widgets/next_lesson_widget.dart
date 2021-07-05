@@ -261,8 +261,7 @@ class _NextLessonState extends State<NextLesson> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: cancelLessonWidget,
-        hasInput: true,
+        widgetInside: cancelLessonWidget
       ),
     );    
   }   

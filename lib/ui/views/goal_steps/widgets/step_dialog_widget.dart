@@ -66,8 +66,7 @@ class _StepDialogState extends State<StepDialog> {
                 showDialog(
                   context: context,
                   builder: (_) => const AnimatedDialog(
-                    widgetInside: UpdateStepDialog(),
-                    hasInput: true,
+                    widgetInside: UpdateStepDialog()
                   ),
                 );                      
               },
@@ -88,8 +87,7 @@ class _StepDialogState extends State<StepDialog> {
                 showDialog(
                   context: context,
                   builder: (_) => const AnimatedDialog(
-                    widgetInside: AddSubStepDialog(),
-                    hasInput: true,
+                    widgetInside: AddSubStepDialog()
                   ),
                 );                       
               },
@@ -142,8 +140,7 @@ class _StepDialogState extends State<StepDialog> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: _showDeleteStepDialog(),
-                    hasInput: false,
+                    widgetInside: _showDeleteStepDialog()
                   ),
                 );                      
               },

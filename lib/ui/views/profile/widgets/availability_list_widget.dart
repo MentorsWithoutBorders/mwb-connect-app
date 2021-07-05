@@ -91,8 +91,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     showDialog(
       context: context,
       builder: (_) => const AnimatedDialog(
-        widgetInside: AddAvailability(),
-        hasInput: true,
+        widgetInside: AddAvailability()
       ),
     ).then((shouldShowToast) {
       if (shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {

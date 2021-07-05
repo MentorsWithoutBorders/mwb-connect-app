@@ -4,7 +4,6 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/tokens_model.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/error_model.dart';
 
 class ApiService {

@@ -108,8 +108,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: EditAvailability(index: widget.index),
-        hasInput: true,
+        widgetInside: EditAvailability(index: widget.index)
       )
     ).then((shouldShowToast) {
       if (shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {

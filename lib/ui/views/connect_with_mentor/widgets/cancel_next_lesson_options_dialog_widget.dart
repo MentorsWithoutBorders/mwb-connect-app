@@ -62,8 +62,7 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
                 showDialog(
                   context: context,
                   builder: (_) => const AnimatedDialog(
-                    widgetInside: CancelNextLessonDialog(),
-                    hasInput: true,
+                    widgetInside: CancelNextLessonDialog()
                   ),
                 ); 
               },
@@ -84,8 +83,7 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: CancelLessonRecurrenceDialog(),
-                    hasInput: false,
+                    widgetInside: CancelLessonRecurrenceDialog()
                   ),
                 );                      
               },

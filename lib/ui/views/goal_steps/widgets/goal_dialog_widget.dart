@@ -65,8 +65,7 @@ class _GoalDialogState extends State<GoalDialog> {
                 showDialog(
                   context: context,
                   builder: (_) => const AnimatedDialog(
-                    widgetInside: UpdateGoalDialog(),
-                    hasInput: true,
+                    widgetInside: UpdateGoalDialog()
                   ),
                 ); 
               },
@@ -87,8 +86,7 @@ class _GoalDialogState extends State<GoalDialog> {
           //       showDialog(
           //         context: context,
           //         builder: (_) => AnimatedDialog(
-          //           widgetInside: _showDeleteGoalDialog(),
-          //           hasInput: false,
+          //           widgetInside: _showDeleteGoalDialog()
           //         ),
           //       );                      
           //     },

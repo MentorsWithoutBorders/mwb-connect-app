@@ -146,8 +146,7 @@ class _LessonRequestState extends State<LessonRequest> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: RejectLessonRequestDialog(),
-                    hasInput: true,
+                    widgetInside: RejectLessonRequestDialog()
                   ),
                 );
               }
@@ -170,8 +169,7 @@ class _LessonRequestState extends State<LessonRequest> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: AcceptLessonRequestDialog(),
-                    hasInput: true,
+                    widgetInside: AcceptLessonRequestDialog()
                   ),
                 );
               }

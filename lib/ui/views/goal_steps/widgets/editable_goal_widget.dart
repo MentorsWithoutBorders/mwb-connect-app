@@ -43,8 +43,7 @@ class _EditableGoalState extends State<EditableGoal> {
           showDialog(
             context: context,
             builder: (_) => AnimatedDialog(
-              widgetInside: GoalDialog(context: context),
-              hasInput: false,
+              widgetInside: GoalDialog(context: context)
             ),
           );           
         },

@@ -141,8 +141,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
           showDialog(
             context: context,
             builder: (_) => AnimatedDialog(
-              widgetInside: const AddGoalDialog(),
-              hasInput: true,
+              widgetInside: const AddGoalDialog()
             ),
           );
         },        
