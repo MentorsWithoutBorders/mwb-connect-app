@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/utils/lesson_recurrence_type.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
 
 class LessonRequestViewModel extends ChangeNotifier {
@@ -80,10 +81,9 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   void initLessonRecurrence() {
     if (nextLesson == null) {
-      nextLesson = Lesson(isRecurrent: false, endRecurrenceDateTime: DateTime.now());
-    } else if (nextLesson.isRecurrent == null) {
+      nextLesson = Lesson(isRecurrent: false);
+    } else if (nextLesson.isRecurrent == null || nextLesson.isRecurrent && nextLesson.endRecurrenceDateTime.difference(nextLesson.dateTime).inDays < 7) {
       nextLesson.isRecurrent = false;
-      nextLesson.endRecurrenceDateTime = DateTime.now();
     }
   }
 
@@ -174,8 +174,13 @@ class LessonRequestViewModel extends ChangeNotifier {
         skillIds.add(skills[i].id);
       }
     }
-    await _lessonRequestService.addStudentSkills(previousLesson.students[0].id, previousLesson.subfield.id, skillIds);
+    await _lessonRequestService.addStudentSkills(previousLesson.id, skillIds);
   }
+
+  Future<void> addStudentsLessonNotes(String text) async {
+    LessonNote lessonNote = LessonNote(text: text);
+    await _lessonRequestService.addStudentsLessonNotes(previousLesson.id, lessonNote);
+  }  
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

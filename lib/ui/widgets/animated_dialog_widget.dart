@@ -25,7 +25,7 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
   void initState() {
     super.initState();
     _setController();
-    _setMarginBottom();
+    _initMarginBottom();
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
@@ -40,20 +40,22 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
     });
   }  
 
-  void _setMarginBottom() {
+  void _initMarginBottom() {
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          setState(() {
-            _marginBottom = 150;
-          });
+          _setMarginBottom(150);
         } else {
-          setState(() {
-            _marginBottom = 0;
-          });
+          _setMarginBottom(0);
         }
       },
     );    
+  }
+
+  void _setMarginBottom(double marginBottom) {
+    setState(() {
+      _marginBottom = marginBottom;
+    });    
   }
 
   void _setController() {
@@ -74,8 +76,8 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
   Widget _showDialog() {
     double marginBottom = _commonProvider.dialogInputHeight;
     final double screenHeight = MediaQuery.of(context).size.height;
-    if (_containerHeight / 2 + 240 > screenHeight / 2) {
-      marginBottom += (_containerHeight / 2 + 240 - screenHeight / 2) + _marginBottom;
+    if (_containerHeight / 2 + 220 > screenHeight / 2) {
+      marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + _marginBottom;
     }
 
     return Center(

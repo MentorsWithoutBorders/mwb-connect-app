@@ -87,7 +87,7 @@ class ConnectWithMentorService {
   }
 
   Future<void> addSkills(List<String> skillIds, String subfieldId) async {
-    await _api.postHTTP(url: '/subfields/$subfieldId/skills', data: skillIds);  
+    await _api.postHTTP(url: '/user/subfields/$subfieldId/skills', data: skillIds);  
     return ;
   }  
   
