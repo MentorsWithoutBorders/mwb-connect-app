@@ -3,8 +3,8 @@ class SupportRequest {
 
   SupportRequest({this.text});
 
-  SupportRequest.fromJson(Map<String, dynamic> snapshot) :
-    text = snapshot['text'] ?? '';
+  SupportRequest.fromJson(Map<String, dynamic> json) :
+    text = json['text'] ?? '';
 
   Map<String, Object> toJson() {
     return {

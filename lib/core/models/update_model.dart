@@ -6,11 +6,11 @@ class Update {
 
   Update({this.major, this.minor, this.release, this.build});
 
-  Update.fromJson(Map<String, dynamic> snapshot) :
-    major = snapshot['major'],
-    minor = snapshot['minor'],
-    release = snapshot['release'],
-    build = snapshot['build'];
+  Update.fromJson(Map<String, dynamic> json) :
+    major = json['major'],
+    minor = json['minor'],
+    release = json['release'],
+    build = json['build'];
 
   Map<String, Object> toJson() {
     return {

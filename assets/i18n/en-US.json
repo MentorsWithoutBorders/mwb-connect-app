@@ -206,6 +206,8 @@
     "change_url": "Change link",
     "update_lesson_recurrence": "Update lesson recurrence",
     "lesson_recurrence_updated": "The lesson recurrence has been updated",
+    "notes_previous_mentors": "see notes from previous mentors",
+    "no_notes_previous_mentors": "There are no lesson notes from previous mentors.",
 		"taught_today": "What I taught today",
 		"taught_today_text": "In order for us to connect your {} from today with an appropriate mentor for the next lesson, please select from the following list what you have taught {}{}:",
     "throughout_recurrence": "throughout the entire lesson recurrence",

@@ -319,11 +319,11 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
-   return FutureBuilder<void>(
+    return FutureBuilder<void>(
       future: _getSkills(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         return _showTaughtTodayDialog();
       }
-   );
+    );
   }
 }

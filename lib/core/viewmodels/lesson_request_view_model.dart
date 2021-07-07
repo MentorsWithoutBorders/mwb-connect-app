@@ -16,6 +16,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   Lesson nextLesson;
   Lesson previousLesson;
   List<Skill> skills;
+  List<LessonNote> lessonsNotes = [];
   bool _shouldUnfocus = false;
 
   Future<void> getLessonRequest() async {
@@ -70,7 +71,31 @@ class LessonRequestViewModel extends ChangeNotifier {
   Future<void> getPreviousLesson() async {
     previousLesson = await _lessonRequestService.getPreviousLesson();
   }
+
+  Future<void> getLessonsNotes(String studentId) async {
+    lessonsNotes = await _lessonRequestService.getLessonsNotes(studentId);
+  }  
+
+  Future<void> addStudentsLessonNotes(String text) async {
+    LessonNote lessonNote = LessonNote(text: text);
+    await _lessonRequestService.addStudentsLessonNotes(previousLesson.id, lessonNote);
+  }    
+
+  Future<void> getSkills() async {
+    await getPreviousLesson();
+    skills = await _lessonRequestService.getSkills(previousLesson.subfield.id);
+  }
   
+  Future<void> addStudentSkills(List<bool> selectedSkills) async {
+    List<String> skillIds = [];
+    for (int i = 0; i < selectedSkills.length; i++) {
+      if (selectedSkills[i]) {
+        skillIds.add(skills[i].id);
+      }
+    }
+    await _lessonRequestService.addStudentSkills(previousLesson.id, skillIds);
+  }
+
   bool get isNextLesson => nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
 
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isRejected != true;
@@ -161,26 +186,6 @@ class LessonRequestViewModel extends ChangeNotifier {
     nextLesson.isRecurrent = !nextLesson.isRecurrent;
     notifyListeners();
   }
-
-  Future<void> getSkills() async {
-    await getPreviousLesson();
-    skills = await _lessonRequestService.getSkills(previousLesson.subfield.id);
-  }
-  
-  Future<void> addStudentSkills(List<bool> selectedSkills) async {
-    List<String> skillIds = [];
-    for (int i = 0; i < selectedSkills.length; i++) {
-      if (selectedSkills[i]) {
-        skillIds.add(skills[i].id);
-      }
-    }
-    await _lessonRequestService.addStudentSkills(previousLesson.id, skillIds);
-  }
-
-  Future<void> addStudentsLessonNotes(String text) async {
-    LessonNote lessonNote = LessonNote(text: text);
-    await _lessonRequestService.addStudentsLessonNotes(previousLesson.id, lessonNote);
-  }  
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

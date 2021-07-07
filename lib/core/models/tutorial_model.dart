@@ -4,9 +4,9 @@ class Tutorial {
 
   Tutorial({this.type, this.sections});
 
-  Tutorial.fromJson(Map<String, dynamic> snapshot) :
-    type = snapshot['type'] ?? '',
-    sections = snapshot['sections']?.cast<String>() ?? [];
+  Tutorial.fromJson(Map<String, dynamic> json) :
+    type = json['type'] ?? '',
+    sections = json['sections']?.cast<String>() ?? [];
 
   Map<String, Object> toJson() {
     return {

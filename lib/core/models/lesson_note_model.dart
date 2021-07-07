@@ -12,7 +12,7 @@ class LessonNote {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     lessonId = json['lessonId'];
     text = json['text'];
-    dateTime = json['availableFrom'] != null ? dateFormat.parseUTC(json['availableFrom']).toLocal() : null;
+    dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']).toLocal() : null;
   }
 
   Map<String, Object> toJson() {

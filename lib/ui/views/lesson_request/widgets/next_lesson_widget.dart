@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -11,6 +10,8 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_options_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lessons_notes_dialog.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
@@ -166,12 +167,12 @@ class _NextLessonState extends State<NextLesson> {
                   child: BulletPoint()
                 ),
                 Expanded(
-                 child: RichText(
+                  child: RichText(
                     text: TextSpan(
                       style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.DOVE_GRAY,
-                        height: 1.2
+                        height: 1.4
                       ),
                       children: <TextSpan>[
                         TextSpan(
@@ -180,8 +181,27 @@ class _NextLessonState extends State<NextLesson> {
                             fontWeight: FontWeight.bold
                           )
                         ),
-                         TextSpan(
-                          text: ' - ${students[index].organization.name}'
+                        TextSpan(
+                          text: ' - ${students[index].organization.name} ('
+                        ),
+                        TextSpan(
+                          text: 'lesson_request.notes_previous_mentors'.tr(),
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontStyle: FontStyle.italic,
+                            decoration: TextDecoration.underline
+                          ),
+                          recognizer: TapGestureRecognizer()..onTap = () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => AnimatedDialog(
+                                widgetInside: LessonsNotesDialog(student: students[index])
+                              ),
+                            );
+                          } 
+                        ),
+                        TextSpan(
+                          text: ')'
                         )
                       ],
                     )

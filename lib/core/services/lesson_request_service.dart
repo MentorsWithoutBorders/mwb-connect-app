@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 
 class LessonRequestService {
@@ -77,7 +77,17 @@ class LessonRequestService {
       previousLesson = Lesson.fromJson(json);
     }
     return previousLesson;
-  }    
+  }
+  
+  Future<List<LessonNote>> getLessonsNotes(String studentId) async {
+    http.Response response = await _api.getHTTP(url: '/users/$studentId/lessons_notes');
+    List<LessonNote> lessonsNotes = [];
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      lessonsNotes = List<LessonNote>.from(json.map((model) => LessonNote.fromJson(model)));      
+    }
+    return lessonsNotes;
+  }  
 
   Future<List<Skill>> getSkills(String subfieldId) async {
     String userId = _storageService.userId;
