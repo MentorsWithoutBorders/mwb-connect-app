@@ -8,6 +8,8 @@ import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
+import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
+import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
 
 class LessonRequestViewModel extends ChangeNotifier {
@@ -16,7 +18,9 @@ class LessonRequestViewModel extends ChangeNotifier {
   Lesson nextLesson;
   Lesson previousLesson;
   List<Skill> skills;
-  List<LessonNote> lessonsNotes = [];
+  List<LessonNote> lessonsNotes;
+  List<GuideTutorial> guideTutorials;
+  List<GuideRecommendation> guideRecommendations;
   bool _shouldUnfocus = false;
 
   Future<void> getLessonRequest() async {
@@ -74,7 +78,15 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   Future<void> getLessonsNotes(String studentId) async {
     lessonsNotes = await _lessonRequestService.getLessonsNotes(studentId);
-  }  
+  }
+  
+  Future<void> getGuideTutorials() async {
+    guideTutorials = await _lessonRequestService.getGuideTutorials(nextLesson.id);
+  }
+
+  Future<void> getGuideRecommendations() async {
+    guideRecommendations = await _lessonRequestService.getGuideRecommendations(nextLesson.id);
+  }    
 
   Future<void> addStudentsLessonNotes(String text) async {
     LessonNote lessonNote = LessonNote(text: text);

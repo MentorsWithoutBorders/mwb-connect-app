@@ -53,8 +53,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     //   showDialog(
     //     context: context,
     //     builder: (_) => AnimatedDialog(
-    //       widgetInside: QuizView(quizNumber: quizNumber),
-    //       hasInput: false
+    //       widgetInside: QuizView(quizNumber: quizNumber)
     //     ),
     //   );
     // }

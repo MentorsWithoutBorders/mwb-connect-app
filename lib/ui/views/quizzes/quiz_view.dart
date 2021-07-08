@@ -164,6 +164,7 @@ class _QuizState extends State<QuizView> {
   ListView _showOptions(List<String> options, String answer) {
     return ListView.separated(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       separatorBuilder: (BuildContext context, int index) => const Divider(
         height: 0.0,
         color: AppColors.MYSTIC,

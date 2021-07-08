@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_guide_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -45,6 +46,7 @@ class _NextLessonState extends State<NextLesson> {
               _showText(),
               _showStudents(),
               _showLink(),
+              _showGuide(),
               if (_lessonRequestProvider.isNextLesson) LessonRecurrence(),
               _showButtons()
             ]
@@ -149,13 +151,14 @@ class _NextLessonState extends State<NextLesson> {
     List<User> students = _lessonRequestProvider.nextLesson.students;
     return Container(
       margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
-      padding: const EdgeInsets.fromLTRB(5.0, 15.0, 5.0, 5.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 5.0),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.SILVER)
       ), 
       child: ListView.builder(
         padding: const EdgeInsets.all(0),
         shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: students.length,
         itemBuilder: (context, index) {
           return Padding(
@@ -242,6 +245,39 @@ class _NextLessonState extends State<NextLesson> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _showGuide() {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(width: 1.0, color: AppColors.SILVER),
+          bottom: BorderSide(width: 1.0, color: AppColors.SILVER),
+        )
+      ),
+      child: Center(
+        child: InkWell(
+          child: Text(
+            'lesson_request.see_lesson_guide_link'.tr(),
+            style: const TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+              fontSize: 13.0
+            )
+          ),
+          onTap: () => {
+            showDialog(
+              context: context,
+              builder: (_) => AnimatedDialog(
+                widgetInside: LessonGuideDialog()
+              ),
+            )
+          }
+        ),
+      ),
     );
   }
 

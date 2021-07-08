@@ -6,6 +6,8 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
+import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
+import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 
 class LessonRequestService {
@@ -59,13 +61,13 @@ class LessonRequestService {
 
   Future<void> updateLessonRecurrence(Lesson lesson) async {
     String id = lesson.id;
-    await _api.putHTTP(url: '/lessons/$id/update_recurrence', data: lesson.toJson());  
+    await _api.putHTTP(url: '/lessons/$id/recurrence', data: lesson.toJson());  
     return ;
   }    
   
   Future<void> changeLessonUrl(String id, String meetingUrl) async {
     Lesson lesson = Lesson(meetingUrl: meetingUrl);
-    await _api.putHTTP(url: '/lessons/$id/change_meeting_url', data: lesson.toJson());  
+    await _api.putHTTP(url: '/lessons/$id/meeting_url', data: lesson.toJson());  
     return ;
   } 
 
@@ -87,6 +89,26 @@ class LessonRequestService {
       lessonsNotes = List<LessonNote>.from(json.map((model) => LessonNote.fromJson(model)));      
     }
     return lessonsNotes;
+  }
+  
+  Future<List<GuideTutorial>> getGuideTutorials(String lessonId) async {
+    http.Response response = await _api.getHTTP(url: '/lessons/$lessonId/guide_tutorials');
+    List<GuideTutorial> guideTutorials = [];
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      guideTutorials = List<GuideTutorial>.from(json.map((model) => GuideTutorial.fromJson(model)));      
+    }
+    return guideTutorials;
+  }
+  
+  Future<List<GuideRecommendation>> getGuideRecommendations(String lessonId) async {
+    http.Response response = await _api.getHTTP(url: '/lessons/$lessonId/guide_recommendations');
+    List<GuideRecommendation> guideRecommendations = [];
+    if (response != null && response.body != null) {
+      var json = jsonDecode(response.body);
+      guideRecommendations = List<GuideRecommendation>.from(json.map((model) => GuideRecommendation.fromJson(model)));      
+    }
+    return guideRecommendations;
   }  
 
   Future<List<Skill>> getSkills(String subfieldId) async {
@@ -101,12 +123,12 @@ class LessonRequestService {
   }
   
   Future<void> addStudentSkills(String lessonId, List<String> skills) async {
-    await _api.putHTTP(url: '/lessons/$lessonId/add_skills', data: skills);
+    await _api.putHTTP(url: '/lessons/$lessonId/skills', data: skills);
     return ;
   }
 
   Future<void> addStudentsLessonNotes(String lessonId, LessonNote lessonNote) async {
-    await _api.postHTTP(url: '/lessons/$lessonId/lesson_notes', data: lessonNote);
+    await _api.postHTTP(url: '/lessons/$lessonId/notes', data: lessonNote);
     return ;
   }  
 }
