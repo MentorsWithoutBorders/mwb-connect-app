@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
 
 class FindMentorDialog extends StatefulWidget {
   const FindMentorDialog({Key key})
@@ -13,6 +15,7 @@ class FindMentorDialog extends StatefulWidget {
 }
 
 class _FindMentorDialogState extends State<FindMentorDialog> {
+  ConnectWithMentorViewModel _connectWithMentorProvider;  
 
   Widget _showFindMentorDialog() {
     return Container(
@@ -60,9 +63,13 @@ class _FindMentorDialogState extends State<FindMentorDialog> {
   }
   
   Widget _showConditionsList() {
+    String quizzes = _connectWithMentorProvider.getQuizzesLeft();
+    bool shouldShowQuizzes = _connectWithMentorProvider.getShouldShowQuizzes();
+    bool shouldShowStep = _connectWithMentorProvider.getShouldShowAddStep();
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
-      child: ConditionsList(),
+      child: ConditionsList(quizzes: quizzes, shouldShowQuizzes: shouldShowQuizzes, shouldShowStep: shouldShowStep)
     );
   }
 
@@ -92,6 +99,8 @@ class _FindMentorDialogState extends State<FindMentorDialog> {
   
   @override
   Widget build(BuildContext context) {
+    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+
     return _showFindMentorDialog();
   }
 }

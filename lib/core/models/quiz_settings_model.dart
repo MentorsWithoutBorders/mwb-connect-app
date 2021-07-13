@@ -1,23 +1,17 @@
 class QuizSettings {
-  int count;
-  int rounds;
-  int timeBetweenRounds;
-  bool showTimer;
+  int studentWeeklyCount;
+  int mentorWeeklyCount;
 
-  QuizSettings({this.count, this.rounds, this.timeBetweenRounds, this.showTimer});
+  QuizSettings({this.studentWeeklyCount, this.mentorWeeklyCount});
 
   QuizSettings.fromJson(Map<String, dynamic> json) :
-    count = json['count'] ?? 0,
-    rounds = json['rounds'] ?? 0,
-    timeBetweenRounds = json['timeBetweenRounds'] ?? 0,
-    showTimer = json['showTimer'] ?? false;
+    studentWeeklyCount = json['studentWeeklyCount'],
+    mentorWeeklyCount = json['mentorWeeklyCount'];
 
   Map<String, Object> toJson() {
     return {
-      'count': count,
-      'rounds': rounds,
-      'timeBetweenRounds': timeBetweenRounds,
-      'showTimer': showTimer
+      'studentWeeklyCount': studentWeeklyCount,
+      'mentorWeeklyCount': mentorWeeklyCount
     };
   }
 }

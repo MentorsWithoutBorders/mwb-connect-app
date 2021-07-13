@@ -97,7 +97,7 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Center(                      
-                  child: Text('common.abort', style: const TextStyle(color: Colors.grey))
+                  child: Text('common.abort'.tr(), style: const TextStyle(color: Colors.grey))
                 )
               ),
               onTap: () {

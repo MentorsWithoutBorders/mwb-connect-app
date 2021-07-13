@@ -108,16 +108,12 @@ class DownloadService {
     // Get quizzes settings
     final QuizSettings quizSettings = await _getQuizSettings();
     if (quizSettings != null) {
-      if (quizSettings.count != 0) {
-        storageService.quizzesCount = quizSettings.count;
+      if (quizSettings.studentWeeklyCount != null) {
+        storageService.quizzesStudentWeeklyCount = quizSettings.studentWeeklyCount;
       }
-      if (quizSettings.rounds != 0) {
-        storageService.quizzesRounds = quizSettings.rounds;
+      if (quizSettings.mentorWeeklyCount != null) {
+        storageService.quizzesMentorWeeklyCount = quizSettings.mentorWeeklyCount;
       }
-      if (quizSettings.timeBetweenRounds != 0) {
-        storageService.timeBetweenQuizzesRounds = quizSettings.timeBetweenRounds;
-      }
-      storageService.showQuizTimer = quizSettings.showTimer;
     }  
     debugPrint('preferences were set');
   }

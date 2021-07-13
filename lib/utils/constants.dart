@@ -12,10 +12,8 @@ class AppConstants {
     'relaxation_method': ['main', 'how_to_relax', 'why_count_down', 'interruptions', 'fast_slow_relaxation', 'when_to_relax'],
     'super_focus_method': ['main', 'in_your_head']
   };
-  static const int quizzesCount = 5;
-  static const int quizzesRounds = 2;
-  static const int timeBetweenQuizzesRounds = 14;
-  static const bool showQuizTimer = false;
+  static const int quizzesStudentWeeklyCount = 3;
+  static const int quizzesMentorWeeklyCount = 3;
   static const bool notificationsEnabled = true;
   static const String notificationsTime = '21:00';
   static const String dateTimeFormat = 'yyyy-MM-dd HH:mm:ss';

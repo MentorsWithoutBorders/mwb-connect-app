@@ -46,7 +46,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          SolveQuizAddStep(),
+          if (_connectWithMentorProvider.shouldShowTraining) SolveQuizAddStep(),
           if (_connectWithMentorProvider.isNextLesson) NextLesson(),
           if (!_connectWithMentorProvider.isNextLesson && !_connectWithMentorProvider.isLessonRequest) FindAvailableMentor(),
           if (_connectWithMentorProvider.isLessonRequest) FindingAvailableMentor()
@@ -74,8 +74,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
   
   Future<void> _init() async {
     if (!_isInit) {
-      await _connectWithMentorProvider.getLastStepAdded();
       await _connectWithMentorProvider.getGoal();
+      await _connectWithMentorProvider.getLastStepAdded();
+      await _connectWithMentorProvider.getQuizNumber();
       await _connectWithMentorProvider.getLessonRequest();
       await _connectWithMentorProvider.getNextLesson();
       _isInit = true;

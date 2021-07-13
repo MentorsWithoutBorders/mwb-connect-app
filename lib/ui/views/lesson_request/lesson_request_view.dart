@@ -47,7 +47,7 @@ class _LessonRequestViewState extends State<LessonRequestView> {
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          SolveQuizAddStep(),
+          if (_lessonRequestProvider.shouldShowTraining) SolveQuizAddStep(),
           if (!_lessonRequestProvider.isNextLesson && !_lessonRequestProvider.isLessonRequest) StandingBy(),
           if (_lessonRequestProvider.isLessonRequest) LessonRequest(),
           if (_lessonRequestProvider.isNextLesson) NextLesson()
@@ -75,6 +75,9 @@ class _LessonRequestViewState extends State<LessonRequestView> {
   
   Future<void> _init() async {
     if (!_isInit) {
+      await _lessonRequestProvider.getGoal();
+      await _lessonRequestProvider.getLastStepAdded();
+      await _lessonRequestProvider.getQuizNumber();
       await _lessonRequestProvider.getLessonRequest();
       await _lessonRequestProvider.getNextLesson();
       await _lessonRequestProvider.getPreviousLesson();

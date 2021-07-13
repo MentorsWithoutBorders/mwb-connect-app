@@ -6,9 +6,8 @@ class DefaultsService {
   void setDefaults() {
     final LocalStorageService storageService = locator<LocalStorageService>();
     storageService.tutorials ??= AppConstants.tutorials;
-    storageService.quizzesCount ??= AppConstants.quizzesCount;
-    storageService.quizzesRounds ??= AppConstants.quizzesRounds;
-    storageService.timeBetweenQuizzesRounds ??= AppConstants.timeBetweenQuizzesRounds;
+    storageService.quizzesStudentWeeklyCount ??= AppConstants.quizzesStudentWeeklyCount;
+    storageService.quizzesMentorWeeklyCount ??= AppConstants.quizzesMentorWeeklyCount;
     storageService.notificationsEnabled ??= AppConstants.notificationsEnabled;
     storageService.notificationsTime ??= AppConstants.notificationsTime;    
   }

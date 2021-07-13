@@ -36,14 +36,11 @@ class LocalStorageService {
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
   set tutorials(Map<String, List<String>> value) => _saveToDisk('tutorials', value);
   
-  int get quizzesCount => _getFromDisk('quizzesCount');
-  set quizzesCount(int value) => _saveToDisk('quizzesCount', value);
-  
-  int get quizzesRounds => _getFromDisk('quizzesRounds');
-  set quizzesRounds(int value) => _saveToDisk('quizzesRounds', value);
-  
-  int get timeBetweenQuizzesRounds => _getFromDisk('timeBetweenQuizzesRounds');
-  set timeBetweenQuizzesRounds(int value) => _saveToDisk('timeBetweenQuizzesRounds', value); 
+  int get quizzesStudentWeeklyCount => _getFromDisk('quizzesStudentWeeklyCount');
+  set quizzesStudentWeeklyCount(int value) => _saveToDisk('quizzesStudentWeeklyCount', value);
+
+  int get quizzesMentorWeeklyCount => _getFromDisk('quizzesMentorWeeklyCount');
+  set quizzesMentorWeeklyCount(int value) => _saveToDisk('quizzesMentorWeeklyCount', value);  
   
   int get quizNumber => _getFromDisk('quizNumber');
   set quizNumber(int value) => _saveToDisk('quizNumber', value);

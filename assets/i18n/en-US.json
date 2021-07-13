@@ -46,7 +46,15 @@
 		"few": "lessons",			
 		"many": "lessons",
 		"other": "lessons"
-	},    
+	},
+	"quiz": {
+		"zero": "quizzes",
+		"one": "quiz",
+		"two": "quizzes",
+		"few": "quizzes",			
+		"many": "quizzes",
+		"other": "quizzes"
+	},  
 	"common": {
 		"cancel": "Cancel",
 		"close": "Close",
@@ -63,6 +71,8 @@
 		"or": "or",
 		"at": "at",
 		"on": "on",
+    "the": "the",
+		"more": "more",
 		"go": "Go",    
 		"yes_cancel": "Yes, cancel",
 		"yes_reject": "Yes, reject",
@@ -72,6 +82,7 @@
     "them": "them",
 		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
 		"period_units": "day, week, month, year",
+    "next_deadline": "Next deadline:",
 		"your_profile": "your profile",
 		"mental_process_goal_steps": "Mental process goal/steps",
 		"relaxation_method": "Relaxation method",
@@ -159,9 +170,9 @@
 		"title": "Connect with a mentor",
 		"solve_quiz_add_step": "Solve quiz and add step",
 		"conditions_certificate": "In order to receive the MWB certificate on {} and connect with a mentor for the next lesson, you’ll have to do the following once a week:",
-		"solve_quiz": "solve a quiz from the ",
-		"add_step": "add at least one new step for achieving your goal",
-		"next_deadline": "Next deadline: ",
+		"solve": "solve",
+		"add_step": "add at least {} for achieving your goal",
+    "one_new_step": "1 new step",    
     "overdue": "overdue, please",
     "contact_support": "contact support",
     "congratulations_certificate": "Congratulations, you will soon receive your MWB certificate!",
@@ -186,7 +197,11 @@
 	"lesson_request": {
 		"title": "Lesson request",
     "training_title": "Solve quiz and add step",
-    "training_text": "In order to guide the students more efficiently in achieving their goals, please follow our training methodology for 1 month:",
+    "training_text": "In order to guide the students more efficiently in achieving their goals, please follow our training methodology for one month:",
+		"solve": "solve",
+		"add_step": "add at least {} for achieving a medium or long-term goal that you set for yourself",
+    "one_new_step": "1 new step",
+    "overdue": "overdue",
 		"standing_by": "Standing by for a lesson request",
 		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills and availability that you’ve specified in ",
 		"lesson_request_text": "{} from {} would like to do a {} lesson on {} at {} {}",
@@ -339,13 +354,6 @@
 				"text": "<span style=\"text-align:justify\">When you don't feel that much energy to take the next step towards you goal, you can do the following:<ul><li>remind yourself of the final goal</li><li>review the main steps that you can take in order to reach it</li><li><b>do the activity which corresponds to the next step for 2-3 minutes in your head, applying the super-focus method to it</b>: whenever you get interrupted by other thoughts, you just continue from where you got interrupted.</li></ul>By doing this, you'll notice that when you take that next step in reality you'll feel much more focused and energized.</span>"
 			}			
 		}					
-	},
-	"quiz": {
-		"close": "Close",
-		"learn_link": "Learn",
-		"more_link": "more",
-		"close_window_timer_message": "You can close this window in {timerStart} seconds",
-		"close_window_message": "You can now close this window"
 	},
 	"quizzes": { 
 		"quiz1": {

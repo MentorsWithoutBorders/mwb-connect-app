@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
@@ -10,21 +11,33 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
+import 'package:mwb_connect_app/core/services/quizzes_service.dart';
 
 class ConnectWithMentorViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final ConnectWithMentorService _connectWithMentorService = locator<ConnectWithMentorService>();
+  final QuizzesService _quizzesService = locator<QuizzesService>();
   final GoalsService _goalsService = locator<GoalsService>(); 
   Goal goal;
   StepModel lastStepAdded;
+  int quizNumber;
   LessonRequestModel lessonRequest;
   Lesson nextLesson;
   Lesson previousLesson;
   List<Skill> mentorSkills;
   bool _shouldReload = false;
 
+  Future<void> getGoal() async {
+    List<Goal> goals = await _goalsService.getGoals();
+    goal = goals[0];
+  }
+  
   Future<void> getLastStepAdded() async {
     lastStepAdded = await _connectWithMentorService.getLastStepAdded();
+  }
+
+  Future<int> getQuizNumber() async {
+    quizNumber = await _quizzesService.getQuizNumber();
   }
   
   Future<void> getLessonRequest() async {
@@ -75,9 +88,40 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     await _connectWithMentorService.setMentorPresence(previousLesson.id, isMentorPresent);
   }
 
+  bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();
+
   bool get isNextLesson => nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
 
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isCanceled != true;
+
+  String getQuizzesLeft() {
+    int weeklyCount = _storageService.quizzesMentorWeeklyCount;
+    int quizzesNumber = weeklyCount - ((quizNumber - 1) % weeklyCount);
+    String quizzesPlural = plural('quiz', quizzesNumber);
+    String quizzesLeft = quizzesNumber.toString();
+    if (quizzesNumber < weeklyCount) {
+      quizzesLeft += ' ' + 'common.more'.tr();
+    }
+    quizzesLeft += ' ' + quizzesPlural;
+    return quizzesLeft;
+  }
+
+  bool getShouldShowQuizzes() {
+    if (quizNumber != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  bool getShouldShowAddStep() {
+    DateTime nextDeadline = getNextDeadline();
+    if (nextDeadline.difference(lastStepAdded.dateTime).inDays < 7) {
+      return false;
+    } else {
+      return true;
+    }
+  }  
 
   DateTime getCertificateDate() {
     DateTime registeredOn = DateTime.parse(_storageService.registeredOn);
@@ -89,7 +133,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     return date;
   }
 
-  DateTime getDeadline() {
+  DateTime getNextDeadline() {
     DateTime registeredOn = DateTime.parse(_storageService.registeredOn);
     registeredOn = Utils.resetTime(registeredOn);
     Jiffy deadline;
@@ -108,9 +152,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
           i++;
         }
       }
-      if (deadline.dateTime.difference(lastStepAddedDateTime).inDays < 7) {
-        deadline = Jiffy(deadline).add(weeks: 1);
-      }
     } else {
       deadline = Jiffy(registeredOn).add(weeks: 1);
     }
@@ -119,19 +160,14 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   bool isOverdue() {
     DateTime now = Utils.resetTime(DateTime.now());
-    DateTime deadLine = Utils.resetTime(getDeadline());
+    DateTime deadLine = Utils.resetTime(getNextDeadline());
     return now.difference(deadLine).inDays > 0;
   }
 
   bool shouldReceiveCertificate() {
     DateTime certificateDate = Utils.resetTime(getCertificateDate());
-    DateTime deadLine = Utils.resetTime(getDeadline());
+    DateTime deadLine = Utils.resetTime(getNextDeadline());
     return certificateDate.difference(deadLine).inDays <= 0;
-  }
-
-  Future<void> getGoal() async {
-    List<Goal> goals = await _goalsService.getGoals();
-    goal = goals[0];
   }
 
   DateTime getCorrectEndRecurrenceDate() {
@@ -146,8 +182,8 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   }
 
   bool get shouldReload => _shouldReload;
-  set shouldReload(bool logout) {
-    _shouldReload = logout;
+  set shouldReload(bool reload) {
+    _shouldReload = reload;
     if (shouldReload) {
       notifyListeners();
     }

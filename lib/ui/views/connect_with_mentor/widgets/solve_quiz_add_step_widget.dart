@@ -27,6 +27,10 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   final String _defaultLocale = Platform.localeName;
 
   Widget _showSolveQuizAddStepCard() {
+    String quizzes = _connectWithMentorProvider.getQuizzesLeft();
+    bool shouldShowQuizzes = _connectWithMentorProvider.getShouldShowQuizzes();
+    bool shouldShowStep = _connectWithMentorProvider.getShouldShowAddStep();
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -45,7 +49,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
                 child: Wrap(
                   children: [
                     _showTopText(),
-                    ConditionsList(),
+                    ConditionsList(quizzes: quizzes, shouldShowQuizzes: shouldShowQuizzes, shouldShowStep: shouldShowStep),
                     if (!_connectWithMentorProvider.shouldReceiveCertificate()) _showNextDeadline(),
                     if (_connectWithMentorProvider.shouldReceiveCertificate()) _showReceiveCertificate(),
                     _showGoButton()
@@ -110,7 +114,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   
   Widget _showNextDeadline() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String deadline = dateFormat.format(_connectWithMentorProvider.getDeadline());
+    String deadline = dateFormat.format(_connectWithMentorProvider.getNextDeadline());
     Color deadlineColor = !_connectWithMentorProvider.isOverdue() ? AppColors.TANGO : AppColors.MONZA;
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
@@ -124,7 +128,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           ),
           children: <TextSpan>[
             TextSpan(
-              text: 'connect_with_mentor.next_deadline'.tr(),
+              text: 'common.next_deadline'.tr() + ' ',
             ),
             TextSpan(
               text: deadline,
@@ -163,7 +167,6 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
       )
     );
   }
-
 
   Widget _showReceiveCertificate() {
     return Padding(
