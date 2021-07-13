@@ -172,7 +172,7 @@ class _FirstGoalState extends State<FirstGoal> {
     final Goal addedGoal = await _goalsProvider.addGoal(_goalText);
     _isAddingGoal = false;
     _goalsProvider.setSelectedGoal(addedGoal);
-    _goToGoalStepsView();
+    Navigator.pop(context);
   }
   
   void _transitionToGoalSteps() {
@@ -182,10 +182,6 @@ class _FirstGoalState extends State<FirstGoal> {
       _topAnimationHeight = 50;
       _isInputVisible = false;
     });
-  }
-
-  void _goToGoalStepsView() {
-    Navigator.pop(context);
   }
   
   @override

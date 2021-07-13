@@ -5,7 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
-import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class QuizView extends StatefulWidget {
   const QuizView({Key key, @required this.quizNumber})
@@ -18,21 +18,12 @@ class QuizView extends StatefulWidget {
 }
 
 class _QuizState extends State<QuizView> {
-  QuizzesViewModel _quizProvider;  
+  QuizzesViewModel _quizProvider;
   final int _maxOptions = 3;
   int _selectedIndex = -1;
-  bool _wasSelected = false;
-  bool _closeWasPressed = false;
   bool _isCorrect;
   String _answer;
-  Timer _timer;
-  int _timerStart = 3;
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
+  bool _isAddingQuiz = false;
 
   Widget _showQuiz() {
     final int quizNumber = widget.quizNumber;
@@ -45,10 +36,6 @@ class _QuizState extends State<QuizView> {
       }
     }
     _answer = 'quizzes.quiz$quizNumber.answer'.tr();
-    final String tutorialType = 'quizzes.quiz$quizNumber.tutorial_type'.tr();
-    final String tutorialSection = 'quizzes.quiz$quizNumber.tutorial_section'.tr();
-    String closeWindowTimerMessage = 'quiz.close_window_timer_message'.tr();
-    closeWindowTimerMessage = closeWindowTimerMessage.replaceAll('{timerStart}', _timerStart.toString());
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
@@ -56,11 +43,6 @@ class _QuizState extends State<QuizView> {
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0)
-        ),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [AppColors.ALLPORTS, AppColors.EMERALD]
         )
       ),
       child: Wrap(
@@ -72,7 +54,7 @@ class _QuizState extends State<QuizView> {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 16,
-                color: Colors.white
+                color: AppColors.DOVE_GRAY
               )
             )
           ),
@@ -85,74 +67,26 @@ class _QuizState extends State<QuizView> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15.0),
-            child: Stack(
-              children: <Widget>[
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)
-                      )
-                    ), 
-                    onPressed: () {
-                      _closeWasPressed = true;
-                      _onWillPop();
-                    },
-                    child: Text('quiz.close'.tr(), style: const TextStyle(color: AppColors.ALLPORTS))
-                  )
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(top: 9.0),
-                          width: 50.0,
-                          child: Text(
-                            'quiz.learn_link'.tr(),
-                            style: const TextStyle(
-                              fontSize: 13.0,
-                              color: Colors.white,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.bold
-                            ),
-                          )
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(top: 22.0),
-                          width: 50.0,
-                          child: Text(
-                            'quiz.more_link'.tr() + ' >>',
-                            style: const TextStyle(
-                              fontSize: 13.0,
-                              color: Colors.white,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.bold
-                            ),
-                          )
-                        )
-                      ],
-                    ),
-                    onTap: () {                          
-                      Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: tutorialType, section: tutorialSection)));
-                    },                      
-                  )
-                )
-              ],
-            )
-          ),
-          if (_timer != null) Padding(
-            padding: const EdgeInsets.only(top: 10.0),
             child: Center(
-              child: Text(
-                _timerStart > 0 ? closeWindowTimerMessage : 'quiz.close_window_message'.tr(),
-                style: const TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
-                ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: AppColors.ALLPORTS,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+                ), 
+                onPressed: () async {
+                  _onWillPop();
+                },
+                child: !_isAddingQuiz ? Text(
+                  'common.close'.tr(), 
+                  style: const TextStyle(color: Colors.white)
+                ) : SizedBox(
+                  width: 40.0,
+                  height: 16.0,
+                  child: ButtonLoader(),
+                )
               )
             )
           )
@@ -241,9 +175,9 @@ class _QuizState extends State<QuizView> {
               ]
             )
           ),
-          onTap: () {
+          onTap: () async {
             if (_selectedIndex == -1) {
-              _onSelected(index, answer);
+              await _onSelected(index, answer);
             }
           }
         ),
@@ -251,8 +185,7 @@ class _QuizState extends State<QuizView> {
     );
   }
   
-  void _onSelected(int index, String answer) {
-    _wasSelected = true;
+  Future<void> _onSelected(int index, String answer) async {
     if ((index + 1).toString() == answer) {
       _isCorrect = true;
     } else {
@@ -261,6 +194,16 @@ class _QuizState extends State<QuizView> {
     setState(() {
       _selectedIndex = index;
     });
+    await _addQuiz();
+  }
+
+  Future<void> _addQuiz() async {
+    bool isClosed = _isCorrect == null ? true : null;
+    final Quiz quiz = Quiz(number: widget.quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
+    setState(() {
+      _isAddingQuiz = true;
+    });    
+    await _quizProvider.addQuiz(quiz);
   }
 
   bool _checkIncorrectAnswer(int index, String answer) {
@@ -272,50 +215,18 @@ class _QuizState extends State<QuizView> {
   }
 
   Future<bool> _onWillPop() async {
-    bool isClosed = _isCorrect == null ? true : null;
-    final Quiz quiz = Quiz(number: widget.quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
-
-    if (_quizProvider.showQuizTimer && !_wasSelected && _timerStart > 0) {
-      if (_timer == null) {
-        setState(() {
-          _selectedIndex = int.parse(_answer) - 1;
-        });
-        if (mounted) {
-          startTimer();
-        }
-      }
-      return false;
-    } else {
-      _timer?.cancel();
-      if (_closeWasPressed) {
-        _quizProvider.addQuiz(quiz);
-        Navigator.pop(context);
-      }
-      return true;
+    if (_isCorrect == null && !_isAddingQuiz) {
+      await _addQuiz();
     }
-  }
-  
-  void startTimer() {
-    const Duration oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
-      oneSec,
-      (Timer timer) => setState(
-        () {
-          if (_timerStart < 1) {
-            timer.cancel();
-          } else {
-            _timerStart = _timerStart - 1;
-          }
-        },
-      ),
-    );
+    Navigator.pop(context);
+    return true;
   }  
 
   @override
   Widget build(BuildContext context) {
     _quizProvider = Provider.of<QuizzesViewModel>(context);    
 
-    return WillPopScope(
+   return WillPopScope(
       onWillPop: _onWillPop,
       child: _showQuiz()
     );

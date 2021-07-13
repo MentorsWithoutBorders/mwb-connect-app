@@ -24,7 +24,7 @@ class _AddStepDialogState extends State<AddStepDialog> {
   StepsViewModel _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
-  bool _isAddingStep = false;  
+  bool _isAddingStep = false;
   
   @override
   void initState() {

@@ -163,7 +163,8 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoalSteps() {
-    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _lessonRequestProvider.shouldReload = true);    
+    int quizNumber = _lessonRequestProvider.quizNumber;
+    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider.shouldReload = true);    
   }
 
   @override

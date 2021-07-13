@@ -6,10 +6,8 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
-import 'package:mwb_connect_app/ui/views/quizzes/quiz_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/first_goal_widget.dart';
 import 'package:mwb_connect_app/ui/views/goals/widgets/goal_card_widget.dart';
 import 'package:mwb_connect_app/ui/views/goals/widgets/add_goal_dialog_widget.dart';
@@ -29,7 +27,6 @@ class GoalsView extends StatefulWidget {
 
 class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   GoalsViewModel _goalsProvider;
-  QuizzesViewModel _quizProvider;
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();  
   final int _opacityDuration = 300;
@@ -47,17 +44,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   @override
   Future<void> reassemble() async {
     super.reassemble();
-    // Show quiz
-    // int quizNumber = await _quizProvider.getQuizNumber();
-    // if (quizNumber != 0) {
-    //   showDialog(
-    //     context: context,
-    //     builder: (_) => AnimatedDialog(
-    //       widgetInside: QuizView(quizNumber: quizNumber)
-    //     ),
-    //   );
-    // }
-    //Show update
+    // Show update
     final UpdatesViewModel updatesViewModel = locator<UpdatesViewModel>();
     final UpdateStatus updateStatus = await updatesViewModel.getUpdateStatus();
     if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
@@ -202,7 +189,6 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
-    _quizProvider = Provider.of<QuizzesViewModel>(context);
 
     return FutureBuilder<void>(
       future: _getGoals(),
