@@ -236,9 +236,9 @@
 	},
 	"goals": {
 		"my_goals": "My goals",
-		"first_goal": "First goal",
+		"first_goal": "My goal",
 		"first_goal_label": "Let's start by setting a clear goal:",
-		"first_goal_placeholder": "e.g. I want to have $100K in the bank",
+		"first_goal_placeholder": "e.g. I want to increase my salary by 50% in 2 years",
 		"first_goal_start": "Start",
 		"add_goal": "Add goal",
 		"add_goal_error": "Please enter goal",

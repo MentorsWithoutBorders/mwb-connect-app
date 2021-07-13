@@ -29,7 +29,9 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
-    goal = goals[0];
+    if (goals.length > 0) {
+      goal = goals[0];
+    }
   }
   
   Future<void> getLastStepAdded() async {

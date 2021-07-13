@@ -52,7 +52,7 @@ class _FirstGoalState extends State<FirstGoal> {
                       opacity: _isStartButtonVisible ? 1.0 : 0.0,
                       duration: Duration(milliseconds: _opacityDuration),
                       child: Container(
-                        margin: const EdgeInsets.only(top: 20.0, left: 20.0),    
+                        margin: const EdgeInsets.only(top: 40.0, left: 20.0),    
                         width: 400.0,
                         child: Text(
                           'goals.first_goal_label'.tr(),
@@ -185,7 +185,7 @@ class _FirstGoalState extends State<FirstGoal> {
   }
 
   void _goToGoalStepsView() {
-    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));    
+    Navigator.pop(context);
   }
   
   @override

@@ -197,15 +197,19 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           ), 
           child: Text('common.go'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
-            _stepsProvider.setShouldShowTutorialChevrons(false);
-            _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
-            Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _connectWithMentorProvider.shouldReload = true);
+            _goToGoalSteps();
           }
         ),
       ),
     );
-  }  
+  }
+  
+  void _goToGoalSteps() {
+    _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
+    _stepsProvider.setShouldShowTutorialChevrons(false);
+    _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
+    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _connectWithMentorProvider.shouldReload = true);
+  }
 
   @override
   Widget build(BuildContext context) {

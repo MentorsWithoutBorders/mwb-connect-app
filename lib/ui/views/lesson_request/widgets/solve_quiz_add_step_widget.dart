@@ -5,7 +5,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
+import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/conditions_list_widget.dart';
 
 class SolveQuizAddStep extends StatefulWidget {
@@ -18,6 +21,8 @@ class SolveQuizAddStep extends StatefulWidget {
 
 class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   LessonRequestViewModel _lessonRequestProvider;
+  GoalsViewModel _goalsProvider;
+  StepsViewModel _stepsProvider;  
   final String _defaultLocale = Platform.localeName;  
 
   Widget _showSolveQuizAddStepCard() {
@@ -139,16 +144,33 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           ), 
           child: Text('common.go'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView()));
+            goToGoal();
           }
         ),
       ),
     );
-  }  
+  }
+
+  void goToGoal() {
+    if (_lessonRequestProvider.goal != null) {
+      _goalsProvider.setSelectedGoal(_lessonRequestProvider.goal);
+      _stepsProvider.setShouldShowTutorialChevrons(false);
+      _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
+      _goToGoalSteps();
+    } else {
+      Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
+    }
+  }
+
+  void _goToGoalSteps() {
+    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _lessonRequestProvider.shouldReload = true);    
+  }
 
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);    
 
     return _showSolveQuizAddStepCard();
   }

@@ -271,9 +271,11 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
 
   void _setSelectedLessonsNumber(int number) {
-    setState(() {
-      _lessonsNumber = number;
-    });
+    if (mounted) {
+      setState(() {
+        _lessonsNumber = number;
+      });
+    }
   }     
 
   List<DropdownMenuItem<int>> _buildNumbers() {
@@ -299,9 +301,11 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
   
   void _setLessonRecurrenceType(LessonRecurrenceType recurrenceType) {
-    setState(() {
-      _lessonRecurrenceType = recurrenceType;
-    });
+    if (mounted) {
+      setState(() {
+        _lessonRecurrenceType = recurrenceType;
+      });
+    }
     _lessonRequestProvider.setLessonRecurrenceType(recurrenceType);  
   }
 

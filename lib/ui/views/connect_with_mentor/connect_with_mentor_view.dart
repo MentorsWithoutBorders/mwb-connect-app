@@ -84,6 +84,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> {
     if (_connectWithMentorProvider.shouldReload) {
       _isInit = false;
       await _connectWithMentorProvider.getLastStepAdded();
+      await _connectWithMentorProvider.getQuizNumber();
       _connectWithMentorProvider.shouldReload = false;
       _isInit = true;
     }    

@@ -36,10 +36,13 @@ class LessonRequestViewModel extends ChangeNotifier {
   List<GuideTutorial> guideTutorials;
   List<GuideRecommendation> guideRecommendations;
   bool _shouldUnfocus = false;
+  bool _shouldReload = false;  
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
-    goal = goals[0];
+    if (goals.length > 0) {
+      goal = goals[0];
+    }
   }
 
   Future<void> getLastStepAdded() async {
@@ -167,7 +170,7 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   bool getShouldShowAddStep() {
     DateTime nextDeadline = getNextDeadline();
-    if (nextDeadline.difference(lastStepAdded.dateTime).inDays < 7) {
+    if (lastStepAdded.id != null && nextDeadline.difference(lastStepAdded.dateTime).inDays < 7) {
       return false;
     } else {
       return true;
@@ -294,5 +297,13 @@ class LessonRequestViewModel extends ChangeNotifier {
     if (shouldUnfocus) {
       notifyListeners();
     }
-  }  
+  } 
+
+  bool get shouldReload => _shouldReload;
+  set shouldReload(bool reload) {
+    _shouldReload = reload;
+    if (shouldReload) {
+      notifyListeners();
+    }
+  }   
 }

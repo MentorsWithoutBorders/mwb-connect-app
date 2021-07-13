@@ -41,8 +41,7 @@ class UserService {
   }
 
   Future<User> getUserDetails() async {
-    String userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId');
+    http.Response response = await _api.getHTTP(url: '/user');
     User user;
     if (response != null && response.body != null) {
       var json = jsonDecode(response.body);
