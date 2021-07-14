@@ -44,7 +44,12 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          _setMarginBottom(150);
+          double marginBottom = 0;
+          final double screenHeight = MediaQuery.of(context).size.height;
+          if (_containerHeight / 2 + 220 > screenHeight / 2) {
+            marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + 150;
+          }
+          _setMarginBottom(marginBottom);
         } else {
           _setMarginBottom(0);
         }
@@ -74,12 +79,6 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
   }
   
   Widget _showDialog() {
-    double marginBottom = _commonProvider.dialogInputHeight;
-    final double screenHeight = MediaQuery.of(context).size.height;
-    if (_containerHeight / 2 + 220 > screenHeight / 2) {
-      marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + _marginBottom;
-    }
-
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -87,7 +86,7 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
           scale: _scaleAnimation,
           child: Container(
             key: _containerKey,
-            margin: EdgeInsets.only(bottom: marginBottom),
+            margin: EdgeInsets.only(bottom: _marginBottom),
             decoration: ShapeDecoration(
               color: Colors.white,
               shape: RoundedRectangleBorder(

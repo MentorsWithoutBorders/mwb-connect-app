@@ -154,7 +154,7 @@ class _NextLessonState extends State<NextLesson> {
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 5.0),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.SILVER)
-      ), 
+      ),
       child: ListView.builder(
         padding: const EdgeInsets.all(0),
         shrinkWrap: true,

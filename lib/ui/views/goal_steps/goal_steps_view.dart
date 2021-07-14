@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/editable_goal_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/tutorial_previews_widget.dart';
@@ -46,6 +45,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
 
   Future<void> _showQuiz(_) async {
     if (widget.quizNumber != 0) {
+      await Future<void>.delayed(const Duration(milliseconds: 500));
       showDialog(
         context: context,
         builder: (_) => AnimatedDialog(

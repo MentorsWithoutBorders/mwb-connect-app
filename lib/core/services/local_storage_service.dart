@@ -45,9 +45,6 @@ class LocalStorageService {
   int get quizNumber => _getFromDisk('quizNumber');
   set quizNumber(int value) => _saveToDisk('quizNumber', value);
 
-  bool get showQuizTimer => _getFromDisk('showQuizTimer');
-  set showQuizTimer(bool value) => _saveToDisk('showQuizTimer', value);
-  
   bool get notificationsEnabled => _getFromDisk('notificationsEnabled');
   set notificationsEnabled(bool value) => _saveToDisk('notificationsEnabled', value);  
 

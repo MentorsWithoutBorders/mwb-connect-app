@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
-import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class QuizView extends StatefulWidget {
   const QuizView({Key key, @required this.quizNumber})
@@ -19,84 +20,167 @@ class QuizView extends StatefulWidget {
 
 class _QuizState extends State<QuizView> {
   QuizzesViewModel _quizProvider;
+  final ScrollController _scrollController = ScrollController();  
   final int _maxOptions = 3;
   int _selectedIndex = -1;
   bool _isCorrect;
   String _answer;
-  bool _isAddingQuiz = false;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }    
 
   Widget _showQuiz() {
+    final bool isMentor = _quizProvider.isMentor;
+    final String type = isMentor ? 'mentors' : 'students';
     final int quizNumber = widget.quizNumber;
-    final String question = 'quizzes.quiz$quizNumber.question'.tr();
+    final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.title'.tr();
+    final String quizTutorialText = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.text'.tr();
+    final String question = 'quizzes.$type.quiz$quizNumber.question'.tr();
     final List<String> options = [];
     for (int i = 1; i <= _maxOptions; i++) {
-      final String option = 'quizzes.quiz$quizNumber.option$i'.tr();
+      final String option = 'quizzes.$type.quiz$quizNumber.option$i'.tr();
       if (!option.contains('quizzes')) {
         options.add(option);
       }
     }
-    _answer = 'quizzes.quiz$quizNumber.answer'.tr();
+    _answer = 'quizzes.$type.quiz$quizNumber.answer'.tr();
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
+      height: MediaQuery.of(context).size.height * 0.7,
       padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 20.0),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0)
         )
       ),
-      child: Wrap(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: Text(
-              question,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                color: AppColors.DOVE_GRAY
-              )
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: Wrap(
+              children: [
+                Center(
+                  child: Text(
+                    quizTutorialTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.ALLPORTS,
+                      fontWeight: FontWeight.bold,
+                      height: 1.8
+                    )
+                  )
+                ),
+                Center(
+                  child: Text(
+                    'quizzes.solve_quiz_subtitle'.tr(),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.DOVE_GRAY
+                    )
+                  )
+                ) 
+              ]
             )
           ),
-          Container(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: Card(
-              elevation: 3,
-              child:_showOptions(options, _answer)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: DraggableScrollbar(
+                controller: _scrollController,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 0.0, right: 10.0),              
+                  controller: _scrollController,
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 20.0),
+                          child: HtmlWidget(quizTutorialText)
+                        ),
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(width: 1.0, color: AppColors.MYSTIC)
+                            ),
+                          )
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
+                          child: Text(
+                            question,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: AppColors.ALLPORTS,
+                              fontWeight: FontWeight.bold
+                            )
+                          )
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(0.0, 5.0, 10.0, 5.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.MYSTIC)
+                          ),
+                          child: _showOptions(options, _answer)
+                        )
+                      ]
+                    );
+                  },
+                ),
+                heightScrollThumb: 200.0,
+                backgroundColor: AppColors.SILVER,
+                scrollThumbBuilder: (
+                  Color backgroundColor,
+                  Animation<double> thumbAnimation,
+                  Animation<double> labelAnimation,
+                  double height, {
+                  Text labelText,
+                  BoxConstraints labelConstraints
+                }) {
+                  return FadeTransition(
+                    opacity: thumbAnimation,
+                    child: Container(
+                      height: height,
+                      width: 5.0,
+                      color: backgroundColor,
+                    ),
+                  );
+                }
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: AppColors.ALLPORTS,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
-                  padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-                ), 
-                onPressed: () async {
-                  _onWillPop();
-                },
-                child: !_isAddingQuiz ? Text(
-                  'common.close'.tr(), 
-                  style: const TextStyle(color: Colors.white)
-                ) : SizedBox(
-                  width: 40.0,
-                  height: 16.0,
-                  child: ButtonLoader(),
-                )
+          Center(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.PACIFIC_BLUE,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                ),
+                padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+              ), 
+              onPressed: () async {
+                _onWillPop();
+              },
+              child: Text(
+                'common.close'.tr(), 
+                style: const TextStyle(color: Colors.white)
               )
             )
           )
-        ]
+        ],
       )
     );
   }
 
   ListView _showOptions(List<String> options, String answer) {
     return ListView.separated(
+      padding: const EdgeInsets.all(0),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       separatorBuilder: (BuildContext context, int index) => const Divider(
@@ -125,7 +209,7 @@ class _QuizState extends State<QuizView> {
             ),
             child: Row(
               children: <Widget>[
-                Container(
+                Padding(
                   padding: const EdgeInsets.only(right: 10.0),
                   child: Stack(
                     children: <Widget>[
@@ -200,9 +284,6 @@ class _QuizState extends State<QuizView> {
   Future<void> _addQuiz() async {
     bool isClosed = _isCorrect == null ? true : null;
     final Quiz quiz = Quiz(number: widget.quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
-    setState(() {
-      _isAddingQuiz = true;
-    });    
     await _quizProvider.addQuiz(quiz);
   }
 
@@ -215,8 +296,8 @@ class _QuizState extends State<QuizView> {
   }
 
   Future<bool> _onWillPop() async {
-    if (_isCorrect == null && !_isAddingQuiz) {
-      await _addQuiz();
+    if (_isCorrect == null) {
+      _addQuiz();
     }
     Navigator.pop(context);
     return true;
