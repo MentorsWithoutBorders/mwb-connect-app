@@ -36,7 +36,6 @@ class LessonRequestViewModel extends ChangeNotifier {
   List<GuideTutorial> guideTutorials;
   List<GuideRecommendation> guideRecommendations;
   bool _shouldUnfocus = false;
-  bool _shouldReload = false;  
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
@@ -49,7 +48,7 @@ class LessonRequestViewModel extends ChangeNotifier {
     lastStepAdded = await _lessonRequestService.getLastStepAdded();
   }
 
-  Future<int> getQuizNumber() async {
+  Future<void> getQuizNumber() async {
     quizNumber = await _quizzesService.getQuizNumber();
   }  
 
@@ -148,6 +147,18 @@ class LessonRequestViewModel extends ChangeNotifier {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
   }
 
+  void refreshTrainingInfo() {
+    if (_storageService.quizNumber != null) {
+      quizNumber = _storageService.quizNumber;
+      _storageService.quizNumber = null;
+    }
+    if (_storageService.isLastStepAdded != null) {
+      lastStepAdded.dateTime = DateTime.now();
+      _storageService.isLastStepAdded = null;
+    }    
+    notifyListeners();
+  }
+
   String getQuizzesLeft() {
     int weeklyCount = _storageService.quizzesMentorWeeklyCount;
     int quizzesNumber = weeklyCount - ((quizNumber - 1) % weeklyCount);
@@ -219,6 +230,8 @@ class LessonRequestViewModel extends ChangeNotifier {
       } else {
         return LessonRecurrenceType.lessons;
       }
+    } else {
+      return LessonRecurrenceType.lessons;
     }
   }  
 
@@ -298,12 +311,4 @@ class LessonRequestViewModel extends ChangeNotifier {
       notifyListeners();
     }
   } 
-
-  bool get shouldReload => _shouldReload;
-  set shouldReload(bool reload) {
-    _shouldReload = reload;
-    if (shouldReload) {
-      notifyListeners();
-    }
-  }   
 }

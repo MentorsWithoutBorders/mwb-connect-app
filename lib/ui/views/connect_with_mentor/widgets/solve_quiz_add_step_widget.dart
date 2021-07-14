@@ -65,13 +65,15 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   Widget _showTitle() {
     return Container(
-      margin: const EdgeInsets.only(left: 3.0, bottom: 15.0),
-      child: Text(
-        'connect_with_mentor.solve_quiz_add_step'.tr(),
-        style: const TextStyle(
-          color: AppColors.TANGO,
-          fontWeight: FontWeight.bold
-        )
+      margin: const EdgeInsets.only(bottom: 15.0),
+      child: Center(
+        child: Text(
+          'connect_with_mentor.solve_quiz_add_step'.tr(),
+          style: const TextStyle(
+            color: AppColors.TANGO,
+            fontWeight: FontWeight.bold
+          )
+        ),
       ),
     );
   }   
@@ -209,7 +211,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
     _stepsProvider.setShouldShowTutorialChevrons(false);
     _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
     int quizNumber = _connectWithMentorProvider.quizNumber;
-    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider.shouldReload = true);
+    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider.refreshTrainingInfo());
   }
 
   @override

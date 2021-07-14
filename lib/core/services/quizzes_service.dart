@@ -11,7 +11,8 @@ class QuizzesService {
     return int.parse(response.body);
   }
 
-  Future<void> addQuiz(Quiz quiz) async {
-    await _api.postHTTP(url: '/quizzes', data: quiz.toJson());  
+  Future<int> addQuiz(Quiz quiz) async {
+    http.Response response = await _api.postHTTP(url: '/quizzes', data: quiz.toJson());
+    return int.parse(response.body);
   }
 }

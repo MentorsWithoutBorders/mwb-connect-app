@@ -168,7 +168,7 @@
 	},
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",
-		"solve_quiz_add_step": "Solve quiz and add step",
+		"solve_quiz_add_step": "MWB training",
 		"conditions_certificate": "In order to receive the MWB certificate on {} and connect with a mentor for the next lesson, you’ll have to do the following once a week:",
 		"solve": "solve",
 		"add_step": "add at least {} for achieving your goal",
@@ -196,7 +196,7 @@
 	},
 	"lesson_request": {
 		"title": "Lesson request",
-    "training_title": "Solve quiz and add step",
+    "training_title": "MWB training",
     "training_text": "In order to guide the students more efficiently in achieving their goals, please follow our training methodology for one month:",
 		"solve": "solve",
 		"add_step": "add at least {} for achieving a medium or long-term goal that you set for yourself",

@@ -25,7 +25,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   Lesson nextLesson;
   Lesson previousLesson;
   List<Skill> mentorSkills;
-  bool _shouldReload = false;
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
@@ -38,7 +37,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     lastStepAdded = await _connectWithMentorService.getLastStepAdded();
   }
 
-  Future<int> getQuizNumber() async {
+  Future<void> getQuizNumber() async {
     quizNumber = await _quizzesService.getQuizNumber();
   }
   
@@ -95,6 +94,18 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   bool get isNextLesson => nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
 
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isCanceled != true;
+
+  void refreshTrainingInfo() {
+    if (_storageService.quizNumber != null) {
+      quizNumber = _storageService.quizNumber;
+      _storageService.quizNumber = null;
+    }
+    if (_storageService.isLastStepAdded != null) {
+      lastStepAdded.dateTime = DateTime.now();
+      _storageService.isLastStepAdded = null;
+    }    
+    notifyListeners();
+  }  
 
   String getQuizzesLeft() {
     int weeklyCount = _storageService.quizzesMentorWeeklyCount;
@@ -181,13 +192,5 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
       }
     }
     return Jiffy(nextLesson.dateTime).add(days: days).dateTime;
-  }
-
-  bool get shouldReload => _shouldReload;
-  set shouldReload(bool reload) {
-    _shouldReload = reload;
-    if (shouldReload) {
-      notifyListeners();
-    }
   }
 }

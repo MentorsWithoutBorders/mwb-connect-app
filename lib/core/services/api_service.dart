@@ -124,7 +124,8 @@ class ApiService {
     _storageService.userEmail = null;
     _storageService.userName = '';
     _storageService.isMentor = null;
-    _storageService.quizNumber = 1;
+    _storageService.quizNumber = null;
+    _storageService.isLastStepAdded = null;
     _storageService.notificationsEnabled = AppConstants.notificationsEnabled;
     _storageService.notificationsTime = AppConstants.notificationsTime;
   }    

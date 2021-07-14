@@ -83,14 +83,6 @@ class _LessonRequestViewState extends State<LessonRequestView> {
       await _lessonRequestProvider.getPreviousLesson();
       _isInit = true;
     }
-    if (_lessonRequestProvider.shouldReload) {
-      _isInit = false;
-      await _lessonRequestProvider.getGoal();
-      await _lessonRequestProvider.getLastStepAdded();
-      await _lessonRequestProvider.getQuizNumber();
-      _lessonRequestProvider.shouldReload = false;
-      _isInit = true;
-    }     
   }  
 
   @override

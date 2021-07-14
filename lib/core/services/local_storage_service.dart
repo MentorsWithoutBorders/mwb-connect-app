@@ -45,6 +45,9 @@ class LocalStorageService {
   int get quizNumber => _getFromDisk('quizNumber');
   set quizNumber(int value) => _saveToDisk('quizNumber', value);
 
+  bool get isLastStepAdded => _getFromDisk('isLastStepAdded');
+  set isLastStepAdded(bool value) => _saveToDisk('isLastStepAdded', value);    
+
   bool get notificationsEnabled => _getFromDisk('notificationsEnabled');
   set notificationsEnabled(bool value) => _saveToDisk('notificationsEnabled', value);  
 

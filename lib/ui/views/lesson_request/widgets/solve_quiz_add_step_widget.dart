@@ -63,13 +63,15 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   Widget _showTitle() {
     return Container(
-      margin: const EdgeInsets.only(left: 3.0, bottom: 15.0),
-      child: Text(
-        'lesson_request.training_title'.tr(),
-        style: const TextStyle(
-          color: AppColors.TANGO,
-          fontWeight: FontWeight.bold
-        )
+      margin: const EdgeInsets.only(bottom: 15.0),
+      child: Center(
+        child: Text(
+          'lesson_request.training_title'.tr(),
+          style: const TextStyle(
+            color: AppColors.TANGO,
+            fontWeight: FontWeight.bold
+          )
+        ),
       ),
     );
   }   
@@ -164,7 +166,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   void _goToGoalSteps() {
     int quizNumber = _lessonRequestProvider.quizNumber;
-    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider.shouldReload = true);
+    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider.refreshTrainingInfo());
   }
 
   @override

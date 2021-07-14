@@ -14,7 +14,7 @@ class QuizzesViewModel extends ChangeNotifier {
   }
 
   Future<void> addQuiz(Quiz quiz) async {
-    await _quizzesService.addQuiz(quiz);
+    _storageService.quizNumber = await _quizzesService.addQuiz(quiz);
     return ;
   }
   
