@@ -45,11 +45,8 @@ class LocalStorageService {
   int get quizNumber => _getFromDisk('quizNumber');
   set quizNumber(int value) => _saveToDisk('quizNumber', value);
 
-  bool get isGoalAdded => _getFromDisk('isGoalAdded');
-  set isGoalAdded(bool value) => _saveToDisk('isGoalAdded', value);    
-
-  bool get isStepAdded => _getFromDisk('isStepAdded');
-  set isStepAdded(bool value) => _saveToDisk('isStepAdded', value);    
+  String get lastStepAddedId => _getFromDisk('lastStepAddedId');
+  set lastStepAddedId(String value) => _saveToDisk('lastStepAddedId', value);
 
   bool get notificationsEnabled => _getFromDisk('notificationsEnabled');
   set notificationsEnabled(bool value) => _saveToDisk('notificationsEnabled', value);  

@@ -35,7 +35,7 @@ class StepsService {
     if (response != null) {
       var json = jsonDecode(response.body);
       addedStep = StepModel.fromJson(json);
-      _storageService.isStepAdded = true;
+      _storageService.lastStepAddedId = addedStep.id;
     }
     return addedStep;
   }  

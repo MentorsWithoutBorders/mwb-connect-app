@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -40,11 +41,15 @@ class LessonRequestViewModel extends ChangeNotifier {
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
     if (goals.isNotEmpty) {
-      goal = goals[0];
+      setGoal(goals[0]);
     } else {
-      goal = null;
+      setGoal(null);
     }
   }
+
+  void setGoal(Goal goal) {
+    this.goal = goal;
+  }  
 
   Future<void> getLastStepAdded() async {
     lastStepAdded = await _lessonRequestService.getLastStepAdded();
@@ -149,19 +154,15 @@ class LessonRequestViewModel extends ChangeNotifier {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
   }
 
-  void refreshTrainingInfo() {
-    if (_storageService.isGoalAdded != null) {
-      getGoal();
-      _storageService.isGoalAdded = null;
-    }     
+  void refreshTrainingInfo() {   
     if (_storageService.quizNumber != null) {
       quizNumber = _storageService.quizNumber;
       _storageService.quizNumber = null;
     }
-    if (_storageService.isStepAdded != null) {
-      lastStepAdded.id = 'id';
+    if (_storageService.lastStepAddedId != null) {
+      lastStepAdded.id = _storageService.lastStepAddedId;
       lastStepAdded.dateTime = DateTime.now();
-      _storageService.isStepAdded = null;
+      _storageService.lastStepAddedId = null;
     }    
     notifyListeners();
   }

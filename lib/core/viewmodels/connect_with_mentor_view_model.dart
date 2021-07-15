@@ -100,10 +100,10 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
       quizNumber = _storageService.quizNumber;
       _storageService.quizNumber = null;
     }
-    if (_storageService.isStepAdded != null) {
-      lastStepAdded.id = 'id';
+    if (_storageService.lastStepAddedId != null) {
+      lastStepAdded.id = _storageService.lastStepAddedId;
       lastStepAdded.dateTime = DateTime.now();
-      _storageService.isStepAdded = null;
+      _storageService.lastStepAddedId = null;
     }    
     notifyListeners();
   }  
