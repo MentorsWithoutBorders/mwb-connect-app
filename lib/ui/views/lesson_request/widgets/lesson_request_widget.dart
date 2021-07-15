@@ -124,59 +124,56 @@ class _LessonRequestState extends State<LessonRequest> {
   }
 
   Widget _showButtons() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: 30.0,
-            margin: const EdgeInsets.only(bottom: 5.0, right: 15.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 1.0,
-                primary: AppColors.MONZA,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 30.0,
+          margin: const EdgeInsets.only(bottom: 5.0, right: 15.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 1.0,
+              primary: AppColors.MONZA,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+            ), 
+            child: Text('common.reject'.tr(), style: const TextStyle(color: Colors.white)),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => AnimatedDialog(
+                  widgetInside: RejectLessonRequestDialog()
                 ),
-                padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-              ), 
-              child: Text('common.reject'.tr(), style: const TextStyle(color: Colors.white)),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AnimatedDialog(
-                    widgetInside: RejectLessonRequestDialog()
-                  ),
-                );
-              }
-            ),
+              );
+            }
           ),
-          Container(
-            height: 30.0,
-            margin: const EdgeInsets.only(bottom: 5.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 1.0,
-                primary: AppColors.JAPANESE_LAUREL,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)
+        ),
+        Container(
+          height: 30.0,
+          margin: const EdgeInsets.only(bottom: 5.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 1.0,
+              primary: AppColors.JAPANESE_LAUREL,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+            ), 
+            child: Text('common.accept'.tr(), style: const TextStyle(color: Colors.white)),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => AnimatedDialog(
+                  widgetInside: AcceptLessonRequestDialog()
                 ),
-                padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-              ), 
-              child: Text('common.accept'.tr(), style: const TextStyle(color: Colors.white)),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AnimatedDialog(
-                    widgetInside: AcceptLessonRequestDialog()
-                  ),
-                );
-              }
-            ),
+              );
+            }
           ),
-        ]
-      ),
+        ),
+      ]
     );
   }  
 

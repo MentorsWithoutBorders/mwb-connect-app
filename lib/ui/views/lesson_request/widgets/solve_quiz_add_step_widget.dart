@@ -155,9 +155,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   void goToGoal() {
     if (_lessonRequestProvider.goal != null) {
-      _goalsProvider.setSelectedGoal(_lessonRequestProvider.goal);
-      _stepsProvider.setShouldShowTutorialChevrons(false);
-      _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
+      _goalsProvider.setSelectedGoal(_lessonRequestProvider.goal);      
       _goToGoalSteps();
     } else {
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
@@ -165,8 +163,12 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoalSteps() {
-    int quizNumber = _lessonRequestProvider.quizNumber;
-    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider.refreshTrainingInfo());
+    if (_goalsProvider.selectedGoal != null) {
+      _stepsProvider.setShouldShowTutorialChevrons(false);
+      _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);    
+      int quizNumber = _lessonRequestProvider.quizNumber;
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider.refreshTrainingInfo());
+    }
   }
 
   @override

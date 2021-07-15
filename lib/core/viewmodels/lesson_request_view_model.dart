@@ -39,8 +39,10 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
-    if (goals.length > 0) {
+    if (goals.isNotEmpty) {
       goal = goals[0];
+    } else {
+      goal = null;
     }
   }
 

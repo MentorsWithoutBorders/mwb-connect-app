@@ -163,9 +163,11 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
           return Padding(
             padding: const EdgeInsets.only(bottom: 6.0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                   width: 40.0,
+                  padding: const EdgeInsets.only(top: 5.0),
                   child: BulletPoint()
                 ),
                 if (isGuideTutorial) Expanded(
@@ -210,7 +212,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
     return Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.MONZA,
+          primary: AppColors.PACIFIC_BLUE,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),
