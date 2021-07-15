@@ -87,7 +87,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             _showErrorMessage(),
             _showPrimaryButton(),
             _showSecondaryButton(),
-            // if (_isLoginForm) _showTertiaryButton()
+            if (_isLoginForm) _showTertiaryButton()
           ],
         )
       )

@@ -21,98 +21,101 @@ class ConditionsList extends StatelessWidget {
     String firstPartAddStep = addStep.substring(0, addStep.indexOf(oneNewStep));
     String secondPartAddStep = addStep.substring(addStep.indexOf(oneNewStep) + oneNewStep.length);
 
-    return Wrap(
-      children: <Widget>[
-        if (shouldShowQuizzes) Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 40.0,
-                child: BulletPoint()
-              ),
-              Expanded(
-                child: RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.DOVE_GRAY,
-                      height: 1.2
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'lesson_request.solve'.tr()
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Wrap(
+        children: <Widget>[
+          if (shouldShowQuizzes) Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: 40.0,
+                  child: BulletPoint()
+                ),
+                Expanded(
+                  child: RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.DOVE_GRAY,
+                        height: 1.2
                       ),
-                      TextSpan(
-                        text: ' ' + quizzes + ' ',
-                        style: const TextStyle(
-                          color: AppColors.TANGO
-                        )
-                      ),
-                      TextSpan(
-                        text: 'common.from'.tr() + ' ' + 'common.the'.tr() + ' '
-                      ), 
-                      TextSpan(
-                        text: 'common.mental_process_goal_steps'.tr().toLowerCase()                   
-                      ),
-                      TextSpan(
-                        text: ', '
-                      ),
-                      TextSpan(
-                        text: 'common.relaxation_method'.tr().toLowerCase()                    
-                      ),
-                      TextSpan(
-                        text: ' ' + 'common.or'.tr() + ' '
-                      ),
-                      TextSpan(
-                        text: 'common.super_focus_method'.tr().toLowerCase()                    
-                      ), 
-                    ],
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'lesson_request.solve'.tr()
+                        ),
+                        TextSpan(
+                          text: ' ' + quizzes + ' ',
+                          style: const TextStyle(
+                            color: AppColors.TANGO
+                          )
+                        ),
+                        TextSpan(
+                          text: 'common.from'.tr() + ' ' + 'common.the'.tr() + ' '
+                        ), 
+                        TextSpan(
+                          text: 'common.mental_process_goal_steps'.tr().toLowerCase()                   
+                        ),
+                        TextSpan(
+                          text: ', '
+                        ),
+                        TextSpan(
+                          text: 'common.relaxation_method'.tr().toLowerCase()                    
+                        ),
+                        TextSpan(
+                          text: ' ' + 'common.or'.tr() + ' '
+                        ),
+                        TextSpan(
+                          text: 'common.super_focus_method'.tr().toLowerCase()                    
+                        ), 
+                      ],
+                    )
                   )
                 )
-              )
-            ],
+              ],
+            ),
           ),
-        ),
-        if (shouldShowStep) Padding(
-          padding: const EdgeInsets.only(bottom: 15.0),
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 40.0,
-                child: BulletPoint()
-              ),
-              Expanded(
-                child: RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.DOVE_GRAY,
-                      height: 1.2
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: firstPartAddStep
+          if (shouldShowStep) Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: 40.0,
+                  child: BulletPoint()
+                ),
+                Expanded(
+                  child: RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.DOVE_GRAY,
+                        height: 1.2
                       ),
-                      TextSpan(
-                        text: oneNewStep,
-                        style: const TextStyle(
-                          color: AppColors.TANGO
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: firstPartAddStep
+                        ),
+                        TextSpan(
+                          text: oneNewStep,
+                          style: const TextStyle(
+                            color: AppColors.TANGO
+                          )
+                        ),
+                        TextSpan(
+                          text: secondPartAddStep
                         )
-                      ),
-                      TextSpan(
-                        text: secondPartAddStep
-                      )
-                    ],
+                      ],
+                    )
                   )
                 )
-              )
-            ],
-          ),
-        )
-      ],
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 

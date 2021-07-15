@@ -57,10 +57,14 @@ class _LessonRequestViewState extends State<LessonRequestView> {
   }
 
   Widget _showTitle() {
+    String title = 'lesson_request.title'.tr();
+    if (_lessonRequestProvider.isNextLesson) {
+      title = 'lesson_request.scheduled_lesson'.tr();
+    }
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('lesson_request.title'.tr()),
+        child: Text(title),
       )
     );
   }

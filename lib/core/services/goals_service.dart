@@ -35,6 +35,7 @@ class GoalsService {
     if (response != null) {
       var json = jsonDecode(response.body);
       addedGoal = Goal.fromJson(json);
+      _storageService.isGoalAdded = true;
     }
     return addedGoal;
   }

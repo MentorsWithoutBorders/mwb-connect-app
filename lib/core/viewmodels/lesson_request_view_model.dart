@@ -148,13 +148,18 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   void refreshTrainingInfo() {
+    if (_storageService.isGoalAdded != null) {
+      getGoal();
+      _storageService.isGoalAdded = null;
+    }     
     if (_storageService.quizNumber != null) {
       quizNumber = _storageService.quizNumber;
       _storageService.quizNumber = null;
     }
-    if (_storageService.isLastStepAdded != null) {
+    if (_storageService.isStepAdded != null) {
+      lastStepAdded.id = 'id';
       lastStepAdded.dateTime = DateTime.now();
-      _storageService.isLastStepAdded = null;
+      _storageService.isStepAdded = null;
     }    
     notifyListeners();
   }
@@ -189,8 +194,9 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   void initLessonRecurrence() {
-    if (nextLesson == null) {
-      nextLesson = Lesson(isRecurrent: false);
+    if (nextLesson == null || nextLesson.id == null) {
+      bool isRecurrent = nextLesson.isRecurrent == null ? false : nextLesson.isRecurrent;
+      nextLesson = Lesson(isRecurrent: isRecurrent);
     } else if (nextLesson.isRecurrent == null || nextLesson.isRecurrent && nextLesson.endRecurrenceDateTime.difference(nextLesson.dateTime).inDays < 7) {
       nextLesson.isRecurrent = false;
     }

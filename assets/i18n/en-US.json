@@ -196,6 +196,7 @@
 	},
 	"lesson_request": {
 		"title": "Lesson request",
+		"scheduled_lesson": "Scheduled lesson",
     "training_title": "MWB training",
     "training_text": "In order to guide the students more efficiently in achieving their goals, please follow our training methodology for one month:",
 		"solve": "solve",

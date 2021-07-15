@@ -52,12 +52,14 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
   Widget _showTitle() {
     return Container(
       margin: const EdgeInsets.only(left: 3.0, bottom: 15.0),
-      child: Text(
-        'connect_with_mentor.find_available_mentor'.tr(),
-        style: const TextStyle(
-          color: AppColors.TANGO,
-          fontWeight: FontWeight.bold
-        )
+      child: Center(
+        child: Text(
+          'connect_with_mentor.find_available_mentor'.tr(),
+          style: const TextStyle(
+            color: AppColors.TANGO,
+            fontWeight: FontWeight.bold
+          )
+        ),
       ),
     );
   }   

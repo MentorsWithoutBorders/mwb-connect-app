@@ -100,9 +100,10 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
       quizNumber = _storageService.quizNumber;
       _storageService.quizNumber = null;
     }
-    if (_storageService.isLastStepAdded != null) {
+    if (_storageService.isStepAdded != null) {
+      lastStepAdded.id = 'id';
       lastStepAdded.dateTime = DateTime.now();
-      _storageService.isLastStepAdded = null;
+      _storageService.isStepAdded = null;
     }    
     notifyListeners();
   }  
@@ -129,7 +130,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   
   bool getShouldShowAddStep() {
     DateTime nextDeadline = getNextDeadline();
-    if (nextDeadline.difference(lastStepAdded.dateTime).inDays < 7) {
+    if (lastStepAdded.id != null && nextDeadline.difference(lastStepAdded.dateTime).inDays < 7) {
       return false;
     } else {
       return true;
