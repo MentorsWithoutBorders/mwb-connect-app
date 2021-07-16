@@ -25,20 +25,26 @@ class LessonRequestView extends StatefulWidget {
 class _LessonRequestViewState extends State<LessonRequestView> {
   LessonRequestViewModel _lessonRequestProvider;
   bool _isInit = false;
-  
+
   @override
-  Future<void> reassemble() async {
-    super.reassemble();
-    // Show taught today
-    // showDialog(
-    //   context: context,
-    //   builder: (_) => Center(
-    //     child: AnimatedDialog(
-    //       widgetInside: TaughtTodayDialog()
-    //     ),
-    //   ),
-    // );
-  }      
+  void initState() {
+    super.initState();
+    _isInit = false;
+  }
+  
+  // @override
+  // Future<void> reassemble() async {
+  //   super.reassemble();
+  //   // Show taught today
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => Center(
+  //       child: AnimatedDialog(
+  //         widgetInside: TaughtTodayDialog()
+  //       ),
+  //     ),
+  //   );
+  // }      
 
   Widget _showLessonRequest() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;

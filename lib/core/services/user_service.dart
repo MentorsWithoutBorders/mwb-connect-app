@@ -22,7 +22,7 @@ class UserService {
       }      
       if (user.isMentor != null) {
         _storageService.isMentor = user.isMentor;
-        if (!user.isMentor && user.field.subfields[0] != null) {
+        if (!user.isMentor && user.field.subfields.length > 0 && user.field.subfields[0] != null) {
           _storageService.subfieldId = user.field.subfields[0].id;
         }
       }        

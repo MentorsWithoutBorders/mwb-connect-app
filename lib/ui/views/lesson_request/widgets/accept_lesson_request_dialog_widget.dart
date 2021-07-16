@@ -141,7 +141,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
             child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
           ),
           onTap: () {
-            Navigator.pop(context);
+            _closeDialog();
           },
         ),
         ElevatedButton(
@@ -166,6 +166,13 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
       ]
     );
   } 
+
+  void _closeDialog() {
+    if (_lessonRequestProvider.nextLesson.isRecurrent) {
+      _lessonRequestProvider.setIsLessonRecurrent();
+    }
+    Navigator.pop(context);
+  }
 
   Future<void> _acceptLessonRequest() async {
     if (!_lessonRequestProvider.checkValidUrl(_url)) {
@@ -192,18 +199,26 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   
   void _unfocus() {
     FocusScope.of(context).unfocus();
+  }
+
+  Future<bool> _onWillPop() async {
+    _closeDialog();
+    return true;
   }    
   
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        _unfocus();
-      },
-      child: _showAcceptLessonRequestDialog()
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          _unfocus();
+        },
+        child: _showAcceptLessonRequestDialog()
+      ),
     );
   }
 }

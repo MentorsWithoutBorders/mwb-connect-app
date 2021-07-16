@@ -31,12 +31,12 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   @override
   void didChangeDependencies() {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
-    _lessonRequestProvider.initLessonRecurrence();
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     super.didChangeDependencies();
   }
   
   void _afterLayout(_) {
+    _lessonRequestProvider.initLessonRecurrence();
     if (_lessonRequestProvider.isNextLesson && _lessonRequestProvider.nextLesson.isRecurrent) {
       _setLessonRecurrenceType(_lessonRequestProvider.getLessonRecurrenceType());
       _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_lessonRequestProvider.nextLesson.endRecurrenceDateTime));

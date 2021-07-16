@@ -165,7 +165,7 @@ class _QuizState extends State<QuizView> {
                 padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
               ), 
               onPressed: () async {
-                _onWillPop();
+                _closeDialog();
               },
               child: Text(
                 'common.close'.tr(), 
@@ -295,11 +295,15 @@ class _QuizState extends State<QuizView> {
     return _selectedIndex != -1 && answer == (index + 1).toString();
   }
 
-  Future<bool> _onWillPop() async {
+  void _closeDialog() {
     if (_isCorrect == null) {
       _addQuiz();
     }
     Navigator.pop(context);
+  }
+
+  Future<bool> _onWillPop() async {
+    _closeDialog();
     return true;
   }  
 
@@ -307,7 +311,7 @@ class _QuizState extends State<QuizView> {
   Widget build(BuildContext context) {
     _quizProvider = Provider.of<QuizzesViewModel>(context);    
 
-   return WillPopScope(
+    return WillPopScope(
       onWillPop: _onWillPop,
       child: _showQuiz()
     );
