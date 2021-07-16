@@ -128,17 +128,14 @@ class _RootViewState extends State<RootView> {
             break;
           case AuthStatus.NOT_LOGGED_IN:
             return OnboardingView(
-              loginCallback: _loginCallback,
+              loginCallback: _loginCallback
             );
-            break;
           case AuthStatus.LOGGED_IN:
             if (snapshot.hasData) {
               bool isMentor = snapshot.data;
               if (isMentor) {
-                // return _showGoalsView();
                 return _showLessonRequestView();
               } else {
-                // return _showGoalsView();
                 return _showConnectWithMentorView();
               }
             } else

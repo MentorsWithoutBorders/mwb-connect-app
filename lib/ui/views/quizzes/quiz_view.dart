@@ -33,7 +33,7 @@ class _QuizState extends State<QuizView> {
   }    
 
   Widget _showQuiz() {
-    final bool isMentor = _quizProvider.isMentor;
+    final bool isMentor = _quizProvider.isMentor; 
     final String type = isMentor ? 'mentors' : 'students';
     final int quizNumber = widget.quizNumber;
     final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.title'.tr();
@@ -309,7 +309,7 @@ class _QuizState extends State<QuizView> {
 
   @override
   Widget build(BuildContext context) {
-    _quizProvider = Provider.of<QuizzesViewModel>(context);    
+    _quizProvider = Provider.of<QuizzesViewModel>(context);
 
     return WillPopScope(
       onWillPop: _onWillPop,

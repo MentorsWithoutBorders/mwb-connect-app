@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -53,7 +54,8 @@ class AuthService {
   }
 
   Future<void> logout() async {
+    _api.postHTTP(url: '/logout', data: {});
     _api.resetStorage();
-    await _api.postHTTP(url: '/logout', data: {});
+    NavigationService.instance.navigateTo('root');
   }
 } 

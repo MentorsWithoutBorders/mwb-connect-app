@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -26,9 +27,7 @@ class ApiService {
       Uri.parse(baseUrl + url), 
       headers: getHeaders()
     );
-    if (_storageService.refreshToken == null) {
-      _logout();
-    } else if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
@@ -36,7 +35,9 @@ class ApiService {
       if (!refreshingToken) {
         await _refreshToken();
       }
-      return getHTTP(url: url);
+      if (_storageService.refreshToken != null) {
+        return getHTTP(url: url);
+      }      
     }
   }
 
@@ -52,9 +53,11 @@ class ApiService {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
       if (!refreshingToken) {
-        await _refreshToken();
+        await _refreshToken();      
       }
-      return await postHTTP(url: url, data: data);
+      if (_storageService.refreshToken != null) {      
+        return await postHTTP(url: url, data: data);
+      }
     }   
   }
 
@@ -70,9 +73,11 @@ class ApiService {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
       if (!refreshingToken) {
-        await _refreshToken();
+        await _refreshToken();       
       }
-      return await putHTTP(url: url, data: data);
+      if (_storageService.refreshToken != null) {
+        return await putHTTP(url: url, data: data);
+      }
     }  
   }
   
@@ -87,9 +92,11 @@ class ApiService {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
       if (!refreshingToken) {
-        await _refreshToken();
+        await _refreshToken();    
       }
-      return await deleteHTTP(url: url);
+      if (_storageService.refreshToken != null) {      
+        return await deleteHTTP(url: url);
+      }
     }
   }
 
@@ -112,11 +119,14 @@ class ApiService {
     Tokens tokens = Tokens.fromJson(json);
     _storageService.accessToken = tokens.accessToken;
     _storageService.refreshToken = tokens.refreshToken;
+    if (_storageService.refreshToken == null) {
+      _logout();
+    }    
   }
   
   Future<void> _logout() async {
     resetStorage();
-    await postHTTP(url: '/logout', data: {});
+    NavigationService.instance.navigateTo('root');
   }
 
   void resetStorage() {

@@ -11,6 +11,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
+import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
@@ -117,7 +118,11 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
+              navigatorKey: NavigationService.instance.navigationKey,
               initialRoute: '/',
+              routes: {
+                'root':(BuildContext context) => RootView(),
+              },              
               title: 'MWBConnect',
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
