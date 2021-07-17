@@ -160,10 +160,6 @@ class _ProfileViewState extends State<ProfileView> {
     FocusScope.of(context).unfocus();
   }
 
-  void _logout() {
-    Navigator.pop(context);
-  }  
-
   void _afterLayout(_) {
     if (_profileProvider.shouldUnfocus) {
       _unfocus();
@@ -174,10 +170,6 @@ class _ProfileViewState extends State<ProfileView> {
       _scrollToPosition(_profileProvider.scrollOffset);
       _profileProvider.scrollOffset = 0;
     }
-
-    if (_profileProvider.shouldLogout) {
-      _logout();
-    }    
   }
 
   Future<Profile> _getProfile() async {

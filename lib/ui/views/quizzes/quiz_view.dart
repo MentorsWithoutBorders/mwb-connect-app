@@ -33,7 +33,7 @@ class _QuizState extends State<QuizView> {
   }    
 
   Widget _showQuiz() {
-    final bool isMentor = _quizProvider.isMentor; 
+    final bool isMentor = _quizProvider.isMentor ?? false;
     final String type = isMentor ? 'mentors' : 'students';
     final int quizNumber = widget.quizNumber;
     final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.title'.tr();

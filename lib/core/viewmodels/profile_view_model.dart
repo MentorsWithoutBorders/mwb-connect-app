@@ -24,28 +24,17 @@ class ProfileViewModel extends ChangeNotifier {
   String availabilityMergedMessage = '';
   bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
-  bool _shouldLogout = false;
   double scrollOffset = 0;
 
   Future<User> getUserDetails() async {
     User user = await _userService.getUserDetails();
-    _checkUserId();
     return user;
   }
 
   Future<List<Field>> getFields() async {
     List<Field> fields = await _profileService.getFields();
-    // _checkUserId();
     return fields;
   }
-
-  void _checkUserId() {
-    if (_storageService.userId == null) {
-      shouldLogout = true;
-    } else {
-      shouldLogout = false;
-    }
-  }  
 
   void setUserDetails(User user) {
     _userService.setUserDetails(user);
@@ -372,12 +361,4 @@ class ProfileViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  bool get shouldLogout => _shouldLogout;
-  set shouldLogout(bool logout) {
-    _shouldLogout = logout;
-    if (shouldLogout) {
-      notifyListeners();
-    }
-  }  
 }
