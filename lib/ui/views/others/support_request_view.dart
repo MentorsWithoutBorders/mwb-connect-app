@@ -212,6 +212,7 @@ class _SupportViewState extends State<SupportView> {
   }
 
  void _goToConfirmation() {
+    FocusScope.of(context).unfocus();
     _controller.animateToPage(_controller.page.toInt() + 1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease
