@@ -111,7 +111,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
         widgetInside: EditAvailability(index: widget.index)
       )
     ).then((shouldShowToast) {
-      if (shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {
+      if (shouldShowToast != null && shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {
         _showToast(context);
         _profileProvider.resetAvailabilityMergedMessage();
       }

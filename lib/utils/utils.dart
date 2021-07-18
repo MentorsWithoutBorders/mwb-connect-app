@@ -2,8 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/datetime_extension.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/time_model.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Utils {
@@ -60,6 +64,40 @@ class Utils {
     }    
     return hoursList;
   }
+
+  static Availability getAvailabilityToUtc(Availability availability) {
+    DateFormat dayOfWeekFormat = DateFormat('EEEE');
+    DateFormat timeFormat = DateFormat('ha');    
+    DateTime now = Utils.resetTime(DateTime.now());
+    while (dayOfWeekFormat.format(now) != availability.dayOfWeek) {
+      now = Jiffy(now).add(days: 1).dateTime;
+    }    
+    final DateTime timeFrom = now.copyWith(hour: Utils.convertTime12to24(availability.time.from)).toUtc();
+    final DateTime timeTo = now.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toUtc();
+    return Availability(
+      dayOfWeek: dayOfWeekFormat.format(timeFrom),
+      time: Time(
+        from: timeFormat.format(timeFrom).toLowerCase(),
+        to: timeFormat.format(timeTo).toLowerCase()
+      )
+    );
+  }
+  
+  static Availability getAvailabilityToLocal(Availability availability) {
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dayOfWeekFormat = DateFormat('EEEE');
+    DateFormat timeFormat = DateFormat('ha');    
+    DateTime now = Utils.resetTime(DateTime.now());
+    while (dayOfWeekFormat.format(now) != availability.dayOfWeek) {
+      now = Jiffy(now).add(days: 1).dateTime;
+    }    
+    final DateTime timeFrom = dateFormat.parseUTC(now.copyWith(hour: convertTime12to24(availability.time.from)).toString()).toLocal();
+    final DateTime timeTo = dateFormat.parseUTC(now.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toString()).toLocal();
+    availability.dayOfWeek = dayOfWeekFormat.format(timeFrom);
+    availability.time.from = timeFormat.format(timeFrom).toLowerCase();
+    availability.time.to = timeFormat.format(timeTo).toLowerCase();
+    return availability;
+  }   
 
   static DateTime resetTime(DateTime dateTime) {
     return dateTime.subtract(Duration(hours: dateTime.hour, minutes: dateTime.minute, seconds: dateTime.second, milliseconds: dateTime.millisecond, microseconds: dateTime.microsecond));

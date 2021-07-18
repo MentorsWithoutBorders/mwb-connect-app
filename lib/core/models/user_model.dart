@@ -5,7 +5,6 @@ import 'package:mwb_connect_app/core/models/organization_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/models/timezone_model.dart';
 
 class User {
@@ -71,7 +70,7 @@ class User {
     final List<Availability> availabilityList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
-        availabilityList.add(Availability(dayOfWeek: json[i]['dayOfWeek'], time: Time(from: json[i]['time']['from'], to: json[i]['time']['to'])));
+        availabilityList.add(Utils.getAvailabilityToLocal(Availability.fromJson(json[i])));
       }
     }
     return availabilityList;
@@ -111,13 +110,7 @@ class User {
     List<Map<String,dynamic>> availabilityList = [];
     if (availabilities != null) {
       for (int i = 0; i < availabilities.length; i++) {
-        availabilityList.add({
-          'dayOfWeek': availabilities[i].dayOfWeekToEng, 
-          'time': {
-            'from': availabilities[i].time.from,
-            'to': availabilities[i].time.to
-          }
-        });
+        availabilityList.add(Utils.getAvailabilityToUtc(availabilities[i]).toJson());
       }
     }
     return availabilityList;

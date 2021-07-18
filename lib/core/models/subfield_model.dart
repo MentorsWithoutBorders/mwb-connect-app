@@ -36,7 +36,7 @@ class Subfield {
     if (skills != null) {
       for (int i = 0; i < skills.length; i++) {
         skillsList.add({
-          'id': skills[i].name, 
+          'id': skills[i].id, 
           'name': skills[i].name
         });      
       }
