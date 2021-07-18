@@ -310,7 +310,7 @@ class ProfileViewModel extends ChangeNotifier {
   bool isAvailabilityValid(Availability availability) {
     final int timeFrom = Utils.convertTime12to24(availability.time.from);
     final int timeTo = Utils.convertTime12to24(availability.time.to);
-    return timeFrom < timeTo;
+    return timeFrom < timeTo || timeFrom != timeTo && timeTo == 0;
   }
 
   void deleteAvailability(int index) {
