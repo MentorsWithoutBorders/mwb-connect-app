@@ -21,7 +21,7 @@ class _SubfieldsState extends State<Subfields> {
 
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<Subfield> userSubfields = _profileProvider.profile.user.field.subfields;
+    final List<Subfield> userSubfields = _profileProvider.user.field.subfields;
     subfieldWidgets.add(Label(text: 'profile.subfields'.tr()));
     if (userSubfields != null) {
       for (int i = 0; i < userSubfields.length; i++) {

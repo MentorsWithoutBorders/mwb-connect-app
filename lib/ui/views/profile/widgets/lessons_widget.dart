@@ -170,7 +170,7 @@ class _LessonsState extends State<Lessons> {
   
   void _setLessonsAvailability() {
     setState(() {
-      _lessonsAvailability = _profileProvider.profile.user.lessonsAvailability;
+      _lessonsAvailability = _profileProvider.user.lessonsAvailability;
     });
   }
 

@@ -13,7 +13,6 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
-import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/edit_availability_widget.dart';
 
@@ -41,8 +40,7 @@ Future<void> main() async {
       await easyLocalizationController.loadTranslations();
       Localization.load(Locale('en', 'US'), translations: easyLocalizationController.translations);
 
-      profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         isMentor: true,
         isAvailable: true,
         availabilities: [

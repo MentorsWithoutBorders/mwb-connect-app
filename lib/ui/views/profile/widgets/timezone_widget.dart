@@ -36,7 +36,7 @@ class _UserTimezoneState extends State<UserTimezone> {
 
     return Column(
       children: [
-        if (_profileProvider.profile.user.availabilities.isNotEmpty) _showTimeZone(),
+        if (_profileProvider.user.availabilities.isNotEmpty) _showTimeZone(),
       ],
     );
   }

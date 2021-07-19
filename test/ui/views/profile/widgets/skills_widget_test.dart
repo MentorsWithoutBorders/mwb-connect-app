@@ -36,8 +36,7 @@ Future<void> main() async {
     final Finder addSkillsField = find.byKey(const Key(AppKeys.addSkillsField));
 
     setUp(() async {
-      profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         name: 'Bob',
         field: 'Programming',
         subfields: [
@@ -47,7 +46,7 @@ Future<void> main() async {
           )
         ]
       );
-      profileViewModel.profile.fields = [
+      profileViewModel.fields = [
         Field(
           name: 'Programming',
           subfields: [

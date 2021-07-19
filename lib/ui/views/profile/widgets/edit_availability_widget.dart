@@ -36,7 +36,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   }
 
   void _initAvalability() {
-    _availability = _profileProvider.profile.user.availabilities[widget.index];
+    _availability = _profileProvider.user.availabilities[widget.index];
   }
   
   Widget _showEditAvailabilityDialog() {

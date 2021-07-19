@@ -33,8 +33,7 @@ Future<void> main() async {
     final Widget nameWidget = widgetLoader.createWidget(widget: Name(), jsonFile: jsonFile);
 
     setUp(() async {
-      profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         name: 'Bob',
         isMentor: true
       );

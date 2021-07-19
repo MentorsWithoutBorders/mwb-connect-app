@@ -67,13 +67,13 @@ class Utils {
 
   static Availability getAvailabilityToUtc(Availability availability) {
     DateFormat dayOfWeekFormat = DateFormat('EEEE');
-    DateFormat timeFormat = DateFormat('ha');    
-    DateTime now = Utils.resetTime(DateTime.now());
-    while (dayOfWeekFormat.format(now) != availability.dayOfWeek) {
-      now = Jiffy(now).add(days: 1).dateTime;
+    DateFormat timeFormat = DateFormat('ha');
+    DateTime date = Utils.resetTime(DateTime.now());
+    while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
+      date = Jiffy(date).add(days: 1).dateTime;
     }    
-    final DateTime timeFrom = now.copyWith(hour: Utils.convertTime12to24(availability.time.from)).toUtc();
-    final DateTime timeTo = now.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toUtc();
+    final DateTime timeFrom = date.copyWith(hour: Utils.convertTime12to24(availability.time.from)).toUtc();
+    final DateTime timeTo = date.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toUtc();
     return Availability(
       dayOfWeek: dayOfWeekFormat.format(timeFrom),
       time: Time(
@@ -87,16 +87,19 @@ class Utils {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     DateFormat dayOfWeekFormat = DateFormat('EEEE');
     DateFormat timeFormat = DateFormat('ha');    
-    DateTime now = Utils.resetTime(DateTime.now());
-    while (dayOfWeekFormat.format(now) != availability.dayOfWeek) {
-      now = Jiffy(now).add(days: 1).dateTime;
+    DateTime date = Utils.resetTime(DateTime.now());
+    while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
+      date = Jiffy(date).add(days: 1).dateTime;
     }    
-    final DateTime timeFrom = dateFormat.parseUTC(now.copyWith(hour: convertTime12to24(availability.time.from)).toString()).toLocal();
-    final DateTime timeTo = dateFormat.parseUTC(now.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toString()).toLocal();
-    availability.dayOfWeek = dayOfWeekFormat.format(timeFrom);
-    availability.time.from = timeFormat.format(timeFrom).toLowerCase();
-    availability.time.to = timeFormat.format(timeTo).toLowerCase();
-    return availability;
+    final DateTime timeFrom = dateFormat.parseUTC(date.copyWith(hour: convertTime12to24(availability.time.from)).toString()).toLocal();
+    final DateTime timeTo = dateFormat.parseUTC(date.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toString()).toLocal();
+    return Availability(
+      dayOfWeek: dayOfWeekFormat.format(timeFrom),
+      time: Time(
+        from: timeFormat.format(timeFrom).toLowerCase(),
+        to: timeFormat.format(timeTo).toLowerCase()
+      )
+    );
   }   
 
   static DateTime resetTime(DateTime dateTime) {

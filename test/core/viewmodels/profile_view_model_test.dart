@@ -42,7 +42,7 @@ Future<void> main() async {
       Localization.load(Locale('en', 'US'), translations: easyLocalizationController.translations);
 
       profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         name: 'Bob', 
         field: 'Graphic Design',
         subfields: [
@@ -67,7 +67,7 @@ Future<void> main() async {
           minIntervalUnit: 'week'
         )
       );
-      profileViewModel.profile.fields = [
+      profileViewModel.fields = [
         Field(
           name: 'Programming',
           subfields: [
@@ -106,7 +106,7 @@ Future<void> main() async {
     test('Profile name should be changed', () async {
       const String name = 'Alice';
       profileViewModel.setName(name);
-      expect(profileViewModel.profile.user.name, name);
+      expect(profileViewModel.user.name, name);
       final User user = await profileViewModel.getUserDetails();
       expect(user.name, name);
     });
@@ -114,8 +114,8 @@ Future<void> main() async {
     test('Field should be changed', () async {
       const String field = 'Programming';
       profileViewModel.setField(field);
-      expect(profileViewModel.profile.user.field, field);
-      expect(profileViewModel.profile.user.subfields.isEmpty, true);
+      expect(profileViewModel.user.field, field);
+      expect(profileViewModel.user.subfields.isEmpty, true);
       final User user = await profileViewModel.getUserDetails();
       expect(user.field, field);
       expect(user.subfields.isEmpty, true);
@@ -135,7 +135,7 @@ Future<void> main() async {
     test('Subfield should be changed', () async {
       Subfield subfield = Subfield(name: 'Visual Identity');
       profileViewModel.setSubfield(subfield, 0);
-      expect(profileViewModel.profile.user.subfields[0].name, subfield.name);
+      expect(profileViewModel.user.subfields[0].name, subfield.name);
       final User user = await profileViewModel.getUserDetails();
       expect(user.subfields[0].name, subfield.name);
     });
@@ -143,7 +143,7 @@ Future<void> main() async {
     test('Subfield should be added', () async {
       Subfield subfield = Subfield(name: 'Visual Identity');
       profileViewModel.setSubfield(subfield, 2);
-      expect(profileViewModel.profile.user.subfields[2].name, subfield.name);
+      expect(profileViewModel.user.subfields[2].name, subfield.name);
       final User user = await profileViewModel.getUserDetails();
       expect(user.subfields[2].name, subfield.name);
     });
@@ -161,12 +161,12 @@ Future<void> main() async {
     
     test('Added default subfield should be correct', () async {
       profileViewModel.addSubfield();
-      expect(profileViewModel.profile.user.subfields[2].name, 'Visual Identity');   
+      expect(profileViewModel.user.subfields[2].name, 'Visual Identity');   
     });
     
     test('Subfields list should be correct after delete subfield', () {
       profileViewModel.deleteSubfield(1);
-      final List<Subfield> subfields = profileViewModel.profile.user.subfields;
+      final List<Subfield> subfields = profileViewModel.user.subfields;
       expect(subfields[0].name, 'User Interface');   
       expect(subfields.asMap().containsKey(1), false);   
     });
@@ -194,7 +194,7 @@ Future<void> main() async {
     
     test('Skill should be added', () {
       profileViewModel.addSkill('Adobe Photoshop', 0);
-      List<String> userSkills = profileViewModel.profile.user.subfields[0].skills;
+      List<String> userSkills = profileViewModel.user.subfields[0].skills;
       profileViewModel.addSkill('Sketch', 0);
       expect(userSkills, ['Adobe Photoshop', 'Sketch']);
       profileViewModel.addSkill('Adobe Photoshop', 0);
@@ -204,22 +204,22 @@ Future<void> main() async {
     test('Skill should be deleted', () {
       profileViewModel.addSkill('Adobe Photoshop', 0);
       profileViewModel.deleteSkill('Adobe Photoshop', 0);
-      List<String> userSkills = profileViewModel.profile.user.subfields[0].skills;
+      List<String> userSkills = profileViewModel.user.subfields[0].skills;
       expect(userSkills, []);
     });      
 
     test('User availability should be set correctly', () {
       profileViewModel.setIsAvailable(false);
-      expect(profileViewModel.profile.user.isAvailable, false);
+      expect(profileViewModel.user.isAvailable, false);
       profileViewModel.setIsAvailable(true);
-      expect(profileViewModel.profile.user.isAvailable, true);         
+      expect(profileViewModel.user.isAvailable, true);         
     });
 
     test('User available from date should be set correctly', () {
       profileViewModel.setAvailableFrom(DateTime.now());
-      expect(profileViewModel.profile.user.availableFrom.hour, DateTime.now().hour);
-      expect(profileViewModel.profile.user.availableFrom.minute, DateTime.now().minute);
-      expect(profileViewModel.profile.user.availableFrom.second, DateTime.now().second);
+      expect(profileViewModel.user.availableFrom.hour, DateTime.now().hour);
+      expect(profileViewModel.user.availableFrom.minute, DateTime.now().minute);
+      expect(profileViewModel.user.availableFrom.second, DateTime.now().second);
     });    
 
     test('New availability should be added', () {
@@ -228,7 +228,7 @@ Future<void> main() async {
         time: Time(from: '8pm', to: '10pm')
       );
       profileViewModel.addAvailability(availability);
-      List<Availability> availabilities = profileViewModel.profile.user.availabilities;
+      List<Availability> availabilities = profileViewModel.user.availabilities;
       expect(availabilities[0].dayOfWeek, 'Wednesday');
       expect(availabilities[0].time.from, '8pm');
       expect(availabilities[0].time.to, '10pm');
@@ -248,14 +248,14 @@ Future<void> main() async {
       );
       profileViewModel.addAvailability(availability1);
       profileViewModel.addAvailability(availability2);
-      List<Availability> availabilities = profileViewModel.profile.user.availabilities;
+      List<Availability> availabilities = profileViewModel.user.availabilities;
       expect(availabilities[0].dayOfWeek, 'Saturday');
       expect(availabilities[0].time.from, '10am');
       expect(availabilities[0].time.to, '8pm');      
     });
     
     test('Availability should be updated', () {
-      List<Availability> availabilities = profileViewModel.profile.user.availabilities;
+      List<Availability> availabilities = profileViewModel.user.availabilities;
       Availability newAvailability = Availability(
         dayOfWeek: 'Thursday',
         time: Time(from: '7pm', to: '10pm')
@@ -277,7 +277,7 @@ Future<void> main() async {
         time: Time(from: '1pm', to: '5pm')
       );
       profileViewModel.updateAvailability(1, availability);
-      List<Availability> availabilities = profileViewModel.profile.user.availabilities;
+      List<Availability> availabilities = profileViewModel.user.availabilities;
       expect(availabilities[0].dayOfWeek, 'Saturday');
       expect(availabilities[0].time.from, '10am');
       expect(availabilities[0].time.to, '5pm');      
@@ -308,7 +308,7 @@ Future<void> main() async {
       );
       profileViewModel.addAvailability(availability);
       profileViewModel.deleteAvailability(0);
-      List<Availability> availabilities = profileViewModel.profile.user.availabilities;
+      List<Availability> availabilities = profileViewModel.user.availabilities;
       expect(availabilities[0].dayOfWeek, 'Saturday');
       expect(availabilities[0].time.from, '10am');
       expect(availabilities[0].time.to, '2pm');
@@ -320,7 +320,7 @@ Future<void> main() async {
         minIntervalUnit: 'month'
       );
       profileViewModel.updateLessonsAvailability(lessonsAvailability);
-      lessonsAvailability = profileViewModel.profile.user.lessonsAvailability;      
+      lessonsAvailability = profileViewModel.user.lessonsAvailability;      
       expect(lessonsAvailability.minInterval, 4);
       expect(lessonsAvailability.minIntervalUnit, 'month');
     });

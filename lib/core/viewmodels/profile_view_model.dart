@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
-import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -18,20 +17,20 @@ class ProfileViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();
   final ProfileService _profileService = locator<ProfileService>();
   final String _defaultLocale = Platform.localeName;
-  Profile profile;
+  User user;
+  List<Field> fields;
   String availabilityMergedMessage = '';
   bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
   double scrollOffset = 0;
 
-  Future<User> getUserDetails() async {
-    User user = await _userService.getUserDetails();
-    return user;
+  Future<void> getUserDetails() async {
+    user = await _userService.getUserDetails();
+    _sortAvailabilities();
   }
 
-  Future<List<Field>> getFields() async {
-    List<Field> fields = await _profileService.getFields();
-    return fields;
+  Future<void> getFields() async {
+    fields = await _profileService.getFields();
   }
 
   void setUserDetails(User user) {
@@ -39,36 +38,36 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void setName(String name) {
-    profile.user.name = name;
-    setUserDetails(profile.user);
+    user.name = name;
+    setUserDetails(user);
   }
   
   void setField(Field field) {
-    if (profile.user.field.id != field.id) {
-      profile.user.field = Field(id: field.id, name: field.name, subfields: []);
-      setUserDetails(profile.user);
+    if (user.field.id != field.id) {
+      user.field = Field(id: field.id, name: field.name, subfields: []);
+      setUserDetails(user);
       notifyListeners();
     }
   }
 
   Field getSelectedField() {
-    return profile.fields.firstWhere((field) => field.id == profile.user.field.id);
+    return fields.firstWhere((field) => field.id == user.field.id);
   }
 
   void setSubfield(Subfield subfield, int index) {
     subfield.skills = [];
-    if (index < profile.user.field.subfields.length) {
-      profile.user.field.subfields[index] = subfield;
+    if (index < user.field.subfields.length) {
+      user.field.subfields[index] = subfield;
     } else {
-      profile.user.field.subfields.add(subfield);
+      user.field.subfields.add(subfield);
     }
-    setUserDetails(profile.user);
+    setUserDetails(user);
     notifyListeners();
   }  
 
   List<Subfield> getSubfields(int index) {
-    final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<Subfield> userSubfields = profile.user.field.subfields;
+    final List<Subfield> subfields = fields[_getSelectedFieldIndex()].subfields;
+    final List<Subfield> userSubfields = user.field.subfields;
     final List<Subfield> filteredSubfields = [];
     if (subfields != null) {
       for (final Subfield subfield in subfields) {
@@ -82,8 +81,8 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   int _getSelectedFieldIndex() {
-    final List<Field> fields = profile.fields;
-    final Field selectedField = profile.user.field;
+    final List<Field> fields = this.fields;
+    final Field selectedField = user.field;
     return fields.indexWhere((Field field) => field.id == selectedField.id);
   }
 
@@ -100,8 +99,8 @@ class ProfileViewModel extends ChangeNotifier {
   
   Subfield getSelectedSubfield(int index) {
     Subfield selectedSubfield;
-    final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<Subfield> userSubfields = profile.user.field.subfields;
+    final List<Subfield> subfields = fields[_getSelectedFieldIndex()].subfields;
+    final List<Subfield> userSubfields = user.field.subfields;
     for (final Subfield subfield in subfields) {
       if (subfield.name == userSubfields[index].name) {
         selectedSubfield = subfield;
@@ -112,8 +111,8 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void addSubfield() {
-    final List<Subfield> subfields = profile.fields[_getSelectedFieldIndex()].subfields;
-    final List<Subfield> userSubfields = profile.user.field.subfields;
+    final List<Subfield> subfields = fields[_getSelectedFieldIndex()].subfields;
+    final List<Subfield> userSubfields = user.field.subfields;
     for (final Subfield subfield in subfields) {
       if (!_containsSubfield(userSubfields, subfield)) {
         setSubfield(Subfield(id: subfield.id, name: subfield.name), userSubfields.length+1);
@@ -124,8 +123,8 @@ class ProfileViewModel extends ChangeNotifier {
   }
   
   void deleteSubfield(int index) {
-    profile.user.field.subfields.removeAt(index);
-    setUserDetails(profile.user);
+    user.field.subfields.removeAt(index);
+    setUserDetails(user);
     notifyListeners();
   }
 
@@ -160,7 +159,7 @@ class ProfileViewModel extends ChangeNotifier {
     List<String> matches = [];
     Subfield subfield = getSelectedSubfield(index);
     List<Skill> subfieldSkills = subfield.skills;
-    List<Skill> userSkills = profile.user.field.subfields[index]?.skills;
+    List<Skill> userSkills = user.field.subfields[index]?.skills;
     if (userSkills != null) {
       for (final Skill skill in subfieldSkills) {
         bool shouldAdd = true;
@@ -182,8 +181,8 @@ class ProfileViewModel extends ChangeNotifier {
   bool addSkill(String skill, int index) {
     Skill skillToAdd = _setSkillToAdd(skill, index);
     if (skillToAdd != null) {
-      profile.user.field.subfields[index].skills.add(skillToAdd);
-      setUserDetails(profile.user);
+      user.field.subfields[index].skills.add(skillToAdd);
+      setUserDetails(user);
       notifyListeners();
       return true;
     } else {
@@ -193,7 +192,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   Skill _setSkillToAdd(String skill, int index) {
     Skill skillToAdd;
-    List<Skill> skills = profile.user.field.subfields[index].skills;
+    List<Skill> skills = user.field.subfields[index].skills;
     for (int i = 0; i < skills.length; i++) {
       if (skill.toLowerCase() == skills[i].name.toLowerCase()) {
         return null;
@@ -210,59 +209,60 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void deleteSkill(String skillId, int index) {
-    Skill skill = profile.user.field.subfields[index].skills.firstWhere((skill) => skill.id == skillId);
-    profile.user.field.subfields[index].skills.remove(skill);
-    setUserDetails(profile.user);
+    Skill skill = user.field.subfields[index].skills.firstWhere((skill) => skill.id == skillId);
+    user.field.subfields[index].skills.remove(skill);
+    setUserDetails(user);
     notifyListeners();
   }
 
   String getAvailabilityStartDate() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
     String date = dateFormat.format(DateTime.now()).capitalize();
-    if (profile.user.availableFrom != null) {
-      date = dateFormat.format(profile.user.availableFrom).capitalize();
+    if (user.availableFrom != null) {
+      date = dateFormat.format(user.availableFrom).capitalize();
     }
     return date;
   }  
 
   void setIsAvailable(bool isAvailable) {
-    profile.user.isAvailable = isAvailable;
-    setUserDetails(profile.user);
+    user.isAvailable = isAvailable;
+    setUserDetails(user);
     notifyListeners();    
   }
 
   void setAvailableFrom(DateTime availableFrom) {
-    profile.user.availableFrom = availableFrom;
-    setUserDetails(profile.user);
+    user.availableFrom = availableFrom;
+    setUserDetails(user);
     notifyListeners();
   }
   
   void addAvailability(Availability availability) {
-    profile.user.availabilities.add(availability);
+    user.availabilities.add(availability);
     _sortAvailabilities();
     _mergeAvailabilityTimes();
-    setUserDetails(profile.user);
+    setUserDetails(user);
     notifyListeners();
   }
 
   void updateAvailability(int index, Availability newAvailability) {
-    profile.user.availabilities[index] = newAvailability;
+    user.availabilities[index] = newAvailability;
     _sortAvailabilities();
     _mergeAvailabilityTimes();
-    setUserDetails(profile.user);
+    setUserDetails(user);
     notifyListeners();
   }
 
   void _sortAvailabilities() {
-    profile.user.availabilities.sort((a, b) => Utils.convertTime12to24(a.time.from).compareTo(Utils.convertTime12to24(b.time.from)));
-    profile.user.availabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek)));
+    user.availabilities.sort((a, b) => Utils.convertTime12to24(a.time.from).compareTo(Utils.convertTime12to24(b.time.from)));
+    user.availabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek)));
+    notifyListeners();
   }
 
   void _mergeAvailabilityTimes() {
     final List<Availability> availabilities = [];
     for (final String dayOfWeek in Utils.daysOfWeek) {
       final List<Availability> dayAvailabilities = [];
-      for (final Availability availability in profile.user.availabilities) {
+      for (final Availability availability in user.availabilities) {
         if (availability.dayOfWeek == dayOfWeek) {
           dayAvailabilities.add(availability);
         }
@@ -289,7 +289,7 @@ class ProfileViewModel extends ChangeNotifier {
       }
       availabilities.addAll(merged);
     }
-    profile.user.availabilities = availabilities;
+    user.availabilities = availabilities;
   }
 
   void _setAvailabilityMergedMessage(Availability availability, List<Availability> merged) {
@@ -314,14 +314,14 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void deleteAvailability(int index) {
-    profile.user.availabilities.removeAt(index);
-    setUserDetails(profile.user);
+    user.availabilities.removeAt(index);
+    setUserDetails(user);
     notifyListeners();
   }
 
   void updateLessonsAvailability(LessonsAvailability lessonsAvailability) {
-    profile.user.lessonsAvailability = lessonsAvailability;
-    setUserDetails(profile.user);
+    user.lessonsAvailability = lessonsAvailability;
+    setUserDetails(user);
     notifyListeners();
   }
     

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/models/profile_model.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -27,9 +24,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel _profileProvider;
   final ScrollController _scrollController = ScrollController();
-  User _user;
-  List<Field> _fields;  
-  bool _profileRetrieved = false;
+  bool _isProfileRetrieved = false;
 
   @override
   void dispose() {
@@ -48,7 +43,7 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           _showPrimaryCard(),
           _showAvailabilityCard(),
-          if (_profileProvider.profile.user.isMentor) _showLessonsCard()
+          if (_profileProvider.user.isMentor) _showLessonsCard()
         ]
       )
     );
@@ -78,8 +73,8 @@ class _ProfileViewState extends State<ProfileView> {
           child: Wrap(
             children: [
               const Name(),
-              if (_profileProvider.profile.user.isMentor) const FieldDropdown(),
-              if (_profileProvider.profile.user.isMentor) const Subfields()
+              if (_profileProvider.user.isMentor) const FieldDropdown(),
+              if (_profileProvider.user.isMentor) const Subfields()
             ],
           )
         ),
@@ -100,8 +95,8 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
             children: [
-              if (_profileProvider.profile.user.isMentor) AvailabilityStartDate(),
-              if (_profileProvider.profile.user.isMentor) _showDivider(),
+              if (_profileProvider.user.isMentor) AvailabilityStartDate(),
+              if (_profileProvider.user.isMentor) _showDivider(),
               AvailabilityList(),
             ],
           )
@@ -148,8 +143,8 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
   
-  Widget _showContent(bool hasData) {
-    if (hasData) {
+  Widget _showContent() {
+    if (_isProfileRetrieved) {
       return _showProfile();
     } else {
       return const Loader();
@@ -172,13 +167,12 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
-  Future<Profile> _getProfile() async {
-    if (!_profileRetrieved) {
-      _user = await _profileProvider.getUserDetails();
-      _fields = await _profileProvider.getFields();
-      _profileRetrieved = true;
+  Future<void> _getProfile() async {
+    if (!_isProfileRetrieved) {
+      await _profileProvider.getUserDetails();
+      await _profileProvider.getFields();
+      _isProfileRetrieved = true;
     }
-    return Profile(user: _user, fields: _fields);
   } 
 
   @override
@@ -187,10 +181,9 @@ class _ProfileViewState extends State<ProfileView> {
 
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
-    return FutureBuilder<Profile>(
+    return FutureBuilder<void>(
       future: _getProfile(),
-      builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
-        _profileProvider.profile = snapshot.data;
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         return GestureDetector(
           onTap: () {
             _unfocus();
@@ -206,7 +199,7 @@ class _ProfileViewState extends State<ProfileView> {
                   elevation: 0.0
                 ),
                 extendBodyBehindAppBar: true,
-                body: _showContent(snapshot.hasData)
+                body: _showContent()
               )
             ],
           )

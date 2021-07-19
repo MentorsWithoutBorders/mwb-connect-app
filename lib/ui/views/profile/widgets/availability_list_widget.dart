@@ -35,7 +35,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   Widget _showTitle() {
-    String title = _profileProvider.profile.user.isMentor ? 'profile.available_days_times'.tr() : 'profile.availability'.tr();
+    String title = _profileProvider.user.isMentor ? 'profile.available_days_times'.tr() : 'profile.availability'.tr();
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
@@ -54,7 +54,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
 
   Widget _showAvailabilityList() {
     final List<Widget> availabilityWidgets = [];
-    final List<Availability> availabilityList = _profileProvider.profile.user.availabilities;
+    final List<Availability> availabilityList = _profileProvider.user.availabilities;
     for (int i = 0; i < availabilityList.length; i++) {
       availabilityWidgets.add(AvailabilityItem(index: i));
     }

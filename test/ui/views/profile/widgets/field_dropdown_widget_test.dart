@@ -5,7 +5,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
-import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -34,12 +33,11 @@ Future<void> main() async {
     final Widget fieldDropdownWidget = widgetLoader.createWidget(widget: FieldDropdown(), jsonFile: jsonFile);
 
     setUp(() async {
-      profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         name: 'Bob',
         field: 'Programming'
       );
-      profileViewModel.profile.fields = [
+      profileViewModel.fields = [
         Field(
           name: 'Programming'
         ),

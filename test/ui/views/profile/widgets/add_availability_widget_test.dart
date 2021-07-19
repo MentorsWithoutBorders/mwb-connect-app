@@ -34,7 +34,7 @@ Future<void> main() async {
     
    setUp(() async {
       profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         isMentor: true,
         isAvailable: true,
         availabilities: []    

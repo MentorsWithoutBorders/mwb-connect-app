@@ -39,8 +39,7 @@ Future<void> main() async {
       await easyLocalizationController.loadTranslations();
       Localization.load(Locale('en', 'US'), translations: easyLocalizationController.translations);
 
-      profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         isMentor: true,
         lessonsAvailability: LessonsAvailability(
           minInterval: 2,

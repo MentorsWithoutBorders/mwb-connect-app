@@ -44,13 +44,12 @@ Future<void> main() async {
     final Finder addSubfieldBtn = find.byKey(const Key(AppKeys.addSubfieldBtn)); 
 
     setUp(() async {
-      profileViewModel.profile = Profile();
-      profileViewModel.profile.user = User(
+      profileViewModel.user = User(
         name: 'Bob',
         field: 'Programming',
         subfields: []
       );
-      profileViewModel.profile.fields = [
+      profileViewModel.fields = [
         Field(
           name: 'Programming',
           subfields: [
