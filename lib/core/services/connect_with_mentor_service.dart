@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 
 class ConnectWithMentorService {
   final ApiService _api = locator<ApiService>();
@@ -57,10 +58,11 @@ class ConnectWithMentorService {
 
   Future<void> cancelNextLesson(Lesson lesson, bool isSingleLesson) async {
     dynamic data = {};
+    Lesson lessonData = Lesson(mentor: User(id: lesson.mentor.id));
     if (isSingleLesson && lesson.isRecurrent) {
-      Lesson lessonData = Lesson(dateTime: lesson.dateTime);
-      data = lessonData.toJson();
+      lessonData.dateTime = lesson.dateTime;
     }
+    data = lessonData.toJson();
     String id = lesson.id;    
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: data);  
     return ;

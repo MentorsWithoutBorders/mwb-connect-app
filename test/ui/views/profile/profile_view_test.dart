@@ -9,7 +9,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
-import 'package:mwb_connect_app/core/models/profile_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
@@ -37,7 +36,6 @@ Future<void> main() async {
 
   group('Profile view tests:', () {
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
-    final Profile profile = Profile();
     final WidgetLoader widgetLoader = WidgetLoader();
     final Widget profileWidget = widgetLoader.createWidget(widget: ProfileView(), jsonFile: jsonFile);
 
