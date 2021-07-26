@@ -22,15 +22,31 @@ class LessonRequestView extends StatefulWidget {
   State<StatefulWidget> createState() => _LessonRequestViewState();
 }
 
-class _LessonRequestViewState extends State<LessonRequestView> {
+class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindingObserver {
   LessonRequestViewModel _lessonRequestProvider;
   bool _isInit = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _isInit = false;
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _isInit = false;
+      setState(() {});
+      _init();
+    }
+  } 
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }  
   
   // @override
   // Future<void> reassemble() async {

@@ -15,7 +15,9 @@ dependencies:
     sdk: flutter
 
   firebase_auth: ^1.1.1
+  firebase_core: ^1.4.0
   firebase_storage: ^8.0.4
+  firebase_messaging: ^10.0.4
   flutuate_mixpanel: ^1.1.8
   provider: ^5.0.0
   http: ^0.13.3

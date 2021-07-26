@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/timezone.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
+import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/timezone_model.dart';
 
@@ -32,9 +33,16 @@ class LoginSignupViewModel extends ChangeNotifier {
 
   Future<String> login(User user) async {
     try {
-      return await _authService.login(user);
+      String userId = await _authService.login(user);
+      _initPushNotifications();
+      return userId;
     } catch(error) {
       throw(error);
     }
-  }  
+  }
+
+  void _initPushNotifications() {
+    final pushNotificationsService = PushNotificationsService();
+    pushNotificationsService.init();
+  }    
 }

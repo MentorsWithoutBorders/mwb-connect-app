@@ -38,7 +38,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
 
   Widget _showText() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(50.0, 25.0, 50.0, 35.0),
+      padding: const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 35.0),
       child: Text(
         'connect_with_mentor.finding_available_mentor'.tr(),
         textAlign: TextAlign.center,
