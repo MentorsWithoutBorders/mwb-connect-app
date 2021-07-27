@@ -14,12 +14,12 @@ class AnimatedDialog extends StatefulWidget {
 }
 
 class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProviderStateMixin {
-  CommonViewModel _commonProvider;      
+  CommonViewModel _commonProvider;
+  final GlobalKey<FormState> _containerKey = GlobalKey<FormState>();
   AnimationController _controller;
   Animation<double> _scaleAnimation;
   double _containerHeight = 0;
   double _marginBottom = 0;
-  final GlobalKey<FormState> _containerKey = GlobalKey<FormState>();
 
   @override
   void initState() {

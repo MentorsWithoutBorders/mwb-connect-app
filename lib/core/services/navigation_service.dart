@@ -9,6 +9,10 @@ class NavigationService{
     navigationKey = GlobalKey<NavigatorState>();
   }
 
+  BuildContext getCurrentContext(){
+    return navigationKey.currentContext;
+  }  
+
   Future<dynamic> navigateToReplacement(String _rn){
     return navigationKey.currentState.pushReplacementNamed(_rn);
   }
@@ -23,6 +27,5 @@ class NavigationService{
 
   goback(){
     return navigationKey.currentState.pop();
-
   }
 }

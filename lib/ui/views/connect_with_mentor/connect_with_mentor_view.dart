@@ -40,7 +40,13 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       setState(() {});
       _init();
     }
-  }   
+  } 
+  
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }    
 
   @override
   Future<void> reassemble() async {

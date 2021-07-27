@@ -71,7 +71,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
               context: context,
               builder: (_) => const AnimatedDialog(
                 widgetInside: CancelLessonRequestDialog()
-              ),
+              )
             ); 
           }
         ),
