@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
@@ -27,6 +29,7 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
+  final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();  
   NotificationsViewModel _notificationsProvider;
   RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
@@ -99,6 +102,7 @@ class _RootViewState extends State<RootView> {
   }
   
   Future<bool> _init() async {
+    _setPNOnMessageListener();
     _setCurrentUser();   
     _setPreferences();
     bool isMentor = await _rootProvider.getIsMentor();
@@ -108,7 +112,12 @@ class _RootViewState extends State<RootView> {
       _rootProvider.showDailyAtTime();
     }    
     return isMentor;
-  }  
+  }
+  
+  void _setPNOnMessageListener() {
+    pushNotificationsService.init(isLogin: false);
+  }
+
 
   @override
   Widget build(BuildContext context) {

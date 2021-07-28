@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
+import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -13,6 +14,7 @@ class AuthService {
   final ApiService _api = locator<ApiService>();
   final UserService _userService = locator<UserService>();    
   final LocalStorageService _storageService = locator<LocalStorageService>();
+  final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();
 
   Future<String> signUp(User user) async {
     http.Response response;
@@ -56,6 +58,7 @@ class AuthService {
   Future<void> logout() async {
     _api.postHTTP(url: '/logout', data: {});
     _api.resetStorage();
+    pushNotificationsService.deleteFCMToken();
     NavigationService.instance.navigateTo('root');
   }
 } 

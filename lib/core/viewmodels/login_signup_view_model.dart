@@ -9,6 +9,7 @@ import 'package:mwb_connect_app/core/models/timezone_model.dart';
 
 class LoginSignupViewModel extends ChangeNotifier {
   final AuthService _authService = locator<AuthService>();
+  final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();
 
   Future<String> signUp(User user) async {
     Uuid uuid = Uuid();
@@ -42,7 +43,6 @@ class LoginSignupViewModel extends ChangeNotifier {
   }
 
   void _initPushNotifications() {
-    final pushNotificationsService = PushNotificationsService();
-    pushNotificationsService.init();
+    pushNotificationsService.init(isLogin: true);
   }    
 }

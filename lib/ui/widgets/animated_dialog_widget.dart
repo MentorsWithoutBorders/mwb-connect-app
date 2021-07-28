@@ -46,9 +46,9 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
         if (visible) {
           double marginBottom = 0;
           final double screenHeight = MediaQuery.of(context).size.height;
-          if (_containerHeight / 2 + 220 > screenHeight / 2) {
-            marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + 150;
-          }
+          // if (_containerHeight / 2 + 220 > screenHeight / 2) {
+          //   marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + 150;
+          // }
           _setMarginBottom(marginBottom);
         } else {
           _setMarginBottom(0);

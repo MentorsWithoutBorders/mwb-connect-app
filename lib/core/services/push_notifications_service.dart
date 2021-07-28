@@ -18,11 +18,13 @@ class PushNotificationsService {
   static final PushNotificationsService _instance = PushNotificationsService._();
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
-  Future<void> init() async {
-    // For iOS request permission first.
+  
+  Future<void> init({bool isLogin}) async {
+    // For iOS request permission first.    
     _firebaseMessaging.requestPermission();
-    await _firebaseMessaging.deleteToken();
+    if (isLogin) {
+      deleteFCMToken();
+    }
     String token = await _firebaseMessaging.getToken();
     print("FirebaseMessaging token: $token");
     FCMToken fcmToken = FCMToken(token: token);
@@ -43,6 +45,10 @@ class PushNotificationsService {
     });
     _addFCMToken(fcmToken);
   }
+
+  Future<void> deleteFCMToken() async {
+    await _firebaseMessaging.deleteToken();        
+  }  
 
   Future<bool> _reloadApp(BuildContext context) async {
     Phoenix.rebirth(context);
