@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class UpdateStepDialog extends StatefulWidget {
   const UpdateStepDialog({Key key})
@@ -19,6 +20,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   StepsViewModel _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _stepText;
+  bool _isUpdatingStep = false;
   
   @override
   void initState() {
@@ -130,24 +132,34 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
               ),
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
+            onPressed: () async {
+              if (_formKey.currentState.validate() && !_isUpdatingStep) {
                 _formKey.currentState.save();
-                _updateStep();
+                await _updateStep();
                 Navigator.pop(context);
               }                    
             },
-            child: Text('step_dialog.update_step'.tr(), style: TextStyle(color: Colors.white))
+            child: !_isUpdatingStep ? Text(
+              'step_dialog.update_step'.tr(), 
+              style: const TextStyle(color: Colors.white)
+            ) : SizedBox(
+              width: 75.0,
+              height: 16.0,
+              child: ButtonLoader(),
+            )
           )
         ]
       )
     );
   }
   
-  void _updateStep() {
+  Future<void> _updateStep() async {
+    setState(() {
+      _isUpdatingStep = true;
+    });    
     final StepModel step = _stepsProvider.selectedStep;
     step.text = _stepText;
-    _stepsProvider.updateStep(step, _stepsProvider.selectedStep.id);
+    await _stepsProvider.updateStep(step, _stepsProvider.selectedStep.id);
   }
 
   @override

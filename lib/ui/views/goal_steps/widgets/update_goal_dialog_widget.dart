@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class UpdateGoalDialog extends StatefulWidget {
   const UpdateGoalDialog({Key key})
@@ -19,6 +20,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
   GoalsViewModel _goalsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _goalText;
+  bool _isUpdatingGoal = false;  
   
   @override
   void initState() {
@@ -130,24 +132,34 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
               ),
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ),  
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
+            onPressed: () async {
+              if (_formKey.currentState.validate() && !_isUpdatingGoal) {
                 _formKey.currentState.save();
-                _updateGoal();
+                await _updateGoal();
                 Navigator.pop(context);
               }                    
             },
-            child: Text('goal_dialog.update_goal'.tr(), style: const TextStyle(color: Colors.white))
+            child: !_isUpdatingGoal ? Text(
+              'goal_dialog.update_goal'.tr(), 
+              style: const TextStyle(color: Colors.white)
+            ) : SizedBox(
+              width: 75.0,
+              height: 16.0,
+              child: ButtonLoader(),
+            )            
           )
         ]
       )
     );
   }
   
-  void _updateGoal() {
+  Future<void> _updateGoal() async {
+    setState(() {
+      _isUpdatingGoal = true;
+    });      
     final Goal goal = _goalsProvider.selectedGoal;
     goal.text = _goalText;
-    _goalsProvider.updateGoal(goal, _goalsProvider.selectedGoal.id);
+    await _goalsProvider.updateGoal(goal, _goalsProvider.selectedGoal.id);
   }
 
   @override

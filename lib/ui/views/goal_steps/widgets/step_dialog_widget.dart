@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/ui/views/goal_steps/widgets/delete_step_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -21,6 +22,7 @@ class StepDialog extends StatefulWidget {
 class _StepDialogState extends State<StepDialog> {
   GoalsViewModel _goalsProvider;
   StepsViewModel _stepsProvider;
+  bool _isDeletingStep = false;  
   
   Widget _showStepDialog() {
     return Container(
@@ -140,7 +142,7 @@ class _StepDialogState extends State<StepDialog> {
                 showDialog(
                   context: context,
                   builder: (_) => AnimatedDialog(
-                    widgetInside: _showDeleteStepDialog()
+                    widgetInside: DeleteStepDialog()
                   ),
                 );                      
               },
@@ -175,74 +177,6 @@ class _StepDialogState extends State<StepDialog> {
     _stepsProvider.moveStepDown(_goalsProvider.selectedGoal.id, _stepsProvider.selectedStep);
   }  
   
-  Widget _showDeleteStepDialog() {
-    final List<String> subSteps = _stepsProvider.getSubSteps(_stepsProvider.selectedStep.id);
-    return Container(
-      width: MediaQuery.of(widget.context).size.width * 0.8,
-      padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
-      child: Wrap(
-        children: <Widget>[
-          Center(
-            child: Text(
-              subSteps.isNotEmpty ? 
-                'step_dialog.delete_step_sub_steps_message'.tr() : 
-                'step_dialog.delete_step_message'.tr(),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              )
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-            child: Text(
-              _stepsProvider.selectedStep.text,
-              style: const TextStyle(
-                fontSize: 14,
-              )
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                InkWell(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
-                    child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
-                  ),
-                  onTap: () {
-                    Navigator.pop(widget.context);
-                  },
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.MONZA,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
-                  ), 
-                  onPressed: () {
-                    _deleteStep(subSteps);
-                  },
-                  child: Text('step_dialog.delete_step'.tr(), style: const TextStyle(color: Colors.white))
-                )
-              ]
-            )
-          )
-        ]
-      )
-    );
-  }
-
-  void _deleteStep(List<String> subSteps) {
-    _stepsProvider.deleteStep(_stepsProvider.selectedStep.id);
-    Navigator.pop(widget.context);    
-  }
-
   @override
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);

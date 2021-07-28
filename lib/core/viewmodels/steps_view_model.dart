@@ -55,6 +55,7 @@ class StepsViewModel extends ChangeNotifier {
     
   Future<void> updateStep(StepModel step, String id) async {
     await _stepsService.updateStep(step, id);
+    notifyListeners();
     return ;
   }
 
