@@ -24,6 +24,7 @@ class GoalsViewModel extends ChangeNotifier {
 
   Future<void> updateGoal(Goal goal, String id) async {
     await _goalsService.updateGoal(goal, id);
+    notifyListeners();
     return ;
   }
 
