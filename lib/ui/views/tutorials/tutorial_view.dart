@@ -126,6 +126,10 @@ class _TutorialViewState extends State<TutorialView> {
   Widget _buildCarouselItem(String section) {
     final String itemTitle = 'tutorials.${widget.type}.$section.title'.tr();
     final String itemText = 'tutorials.${widget.type}.$section.text'.tr();
+    double heightScrollThumb = 300.0;
+    if (MediaQuery.of(context).orientation == Orientation.landscape){
+      heightScrollThumb = 80.0;
+    }
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 20.0),
@@ -161,7 +165,7 @@ class _TutorialViewState extends State<TutorialView> {
             );
           },
         ),
-        heightScrollThumb: 300.0,
+        heightScrollThumb: heightScrollThumb,
         backgroundColor: AppColors.SILVER,
         scrollThumbBuilder: (
           Color backgroundColor,

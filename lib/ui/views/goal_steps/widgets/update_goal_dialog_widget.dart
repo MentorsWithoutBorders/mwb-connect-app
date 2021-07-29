@@ -146,7 +146,7 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
               width: 75.0,
               height: 16.0,
               child: ButtonLoader(),
-            )            
+            ) 
           )
         ]
       )

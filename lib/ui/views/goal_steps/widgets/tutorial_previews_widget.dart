@@ -40,7 +40,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     _setAnimationController();
   }
 
-  void _setAnimationController() {
+  void _setAnimationController() { 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
     _animation = Tween<double>(begin: _previewsClosedHeight, end: _previewsOpenHeight).animate(_animationController)

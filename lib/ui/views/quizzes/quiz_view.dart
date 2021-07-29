@@ -47,6 +47,10 @@ class _QuizState extends State<QuizView> {
       }
     }
     _answer = 'quizzes.$type.quiz$quizNumber.answer'.tr();
+    double heightScrollThumb = 200.0;
+    if (MediaQuery.of(context).orientation == Orientation.landscape){
+      heightScrollThumb = 30.0;
+    }   
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
@@ -133,7 +137,7 @@ class _QuizState extends State<QuizView> {
                     );
                   },
                 ),
-                heightScrollThumb: 200.0,
+                heightScrollThumb: heightScrollThumb,
                 backgroundColor: AppColors.SILVER,
                 scrollThumbBuilder: (
                   Color backgroundColor,
