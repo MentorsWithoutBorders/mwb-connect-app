@@ -26,15 +26,16 @@ class RootViewModel extends ChangeNotifier {
   final BehaviorSubject<String> selectNotificationSubject =
       BehaviorSubject<String>();
   NotificationAppLaunchDetails notificationAppLaunchDetails;
-  dynamic _location; 
+  dynamic _location;
+  bool isMentor;
 
-  Future<bool> getIsMentor() async {
+  Future<void> getIsMentor() async {
     if (_storageService.userId != null && _storageService.isMentor == null) {
       User user = await _userService.getUserDetails();
       _userService.setUserStorage(user: user);
-      return user.isMentor;
+      isMentor = user.isMentor;
     } else {
-      return _storageService.isMentor;
+      isMentor = _storageService.isMentor;
     }
   }
   

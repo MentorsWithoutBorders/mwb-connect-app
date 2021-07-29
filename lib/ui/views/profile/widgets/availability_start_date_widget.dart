@@ -131,8 +131,8 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   Widget _showEditCalendarIcon() {
     return Container(
       key: const Key(AppKeys.editCalendarIcon),
-      height: 18.0,
-      padding: const EdgeInsets.only(left: 8.0),
+      height: 20.0,
+      padding: const EdgeInsets.only(left: 8.0, bottom: 3.0),
       child: Image.asset(
         'assets/images/edit_calendar_icon.png'
       ),

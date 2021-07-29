@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
@@ -28,12 +26,12 @@ class RootView extends StatefulWidget {
   State<StatefulWidget> createState() => _RootViewState();
 }
 
-class _RootViewState extends State<RootView> {
-  final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();  
+class _RootViewState extends State<RootView> { 
   NotificationsViewModel _notificationsProvider;
   RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
+  bool _isInit = false;
 
   @override
   void dispose() {
@@ -101,23 +99,19 @@ class _RootViewState extends State<RootView> {
     });    
   }
   
-  Future<bool> _init() async {
-    _setPNOnMessageListener();
-    _setCurrentUser();   
-    _setPreferences();
-    bool isMentor = await _rootProvider.getIsMentor();
-    // _getImages();
-    _setLocalNotifications();
-    if (_notificationsProvider.notificationsSettingsUpdated) {
-      _rootProvider.showDailyAtTime();
-    }    
-    return isMentor;
+  Future<void> _init() async {
+    if (!_isInit) {
+      _setCurrentUser();   
+      _setPreferences();
+      await _rootProvider.getIsMentor();
+      // _getImages();
+      _setLocalNotifications();
+      if (_notificationsProvider.notificationsSettingsUpdated) {
+        _rootProvider.showDailyAtTime();
+      }
+      _isInit = true;
+    }
   }
-  
-  void _setPNOnMessageListener() {
-    pushNotificationsService.init(isLogin: false);
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -128,9 +122,9 @@ class _RootViewState extends State<RootView> {
 
     _rootProvider.sendAnalyticsEvent();
 
-    return FutureBuilder<bool>(
+    return FutureBuilder<void>(
       future: _init(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         switch (_authStatus) {
           case AuthStatus.NOT_DETERMINED:
             return _buildWaitingScreen();
@@ -140,8 +134,8 @@ class _RootViewState extends State<RootView> {
               loginCallback: _loginCallback
             );
           case AuthStatus.LOGGED_IN:
-            if (snapshot.hasData) {
-              bool isMentor = snapshot.data;
+            if (_isInit) {
+              bool isMentor = _rootProvider.isMentor;
               if (isMentor) {
                 return _showLessonRequestView();
               } else {

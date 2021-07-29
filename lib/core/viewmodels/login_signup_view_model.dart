@@ -35,14 +35,14 @@ class LoginSignupViewModel extends ChangeNotifier {
   Future<String> login(User user) async {
     try {
       String userId = await _authService.login(user);
-      _initPushNotifications();
+      await _initPushNotifications();
       return userId;
     } catch(error) {
       throw(error);
     }
   }
 
-  void _initPushNotifications() {
-    pushNotificationsService.init(isLogin: true);
+  Future<void> _initPushNotifications() async {
+    await pushNotificationsService.init();
   }    
 }

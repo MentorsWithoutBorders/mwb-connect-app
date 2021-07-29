@@ -67,7 +67,9 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
         )
       )
     );
-    lessonGuideWidgets.add(guideTutorialsText);
+    if (guideTutorials.length > 0) {
+      lessonGuideWidgets.add(guideTutorialsText);
+    }
     for (GuideTutorial guideTutorial in guideTutorials) {
       Widget guideTutorialWidget = Padding(
         padding: const EdgeInsets.only(bottom: 10.0),
@@ -166,7 +168,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  width: 40.0,
+                  width: 30.0,
                   padding: const EdgeInsets.only(top: 5.0),
                   child: BulletPoint()
                 ),
@@ -189,6 +191,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
                   child: InkWell(
                     child: Text(
                       '${guideLines[index]}',
+                      textAlign: TextAlign.justify,
                       style: const TextStyle(
                         fontSize: 12.0,
                         color: AppColors.DOVE_GRAY,

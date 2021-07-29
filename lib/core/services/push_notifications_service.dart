@@ -19,15 +19,14 @@ class PushNotificationsService {
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   
-  Future<void> init({bool isLogin}) async {
+  Future<void> init() async {
     // For iOS request permission first.    
     _firebaseMessaging.requestPermission();
-    if (isLogin) {
-      deleteFCMToken();
-    }
+    await deleteFCMToken();
     String token = await _firebaseMessaging.getToken();
     print("FirebaseMessaging token: $token");
     FCMToken fcmToken = FCMToken(token: token);
+    await _addFCMToken(fcmToken);
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       if (event.notification.body.isNotEmpty) {
         showDialog(
@@ -43,7 +42,6 @@ class PushNotificationsService {
         );
       }     
     });
-    _addFCMToken(fcmToken);
   }
 
   Future<void> deleteFCMToken() async {
@@ -55,7 +53,7 @@ class PushNotificationsService {
     return true;
   }  
 
-  void _addFCMToken(FCMToken fcmToken) {
-    _api.postHTTP(url: '/fcm_tokens', data: fcmToken.toJson());  
+  Future<void> _addFCMToken(FCMToken fcmToken) async {
+    await _api.postHTTP(url: '/fcm_tokens', data: fcmToken.toJson());  
   }  
 }
