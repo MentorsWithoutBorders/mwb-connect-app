@@ -164,7 +164,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
       child: Opacity(
         opacity: isRecurrent ? 1.0 : 0.3,
         child: Container(
-          margin: const EdgeInsets.only(top: 5.0, left: 30.0, bottom: 15.0),
+          margin: const EdgeInsets.only(top: 5.0, left: 30.0, bottom: 5.0),
           child: Column(
             children: <Widget>[
               Row(

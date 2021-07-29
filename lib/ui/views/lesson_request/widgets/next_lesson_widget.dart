@@ -283,7 +283,7 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showButtons() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
       child: Center(
         child: Column(
           children: [

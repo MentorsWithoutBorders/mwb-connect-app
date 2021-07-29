@@ -43,9 +43,7 @@ class PushNotificationsService {
         );
       }     
     });
-    if (isLogin) {
-      _addFCMToken(fcmToken);
-    }
+    _addFCMToken(fcmToken);
   }
 
   Future<void> deleteFCMToken() async {

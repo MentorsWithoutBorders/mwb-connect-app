@@ -44,10 +44,10 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (visible) {
-          double marginBottom = 0;
+          double marginBottom = 120.0;
           final double screenHeight = MediaQuery.of(context).size.height;
           // if (_containerHeight / 2 + 220 > screenHeight / 2) {
-          //   marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + 150;
+          //   marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + 120;
           // }
           _setMarginBottom(marginBottom);
         } else {

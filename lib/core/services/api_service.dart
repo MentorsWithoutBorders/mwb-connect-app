@@ -32,12 +32,12 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      if (!refreshingToken) {
-        await _refreshToken();
-      }
-      if (_storageService.refreshToken != null) {
-        return getHTTP(url: url);
-      }      
+      // if (!refreshingToken) {
+      //   await _refreshToken();
+      // }
+      // if (_storageService.refreshToken != null) {
+      //   return getHTTP(url: url);
+      // }      
     }
   }
 
@@ -52,12 +52,12 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      if (!refreshingToken) {
-        await _refreshToken();      
-      }
-      if (_storageService.refreshToken != null) {      
-        return await postHTTP(url: url, data: data);
-      }
+      // if (!refreshingToken) {
+      //   await _refreshToken();      
+      // }
+      // if (_storageService.refreshToken != null) {      
+      //   return await postHTTP(url: url, data: data);
+      // }
     }   
   }
 
@@ -72,12 +72,12 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      if (!refreshingToken) {
-        await _refreshToken();       
-      }
-      if (_storageService.refreshToken != null) {
-        return await putHTTP(url: url, data: data);
-      }
+      // if (!refreshingToken) {
+      //   await _refreshToken();       
+      // }
+      // if (_storageService.refreshToken != null) {
+      //   return await putHTTP(url: url, data: data);
+      // }
     }  
   }
   
@@ -91,12 +91,12 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
-      if (!refreshingToken) {
-        await _refreshToken();    
-      }
-      if (_storageService.refreshToken != null) {      
-        return await deleteHTTP(url: url);
-      }
+      // if (!refreshingToken) {
+      //   await _refreshToken();    
+      // }
+      // if (_storageService.refreshToken != null) {      
+      //   return await deleteHTTP(url: url);
+      // }
     }
   }
 
