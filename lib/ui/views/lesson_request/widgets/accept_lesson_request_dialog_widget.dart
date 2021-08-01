@@ -180,7 +180,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
       return ;
     }
     _setIsAcceptingLessonRequest(true);
-    await _lessonRequestProvider.acceptLessonRequest(_url);
+    await _lessonRequestProvider.acceptLessonRequest(_url, context);
     Navigator.pop(context);
   }
   

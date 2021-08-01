@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
@@ -84,11 +85,16 @@ class LessonRequestViewModel extends ChangeNotifier {
     } 
   }
 
-  Future<void> acceptLessonRequest(String meetingUrl) async {
+  Future<void> acceptLessonRequest(String meetingUrl, BuildContext context) async {
     nextLesson.meetingUrl = meetingUrl;
-    nextLesson = await _lessonRequestService.acceptLessonRequest(lessonRequest.id, nextLesson);
-    lessonRequest.id = null;
-    notifyListeners();
+    Lesson acceptedLessonRequest = await _lessonRequestService.acceptLessonRequest(lessonRequest.id, nextLesson);
+    if (acceptedLessonRequest != null && acceptedLessonRequest.id != null) {
+      nextLesson = acceptedLessonRequest;
+      lessonRequest.id = null;
+      notifyListeners();      
+    } else {
+      Phoenix.rebirth(context);
+    }
   }  
 
   Future<void> rejectLessonRequest() async {
