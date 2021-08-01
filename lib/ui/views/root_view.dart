@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/connect_with_mentor_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/lesson_request_view.dart';
@@ -27,16 +26,16 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> { 
-  NotificationsViewModel _notificationsProvider;
   RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
+  bool _isInit = false;
 
   @override
-  void dispose() {
-    _rootProvider.didReceiveLocalNotificationSubject.close();
-    _rootProvider.selectNotificationSubject.close();
-    super.dispose();
+  void didChangeDependencies() {
+    _rootProvider = Provider.of<RootViewModel>(context);
+    _init();
+    super.didChangeDependencies();
   }  
 
   void _loginCallback() {
@@ -89,61 +88,40 @@ class _RootViewState extends State<RootView> {
   void _getImages() {
     _rootProvider.getImages();    
   }
-
-  void _setLocalNotifications() {
-    _rootProvider.setLocalNotifications().then((value) {
-      _rootProvider.requestIOSPermissions();
-      _rootProvider.configureDidReceiveLocalNotificationSubject(context);
-      _rootProvider.configureSelectNotificationSubject();      
-    });    
-  }
   
   Future<void> _init() async {
-    _setCurrentUser();   
-    _setPreferences();
-    await _rootProvider.getIsMentor();
-    // _getImages();
-    _setLocalNotifications();
-    if (_notificationsProvider.notificationsSettingsUpdated) {
-      _rootProvider.showDailyAtTime();
+    if (!_isInit) {
+      _setCurrentUser();   
+      _setPreferences();
+      await _rootProvider.getIsMentor();
+      // _getImages();
+      _isInit = true;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _rootProvider = Provider.of<RootViewModel>(context);
-    _notificationsProvider = Provider.of<NotificationsViewModel>(context);
-
-    print('this is rootview');
-
-    _rootProvider.sendAnalyticsEvent();
-
-    return FutureBuilder<void>(
-      future: _init(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        switch (_authStatus) {
-          case AuthStatus.NOT_DETERMINED:
-            return _buildWaitingScreen();
-            break;
-          case AuthStatus.NOT_LOGGED_IN:
-            return OnboardingView(
-              loginCallback: _loginCallback
-            );
-          case AuthStatus.LOGGED_IN:
-            bool isMentor = _rootProvider.isMentor;
-            if (isMentor != null) {
-              if (isMentor) {
-                return _showLessonRequestView();
-              } else {
-                return _showConnectWithMentorView();
-              }
-            } else
-              return _buildWaitingScreen();
-            break;              
-          default:
-            return _buildWaitingScreen();            
-        }
-      }
-    );
+    switch (_authStatus) {
+      case AuthStatus.NOT_DETERMINED:
+        return _buildWaitingScreen();
+        break;
+      case AuthStatus.NOT_LOGGED_IN:
+        return OnboardingView(
+          loginCallback: _loginCallback
+        );
+      case AuthStatus.LOGGED_IN:
+        bool isMentor = _rootProvider.isMentor;
+        if (isMentor != null) {
+          if (isMentor) {
+            return _showLessonRequestView();
+          } else {
+            return _showConnectWithMentorView();
+          }
+        } else
+          return _buildWaitingScreen();
+        break;              
+      default:
+        return _buildWaitingScreen();            
+    }
   }
 }

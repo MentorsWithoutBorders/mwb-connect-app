@@ -208,6 +208,7 @@
 		"standing_by": "Standing by for a lesson request",
 		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills and availability that you’ve specified in ",
 		"lesson_request_text": "{} from {} would like to do a {} lesson on {} at {} {}",
+    "lesson_request_expired": "We're sorry but the lesson request has expired (each lesson request is available for 1h).",
     "lesson_request_recurrence_text": "Schedule recurring lesson every {} at {} {} (can also be done after the single lesson is scheduled)",
     "next_lesson_recurrence_text": "Schedule recurring lesson every {} at {} {} (can also be done during the lesson or up to 3 hours after the lesson)",    
     "lesson_recurrence_until": "Until: ",

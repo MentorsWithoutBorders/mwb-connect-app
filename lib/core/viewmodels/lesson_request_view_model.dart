@@ -35,6 +35,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   List<LessonNote> lessonsNotes;
   List<GuideTutorial> guideTutorials;
   List<GuideRecommendation> guideRecommendations;
+  bool _shouldShowExpired = false;
   bool _shouldUnfocus = false;
 
   Future<void> getGoal() async {
@@ -59,7 +60,17 @@ class LessonRequestViewModel extends ChangeNotifier {
   }  
 
   Future<void> getLessonRequest() async {
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
     lessonRequest = await _lessonRequestService.getLessonRequest();
+    if (lessonRequest != null && lessonRequest.id != null && lessonRequest.isExpired != null && lessonRequest.isExpired) {
+      if (dateFormat.format(lessonRequest.sentDateTime) != _storageService.lessonRequestExpiredDateTime) {
+        shouldShowExpired = true;
+        _storageService.lessonRequestExpiredDateTime = dateFormat.format(lessonRequest.sentDateTime);
+      } else {
+        shouldShowExpired = false;
+      }
+      lessonRequest = null;
+    }
   }
 
   Future<void> acceptLessonRequest(String meetingUrl) async {
@@ -311,6 +322,14 @@ class LessonRequestViewModel extends ChangeNotifier {
     nextLesson.isRecurrent = !nextLesson.isRecurrent;
     notifyListeners();
   }
+
+  bool get shouldShowExpired => _shouldShowExpired;
+  set shouldShowExpired(bool expired) {
+    _shouldShowExpired = expired;
+    if (shouldShowExpired) {
+      notifyListeners();
+    }
+  }   
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

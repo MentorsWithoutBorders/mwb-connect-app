@@ -75,7 +75,7 @@ class PushNotificationsService {
           return WillPopScope(
             onWillPop: () => _reloadApp(context),
             child: AnimatedDialog(
-              widgetInside: NotificationDialog(text: event.notification.body)
+              widgetInside: NotificationDialog(text: event.notification.body, shouldReload: true)
             )
           );
         }

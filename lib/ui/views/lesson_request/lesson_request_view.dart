@@ -6,10 +6,10 @@ import 'package:mwb_connect_app/ui/views/lesson_request/widgets/solve_quiz_add_s
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/standing_by_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/next_lesson_widget.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/taught_today_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class LessonRequestView extends StatefulWidget {
@@ -30,7 +30,6 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _isInit = false;
   }
 
   @override
@@ -92,11 +91,25 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
       await _lessonRequestProvider.getLastStepAdded();
       await _lessonRequestProvider.getQuizNumber();
       await _lessonRequestProvider.getLessonRequest();
+      _showExpiredLessonRequest();
       await _lessonRequestProvider.getNextLesson();
       await _lessonRequestProvider.getPreviousLesson();
       _isInit = true;
     }
-  }  
+  }
+
+  void _showExpiredLessonRequest() {
+    if (_lessonRequestProvider.shouldShowExpired) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AnimatedDialog(
+            widgetInside: NotificationDialog(text: 'lesson_request.lesson_request_expired'.tr(), shouldReload: false)
+          );
+        }
+      );
+    }
+  } 
 
   @override
   Widget build(BuildContext context) {

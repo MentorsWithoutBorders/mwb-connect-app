@@ -31,7 +31,10 @@ class LocalStorageService {
   set registeredOn(String value) => _saveToDisk('registeredOn', value);  
 
   String get subfieldId => _getFromDisk('subfieldId');
-  set subfieldId(String value) => _saveToDisk('subfieldId', value);     
+  set subfieldId(String value) => _saveToDisk('subfieldId', value); 
+
+  String get lessonRequestExpiredDateTime => _getFromDisk('lessonRequestExpiredDateTime');
+  set lessonRequestExpiredDateTime(String value) => _saveToDisk('lessonRequestExpiredDateTime', value);       
 
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
   set tutorials(Map<String, List<String>> value) => _saveToDisk('tutorials', value);

@@ -9,10 +9,12 @@ class LessonRequestModel {
   User mentor;
   Subfield subfield;
   DateTime lessonDateTime;
+  DateTime sentDateTime;
   bool isCanceled;
   bool isRejected;
+  bool isExpired;
 
-  LessonRequestModel({this.id, this.student, this.mentor, this.subfield, this.lessonDateTime, this.isCanceled, this.isRejected});
+  LessonRequestModel({this.id, this.student, this.mentor, this.subfield, this.lessonDateTime, this.sentDateTime, this.isCanceled, this.isRejected, this.isExpired});
 
   LessonRequestModel.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
@@ -21,8 +23,10 @@ class LessonRequestModel {
     mentor = _userFromJson(json['mentor']);
     subfield = _subfieldFromJson(json['subfield']);
     lessonDateTime = json['lessonDateTime'] != null ? dateFormat.parseUTC(json['lessonDateTime']).toLocal() : null;
+    sentDateTime = json['sentDateTime'] != null ? dateFormat.parseUTC(json['sentDateTime']).toLocal() : null;
     isCanceled = json['isCanceled'];
     isRejected = json['isRejected'];
+    isExpired = json['isExpired'];
   }
 
   User _userFromJson(Map<String, dynamic> json) {
@@ -49,8 +53,10 @@ class LessonRequestModel {
       'mentor': mentor.toJson(),
       'subfield': subfield.toJson(),
       'lessonDateTime': lessonDateTime != null ? dateFormat.format(lessonDateTime.toUtc()) : null,
+      'sentDateTime': sentDateTime != null ? dateFormat.format(sentDateTime.toUtc()) : null,
       'isCanceled': isCanceled,
-      'isRejected': isRejected
+      'isRejected': isRejected,
+      'isExpired': isExpired
     };
   }
 }
