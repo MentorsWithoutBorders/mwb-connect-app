@@ -42,19 +42,6 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
 
   @override
-  Future<void> reassemble() async {
-    super.reassemble();
-    // Show update
-    final UpdatesViewModel updatesViewModel = locator<UpdatesViewModel>();
-    final UpdateStatus updateStatus = await updatesViewModel.getUpdateStatus();
-    if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
-      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));
-    } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
-      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
-    }
-  }  
-
-  @override
   void dispose() {
     _scrollController.dispose();
     WidgetsBinding.instance.removeObserver(this);

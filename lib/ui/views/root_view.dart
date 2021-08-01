@@ -25,24 +25,16 @@ class RootView extends StatefulWidget {
   State<StatefulWidget> createState() => _RootViewState();
 }
 
-class _RootViewState extends State<RootView> { 
+class _RootViewState extends State<RootView> {
   RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
-
-  @override
-  void didChangeDependencies() {
-    _rootProvider = Provider.of<RootViewModel>(context);
-    _init();
-    super.didChangeDependencies();
-  }  
 
   void _loginCallback() {
     setState(() {
       _userId = _rootProvider.getUserId();
       _authStatus = AuthStatus.LOGGED_IN;
     });
-    //_setPreferences();
   }
 
   void _logoutCallback() {
@@ -79,40 +71,42 @@ class _RootViewState extends State<RootView> {
       _authStatus = _userId == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
     });
   }    
-
-  void _getImages() {
-    _rootProvider.getImages();    
-  }
   
   Future<void> _init() async {
     _setCurrentUser();   
     await _rootProvider.getIsMentor();
-    // _getImages();
   }
 
   @override
   Widget build(BuildContext context) {
-    switch (_authStatus) {
-      case AuthStatus.NOT_DETERMINED:
-        return _buildWaitingScreen();
-        break;
-      case AuthStatus.NOT_LOGGED_IN:
-        return OnboardingView(
-          loginCallback: _loginCallback
-        );
-      case AuthStatus.LOGGED_IN:
-        bool isMentor = _rootProvider.isMentor;
-        if (isMentor != null) {
-          if (isMentor) {
-            return _showLessonRequestView();
-          } else {
-            return _showConnectWithMentorView();
-          }
-        } else
-          return _buildWaitingScreen();
-        break;              
-      default:
-        return _buildWaitingScreen();            
-    }
+    _rootProvider = Provider.of<RootViewModel>(context);
+
+    return FutureBuilder<void>(
+      future: _init(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {    
+        switch (_authStatus) {
+          case AuthStatus.NOT_DETERMINED:
+            return _buildWaitingScreen();
+            break;
+          case AuthStatus.NOT_LOGGED_IN:
+            return OnboardingView(
+              loginCallback: _loginCallback
+            );
+          case AuthStatus.LOGGED_IN:
+            bool isMentor = _rootProvider.isMentor;
+            if (isMentor != null) {
+              if (isMentor) {
+                return _showLessonRequestView();
+              } else {
+                return _showConnectWithMentorView();
+              }
+            } else
+              return _buildWaitingScreen();
+            break;              
+          default:
+            return _buildWaitingScreen();            
+        }
+      }
+    );
   }
 }

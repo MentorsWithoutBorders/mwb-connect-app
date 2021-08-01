@@ -4,12 +4,10 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
-import 'package:mwb_connect_app/core/services/download_service.dart';
 
 class RootViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final DownloadService _downloadService = locator<DownloadService>();
   bool isMentor;
 
   Future<void> getIsMentor() async {
@@ -20,10 +18,6 @@ class RootViewModel extends ChangeNotifier {
     } else {
       isMentor = _storageService.isMentor;
     }
-  }
-
-  void getImages() {
-    _downloadService.getImages();    
   }
 
   String getUserId() {

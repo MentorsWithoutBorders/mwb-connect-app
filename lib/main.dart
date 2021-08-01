@@ -75,7 +75,6 @@ class MWBConnectApp extends StatefulWidget {
 class _MWBConnectAppState extends State<MWBConnectApp> {
   MixpanelAPI _mixpanel;
   String _mixpanelToken;
-  //DownloadService _downloadService = locator<DownloadService>();  
 
   _MWBConnectAppState(this._mixpanelToken);
 
@@ -94,8 +93,8 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
   Widget build(BuildContext context) {
     MixpanelAPI.getInstance(_mixpanelToken).then((MixpanelAPI mixpanel) {
       _mixpanel = mixpanel;
-      final Map<String, String> properties = {'p1': 'property1'};
-      _mixpanel.track('Test Event', properties);      
+      // final Map<String, String> properties = {'p1': 'property1'};
+      // _mixpanel.track('Test Event', properties);      
     });
 
     return FutureBuilder(

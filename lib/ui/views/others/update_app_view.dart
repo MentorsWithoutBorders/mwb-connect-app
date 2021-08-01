@@ -17,13 +17,21 @@ class UpdateAppView extends StatefulWidget {
   State<StatefulWidget> createState() => _UpdateAppViewState();
 }
 
-class _UpdateAppViewState extends State<UpdateAppView> {
+class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserver {
   Directory _appDocsDir;  
   bool _isLoaded = false;
 
   @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.inactive) {
+      Navigator.of(context).pop();
+    }
+  }  
+
+  @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _setAppDirectory();
   }
 
@@ -32,7 +40,14 @@ class _UpdateAppViewState extends State<UpdateAppView> {
     setState(() {
       _isLoaded = true;
     });    
-  }    
+  }
+  
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }   
+
 
   Widget _showUpdateApp(BuildContext context) {
     final String updateTitle = 'update_app.title'.tr();

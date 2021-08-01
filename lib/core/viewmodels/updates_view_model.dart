@@ -26,17 +26,17 @@ class UpdatesViewModel extends ChangeNotifier {
     final List<String> packageVersion = packageInfo.version.split('.');
     final int packageVersionMajor = int.parse(packageVersion[0]);
     final int packageVersionMinor = int.parse(packageVersion[1]);
-    final int packageVersionRelease = int.parse(packageVersion[2]);
+    final int packageVersionRevision = int.parse(packageVersion[2]);
     final int packageVersionBuild = int.parse(packageInfo.buildNumber);
     if (update.major > packageVersionMajor ||
         update.minor > packageVersionMinor &&
         update.major >= packageVersionMajor) {
       return UpdateStatus.FORCE_UPDATE;
-    } else if (update.release > packageVersionRelease &&
+    } else if (update.revision > packageVersionRevision &&
         update.minor >= packageVersionMinor &&
         update.major >= packageVersionMajor ||
         update.build > packageVersionBuild &&
-        update.release >= packageVersionRelease &&
+        update.revision >= packageVersionRevision &&
         update.minor >= packageVersionMinor &&
         update.major >= packageVersionMajor) {
       return UpdateStatus.RECOMMEND_UPDATE;

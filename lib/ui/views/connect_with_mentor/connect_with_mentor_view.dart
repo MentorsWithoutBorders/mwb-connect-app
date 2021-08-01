@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
+import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -41,8 +45,19 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
         setState(() {});
         _init();
       }
+      _checkUpdate();
     }
   }
+
+  Future<void> _checkUpdate() async {
+    final UpdatesViewModel updatesProvider = locator<UpdatesViewModel>();
+    final UpdateStatus updateStatus = await updatesProvider.getUpdateStatus();
+    if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
+      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));
+    } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
+      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
+    }    
+  } 
   
   bool _checkAppReload() {
     return _commonProvider.checkAppReload();
