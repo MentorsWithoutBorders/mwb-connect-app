@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
@@ -24,6 +25,7 @@ class LessonRequestView extends StatefulWidget {
 
 class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindingObserver {
   LessonRequestViewModel _lessonRequestProvider;
+  CommonViewModel _commonProvider;
   bool _isInit = false;
 
   @override
@@ -36,10 +38,21 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _isInit = false;
-      setState(() {});
-      _init();
+      if (!_checkAppReload()) {
+        _setPreferences();
+        setState(() {});
+        _init();
+      }
     }
-  } 
+  }
+
+  bool _checkAppReload() {
+    return _commonProvider.checkAppReload();
+  }    
+  
+  void _setPreferences() {
+    _commonProvider.setPreferences();   
+  }
 
   @override
   void dispose() {
@@ -128,6 +141,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _commonProvider = Provider.of<CommonViewModel>(context);
 
     return FutureBuilder<void>(
       future: _init(),

@@ -235,9 +235,7 @@
 		"taught_today": "What I taught today",
 		"taught_today_text": "In order for us to connect your {} from today with an appropriate mentor after your lesson/s, please select from the following list what you have taught {}:",
     "throughout_recurrence": "throughout the entire lesson recurrence",
-    "quick_notes_placeholder": "Please also add some quick notes...",
-		"student_connected": "We're sorry but the student has already been connected with a mentor.",
-		"request_canceled": "We're sorry but the student has canceled the lesson request."
+    "quick_notes_placeholder": "Please also add some quick notes..."
 	},
 	"goals": {
 		"my_goals": "My goals",

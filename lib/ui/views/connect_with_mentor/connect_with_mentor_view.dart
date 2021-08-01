@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
@@ -22,23 +23,34 @@ class ConnectWithMentorView extends StatefulWidget {
 
 class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with WidgetsBindingObserver {
   ConnectWithMentorViewModel _connectWithMentorProvider;
+  CommonViewModel _commonProvider;
   bool _isInit = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _isInit = false;
   } 
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _isInit = false;
-      setState(() {});
-      _init();
+      if (!_checkAppReload()) {
+        _setPreferences();
+        setState(() {});
+        _init();
+      }
     }
-  } 
+  }
+  
+  bool _checkAppReload() {
+    return _commonProvider.checkAppReload();
+  }    
+  
+  void _setPreferences() {
+    _commonProvider.setPreferences();   
+  }  
   
   @override
   void dispose() {
@@ -93,6 +105,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   @override
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _commonProvider = Provider.of<CommonViewModel>(context);
 
     return FutureBuilder<void>(
       future: _init(),

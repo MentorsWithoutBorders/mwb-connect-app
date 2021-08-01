@@ -362,5 +362,5 @@ class LessonRequestViewModel extends ChangeNotifier {
     if (shouldUnfocus) {
       notifyListeners();
     }
-  } 
+  }
 }

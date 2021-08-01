@@ -34,7 +34,6 @@ class _OnboardingViewState extends State<OnboardingView> {
   @override
   void initState() {
     super.initState();
-    _sendScreenNameAnalytics();
     _setAppDirectory();
     _setSections();
   }
@@ -44,10 +43,6 @@ class _OnboardingViewState extends State<OnboardingView> {
     _controller.dispose();
     super.dispose();
   }   
-
-  void _sendScreenNameAnalytics() {
-    _analyticsService.sendScreenName('Onboarding');   
-  }
 
   Future<void> _setAppDirectory() async {
     _appDocsDir = await getApplicationDocumentsDirectory();

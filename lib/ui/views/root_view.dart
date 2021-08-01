@@ -29,7 +29,6 @@ class _RootViewState extends State<RootView> {
   RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
-  bool _isInit = false;
 
   @override
   void didChangeDependencies() {
@@ -81,22 +80,14 @@ class _RootViewState extends State<RootView> {
     });
   }    
 
-  void _setPreferences() {
-    _rootProvider.setPreferences();   
-  }
-
   void _getImages() {
     _rootProvider.getImages();    
   }
   
   Future<void> _init() async {
-    if (!_isInit) {
-      _setCurrentUser();   
-      _setPreferences();
-      await _rootProvider.getIsMentor();
-      // _getImages();
-      _isInit = true;
-    }
+    _setCurrentUser();   
+    await _rootProvider.getIsMentor();
+    // _getImages();
   }
 
   @override

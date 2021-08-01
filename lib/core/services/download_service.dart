@@ -17,6 +17,7 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class DownloadService { 
   final ApiService _api = locator<ApiService>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
 
   Future<void> initAppDirectory() async {
     await _createDir('i18n');
@@ -71,12 +72,17 @@ class DownloadService {
             await _deleteFile(fileAppDir);
             await _createFile(fileAppDir);
             await _getFileFromCloudstore(ref, fileAppDirPath);
+            _setAppReload();
           }
         }
       });
     } on Exception catch(e) {
       print(e);
     }
+  }
+
+  void _setAppReload() {
+    _storageService.shouldAppReload = true;
   }
 
   Future<void> _createFile(File file) async {
@@ -115,7 +121,6 @@ class DownloadService {
         storageService.quizzesMentorWeeklyCount = quizSettings.mentorWeeklyCount;
       }
     }  
-    debugPrint('preferences were set');
   }
 
   Future<void> getImages() async {

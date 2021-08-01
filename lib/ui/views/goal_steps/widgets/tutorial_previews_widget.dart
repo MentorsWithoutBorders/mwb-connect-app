@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -294,7 +293,6 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
             TextSpan(
               text: itemText + ' ',
               recognizer: TapGestureRecognizer()..onTap = () {
-                // if (_isOpen) Phoenix.rebirth(context);
                 if (_isOpen) {
                   Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: item)));
                 }
@@ -308,7 +306,6 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
                 fontWeight: FontWeight.bold
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
-                // if (_isOpen) Phoenix.rebirth(context);
                 if (_isOpen) {
                   Navigator.push(context, MaterialPageRoute<TutorialView>(builder: (_) => TutorialView(type: item)));
                 }

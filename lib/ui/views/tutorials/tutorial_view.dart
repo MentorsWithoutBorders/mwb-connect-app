@@ -153,7 +153,7 @@ class _TutorialViewState extends State<TutorialView> {
                   ),
                 ),
                 Container (
-                  height: _imageExists[section] ? 170 : 0,
+                  height: _imageExists[section] ? 140 : 0,
                   padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                   child: _showImage(section),
                 ),

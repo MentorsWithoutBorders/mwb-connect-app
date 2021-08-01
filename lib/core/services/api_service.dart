@@ -136,6 +136,7 @@ class ApiService {
     _storageService.isMentor = null;
     _storageService.quizNumber = null;
     _storageService.lastStepAddedId = null;
+    _storageService.shouldAppReload = null;
     _storageService.notificationsEnabled = AppConstants.notificationsEnabled;
     _storageService.notificationsTime = AppConstants.notificationsTime;
   }    
