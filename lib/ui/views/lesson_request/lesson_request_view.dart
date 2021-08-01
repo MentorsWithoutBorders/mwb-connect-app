@@ -92,6 +92,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
       await _lessonRequestProvider.getQuizNumber();
       await _lessonRequestProvider.getLessonRequest();
       _showExpiredLessonRequest();
+      _showCanceledLessonRequest();
       await _lessonRequestProvider.getNextLesson();
       await _lessonRequestProvider.getPreviousLesson();
       _isInit = true;
@@ -109,7 +110,20 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         }
       );
     }
-  } 
+  }
+
+  void _showCanceledLessonRequest() {
+    if (_lessonRequestProvider.shouldShowCanceled) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AnimatedDialog(
+            widgetInside: NotificationDialog(text: 'lesson_request.lesson_request_canceled'.tr(), shouldReload: false)
+          );
+        }
+      );
+    }
+  }    
 
   @override
   Widget build(BuildContext context) {

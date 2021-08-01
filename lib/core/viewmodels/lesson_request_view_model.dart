@@ -36,6 +36,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   List<GuideTutorial> guideTutorials;
   List<GuideRecommendation> guideRecommendations;
   bool _shouldShowExpired = false;
+  bool _shouldShowCanceled = false;
   bool _shouldUnfocus = false;
 
   Future<void> getGoal() async {
@@ -62,15 +63,25 @@ class LessonRequestViewModel extends ChangeNotifier {
   Future<void> getLessonRequest() async {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
     lessonRequest = await _lessonRequestService.getLessonRequest();
-    if (lessonRequest != null && lessonRequest.id != null && lessonRequest.isExpired != null && lessonRequest.isExpired) {
-      if (dateFormat.format(lessonRequest.sentDateTime) != _storageService.lessonRequestExpiredDateTime) {
-        shouldShowExpired = true;
-        _storageService.lessonRequestExpiredDateTime = dateFormat.format(lessonRequest.sentDateTime);
-      } else {
-        shouldShowExpired = false;
+    if (lessonRequest != null && lessonRequest.id != null) {
+      if (lessonRequest.isExpired != null && lessonRequest.isExpired) {
+        if (dateFormat.format(lessonRequest.sentDateTime) != _storageService.lessonRequestExpiredDateTime) {
+          shouldShowExpired = true;
+          _storageService.lessonRequestExpiredDateTime = dateFormat.format(lessonRequest.sentDateTime);
+        } else {
+          shouldShowExpired = false;
+        }
+        lessonRequest = null;
+      } else if (lessonRequest.isCanceled != null && lessonRequest.isCanceled) {
+        if (dateFormat.format(lessonRequest.sentDateTime) != _storageService.lessonRequestCanceledDateTime) {
+          shouldShowCanceled = true;
+          _storageService.lessonRequestCanceledDateTime = dateFormat.format(lessonRequest.sentDateTime);
+        } else {
+          shouldShowCanceled = false;
+        }
+        lessonRequest = null;
       }
-      lessonRequest = null;
-    }
+    } 
   }
 
   Future<void> acceptLessonRequest(String meetingUrl) async {
@@ -329,7 +340,15 @@ class LessonRequestViewModel extends ChangeNotifier {
     if (shouldShowExpired) {
       notifyListeners();
     }
-  }   
+  }
+
+  bool get shouldShowCanceled => _shouldShowCanceled;
+  set shouldShowCanceled(bool expired) {
+    _shouldShowCanceled = expired;
+    if (shouldShowCanceled) {
+      notifyListeners();
+    }
+  }     
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
