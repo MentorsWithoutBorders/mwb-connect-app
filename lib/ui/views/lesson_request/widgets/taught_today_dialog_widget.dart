@@ -81,17 +81,13 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
 
   Widget _showText() {
     int studentsNumber = _lessonRequestProvider.previousLesson.students.length;
-    bool isRecurrent = _lessonRequestProvider.previousLesson.isRecurrent;
     String studentPlural = plural('student', studentsNumber);
     String pronoun = studentsNumber == 1 ? 'common.him_her'.tr() : 'common.them'.tr();
-    String throughoutRecurrence = '';
-    if (isRecurrent != null && isRecurrent) {
-      throughoutRecurrence = ' ' + 'lesson_request.throughout_recurrence'.tr();
-    }
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
-        'lesson_request.taught_today_text'.tr(args: [studentPlural, pronoun, throughoutRecurrence]),
+        'lesson_request.taught_today_text'.tr(args: [studentPlural, pronoun]),
         textAlign: TextAlign.justify,
         style: const TextStyle(
           fontSize: 12.0,

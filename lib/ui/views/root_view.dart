@@ -31,7 +31,6 @@ class _RootViewState extends State<RootView> {
   RootViewModel _rootProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
-  bool _isInit = false;
 
   @override
   void dispose() {
@@ -100,16 +99,13 @@ class _RootViewState extends State<RootView> {
   }
   
   Future<void> _init() async {
-    if (!_isInit) {
-      _setCurrentUser();   
-      _setPreferences();
-      await _rootProvider.getIsMentor();
-      // _getImages();
-      _setLocalNotifications();
-      if (_notificationsProvider.notificationsSettingsUpdated) {
-        _rootProvider.showDailyAtTime();
-      }
-      _isInit = true;
+    _setCurrentUser();   
+    _setPreferences();
+    await _rootProvider.getIsMentor();
+    // _getImages();
+    _setLocalNotifications();
+    if (_notificationsProvider.notificationsSettingsUpdated) {
+      _rootProvider.showDailyAtTime();
     }
   }
 
@@ -134,8 +130,8 @@ class _RootViewState extends State<RootView> {
               loginCallback: _loginCallback
             );
           case AuthStatus.LOGGED_IN:
-            if (_isInit) {
-              bool isMentor = _rootProvider.isMentor;
+            bool isMentor = _rootProvider.isMentor;
+            if (isMentor != null) {
               if (isMentor) {
                 return _showLessonRequestView();
               } else {

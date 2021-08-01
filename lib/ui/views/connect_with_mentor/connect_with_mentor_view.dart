@@ -6,9 +6,7 @@ import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/learned_today_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
@@ -46,19 +44,6 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }    
-
-  @override
-  Future<void> reassemble() async {
-    super.reassemble();
-    // Show learned today
-    // showDialog(
-    //   context: context,
-    //   builder: (_) => AnimatedDialog(
-    //     widgetInside: LearnedTodayDialog(),
-    //     hasInput: false
-    //   ),
-    // );
   }    
 
   Widget _showConnectWithMentor() {

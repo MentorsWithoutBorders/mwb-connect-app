@@ -27,11 +27,11 @@ class LocalStorageService {
   bool get isMentor => _getFromDisk('isMentor');
   set isMentor(bool value) => _saveToDisk('isMentor', value);
 
+  String get registeredOn => _getFromDisk('registeredOn');
+  set registeredOn(String value) => _saveToDisk('registeredOn', value);  
+
   String get subfieldId => _getFromDisk('subfieldId');
   set subfieldId(String value) => _saveToDisk('subfieldId', value);     
-
-  String get registeredOn => _getFromDisk('registeredOn');
-  set registeredOn(String value) => _saveToDisk('registeredOn', value);    
 
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
   set tutorials(Map<String, List<String>> value) => _saveToDisk('tutorials', value);

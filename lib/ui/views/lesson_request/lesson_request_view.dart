@@ -48,19 +48,6 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
     super.dispose();
   }  
   
-  // @override
-  // Future<void> reassemble() async {
-  //   super.reassemble();
-  //   // Show taught today
-  //   showDialog(
-  //     context: context,
-  //     builder: (_) => Center(
-  //       child: AnimatedDialog(
-  //         widgetInside: TaughtTodayDialog()
-  //       ),
-  //     ),
-  //   );
-  // }      
 
   Widget _showLessonRequest() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
