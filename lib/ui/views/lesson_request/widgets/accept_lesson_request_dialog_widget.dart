@@ -146,7 +146,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.WATERCOURSE,
+            primary: AppColors.ALLPORTS,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

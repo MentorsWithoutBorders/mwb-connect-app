@@ -156,7 +156,7 @@ class _LessonRequestState extends State<LessonRequest> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 1.0,
-              primary: AppColors.WATERCOURSE,
+              primary: AppColors.ALLPORTS,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               ),
