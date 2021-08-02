@@ -106,23 +106,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
             },
           ),
-          ListTile(
-            leading: const Padding(
-              padding: EdgeInsets.only(left: 5.0),
-              child: IconTheme(
-                data: IconThemeData(
-                  color: AppColors.SILVER
-                ),
-                child: Icon(Icons.library_books),
-              )
-            ),
-            dense: true,
-            title: Text('drawer.terms'.tr()),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute<TermsView>(builder: (_) => TermsView()));
-            },
-          ),
+          // ListTile(
+          //   leading: const Padding(
+          //     padding: EdgeInsets.only(left: 5.0),
+          //     child: IconTheme(
+          //       data: IconThemeData(
+          //         color: AppColors.SILVER
+          //       ),
+          //       child: Icon(Icons.library_books),
+          //     )
+          //   ),
+          //   dense: true,
+          //   title: Text('drawer.terms'.tr()),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(context, MaterialPageRoute<TermsView>(builder: (_) => TermsView()));
+          //   },
+          // ),
           ListTile(
             leading: const Padding(
               padding: EdgeInsets.only(left: 5.0),

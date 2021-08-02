@@ -16,7 +16,9 @@ class LoginSignupViewModel extends ChangeNotifier {
     user.id = uuid.v4();
     user.timeZone = await getTimeZone();
     try {
-      return await _authService.signUp(user);
+      String userId = await _authService.signUp(user);
+      await _initPushNotifications();
+      return userId;
     } catch(error) {
       throw(error);
     }

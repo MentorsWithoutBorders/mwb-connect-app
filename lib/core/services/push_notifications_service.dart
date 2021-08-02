@@ -33,10 +33,10 @@ class PushNotificationsService {
     FCMToken fcmToken = FCMToken(token: token);
     await _addFCMToken(fcmToken);
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
-      showPushNotification(event);
+      showPushNotification(event: event, isOpenApp: true);
     });       
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      showPushNotification(event);
+      showPushNotification(event: event, isOpenApp: false);
     }); 
   }
 
@@ -54,16 +54,20 @@ class PushNotificationsService {
     return pushNotificationType;
   }
 
-  void showPushNotification(RemoteMessage event) {
+  void showPushNotification({RemoteMessage event, bool isOpenApp}) {
     switch (_getPushNotificationType(event.data['type'])) {
       case PushNotificationType.normal:
-        _showNormalPushNotification(event);
+        if (!isOpenApp) {
+          _showNormalPushNotification(event);
+        }
         break;
       case PushNotificationType.afterLesson:
         _showAfterLessonPushNotification();
         break;
       default:
-        _showNormalPushNotification(event);       
+        if (!isOpenApp) {
+          _showNormalPushNotification(event);
+        }
     }
   }
 

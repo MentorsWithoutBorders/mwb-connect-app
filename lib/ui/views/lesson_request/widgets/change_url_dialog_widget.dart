@@ -135,7 +135,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.JAPANESE_LAUREL,
+            primary: AppColors.WATERCOURSE,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

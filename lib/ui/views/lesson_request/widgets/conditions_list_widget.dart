@@ -30,7 +30,7 @@ class ConditionsList extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Container(
-                  width: 40.0,
+                  width: 30.0,
                   child: BulletPoint()
                 ),
                 Expanded(
@@ -65,7 +65,7 @@ class ConditionsList extends StatelessWidget {
                           text: 'common.relaxation_method'.tr().toLowerCase()                    
                         ),
                         TextSpan(
-                          text: ' ' + 'common.or'.tr() + ' '
+                          text: ' ' + 'common.and'.tr() + ' '
                         ),
                         TextSpan(
                           text: 'common.super_focus_method'.tr().toLowerCase()                    
@@ -82,7 +82,7 @@ class ConditionsList extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Container(
-                  width: 40.0,
+                  width: 30.0,
                   child: BulletPoint()
                 ),
                 Expanded(
