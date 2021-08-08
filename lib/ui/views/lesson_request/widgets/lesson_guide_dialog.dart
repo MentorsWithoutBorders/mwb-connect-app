@@ -215,7 +215,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
     return Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.PACIFIC_BLUE,
+          primary: AppColors.BERMUDA_GRAY,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),

@@ -108,11 +108,13 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   
   Future<void> _init() async {
     if (!_isInit) {
-      await _connectWithMentorProvider.getGoal();
-      await _connectWithMentorProvider.getLastStepAdded();
-      await _connectWithMentorProvider.getQuizNumber();
-      await _connectWithMentorProvider.getLessonRequest();
-      await _connectWithMentorProvider.getNextLesson();
+      await Future.wait([
+        _connectWithMentorProvider.getGoal(),
+        _connectWithMentorProvider.getLastStepAdded(),
+        _connectWithMentorProvider.getQuizNumber(),
+        _connectWithMentorProvider.getLessonRequest(),
+        _connectWithMentorProvider.getNextLesson()
+      ]);      
       _isInit = true;
     }
   }

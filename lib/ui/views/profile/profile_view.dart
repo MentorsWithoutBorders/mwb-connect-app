@@ -169,8 +169,10 @@ class _ProfileViewState extends State<ProfileView> {
 
   Future<void> _getProfile() async {
     if (!_isProfileRetrieved) {
-      await _profileProvider.getUserDetails();
-      await _profileProvider.getFields();
+      await Future.wait([
+        _profileProvider.getUserDetails(),
+        _profileProvider.getFields()
+      ]);      
       _isProfileRetrieved = true;
     }
   } 

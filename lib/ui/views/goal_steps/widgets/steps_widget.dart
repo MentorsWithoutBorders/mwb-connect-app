@@ -90,7 +90,7 @@ class _StepsState extends State<Steps> {
       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.ALLPORTS,
+          primary: AppColors.JAPANESE_LAUREL,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),

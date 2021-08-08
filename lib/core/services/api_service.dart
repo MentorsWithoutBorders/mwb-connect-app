@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/core/models/error_model.dart';
 
 class ApiService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final String baseUrl = 'http://143.198.173.157:3000/api/v1';
+  final String baseUrl = 'https://www.mwbtraining.co/staging/api/v1';
   bool refreshingToken = false;
   
   Map<String, String> getHeaders() {

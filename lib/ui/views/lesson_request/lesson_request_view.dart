@@ -115,14 +115,16 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   
   Future<void> _init() async {
     if (!_isInit) {
-      await _lessonRequestProvider.getGoal();
-      await _lessonRequestProvider.getLastStepAdded();
-      await _lessonRequestProvider.getQuizNumber();
-      await _lessonRequestProvider.getLessonRequest();
+      await Future.wait([
+        _lessonRequestProvider.getGoal(),
+        _lessonRequestProvider.getLastStepAdded(),
+        _lessonRequestProvider.getQuizNumber(),
+        _lessonRequestProvider.getLessonRequest(),
+        _lessonRequestProvider.getNextLesson(),
+        _lessonRequestProvider.getPreviousLesson()
+      ]);
       _showExpiredLessonRequest();
-      _showCanceledLessonRequest();
-      await _lessonRequestProvider.getNextLesson();
-      await _lessonRequestProvider.getPreviousLesson();
+      _showCanceledLessonRequest();      
       _isInit = true;
     }
   }
