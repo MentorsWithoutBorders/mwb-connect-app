@@ -133,7 +133,7 @@
 		"email_label": "Please enter your email:",
 		"link_label": "You will receive a reset password link",
 		"email": "Email",
-		"email_empty": "Email can't be empty",
+		"email_not_valid": "Please enter a valid email address",
 		"next": "Next",
 		"email_sent": "We've sent you an email, please click on the link that you'll find in the message and you'll be able to reset your password."
 	},

@@ -12,7 +12,7 @@ import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
-import 'package:mwb_connect_app/ui/views/forgot_password.dart';
+import 'package:mwb_connect_app/ui/views/forgot_password_view.dart';
 
 class LoginSignupView extends StatefulWidget {
   const LoginSignupView({Key key, this.loginCallback, this.isLoginForm})

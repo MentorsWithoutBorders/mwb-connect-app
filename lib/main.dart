@@ -16,6 +16,7 @@ import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/forgot_password_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
@@ -107,6 +108,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> {
               ChangeNotifierProvider<CommonViewModel>.value(value: locator<CommonViewModel>()),
               ChangeNotifierProvider<RootViewModel>.value(value: locator<RootViewModel>()),
               ChangeNotifierProvider<LoginSignupViewModel>.value(value: locator<LoginSignupViewModel>()),
+              ChangeNotifierProvider<ForgotPasswordViewModel>.value(value: locator<ForgotPasswordViewModel>()),
               ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
               ChangeNotifierProvider<ConnectWithMentorViewModel>.value(value: locator<ConnectWithMentorViewModel>()),
               ChangeNotifierProvider<LessonRequestViewModel>.value(value: locator<LessonRequestViewModel>()),

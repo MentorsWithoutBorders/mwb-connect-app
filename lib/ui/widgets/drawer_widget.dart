@@ -47,7 +47,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   'MWB Connect',
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
-                    fontStyle: FontStyle.italic,
                     fontSize: 20,
                     color: Colors.white
                   )

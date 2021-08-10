@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/core/models/error_model.dart';
 
 class ApiService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final String baseUrl = 'https://www.mwbtraining.co/staging/api/v1';
+  final String baseUrl = 'https://mwbtraining.co/staging/api/v1';
   bool refreshingToken = false;
   
   Map<String, String> getHeaders() {
@@ -32,6 +32,7 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
+      throw(Exception(_getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();
       // }
@@ -52,6 +53,7 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
+      throw(Exception(_getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();      
       // }
@@ -72,6 +74,7 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
+      throw(Exception(_getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();       
       // }
@@ -91,6 +94,7 @@ class ApiService {
     } else if (response.statusCode == 400) {
       throw(Exception(_getError(response)));
     } else if (response.statusCode == 401) {
+      throw(Exception(_getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();    
       // }

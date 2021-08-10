@@ -105,6 +105,10 @@ class Utils {
   static DateTime resetTime(DateTime dateTime) {
     return dateTime.subtract(Duration(hours: dateTime.hour, minutes: dateTime.minute, seconds: dateTime.second, milliseconds: dateTime.millisecond, microseconds: dateTime.microsecond));
   }
+
+  static bool checkValidEmail(String email) {
+    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+  }
   
   static String getUrlType(String url) {
     if (url.contains('meet')) {

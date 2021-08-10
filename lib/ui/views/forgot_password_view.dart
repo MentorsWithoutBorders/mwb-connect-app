@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/viewmodels/forgot_password_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class ForgotPasswordView extends StatefulWidget {
@@ -164,12 +166,12 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           hintStyle: const TextStyle(color: Colors.white),
           hintText: 'forgot_password.email'.tr(),
           errorStyle: const TextStyle(
-            color: Colors.orange
+            color: Colors.yellow
           )
         ), 
         validator: (String value) {
-          if (_changeButtonPressed && value.isEmpty) {
-            return 'forgot_password.email_empty'.tr();
+          if (value.isEmpty) {
+            return 'forgot_password.email_not_valid'.tr();
           } else {
             return null;
           }
@@ -194,16 +196,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     if (_errorMessage.isNotEmpty && _errorMessage != null) {
       return Padding(
         padding: const EdgeInsets.only(left: 20.0, top: 20.0),
-        child: Center(
-          child: Text(
-            _errorMessage,
-            style: const TextStyle(
-              fontSize: 13.0,
-              color: Colors.orange,
-              height: 1.0,
-              fontWeight: FontWeight.w400
-            ),
-          )
+        child: Text(
+          _errorMessage,
+          style: const TextStyle(
+            fontSize: 13.0,
+            color: Colors.yellow,
+            height: 1.0,
+            fontWeight: FontWeight.w400
+          ),
         )
       );
     } else {
@@ -226,18 +226,15 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               borderRadius: BorderRadius.circular(30.0)
             ),
           ),
-          child: Text(
-            'forgot_password.next'.tr(),
-            style: const TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)
-          ),
           onPressed: () async {
             if (!_changeButtonPressed) {
-              setState(() {
-                _changeButtonPressed = true;
-              });
-              _validateAndSubmit();
+              await _validateAndSubmit();
             }
-          }
+          },
+          child: Text(
+            'forgot_password.next'.tr(), 
+            style: const TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)
+          )
         ),
       )
     );
@@ -245,19 +242,21 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   
   Future<void> _validateAndSubmit() async {
     FocusScope.of(context).unfocus();
-    setState(() {
-      _errorMessage = '';
-    });
+    _setErrorMessage('');
     if (_validateAndSave()) {
       try {
         await _resetPassword(_email);
       } catch (e) {
         print('Error: $e');
-        setState(() {
-          _errorMessage = e.message;
-        });
+        _setErrorMessage(e.message);
       }
     }
+  }
+
+  void _setErrorMessage(String error) {
+    setState(() {
+      _errorMessage = error;
+    });    
   }
 
   // Check if form is valid
@@ -271,7 +270,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   }
   
   Future<void> _resetPassword(String email) async {
-    // await widget.auth.sendPasswordResetEmail(email);
+    setState(() {
+      _changeButtonPressed = true;
+    });    
+    final ForgotPasswordViewModel forgotPasswordProvider = locator<ForgotPasswordViewModel>();
+    await forgotPasswordProvider.sendResetPassword(email);
     _goToConfirmation();
   }
 
