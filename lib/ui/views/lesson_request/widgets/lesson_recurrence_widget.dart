@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
@@ -95,7 +95,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 width: 40.0,
                 height: 35.0,                      
                 child: Checkbox(
-                  value: _lessonRequestProvider.nextLesson.isRecurrent,
+                  value: _lessonRequestProvider.nextLesson.isRecurrent != null ? _lessonRequestProvider.nextLesson.isRecurrent : false,
                   onChanged: (value) {
                     _setIsRecurrent();
                   },
@@ -158,7 +158,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     if (_lessonRequestProvider.nextLesson.endRecurrenceDateTime != null) {
       date = dateFormat.format(_lessonRequestProvider.nextLesson.endRecurrenceDateTime).capitalize();
     }
-    bool isRecurrent = _lessonRequestProvider.nextLesson.isRecurrent;
+    bool isRecurrent = _lessonRequestProvider.nextLesson.isRecurrent != null ? _lessonRequestProvider.nextLesson.isRecurrent : false;
     return IgnorePointer(
       ignoring: !isRecurrent,
       child: Opacity(
