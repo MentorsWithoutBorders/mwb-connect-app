@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/tokens_model.dart';
 import 'package:mwb_connect_app/core/models/error_model.dart';
@@ -134,6 +133,7 @@ class ApiService {
   }
 
   void resetStorage() {
+    _storageService.accessToken = null;
     _storageService.userId = null;
     _storageService.userEmail = null;
     _storageService.userName = '';
@@ -141,7 +141,5 @@ class ApiService {
     _storageService.quizNumber = null;
     _storageService.lastStepAddedId = null;
     _storageService.shouldAppReload = null;
-    _storageService.notificationsEnabled = AppConstants.notificationsEnabled;
-    _storageService.notificationsTime = AppConstants.notificationsTime;
   }    
 }

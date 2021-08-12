@@ -57,12 +57,6 @@ class LocalStorageService {
   String get lastStepAddedId => _getFromDisk('lastStepAddedId');
   set lastStepAddedId(String value) => _saveToDisk('lastStepAddedId', value);
 
-  bool get notificationsEnabled => _getFromDisk('notificationsEnabled');
-  set notificationsEnabled(bool value) => _saveToDisk('notificationsEnabled', value);  
-
-  String get notificationsTime => _getFromDisk('notificationsTime');
-  set notificationsTime(String value) => _saveToDisk('notificationsTime', value);    
-
   dynamic _getFromDisk(String key) {
     Object value = _preferences.get(key);
     if (value is String && value != null && value.indexOf('{') == 0) {

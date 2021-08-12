@@ -4,14 +4,11 @@ import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/models/notifications_settings_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/notifications_service.dart';
 
 class UserService {
   final ApiService _api = locator<ApiService>();
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final NotificationsService _notificationsService = locator<NotificationsService>(); 
 
   Future<void> setUserStorage({User user}) async {
     if (user?.id != null) {
@@ -29,14 +26,6 @@ class UserService {
       if (user.registeredOn != null) {
         _storageService.registeredOn = user.registeredOn.toString();
       }      
-      // Get notifications settings
-      final NotificationsSettings notificationsSettings = await _notificationsService.getNotificationsSettings();
-      if (notificationsSettings != null) {
-        _storageService.notificationsEnabled = notificationsSettings.enabled;
-      }
-      if (notificationsSettings != null && notificationsSettings.time != null) {
-        _storageService.notificationsTime = notificationsSettings.time;
-      }
     }
   }
 

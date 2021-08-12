@@ -313,9 +313,6 @@
 		"title": "New version available",
 		"text": "We recommend that you update to the latest version. You can keep using this app while downloading the update."
 	},
-	"daily_notification": {
-		"title": "Let's add one more step to your plan"
-	},
 	"notifications": {
 		"title": "Notifications",
 		"label": "Daily notifications",

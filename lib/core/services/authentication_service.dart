@@ -26,8 +26,8 @@ class AuthService {
     var json = jsonDecode(response.body);
     Tokens tokens = Tokens.fromJson(json);
     user.id = tokens.userId;
-    await _setUserStorage(user);
     _setTokens(tokens);
+    await _setUserStorage(user);
     return tokens.userId;
   }
 
@@ -41,8 +41,8 @@ class AuthService {
     var json = jsonDecode(response.body);
     Tokens tokens = Tokens.fromJson(json);
     user.id = tokens.userId;
-    await _setUserStorage(user);
     _setTokens(tokens);
+    await _setUserStorage(user);
     return tokens.userId;    
   }
   

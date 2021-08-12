@@ -8,8 +8,6 @@ class DefaultsService {
     storageService.tutorials ??= AppConstants.tutorials;
     storageService.quizzesStudentWeeklyCount ??= AppConstants.quizzesStudentWeeklyCount;
     storageService.quizzesMentorWeeklyCount ??= AppConstants.quizzesMentorWeeklyCount;
-    storageService.notificationsEnabled ??= AppConstants.notificationsEnabled;
-    storageService.notificationsTime ??= AppConstants.notificationsTime;    
   }
 
 }

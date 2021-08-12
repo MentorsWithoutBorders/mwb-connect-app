@@ -8,6 +8,8 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/notifications_settings_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 
 class NotificationsView extends StatefulWidget {
   const NotificationsView({Key key})
@@ -19,22 +21,18 @@ class NotificationsView extends StatefulWidget {
 
 class _NotificationsViewState extends State<NotificationsView> with SingleTickerProviderStateMixin {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  NotificationsViewModel _notificationsViewModel;
+  NotificationsViewModel _notificationsProvider;
   AnimationController _controller;
   Animation<Offset> _offset;  
   final int _animationDuration = 300;
   bool _isEnabled;
   String _time;
   String _pickedTime;
+  bool _areSettingsRetrieved = false;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _isEnabled = _storageService.notificationsEnabled;
-      _time = _storageService.notificationsTime;
-    });
-
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
 
@@ -52,7 +50,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return AnimatedContainer(
       duration: Duration(milliseconds: _animationDuration),
-      margin: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 0.0),
+      margin: EdgeInsets.fromLTRB(20.0, statusBarHeight + 70.0, 20.0, 0.0),
       height: _isEnabled ? 75.0 : 55.0,
       child: Card(
         elevation: 3,
@@ -101,7 +99,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
             ),
             // Android
             if (Platform.isAndroid) Switch(
-              value: _storageService.notificationsEnabled,
+              value: _isEnabled,
               onChanged: (bool value) async {
                 await _updateNotificationsEnabled(value);
               },
@@ -114,7 +112,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
               child: Transform.scale( 
                 scale: 0.8,
                 child: CupertinoSwitch(
-                  value: _storageService.notificationsEnabled,
+                  value: _isEnabled,
                   onChanged: (bool value) async {
                     await _updateNotificationsEnabled(value);
                   }
@@ -169,18 +167,18 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     setState(() {
       _isEnabled = value;
     });    
-    _storageService.notificationsEnabled = value;
-    final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: value, time: _storageService.notificationsTime);
-    await _notificationsViewModel.updateNotificationsSettings(notificationsSettings);
+    _isEnabled = value;
+    final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: value, time: _time);
+    await _notificationsProvider.updateNotificationsSettings(notificationsSettings);
   }
 
   void _updateNotificationsTime(String time) {
     setState(() {
       _time = time;
     });
-    _storageService.notificationsTime = time;
-    final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: _storageService.notificationsEnabled, time: time);
-    _notificationsViewModel.updateNotificationsSettings(notificationsSettings);
+    _time = time;
+    final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: _isEnabled, time: time);
+    _notificationsProvider.updateNotificationsSettings(notificationsSettings);
   }  
 
   Widget _showTitle() {
@@ -270,36 +268,74 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     _pickedTime = timeSplit[0].padLeft(2, '0') + ':' + timeSplit[1].padLeft(2, '0');
   }
 
+
+  Future<void> _getNotificationSettings() async {
+    if (!_areSettingsRetrieved) {
+      await _notificationsProvider.getNotificationsSettings();
+      _setNotificationSettings();
+      _areSettingsRetrieved = true;
+    }
+  }
+
+  void _setNotificationSettings() {
+    NotificationsSettings notificationsSettings = _notificationsProvider.notificationsSettings;
+    bool notificationsEnabled = AppConstants.notificationsEnabled;
+    String notificationsTime = AppConstants.notificationsTime;
+    if (notificationsSettings != null && notificationsSettings.enabled != null) {
+      notificationsEnabled = notificationsSettings.enabled;
+    }
+    if (notificationsSettings != null && notificationsSettings.time != null) {
+      notificationsTime = notificationsSettings.time;
+    }    
+    setState(() {
+      _isEnabled = notificationsEnabled;
+      _time = notificationsTime;
+    });    
+  }
+
+  Widget _showContent() {
+    if (_areSettingsRetrieved) {
+      return Stack(
+        children: <Widget>[
+          _showNotifications(),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: _showCupertinoTimePicker()
+          )
+        ],
+      );
+    } else {
+      return const Loader();
+    }
+  }     
+
   @override
   Widget build(BuildContext context) {
-    _notificationsViewModel = locator<NotificationsViewModel>();
+    _notificationsProvider = locator<NotificationsViewModel>();
 
-    return Stack(
-      children: <Widget>[
-        BackgroundGradient(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: _showTitle(),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            leading: IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () => Navigator.of(context).pop(null),
+    return FutureBuilder<void>(
+      future: _getNotificationSettings(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return Stack(
+          children: <Widget>[
+            BackgroundGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                title: _showTitle(),
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                leading: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.of(context).pop(null),
+                )
+              ),
+              extendBodyBehindAppBar: true,
+              body: _showContent()
             )
-          ),
-          extendBodyBehindAppBar: true,
-          body: Stack(
-            children: <Widget>[
-              _showNotifications(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: _showCupertinoTimePicker()
-              )
-            ],
-          )
-        )
-      ],
+          ],
+        );
+      }
     );
   }  
 }
