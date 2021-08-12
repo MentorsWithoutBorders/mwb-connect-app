@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
@@ -232,20 +233,31 @@ class _NextLessonState extends State<NextLesson> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
           child: Center(
-            child: Text(
-              _url,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline
-              )
+            child: InkWell(
+              child: Text(
+                _url,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline
+                )
+              ),
+              onTap: () async => await _launchMeetingUrl()
             ),
           ),
         ),
       ],
     );
+  }
+
+  Future<void> _launchMeetingUrl() async {
+    if (await canLaunch(_url)) {
+      await launch(_url);
+    } else {
+      throw 'Could not launch $_url';
+    }    
   }
 
   Widget _showGuide() {

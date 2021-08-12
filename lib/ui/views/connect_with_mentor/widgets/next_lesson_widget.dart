@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -20,6 +21,7 @@ class NextLesson extends StatefulWidget {
 
 class _NextLessonState extends State<NextLesson> {
   ConnectWithMentorViewModel _connectWithMentorProvider;
+  String _url = '';
 
   Widget _showNextLessonCard() {
     return Padding(
@@ -71,7 +73,7 @@ class _NextLessonState extends State<NextLesson> {
     String firstPart = text.substring(name.length, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    String link = nextLesson.meetingUrl;
+    _url = nextLesson.meetingUrl;
 
     return Wrap(
       children: [
@@ -124,21 +126,32 @@ class _NextLessonState extends State<NextLesson> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 25.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 25.0),
           child: Center(
-            child: Text(
-              link,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline
-              )
-            ),
-          ),
+            child: InkWell(
+              child: Text(
+                _url,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline
+                )
+              ),
+              onTap: () async => await _launchMeetingUrl()              
+            )
+          )
         )
-      ],
+      ]
     );
   }
+
+  Future<void> _launchMeetingUrl() async {
+    if (await canLaunch(_url)) {
+      await launch(_url);
+    } else {
+      throw 'Could not launch $_url';
+    }    
+  }   
 
   Widget _showRecurringLessonText(Lesson nextLesson) {
     DateTime nextLessonDateTime = nextLesson.dateTime;
@@ -159,7 +172,7 @@ class _NextLessonState extends State<NextLesson> {
     String firstPart = text.substring(name.length, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(lessonDate));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    String link = nextLesson.meetingUrl;
+    _url = nextLesson.meetingUrl;
 
     return Wrap(
       children: [
@@ -212,21 +225,24 @@ class _NextLessonState extends State<NextLesson> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 25.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 25.0),
           child: Center(
-            child: Text(
-              link,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline
-              )
-            ),
-          ),
+            child: InkWell(
+              child: Text(
+                _url,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline
+                )
+              ),
+              onTap: () async => await _launchMeetingUrl()
+            )
+          )
         )
-      ],
+      ]
     );
-  }  
+  } 
 
   Widget _showCancelButton() {
     return Center(
