@@ -141,5 +141,6 @@ class ApiService {
     _storageService.quizNumber = null;
     _storageService.lastStepAddedId = null;
     _storageService.shouldAppReload = null;
+    _storageService.lastUpdateShownDateTime = null;
   }    
 }

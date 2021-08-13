@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/standing_by_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_request_widget.dart';
@@ -48,11 +48,11 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         await _init();
       }
       _checkUpdate();
-    }
+    }  
   }
 
   Future<void> _checkUpdate() async {
-    final UpdatesViewModel updatesProvider = locator<UpdatesViewModel>();
+    final UpdateAppViewModel updatesProvider = locator<UpdateAppViewModel>();
     final UpdateStatus updateStatus = await updatesProvider.getUpdateStatus();
     if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));

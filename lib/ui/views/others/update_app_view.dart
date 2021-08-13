@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:easy_localization/easy_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -23,7 +24,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
       Navigator.of(context).pop();
     }
   }  
@@ -107,11 +108,11 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
                     ),
                     padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 12.0),
                   ), 
-                  onPressed: () {
-                    _updateApp();
+                  onPressed: () async {
+                    await _updateApp();
                   },
-                  child: const Text(
-                    'Update now', 
+                  child: Text(
+                    'update_app.update_now'.tr(), 
                     style: TextStyle(
                       fontSize: 14.0,
                       color: Colors.white
@@ -124,9 +125,9 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: const Center(                      
+                      child: Center(                      
                         child: Text(
-                          'Later', 
+                          'update_app.later'.tr(), 
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white
@@ -161,8 +162,19 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
     return File(pathName);
   }
 
-  void _updateApp() {
-    Navigator.of(context).pop(null);
+  Future<void> _updateApp() async {
+    final TargetPlatform platform = Theme.of(context).platform;
+    String url = '';
+    if (platform == TargetPlatform.iOS) {
+      url = '';
+    } else if (platform == TargetPlatform.android) {
+      url = 'https://play.google.com/store/apps/details?id=com.mwbconnect.app';
+    }
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }      
   }
 
   Future<bool> _onWillPop() async {

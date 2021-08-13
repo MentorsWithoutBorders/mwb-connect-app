@@ -17,6 +17,7 @@ import 'package:mwb_connect_app/core/services/notifications_service.dart';
 import 'package:mwb_connect_app/core/services/support_request_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
+import 'package:mwb_connect_app/core/services/update_app_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
@@ -29,7 +30,7 @@ import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/support_request_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -52,6 +53,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => SupportRequestService());
   locator.registerLazySingleton(() => DownloadService());
   locator.registerLazySingleton(() => AnalyticsService());
+  locator.registerLazySingleton(() => UpdateAppService());
   locator.registerLazySingleton(() => CommonViewModel());
   locator.registerLazySingleton(() => RootViewModel());
   locator.registerLazySingleton(() => LoginSignupViewModel());
@@ -64,5 +66,5 @@ void setupLocator() {
   locator.registerLazySingleton(() => QuizzesViewModel());
   locator.registerLazySingleton(() => NotificationsViewModel());
   locator.registerLazySingleton(() => SupportRequestViewModel());
-  locator.registerLazySingleton(() => UpdatesViewModel());
+  locator.registerLazySingleton(() => UpdateAppViewModel());
 }

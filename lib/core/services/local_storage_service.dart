@@ -40,7 +40,10 @@ class LocalStorageService {
   set lessonRequestCanceledDateTime(String value) => _saveToDisk('lessonRequestCanceledDateTime', value);
   
   bool get shouldAppReload => _getFromDisk('shouldAppReload');
-  set shouldAppReload(bool value) => _saveToDisk('shouldAppReload', value);   
+  set shouldAppReload(bool value) => _saveToDisk('shouldAppReload', value);
+  
+  String get lastUpdateShownDateTime => _getFromDisk('lastUpdateShownDateTime');
+  set lastUpdateShownDateTime(String value) => _saveToDisk('lastUpdateShownDateTime', value);  
 
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
   set tutorials(Map<String, List<String>> value) => _saveToDisk('tutorials', value);

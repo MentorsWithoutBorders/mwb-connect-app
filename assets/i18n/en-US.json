@@ -86,6 +86,7 @@
 		"period_units": "day, week, month, year",
     "next_deadline": "Next deadline:",
 		"your_profile": "your profile",
+    "try_again": "There has been an error, please try again",
 		"mental_process_goal_steps": "Mental process goal/steps",
 		"relaxation_method": "Relaxation method",
 		"super_focus_method": "Super-focus method",
@@ -587,7 +588,9 @@
 	},
 	"update_app": {
 		"title": "New version available",
-		"text": "We recommend that you update to the latest version. You can keep using this app while downloading the update."
+		"text": "We recommend that you update to the latest version. You can keep using this app while downloading the update.",
+    "update_now": "Update now",
+    "later": "Later"
 	},
 	"notifications": {
 		"title": "Notifications",

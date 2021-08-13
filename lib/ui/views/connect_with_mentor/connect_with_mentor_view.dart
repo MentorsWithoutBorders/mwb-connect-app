@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/updates_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
@@ -50,7 +50,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   }
 
   Future<void> _checkUpdate() async {
-    final UpdatesViewModel updatesProvider = locator<UpdatesViewModel>();
+    final UpdateAppViewModel updatesProvider = locator<UpdateAppViewModel>();
     final UpdateStatus updateStatus = await updatesProvider.getUpdateStatus();
     if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));

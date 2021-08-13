@@ -476,7 +476,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       } catch (error) {
         setState(() {
           _isLoading = false;
-          _errorMessage = error.message;
+          _errorMessage = 'try_again'.tr();
         });
       }
     }
