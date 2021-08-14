@@ -23,13 +23,6 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   bool _isLoaded = false;
 
   @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-      Navigator.of(context).pop();
-    }
-  }  
-
-  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
