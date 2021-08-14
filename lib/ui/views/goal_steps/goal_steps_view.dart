@@ -72,7 +72,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
         builder: (context, orientation){
           if (orientation == Orientation.portrait) {
             return _showGoalSteps(false);
-          }else{
+          } else {
             return _showGoalSteps(true);
           }
         }

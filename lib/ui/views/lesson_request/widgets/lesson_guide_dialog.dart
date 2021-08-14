@@ -23,14 +23,14 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
   final ScrollController _scrollController = ScrollController();    
   bool _isLessonGuideRetrieved = false;
 
-  Widget _showLessonGuideDialog() {
+  Widget _showLessonGuideDialog(bool isHorizontal) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 20.0),
       child: Wrap(
         children: <Widget>[
           _showTitle(),
-          _showLessonGuide(),
+          _showLessonGuide(isHorizontal),
           _showCloseButton()
         ]
       )
@@ -52,7 +52,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
     );
   }
 
-  Widget _showLessonGuide() {
+  Widget _showLessonGuide(bool isHorizontal) {
     List<GuideTutorial> guideTutorials = _lessonRequestProvider.guideTutorials != null ? _lessonRequestProvider.guideTutorials : [];
     List<GuideRecommendation> guideRecommendations = _lessonRequestProvider.guideRecommendations != null ? _lessonRequestProvider.guideRecommendations : [];
     List<Widget> lessonGuideWidgets = [];
@@ -114,8 +114,14 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
     }    
 
     if (_isLessonGuideRetrieved) {
+      double height = 300.0;
+      double heightScrollThumb = 150.0;
+      if (isHorizontal) {
+        height = MediaQuery.of(context).size.height * 0.4;
+        heightScrollThumb = 50.0;
+      }
       return Container(
-        height: 300.0,
+        height: height,
         padding: const EdgeInsets.only(bottom: 20.0),
         child: DraggableScrollbar(
           controller: _scrollController,
@@ -124,7 +130,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
             controller: _scrollController,
             children: lessonGuideWidgets
           ),
-          heightScrollThumb: 150.0,
+          heightScrollThumb: heightScrollThumb,
           backgroundColor: AppColors.SILVER,
           scrollThumbBuilder: (
             Color backgroundColor,
@@ -247,7 +253,15 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
     return FutureBuilder<void>(
       future: _getLessonGuide(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return _showLessonGuideDialog();
+        return OrientationBuilder(
+          builder: (context, orientation){
+            if (orientation == Orientation.portrait) {
+              return _showLessonGuideDialog(false);
+            } else {
+              return _showLessonGuideDialog(true);
+            }
+          }
+        );
       }
     );
   }

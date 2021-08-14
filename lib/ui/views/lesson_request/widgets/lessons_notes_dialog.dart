@@ -24,14 +24,14 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
   final ScrollController _scrollController = ScrollController();    
   bool _areLessonsNotesRetrieved = false;
 
-  Widget _showLessonsNotesDialog() {
+  Widget _showLessonsNotesDialog(bool isHorizontal) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(30.0, 25.0, 30.0, 20.0),
       child: Wrap(
         children: <Widget>[
           _showTitle(),
-          _showLessonsNotes(),
+          _showLessonsNotes(isHorizontal),
           _showCloseButton()
         ]
       )
@@ -53,7 +53,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
     );
   }
 
-  Widget _showLessonsNotes() {
+  Widget _showLessonsNotes(bool isHorizontal) {
     List<LessonNote> lessonsNotes = _lessonRequestProvider.lessonsNotes != null ? _lessonRequestProvider.lessonsNotes : [];
     List<Widget> lessonNoteWidgets = [];
     DateFormat dateFormat = DateFormat(AppConstants.dateFormat);
@@ -87,6 +87,12 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
     }
 
     if (_areLessonsNotesRetrieved) {
+      double height = 250.0;
+      double heightScrollThumb = 125.0;
+      if (isHorizontal) {
+        height = MediaQuery.of(context).size.height * 0.4;
+        heightScrollThumb = 50.0;
+      }      
       return Stack(
         children: [
           if (lessonsNotes.length == 0) Text(
@@ -97,7 +103,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
             )
           ),
           Container(
-            height: 250.0,
+            height: height,
             padding: const EdgeInsets.only(bottom: 20.0),
             child: DraggableScrollbar(
               controller: _scrollController,
@@ -105,7 +111,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
                 controller: _scrollController,
                 children: lessonNoteWidgets
               ),
-              heightScrollThumb: 125.0,
+              heightScrollThumb: heightScrollThumb,
               backgroundColor: AppColors.SILVER,
               scrollThumbBuilder: (
                 Color backgroundColor,
@@ -171,7 +177,15 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
     return FutureBuilder<void>(
       future: _getLessonsNotes(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return _showLessonsNotesDialog();
+        return OrientationBuilder(
+          builder: (context, orientation){
+            if (orientation == Orientation.portrait) {
+              return _showLessonsNotesDialog(false);
+            } else {
+              return _showLessonsNotesDialog(true);
+            }
+          }
+        );
       }
     );
   }
