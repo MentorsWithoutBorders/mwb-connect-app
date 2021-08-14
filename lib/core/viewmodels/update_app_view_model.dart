@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
-import 'package:mwb_connect_app/core/models/update_model.dart';
+import 'package:mwb_connect_app/core/models/app_version_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/update_app_service.dart';
 
@@ -13,30 +13,37 @@ class UpdateAppViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   
   Future<UpdateStatus> getUpdateStatus() async {
+    final AppVersion appVersion = await _updateAppService.getCurrentVersion();
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final Update update = await _updateAppService.getCurrentVersion();
     final List<String> packageVersion = packageInfo.version.split('.');
     final int packageVersionMajor = int.parse(packageVersion[0]);
     final int packageVersionMinor = int.parse(packageVersion[1]);
     final int packageVersionRevision = int.parse(packageVersion[2]);
     final int packageVersionBuild = int.parse(packageInfo.buildNumber);
+    AppVersion currentAppVersion = AppVersion(
+      major: packageVersionMajor,
+      minor: packageVersionMinor,
+      revision: packageVersionRevision,
+      build: packageVersionBuild
+    );    
+    _updateAppService.sendAppVersion(currentAppVersion);
     final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
-    final DateTime now = DateTime.now();    
+    final DateTime now = DateTime.now();
     if (!_shouldShowUpdate()) {
       return UpdateStatus.NO_UPDATE;
     } else {
-      if (update.major > packageVersionMajor ||
-          update.minor > packageVersionMinor &&
-          update.major >= packageVersionMajor) {
+      if (appVersion.major > packageVersionMajor ||
+          appVersion.minor > packageVersionMinor &&
+          appVersion.major >= packageVersionMajor) {
         _storageService.lastUpdateShownDateTime = dateFormat.format(now);
         return UpdateStatus.FORCE_UPDATE;
-      } else if (update.revision > packageVersionRevision &&
-          update.minor >= packageVersionMinor &&
-          update.major >= packageVersionMajor ||
-          update.build > packageVersionBuild &&
-          update.revision >= packageVersionRevision &&
-          update.minor >= packageVersionMinor &&
-          update.major >= packageVersionMajor) {
+      } else if (appVersion.revision > packageVersionRevision &&
+          appVersion.minor >= packageVersionMinor &&
+          appVersion.major >= packageVersionMajor ||
+          appVersion.build > packageVersionBuild &&
+          appVersion.revision >= packageVersionRevision &&
+          appVersion.minor >= packageVersionMinor &&
+          appVersion.major >= packageVersionMajor) {
         _storageService.lastUpdateShownDateTime = dateFormat.format(now);            
         return UpdateStatus.RECOMMEND_UPDATE;
       } else {
