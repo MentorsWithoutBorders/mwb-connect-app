@@ -19,14 +19,15 @@ class GoalStepsView extends StatefulWidget {
 
 class _GoalStepsViewState extends State<GoalStepsView> {
 
-  Widget _showGoalSteps() {
+  Widget _showGoalSteps(bool isHorizontal) {
     return Stack(
       children: <Widget>[
         BackgroundGradient(),
         Column(
           children: <Widget>[
             EditableGoal(),
-            TutorialPreviews(),
+            if (!isHorizontal) TutorialPreviews(),
+            if (isHorizontal) SizedBox(height: 20.0),
             Steps()
           ]
         )
@@ -67,7 +68,15 @@ class _GoalStepsViewState extends State<GoalStepsView> {
       ),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      body: _showGoalSteps()
+      body: OrientationBuilder(
+        builder: (context, orientation){
+          if (orientation == Orientation.portrait) {
+            return _showGoalSteps(false);
+          }else{
+            return _showGoalSteps(true);
+          }
+        }
+      )
     );
   }
 }
