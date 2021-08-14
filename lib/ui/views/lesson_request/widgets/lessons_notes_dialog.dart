@@ -140,7 +140,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
     return Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.PACIFIC_BLUE,
+          primary: AppColors.BERMUDA_GRAY,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),

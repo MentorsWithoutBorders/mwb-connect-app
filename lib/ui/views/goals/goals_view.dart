@@ -93,7 +93,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.MONZA,
+          primary: AppColors.JAPANESE_LAUREL,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),
