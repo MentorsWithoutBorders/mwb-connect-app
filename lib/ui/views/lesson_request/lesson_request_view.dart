@@ -131,6 +131,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
 
   void _showExpiredLessonRequest() {
     if (_lessonRequestProvider.shouldShowExpired) {
+      _lessonRequestProvider.shouldShowExpired = false;
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -144,6 +145,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
 
   void _showCanceledLessonRequest() {
     if (_lessonRequestProvider.shouldShowCanceled) {
+      _lessonRequestProvider.shouldShowCanceled = false;
       showDialog(
         context: context,
         builder: (BuildContext context) {

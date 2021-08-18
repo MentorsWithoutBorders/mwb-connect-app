@@ -141,6 +141,10 @@ class ApiService {
     _storageService.quizNumber = null;
     _storageService.lastStepAddedId = null;
     _storageService.shouldAppReload = null;
+    _storageService.shouldShowLessonRequestExpired = null;
+    _storageService.shouldShowLessonRequestCanceled = null;
+    _storageService.lessonRequestExpiredId = null;
+    _storageService.lessonRequestCanceledId = null;
     _storageService.lastUpdateShownDateTime = null;
   }    
 }

@@ -31,13 +31,19 @@ class LocalStorageService {
   set registeredOn(String value) => _saveToDisk('registeredOn', value);  
 
   String get subfieldId => _getFromDisk('subfieldId');
-  set subfieldId(String value) => _saveToDisk('subfieldId', value); 
-
-  String get lessonRequestExpiredDateTime => _getFromDisk('lessonRequestExpiredDateTime');
-  set lessonRequestExpiredDateTime(String value) => _saveToDisk('lessonRequestExpiredDateTime', value);
+  set subfieldId(String value) => _saveToDisk('subfieldId', value);
   
-  String get lessonRequestCanceledDateTime => _getFromDisk('lessonRequestCanceledDateTime');
-  set lessonRequestCanceledDateTime(String value) => _saveToDisk('lessonRequestCanceledDateTime', value);
+  bool get shouldShowLessonRequestExpired => _getFromDisk('shouldShowLessonRequestExpired');
+  set shouldShowLessonRequestExpired(bool value) => _saveToDisk('shouldShowLessonRequestExpired', value);
+  
+  bool get shouldShowLessonRequestCanceled => _getFromDisk('shouldShowLessonRequestCanceled');
+  set shouldShowLessonRequestCanceled(bool value) => _saveToDisk('shouldShowLessonRequestCanceled', value);
+  
+  String get lessonRequestExpiredId => _getFromDisk('lessonRequestExpiredId');
+  set lessonRequestExpiredId(String value) => _saveToDisk('lessonRequestExpiredId', value);
+  
+  String get lessonRequestCanceledId => _getFromDisk('lessonRequestCanceledId');
+  set lessonRequestCanceledId(String value) => _saveToDisk('lessonRequestCanceledId', value);  
   
   bool get shouldAppReload => _getFromDisk('shouldAppReload');
   set shouldAppReload(bool value) => _saveToDisk('shouldAppReload', value);

@@ -24,7 +24,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
   final QuizzesService _quizzesService = locator<QuizzesService>();
-  final GoalsService _goalsService = locator<GoalsService>(); 
+  final GoalsService _goalsService = locator<GoalsService>();
   Goal goal;
   StepModel lastStepAdded;
   int quizNumber;  
@@ -36,8 +36,6 @@ class LessonRequestViewModel extends ChangeNotifier {
   List<LessonNote> lessonsNotes;
   List<GuideTutorial> guideTutorials;
   List<GuideRecommendation> guideRecommendations;
-  bool _shouldShowExpired = false;
-  bool _shouldShowCanceled = false;
   bool _shouldUnfocus = false;
 
   Future<void> getGoal() async {
@@ -62,27 +60,22 @@ class LessonRequestViewModel extends ChangeNotifier {
   }  
 
   Future<void> getLessonRequest() async {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
     lessonRequest = await _lessonRequestService.getLessonRequest();
     if (lessonRequest != null && lessonRequest.id != null) {
       if (lessonRequest.isExpired != null && lessonRequest.isExpired) {
-        if (dateFormat.format(lessonRequest.sentDateTime) != _storageService.lessonRequestExpiredDateTime) {
-          shouldShowExpired = true;
-          _storageService.lessonRequestExpiredDateTime = dateFormat.format(lessonRequest.sentDateTime);
-        } else {
-          shouldShowExpired = false;
+        if (lessonRequest.id != _storageService.lessonRequestExpiredId) {
+          _storageService.shouldShowLessonRequestExpired = true;
+          _storageService.lessonRequestExpiredId = lessonRequest.id;
         }
         lessonRequest = null;
       } else if (lessonRequest.isCanceled != null && lessonRequest.isCanceled) {
-        if (dateFormat.format(lessonRequest.sentDateTime) != _storageService.lessonRequestCanceledDateTime) {
-          shouldShowCanceled = true;
-          _storageService.lessonRequestCanceledDateTime = dateFormat.format(lessonRequest.sentDateTime);
-        } else {
-          shouldShowCanceled = false;
+        if (lessonRequest.id != _storageService.lessonRequestCanceledId) {
+          _storageService.shouldShowLessonRequestCanceled = true;
+          _storageService.lessonRequestCanceledId = lessonRequest.id;
         }
         lessonRequest = null;
       }
-    } 
+    }
   }
 
   Future<void> acceptLessonRequest(String meetingUrl, BuildContext context) async {
@@ -340,20 +333,14 @@ class LessonRequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get shouldShowExpired => _shouldShowExpired;
-  set shouldShowExpired(bool expired) {
-    _shouldShowExpired = expired;
-    if (shouldShowExpired) {
-      notifyListeners();
-    }
+  bool get shouldShowExpired => _storageService.shouldShowLessonRequestExpired == true;
+  set shouldShowExpired(bool showExpired) {
+    _storageService.shouldShowLessonRequestExpired = showExpired;
   }
 
-  bool get shouldShowCanceled => _shouldShowCanceled;
-  set shouldShowCanceled(bool expired) {
-    _shouldShowCanceled = expired;
-    if (shouldShowCanceled) {
-      notifyListeners();
-    }
+  bool get shouldShowCanceled => _storageService.shouldShowLessonRequestCanceled == true;
+  set shouldShowCanceled(bool showCanceled) {
+    _storageService.shouldShowLessonRequestCanceled = showCanceled;
   }     
 
   bool get shouldUnfocus => _shouldUnfocus;
