@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/connect_with_mentor_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/lesson_request_view.dart';
@@ -27,6 +28,7 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView> {
   RootViewModel _rootProvider;
+  GoalsViewModel _goalsProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = '';
 
@@ -38,6 +40,7 @@ class _RootViewState extends State<RootView> {
   }
 
   void _logoutCallback() {
+    _goalsProvider.setSelectedGoal(null);
     setState(() {
       _authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = '';
@@ -80,6 +83,7 @@ class _RootViewState extends State<RootView> {
   @override
   Widget build(BuildContext context) {
     _rootProvider = Provider.of<RootViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
 
     return FutureBuilder<void>(
       future: _init(),

@@ -146,14 +146,14 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           ), 
           child: Text('common.go'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            goToGoal();
+            _goToGoal();
           }
         ),
       ),
     );
   }
 
-  void goToGoal() {
+  void _goToGoal() {
     if (_lessonRequestProvider.goal != null) {
       _goalsProvider.setSelectedGoal(_lessonRequestProvider.goal);
       _goToGoalSteps();

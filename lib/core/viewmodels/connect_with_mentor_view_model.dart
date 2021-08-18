@@ -28,10 +28,16 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
-    if (goals.length > 0) {
-      goal = goals[0];
+    if (goals.isNotEmpty) {
+      setGoal(goals[0]);
+    } else {
+      setGoal(null);
     }
   }
+
+  void setGoal(Goal goal) {
+    this.goal = goal;
+  }  
   
   Future<void> getLastStepAdded() async {
     lastStepAdded = await _connectWithMentorService.getLastStepAdded();

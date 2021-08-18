@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
@@ -199,20 +200,31 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           ), 
           child: Text('common.go'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            _goToGoalSteps();
+            _goToGoal();
           }
         ),
       ),
     );
   }
-  
-  void _goToGoalSteps() {
-    _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
-    _stepsProvider.setShouldShowTutorialChevrons(false);
-    _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
-    int quizNumber = _connectWithMentorProvider.quizNumber;
-    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider.refreshTrainingInfo());
+
+  void _goToGoal() {
+    if (_connectWithMentorProvider.goal != null) {
+      _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
+      _goToGoalSteps();
+    } else {
+      Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
+    }
   }
+
+  void _goToGoalSteps() {
+    if (_goalsProvider.selectedGoal != null) {
+      _stepsProvider.setShouldShowTutorialChevrons(false);
+      _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false); 
+      _connectWithMentorProvider.setGoal(_goalsProvider.selectedGoal);
+      int quizNumber = _connectWithMentorProvider.quizNumber;
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider.refreshTrainingInfo());
+    }
+  }  
 
   @override
   Widget build(BuildContext context) {

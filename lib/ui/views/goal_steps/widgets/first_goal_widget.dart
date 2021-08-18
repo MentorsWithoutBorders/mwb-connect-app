@@ -25,7 +25,6 @@ class _FirstGoalState extends State<FirstGoal> {
   bool _isInputVisible = false;
   bool _isStartButtonVisible = true;
   bool _isAddingGoal = false;
-  double _topAnimationHeight = 0;
   double _inputAnimationHeight = 80;
   String _goalText;  
 
@@ -120,7 +119,7 @@ class _FirstGoalState extends State<FirstGoal> {
                     padding: const EdgeInsets.all(20.0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: AppColors.ALLPORTS,
+                        primary: AppColors.JAPANESE_LAUREL,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)
                         ),
@@ -175,7 +174,6 @@ class _FirstGoalState extends State<FirstGoal> {
     FocusScope.of(context).unfocus();
     setState(() {
       _isStartButtonVisible = false;
-      _topAnimationHeight = 50;
       _isInputVisible = false;
     });
   }

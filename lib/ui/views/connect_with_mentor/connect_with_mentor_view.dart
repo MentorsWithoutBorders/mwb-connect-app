@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
@@ -27,6 +28,7 @@ class ConnectWithMentorView extends StatefulWidget {
 
 class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with WidgetsBindingObserver {
   ConnectWithMentorViewModel _connectWithMentorProvider;
+  GoalsViewModel _goalsProvider;
   CommonViewModel _commonProvider;
   bool _isInit = false;
 
@@ -114,14 +116,20 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
         _connectWithMentorProvider.getQuizNumber(),
         _connectWithMentorProvider.getLessonRequest(),
         _connectWithMentorProvider.getNextLesson()
-      ]);      
+      ]);
+      _setSelectedGoal();
       _isInit = true;
     }
   }
 
+  void _setSelectedGoal() {
+    _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
+  }  
+
   @override
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
 
     return FutureBuilder<void>(

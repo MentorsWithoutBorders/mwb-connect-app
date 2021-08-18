@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/solve_quiz_add_step_widget.dart';
@@ -29,6 +30,7 @@ class LessonRequestView extends StatefulWidget {
 
 class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindingObserver {
   LessonRequestViewModel _lessonRequestProvider;
+  GoalsViewModel _goalsProvider;
   CommonViewModel _commonProvider;
   bool _isInit = false;
 
@@ -123,10 +125,15 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         _lessonRequestProvider.getNextLesson(),
         _lessonRequestProvider.getPreviousLesson()
       ]);
+      _setSelectedGoal();
       _showExpiredLessonRequest();
       _showCanceledLessonRequest();      
       _isInit = true;
     }
+  }
+
+  void _setSelectedGoal() {
+    _goalsProvider.setSelectedGoal(_lessonRequestProvider.goal);
   }
 
   void _showExpiredLessonRequest() {
@@ -160,6 +167,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
 
     return FutureBuilder<void>(
