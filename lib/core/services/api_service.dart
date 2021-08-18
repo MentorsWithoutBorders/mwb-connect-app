@@ -143,8 +143,8 @@ class ApiService {
     _storageService.shouldAppReload = null;
     _storageService.shouldShowLessonRequestExpired = null;
     _storageService.shouldShowLessonRequestCanceled = null;
-    _storageService.lessonRequestExpiredId = null;
-    _storageService.lessonRequestCanceledId = null;
+    // _storageService.lessonRequestExpiredIds = null;
+    // _storageService.lessonRequestCanceledIds = null;
     _storageService.lastUpdateShownDateTime = null;
   }    
 }

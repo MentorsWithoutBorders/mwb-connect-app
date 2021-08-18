@@ -63,19 +63,27 @@ class LessonRequestViewModel extends ChangeNotifier {
     lessonRequest = await _lessonRequestService.getLessonRequest();
     if (lessonRequest != null && lessonRequest.id != null) {
       if (lessonRequest.isExpired != null && lessonRequest.isExpired) {
-        if (lessonRequest.id != _storageService.lessonRequestExpiredId) {
+        if (_storageService.lessonRequestExpiredIds == null || !_storageService.lessonRequestExpiredIds.contains(lessonRequest.id)) {
           _storageService.shouldShowLessonRequestExpired = true;
-          _storageService.lessonRequestExpiredId = lessonRequest.id;
+          _storageService.lessonRequestExpiredIds = addLessonRequestId(_storageService.lessonRequestExpiredIds, lessonRequest.id);
         }
         lessonRequest = null;
       } else if (lessonRequest.isCanceled != null && lessonRequest.isCanceled) {
-        if (lessonRequest.id != _storageService.lessonRequestCanceledId) {
+        if (_storageService.lessonRequestCanceledIds == null || !_storageService.lessonRequestCanceledIds.contains(lessonRequest.id)) {
           _storageService.shouldShowLessonRequestCanceled = true;
-          _storageService.lessonRequestCanceledId = lessonRequest.id;
+          _storageService.lessonRequestCanceledIds = addLessonRequestId(_storageService.lessonRequestCanceledIds, lessonRequest.id);
         }
         lessonRequest = null;
       }
     }
+  }
+
+  String addLessonRequestId(String existingIds, String newId) {
+    List<String> ids = existingIds != null ? existingIds.split(', ') : [];
+    if (ids.isEmpty || !ids.contains(newId)) {
+      ids.add(newId);
+    }
+    return ids.join(', ');
   }
 
   Future<void> acceptLessonRequest(String meetingUrl, BuildContext context) async {
