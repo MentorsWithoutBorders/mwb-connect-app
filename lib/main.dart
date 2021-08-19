@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:eraser/eraser.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
@@ -48,6 +49,7 @@ Future<void> main() async {
       ),
     )
   );
+  Eraser.clearAllAppNotifications();  
 }
 
 Future<void> _signInFirebaseAnonymously() async {
@@ -73,11 +75,18 @@ class MWBConnectApp extends StatefulWidget {
   _MWBConnectAppState createState() => _MWBConnectAppState(_mixpanelToken);
 }
 
-class _MWBConnectAppState extends State<MWBConnectApp> {
+class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserver {
   MixpanelAPI _mixpanel;
   String _mixpanelToken;
 
   _MWBConnectAppState(this._mixpanelToken);
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (AppLifecycleState.resumed == state) {
+      Eraser.clearAllAppNotifications();
+    }
+  }
 
   Widget _buildWaitingScreen() {
     return MaterialApp(
