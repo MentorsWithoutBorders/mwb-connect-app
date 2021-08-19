@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
@@ -47,10 +46,6 @@ class _QuizState extends State<QuizView> {
       }
     }
     _answer = 'quizzes.$type.quiz$quizNumber.answer'.tr();
-    double heightScrollThumb = 200.0;
-    if (MediaQuery.of(context).orientation == Orientation.landscape){
-      heightScrollThumb = 30.0;
-    }   
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
@@ -93,14 +88,14 @@ class _QuizState extends State<QuizView> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
-              child: DraggableScrollbar(
-                controller: _scrollController,
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(top: 0.0, right: 10.0),              
-                  controller: _scrollController,
-                  itemCount: 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
+              child: Scrollbar(
+                controller: _scrollController, 
+                isAlwaysShown: true, 
+                child: SingleChildScrollView(
+                  controller: _scrollController,                
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 7.0),
+                    child: Column(
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 20.0),
@@ -134,30 +129,11 @@ class _QuizState extends State<QuizView> {
                           child: _showOptions(options, _answer)
                         )
                       ]
-                    );
-                  },
-                ),
-                heightScrollThumb: heightScrollThumb,
-                backgroundColor: AppColors.SILVER,
-                scrollThumbBuilder: (
-                  Color backgroundColor,
-                  Animation<double> thumbAnimation,
-                  Animation<double> labelAnimation,
-                  double height, {
-                  Text labelText,
-                  BoxConstraints labelConstraints
-                }) {
-                  return FadeTransition(
-                    opacity: thumbAnimation,
-                    child: Container(
-                      height: height,
-                      width: 5.0,
-                      color: backgroundColor,
                     ),
-                  );
-                }
-              ),
-            ),
+                  )
+                )
+              )
+            )
           ),
           Center(
             child: ElevatedButton(
