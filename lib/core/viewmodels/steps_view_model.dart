@@ -69,13 +69,13 @@ class StepsViewModel extends ChangeNotifier {
       });
     }
     await _stepsService.deleteStep(id);
-    _updateIndexesAfterDeleteStep(selectedStep);    
+    _updateIndexesAfterDeleteStep(selectedStep);
+    notifyListeners();
     return ;
   }
 
   void deleteStepFromList(String stepId) {
     steps.removeWhere((StepModel step) => step.id == stepId);
-    notifyListeners();
   }    
 
   void setSelectedStep(StepModel step) {
