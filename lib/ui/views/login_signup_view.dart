@@ -127,6 +127,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       child: TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         style: const TextStyle(
           color: Colors.white,
           fontSize: 15.0
