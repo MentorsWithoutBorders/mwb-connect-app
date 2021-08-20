@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
-import 'package:mwb_connect_app/ui/views/others/terms_view.dart';
+import 'package:mwb_connect_app/ui/views/others/privacy_view.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key key, this.logoutCallback})
@@ -105,23 +105,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
             },
           ),
-          // ListTile(
-          //   leading: const Padding(
-          //     padding: EdgeInsets.only(left: 5.0),
-          //     child: IconTheme(
-          //       data: IconThemeData(
-          //         color: AppColors.SILVER
-          //       ),
-          //       child: Icon(Icons.library_books),
-          //     )
-          //   ),
-          //   dense: true,
-          //   title: Text('drawer.terms'.tr()),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     Navigator.push(context, MaterialPageRoute<TermsView>(builder: (_) => TermsView()));
-          //   },
-          // ),
+          ListTile(
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
+              child: IconTheme(
+                data: IconThemeData(
+                  color: AppColors.SILVER
+                ),
+                child: Icon(Icons.library_books),
+              )
+            ),
+            dense: true,
+            title: Text('drawer.privacy'.tr()),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute<PrivacyView>(builder: (_) => PrivacyView()));
+            },
+          ),
           ListTile(
             leading: const Padding(
               padding: EdgeInsets.only(left: 5.0),

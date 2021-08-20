@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
-class TermsView extends StatefulWidget {
-  const TermsView({Key key})
+class PrivacyView extends StatefulWidget {
+  const PrivacyView({Key key})
     : super(key: key);   
 
   @override
-  State<StatefulWidget> createState() => _TermsViewState();
+  State<StatefulWidget> createState() => _PrivacyViewState();
 }
 
-class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMixin {
+class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStateMixin {
   final ScrollController _controller = ScrollController();
   final GlobalKey _cardKey = GlobalKey();
   final GlobalKey _textKey = GlobalKey();
@@ -41,11 +42,10 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
     });
   }   
 
-  Widget _showTerms() {
-    final String termsTitle = 'terms.text_title'.tr();
-    final String termsLastUpdatedLabel = 'terms.last_updated_label'.tr();
-    final String termsLastUpdated = 'terms.last_updated'.tr();
-    final String termsText = 'terms.text'.tr();
+  Widget _showPrivacy() {
+    final String privacyLastUpdatedLabel = 'privacy.last_updated_label'.tr();
+    final String privacyLastUpdated = 'privacy.last_updated'.tr();
+    final String privacyText = 'privacy.text'.tr();
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     
     return Container(
@@ -70,17 +70,10 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        termsTitle,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          color: AppColors.ALLPORTS
-                        ),
-                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
+                        padding: const EdgeInsets.only(bottom: 10.0),
                         child: Text(
-                          termsLastUpdatedLabel + ' ' + termsLastUpdated,
+                          privacyLastUpdatedLabel + ' ' + privacyLastUpdated,
                           textAlign: TextAlign.justify,
                           style: const TextStyle(
                             fontSize: 14.0,
@@ -89,15 +82,9 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: Text(
-                          termsText,
-                          textAlign: TextAlign.justify,
-                          style: const TextStyle(
-                            fontSize: 14.0
-                          ),
-                        ),
-                      ),
+                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                        child: HtmlWidget(privacyText)
+                      )
                     ],
                   ),
                 );
@@ -132,7 +119,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('terms.title'.tr()),
+        child: Text('privacy.title'.tr()),
       )
     );
   } 
@@ -154,7 +141,7 @@ class _TermsViewState extends State<TermsView> with SingleTickerProviderStateMix
             )
           ),
           extendBodyBehindAppBar: true,
-          body: _showTerms()
+          body: _showPrivacy()
         )
       ],
     );
