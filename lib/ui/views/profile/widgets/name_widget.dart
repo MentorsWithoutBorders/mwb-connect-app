@@ -26,6 +26,7 @@ class _NameState extends State<Name> {
         autofocus: false, 
         hint: 'profile.name_placeholder'.tr(), 
         text: _profileProvider.user?.name, 
+        textCapitalization: TextCapitalization.words,
         inputChangedCallback: _changeName
       )
     );

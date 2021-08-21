@@ -95,7 +95,8 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
             child: InputBox(
               autofocus: true, 
               hint: '',
-              text: _url, 
+              text: _url,
+              textCapitalization: TextCapitalization.none,
               inputChangedCallback: _changeUrl
             ),
           ),

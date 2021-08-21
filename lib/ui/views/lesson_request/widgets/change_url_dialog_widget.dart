@@ -84,7 +84,8 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
             child: InputBox(
               autofocus: true, 
               hint: '',
-              text: _url, 
+              text: _url,
+              textCapitalization: TextCapitalization.none, 
               inputChangedCallback: _changeUrl
             ),
           ),

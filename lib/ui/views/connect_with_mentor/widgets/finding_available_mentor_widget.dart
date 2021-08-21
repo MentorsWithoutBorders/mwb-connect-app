@@ -59,7 +59,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.BERMUDA_GRAY,
+            primary: AppColors.MONZA,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

@@ -102,42 +102,37 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 ),
               ),
               Expanded(
-                child: InkWell(
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.DOVE_GRAY,
-                        height: 1.5
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.DOVE_GRAY,
+                      height: 1.5
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: firstPart
                       ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: firstPart
-                        ),
-                        TextSpan(
-                          text: date,
-                          style: const TextStyle(
-                            color: AppColors.TANGO
-                          ) 
-                        ),
-                        TextSpan(
-                          text: ' ' + at + ' '
-                        ),
-                        TextSpan(
-                          text: time + ' ' + timeZone,
-                          style: const TextStyle(
-                            color: AppColors.TANGO
-                          ) 
-                        ),
-                        TextSpan(
-                          text: secondPart
-                        ),
-                      ],
-                    )
-                  ),
-                  onTap: () {
-                    _setIsRecurrent();
-                  }
+                      TextSpan(
+                        text: date,
+                        style: const TextStyle(
+                          color: AppColors.TANGO
+                        ) 
+                      ),
+                      TextSpan(
+                        text: ' ' + at + ' '
+                      ),
+                      TextSpan(
+                        text: time + ' ' + timeZone,
+                        style: const TextStyle(
+                          color: AppColors.TANGO
+                        ) 
+                      ),
+                      TextSpan(
+                        text: secondPart
+                      ),
+                    ],
+                  )
                 ),
               )
             ]

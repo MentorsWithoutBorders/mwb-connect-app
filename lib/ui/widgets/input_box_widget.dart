@@ -6,6 +6,7 @@ class InputBox extends StatelessWidget {
   final bool autofocus;
   final String hint;
   final String text;
+  final TextCapitalization textCapitalization;
   final Function(String) inputChangedCallback;
 
   InputBox({
@@ -13,6 +14,7 @@ class InputBox extends StatelessWidget {
     @required this.autofocus,
     this.hint,
     this.text,
+    this.textCapitalization,
     this.inputChangedCallback
   }) : super(key: key);  
 
@@ -20,7 +22,7 @@ class InputBox extends StatelessWidget {
     return TextFormField(
       key: key,
       autofocus: autofocus,
-      textCapitalization: TextCapitalization.sentences,
+      textCapitalization: textCapitalization,
       style: const TextStyle(
         fontSize: 14.0,
       ),

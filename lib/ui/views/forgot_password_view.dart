@@ -166,7 +166,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           hintStyle: const TextStyle(color: Colors.white),
           hintText: 'forgot_password.email'.tr(),
           errorStyle: const TextStyle(
-            color: Colors.yellow
+            color: AppColors.SOLITUDE
           )
         ), 
         validator: (String value) {
@@ -200,7 +200,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           _errorMessage,
           style: const TextStyle(
             fontSize: 13.0,
-            color: Colors.yellow,
+            color: AppColors.SOLITUDE,
             height: 1.0,
             fontWeight: FontWeight.w400
           ),
