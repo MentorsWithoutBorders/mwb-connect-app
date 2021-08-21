@@ -143,7 +143,11 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         context: context,
         builder: (BuildContext context) {
           return AnimatedDialog(
-            widgetInside: NotificationDialog(text: 'lesson_request.lesson_request_expired'.tr(), shouldReload: false)
+            widgetInside: NotificationDialog(
+              text: 'lesson_request.lesson_request_expired'.tr(),
+              buttonText: 'common.ok'.tr(),
+              shouldReload: false
+            )
           );
         }
       );
@@ -157,7 +161,11 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         context: context,
         builder: (BuildContext context) {
           return AnimatedDialog(
-            widgetInside: NotificationDialog(text: 'lesson_request.lesson_request_canceled'.tr(), shouldReload: false)
+            widgetInside: NotificationDialog(
+              text: 'lesson_request.lesson_request_canceled'.tr(),
+              buttonText: 'common.ok'.tr(),
+              shouldReload: false
+            )
           );
         }
       );

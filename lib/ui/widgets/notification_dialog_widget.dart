@@ -4,10 +4,11 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class NotificationDialog extends StatefulWidget {
-  const NotificationDialog({Key key, this.text, this.shouldReload})
+  const NotificationDialog({Key key, this.text, this.buttonText, this.shouldReload})
     : super(key: key);
 
   final String text;
+  final String buttonText;
   final bool shouldReload;
     
   @override
@@ -73,7 +74,7 @@ class _NotificationDialogState extends State<NotificationDialog> {
           padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
         ),
         child: Text(
-          'common.ok'.tr(),
+          widget.buttonText,
           style: const TextStyle(color: Colors.white)
         ),
         onPressed: () async {

@@ -1,4 +1,5 @@
 enum PushNotificationType { 
-  normal, 
+  normal,
+  lessonRequest,
   afterLesson
 }

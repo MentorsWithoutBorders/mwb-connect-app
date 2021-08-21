@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/push_notification_type.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -61,6 +62,11 @@ class PushNotificationsService {
           _showNormalPushNotification(event);
         }
         break;
+      case PushNotificationType.lessonRequest:
+        if (!isOpenApp) {
+          _showLessonRequestPushNotification(event);
+        }
+        break;        
       case PushNotificationType.afterLesson:
         _showAfterLessonPushNotification();
         break;
@@ -79,13 +85,37 @@ class PushNotificationsService {
           return WillPopScope(
             onWillPop: () => _reloadApp(context),
             child: AnimatedDialog(
-              widgetInside: NotificationDialog(text: event.notification.body, shouldReload: true)
+              widgetInside: NotificationDialog(
+                text: event.notification.body, 
+                buttonText: 'common.ok'.tr(),
+                shouldReload: true
+              )
+            )
+          );
+        }
+      );
+    }
+  }
+
+  void _showLessonRequestPushNotification(event) {
+    if (event != null && event.notification.body.isNotEmpty) {
+      showDialog(
+        context: NavigationService.instance.getCurrentContext(),
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () => _reloadApp(context),
+            child: AnimatedDialog(
+              widgetInside: NotificationDialog(
+                text: event.notification.body, 
+                buttonText: 'lesson_request.show_request'.tr(),
+                shouldReload: true
+              )
             )
           );
         }
       );
     }    
-  }
+  }  
 
   void _showAfterLessonPushNotification() {
     bool isMentor = _storageService.isMentor;
