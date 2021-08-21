@@ -33,18 +33,6 @@ class LocalStorageService {
   String get subfieldId => _getFromDisk('subfieldId');
   set subfieldId(String value) => _saveToDisk('subfieldId', value);
   
-  bool get shouldShowLessonRequestExpired => _getFromDisk('shouldShowLessonRequestExpired');
-  set shouldShowLessonRequestExpired(bool value) => _saveToDisk('shouldShowLessonRequestExpired', value);
-  
-  bool get shouldShowLessonRequestCanceled => _getFromDisk('shouldShowLessonRequestCanceled');
-  set shouldShowLessonRequestCanceled(bool value) => _saveToDisk('shouldShowLessonRequestCanceled', value);
-  
-  String get lessonRequestExpiredIds => _getFromDisk('lessonRequestExpiredIds');
-  set lessonRequestExpiredIds(String value) => _saveToDisk('lessonRequestExpiredIds', value);
-  
-  String get lessonRequestCanceledIds => _getFromDisk('lessonRequestCanceledIds');
-  set lessonRequestCanceledIds(String value) => _saveToDisk('lessonRequestCanceledIds', value);  
-  
   bool get shouldAppReload => _getFromDisk('shouldAppReload');
   set shouldAppReload(bool value) => _saveToDisk('shouldAppReload', value);
   

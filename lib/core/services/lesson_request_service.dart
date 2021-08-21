@@ -10,6 +10,7 @@ import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_request_widget.dart';
 
 class LessonRequestService {
   final ApiService _api = locator<ApiService>();
@@ -47,7 +48,12 @@ class LessonRequestService {
   Future<void> rejectLessonRequest(String id) async {
     await _api.putHTTP(url: '/lesson_requests/$id/reject_lesson_request', data: {});  
     return ;
-  }  
+  }
+  
+  Future<void> updateLessonRequest(String id, LessonRequestModel lessonRequest) async {
+    await _api.putHTTP(url: '/lesson_requests/$id/update_lesson_request', data: lessonRequest.toJson());  
+    return ;
+  }    
   
   Future<Lesson> getNextLesson() async {
     http.Response response = await _api.getHTTP(url: '/next_lesson');

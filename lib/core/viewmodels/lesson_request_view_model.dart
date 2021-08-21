@@ -37,6 +37,8 @@ class LessonRequestViewModel extends ChangeNotifier {
   List<GuideTutorial> guideTutorials;
   List<GuideRecommendation> guideRecommendations;
   bool _shouldUnfocus = false;
+  bool shouldShowExpired = false;
+  bool shouldShowCanceled = false;
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
@@ -63,15 +65,15 @@ class LessonRequestViewModel extends ChangeNotifier {
     lessonRequest = await _lessonRequestService.getLessonRequest();
     if (lessonRequest != null && lessonRequest.id != null) {
       if (lessonRequest.isExpired != null && lessonRequest.isExpired) {
-        if (_storageService.lessonRequestExpiredIds == null || !_storageService.lessonRequestExpiredIds.contains(lessonRequest.id)) {
-          _storageService.shouldShowLessonRequestExpired = true;
-          _storageService.lessonRequestExpiredIds = addLessonRequestId(_storageService.lessonRequestExpiredIds, lessonRequest.id);
+        if (lessonRequest.wasExpiredShown == null || lessonRequest.wasExpiredShown != null && !lessonRequest.wasExpiredShown) {
+          shouldShowExpired = true;
+          await _lessonRequestService.updateLessonRequest(lessonRequest.id, LessonRequestModel(wasExpiredShown: true));
         }
         lessonRequest = null;
       } else if (lessonRequest.isCanceled != null && lessonRequest.isCanceled) {
-        if (_storageService.lessonRequestCanceledIds == null || !_storageService.lessonRequestCanceledIds.contains(lessonRequest.id)) {
-          _storageService.shouldShowLessonRequestCanceled = true;
-          _storageService.lessonRequestCanceledIds = addLessonRequestId(_storageService.lessonRequestCanceledIds, lessonRequest.id);
+        if (lessonRequest.wasCanceledShown == null || lessonRequest.wasCanceledShown != null && !lessonRequest.wasCanceledShown) {
+          shouldShowCanceled = true;
+          await _lessonRequestService.updateLessonRequest(lessonRequest.id, LessonRequestModel(wasCanceledShown: true));
         }
         lessonRequest = null;
       }
@@ -339,17 +341,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   void setIsLessonRecurrent() {
     nextLesson.isRecurrent = !nextLesson.isRecurrent;
     notifyListeners();
-  }
-
-  bool get shouldShowExpired => _storageService.shouldShowLessonRequestExpired == true;
-  set shouldShowExpired(bool showExpired) {
-    _storageService.shouldShowLessonRequestExpired = showExpired;
-  }
-
-  bool get shouldShowCanceled => _storageService.shouldShowLessonRequestCanceled == true;
-  set shouldShowCanceled(bool showCanceled) {
-    _storageService.shouldShowLessonRequestCanceled = showCanceled;
-  }     
+  }   
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
