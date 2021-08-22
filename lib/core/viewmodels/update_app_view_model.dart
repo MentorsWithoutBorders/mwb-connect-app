@@ -58,7 +58,7 @@ class UpdateAppViewModel extends ChangeNotifier {
     if (_storageService.lastUpdateShownDateTime != null) {
       lastUpdateShownDateTime = DateTime.parse(_storageService.lastUpdateShownDateTime);
     }
-    if (_storageService.lastUpdateShownDateTime == null || now.difference(lastUpdateShownDateTime).inDays >= 14) {
+    if (_storageService.lastUpdateShownDateTime == null || now.difference(lastUpdateShownDateTime).inDays >= 7) {
       return true;
     } else {
       return false;

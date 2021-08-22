@@ -80,7 +80,10 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   }
 
   Widget _showText() {
-    int studentsNumber = _lessonRequestProvider.previousLesson.students.length;
+    int studentsNumber = 0;
+    if (_lessonRequestProvider.previousLesson != null && _lessonRequestProvider.previousLesson.students != null) {
+      studentsNumber = _lessonRequestProvider.previousLesson.students.length;
+    }
     String studentPlural = plural('student', studentsNumber);
     String pronoun = studentsNumber == 1 ? 'common.him_her'.tr() : 'common.them'.tr();
 

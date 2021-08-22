@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/forgot_password_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({Key key})
@@ -231,9 +232,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               await _validateAndSubmit();
             }
           },
-          child: Text(
-            'forgot_password.next'.tr(), 
-            style: const TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)
+          child: !_changeButtonPressed ? Text(
+            'forgot_password.next'.tr(),
+            style: const TextStyle(color: AppColors.ALLPORTS)
+          ) : SizedBox(
+            width: 80.0,
+            height: 20.0,
+            child: ButtonLoader(color: AppColors.ALLPORTS)
           )
         ),
       )
