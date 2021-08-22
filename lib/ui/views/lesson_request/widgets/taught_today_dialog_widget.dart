@@ -299,7 +299,20 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     _setIsSubmitting(true);
     await _lessonRequestProvider.addStudentSkills(_selectedSkills);
     await _lessonRequestProvider.addStudentsLessonNotes(_lessonNote);
+    _showToast();
   }
+
+  void _showToast() {
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text('lesson_request.taught_today_sent'.tr()),
+        action: SnackBarAction(
+          label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
+        ),
+      ),
+    );
+  }   
 
   void _setIsSubmitting(bool isSubmitting) {
     setState(() {

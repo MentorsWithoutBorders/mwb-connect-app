@@ -88,7 +88,9 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
         skillIds.add(mentorSkills[i].id);
       }
     }
-    await _connectWithMentorService.addSkills(skillIds, previousLesson.subfield.id);
+    if (previousLesson != null && previousLesson.subfield != null) {
+      await _connectWithMentorService.addSkills(skillIds, previousLesson.subfield.id);
+    }
   }
 
   Future<void> setMentorPresence(bool isMentorPresent) async {

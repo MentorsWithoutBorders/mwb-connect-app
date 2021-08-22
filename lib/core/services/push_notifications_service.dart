@@ -2,8 +2,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/push_notification_type.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/push_notification_type.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/models/fcm_token_model.dart';
@@ -119,25 +120,43 @@ class PushNotificationsService {
 
   void _showAfterLessonPushNotification() {
     bool isMentor = _storageService.isMentor;
-    if (isMentor) {
-      showDialog(
-        context: NavigationService.instance.getCurrentContext(),
-        builder: (_) => Center(
-          child: AnimatedDialog(
-            widgetInside: TaughtTodayDialog()
+    final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
+    final DateTime now = DateTime.now();
+    if (_shouldShowAfterLessonPushNotification()) {
+      if (isMentor) {
+        showDialog(
+          context: NavigationService.instance.getCurrentContext(),
+          builder: (_) => Center(
+            child: AnimatedDialog(
+              widgetInside: TaughtTodayDialog()
+            ),
           ),
-        ),
-      );
-    } else {
-      showDialog(
-        context: NavigationService.instance.getCurrentContext(),
-        builder: (_) => Center(
-          child: AnimatedDialog(
-            widgetInside: LearnedTodayDialog()
+        );
+      } else {
+        showDialog(
+          context: NavigationService.instance.getCurrentContext(),
+          builder: (_) => Center(
+            child: AnimatedDialog(
+              widgetInside: LearnedTodayDialog()
+            ),
           ),
-        ),
-      );      
+        );      
+      }
+      _storageService.lastAfterLessonShownDateTime = dateFormat.format(now);
     }
+  }
+  
+  bool _shouldShowAfterLessonPushNotification() {
+    final DateTime now = DateTime.now();
+    DateTime lastAfterLessonShownDateTime = DateTime.now();
+    if (_storageService.lastAfterLessonShownDateTime != null) {
+      lastAfterLessonShownDateTime = DateTime.parse(_storageService.lastAfterLessonShownDateTime);
+    }
+    if (_storageService.lastAfterLessonShownDateTime == null || now.difference(lastAfterLessonShownDateTime).inHours >= 1) {
+      return true;
+    } else {
+      return false;
+    }       
   }  
 
   Future<void> deleteFCMToken() async {

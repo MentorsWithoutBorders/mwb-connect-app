@@ -156,7 +156,9 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   Future<void> addStudentsLessonNotes(String text) async {
     LessonNote lessonNote = LessonNote(text: text);
-    await _lessonRequestService.addStudentsLessonNotes(previousLesson.id, lessonNote);
+    if (previousLesson != null && previousLesson.id != null) {
+      await _lessonRequestService.addStudentsLessonNotes(previousLesson.id, lessonNote);
+    }
   }    
 
   Future<void> getSkills() async {
@@ -171,7 +173,9 @@ class LessonRequestViewModel extends ChangeNotifier {
         skillIds.add(skills[i].id);
       }
     }
-    await _lessonRequestService.addStudentSkills(previousLesson.id, skillIds);
+    if (previousLesson != null && previousLesson.id != null) {
+      await _lessonRequestService.addStudentSkills(previousLesson.id, skillIds);
+    }
   }
 
   bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();

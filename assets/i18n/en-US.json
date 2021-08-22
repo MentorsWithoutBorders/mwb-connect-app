@@ -195,6 +195,7 @@
     "cancel_lesson_recurrence_text": "Are you sure you don't want to attend any of the lessons in this recurrence?",
 		"learned_today": "What I learned today",
 		"learned_today_text": "In order to connect you with an appropriate mentor for the next lesson, please select from the following list what you learned from today’s mentor:",
+    "learned_today_sent": "The lesson skills have been added successfully",
 		"mentor_not_present": "The mentor didn't show up"
 	},
 	"lesson_request": {
@@ -236,6 +237,7 @@
     "recommendations": "recommendations",
 		"taught_today": "What I taught today",
 		"taught_today_text": "In order for us to connect your {} from today with an appropriate mentor after your lesson/s, please select from the following list what you have taught {}:",
+    "taught_today_sent": "The lesson information has been sent successfully",
     "throughout_recurrence": "throughout the entire lesson recurrence",
     "quick_notes_placeholder": "Please also add some quick notes..."
 	},

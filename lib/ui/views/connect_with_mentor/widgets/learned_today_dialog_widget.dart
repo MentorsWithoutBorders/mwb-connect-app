@@ -245,7 +245,20 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
     _setIsSubmitting(true);
     await _connectWithMentorProvider.addSkills(_selectedSkills);
     await _connectWithMentorProvider.setMentorPresence(!_isMentorAbsent);
+    _showToast();
   }
+
+  void _showToast() {
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text('connect_with_mentor.learned_today_sent'.tr()),
+        action: SnackBarAction(
+          label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
+        ),
+      ),
+    );
+  }  
 
   void _setIsSubmitting(bool isSubmitting) {
     setState(() {
