@@ -475,7 +475,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           widget.loginCallback();
         }
       } catch (error) {
-        String message = 'try_again'.tr();
+        String message = 'common.try_again'.tr();
         if (error != null && error.message != null) {
           message = error.message;
         }

@@ -46,5 +46,5 @@ class LoginSignupViewModel extends ChangeNotifier {
 
   Future<void> _initPushNotifications() async {
     await pushNotificationsService.init();
-  }    
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await _signInFirebaseAnonymously();
   await _initAppDirectory();
+  await _initPushNotifications();
 
   Directory directory = await getApplicationDocumentsDirectory();
   runApp(
@@ -65,6 +67,11 @@ void _setDefaults() {
   final DefaultsService defaultsService = locator<DefaultsService>();
   defaultsService.setDefaults();    
 }
+
+Future<void> _initPushNotifications() async {
+  final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();
+  await pushNotificationsService.init();
+} 
 
 class MWBConnectApp extends StatefulWidget {
   final String _mixpanelToken;

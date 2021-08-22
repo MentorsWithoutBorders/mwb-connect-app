@@ -27,19 +27,21 @@ class PushNotificationsService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   
   Future<void> init() async {
-    // For iOS request permission first.    
-    _firebaseMessaging.requestPermission();
-    await deleteFCMToken();
-    String token = await _firebaseMessaging.getToken();
-    print("FirebaseMessaging token: $token");
-    FCMToken fcmToken = FCMToken(token: token);
-    await _addFCMToken(fcmToken);
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
-      showPushNotification(event: event, isOpenApp: true);
-    });       
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      showPushNotification(event: event, isOpenApp: false);
-    }); 
+    if (_storageService.userId != null) {
+      // For iOS request permission first.    
+      _firebaseMessaging.requestPermission();
+      await deleteFCMToken();
+      String token = await _firebaseMessaging.getToken();
+      print('FirebaseMessaging token: $token');
+      FCMToken fcmToken = FCMToken(token: token);
+      await _addFCMToken(fcmToken);
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
+        showPushNotification(event: event, isOpenApp: true);
+      });       
+      FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+        showPushNotification(event: event, isOpenApp: false);
+      }); 
+    }
   }
 
   PushNotificationType _getPushNotificationType(String type) {
