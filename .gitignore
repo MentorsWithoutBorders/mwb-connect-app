@@ -45,5 +45,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-/android/app/google-services-prod.json
+/android/app/google-services.prod.json
+/ios/Runner/GoogleService-Info.prod.plist
 /android/app/mwb_connect.jks

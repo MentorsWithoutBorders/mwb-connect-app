@@ -370,7 +370,7 @@
       },
       "quiz_tutorial2": {
         "title": "Relaxation method",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">While pursuing their goals, our students will inevitably experience various negative states such as anger, frustration, discouragement, worry, boredom, stress etc. and the longer they let these negative states manifest themselves, the more they will lose patience, joy and efficiency and there’s also a very high chance that they will give up at some point.<br><br>The best thing to do in those moments is to <b>relax efficiently</b> because the body needs to feel good and relaxation is the most accessible feel-good state that we all have at our disposal.<br><br>For relaxing, we teach them a very simple method: counting down from 10 to 1, letting each part of the body relax from head to toes and very importantly, <b>when they get to 0 they have to keep focusing on how they're letting the entire body relax until they reach a very relaxed, feel-good state</b>.</span></div>"
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">While pursuing their goals, our students will inevitably experience various negative states such as anger, frustration, discouragement, worry, boredom, stress etc. and the longer they let these negative states manifest themselves, the more they will lose patience, joy and efficiency and there’s also a very high chance that they will give up at some point.<br><br>The best thing to do in those moments is to <b>relax efficiently</b> because the body needs to feel good and relaxation is the most accessible feel-good state that we all have at our disposal.<br><br>For relaxing, we teach them a very simple method: counting down from 10 to 1, letting each part of the body relax from head to toes and then very importantly, <b>when they get to 0 they have to keep focusing on how they're letting the entire body relax until they reach a very relaxed, feel-good state</b>.</span></div>"
       },
       "quiz_tutorial3": {
         "title": "Super-focus method",
@@ -389,16 +389,16 @@
         "text": "<div align=\"justify\"><span style=\"color: #646464\">There’s a fast and a slow way of doing the 10-to-0 relaxation, the only difference between them being that in the <b>slow version</b> there should be a <b>3–4 second interval</b> between 10 and 9, 9 and 8 and so on, whereas <b>in the fast version we do the countdown faster</b>, without these intervals. In both versions however, the most important part remains what we do when we get to 0: <b>keep focusing on how we're letting the entire body relax until we reach that really feel-good, relaxed state</b>.<br><br>It's best for our students to start by practicing the slow relaxation but gradually they should get to the point where they are using the fast version more often.</span></div>"
       },
       "quiz_tutorial7": {
-        "title": "Mental process goal/steps",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">We are helping our students achieve their professional goals by sharing with them our own knowledge and skills. At the same time however, they need to generate a continuous stream of <b>ideas, energy and confidence</b> channelled towards their goals and the way to do this is very simple: they just need to ask themselves on a regular basis (preferably at least once a day) <b>\"what else can I do in order to achieve my goal?\"</b> and put into practice the ideas that they come up with whenever they feel it’s appropriate to do so.<br><br>They get these ideas from the enormous <b>warehouse of resources</b> that we all have at our disposal which is the subconscious mind and thus the plan for achieving their goals becomes clearer and clearer in their minds.</span></div>"
-      },
+        "title": "Energy",
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">By asking themselves on a regular basis \"what else can I do in order to achieve my goal?\", our students won't only get ideas but they will also generate more and more energy to act on those ideas because the mental process goal/steps will gradually get transferred to their subconscious mind which will keep it running on auto-pilot, in the background, on an infinite loop.<br><br>Because the subconscious mind is a tremendously powerful force that we have within ourselves, any process that it keeps running in the background has the tendency of pushing the body in the direction of the goal which is at the end of that process.</span></div>"
+      },     
       "quiz_tutorial8": {
-        "title": "Relaxation method",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">While pursuing their goals, our students will inevitably experience various negative states such as anger, frustration, discouragement, worry, boredom, stress etc. and the longer they let these negative states manifest themselves, the more they will lose patience, joy and efficiency and there’s also a very high chance that they will give up at some point.<br><br>The best thing to do in those moments is to <b>relax efficiently</b> because the body needs to feel good and relaxation is the most accessible feel-good state that we all have at our disposal.<br><br>For relaxing, we teach them a very simple method: counting down from 10 to 1, letting each part of the body relax from head to toes and very importantly, <b>when they get to 0 they have to keep focusing on how they're letting the entire body relax until they reach a very relaxed, feel-good state</b>.</span></div>"
+        "title": "Confidence",
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">Apart from ideas and energy, our students will also get more and more confidence that they can achieve their goals whenever they keep asking themselves \"what else can I do in order to achieve my goal?\"<br><br>That's because the subconscious mind simply cannot tell the difference between imagination and reality so for any process that we run in our minds, we feel that we’ve already gone through that process in reality multiple times and this gives us more and more confidence that we’ll actually reach our goal.</span></div>"
       },
       "quiz_tutorial9": {
-        "title": "Super-focus method",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">While planning and taking steps towards their goals, our students will also get distracted by various thoughts which will prevent them from keeping their focus on the tasks at hand. What they need to do in those moments is to simply realize that they got distracted and immediately switch their focus back to the steps that they are taking.<br><br>If they do this every time they get distracted by other thoughts, they will notice how they will get more and more immersed in the steps that they are taking and they will feel the pure joy of being there entirely.</span></div>"
+        "title": "Internal super-focus",
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">We also teach our students a very useful application of the super-focus method which allows them to pump more energy into the next step that they want to take. All they need to do is the following: think of their final goal and some of the main steps to achieve it, then think about the desired outcome of the step that they will take in the next 1h or so and some of the actions that will be part of this step.<br><br>While going through this entire thinking process, they also need to apply the super-focus method (whenever their mind gets distracted, continue from where the interruption happened) until the body becomes very comfortable.</span></div>"
       },
       "quiz_tutorial10": {
         "title": "Getting ideas",
@@ -474,12 +474,12 @@
         "answer": "3"		
       },      
       "quiz7": {
-        "question": "Apart from ideas, what do we get when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-        "option1": "Energy and confidence to put into practice the ideas that we come up with.",
-        "option2": "Nothing, this question only generates ideas.",
-        "option3": "Clarity for visualizing our goals.",
-        "answer": "1"
-      },
+        "question": "Why do our students get more and more energy when they keep asking themselves \"what else can I do in order to achieve my goal?\"",
+        "option1": "Because they are in a positive state of mind.",
+        "option2": "Because the subconscious mind keeps the mental process goal/steps running in the background, on autopilot.",
+        "option3": "Because energy is all around us and we just need to tap into it.",
+        "answer": "2"
+      }, 
       "quiz8": {
         "question": "What happens when we count down from 10 to 1, letting each part of the body relax?",
         "option1": "We get to feel a very pleasant, relaxed state.",
