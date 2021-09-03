@@ -8,18 +8,18 @@ import 'package:mwb_connect_app/ui/views/goal_steps/widgets/update_goal_dialog_w
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalDialog extends StatefulWidget {
-  const GoalDialog({Key key, @required this.context})
+  const GoalDialog({Key? key, @required this.context})
     : super(key: key);  
 
-  final BuildContext context;  
+  final BuildContext? context;  
 
   @override
   State<StatefulWidget> createState() => _GoalDialogState();
 }
 
 class _GoalDialogState extends State<GoalDialog> {
-  GoalsViewModel _goalsProvider;
-  StepsViewModel _stepsProvider;
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
 
   Widget _showGoalDialog() {
     return Container(
@@ -104,7 +104,7 @@ class _GoalDialogState extends State<GoalDialog> {
                 )
               ),
               onTap: () {
-                Navigator.pop(widget.context);
+                Navigator.pop(widget.context!);
               },
             ),
           )
@@ -115,13 +115,13 @@ class _GoalDialogState extends State<GoalDialog> {
 
   Widget _showDeleteGoalDialog() {
     return Container(
-      width: MediaQuery.of(widget.context).size.width * 0.8,
+      width: MediaQuery.of(widget.context!).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
       child: Wrap(
         children: <Widget>[
           Center(
             child: Text(
-              _stepsProvider.steps.isNotEmpty ? 
+              _stepsProvider?.steps?.isNotEmpty == true ? 
                 'goal_dialog.delete_goal_steps_message'.tr() :
                 'goal_dialog.delete_goal_message'.tr(),
               textAlign: TextAlign.center,
@@ -134,7 +134,7 @@ class _GoalDialogState extends State<GoalDialog> {
           Padding(
             padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
             child: Text(
-              _goalsProvider.selectedGoal.text,
+              _goalsProvider?.selectedGoal?.text as String,
               style: const TextStyle(
                 fontSize: 14,
               )
@@ -151,7 +151,7 @@ class _GoalDialogState extends State<GoalDialog> {
                     child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
                   ),
                   onTap: () {
-                    Navigator.pop(widget.context);
+                    Navigator.pop(widget.context!);
                   },
                 ),
                 ElevatedButton(
@@ -176,9 +176,9 @@ class _GoalDialogState extends State<GoalDialog> {
   }
 
   void _deleteGoal() {
-    _goalsProvider.deleteGoal(_goalsProvider.selectedGoal.id);
-    Navigator.pop(widget.context);
-    Navigator.pop(widget.context);
+    _goalsProvider?.deleteGoal(_goalsProvider?.selectedGoal?.id as String);
+    Navigator.pop(widget.context!);
+    Navigator.pop(widget.context!);
   }
 
   @override

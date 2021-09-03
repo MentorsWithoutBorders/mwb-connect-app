@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
@@ -18,13 +19,13 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   final ConnectWithMentorService _connectWithMentorService = locator<ConnectWithMentorService>();
   final QuizzesService _quizzesService = locator<QuizzesService>();
   final GoalsService _goalsService = locator<GoalsService>(); 
-  Goal goal;
-  StepModel lastStepAdded;
-  int quizNumber;
-  LessonRequestModel lessonRequest;
-  Lesson nextLesson;
-  Lesson previousLesson;
-  List<Skill> mentorSkills;
+  Goal? goal;
+  StepModel? lastStepAdded;
+  int? quizNumber;
+  LessonRequestModel? lessonRequest;
+  Lesson? nextLesson;
+  Lesson? previousLesson;
+  List<Skill>? mentorSkills;
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
@@ -35,7 +36,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     }
   }
 
-  void setGoal(Goal goal) {
+  void setGoal(Goal? goal) {
     this.goal = goal;
   }  
   
@@ -57,8 +58,8 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   }  
 
   Future<void> cancelLessonRequest() async {
-    await _connectWithMentorService.cancelLessonRequest(lessonRequest.id);
-    lessonRequest.isCanceled = true;
+    await _connectWithMentorService.cancelLessonRequest(lessonRequest?.id);
+    lessonRequest?.isCanceled = true;
     notifyListeners();
   } 
   
@@ -66,7 +67,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     nextLesson = await _connectWithMentorService.getNextLesson();
   }
 
-  Future<void> cancelNextLesson({bool isSingleLesson}) async {
+  Future<void> cancelNextLesson({bool? isSingleLesson}) async {
     await _connectWithMentorService.cancelNextLesson(nextLesson, isSingleLesson);
     await getNextLesson();
     notifyListeners();
@@ -78,30 +79,30 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   
   Future<void> getMentorSkills() async {
     await getPreviousLesson();
-    mentorSkills = await _connectWithMentorService.getMentorSkills(previousLesson.mentor.id, previousLesson.subfield.id);
+    mentorSkills = await _connectWithMentorService.getMentorSkills(previousLesson?.mentor?.id, previousLesson?.subfield?.id);
   }
   
   Future<void> addSkills(List<bool> selectedSkills) async {
     List<String> skillIds = [];
     for (int i = 0; i < selectedSkills.length; i++) {
-      if (selectedSkills[i]) {
-        skillIds.add(mentorSkills[i].id);
+      if (selectedSkills[i] == true) {
+        skillIds.add(mentorSkills?[i].id as String);
       }
     }
-    if (previousLesson != null && previousLesson.subfield != null) {
-      await _connectWithMentorService.addSkills(skillIds, previousLesson.subfield.id);
+    if (previousLesson != null && previousLesson?.subfield != null) {
+      await _connectWithMentorService.addSkills(skillIds, previousLesson?.subfield?.id);
     }
   }
 
   Future<void> setMentorPresence(bool isMentorPresent) async {
-    await _connectWithMentorService.setMentorPresence(previousLesson.id, isMentorPresent);
+    await _connectWithMentorService.setMentorPresence(previousLesson?.id, isMentorPresent);
   }
 
   bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();
 
-  bool get isNextLesson => nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
+  bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
 
-  bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isCanceled != true;
+  bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest?.id != null && lessonRequest?.isCanceled != true;
 
   void refreshTrainingInfo() {
     if (_storageService.quizNumber != null) {
@@ -109,22 +110,25 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
       _storageService.quizNumber = null;
     }
     if (_storageService.lastStepAddedId != null) {
-      lastStepAdded.id = _storageService.lastStepAddedId;
-      lastStepAdded.dateTime = DateTime.now();
+      lastStepAdded?.id = _storageService.lastStepAddedId;
+      lastStepAdded?.dateTime = DateTime.now();
       _storageService.lastStepAddedId = null;
     }    
     notifyListeners();
   }  
 
   String getQuizzesLeft() {
-    int weeklyCount = _storageService.quizzesMentorWeeklyCount;
-    int quizzesNumber = weeklyCount - ((quizNumber - 1) % weeklyCount);
-    String quizzesPlural = plural('quiz', quizzesNumber);
-    String quizzesLeft = quizzesNumber.toString();
-    if (quizzesNumber < weeklyCount) {
-      quizzesLeft += ' ' + 'common.more'.tr();
+    int? weeklyCount = _storageService.quizzesMentorWeeklyCount;
+    String quizzesLeft = '';
+    if (weeklyCount != null && quizNumber != null) {
+      int quizzesNumber = weeklyCount - ((quizNumber! - 1) % weeklyCount);
+      String quizzesPlural = plural('quiz', quizzesNumber);
+      quizzesLeft = quizzesNumber.toString();
+      if (quizzesNumber < weeklyCount) {
+        quizzesLeft += ' ' + 'common.more'.tr();
+      }
+      quizzesLeft += ' ' + quizzesPlural;
     }
-    quizzesLeft += ' ' + quizzesPlural;
     return quizzesLeft;
   }
 
@@ -137,69 +141,86 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   }
   
   bool getShouldShowAddStep() {
-    DateTime nextDeadline = getNextDeadline();
-    if (lastStepAdded.id != null && nextDeadline.difference(lastStepAdded.dateTime).inDays < 7) {
+    DateTime nextDeadline = getNextDeadline() as DateTime;
+    DateTime now = Utils.resetTime(DateTime.now());
+    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
+    int limit = now.difference(registeredOn).inDays > 7 ? 7 : 8;
+    if (lastStepAdded?.id != null && nextDeadline.difference(Utils.resetTime(lastStepAdded?.dateTime as DateTime)).inDays < limit) {
       return false;
     } else {
       return true;
     }
   }  
 
-  DateTime getCertificateDate() {
-    DateTime registeredOn = DateTime.parse(_storageService.registeredOn);
+  DateTime? getCertificateDate() {
+    DateTime registeredOn = DateTime.parse(_storageService.registeredOn as String);
     registeredOn = Utils.resetTime(registeredOn);
-    DateTime date;
+    DateTime? date;
     if (_storageService.registeredOn != null) {
       date = Jiffy(registeredOn).add(months: 3).dateTime;
     }
     return date;
   }
 
-  DateTime getNextDeadline() {
-    DateTime registeredOn = DateTime.parse(_storageService.registeredOn);
-    registeredOn = Utils.resetTime(registeredOn);
-    Jiffy deadline;
-    if (lastStepAdded != null && lastStepAdded.dateTime != null) {
-      DateTime lastStepAddedDateTime = lastStepAdded.dateTime;
-      lastStepAddedDateTime = Utils.resetTime(lastStepAddedDateTime);
-      Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
-      int i = 1;
-      bool found = false;
-      while (!found) {
-        deadline = Jiffy(registeredOn).add(weeks: i);
-        if (deadline.dateTime.difference(lastStepAddedDateTime).inDays > 7 ||
-            deadline.isSameOrAfter(now, Units.DAY)) {
-          found = true;
-        } else {
-          i++;
-        }
-      }
+  DateTime? getNextDeadline() {
+    Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
+    Jiffy deadline = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    if (deadline.isSame(now)) {
+      deadline.add(weeks: 1);
     } else {
-      deadline = Jiffy(registeredOn).add(weeks: 1);
+      while (deadline.isBefore(now, Units.DAY)) {
+        deadline.add(weeks: 1);
+      }
     }
     return deadline.dateTime;
   }
 
-  bool isOverdue() {
-    DateTime now = Utils.resetTime(DateTime.now());
-    DateTime deadLine = Utils.resetTime(getNextDeadline());
-    return now.difference(deadLine).inDays > 0;
+  String getTrainingWeek() {
+    Jiffy nextDeadline = Jiffy(getNextDeadline());
+    Jiffy date = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    int weekNumber = 0;
+    while (date.isSameOrBefore(nextDeadline, Units.DAY)) {
+      date.add(weeks: 1);
+      weekNumber++;
+    }
+    weekNumber--;
+    String week = '';
+    switch (weekNumber) {
+      case 1:
+        week = 'numerals.first'.tr();
+        break;
+      case 2: 
+        week = 'numerals.second'.tr();
+        break;
+      case 3: 
+        week = 'numerals.third'.tr();
+        break;
+      default:
+        week = 'numerals.nth'.tr(args: [weekNumber.toString()]);
+    }
+    return week;
   }
 
+  bool shouldShowTrainingCompleted() {
+    DateTime now = Utils.resetTime(DateTime.now());
+    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
+    return now.difference(registeredOn).inDays <= 7 * AppConstants.studentWeeksTraining;
+  }  
+
   bool shouldReceiveCertificate() {
-    DateTime certificateDate = Utils.resetTime(getCertificateDate());
-    DateTime deadLine = Utils.resetTime(getNextDeadline());
+    DateTime certificateDate = Utils.resetTime(getCertificateDate() as DateTime);
+    DateTime deadLine = Utils.resetTime(getNextDeadline() as DateTime);
     return certificateDate.difference(deadLine).inDays <= 0;
   }
 
   DateTime getCorrectEndRecurrenceDate() {
     int days = 0;
-    if (isNextLesson) {
-      days = nextLesson.endRecurrenceDateTime.difference(nextLesson.dateTime).inDays;
+    if (isNextLesson == true && nextLesson?.endRecurrenceDateTime != null && nextLesson?.dateTime != null) {
+      days = nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int;
       if (days % 7 != 0) {
         days = days - days % 7;
       }
     }
-    return Jiffy(nextLesson.dateTime).add(days: days).dateTime;
+    return Jiffy(nextLesson?.dateTime).add(days: days).dateTime;
   }
 }

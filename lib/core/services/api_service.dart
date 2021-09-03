@@ -12,7 +12,7 @@ class ApiService {
   bool refreshingToken = false;
   
   Map<String, String> getHeaders() {
-    String accessToken = _storageService.accessToken;
+    String? accessToken = _storageService.accessToken;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -21,7 +21,7 @@ class ApiService {
     return headers;    
   }
 
-  Future<http.Response> getHTTP({String url}) async {
+  Future<http.Response> getHTTP({required String url}) async {
     final response = await http.get(
       Uri.parse(baseUrl + url), 
       headers: getHeaders()
@@ -29,9 +29,9 @@ class ApiService {
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
     } else if (response.statusCode == 401) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();
       // }
@@ -39,9 +39,10 @@ class ApiService {
       //   return getHTTP(url: url);
       // }      
     }
+    return response;
   }
 
-  Future<http.Response> postHTTP({String url, dynamic data}) async {
+  Future<http.Response> postHTTP({required String url, dynamic data}) async {
     final response = await http.post(
       Uri.parse(baseUrl + url), 
       headers: getHeaders(),
@@ -50,19 +51,20 @@ class ApiService {
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
     } else if (response.statusCode == 401) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();      
       // }
       // if (_storageService.refreshToken != null) {      
       //   return await postHTTP(url: url, data: data);
       // }
-    }   
+    }
+    return response;
   }
 
-  Future<http.Response> putHTTP({String url, dynamic data}) async {
+  Future<http.Response> putHTTP({required String url, dynamic data}) async {
     final response = await http.put(
       Uri.parse(baseUrl + url), 
       headers: getHeaders(),
@@ -71,19 +73,20 @@ class ApiService {
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
     } else if (response.statusCode == 401) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();       
       // }
       // if (_storageService.refreshToken != null) {
       //   return await putHTTP(url: url, data: data);
       // }
-    }  
+    }
+    return response;
   }
   
-  Future<http.Response> deleteHTTP({String url}) async {
+  Future<http.Response> deleteHTTP({required String url}) async {
     final response = await http.delete(
       Uri.parse(baseUrl + url), 
       headers: getHeaders()
@@ -91,9 +94,9 @@ class ApiService {
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 400) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
     } else if (response.statusCode == 401) {
-      throw(Exception(_getError(response)));
+      throw(ErrorModel(message: _getError(response)));
       // if (!refreshingToken) {
       //   await _refreshToken();    
       // }
@@ -101,17 +104,18 @@ class ApiService {
       //   return await deleteHTTP(url: url);
       // }
     }
+    return response;
   }
 
-  String _getError(http.Response response) {
+  String? _getError(http.Response response) {
     var json = jsonDecode(response.body);
     ErrorModel error = ErrorModel.fromJson(json);
     return error.message;
   }  
 
   Future<void> _refreshToken() async {
-    String userId = _storageService.userId;
-    String refreshToken = _storageService.refreshToken;
+    String? userId = _storageService.userId;
+    String? refreshToken = _storageService.refreshToken;
     refreshingToken = true;
     final response = await http.get(
       Uri.parse(baseUrl + '/users/$userId/access_token?refreshToken=$refreshToken'),
@@ -142,6 +146,7 @@ class ApiService {
     _storageService.lastStepAddedId = null;
     _storageService.shouldAppReload = null;
     _storageService.lastUpdateShownDateTime = null;
-    _storageService.lastAfterLessonShownDateTime = null;
+    _storageService.lastPNShownDateTime = null;
+    _storageService.isFCMPermissionRequested = null;
   }    
 }

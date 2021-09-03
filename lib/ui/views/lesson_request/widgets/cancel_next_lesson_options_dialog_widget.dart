@@ -6,10 +6,10 @@ import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_less
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class CancelNextLessonOptionsDialog extends StatefulWidget {
-  const CancelNextLessonOptionsDialog({Key key, @required this.context})
+  const CancelNextLessonOptionsDialog({Key? key, @required this.context})
     : super(key: key);  
 
-  final BuildContext context;  
+  final BuildContext? context;  
 
   @override
   State<StatefulWidget> createState() => _CancelNextLessonOptionsDialogState();
@@ -101,7 +101,7 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
                 )
               ),
               onTap: () {
-                Navigator.pop(widget.context);
+                Navigator.pop(widget.context!);
               },
             ),
           )

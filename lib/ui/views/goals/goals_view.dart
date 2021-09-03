@@ -12,17 +12,17 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalsView extends StatefulWidget {
-  const GoalsView({Key key, this.logoutCallback})
+  const GoalsView({Key? key, this.logoutCallback})
     : super(key: key);  
 
-  final VoidCallback logoutCallback;
+  final VoidCallback? logoutCallback;
 
   @override
   State<StatefulWidget> createState() => _GoalsViewState();
 }
 
 class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
-  GoalsViewModel _goalsProvider;
+  GoalsViewModel? _goalsProvider;
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();  
   final int _opacityDuration = 300;
@@ -33,26 +33,26 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
   
   void _afterLayout(_) {
-    if (_goalsProvider.wasGoalAdded) {
+    if (_goalsProvider?.wasGoalAdded == true) {
       _scrollToLastGoal();
-      _goalsProvider.setWasGoalAdded(false);
+      _goalsProvider?.setWasGoalAdded(false);
     }
   }
 
   void _scrollToLastGoal() {
-    _scrollController.scrollToIndex(_goalsProvider.goals.length);
+    _scrollController.scrollToIndex(_goalsProvider?.goals?.length as int);
   }
   
   Widget _showGoals() {
@@ -71,17 +71,17 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
                 scrollDirection: _scrollDirection,
                 controller: _scrollController,                
                 shrinkWrap: true,
-                itemCount: _goalsProvider.goals.length,
+                itemCount: _goalsProvider?.goals?.length,
                 itemBuilder: (BuildContext buildContext, int index) =>
                   AutoScrollTag(
                     key: ValueKey<int>(index),
                     controller: _scrollController,
                     index: index,
-                    child: GoalCard(goal: _goalsProvider.goals[index])
+                    child: GoalCard(goal: _goalsProvider?.goals?[index])
                   )
               ),
             ),
-            if (_goalsProvider.goals.isNotEmpty) _showAddGoalButton()
+            if (_goalsProvider?.goals != null && _goalsProvider?.goals?.isNotEmpty == true) _showAddGoalButton()
           ]
         ),
       )
@@ -120,10 +120,10 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
 
   Widget _showTitle() {
     Widget title;
-    if (_goalsProvider.goals == null) {
+    if (_goalsProvider?.goals == null) {
       title = const Text('');
     } else {
-      if (_goalsProvider.goals.isNotEmpty) {
+      if (_goalsProvider?.goals?.isNotEmpty == true) {
         title = Text('goals.my_goals'.tr());
       } else {
         title = Text('goals.first_goal'.tr());
@@ -141,7 +141,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   Future<void> _getGoals() async {
     if (!_isRetrievingGoals) { 
       _isRetrievingGoals = true; 
-      await _goalsProvider.getGoals();
+      await _goalsProvider?.getGoals();
       setState(() {
         _goalsRetrieved = true;
       });
@@ -149,24 +149,25 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
   
   Widget _showContent() {
-    if (_goalsRetrieved) {
-      if (_goalsProvider.goals.isNotEmpty) {
-        // For opacity animation
-        Future<void>.delayed(const Duration(milliseconds: 300), () {
-          if (mounted && !_shouldShowGoals) {
-            setState(() {
-              _shouldShowGoals = true;
-            });
-          }
-        });
-        WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-        return _showGoals();
-      } else {
-        return FirstGoal();
-      }
-    } else {
-      return Loader();
-    }
+    // if (_goalsRetrieved) {
+    //   if (_goalsProvider?.goals?.isNotEmpty == true) {
+    //     // For opacity animation
+    //     Future<void>.delayed(const Duration(milliseconds: 300), () {
+    //       if (mounted && !_shouldShowGoals) {
+    //         setState(() {
+    //           _shouldShowGoals = true;
+    //         });
+    //       }
+    //     });
+    //     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    //     return _showGoals();
+    //   } else {
+    //     return FirstGoal();
+    //   }
+    // } else {
+    //   return Loader();
+    // }
+    return FirstGoal();    
   }  
   
   @override

@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widget.dart';
 
 class Subfields extends StatefulWidget {
-  const Subfields({Key key})
+  const Subfields({Key? key})
     : super(key: key); 
 
   @override
@@ -17,11 +17,11 @@ class Subfields extends StatefulWidget {
 }
 
 class _SubfieldsState extends State<Subfields> {
-  ProfileViewModel _profileProvider;    
+  ProfileViewModel? _profileProvider;    
 
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<Subfield> userSubfields = _profileProvider.user.field.subfields;
+    final List<Subfield>? userSubfields = _profileProvider?.user?.field?.subfields;
     subfieldWidgets.add(Label(text: 'profile.subfields'.tr()));
     if (userSubfields != null) {
       for (int i = 0; i < userSubfields.length; i++) {
@@ -55,11 +55,11 @@ class _SubfieldsState extends State<Subfields> {
 
   void _addSubfield() {
     _unfocus();
-    _profileProvider.addSubfield();    
+    _profileProvider?.addSubfield();    
   }
 
   void _unfocus() {
-    _profileProvider.shouldUnfocus = true;
+    _profileProvider?.shouldUnfocus = true;
   }
   
   @override

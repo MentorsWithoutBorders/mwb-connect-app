@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class FindAvailableMentor extends StatefulWidget {
-  const FindAvailableMentor({Key key})
+  const FindAvailableMentor({Key? key})
     : super(key: key); 
 
   @override
@@ -16,7 +16,7 @@ class FindAvailableMentor extends StatefulWidget {
 }
 
 class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerProviderStateMixin {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
   bool _isSendingLessonRequest = false;
 
   Widget _showFindAvailableMentorCard() {
@@ -51,12 +51,13 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
 
   Widget _showTitle() {
     return Container(
-      margin: const EdgeInsets.only(left: 3.0, bottom: 15.0),
+      margin: const EdgeInsets.only(top: 3.0, bottom: 15.0),
       child: Center(
         child: Text(
           'connect_with_mentor.find_available_mentor'.tr(),
           style: const TextStyle(
             color: AppColors.TANGO,
+            fontSize: 16.0,
             fontWeight: FontWeight.bold
           )
         ),
@@ -144,7 +145,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
   
   Future<void> _sendLessonRequest() async {  
     _setIsSendingLessonRequest(true);
-    await _connectWithMentorProvider.sendLessonRequest();
+    await _connectWithMentorProvider?.sendLessonRequest();
     _setIsSendingLessonRequest(false);
   }
 

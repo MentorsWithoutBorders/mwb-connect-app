@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class BulletPoint extends StatelessWidget {
-  const BulletPoint({Key key})
+  const BulletPoint({Key? key})
     : super(key: key); 
 
   @override

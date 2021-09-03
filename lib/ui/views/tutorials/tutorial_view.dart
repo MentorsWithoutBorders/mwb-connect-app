@@ -14,11 +14,11 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class TutorialView extends StatefulWidget {
-  const TutorialView({Key key, @required this.type, this.section})
+  const TutorialView({Key? key, @required this.type, this.section})
     : super(key: key); 
 
-  final String type;
-  final String section;
+  final String? type;
+  final String? section;
   
   @override
   State<StatefulWidget> createState() => _TutorialViewState();
@@ -27,7 +27,7 @@ class TutorialView extends StatefulWidget {
 class _TutorialViewState extends State<TutorialView> {
   final ScrollController _scrollController = ScrollController();
   final double _pageIndicatorHeight = 30.0;
-  Directory _appDocsDir;  
+  Directory? _appDocsDir;  
   final Map<String, bool> _imageExists = {};
   List<String> _sections = [];
   bool _isLoaded = false;
@@ -46,7 +46,7 @@ class _TutorialViewState extends State<TutorialView> {
       tutorials[entry.key] = entry.value.cast<String>();
     }    
     setState(() {
-      _sections = tutorials[widget.type];
+      _sections = tutorials[widget.type!] as List<String>;
     });
     _sections.forEach((String section) {
       _imageExists.putIfAbsent(section, () => true);
@@ -79,7 +79,7 @@ class _TutorialViewState extends State<TutorialView> {
   }  
   
   Widget _showTutorial() {
-    final int initialPage = widget.section != null ? _sections.indexOf(widget.section) : 0;
+    final int initialPage = widget.section != null ? _sections.indexOf(widget.section!) : 0;
     final PageController controller = PageController(initialPage: initialPage, viewportFraction: 1, keepPage: true);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
@@ -153,7 +153,7 @@ class _TutorialViewState extends State<TutorialView> {
                   ),
                 ),
                 Container (
-                  height: _imageExists[section] ? 140 : 0,
+                  height: _imageExists[section] == true ? 140 : 0,
                   padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                   child: _showImage(section),
                 ),
@@ -172,8 +172,8 @@ class _TutorialViewState extends State<TutorialView> {
           Animation<double> thumbAnimation,
           Animation<double> labelAnimation,
           double height, {
-          Text labelText,
-          BoxConstraints labelConstraints
+          Text? labelText,
+          BoxConstraints? labelConstraints
         }) {
           return FadeTransition(
             opacity: thumbAnimation,
@@ -189,7 +189,7 @@ class _TutorialViewState extends State<TutorialView> {
   }
 
   String _imageName(String section) {
-    return section == 'main' ? widget.type : section;
+    return section == 'main' ? widget.type as String : section;
   }
 
   Widget _showImage(String section) {
@@ -202,7 +202,7 @@ class _TutorialViewState extends State<TutorialView> {
   }
 
   File _fileFromDocsDir(String filename) {
-    final String pathName = p.join(_appDocsDir.path, filename);
+    final String pathName = p.join(_appDocsDir?.path as String, filename);
     return File(pathName);
   }
 

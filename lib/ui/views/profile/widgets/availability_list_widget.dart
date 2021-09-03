@@ -12,7 +12,7 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/add_availability_widget
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityList extends StatefulWidget {
-  const AvailabilityList({Key key})
+  const AvailabilityList({Key? key})
     : super(key: key); 
 
   @override
@@ -20,7 +20,7 @@ class AvailabilityList extends StatefulWidget {
 }
 
 class _AvailabilityListState extends State<AvailabilityList> with TickerProviderStateMixin {
-  ProfileViewModel _profileProvider;
+  ProfileViewModel? _profileProvider;
 
   Widget _showAvailability() {
     return Column(
@@ -35,7 +35,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   Widget _showTitle() {
-    String title = _profileProvider.user.isMentor ? 'profile.available_days_times'.tr() : 'profile.availability'.tr();
+    String title = _profileProvider?.user?.isMentor == true ? 'profile.available_days_times'.tr() : 'profile.availability'.tr();
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
@@ -54,9 +54,11 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
 
   Widget _showAvailabilityList() {
     final List<Widget> availabilityWidgets = [];
-    final List<Availability> availabilityList = _profileProvider.user.availabilities;
-    for (int i = 0; i < availabilityList.length; i++) {
-      availabilityWidgets.add(AvailabilityItem(index: i));
+    final List<Availability>? availabilityList = _profileProvider?.user?.availabilities;
+    if (availabilityList != null) {
+      for (int i = 0; i < availabilityList.length; i++) {
+        availabilityWidgets.add(AvailabilityItem(index: i));
+      }
     }
     return Padding(
       padding: const EdgeInsets.only(left: 5.0, bottom: 10.0),
@@ -94,9 +96,9 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
         widgetInside: AddAvailability()
       ),
     ).then((shouldShowToast) {
-      if (shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {
+      if (shouldShowToast && _profileProvider?.availabilityMergedMessage.isNotEmpty == true) {
         _showToast(context);
-        _profileProvider.resetAvailabilityMergedMessage();
+        _profileProvider?.resetAvailabilityMergedMessage();
       }
     });     
   }
@@ -106,7 +108,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     scaffold.showSnackBar(
       SnackBar(
         key: const Key(AppKeys.toast),
-        content: Text(_profileProvider.availabilityMergedMessage),
+        content: Text(_profileProvider?.availabilityMergedMessage as String),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
@@ -115,7 +117,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
   }
 
   void _unfocus() {
-    _profileProvider.shouldUnfocus = true;
+    _profileProvider?.shouldUnfocus = true;
   }   
 
 

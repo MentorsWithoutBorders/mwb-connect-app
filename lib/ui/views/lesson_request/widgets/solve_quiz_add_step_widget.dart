@@ -12,7 +12,7 @@ import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/conditions_list_widget.dart';
 
 class SolveQuizAddStep extends StatefulWidget {
-  const SolveQuizAddStep({Key key})
+  const SolveQuizAddStep({Key? key})
     : super(key: key); 
 
   @override
@@ -20,15 +20,15 @@ class SolveQuizAddStep extends StatefulWidget {
 }
 
 class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
-  LessonRequestViewModel _lessonRequestProvider;
-  GoalsViewModel _goalsProvider;
-  StepsViewModel _stepsProvider;  
+  LessonRequestViewModel? _lessonRequestProvider;
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;  
   final String _defaultLocale = Platform.localeName;  
 
   Widget _showSolveQuizAddStepCard() {
-    String quizzes = _lessonRequestProvider.getQuizzesLeft();
-    bool shouldShowQuizzes = _lessonRequestProvider.getShouldShowQuizzes();
-    bool shouldShowStep = _lessonRequestProvider.getShouldShowAddStep();
+    String? quizzes = _lessonRequestProvider?.getQuizzesLeft();
+    bool? shouldShowQuizzes = _lessonRequestProvider?.getShouldShowQuizzes();
+    bool? shouldShowStep = _lessonRequestProvider?.getShouldShowAddStep();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -69,6 +69,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           'lesson_request.training_title'.tr(),
           style: const TextStyle(
             color: AppColors.TANGO,
+            fontSize: 16.0,
             fontWeight: FontWeight.bold
           )
         ),
@@ -94,8 +95,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   Widget _showNextDeadline() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String deadline = dateFormat.format(_lessonRequestProvider.getNextDeadline());
-    Color deadlineColor = !_lessonRequestProvider.isOverdue() ? AppColors.TANGO : AppColors.MONZA;
+    String deadline = dateFormat.format(_lessonRequestProvider?.getNextDeadline() as DateTime);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: RichText(
@@ -113,14 +113,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
             TextSpan(
               text: deadline,
               style: TextStyle(
-                color: deadlineColor,
-                fontWeight: FontWeight.bold
-              )
-            ),
-            if (_lessonRequestProvider.isOverdue()) TextSpan(
-              text: ' (' + 'lesson_request.overdue'.tr() + ')',
-              style: TextStyle(
-                color: AppColors.MONZA,
+                color: AppColors.TANGO,
                 fontWeight: FontWeight.bold
               )
             )
@@ -154,8 +147,8 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoal() {
-    if (_lessonRequestProvider.goal != null) {
-      _goalsProvider.setSelectedGoal(_lessonRequestProvider.goal);
+    if (_lessonRequestProvider?.goal != null) {
+      _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
       _goToGoalSteps();
     } else {
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
@@ -163,12 +156,12 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoalSteps() {
-    if (_goalsProvider.selectedGoal != null) {
-      _stepsProvider.setShouldShowTutorialChevrons(false);
-      _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false); 
-      _lessonRequestProvider.setGoal(_goalsProvider.selectedGoal);
-      int quizNumber = _lessonRequestProvider.quizNumber;
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider.refreshTrainingInfo());
+    if (_goalsProvider?.selectedGoal != null) {
+      _stepsProvider?.setShouldShowTutorialChevrons(false);
+      _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
+      _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
+      int quizNumber = _lessonRequestProvider?.quizNumber as int;
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider?.refreshTrainingInfo());
     }
   }
 

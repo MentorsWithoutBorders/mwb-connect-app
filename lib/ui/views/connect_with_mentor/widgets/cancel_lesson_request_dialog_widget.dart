@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.d
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelLessonRequestDialog extends StatefulWidget {
-  const CancelLessonRequestDialog({Key key})
+  const CancelLessonRequestDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -14,7 +14,7 @@ class CancelLessonRequestDialog extends StatefulWidget {
 }
 
 class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> with TickerProviderStateMixin {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
   bool _isCancelingLessonRequest = false;
 
   Widget _showCancelLessonRequestDialog() {
@@ -100,7 +100,7 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
 
   Future<void> _cancelLessonRequest() async {  
     _setIsCancelingLessonRequest(true);
-    await _connectWithMentorProvider.cancelLessonRequest();
+    await _connectWithMentorProvider?.cancelLessonRequest();
   }
   
   void _setIsCancelingLessonRequest(bool isCanceling) {

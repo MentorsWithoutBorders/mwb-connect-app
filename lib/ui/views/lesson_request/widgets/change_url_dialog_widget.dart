@@ -8,19 +8,19 @@ import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class ChangeUrlDialog extends StatefulWidget {
-  const ChangeUrlDialog({Key key, this.url})
+  const ChangeUrlDialog({Key? key, this.url})
     : super(key: key);  
 
-  final String url;
+  final String? url;
 
   @override
   State<StatefulWidget> createState() => _ChangeUrlDialogState();
 }
 
 class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   String urlType = AppConstants.meetingUrlType;  
-  String _url;
+  String? _url;
   bool _shouldShowError = false;
   bool _isUpdatingLessonUrl = false;
 
@@ -84,7 +84,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
             child: InputBox(
               autofocus: true, 
               hint: '',
-              text: _url,
+              text: _url as String,
               textCapitalization: TextCapitalization.none, 
               inputChangedCallback: _changeUrl
             ),
@@ -158,12 +158,12 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
   } 
 
   Future<void> _changeLessonUrl() async {
-    if (!_lessonRequestProvider.checkValidUrl(_url)) {
+    if (_lessonRequestProvider?.checkValidUrl(_url as String) == false) {
       _setShouldShowError(true);
       return ;
     }    
     _setIsUpdatingLessonUrl(true);
-    await _lessonRequestProvider.changeLessonUrl(_url);
+    await _lessonRequestProvider?.changeLessonUrl(_url as String);
     Navigator.pop(context);
   }
   

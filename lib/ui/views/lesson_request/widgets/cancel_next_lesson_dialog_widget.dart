@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelNextLessonDialog extends StatefulWidget {
-  const CancelNextLessonDialog({Key key})
+  const CancelNextLessonDialog({Key? key})
     : super(key: key);
     
   @override
@@ -16,7 +16,7 @@ class CancelNextLessonDialog extends StatefulWidget {
 }
 
 class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   bool _isCancellingLesson = false;  
 
   Widget _showCancelNextLessonDialog() {
@@ -50,20 +50,20 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showText() {
-    if (!_lessonRequestProvider.isNextLesson) {
+    if (_lessonRequestProvider?.isNextLesson == false) {
       return SizedBox.shrink();
     }
-    Lesson nextLesson = _lessonRequestProvider.nextLesson;
-    DateTime nextLessonDateTime = nextLesson.dateTime;
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
+    DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    String subfield = nextLesson.subfield.name.toLowerCase();
+    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String date = dateFormat.format(nextLessonDateTime);
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
-    String studentPlural = plural('student', nextLesson.students.length);
+    String studentPlural = plural('student', nextLesson?.students?.length as int);
     String text = 'lesson_request.cancel_next_lesson_text'.tr(args: [subfield, date, time, timeZone, studentPlural]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
@@ -152,7 +152,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
 
   Future<void> _cancelNextLesson() async {  
     _setIsCancellingLesson(true);
-    await _lessonRequestProvider.cancelNextLesson(isSingleLesson: true);
+    await _lessonRequestProvider?.cancelNextLesson(isSingleLesson: true);
   }
   
   void _setIsCancellingLesson(bool isCanceling) {

@@ -1,6 +1,6 @@
 class Time {
-  String from;
-  String to;
+  String? from;
+  String? to;
 
   Time({this.from, this.to});
 
@@ -9,7 +9,7 @@ class Time {
     to = json['to'] ?? '';
   }
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'from': from,
       'to': to

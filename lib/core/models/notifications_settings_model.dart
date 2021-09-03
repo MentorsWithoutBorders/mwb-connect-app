@@ -1,6 +1,6 @@
 class NotificationsSettings {
-  bool enabled;
-  String time;
+  bool? enabled;
+  String? time;
 
   NotificationsSettings({this.enabled, this.time});
 
@@ -8,7 +8,7 @@ class NotificationsSettings {
     enabled = json['enabled'] ?? true,
     time = json['time'];
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'enabled': enabled,
       'time': time

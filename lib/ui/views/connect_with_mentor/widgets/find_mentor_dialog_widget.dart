@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
 
 class FindMentorDialog extends StatefulWidget {
-  const FindMentorDialog({Key key})
+  const FindMentorDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -15,7 +15,7 @@ class FindMentorDialog extends StatefulWidget {
 }
 
 class _FindMentorDialogState extends State<FindMentorDialog> {
-  ConnectWithMentorViewModel _connectWithMentorProvider;  
+  ConnectWithMentorViewModel? _connectWithMentorProvider;  
 
   Widget _showFindMentorDialog() {
     return Container(
@@ -63,9 +63,9 @@ class _FindMentorDialogState extends State<FindMentorDialog> {
   }
   
   Widget _showConditionsList() {
-    String quizzes = _connectWithMentorProvider.getQuizzesLeft();
-    bool shouldShowQuizzes = _connectWithMentorProvider.getShouldShowQuizzes();
-    bool shouldShowStep = _connectWithMentorProvider.getShouldShowAddStep();
+    String? quizzes = _connectWithMentorProvider?.getQuizzesLeft();
+    bool? shouldShowQuizzes = _connectWithMentorProvider?.getShouldShowQuizzes();
+    bool? shouldShowStep = _connectWithMentorProvider?.getShouldShowAddStep();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),

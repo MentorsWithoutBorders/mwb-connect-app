@@ -10,11 +10,8 @@ class NotificationsService {
 
   Future<NotificationsSettings> getNotificationsSettings() async {
     http.Response response = await _api.getHTTP(url: '/notifications_settings');
-    NotificationsSettings notificationsSettings;
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      notificationsSettings = NotificationsSettings.fromJson(json);
-    }
+    var json = jsonDecode(response.body);
+    NotificationsSettings notificationsSettings = NotificationsSettings.fromJson(json);
     return notificationsSettings;
   }
 

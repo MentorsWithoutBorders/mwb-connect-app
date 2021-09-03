@@ -1,6 +1,6 @@
 class QuizSettings {
-  int studentWeeklyCount;
-  int mentorWeeklyCount;
+  int? studentWeeklyCount;
+  int? mentorWeeklyCount;
 
   QuizSettings({this.studentWeeklyCount, this.mentorWeeklyCount});
 
@@ -8,7 +8,7 @@ class QuizSettings {
     studentWeeklyCount = json['studentWeeklyCount'],
     mentorWeeklyCount = json['mentorWeeklyCount'];
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'studentWeeklyCount': studentWeeklyCount,
       'mentorWeeklyCount': mentorWeeklyCount

@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class PrivacyView extends StatefulWidget {
-  const PrivacyView({Key key})
+  const PrivacyView({Key? key})
     : super(key: key);   
 
   @override
@@ -23,7 +23,7 @@ class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout); 
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout); 
   }
 
   @override
@@ -33,8 +33,8 @@ class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStat
   }  
 
   void _afterLayout(_) {
-    final RenderBox textBox = _textKey.currentContext.findRenderObject();
-    final RenderBox cardBox = _cardKey.currentContext.findRenderObject();
+    final RenderBox textBox = _textKey.currentContext?.findRenderObject() as RenderBox;
+    final RenderBox cardBox = _cardKey.currentContext?.findRenderObject() as RenderBox;
     double height = cardBox.size.height / textBox.size.height * 100;
     if (height < _scrollThumbMinHeight) height = _scrollThumbMinHeight;
     setState(() {
@@ -97,8 +97,8 @@ class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStat
               Animation<double> thumbAnimation,
               Animation<double> labelAnimation,
               double height, {
-              Text labelText,
-              BoxConstraints labelConstraints
+              Text? labelText,
+              BoxConstraints? labelConstraints
             }) {
               return FadeTransition(
                 opacity: thumbAnimation,

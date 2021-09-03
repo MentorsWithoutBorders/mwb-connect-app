@@ -8,10 +8,10 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalStepsView extends StatefulWidget {
-  const GoalStepsView({Key key, this.quizNumber})
+  const GoalStepsView({Key? key, this.quizNumber})
     : super(key: key);
     
-  final int quizNumber;
+  final int? quizNumber;
 
   @override
   State<StatefulWidget> createState() => _GoalStepsViewState();
@@ -50,7 +50,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
       showDialog(
         context: context,
         builder: (_) => AnimatedDialog(
-          widgetInside: QuizView(quizNumber: widget.quizNumber)
+          widgetInside: QuizView(quizNumber: widget.quizNumber as int)
         ),
       );
     }    
@@ -58,7 +58,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(_showQuiz);
+    WidgetsBinding.instance?.addPostFrameCallback(_showQuiz);
 
     return Scaffold(
       appBar: AppBar(

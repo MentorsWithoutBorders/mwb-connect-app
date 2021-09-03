@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class Tag extends StatelessWidget {
-  final Color color;
-  final String id;
-  final String text;
-  final Key textKey;
-  final String deleteImg;
-  final Key deleteKey;
-  final Function(String) tagDeletedCallback;
+  final Color? color;
+  final String? id;
+  final String? text;
+  final Key? textKey;
+  final String? deleteImg;
+  final Key? deleteKey;
+  final Function(String)? tagDeletedCallback;
 
   Tag({
-    Key key,
+    Key? key,
     this.color,
     this.id,
     this.text,
@@ -36,7 +36,7 @@ class Tag extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 15.0),
                 child: Text(
-                  text,
+                  text!,
                   key: textKey,
                   style: TextStyle(
                     fontSize: 12, 
@@ -49,10 +49,10 @@ class Tag extends StatelessWidget {
                 child: Container(
                   height: 18.0,
                   padding: const EdgeInsets.only(right: 7.0),
-                  child: Image.asset(deleteImg)
+                  child: Image.asset(deleteImg!)
                 ),
                 onTap: () {
-                  tagDeletedCallback(id); 
+                  tagDeletedCallback!(id!); 
                 }
               )
             ],

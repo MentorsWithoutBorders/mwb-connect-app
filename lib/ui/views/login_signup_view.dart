@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
@@ -15,10 +16,10 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/views/forgot_password_view.dart';
 
 class LoginSignupView extends StatefulWidget {
-  const LoginSignupView({Key key, this.loginCallback, this.isLoginForm})
+  const LoginSignupView({Key? key, this.loginCallback, required this.isLoginForm})
     : super(key: key); 
 
-  final VoidCallback loginCallback;
+  final VoidCallback? loginCallback;
   final bool isLoginForm;
 
   @override
@@ -28,27 +29,26 @@ class LoginSignupView extends StatefulWidget {
 class _LoginSignupViewState extends State<LoginSignupView> {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();  
-  LoginSignupViewModel _loginSignupProvider;
-  final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
-  int _keyboardVisibilitySubscriberId;
+  LoginSignupViewModel? _loginSignupProvider;
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  User _user;
-  String _name;
-  String _email;
-  String _password;
-  String _errorMessage;
-  bool _isLoginForm;
-  bool _isLoading;
-  bool _primaryButtonPressed = false;  
+  User? _user;
+  String? _name;
+  String? _email;
+  String? _password;
+  String? _errorMessage;
+  bool _isLoginForm = true;
+  bool _isLoading = false;
+  bool? _primaryButtonPressed = false;  
 
   @override
   @protected
   void initState() {
     super.initState();
-    _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
-      onChange: (bool visible) {
-        if (visible) {
+    KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {    
+      keyboardVisibilityController.onChange.listen((bool visible) {
+        if (visible && _scrollController.hasClients) {
           Future<void>.delayed(const Duration(milliseconds: 100), () {
             _scrollController.animateTo(
               _scrollController.position.maxScrollExtent,
@@ -57,19 +57,12 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             );
           });
         }
-      },
-    );
-    _errorMessage = '';
+      });
+      _errorMessage = '';
+    });
     _isLoading = false;
     _isLoginForm = widget.isLoginForm;    
   }  
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
-    super.dispose();
-  }
 
   Widget _showForm() {
     return Container(
@@ -81,13 +74,13 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           children: <Widget>[
             _showLogo(),
             _showTitle(),
-            if (!_isLoginForm) _showNameInput(),
+            if (_isLoginForm == false) _showNameInput(),
             _showEmailInput(),
             _showPasswordInput(),
             _showErrorMessage(),
             _showPrimaryButton(),
             _showSecondaryButton(),
-            if (_isLoginForm) _showTertiaryButton()
+            if (_isLoginForm == true) _showTertiaryButton()
           ],
         )
       )
@@ -110,7 +103,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       padding: const EdgeInsets.only(top: 40.0),
       child: Center(
         child: Text(
-          _isLoginForm ? 'login.title'.tr() : 'sign_up.title'.tr(),
+          _isLoginForm == true ? 'login.title'.tr() : 'sign_up.title'.tr(),
           style: const TextStyle(
             fontSize: 22.0,
             color: Colors.white,
@@ -175,8 +168,8 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             fontWeight: FontWeight.w400
           )
         ), 
-        validator: (String value) {
-          if (_primaryButtonPressed && value.isEmpty) {
+        validator: (String? value) {
+          if (_primaryButtonPressed == true && value?.isEmpty == true) {
             setState(() {
               _isLoading = false;
             });
@@ -192,11 +185,11 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           });          
           Future<void>.delayed(const Duration(milliseconds: 20), () {        
             if (value.isNotEmpty) {
-              _formKey.currentState.validate();
+              _formKey.currentState?.validate();
             }
           });
         },             
-        onSaved: (String value) => _name = value.trim(),
+        onSaved: (String? value) => _name = value?.trim(),
       ),
     );
   }  
@@ -255,8 +248,8 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             fontWeight: FontWeight.w400
           )
         ), 
-        validator: (String value) {
-          if (_primaryButtonPressed && value.isEmpty) {
+        validator: (String? value) {
+          if (_primaryButtonPressed == true && value?.isEmpty == true) {
             setState(() {
               _isLoading = false;
             });
@@ -272,11 +265,11 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           });          
           Future<void>.delayed(const Duration(milliseconds: 20), () {        
             if (value.isNotEmpty) {
-              _formKey.currentState.validate();
+              _formKey.currentState?.validate();
             }
           });
         },             
-        onSaved: (String value) => _email = value.trim(),
+        onSaved: (String? value) => _email = value?.trim(),
       ),
     );
   }
@@ -336,8 +329,8 @@ class _LoginSignupViewState extends State<LoginSignupView> {
             fontWeight: FontWeight.w400
           )
         ),
-        validator: (String value) {
-          if (_primaryButtonPressed && value.isEmpty) {
+        validator: (String? value) {
+          if (_primaryButtonPressed == true && value?.isEmpty == true) {
             setState(() {
               _isLoading = false;
             });
@@ -353,22 +346,22 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           });
           Future<void>.delayed(const Duration(milliseconds: 20), () {
             if (value.isNotEmpty) {              
-              _formKey.currentState.validate();
+              _formKey.currentState?.validate();
             }
           });
         },          
-        onSaved: (String value) => _password = value.trim(),
+        onSaved: (String? value) => _password = value?.trim(),
       ),
     );
   }
 
   Widget _showErrorMessage() {
-    if (_errorMessage.isNotEmpty && _errorMessage != null) {
+    if (_errorMessage?.isNotEmpty == true && _errorMessage != null) {
       return Padding(
-        padding: const EdgeInsets.only(left: 20.0, top: 20.0),
+        padding: const EdgeInsets.only(left: 20.0, top: 15.0),
         child: Center(
           child: Text(
-            _errorMessage,
+            _errorMessage!,
             style: const TextStyle(
               fontSize: 13.0,
               color: AppColors.SOLITUDE,
@@ -399,7 +392,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
               borderRadius: BorderRadius.circular(30.0)
             )
           ),  
-          child: Text(_isLoginForm ? 'login.action'.tr() : 'sign_up.action'.tr(),
+          child: Text(_isLoginForm == true ? 'login.action'.tr() : 'sign_up.action'.tr(),
               style: const TextStyle(fontSize: 16.0, color: AppColors.ALLPORTS)),
           onPressed: () async {
             setState(() {
@@ -419,7 +412,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           height: 30.0,
           margin: const EdgeInsets.only(top: 15.0),
           child: Text(
-            _isLoginForm ? 'login.sign_up'.tr() : 'sign_up.login'.tr(),
+            _isLoginForm == true ? 'login.sign_up'.tr() : 'sign_up.login'.tr(),
             style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: Colors. white)
           )
         )
@@ -455,15 +448,15 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       _isLoading = true;
     });
     if (_validateAndSave()) {
-      String userId = '';
+      String? userId = '';
       try {
-        if (_isLoginForm) {
+        if (_isLoginForm == true) {
           _user = User(email: _email, password: _password);
-          userId = await _loginSignupProvider.login(_user);
+          userId = await _loginSignupProvider?.login(_user!);
           print('Signed in: $userId');
         } else {
           _user = User(name: _name, email: _email, password: _password);
-          userId = await _loginSignupProvider.signUp(_user);
+          userId = await _loginSignupProvider?.signUp(_user!);
         }
         setState(() {
           _isLoading = false;
@@ -472,12 +465,12 @@ class _LoginSignupViewState extends State<LoginSignupView> {
         if (isNotEmpty(userId)) {
           _identifyUser();
           Navigator.pop(context);
-          widget.loginCallback();
+          widget.loginCallback!();
         }
-      } catch (error) {
+      } on ErrorModel catch (error) {
         String message = 'common.try_again'.tr();
-        if (error != null && error.message != null) {
-          message = error.message;
+        if (error.message != null) {
+          message = error.message as String;
         }
         setState(() {
           _isLoading = false;
@@ -489,23 +482,23 @@ class _LoginSignupViewState extends State<LoginSignupView> {
 
   // Check if form is valid before performing login or sign_up
   bool _validateAndSave() {
-    final FormState form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
+    final FormState? form = _formKey.currentState;
+    if (form?.validate() == true) {
+      form?.save();
       return true;
     }
     return false;
   }
 
   void _identifyUser() {
-    final String userId = _storageService.userId;
-    final String name = _storageService.userName;
-    final String email = _storageService.userEmail;
-    _analyticsService.identifyUser(userId, name, email);
+    final String? userId = _storageService.userId;
+    final String? name = _storageService.userName;
+    final String? email = _storageService.userEmail;
+    // _analyticsService.identifyUser(userId!, name!, email!);
   }  
 
   void _resetForm() {
-    _formKey.currentState.reset();
+    _formKey.currentState?.reset();
     _errorMessage = '';
   }
 
@@ -533,7 +526,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           body: Stack(
             children: <Widget>[
               _showForm(),
-              if (_isLoading) Loader()
+              if (_isLoading == true) Loader()
             ],
           )
         )

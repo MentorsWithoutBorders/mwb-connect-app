@@ -40,16 +40,21 @@ class Utils {
     return periodUnits[AppConstants.periodUnitsEng.indexOf(periodUnit)];
   }   
 
-  static int convertTime12to24(String time12h) {
-    int hours = int.parse(time12h.replaceAll(RegExp(r'[^0-9]'),''));
-    final String modifier = time12h.replaceAll(hours.toString(), '');
+  static List<int> convertTime12to24(String time12h) {
+    String time = time12h.replaceAll(RegExp(r'[^0-9:]'), '');
+    if (!time12h.contains(':')) {
+      time = time12h.replaceAll(RegExp(r'[^0-9]'), '');
+    }
+    final String modifier = time12h.replaceAll(time, '');
+    int hours = int.parse(time.split(':')[0]);
+    int minutes = time12h.contains(':') ? int.parse(time.split(':')[1]) : 0;
     if (hours == 12) {
       hours = 0;
     }
     if (modifier == 'pm') {
       hours = hours + 12;
     }
-    return hours;
+    return [hours, minutes];
   }
 
   static List<String> buildHoursList() {
@@ -67,13 +72,15 @@ class Utils {
 
   static Availability getAvailabilityToUtc(Availability availability) {
     DateFormat dayOfWeekFormat = DateFormat('EEEE');
-    DateFormat timeFormat = DateFormat('ha');
+    DateFormat timeFormat = DateFormat('h:ma');
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
       date = Jiffy(date).add(days: 1).dateTime;
-    }    
-    final DateTime timeFrom = date.copyWith(hour: Utils.convertTime12to24(availability.time.from)).toUtc();
-    final DateTime timeTo = date.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toUtc();
+    }
+    List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
+    List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
+    final DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0], minute: availabilityTimeFrom[1]).toUtc();
+    final DateTime timeTo = date.copyWith(hour: availabilityTimeTo[0], minute: availabilityTimeTo[1]).toUtc();
     return Availability(
       dayOfWeek: dayOfWeekFormat.format(timeFrom),
       time: Time(
@@ -90,9 +97,11 @@ class Utils {
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
       date = Jiffy(date).add(days: 1).dateTime;
-    }    
-    final DateTime timeFrom = dateFormat.parseUTC(date.copyWith(hour: convertTime12to24(availability.time.from)).toString()).toLocal();
-    final DateTime timeTo = dateFormat.parseUTC(date.copyWith(hour: Utils.convertTime12to24(availability.time.to)).toString()).toLocal();
+    }
+    List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
+    List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
+    final DateTime timeFrom = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeFrom[0], minute: availabilityTimeFrom[1]).toString()).toLocal();
+    final DateTime timeTo = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeTo[0], minute: availabilityTimeTo[1]).toString()).toLocal();
     return Availability(
       dayOfWeek: dayOfWeekFormat.format(timeFrom),
       time: Time(
@@ -120,30 +129,30 @@ class Utils {
     }
   }
 
-  static Future<void> showDatePickerAndroid({BuildContext context, DateTime initialDate, DateTime firstDate, DateTime lastDate, Function setDate}) async {
+  static Future<void> showDatePickerAndroid({BuildContext? context, DateTime? initialDate, DateTime? firstDate, DateTime? lastDate, Function? setDate}) async {
     final DateTime now = DateTime.now();
-    final DateTime picked = await showDatePicker(
-      context: context,
+    final DateTime? picked = await showDatePicker(
+      context: context as BuildContext,
       locale: Locale(_defaultLocale.split('_')[0], _defaultLocale.split('_')[1]),
-      initialDate: initialDate,
+      initialDate: initialDate as DateTime,
       firstDate: firstDate != null ? firstDate : now,
       lastDate: lastDate != null ? lastDate : DateTime(now.year + 4),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light(),
-          child: child,
+          child: child!,
         );
       }
     );
     if (picked != null && picked != initialDate) {
-      setDate(picked);
+      setDate!(picked);
     }
   }
 
-  static void showDatePickerIOS({BuildContext context, DateTime initialDate, DateTime firstDate, DateTime lastDate, Function setDate}) async {
+  static void showDatePickerIOS({BuildContext? context, DateTime? initialDate, DateTime? firstDate, DateTime? lastDate, Function? setDate}) async {
     final DateTime now = DateTime.now();
     showModalBottomSheet(
-      context: context,
+      context: context as BuildContext,
       builder: (BuildContext builder) {
         return Wrap(
           children: [
@@ -171,12 +180,12 @@ class Utils {
               color: Colors.white,
               child: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (DateTime picked) {
+                onDateTimeChanged: (DateTime? picked) {
                   if (picked != null && picked != initialDate) {
-                    setDate(picked);
+                    setDate!(picked);
                   }
                 },
-                initialDateTime: initialDate,
+                initialDateTime: Jiffy(now).isBefore(Jiffy(initialDate!), Units.DAY) ? initialDate : now,
                 minimumDate: firstDate != null ? firstDate : now,
                 maximumDate: lastDate != null ? lastDate : DateTime(now.year + 4),
               ),

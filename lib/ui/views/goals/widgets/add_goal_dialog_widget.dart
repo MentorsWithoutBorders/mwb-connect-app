@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AddGoalDialog extends StatefulWidget {
-  const AddGoalDialog({Key key})
+  const AddGoalDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -15,16 +15,16 @@ class AddGoalDialog extends StatefulWidget {
 }
 
 class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateMixin {
-  CommonViewModel _commonProvider;
-  GoalsViewModel _goalsProvider;
+  CommonViewModel? _commonProvider;
+  GoalsViewModel? _goalsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _goalText;  
+  String? _goalText;  
   bool _isAddingGoal = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }    
 
   void _afterLayout(_) {
@@ -32,8 +32,8 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
   }
   
   void _getFormHeight() {
-    RenderBox box = _formKey.currentContext.findRenderObject();
-    _commonProvider.setDialogInputHeight(box.size.height);
+    RenderBox box = _formKey.currentContext?.findRenderObject() as RenderBox;
+    _commonProvider?.setDialogInputHeight(box.size.height);
   }  
 
   Widget _showAddGoalDialog() {
@@ -88,8 +88,8 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
               color: Colors.orange
             )
           ),
-          validator: (String value) {
-            if (value.isEmpty) {
+          validator: (String? value) {
+            if (value?.isEmpty == true) {
               return 'goals.add_goal_error'.tr();
             }
             return null;
@@ -97,12 +97,12 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
           onChanged: (String value) {
             Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
-                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-                _formKey.currentState.validate();
+                WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+                _formKey.currentState?.validate();
               }
             });
           },
-          onSaved: (String value) => _goalText = value
+          onSaved: (String? value) => _goalText = value
         )
       )
     );
@@ -132,8 +132,8 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ),
             onPressed: () async {
-              if (_formKey.currentState.validate() && !_isAddingGoal) {
-                _formKey.currentState.save();
+              if (_formKey.currentState?.validate() == true && !_isAddingGoal) {
+                _formKey.currentState?.save();
                 await _addGoal();
                 Navigator.pop(context);
               } 
@@ -156,7 +156,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> with TickerProviderStateM
     setState(() {
       _isAddingGoal = true;
     });
-    await _goalsProvider.addGoal(_goalText);
+    await _goalsProvider?.addGoal(_goalText as String);
   }
 
   @override

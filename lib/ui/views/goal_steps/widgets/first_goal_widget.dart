@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class FirstGoal extends StatefulWidget {
-  const FirstGoal({Key key})
+  const FirstGoal({Key? key})
     : super(key: key);  
 
   @override
@@ -16,7 +16,7 @@ class FirstGoal extends StatefulWidget {
 }
 
 class _FirstGoalState extends State<FirstGoal> {
-  GoalsViewModel _goalsProvider;
+  GoalsViewModel? _goalsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final int _inputContainerOpacityDuration = 500;
   final int _opacityDuration = 300;
@@ -26,7 +26,7 @@ class _FirstGoalState extends State<FirstGoal> {
   bool _isStartButtonVisible = true;
   bool _isAddingGoal = false;
   double _inputAnimationHeight = 80;
-  String _goalText;  
+  String? _goalText;  
 
   Widget _showFirstGoal() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -90,8 +90,8 @@ class _FirstGoalState extends State<FirstGoal> {
                           color: Colors.orange
                         )
                       ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
+                      validator: (String? value) {
+                        if (value?.isEmpty == true) {
                           return 'goals.add_goal_error'.tr();
                         }
                         return null;
@@ -99,11 +99,11 @@ class _FirstGoalState extends State<FirstGoal> {
                       onChanged: (String value) {
                         Future<void>.delayed(const Duration(milliseconds: 10), () {        
                           if (value.isNotEmpty) {              
-                            _formKey.currentState.validate();
+                            _formKey.currentState?.validate();
                           }
                         });
                       },                    
-                      onSaved: (String value) => _goalText = value
+                      onSaved: (String? value) => _goalText = value
                     )
                   )
                 ),
@@ -126,8 +126,8 @@ class _FirstGoalState extends State<FirstGoal> {
                         padding: const EdgeInsets.fromLTRB(60.0, 12.0, 60.0, 12.0),
                       ),
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();                            
+                        if (_formKey.currentState?.validate() == true) {
+                          _formKey.currentState?.save();                            
                           await _addGoal();
                         }
                       },
@@ -164,9 +164,9 @@ class _FirstGoalState extends State<FirstGoal> {
     // Needed for setState to not be called when FirstGoal is not part of the view
     await Future<void>.delayed(const Duration(milliseconds: 350));
     _isAddingGoal = true;
-    final Goal addedGoal = await _goalsProvider.addGoal(_goalText);
+    final Goal? addedGoal = await _goalsProvider?.addGoal(_goalText as String);
     _isAddingGoal = false;
-    _goalsProvider.setSelectedGoal(addedGoal);
+    _goalsProvider?.setSelectedGoal(addedGoal);
     Navigator.pop(context);
   }
   

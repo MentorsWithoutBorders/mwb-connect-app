@@ -18,5 +18,5 @@ class QuizzesViewModel extends ChangeNotifier {
     return ;
   }
   
-  bool get isMentor => _storageService.isMentor;
+  bool? get isMentor => _storageService.isMentor;
 }

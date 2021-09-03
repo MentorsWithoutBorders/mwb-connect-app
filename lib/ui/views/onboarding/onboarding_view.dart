@@ -15,10 +15,10 @@ import 'package:mwb_connect_app/ui/widgets/slide_swipe_widget.dart';
 import 'package:mwb_connect_app/ui/views/login_signup_view.dart';
 
 class OnboardingView extends StatefulWidget {
-  const OnboardingView({Key key, this.loginCallback})
+  const OnboardingView({Key? key, this.loginCallback})
     : super(key: key);    
 
-  final VoidCallback loginCallback;
+  final VoidCallback? loginCallback;
 
   @override
   State<StatefulWidget> createState() => _OnboardingViewState();
@@ -27,7 +27,7 @@ class OnboardingView extends StatefulWidget {
 class _OnboardingViewState extends State<OnboardingView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final PageController _controller = PageController(viewportFraction: 0.85, keepPage: true);  
-  Directory _appDocsDir;  
+  Directory? _appDocsDir;  
   List<String> _sections = [];
   bool _isLoaded = false;
 
@@ -254,7 +254,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   File _fileFromDocsDir(String filename) {
-    final String pathName = p.join(_appDocsDir.path, filename);
+    final String pathName = p.join(_appDocsDir?.path as String, filename);
     return File(pathName);
   }
 
@@ -265,7 +265,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
     _resetController();
     Navigator.push(context, MaterialPageRoute<LoginSignupView>(builder: (_) => LoginSignupView(
-      loginCallback: widget.loginCallback,
+      loginCallback: widget.loginCallback!,
       isLoginForm: true
     ))); 
   }
@@ -284,7 +284,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
     _resetController();
     Navigator.push(context, MaterialPageRoute<LoginSignupView>(builder: (_) => LoginSignupView(
-      loginCallback: widget.loginCallback,
+      loginCallback: widget.loginCallback!,
       isLoginForm: false
     ))); 
   }  

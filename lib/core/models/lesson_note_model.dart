@@ -2,9 +2,9 @@ import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 
 class LessonNote {
-  String lessonId;
-  String text;
-  DateTime dateTime;
+  String? lessonId;
+  String? text;
+  DateTime? dateTime;
 
   LessonNote({this.lessonId, this.text, this.dateTime});
 
@@ -15,12 +15,12 @@ class LessonNote {
     dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']).toLocal() : null;
   }
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     return {
       'lessonId': lessonId,
       'text': text,
-      'dateTime': dateTime != null ? dateFormat.format(dateTime.toUtc()) : null,
+      'dateTime': dateTime != null ? dateFormat.format(dateTime!.toUtc()) : null,
     };
   }
 }

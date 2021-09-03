@@ -7,18 +7,18 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/skills_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
-  const SubfieldDropdown({Key key, @required this.index})
+  const SubfieldDropdown({Key? key, @required this.index})
     : super(key: key); 
 
-  final int index;
+  final int? index;
 
   @override
   State<StatefulWidget> createState() => _SubfieldDropdownState();
 }
 
 class _SubfieldDropdownState extends State<SubfieldDropdown> {
-  ProfileViewModel _profileProvider;  
-  Subfield _selectedSubfield;
+  ProfileViewModel? _profileProvider;  
+  Subfield? _selectedSubfield;
 
   Widget _showSubfieldDropdown() {
     return Container(
@@ -39,7 +39,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
                         dropdownMenuItemList: _buildSubfieldDropdown(),
                         onTapped: _unfocus,
                         onChanged: _changeSubfield,
-                        value: _selectedSubfield
+                        value: _selectedSubfield!
                       ),
                     ),
                     Skills(index: widget.index)
@@ -73,23 +73,26 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   void _deleteSubfield() async {
     _unfocus();
     await Future<void>.delayed(const Duration(milliseconds: 20));
-    _profileProvider.deleteSubfield(widget.index);
+    _profileProvider?.deleteSubfield(widget.index!);
   }
 
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
     final List<DropdownMenuItem<Subfield>> items = [];
-    for (final Subfield subfield in _profileProvider.getSubfields(widget.index)) {
-      items.add(DropdownMenuItem<Subfield>(
-        value: subfield,
-        child: Text(subfield.name),
-      ));
+    List<Subfield>? subfields = _profileProvider?.getSubfields(widget.index!);
+    if (subfields != null) {
+      for (final Subfield subfield in subfields) {
+        items.add(DropdownMenuItem<Subfield>(
+          value: subfield,
+          child: Text(subfield.name as String),
+        ));
+      }
     }
     return items;
   }  
 
-  void _changeSubfield(Subfield subfield) {
-    _setSelectedSubfield(subfield);
-    _profileProvider.setSubfield(Subfield(id: subfield.id, name: subfield.name), widget.index);
+  void _changeSubfield(Subfield? subfield) {
+    _setSelectedSubfield(subfield!);
+    _profileProvider?.setSubfield(Subfield(id: subfield.id, name: subfield.name), widget.index!);
   }
   
   void _setSelectedSubfield(Subfield subfield) {
@@ -99,13 +102,13 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }
 
   void _unfocus() {
-    _profileProvider.shouldUnfocus = true;
+    _profileProvider?.shouldUnfocus = true;
   }  
 
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
-    _setSelectedSubfield(_profileProvider.getSelectedSubfield(widget.index));
+    _setSelectedSubfield(_profileProvider?.getSelectedSubfield(widget.index!) as Subfield);
 
     return _showSubfieldDropdown();
   }

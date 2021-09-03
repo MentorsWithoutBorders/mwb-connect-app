@@ -2,12 +2,12 @@ import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 
 class StepModel {
-  String id;
-  String parentId;
-  String text;
-  int level;
-  int index;
-  DateTime dateTime;
+  String? id;
+  String? parentId;
+  String? text;
+  int? level;
+  int? index;
+  DateTime? dateTime;
 
   StepModel({this.id, this.parentId, this.text, this.level, this.index, this.dateTime});
 
@@ -21,14 +21,14 @@ class StepModel {
     dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']).toLocal() : null;
   }
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     return {
       'parentId': parentId,
       'text': text,
       'level': level,
       'index': index,
-      'dateTime': dateTime != null ? dateFormat.format(dateTime.toUtc()) : null,
+      'dateTime': dateTime != null ? dateFormat.format(dateTime!.toUtc()) : null,
     };
   }
 }

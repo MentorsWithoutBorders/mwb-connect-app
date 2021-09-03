@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/notifications_settings_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -12,7 +11,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 
 class NotificationsView extends StatefulWidget {
-  const NotificationsView({Key key})
+  const NotificationsView({Key? key})
     : super(key: key);   
 
   @override
@@ -20,14 +19,13 @@ class NotificationsView extends StatefulWidget {
 }
 
 class _NotificationsViewState extends State<NotificationsView> with SingleTickerProviderStateMixin {
-  final LocalStorageService _storageService = locator<LocalStorageService>();
-  NotificationsViewModel _notificationsProvider;
-  AnimationController _controller;
-  Animation<Offset> _offset;  
+  NotificationsViewModel? _notificationsProvider;
+  AnimationController? _controller;
+  Animation<Offset>? _offset;  
   final int _animationDuration = 300;
-  bool _isEnabled;
-  String _time;
-  String _pickedTime;
+  bool? _isEnabled;
+  String? _time;
+  String? _pickedTime;
   bool _areSettingsRetrieved = false;
 
   @override
@@ -37,12 +35,12 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
         AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
 
     _offset = Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.ease));    
+        .animate(CurvedAnimation(parent: _controller as AnimationController, curve: Curves.ease));    
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
   
@@ -51,7 +49,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     return AnimatedContainer(
       duration: Duration(milliseconds: _animationDuration),
       margin: EdgeInsets.fromLTRB(20.0, statusBarHeight + 70.0, 20.0, 0.0),
-      height: _isEnabled ? 75.0 : 55.0,
+      height: _isEnabled == true ? 75.0 : 55.0,
       child: Card(
         elevation: 3,
         child: Row(
@@ -74,10 +72,10 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                       ),
                       Expanded(
                         child: AnimatedOpacity(
-                          opacity: _isEnabled ? 1.0 : 0.0,
+                          opacity: _isEnabled == true ? 1.0 : 0.0,
                           duration: Duration(milliseconds: _animationDuration),
                           child: Text(
-                            _time,
+                            _time as String,
                             style: const TextStyle(
                               fontSize: 16.0,
                               height: 1.5
@@ -99,7 +97,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
             ),
             // Android
             if (Platform.isAndroid) Switch(
-              value: _isEnabled,
+              value: _isEnabled as bool,
               onChanged: (bool value) async {
                 await _updateNotificationsEnabled(value);
               },
@@ -112,7 +110,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
               child: Transform.scale( 
                 scale: 0.8,
                 child: CupertinoSwitch(
-                  value: _isEnabled,
+                  value: _isEnabled as bool,
                   onChanged: (bool value) async {
                     await _updateNotificationsEnabled(value);
                   }
@@ -126,18 +124,18 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
   }
 
   List<String> _initialTime() {
-    return _time.split(':');   
+    return _time!.split(':');   
   }
 
   Future<void> _showTimePickerAndroid() async {
-    final TimeOfDay picked = await showTimePicker(
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: int.parse(_initialTime()[0]), minute: int.parse(_initialTime()[1])),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return MediaQuery(
           data: MediaQuery.of(context)
             .copyWith(alwaysUse24HourFormat: true),
-          child: child,
+          child: child!,
         );
       }
     );
@@ -147,29 +145,29 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
       });
       await _updateNotificationsEnabled(true);
       _setPickedTimeAndroid(picked);
-      _updateNotificationsTime(_pickedTime);
+      _updateNotificationsTime(_pickedTime!);
     }    
   }
 
   void _setPickedTimeAndroid(TimeOfDay time) {
     _pickedTime = time.toString().replaceAll('TimeOfDay(', '');
-    _pickedTime = _pickedTime.replaceAll(')', '');    
+    _pickedTime = _pickedTime?.replaceAll(')', '');    
   }
 
   void _showTimePickerIOS() {
-    _controller.forward();    
+    _controller?.forward();    
   }
 
   Future<void> _updateNotificationsEnabled(bool value) async {
     if (value == false && Platform.isIOS) {
-      _controller.reverse();
+      _controller?.reverse();
     }
     setState(() {
       _isEnabled = value;
     });    
     _isEnabled = value;
     final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: value, time: _time);
-    await _notificationsProvider.updateNotificationsSettings(notificationsSettings);
+    await _notificationsProvider?.updateNotificationsSettings(notificationsSettings);
   }
 
   void _updateNotificationsTime(String time) {
@@ -178,7 +176,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     });
     _time = time;
     final NotificationsSettings notificationsSettings = NotificationsSettings(enabled: _isEnabled, time: time);
-    _notificationsProvider.updateNotificationsSettings(notificationsSettings);
+    _notificationsProvider?.updateNotificationsSettings(notificationsSettings);
   }  
 
   Widget _showTitle() {
@@ -192,7 +190,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
   
   Widget _showCupertinoTimePicker() {
     return SlideTransition(
-      position: _offset,
+      position: _offset!,
       child: Wrap(
         children: <Widget>[
           Container(
@@ -213,7 +211,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                     ),
                   ),
                   onTap: () {
-                    _controller.reverse();
+                    _controller?.reverse();
                   },
                 ),
                 Expanded(
@@ -240,9 +238,9 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                   onTap: () async {
                     await _updateNotificationsEnabled(true);
                     if (_pickedTime != null) {
-                      _updateNotificationsTime(_pickedTime);
+                      _updateNotificationsTime(_pickedTime!);
                     }
-                    _controller.reverse();
+                    _controller?.reverse();
                   },
                 )
               ],
@@ -271,21 +269,21 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
 
   Future<void> _getNotificationSettings() async {
     if (!_areSettingsRetrieved) {
-      await _notificationsProvider.getNotificationsSettings();
+      await _notificationsProvider?.getNotificationsSettings();
       _setNotificationSettings();
       _areSettingsRetrieved = true;
     }
   }
 
   void _setNotificationSettings() {
-    NotificationsSettings notificationsSettings = _notificationsProvider.notificationsSettings;
+    NotificationsSettings? notificationsSettings = _notificationsProvider?.notificationsSettings;
     bool notificationsEnabled = AppConstants.notificationsEnabled;
     String notificationsTime = AppConstants.notificationsTime;
     if (notificationsSettings != null && notificationsSettings.enabled != null) {
-      notificationsEnabled = notificationsSettings.enabled;
+      notificationsEnabled = notificationsSettings.enabled as bool;
     }
     if (notificationsSettings != null && notificationsSettings.time != null) {
-      notificationsTime = notificationsSettings.time;
+      notificationsTime = notificationsSettings.time as String;
     }    
     setState(() {
       _isEnabled = notificationsEnabled;

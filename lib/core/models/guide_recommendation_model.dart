@@ -1,6 +1,6 @@
 class GuideRecommendation {
-  String type;
-  List<String> recommendations;
+  String? type;
+  List<String>? recommendations;
 
   GuideRecommendation({this.type, this.recommendations});
 
@@ -9,7 +9,7 @@ class GuideRecommendation {
     recommendations = json['recommendations']?.cast<String>() ?? [];
   }
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'type': type,
       'recommendations': recommendations

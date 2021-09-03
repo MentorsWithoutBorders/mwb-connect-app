@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/core/models/notifications_settings_model.dart';
 
 class NotificationsViewModel extends ChangeNotifier {
   final NotificationsService _notificationsService = locator<NotificationsService>();
-  NotificationsSettings notificationsSettings;
+  NotificationsSettings? notificationsSettings;
   bool notificationsSettingsUpdated = true;
 
   Future<void> getNotificationsSettings() async {

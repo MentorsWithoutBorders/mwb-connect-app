@@ -10,11 +10,8 @@ class ProfileService {
 
   Future<List<Field>> getFields() async {
     http.Response response = await _api.getHTTP(url: '/fields');
-    List<Field> fields;
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      fields = List<Field>.from(json.map((model) => Field.fromJson(model)));
-    }
+    var json = jsonDecode(response.body);
+    List<Field> fields = List<Field>.from(json.map((model) => Field.fromJson(model)));
     return fields;
   }
 }

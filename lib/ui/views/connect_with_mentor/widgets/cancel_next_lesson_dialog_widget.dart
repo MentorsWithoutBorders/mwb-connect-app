@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.d
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelNextLessonDialog extends StatefulWidget {
-  const CancelNextLessonDialog({Key key})
+  const CancelNextLessonDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -16,7 +16,7 @@ class CancelNextLessonDialog extends StatefulWidget {
 }
 
 class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
   bool _isCancelingNextLesson = false;
 
   Widget _showCancelNextLessonDialog() {
@@ -49,16 +49,16 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showText() {
-    if (!_connectWithMentorProvider.isNextLesson) {
+    if (_connectWithMentorProvider?.isNextLesson == false) {
       return SizedBox.shrink();
     }    
-    Lesson nextLesson = _connectWithMentorProvider.nextLesson;
-    DateTime nextLessonDateTime = nextLesson.dateTime;  
+    Lesson? nextLesson = _connectWithMentorProvider?.nextLesson;
+    DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;  
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    String name = nextLesson.mentor.name;
-    String subfield = nextLesson.subfield.name.toLowerCase();
+    String name = nextLesson?.mentor?.name as String;
+    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String date = dateFormat.format(nextLessonDateTime);
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
@@ -159,7 +159,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   
   Future<void> _cancelNextLesson() async {  
     _setIsCancelingNextLesson(true);
-    await _connectWithMentorProvider.cancelNextLesson(isSingleLesson: true);
+    await _connectWithMentorProvider?.cancelNextLesson(isSingleLesson: true);
   }
   
   void _setIsCancelingNextLesson(bool isCanceling) {

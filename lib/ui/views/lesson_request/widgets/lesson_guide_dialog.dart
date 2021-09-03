@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class LessonGuideDialog extends StatefulWidget {
-  const LessonGuideDialog({Key key})
+  const LessonGuideDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -19,7 +19,7 @@ class LessonGuideDialog extends StatefulWidget {
 }
 
 class _LessonGuideDialogState extends State<LessonGuideDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   final ScrollController _scrollController = ScrollController();    
   bool _isLessonGuideRetrieved = false;
 
@@ -53,8 +53,8 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
   }
 
   Widget _showLessonGuide(bool isHorizontal) {
-    List<GuideTutorial> guideTutorials = _lessonRequestProvider.guideTutorials != null ? _lessonRequestProvider.guideTutorials : [];
-    List<GuideRecommendation> guideRecommendations = _lessonRequestProvider.guideRecommendations != null ? _lessonRequestProvider.guideRecommendations : [];
+    List<GuideTutorial>? guideTutorials = _lessonRequestProvider?.guideTutorials != null ? _lessonRequestProvider?.guideTutorials : [];
+    List<GuideRecommendation>? guideRecommendations = _lessonRequestProvider?.guideRecommendations != null ? _lessonRequestProvider?.guideRecommendations : [];
     List<Widget> lessonGuideWidgets = [];
     Widget guideTutorialsText = Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -67,51 +67,55 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
         )
       )
     );
-    if (guideTutorials.length > 0) {
+    if (guideTutorials?.length as int > 0) {
       lessonGuideWidgets.add(guideTutorialsText);
     }
-    for (GuideTutorial guideTutorial in guideTutorials) {
-      Widget guideTutorialWidget = Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              guideTutorial.skills.join(', '),
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                height: 1.5
-              )
-            ),
-            _showGuideLines(guideTutorial.tutorialUrls, true)         
-          ]
-        ),
-      );
-      lessonGuideWidgets.add(guideTutorialWidget);
+    if (guideTutorials != null) {
+      for (GuideTutorial guideTutorial in guideTutorials) {
+        Widget guideTutorialWidget = Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                guideTutorial.skills!.join(', '),
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  height: 1.5
+                )
+              ),
+              _showGuideLines(guideTutorial.tutorialUrls, true)         
+            ]
+          ),
+        );
+        lessonGuideWidgets.add(guideTutorialWidget);
+      }
     }
-    for (GuideRecommendation guideRecommendations in guideRecommendations) {
-      Widget guideRecommendationWidget = Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              guideRecommendations.type + ' ' + 'lesson_request.recommendations'.tr() + ':',
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                height: 1.5
-              )
-            ),
-            _showGuideLines(guideRecommendations.recommendations, false)         
-          ]
-        ),
-      );
-      lessonGuideWidgets.add(guideRecommendationWidget);
-    }    
+    if (guideRecommendations != null) {    
+      for (GuideRecommendation guideRecommendations in guideRecommendations) {
+        Widget guideRecommendationWidget = Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                guideRecommendations.type! + ' ' + 'lesson_request.recommendations'.tr() + ':',
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  height: 1.5
+                )
+              ),
+              _showGuideLines(guideRecommendations.recommendations, false)         
+            ]
+          ),
+        );
+        lessonGuideWidgets.add(guideRecommendationWidget);
+      }
+    }
 
     if (_isLessonGuideRetrieved) {
       double height = 300.0;
@@ -137,8 +141,8 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
             Animation<double> thumbAnimation,
             Animation<double> labelAnimation,
             double height, {
-            Text labelText,
-            BoxConstraints labelConstraints
+            Text? labelText,
+            BoxConstraints? labelConstraints
           }) {
             return FadeTransition(
               opacity: thumbAnimation,
@@ -159,14 +163,14 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
     }
   }
 
-  Widget _showGuideLines(List<String> guideLines, bool isGuideTutorial) {
+  Widget _showGuideLines(List<String>? guideLines, bool isGuideTutorial) {
     return Container(
       padding: const EdgeInsets.only(top: 10.0),
       child: ListView.builder(
         padding: const EdgeInsets.all(0),
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: guideLines.length,
+        itemCount: guideLines?.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 6.0),
@@ -181,7 +185,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
                 if (isGuideTutorial) Expanded(
                   child: InkWell(
                     child: Text(
-                      '${guideLines[index]}',
+                      '${guideLines?[index]}',
                       style: const TextStyle(
                         fontSize: 12.0,
                         color: Colors.blue,
@@ -189,14 +193,14 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
                       )
                     ),
                     onTap: () async {
-                      await _launchUrl(guideLines[index]);
-                    }                     
+                      await _launchUrl(guideLines?[index] as String);
+                    }
                   )
                 ),
                 if (!isGuideTutorial) Expanded(
                   child: InkWell(
                     child: Text(
-                      '${guideLines[index]}',
+                      '${guideLines?[index]}',
                       textAlign: TextAlign.justify,
                       style: const TextStyle(
                         fontSize: 12.0,
@@ -240,8 +244,8 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
   
   Future<void> _getLessonGuide() async {
     if (!_isLessonGuideRetrieved) {
-      await _lessonRequestProvider.getGuideTutorials();
-      await _lessonRequestProvider.getGuideRecommendations();
+      await _lessonRequestProvider?.getGuideTutorials();
+      await _lessonRequestProvider?.getGuideRecommendations();
       _isLessonGuideRetrieved = true;
     } 
   }

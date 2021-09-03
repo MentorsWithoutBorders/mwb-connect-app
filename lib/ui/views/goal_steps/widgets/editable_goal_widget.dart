@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/ui/views/goal_steps/widgets/goal_dialog_widget.d
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class EditableGoal extends StatefulWidget {
-  const EditableGoal({Key key})
+  const EditableGoal({Key? key})
     : super(key: key);  
   
   @override
@@ -14,7 +14,7 @@ class EditableGoal extends StatefulWidget {
 }
 
 class _EditableGoalState extends State<EditableGoal> {
-  GoalsViewModel _goalsProvider;
+  GoalsViewModel? _goalsProvider;
   bool _isVisible = false;
 
   Future<void> _animateElements() async {
@@ -28,7 +28,7 @@ class _EditableGoalState extends State<EditableGoal> {
 
   Widget _showEditableGoal(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final Goal selectedGoal = _goalsProvider.selectedGoal;
+    final Goal? selectedGoal = _goalsProvider?.selectedGoal;
     _animateElements();
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -63,7 +63,7 @@ class _EditableGoalState extends State<EditableGoal> {
                 fontWeight: FontWeight.bold
               ),
             child: Text(
-              selectedGoal != null && selectedGoal.text != null ? selectedGoal.text : ''
+              selectedGoal != null && selectedGoal.text != null ? selectedGoal.text as String : ''
             )
           ),
         )

@@ -32,18 +32,18 @@ class UpdateAppViewModel extends ChangeNotifier {
     if (!_shouldShowUpdate()) {
       return UpdateStatus.NO_UPDATE;
     } else {
-      if (appVersion.major > packageVersionMajor ||
-          appVersion.minor > packageVersionMinor &&
-          appVersion.major >= packageVersionMajor) {
+      if (appVersion.major as int > packageVersionMajor ||
+          appVersion.minor as int > packageVersionMinor &&
+          appVersion.major as int >= packageVersionMajor) {
         _storageService.lastUpdateShownDateTime = dateFormat.format(now);
         return UpdateStatus.FORCE_UPDATE;
-      } else if (appVersion.revision > packageVersionRevision &&
-          appVersion.minor >= packageVersionMinor &&
-          appVersion.major >= packageVersionMajor ||
-          appVersion.build > packageVersionBuild &&
-          appVersion.revision >= packageVersionRevision &&
-          appVersion.minor >= packageVersionMinor &&
-          appVersion.major >= packageVersionMajor) {
+      } else if (appVersion.revision as int > packageVersionRevision &&
+          appVersion.minor as int >= packageVersionMinor &&
+          appVersion.major as int >= packageVersionMajor ||
+          appVersion.build as int > packageVersionBuild &&
+          appVersion.revision as int >= packageVersionRevision &&
+          appVersion.minor as int >= packageVersionMinor &&
+          appVersion.major as int >= packageVersionMajor) {
         _storageService.lastUpdateShownDateTime = dateFormat.format(now);            
         return UpdateStatus.RECOMMEND_UPDATE;
       } else {
@@ -56,7 +56,7 @@ class UpdateAppViewModel extends ChangeNotifier {
     final DateTime now = DateTime.now();
     DateTime lastUpdateShownDateTime = DateTime.now();
     if (_storageService.lastUpdateShownDateTime != null) {
-      lastUpdateShownDateTime = DateTime.parse(_storageService.lastUpdateShownDateTime);
+      lastUpdateShownDateTime = DateTime.parse(_storageService.lastUpdateShownDateTime as String);
     }
     if (_storageService.lastUpdateShownDateTime == null || now.difference(lastUpdateShownDateTime).inDays >= 7) {
       return true;

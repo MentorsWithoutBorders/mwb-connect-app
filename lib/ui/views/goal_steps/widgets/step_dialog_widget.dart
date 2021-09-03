@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/delete_step_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -10,19 +11,18 @@ import 'package:mwb_connect_app/ui/views/goal_steps/widgets/add_sub_step_dialog_
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class StepDialog extends StatefulWidget {
-  const StepDialog({Key key, @required this.context})
+  const StepDialog({Key? key, @required this.context})
     : super(key: key);  
 
-  final BuildContext context;  
+  final BuildContext? context;  
 
   @override
   State<StatefulWidget> createState() => _StepDialogState();
 }
 
 class _StepDialogState extends State<StepDialog> {
-  GoalsViewModel _goalsProvider;
-  StepsViewModel _stepsProvider;
-  bool _isDeletingStep = false;  
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
   
   Widget _showStepDialog() {
     return Container(
@@ -50,6 +50,9 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   Widget _showOptions() {
+    int selectedStepLevel = _stepsProvider?.selectedStep?.level as int;
+    int selectedStepIndex = _stepsProvider?.selectedStep?.index as int;
+    int currentIndex = _stepsProvider?.getCurrentIndex(steps: _stepsProvider?.steps, parentId: _stepsProvider?.selectedStep?.parentId) as int;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Wrap(
@@ -75,7 +78,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.update_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_stepsProvider.selectedStep.level <= 1) SizedBox(
+          if (selectedStepLevel <= 1) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -96,7 +99,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.add_sub_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_stepsProvider.selectedStep.index > 0) SizedBox(
+          if (selectedStepIndex > 0) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -112,7 +115,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.move_step_up'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (_stepsProvider.selectedStep.index < _stepsProvider.getCurrentIndex(steps: _stepsProvider.steps, parentId: _stepsProvider.selectedStep.parentId)) SizedBox(
+          if (selectedStepIndex < currentIndex) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -160,7 +163,7 @@ class _StepDialogState extends State<StepDialog> {
                 )
               ),
               onTap: () {
-                Navigator.pop(widget.context);
+                Navigator.pop(widget.context!);
               },
             ),
           )
@@ -170,11 +173,11 @@ class _StepDialogState extends State<StepDialog> {
   }
 
   void _moveStepUp() {
-    _stepsProvider.moveStepUp(_goalsProvider.selectedGoal.id, _stepsProvider.selectedStep);
+    _stepsProvider?.moveStepUp(_goalsProvider?.selectedGoal?.id as String, _stepsProvider?.selectedStep as StepModel);
   }
 
   void _moveStepDown() {
-    _stepsProvider.moveStepDown(_goalsProvider.selectedGoal.id, _stepsProvider.selectedStep);
+    _stepsProvider?.moveStepDown(_goalsProvider?.selectedGoal?.id as String, _stepsProvider?.selectedStep as StepModel);
   }  
   
   @override

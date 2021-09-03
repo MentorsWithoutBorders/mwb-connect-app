@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class LearnedTodayDialog extends StatefulWidget {
-  const LearnedTodayDialog({Key key})
+  const LearnedTodayDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -17,7 +17,7 @@ class LearnedTodayDialog extends StatefulWidget {
 }
 
 class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
-  ConnectWithMentorViewModel _connectWithMentorProvider;  
+  ConnectWithMentorViewModel? _connectWithMentorProvider;  
   final ScrollController _scrollController = ScrollController();  
   List<bool> _selectedSkills = [];
   bool _isMentorAbsent = false;
@@ -57,10 +57,16 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
   }
 
   Widget _showText() {
+    bool isRecurrent = false;
+    if (_connectWithMentorProvider?.previousLesson != null && _connectWithMentorProvider?.previousLesson?.isRecurrent != null) {
+      isRecurrent = _connectWithMentorProvider?.previousLesson?.isRecurrent as bool;
+    }
+    String recurrence = isRecurrent ? 'connect_with_mentor.learned_today_recurrence'.tr() : 'connect_with_mentor.learned_today_next_lesson'.tr();
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
-        'connect_with_mentor.learned_today_text'.tr(),
+        'connect_with_mentor.learned_today_text'.tr(args: [recurrence]),
         textAlign: TextAlign.justify,
         style: const TextStyle(
           fontSize: 12,
@@ -72,8 +78,8 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
   }
 
   Widget _showSkills() {
-    List<Skill> skills = _connectWithMentorProvider.mentorSkills != null ? _connectWithMentorProvider.mentorSkills : [];
-    _initSkillCheckBoxes(skills);
+    List<Skill>? skills = _connectWithMentorProvider?.mentorSkills != null ? _connectWithMentorProvider?.mentorSkills : [];
+    _initSkillCheckBoxes(skills as List<Skill>);
     List<Widget> skillWidgets = [];
     for (int i = 0; i < skills.length; i++) {
       Widget skillWidget = Row(
@@ -92,7 +98,7 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
           Expanded(
             child: InkWell(
               child: Text(
-                skills[i].name,
+                skills[i].name as String,
                 style: TextStyle(
                   fontSize: 12.0,
                   color: _selectedSkills[i] ? Colors.black : AppColors.DOVE_GRAY
@@ -130,8 +136,8 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
             Animation<double> thumbAnimation,
             Animation<double> labelAnimation,
             double height, {
-            Text labelText,
-            BoxConstraints labelConstraints
+            Text? labelText,
+            BoxConstraints? labelConstraints
           }) {
             return FadeTransition(
               opacity: thumbAnimation,
@@ -243,8 +249,8 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
 
   Future<void> _submitLearnedToday() async {
     _setIsSubmitting(true);
-    await _connectWithMentorProvider.addSkills(_selectedSkills);
-    await _connectWithMentorProvider.setMentorPresence(!_isMentorAbsent);
+    await _connectWithMentorProvider?.addSkills(_selectedSkills);
+    await _connectWithMentorProvider?.setMentorPresence(!_isMentorAbsent);
     _showToast();
   }
 
@@ -268,9 +274,27 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
   
   Future<void> _getMentorSkills() async {
     if (!_areMentorSkillsRetrieved) {
-      await _connectWithMentorProvider.getMentorSkills();
+      await _connectWithMentorProvider?.getMentorSkills();
       _areMentorSkillsRetrieved = true;
     }
+  }
+
+  Future<bool> _onWillPop() async {
+    if (!checkEmptySkills() || _isMentorAbsent) {
+      await _submitLearnedToday();
+    }
+    return true;
+  }
+
+  bool checkEmptySkills() {
+    bool isEmpty = true;
+    for (bool selectedSkill in _selectedSkills) {
+      if (selectedSkill == true) {
+        isEmpty = false;
+        break;
+      }
+    }
+    return isEmpty;
   }  
   
   @override
@@ -280,7 +304,10 @@ class _LearnedTodayDialogState extends State<LearnedTodayDialog> {
    return FutureBuilder<void>(
       future: _getMentorSkills(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return _showLearnedTodayDialog();
+        return WillPopScope(
+          onWillPop: _onWillPop,
+          child: _showLearnedTodayDialog()
+        );
       }
    );
   }

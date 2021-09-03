@@ -7,13 +7,13 @@ import 'package:mwb_connect_app/core/models/goal_model.dart';
 class GoalsViewModel extends ChangeNotifier {
   final GoalsService _goalsService = locator<GoalsService>();   
 
-  List<Goal> goals;
-  Goal selectedGoal;
+  List<Goal>? goals;
+  Goal? selectedGoal;
   bool wasGoalAdded = false;
 
   Future<List<Goal>> getGoals() async {
     goals = await _goalsService.getGoals();
-    return goals;
+    return goals as List<Goal>;
   }
 
   Future<void> deleteGoal(String id) async {
@@ -37,17 +37,17 @@ class GoalsViewModel extends ChangeNotifier {
   }
 
   void _deleteGoalFromList(String goalId) {
-    goals.removeWhere((Goal goal) => goal.id == goalId);
+    goals?.removeWhere((Goal goal) => goal.id == goalId);
     notifyListeners();
   }  
 
-  void setSelectedGoal(Goal goal) {
+  void setSelectedGoal(Goal? goal) {
     selectedGoal = goal;
     notifyListeners();
   }
 
   void addGoalToList(Goal goal) {
-    goals.add(goal);
+    goals?.add(goal);
     notifyListeners();
   }
 

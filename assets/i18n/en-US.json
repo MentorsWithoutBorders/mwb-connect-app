@@ -31,6 +31,12 @@
 		"many": "years",
 		"other": "years"
 	},
+  "numerals": {
+    "first": "1st",
+    "second": "2nd",
+    "third": "3rd",
+    "nth": "{}th"
+  },
 	"student": {
 		"zero": "students",
 		"one": "student",
@@ -81,6 +87,7 @@
 		"no_abort": "No, abort",
     "him_her": "him/her",
     "them": "them",
+    "today": "today",
 		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
     "notification": "Notification",
 		"period_units": "day, week, month, year",
@@ -140,6 +147,7 @@
 	},
 	"drawer": {
 		"profile": "My profile",
+		"training": "Training",
 		"notifications": "Notifications",
 		"support": "Support",
 		"feedback": "Send feedback",
@@ -194,8 +202,10 @@
 		"cancel_lesson_text": "Are you sure you don't want attend the {} lesson with {} on {}, {} at {} {}?",
     "cancel_lesson_recurrence_text": "Are you sure you don't want to attend any of the lessons in this recurrence?",
 		"learned_today": "What I learned today",
-		"learned_today_text": "In order to connect you with an appropriate mentor for the next lesson, please select from the following list what you learned from today’s mentor:",
-    "learned_today_sent": "The lesson skills have been added successfully",
+		"learned_today_text": "In order to connect you with an appropriate mentor {}, please select from the following list what you have learned from today’s mentor:",
+    "learned_today_next_lesson": "for the next lesson",
+    "learned_today_recurrence": "after you complete the current lesson recurrence",
+    "learned_today_sent": "The lesson info has been added successfully",
 		"mentor_not_present": "The mentor didn't show up"
 	},
 	"lesson_request": {
@@ -236,7 +246,9 @@
     "lesson_guide_tutorials_text": "During the lesson, you can use one or more of the following tutorials:",
     "recommendations": "recommendations",
 		"taught_today": "What I taught today",
-		"taught_today_text": "In order for us to connect your {} from today with an appropriate mentor after your lesson/s, please select from the following list what you have taught {}:",
+		"taught_today_text": "In order for us to connect your {} from today with an appropriate mentor {}, please select from the following list what you have taught {}{}:",
+    "taught_today_next_lesson": "for the next lesson",
+    "taught_today_recurrence": "after you complete the current lesson recurrence",
     "taught_today_sent": "The lesson information has been sent successfully",
     "throughout_recurrence": "throughout the entire lesson recurrence",
     "quick_notes_placeholder": "Please also add some quick notes..."
@@ -286,7 +298,12 @@
 		"delete_step": "Delete step",
 		"delete_step_message": "Are you sure you want to delete this step?",
 		"delete_step_sub_steps_message": "Are you sure you want to delete this step with all its sub-steps?"
-	},			
+	},
+  "training_completed": {
+    "title": "{} week of training completed",
+    "text": "You have completed the {} week of training but if you want to add more steps to your plan and/or go through the training tutorials, please feel free to",
+    "use_this_link": "use this link"
+  },			
 	"tutorials": { 
 		"mental_process_goal_steps": {
 			"title": "Adding steps",
@@ -394,23 +411,23 @@
       },     
       "quiz_tutorial8": {
         "title": "Confidence",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">Apart from ideas and energy, our students will also get more and more confidence that they can achieve their goals whenever they keep asking themselves \"what else can I do in order to achieve my goal?\"<br><br>That's because the subconscious mind simply cannot tell the difference between imagination and reality so for any process that we run in our minds, we feel that we’ve already gone through that process in reality multiple times and this gives us more and more confidence that we’ll actually reach our goal.</span></div>"
-      },
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">Apart from ideas and energy, our students will also get more and more confidence that they can reach their goals whenever they keep asking themselves \"what else can I do in order to achieve my goal?\"<br><br>That's because the subconscious mind simply cannot tell the difference between imagination and reality so for any process that we run in our minds we feel that we’ve already gone through that process in reality multiple times and this gives us more and more confidence that we’ll actually reach our goal.</span></div>"
+      },     
       "quiz_tutorial9": {
         "title": "Internal super-focus",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">We also teach our students a very useful application of the super-focus method which allows them to pump more energy into the next step that they want to take. All they need to do is the following: think of their final goal and some of the main steps to achieve it, then think about the desired outcome of the step that they will take in the next 1h or so and some of the actions that will be part of this step.<br><br>While going through this entire thinking process, they also need to apply the super-focus method (whenever their mind gets distracted, continue from where the interruption happened) until the body becomes very comfortable.</span></div>"
-      },
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">We also teach our students a very useful application of the super-focus method which allows them to pump more energy into the next step that they want to take. All they need to do is the following: think of their final goal and some of the main steps to achieve it, then think about the desired outcome of the step that they will take in the next 1h or so and some of the actions that will be part of this step.<br><br>While going through this entire thinking process, they also need to apply the super-focus method (whenever their mind gets distracted, continue from where the interruption happened) until the body becomes very comfortable with the process.</span></div>"
+      },     
       "quiz_tutorial10": {
-        "title": "Getting ideas",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">The main benefit of asking themselves each and every day <b>\"what else can I do in order to achieve my goal?\"</b> is the fact that our students will be able to build a clearer and clearer plan in their minds for achieving their goals. That's because when they ask themselves this very simple yet extremely powerful question, what they actually do is that they keep searching for ideas in their subconscious mind which is the warehouse of everything that they’ve seen, heard, felt, done, thought throughout their lives.<br><br>This mental process is actually very similar to what they do in order to complete short-term tasks, the only difference being that they are applying it for achieving their medium to long-term goals such as \"I want to land a job in my field of interest.\"</span></div>"
+        "title": "Ideas, energy and confidence",
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">To recap, we encourage our students to keep asking themselves on a regular basis <b>\"what else can I do in order to achieve my goal?\"</b> so that they can build a clearer and clearer plan in their minds for achieving their goals.<br><br>At the same time, this very simple yet extremely powerful question will allow them to generate more and more energy and confidence to put their ideas into practice because their subconscious minds will keep the process running on auto-pilot in the background and it will also reinforce the feeling that they've already taken all the steps and achieved their goals multiple times in the past.</span></div>"
       },
       "quiz_tutorial11": {
-        "title": "Interruptions during relaxation",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">While practicing the 10-to-0 relaxation method, our students will notice that various thoughts will distract them. All they need to do in those moments is to simply realize that they got interrupted and continue from the number where the interruption happened (if they remember it, if not they can just continue from any number they wish).<br><br>The important thing is to never go back from 10 because sometimes there will be many interruptions and if they keep going back from 10, they will never be able to finish the relaxation process.</span></div>"
+        "title": "Fast and slow relaxation",
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">Relaxation is very useful whenever our students feel discouraged, frustrated, worried, stressed, confused, etc. while pursuing their goals. The 10-to-0 relaxation method that we teach them is just about counting down from 10 to 0, letting each part of the body relax from head to toes and keeping in mind that the most important part is the final one: <b>when they get to 0, they have to keep focusing on how they're letting the entire body relax until they reach that really feel-good, relaxed state</b>.<br><br>If they get interrupted by other thoughts during the relaxation process, they should just continue from the number where the interruption happened and they should also gradually get to the point where they are using the fast relaxation more often than the slow one (1 second intervals or less between the numbers rather than 3-4 seconds).</span></div>"
       },
       "quiz_tutorial12": {
-        "title": "Fast and slow relaxation",
-        "text": "<div align=\"justify\"><span style=\"color: #646464\">There’s a fast way and a slow way of doing the 10-to-0 relaxation, the only difference between them being that in the <b>slow version</b> there should be a <b>3–4 second interval</b> between 10 and 9, 9 and 8 and so on, whereas <b>in the fast version we do the countdown faster</b>, without these intervals.<br><br>In both versions however, the most important part remains what we do when we get to 0: <b>keep focusing on how we're letting the entire body relax until we reach that really feel-good, relaxed state</b>.<br><br>It's best for our students to start by practicing the slow relaxation but gradually they should get to the point where they are using the fast version more often.</span></div>"
+        "title": "Super-focus method",
+        "text": "<div align=\"justify\"><span style=\"color: #646464\">The super-focus method allows our students to immerse themselves more and more in each and every step that they are taking and it's just about realizing when they get distracted by other thoughts and switching their focus back to the activity at hand.<br><br>This method can also be applied for pumping more enegy into the next steps that they want to take: they just have to think about the final goal, the overall plan to achieve it and the immediate next steps and apply the super-focus method while doing that until the body becomes very comfortable with the entire thinking process.</span></div>"
       }             
     },
     "students": {
@@ -481,39 +498,39 @@
         "answer": "2"
       }, 
       "quiz8": {
-        "question": "What happens when we count down from 10 to 1, letting each part of the body relax?",
-        "option1": "We get to feel a very pleasant, relaxed state.",
-        "option2": "We become very focused.",
-        "option3": "We feel a mild relaxation because from 10 to 1 we're just preparing the body to relax.",
+        "question": "Why do our students get more and more confidence when they keep asking themselves \"what else can I do in order to achieve my goal?\"",
+        "option1": "Because in this way they are able to focus more on their goals.",
+        "option2": "Because this question allows them to think positively.",
+        "option3": "Because the subconscious mind cannot tell the difference between imagination and reality.",
         "answer": "3"
-      },
+      }, 
       "quiz9": {
-        "question": "Why do we get ideas when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-        "option1": "Because this mental process becomes a very powerful habit.",
-        "option2": "Because our subconscious mind is a huge warehouse of resources and we can keep extracting ideas from there.",
-        "option3": "Because our subconscious mind cannot tell the difference between imagination and reality.",
-        "answer": "2"		
-      },
+        "question": "How can our students pump more energy into each step that they are taking?",
+        "option1": "By thinking beforehand about its desired outcome and some of its actions and applying the super-focus method to this process.",
+        "option2": "By taking each step only when they feel ready.",
+        "option3": "By doing extensive research related to each step.",
+        "answer": "1"		
+      }, 
       "quiz10": {
-        "question": "What should we do if we get interrupted by various thoughts during the 10-to-0 relaxation process?",
-        "option1": "Restart the relaxation process from 10.",
-        "option2": "Continue from the number where we got interrupted, no matter how many times we get interrupted.",
-        "option3": "Give up because we won't be able to relax if we get these interruptions.",
-        "answer": "2"	
-      },			
+        "question": "How can our students make the plans for achieving their goals clearer and clearer in their minds?",
+        "option1": "By visualizing the steps to achieve their goals.",
+        "option2": "By having a strong belief that they can achieve their goals.",
+        "option3": "By asking themselves on a regular basis \"what else can I do in order to achieve my goal?\"",
+        "answer": "3"
+      },		
       "quiz11": {
-        "question": "Why do we get energy when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-        "option1": "Because this mental process becomes a very powerful habit.",
-        "option2": "Because our subconscious mind is a huge warehouse of resources and we can keep extracting ideas from there.",
-        "option3": "Because our subconscious mind cannot tell the difference between imagination and reality.",
-        "answer": "1"			
-      },			
+        "question": "Which is the most important part of the 10-to-0 relaxation method?",
+        "option1": "Counting down from 10 to 0.",
+        "option2": "When we get to 0, we focus on how we’re letting the entire body relax until we reach a very relaxed state.",        
+        "option3": "Letting each part of the body relax as we count down.",
+        "answer": "2"
+      },	
       "quiz12": {
-        "question": "Why do we get confidence when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-        "option1": "Because this mental process becomes a very powerful habit.",
-        "option2": "Because our subconscious mind is a huge warehouse of resources and we can keep extracting ideas from there.",
-        "option3": "Because our subconscious mind cannot tell the difference between imagination and reality.",
-        "answer": "3"	
+        "question": "How can our students immerse themselves more fully into each step that they are taking?",
+        "option1": "They have to switch their focus back to the activity at hand every time they get interrupted by various other thoughts.",        
+        "option2": "They should try to eliminate any distractions.",
+        "option3": "They should remind themselves of their goals.",
+        "answer": "1"
       }
     },
     "students": {

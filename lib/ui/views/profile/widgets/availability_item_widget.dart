@@ -9,23 +9,23 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/edit_availability_widge
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityItem extends StatefulWidget {
-  const AvailabilityItem({Key key, this.index})
+  const AvailabilityItem({Key? key, @required this.index})
     : super(key: key); 
 
-  final int index;
+  final int? index;
 
   @override
   State<StatefulWidget> createState() => _AvailabilityItemState();
 }
 
 class _AvailabilityItemState extends State<AvailabilityItem> {
-  ProfileViewModel _profileProvider;  
+  ProfileViewModel? _profileProvider;  
 
   Widget _showAvailabilityItem() {
-    final Availability availability = _profileProvider.user.availabilities[widget.index];
-    final String dayOfWeek = availability.dayOfWeek;
-    final String timeFrom = availability.time.from;
-    final String timeTo = availability.time.to;
+    final Availability? availability = _profileProvider?.user?.availabilities?[widget.index!];
+    final String? dayOfWeek = availability?.dayOfWeek;
+    final String? timeFrom = availability?.time?.from;
+    final String? timeTo = availability?.time?.to;
     return Row(
       children: [
         Expanded(
@@ -33,13 +33,13 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
             key: Key(AppKeys.availabilityItem + widget.index.toString()),              
             child: Row(
               children: [
-                _showDayOfWeek(dayOfWeek),
-                _showTimes(timeFrom, timeTo),
+                _showDayOfWeek(dayOfWeek!),
+                _showTimes(timeFrom!, timeTo!),
                 _showEditItem()
               ],
             ),
             onTap: () {
-              _showEditAvailabilityDialog(availability);
+              _showEditAvailabilityDialog(availability!);
             }
           )
         ),
@@ -100,7 +100,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
   
   void _deleteAvailability() {
     _unfocus();
-    _profileProvider.deleteAvailability(widget.index);    
+    _profileProvider?.deleteAvailability(widget.index!);    
   }
 
   void _showEditAvailabilityDialog(Availability availability) {
@@ -111,9 +111,9 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
         widgetInside: EditAvailability(index: widget.index)
       )
     ).then((shouldShowToast) {
-      if (shouldShowToast != null && shouldShowToast && _profileProvider.availabilityMergedMessage.isNotEmpty) {
+      if (shouldShowToast != null && shouldShowToast && _profileProvider?.availabilityMergedMessage.isNotEmpty == true) {
         _showToast(context);
-        _profileProvider.resetAvailabilityMergedMessage();
+        _profileProvider?.resetAvailabilityMergedMessage();
       }
     });     
   }
@@ -123,7 +123,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
     scaffold.showSnackBar(
       SnackBar(
         key: const Key(AppKeys.toast),
-        content: Text(_profileProvider.availabilityMergedMessage),
+        content: Text(_profileProvider?.availabilityMergedMessage as String),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
@@ -132,7 +132,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
   }
   
   void _unfocus() {
-    _profileProvider.shouldUnfocus = true;
+    _profileProvider?.shouldUnfocus = true;
   }   
 
   @override

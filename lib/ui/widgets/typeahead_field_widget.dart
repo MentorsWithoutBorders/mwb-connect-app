@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 
 class TypeAheadField extends StatefulWidget {
   const TypeAheadField({
-    Key key,
+    Key? key,
     this.options,
     this.inputKey, 
     this.inputController, 
@@ -16,14 +16,14 @@ class TypeAheadField extends StatefulWidget {
     this.onSuggestionSelected
   }) : super(key: key);   
 
-  final List<String> options;
-  final Key inputKey;
-  final TextEditingController inputController;
-  final InputDecoration inputDecoration;
-  final Function() onFocusCallback;
-  final Function(String) onChangedCallback;
-  final Function(String) onSubmittedCallback;
-  final Function(String) onSuggestionSelected;
+  final List<String>? options;
+  final Key? inputKey;
+  final TextEditingController? inputController;
+  final InputDecoration? inputDecoration;
+  final Function()? onFocusCallback;
+  final Function(String)? onChangedCallback;
+  final Function(String)? onSubmittedCallback;
+  final Function(String)? onSuggestionSelected;
 
   @override
   _TypeAheadFieldState createState() => _TypeAheadFieldState();
@@ -31,7 +31,7 @@ class TypeAheadField extends StatefulWidget {
 
 class _TypeAheadFieldState extends State<TypeAheadField> {
   final FocusNode _focusNode = FocusNode();
-  OverlayEntry _overlayEntry;
+  OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
   final ScrollController _scrollController = ScrollController();
 
@@ -40,26 +40,27 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
     super.initState();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        widget.onFocusCallback();
+        widget.onFocusCallback!();
         _overlayEntry = _createOverlayEntry();
-        Overlay.of(context).insert(_overlayEntry);
+        Overlay.of(context)?.insert(_overlayEntry!);
       } else {
-        _overlayEntry.remove();
+        _overlayEntry?.remove();
       }
     });
   }
 
   OverlayEntry _createOverlayEntry() {
     final List<Widget> optionWidgets = [];
-    if (widget.options != null && widget.options.length > 0) {
-      for (int i = 0; i < widget.options.length; i++) {
+    int optionsLength = widget.options?.length as int;
+    if (widget.options != null && optionsLength > 0) {
+      for (int i = 0; i < optionsLength; i++) {
         final Widget option = InkWell(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-            child: Text(widget.options[i])
+            child: Text(widget.options?[i] as String)
           ),
           onTap: () {
-            widget.onSuggestionSelected(widget.options[i]); 
+            widget.onSuggestionSelected!(widget.options?[i] as String); 
           }
         );
         optionWidgets.add(option);
@@ -77,9 +78,9 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
     if (optionWidgets.length < 5) {
       height = optionWidgets.length * 32.0;
     }
-    double heightScrollThumb = 150.0 / (widget.options.length / 5);
+    double heightScrollThumb = 150.0 / (optionsLength / 5);
 
-    RenderBox renderBox = context.findRenderObject();
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
     return OverlayEntry(
       builder: (context) => Positioned(
@@ -106,8 +107,8 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
                   Animation<double> thumbAnimation,
                   Animation<double> labelAnimation,
                   double height, {
-                  Text labelText,
-                  BoxConstraints labelConstraints
+                  Text? labelText,
+                  BoxConstraints? labelConstraints
                 }) {
                   return FadeTransition(
                     opacity: thumbAnimation,
@@ -128,15 +129,15 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
 
   void _afterLayout(_) {
     if (_overlayEntry != null && _focusNode.hasFocus) {
-      _overlayEntry.remove();
+      _overlayEntry?.remove();
       _overlayEntry = _createOverlayEntry();
-      Overlay.of(context).insert(_overlayEntry);
+      Overlay.of(context)?.insert(_overlayEntry!);
     }  
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
     return CompositedTransformTarget(
       link: _layerLink,

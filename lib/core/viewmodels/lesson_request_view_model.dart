@@ -25,17 +25,17 @@ class LessonRequestViewModel extends ChangeNotifier {
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
   final QuizzesService _quizzesService = locator<QuizzesService>();
   final GoalsService _goalsService = locator<GoalsService>();
-  Goal goal;
-  StepModel lastStepAdded;
-  int quizNumber;  
-  LessonRequestModel lessonRequest;
-  String quizzes;
-  Lesson nextLesson;
-  Lesson previousLesson;
-  List<Skill> skills;
-  List<LessonNote> lessonsNotes;
-  List<GuideTutorial> guideTutorials;
-  List<GuideRecommendation> guideRecommendations;
+  Goal? goal;
+  StepModel? lastStepAdded;
+  int? quizNumber;  
+  LessonRequestModel? lessonRequest;
+  String? quizzes;
+  Lesson? nextLesson;
+  Lesson? previousLesson;
+  List<Skill>? skills;
+  List<LessonNote>? lessonsNotes;
+  List<GuideTutorial>? guideTutorials;
+  List<GuideRecommendation>? guideRecommendations;
   bool _shouldUnfocus = false;
   bool shouldShowExpired = false;
   bool shouldShowCanceled = false;
@@ -49,7 +49,7 @@ class LessonRequestViewModel extends ChangeNotifier {
     }
   }
 
-  void setGoal(Goal goal) {
+  void setGoal(Goal? goal) {
     this.goal = goal;
   }  
 
@@ -63,24 +63,24 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   Future<void> getLessonRequest() async {
     lessonRequest = await _lessonRequestService.getLessonRequest();
-    if (lessonRequest != null && lessonRequest.id != null) {
-      if (lessonRequest.isExpired != null && lessonRequest.isExpired) {
-        if (lessonRequest.wasExpiredShown == null || lessonRequest.wasExpiredShown != null && !lessonRequest.wasExpiredShown) {
+    if (lessonRequest != null && lessonRequest?.id != null) {
+      if (lessonRequest?.isExpired != null && lessonRequest?.isExpired == true) {
+        if (lessonRequest?.wasExpiredShown == null || lessonRequest?.wasExpiredShown != null && lessonRequest?.wasExpiredShown == false) {
           shouldShowExpired = true;
-          await _lessonRequestService.updateLessonRequest(lessonRequest.id, LessonRequestModel(wasExpiredShown: true));
+          await _lessonRequestService.updateLessonRequest(lessonRequest?.id, LessonRequestModel(wasExpiredShown: true));
         }
         lessonRequest = null;
-      } else if (lessonRequest.isCanceled != null && lessonRequest.isCanceled) {
-        if (lessonRequest.wasCanceledShown == null || lessonRequest.wasCanceledShown != null && !lessonRequest.wasCanceledShown) {
+      } else if (lessonRequest?.isCanceled != null && lessonRequest?.isCanceled == true) {
+        if (lessonRequest?.wasCanceledShown == null || lessonRequest?.wasCanceledShown != null && lessonRequest?.wasCanceledShown == false) {
           shouldShowCanceled = true;
-          await _lessonRequestService.updateLessonRequest(lessonRequest.id, LessonRequestModel(wasCanceledShown: true));
+          await _lessonRequestService.updateLessonRequest(lessonRequest?.id, LessonRequestModel(wasCanceledShown: true));
         }
         lessonRequest = null;
       }
     }
   }
 
-  String addLessonRequestId(String existingIds, String newId) {
+  String addLessonRequestId(String? existingIds, String newId) {
     List<String> ids = existingIds != null ? existingIds.split(', ') : [];
     if (ids.isEmpty || !ids.contains(newId)) {
       ids.add(newId);
@@ -89,11 +89,11 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   Future<void> acceptLessonRequest(String meetingUrl, BuildContext context) async {
-    nextLesson.meetingUrl = meetingUrl;
-    Lesson acceptedLessonRequest = await _lessonRequestService.acceptLessonRequest(lessonRequest.id, nextLesson);
-    if (acceptedLessonRequest != null && acceptedLessonRequest.id != null) {
+    nextLesson?.meetingUrl = meetingUrl;
+    Lesson acceptedLessonRequest = await _lessonRequestService.acceptLessonRequest(lessonRequest?.id, nextLesson);
+    if (acceptedLessonRequest.id != null) {
       nextLesson = acceptedLessonRequest;
-      lessonRequest.id = null;
+      lessonRequest?.id = null;
       notifyListeners();      
     } else {
       Phoenix.rebirth(context);
@@ -101,8 +101,8 @@ class LessonRequestViewModel extends ChangeNotifier {
   }  
 
   Future<void> rejectLessonRequest() async {
-    await _lessonRequestService.rejectLessonRequest(lessonRequest.id);
-    lessonRequest.isRejected = true;
+    await _lessonRequestService.rejectLessonRequest(lessonRequest?.id);
+    lessonRequest?.isRejected = true;
     notifyListeners();
   }
   
@@ -110,7 +110,7 @@ class LessonRequestViewModel extends ChangeNotifier {
     nextLesson = await _lessonRequestService.getNextLesson();
   }
 
-  Future<void> cancelNextLesson({bool isSingleLesson}) async {
+  Future<void> cancelNextLesson({bool? isSingleLesson}) async {
     await _lessonRequestService.cancelNextLesson(nextLesson, isSingleLesson);
     await getNextLesson();
     notifyListeners();
@@ -119,22 +119,22 @@ class LessonRequestViewModel extends ChangeNotifier {
   Future<void> updateLessonRecurrence() async {
     if (isNextLesson) {
       Lesson lesson = Lesson(
-        id: nextLesson.id,
-        isRecurrent: nextLesson.isRecurrent,
-        endRecurrenceDateTime: nextLesson.endRecurrenceDateTime,
-        isRecurrenceDateSelected: nextLesson.isRecurrenceDateSelected
+        id: nextLesson?.id,
+        isRecurrent: nextLesson?.isRecurrent,
+        endRecurrenceDateTime: nextLesson?.endRecurrenceDateTime,
+        isRecurrenceDateSelected: nextLesson?.isRecurrenceDateSelected
       );
-      if (!lesson.isRecurrent) {
+      if (lesson.isRecurrent == false) {
         lesson.isRecurrent = true;
-        lesson.endRecurrenceDateTime = nextLesson.dateTime;
+        lesson.endRecurrenceDateTime = nextLesson?.dateTime;
       }    
       await _lessonRequestService.updateLessonRecurrence(lesson);
     }
   }    
 
   Future<void> changeLessonUrl(String meetingUrl) async {
-    await _lessonRequestService.changeLessonUrl(nextLesson.id, meetingUrl);
-    nextLesson.meetingUrl = meetingUrl;
+    await _lessonRequestService.changeLessonUrl(nextLesson?.id, meetingUrl);
+    nextLesson?.meetingUrl = meetingUrl;
     notifyListeners();
   }  
 
@@ -147,42 +147,42 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
   
   Future<void> getGuideTutorials() async {
-    guideTutorials = await _lessonRequestService.getGuideTutorials(nextLesson.id);
+    guideTutorials = await _lessonRequestService.getGuideTutorials(nextLesson?.id);
   }
 
   Future<void> getGuideRecommendations() async {
-    guideRecommendations = await _lessonRequestService.getGuideRecommendations(nextLesson.id);
+    guideRecommendations = await _lessonRequestService.getGuideRecommendations(nextLesson?.id);
   }    
 
   Future<void> addStudentsLessonNotes(String text) async {
     LessonNote lessonNote = LessonNote(text: text);
-    if (previousLesson != null && previousLesson.id != null) {
-      await _lessonRequestService.addStudentsLessonNotes(previousLesson.id, lessonNote);
+    if (previousLesson != null && previousLesson?.id != null) {
+      await _lessonRequestService.addStudentsLessonNotes(previousLesson?.id, lessonNote);
     }
   }    
 
   Future<void> getSkills() async {
     await getPreviousLesson();
-    skills = await _lessonRequestService.getSkills(previousLesson.subfield.id);
+    skills = await _lessonRequestService.getSkills(previousLesson?.subfield?.id);
   }
   
   Future<void> addStudentSkills(List<bool> selectedSkills) async {
     List<String> skillIds = [];
     for (int i = 0; i < selectedSkills.length; i++) {
-      if (selectedSkills[i]) {
-        skillIds.add(skills[i].id);
+      if (selectedSkills[i] == true) {
+        skillIds.add(skills?[i].id as String);
       }
     }
-    if (previousLesson != null && previousLesson.id != null) {
-      await _lessonRequestService.addStudentSkills(previousLesson.id, skillIds);
+    if (previousLesson != null && previousLesson?.id != null) {
+      await _lessonRequestService.addStudentSkills(previousLesson?.id, skillIds);
     }
   }
 
   bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();
 
-  bool get isNextLesson => nextLesson != null && nextLesson.id != null && nextLesson.isCanceled != true;
+  bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
 
-  bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest.id != null && lessonRequest.isRejected != true;
+  bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest?.id != null && lessonRequest?.isRejected != true;
   
   bool checkValidUrl(String url) {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
@@ -194,22 +194,25 @@ class LessonRequestViewModel extends ChangeNotifier {
       _storageService.quizNumber = null;
     }
     if (_storageService.lastStepAddedId != null) {
-      lastStepAdded.id = _storageService.lastStepAddedId;
-      lastStepAdded.dateTime = DateTime.now();
+      lastStepAdded?.id = _storageService.lastStepAddedId;
+      lastStepAdded?.dateTime = DateTime.now();
       _storageService.lastStepAddedId = null;
     }    
     notifyListeners();
   }
 
   String getQuizzesLeft() {
-    int weeklyCount = _storageService.quizzesMentorWeeklyCount;
-    int quizzesNumber = weeklyCount - ((quizNumber - 1) % weeklyCount);
-    String quizzesPlural = plural('quiz', quizzesNumber);
-    String quizzesLeft = quizzesNumber.toString();
-    if (quizzesNumber < weeklyCount) {
-      quizzesLeft += ' ' + 'common.more'.tr();
+    int? weeklyCount = _storageService.quizzesMentorWeeklyCount;
+    String quizzesLeft = '';
+    if (weeklyCount != null && quizNumber != null) {
+      int quizzesNumber = weeklyCount - ((quizNumber! - 1) % weeklyCount);
+      String quizzesPlural = plural('quiz', quizzesNumber);
+      quizzesLeft = quizzesNumber.toString();
+      if (quizzesNumber < weeklyCount) {
+        quizzesLeft += ' ' + 'common.more'.tr();
+      }
+      quizzesLeft += ' ' + quizzesPlural;
     }
-    quizzesLeft += ' ' + quizzesPlural;
     return quizzesLeft;
   }
 
@@ -222,8 +225,11 @@ class LessonRequestViewModel extends ChangeNotifier {
   }  
 
   bool getShouldShowAddStep() {
-    DateTime nextDeadline = getNextDeadline();
-    if (lastStepAdded.id != null && nextDeadline.difference(lastStepAdded.dateTime).inDays < 7) {
+    DateTime nextDeadline = getNextDeadline() as DateTime;
+    DateTime now = Utils.resetTime(DateTime.now());
+    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
+    int limit = now.difference(registeredOn).inDays > 7 ? 7 : 8;
+    if (lastStepAdded?.id != null && nextDeadline.difference(Utils.resetTime(lastStepAdded?.dateTime as DateTime)).inDays < limit) {
       return false;
     } else {
       return true;
@@ -231,44 +237,44 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   void initLessonRecurrence() {
-    if (nextLesson == null || nextLesson.id == null) {
-      bool isRecurrent = nextLesson.isRecurrent == null ? false : nextLesson.isRecurrent;
+    if (nextLesson == null || nextLesson?.id == null) {
+      bool? isRecurrent = nextLesson?.isRecurrent == null ? false : nextLesson?.isRecurrent;
       nextLesson = Lesson(isRecurrent: isRecurrent);
-    } else if (nextLesson.isRecurrent == null || nextLesson.isRecurrent && nextLesson.endRecurrenceDateTime.difference(nextLesson.dateTime).inDays < 7) {
-      nextLesson.isRecurrent = false;
+    } else if (nextLesson?.isRecurrent == null || nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int < 7) {
+      nextLesson?.isRecurrent = false;
     }
   }
 
-  void setEndRecurrenceDate({DateTime picked, int lessonsNumber}) {
+  void setEndRecurrenceDate({DateTime? picked, int? lessonsNumber}) {
     if (picked != null) {
-      nextLesson.endRecurrenceDateTime = picked;
+      nextLesson?.endRecurrenceDateTime = picked;
       if (isLessonRequest) {
-        nextLesson.endRecurrenceDateTime = nextLesson.endRecurrenceDateTime.copyWith(hour: lessonRequest.lessonDateTime.hour);
+        nextLesson?.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime?.copyWith(hour: lessonRequest?.lessonDateTime?.hour as int);
       } else if (isNextLesson) {
-        nextLesson.endRecurrenceDateTime = nextLesson.endRecurrenceDateTime.copyWith(hour: nextLesson.dateTime.hour);
+        nextLesson?.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime?.copyWith(hour: nextLesson?.dateTime?.hour as int);
       }      
     } else {
-      if (isLessonRequest) {
-        int duration = (lessonsNumber - 1) * 7;
-        nextLesson.endRecurrenceDateTime = lessonRequest.lessonDateTime.add(Duration(days: duration));
+      if (isLessonRequest == true) {
+        int duration = (lessonsNumber! - 1) * 7;
+        nextLesson?.endRecurrenceDateTime = lessonRequest?.lessonDateTime?.add(Duration(days: duration));
       } else if (isNextLesson) {
-        int duration = (lessonsNumber - 1) * 7;
-        nextLesson.endRecurrenceDateTime = nextLesson.dateTime.add(Duration(days: duration));
+        int duration = (lessonsNumber! - 1) * 7;
+        nextLesson?.endRecurrenceDateTime = nextLesson?.dateTime?.add(Duration(days: duration));
       }
     }
   }
 
   void setLessonRecurrenceType(LessonRecurrenceType recurrenceType) {
     if (recurrenceType == LessonRecurrenceType.date) {
-      nextLesson.isRecurrenceDateSelected = true;
+      nextLesson?.isRecurrenceDateSelected = true;
     } else if (recurrenceType == LessonRecurrenceType.lessons) {
-      nextLesson.isRecurrenceDateSelected = false;
+      nextLesson?.isRecurrenceDateSelected = false;
     }
   }
 
-  LessonRecurrenceType getLessonRecurrenceType() {
-    if (nextLesson.isRecurrenceDateSelected != null) {
-      if (nextLesson.isRecurrenceDateSelected) {
+  LessonRecurrenceType? getLessonRecurrenceType() {
+    if (nextLesson?.isRecurrenceDateSelected != null) {
+      if (nextLesson?.isRecurrenceDateSelected == true) {
         return LessonRecurrenceType.date;
       } else {
         return LessonRecurrenceType.lessons;
@@ -278,72 +284,92 @@ class LessonRequestViewModel extends ChangeNotifier {
     }
   }  
 
-  DateTime getMinRecurrenceDate() {
-    DateTime minRecurrenceDate;
+  DateTime? getMinRecurrenceDate() {
+    DateTime? minRecurrenceDate;
     if (isLessonRequest) {
-      minRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: 7));
+      minRecurrenceDate = lessonRequest?.lessonDateTime?.add(Duration(days: 7));
     } else if (isNextLesson) {
-      minRecurrenceDate = nextLesson.dateTime.add(Duration(days: 7));
+      minRecurrenceDate = nextLesson?.dateTime?.add(Duration(days: 7));
     }
     return minRecurrenceDate;
   }
 
-  DateTime getMaxRecurrenceDate() {
-    DateTime maxRecurrenceDate;
+  DateTime? getMaxRecurrenceDate() {
+    DateTime? maxRecurrenceDate;
     int maxDays = AppConstants.maxLessonsNumberRecurrence * 7 - 7;
     if (isLessonRequest) {
-      maxRecurrenceDate = lessonRequest.lessonDateTime.add(Duration(days: maxDays));
+      maxRecurrenceDate = lessonRequest?.lessonDateTime?.add(Duration(days: maxDays));
     } else if (isNextLesson) {
-      maxRecurrenceDate = nextLesson.dateTime.add(Duration(days: maxDays));
+      maxRecurrenceDate = nextLesson?.dateTime?.add(Duration(days: maxDays));
     }
     return maxRecurrenceDate;
   }  
 
-  int calculateLessonsNumber(DateTime endRecurrenceDate) {
+  int calculateLessonsNumber(DateTime? endRecurrenceDate) {
     int lessonsNumber = AppConstants.minLessonsNumberRecurrence;
     if (endRecurrenceDate != null) {
       if (isLessonRequest) {
-        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(lessonRequest.lessonDateTime)).inDays ~/ 7 + 1;
+        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(lessonRequest?.lessonDateTime as DateTime)).inDays ~/ 7 + 1;
       } else if (isNextLesson) {
-        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(nextLesson.dateTime)).inDays ~/ 7 + 1;
+        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(nextLesson?.dateTime as DateTime)).inDays ~/ 7 + 1;
       }
     }
     return lessonsNumber;
   }
 
-  DateTime getNextDeadline() {
-    DateTime registeredOn = DateTime.parse(_storageService.registeredOn);
-    registeredOn = Utils.resetTime(registeredOn);
-    Jiffy deadline;
-    if (lastStepAdded != null && lastStepAdded.dateTime != null) {
-      DateTime lastStepAddedDateTime = lastStepAdded.dateTime;
-      lastStepAddedDateTime = Utils.resetTime(lastStepAddedDateTime);
-      Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
-      int i = 1;
-      bool found = false;
-      while (!found) {
-        deadline = Jiffy(registeredOn).add(weeks: i);
-        if (deadline.dateTime.difference(lastStepAddedDateTime).inDays > 7 ||
-            deadline.isSameOrAfter(now, Units.DAY)) {
-          found = true;
-        } else {
-          i++;
-        }
-      }
+  DateTime? getNextDeadline() {
+    Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
+    Jiffy deadline = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    if (deadline.isSame(now)) {
+      deadline.add(weeks: 1);
     } else {
-      deadline = Jiffy(registeredOn).add(weeks: 1);
+      while (deadline.isBefore(now, Units.DAY)) {
+        deadline.add(weeks: 1);
+      }
     }
     return deadline.dateTime;
   }
 
-  bool isOverdue() {
+  String getTrainingWeek() {
+    Jiffy nextDeadline = Jiffy(getNextDeadline());
+    Jiffy date = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    int weekNumber = 0;
+    while (date.isSameOrBefore(nextDeadline, Units.DAY)) {
+      date.add(weeks: 1);
+      weekNumber++;
+    }
+    weekNumber--;
+    String week = '';
+    switch (weekNumber) {
+      case 1:
+        week = 'numerals.first'.tr();
+        break;
+      case 2: 
+        week = 'numerals.second'.tr();
+        break;
+      case 3: 
+        week = 'numerals.third'.tr();
+        break;
+      default:
+        week = 'numerals.nth'.tr(args: [weekNumber.toString()]);
+    }
+    return week;
+  }
+
+  bool shouldShowTrainingCompleted() {
     DateTime now = Utils.resetTime(DateTime.now());
-    DateTime deadLine = Utils.resetTime(getNextDeadline());
-    return now.difference(deadLine).inDays > 0;
+    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
+    return now.difference(registeredOn).inDays <= 7 * AppConstants.mentorWeeksTraining;
   }
   
   void setIsLessonRecurrent() {
-    nextLesson.isRecurrent = !nextLesson.isRecurrent;
+    if (nextLesson != null) {
+      if (nextLesson?.isRecurrent == true) {
+        nextLesson?.isRecurrent = false;
+      } else {
+        nextLesson?.isRecurrent = true;
+      }
+    }
     notifyListeners();
   }   
 

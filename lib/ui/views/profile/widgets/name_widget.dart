@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 
 class Name extends StatefulWidget {
-  const Name({Key key})
+  const Name({Key? key})
     : super(key: key);    
 
   @override
@@ -15,17 +15,17 @@ class Name extends StatefulWidget {
 }
 
 class _NameState extends State<Name> {
-  ProfileViewModel _profileProvider;  
+  ProfileViewModel? _profileProvider;  
 
   Widget _showName() {
-    final double paddingBottom = _profileProvider.user.isMentor ? 15.0 : 5.0;
+    final double paddingBottom = _profileProvider?.user?.isMentor == true ? 15.0 : 5.0;
     return Container(
       padding: EdgeInsets.only(bottom: paddingBottom),
       child: InputBox(
         key: const Key(AppKeys.nameField),
         autofocus: false, 
         hint: 'profile.name_placeholder'.tr(), 
-        text: _profileProvider.user?.name, 
+        text: _profileProvider?.user?.name as String, 
         textCapitalization: TextCapitalization.words,
         inputChangedCallback: _changeName
       )
@@ -33,7 +33,7 @@ class _NameState extends State<Name> {
   }
 
   void _changeName(String name) {
-    _profileProvider.setName(name);
+    _profileProvider?.setName(name);
   }
 
   @override

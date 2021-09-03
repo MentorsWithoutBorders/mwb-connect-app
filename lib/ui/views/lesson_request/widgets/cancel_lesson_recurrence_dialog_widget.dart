@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelLessonRecurrenceDialog extends StatefulWidget {
-  const CancelLessonRecurrenceDialog({Key key})
+  const CancelLessonRecurrenceDialog({Key? key})
     : super(key: key);
     
   @override
@@ -15,7 +15,7 @@ class CancelLessonRecurrenceDialog extends StatefulWidget {
 }
 
 class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   bool _isCancellingLesson = false;  
 
   Widget _showCancelLessonRecurrenceDialog() {
@@ -49,8 +49,8 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
   }
 
   Widget _showText() {
-    Lesson nextLesson = _lessonRequestProvider.nextLesson;
-    String studentPlural = plural('student', nextLesson.students.length);
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
+    String studentPlural = plural('student', nextLesson?.students?.length as int);
     String text = 'lesson_request.cancel_lesson_recurrence_text'.tr(args: [studentPlural]);
 
     return Padding(
@@ -105,7 +105,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
 
   Future<void> _cancelLessonRecurrence() async {  
     _setIsCancellingLesson(true);
-    await _lessonRequestProvider.cancelNextLesson(isSingleLesson: false);
+    await _lessonRequestProvider?.cancelNextLesson(isSingleLesson: false);
   }
   
   void _setIsCancellingLesson(bool isCanceling) {

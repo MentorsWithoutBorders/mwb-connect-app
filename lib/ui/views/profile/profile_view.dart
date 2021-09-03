@@ -14,7 +14,7 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({Key key})
+  const ProfileView({Key? key})
     : super(key: key);   
 
   @override
@@ -22,7 +22,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  ProfileViewModel _profileProvider;
+  ProfileViewModel? _profileProvider;
   final ScrollController _scrollController = ScrollController();
   bool _isProfileRetrieved = false;
 
@@ -43,7 +43,7 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           _showPrimaryCard(),
           _showAvailabilityCard(),
-          if (_profileProvider.user.isMentor) _showLessonsCard()
+          if (_profileProvider?.user?.isMentor == true) _showLessonsCard()
         ]
       )
     );
@@ -73,8 +73,8 @@ class _ProfileViewState extends State<ProfileView> {
           child: Wrap(
             children: [
               const Name(),
-              if (_profileProvider.user.isMentor) const FieldDropdown(),
-              if (_profileProvider.user.isMentor) const Subfields()
+              if (_profileProvider?.user?.isMentor == true) const FieldDropdown(),
+              if (_profileProvider?.user?.isMentor == true) const Subfields()
             ],
           )
         ),
@@ -95,8 +95,8 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
             children: [
-              if (_profileProvider.user.isMentor) AvailabilityStartDate(),
-              if (_profileProvider.user.isMentor) _showDivider(),
+              if (_profileProvider?.user?.isMentor == true) AvailabilityStartDate(),
+              if (_profileProvider?.user?.isMentor == true) _showDivider(),
               AvailabilityList(),
             ],
           )
@@ -156,22 +156,22 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   void _afterLayout(_) {
-    if (_profileProvider.shouldUnfocus) {
+    if (_profileProvider?.shouldUnfocus == true) {
       _unfocus();
-      _profileProvider.shouldUnfocus = false;
+      _profileProvider?.shouldUnfocus = false;
     }
 
-    if (_profileProvider.scrollOffset != 0) {
-      _scrollToPosition(_profileProvider.scrollOffset);
-      _profileProvider.scrollOffset = 0;
+    if (_profileProvider?.scrollOffset != 0) {
+      _scrollToPosition(_profileProvider?.scrollOffset as double);
+      _profileProvider?.scrollOffset = 0;
     }
   }
 
   Future<void> _getProfile() async {
-    if (!_isProfileRetrieved) {
+    if (!_isProfileRetrieved && _profileProvider != null) {
       await Future.wait([
-        _profileProvider.getUserDetails(),
-        _profileProvider.getFields()
+        _profileProvider!.getUserDetails(),
+        _profileProvider!.getFields()
       ]);      
       _isProfileRetrieved = true;
     }
@@ -181,7 +181,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
 
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
     return FutureBuilder<void>(
       future: _getProfile(),

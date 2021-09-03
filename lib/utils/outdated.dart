@@ -24,12 +24,14 @@ main() async {
 
       Document document = parser.parse(html.body);
 
-      var jsonScript =
+      Element? jsonScript =
           document.querySelector('script[type="application/ld+json"]');
-      var json = jsonDecode(jsonScript.innerHtml);
-//      print(json['version']);
-      if (json['version'].toString().compareTo(versionNumber) > 0) {
-        print(' => ' + json['version']);
+      if (jsonScript != null) {
+        var json = jsonDecode(jsonScript.innerHtml);
+  //      print(json['version']);
+        if (json['version'].toString().compareTo(versionNumber) > 0) {
+          print(' => ' + json['version']);
+        }
       }
     }
   }

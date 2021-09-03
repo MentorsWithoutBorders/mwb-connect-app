@@ -1,6 +1,6 @@
 class Tutorial {
-  String type;
-  List<String> sections;
+  String? type;
+  List<String>? sections;
 
   Tutorial({this.type, this.sections});
 
@@ -8,7 +8,7 @@ class Tutorial {
     type = json['type'] ?? '',
     sections = json['sections']?.cast<String>() ?? [];
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'type': type,
       'sections': sections

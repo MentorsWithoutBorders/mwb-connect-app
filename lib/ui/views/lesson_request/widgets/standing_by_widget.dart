@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 
 class StandingBy extends StatefulWidget {
-  const StandingBy({Key key})
+  const StandingBy({Key? key})
     : super(key: key); 
 
   @override
@@ -44,7 +44,7 @@ class _StandingByState extends State<StandingBy> {
 
   Widget _showTitle() {
     return Container(
-      margin: const EdgeInsets.only(top: 8.0, bottom: 15.0),
+      margin: const EdgeInsets.only(top: 3.0, bottom: 15.0),
       child: Center(
         child: Text(
           'lesson_request.standing_by'.tr(),
@@ -60,7 +60,7 @@ class _StandingByState extends State<StandingBy> {
 
   Widget _showText() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(

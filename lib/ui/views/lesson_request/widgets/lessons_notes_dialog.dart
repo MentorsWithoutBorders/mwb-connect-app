@@ -10,17 +10,17 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class LessonsNotesDialog extends StatefulWidget {
-  const LessonsNotesDialog({Key key, this.student})
+  const LessonsNotesDialog({Key? key, this.student})
     : super(key: key);  
 
-  final User student;
+  final User? student;
 
   @override
   State<StatefulWidget> createState() => _LessonsNotesDialogState();
 }
 
 class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   final ScrollController _scrollController = ScrollController();    
   bool _areLessonsNotesRetrieved = false;
 
@@ -43,7 +43,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
       padding: const EdgeInsets.only(bottom: 30.0),
       child: Center(
         child: Text(
-          widget.student.name,
+          widget.student?.name as String,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold
@@ -54,36 +54,38 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
   }
 
   Widget _showLessonsNotes(bool isHorizontal) {
-    List<LessonNote> lessonsNotes = _lessonRequestProvider.lessonsNotes != null ? _lessonRequestProvider.lessonsNotes : [];
+    List<LessonNote>? lessonsNotes = _lessonRequestProvider?.lessonsNotes != null ? _lessonRequestProvider?.lessonsNotes : [];
     List<Widget> lessonNoteWidgets = [];
     DateFormat dateFormat = DateFormat(AppConstants.dateFormat);
-    for (LessonNote lessonNote in lessonsNotes) {
-      String lessonNoteDate = dateFormat.format(lessonNote.dateTime);
-      Widget lessonNoteWidget = Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              lessonNoteDate,
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                height: 1.5
+    if (lessonsNotes != null) {
+      for (LessonNote lessonNote in lessonsNotes) {
+        String lessonNoteDate = dateFormat.format(lessonNote.dateTime as DateTime);
+        Widget lessonNoteWidget = Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                lessonNoteDate,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  height: 1.5
+                )
+              ),
+              Text(
+                lessonNote.text as String,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: AppColors.DOVE_GRAY
+                )
               )
-            ),
-            Text(
-              lessonNote.text,
-              style: TextStyle(
-                fontSize: 12.0,
-                color: AppColors.DOVE_GRAY
-              )
-            )
-          ]
-        ),
-      );
-      lessonNoteWidgets.add(lessonNoteWidget);
+            ]
+          ),
+        );
+        lessonNoteWidgets.add(lessonNoteWidget);
+      }
     }
 
     if (_areLessonsNotesRetrieved) {
@@ -95,7 +97,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
       }      
       return Stack(
         children: [
-          if (lessonsNotes.length == 0) Text(
+          if (lessonsNotes?.length == 0) Text(
             'lesson_request.no_notes_previous_mentors'.tr(),
             style: TextStyle(
               fontSize: 12.0,
@@ -118,8 +120,8 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
                 Animation<double> thumbAnimation,
                 Animation<double> labelAnimation,
                 double height, {
-                Text labelText,
-                BoxConstraints labelConstraints
+                Text? labelText,
+                BoxConstraints? labelConstraints
               }) {
                 return FadeTransition(
                   opacity: thumbAnimation,
@@ -165,7 +167,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
   
   Future<void> _getLessonsNotes() async {
     if (!_areLessonsNotesRetrieved) {
-      await _lessonRequestProvider.getLessonsNotes(widget.student.id);
+      await _lessonRequestProvider?.getLessonsNotes(widget.student?.id as String);
       _areLessonsNotesRetrieved = true;
     } 
   }

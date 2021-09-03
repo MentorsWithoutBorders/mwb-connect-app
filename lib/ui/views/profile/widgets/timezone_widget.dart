@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 
 class UserTimezone extends StatefulWidget {
-  const UserTimezone({Key key})
+  const UserTimezone({Key? key})
     : super(key: key); 
 
   @override
@@ -13,7 +13,7 @@ class UserTimezone extends StatefulWidget {
 }
 
 class _UserTimezoneState extends State<UserTimezone> {
-  ProfileViewModel _profileProvider;   
+  ProfileViewModel? _profileProvider;   
 
   Widget _showTimeZone() {
     final DateTime now = DateTime.now();
@@ -36,7 +36,7 @@ class _UserTimezoneState extends State<UserTimezone> {
 
     return Column(
       children: [
-        if (_profileProvider.user.availabilities.isNotEmpty) _showTimeZone(),
+        if (_profileProvider?.user?.availabilities?.isNotEmpty == true) _showTimeZone(),
       ],
     );
   }

@@ -15,7 +15,7 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class LessonRecurrence extends StatefulWidget {
-  const LessonRecurrence({Key key})
+  const LessonRecurrence({Key? key})
     : super(key: key); 
 
   @override
@@ -23,23 +23,23 @@ class LessonRecurrence extends StatefulWidget {
 }
 
 class _LessonRecurrenceState extends State<LessonRecurrence> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   final String _defaultLocale = Platform.localeName;
-  int _lessonsNumber;
-  LessonRecurrenceType _lessonRecurrenceType;
+  int? _lessonsNumber;
+  LessonRecurrenceType? _lessonRecurrenceType;
 
   @override
   void didChangeDependencies() {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
     super.didChangeDependencies();
   }
   
   void _afterLayout(_) {
-    _lessonRequestProvider.initLessonRecurrence();
-    if (_lessonRequestProvider.isNextLesson && _lessonRequestProvider.nextLesson.isRecurrent) {
-      _setLessonRecurrenceType(_lessonRequestProvider.getLessonRecurrenceType());
-      _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_lessonRequestProvider.nextLesson.endRecurrenceDateTime));
+    _lessonRequestProvider?.initLessonRecurrence();
+    if (_lessonRequestProvider?.isNextLesson == true && _lessonRequestProvider?.nextLesson?.isRecurrent == true) {
+      _setLessonRecurrenceType(_lessonRequestProvider?.getLessonRecurrenceType());
+      _setSelectedLessonsNumber(_lessonRequestProvider?.calculateLessonsNumber(_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime) as int);
     } else {
       _setLessonRecurrenceType(LessonRecurrenceType.lessons);
       _setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
@@ -60,13 +60,13 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
 
   Widget _showSetRecurrence() {
-    LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
-    Lesson nextLesson = _lessonRequestProvider.nextLesson;
+    LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
     DateTime lessonDateTime = DateTime.now();
-    if (_lessonRequestProvider.isLessonRequest) {
-      lessonDateTime = lessonRequest.lessonDateTime;
-    } else if (_lessonRequestProvider.isNextLesson) {
-      lessonDateTime = nextLesson.dateTime;
+    if (_lessonRequestProvider?.isLessonRequest == true) {
+      lessonDateTime = lessonRequest?.lessonDateTime as DateTime;
+    } else if (_lessonRequestProvider?.isNextLesson == true) {
+      lessonDateTime = nextLesson?.dateTime as DateTime;
     }
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
@@ -77,9 +77,9 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
     String text = '';
-    if (_lessonRequestProvider.isLessonRequest) {
+    if (_lessonRequestProvider?.isLessonRequest == true) {
       text = 'lesson_request.lesson_request_recurrence_text'.tr(args: [date, time, timeZone]);
-    } else if (_lessonRequestProvider.isNextLesson) {
+    } else if (_lessonRequestProvider?.isNextLesson == true) {
       text = 'lesson_request.next_lesson_recurrence_text'.tr(args: [date, time, timeZone]);
     }    
     String firstPart = text.substring(0, text.indexOf(date));
@@ -95,7 +95,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 width: 40.0,
                 height: 35.0,                      
                 child: Checkbox(
-                  value: _lessonRequestProvider.nextLesson.isRecurrent != null ? _lessonRequestProvider.nextLesson.isRecurrent : false,
+                  value: _lessonRequestProvider?.nextLesson?.isRecurrent != null ? _lessonRequestProvider?.nextLesson?.isRecurrent : false,
                   onChanged: (value) {
                     _setIsRecurrent();
                   },
@@ -144,16 +144,16 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
 
   void _setIsRecurrent() {
     _unfocus();
-    _lessonRequestProvider.setIsLessonRecurrent();
+    _lessonRequestProvider?.setIsLessonRecurrent();
   }
   
   Widget _showRecurrenceTypes() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
     String date = '';
-    if (_lessonRequestProvider.nextLesson.endRecurrenceDateTime != null) {
-      date = dateFormat.format(_lessonRequestProvider.nextLesson.endRecurrenceDateTime).capitalize();
+    if (_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime != null) {
+      date = dateFormat.format(_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime as DateTime).capitalize();
     }
-    bool isRecurrent = _lessonRequestProvider.nextLesson.isRecurrent != null ? _lessonRequestProvider.nextLesson.isRecurrent : false;
+    bool isRecurrent = _lessonRequestProvider?.nextLesson?.isRecurrent != null ? _lessonRequestProvider?.nextLesson?.isRecurrent as bool : false;
     return IgnorePointer(
       ignoring: !isRecurrent,
       child: Opacity(
@@ -170,7 +170,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     child: Radio<LessonRecurrenceType>(
                       value: LessonRecurrenceType.lessons,
                       groupValue: _lessonRecurrenceType,
-                      onChanged: (LessonRecurrenceType value) {
+                      onChanged: (LessonRecurrenceType? value) {
                         _unfocus();
                         _setLessonRecurrenceType(value);
                       },
@@ -200,7 +200,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     child: Radio<LessonRecurrenceType>(
                       value: LessonRecurrenceType.date,
                       groupValue: _lessonRecurrenceType,
-                      onChanged: (LessonRecurrenceType value) {
+                      onChanged: (LessonRecurrenceType? value) {
                         _unfocus();
                         _setLessonRecurrenceType(value);
                       },
@@ -260,8 +260,8 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     _setLessonRecurrenceType(LessonRecurrenceType.lessons);    
   }
 
-  void _changeLessonsNumber(int number) {
-    _setSelectedLessonsNumber(number);
+  void _changeLessonsNumber(int? number) {
+    _setSelectedLessonsNumber(number!);
     _setEndRecurrenceDate(null);
   }
 
@@ -295,20 +295,20 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     );
   }
   
-  void _setLessonRecurrenceType(LessonRecurrenceType recurrenceType) {
+  void _setLessonRecurrenceType(LessonRecurrenceType? recurrenceType) {
     if (mounted) {
       setState(() {
         _lessonRecurrenceType = recurrenceType;
       });
     }
-    _lessonRequestProvider.setLessonRecurrenceType(recurrenceType);  
+    _lessonRequestProvider?.setLessonRecurrenceType(recurrenceType!);  
   }
 
   Future<void> _selectDate() async {
     final TargetPlatform platform = Theme.of(context).platform;
-    DateTime minRecurrenceDate = _lessonRequestProvider.getMinRecurrenceDate();
-    DateTime maxRecurrenceDate = _lessonRequestProvider.getMaxRecurrenceDate();
-    DateTime endRecurrenceDateTime = _lessonRequestProvider.nextLesson.endRecurrenceDateTime;
+    DateTime minRecurrenceDate = _lessonRequestProvider?.getMinRecurrenceDate() as DateTime;
+    DateTime maxRecurrenceDate = _lessonRequestProvider?.getMaxRecurrenceDate() as DateTime;
+    DateTime endRecurrenceDateTime = _lessonRequestProvider?.nextLesson?.endRecurrenceDateTime as DateTime;
     if (platform == TargetPlatform.iOS) {
       return Utils.showDatePickerIOS(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     } else {
@@ -316,10 +316,10 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     }
   }
 
-  void _setEndRecurrenceDate(DateTime picked) {
-    _lessonRequestProvider.setEndRecurrenceDate(picked: picked, lessonsNumber: _lessonsNumber);
+  void _setEndRecurrenceDate(DateTime? picked) {
+    _lessonRequestProvider?.setEndRecurrenceDate(picked: picked, lessonsNumber: _lessonsNumber);
     if (picked != null) {
-      _setSelectedLessonsNumber(_lessonRequestProvider.calculateLessonsNumber(_lessonRequestProvider.nextLesson.endRecurrenceDateTime));
+      _setSelectedLessonsNumber(_lessonRequestProvider?.calculateLessonsNumber(_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime) as int);
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/support_request_model.dart';
@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/support_request_view_model.dart'
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class SupportView extends StatefulWidget {
-  const SupportView({Key key})
+  const SupportView({Key? key})
     : super(key: key);   
 
   @override
@@ -17,36 +17,32 @@ class SupportView extends StatefulWidget {
 
 class _SupportViewState extends State<SupportView> {
   final PageController _controller = PageController(viewportFraction: 1, keepPage: true);
-  final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
-  int _keyboardVisibilitySubscriberId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
-  String _supportText;
+  String? _supportText;
   bool _sendButtonPressed = false;
 
   @override
   @protected
   void initState() {
     super.initState();
-    _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
-      onChange: (bool visible) {
-        if (visible) {
-          Future<void>.delayed(const Duration(milliseconds: 100), () {
-            _scrollController.animateTo(
-              _scrollController.position.maxScrollExtent,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 300),
-            );
-          });
-        }
-      },
-    );
+    KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();   
+    keyboardVisibilityController.onChange.listen((bool visible) {
+      if (visible) {
+        Future<void>.delayed(const Duration(milliseconds: 100), () {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
     super.dispose();
   }
 
@@ -129,8 +125,8 @@ class _SupportViewState extends State<SupportView> {
             hintStyle: const TextStyle(color: AppColors.SILVER),
             hintText: 'support.message_placeholder'.tr(),
           ), 
-          validator: (String value) {
-            if (_sendButtonPressed && value.isEmpty) {
+          validator: (String? value) {
+            if (_sendButtonPressed && value?.isEmpty == true) {
               return 'support.message_error'.tr();
             } else {
               return null;
@@ -142,11 +138,11 @@ class _SupportViewState extends State<SupportView> {
             });          
             Future<void>.delayed(const Duration(milliseconds: 20), () {        
               if (value.isNotEmpty) {
-                _formKey.currentState.validate();
+                _formKey.currentState?.validate();
               }
             });
           },             
-          onSaved: (String value) => _supportText = value.trim(),
+          onSaved: (String? value) => _supportText = value?.trim(),
         ),
       ),
     );
@@ -194,15 +190,15 @@ class _SupportViewState extends State<SupportView> {
 
   // Check if form is valid
   bool _validateAndSave() {
-    final FormState form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
+    final FormState? form = _formKey.currentState;
+    if (form?.validate() == true) {
+      form?.save();
       return true;
     }
     return false;
   }
   
-  void _sendRequest(String text) {
+  void _sendRequest(String? text) {
     final SupportRequestViewModel supportRequestProvider = locator<SupportRequestViewModel>();
     final SupportRequest supportRequest = SupportRequest(
       text: text
@@ -213,7 +209,8 @@ class _SupportViewState extends State<SupportView> {
 
  void _goToConfirmation() {
     FocusScope.of(context).unfocus();
-    _controller.animateToPage(_controller.page.toInt() + 1,
+    int page = _controller.page?.toInt() as int;
+    _controller.animateToPage(page + 1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease
     );

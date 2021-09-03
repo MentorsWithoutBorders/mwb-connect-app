@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AcceptLessonRequestDialog extends StatefulWidget {
-  const AcceptLessonRequestDialog({Key key})
+  const AcceptLessonRequestDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -17,7 +17,7 @@ class AcceptLessonRequestDialog extends StatefulWidget {
 }
 
 class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   String urlType = AppConstants.meetingUrlType;
   String _url = '';
   bool _shouldShowError = false;
@@ -33,8 +33,8 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   
   void _setInitialUrl() {
     if (!_isInit) {
-      if (_url == '' && _lessonRequestProvider != null && _lessonRequestProvider.previousLesson != null) {
-        _changeUrl(_lessonRequestProvider.previousLesson.meetingUrl);
+      if (_url == '' && _lessonRequestProvider != null && _lessonRequestProvider?.previousLesson != null) {
+        _changeUrl(_lessonRequestProvider?.previousLesson?.meetingUrl as String);
       }   
       _isInit = true;
     }
@@ -169,19 +169,19 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   } 
 
   void _closeDialog() {
-    if (_lessonRequestProvider.nextLesson.isRecurrent) {
-      _lessonRequestProvider.setIsLessonRecurrent();
+    if (_lessonRequestProvider?.nextLesson?.isRecurrent == true) {
+      _lessonRequestProvider?.setIsLessonRecurrent();
     }
     Navigator.pop(context);
   }
 
   Future<void> _acceptLessonRequest() async {
-    if (!_lessonRequestProvider.checkValidUrl(_url)) {
+    if (_lessonRequestProvider?.checkValidUrl(_url) == false) {
       _setShouldShowError(true);
       return ;
     }
     _setIsAcceptingLessonRequest(true);
-    await _lessonRequestProvider.acceptLessonRequest(_url, context);
+    await _lessonRequestProvider?.acceptLessonRequest(_url, context);
     Navigator.pop(context);
   }
   
@@ -192,9 +192,9 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   }
 
   void _afterLayout(_) {
-    if (_lessonRequestProvider.shouldUnfocus) {
+    if (_lessonRequestProvider?.shouldUnfocus == true) {
       _unfocus();
-      _lessonRequestProvider.shouldUnfocus = false;
+      _lessonRequestProvider?.shouldUnfocus = false;
     }  
   }
   
@@ -209,7 +209,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
     return WillPopScope(
       onWillPop: _onWillPop,

@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/services/user_service.dart';
 class RootViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  bool isMentor;
+  bool? isMentor;
 
   Future<void> getIsMentor() async {
     if (_storageService.userId != null && _storageService.isMentor == null) {
@@ -20,7 +20,7 @@ class RootViewModel extends ChangeNotifier {
     }
   }
 
-  String getUserId() {
+  String? getUserId() {
     return _storageService.userId;
   }  
 }

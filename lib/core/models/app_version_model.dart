@@ -1,8 +1,8 @@
 class AppVersion {
-  int major;
-  int minor;
-  int revision;
-  int build;
+  int? major;
+  int? minor;
+  int? revision;
+  int? build;
 
   AppVersion({this.major, this.minor, this.revision, this.build});
 
@@ -12,7 +12,7 @@ class AppVersion {
     revision = json['revision'],
     build = json['build'];
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'major': major,
       'minor': minor,

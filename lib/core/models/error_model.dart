@@ -1,6 +1,6 @@
 class ErrorModel {
-  String name;
-  String message; 
+  String? name;
+  String? message; 
 
   ErrorModel({this.name, this.message});
 
@@ -8,7 +8,7 @@ class ErrorModel {
     name = json['name'] ?? '',
     message = json['message'] ?? '';
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'name': name,
       'message': message

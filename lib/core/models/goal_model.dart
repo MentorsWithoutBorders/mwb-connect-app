@@ -1,6 +1,6 @@
 class Goal {
-  String id;
-  String text;
+  String? id;
+  String? text;
 
   Goal({this.id, this.text});
 
@@ -8,7 +8,7 @@ class Goal {
     id = json['id'],
     text = json['text'] ?? '';
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'id': id,
       'text': text

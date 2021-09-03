@@ -2,17 +2,16 @@ import 'dart:io';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:eraser/eraser.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/defaults_service.dart';
+import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
@@ -38,7 +37,6 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await _signInFirebaseAnonymously();
   await _initAppDirectory();
-  await _initPushNotifications();
 
   Directory directory = await getApplicationDocumentsDirectory();
   runApp(
@@ -51,7 +49,6 @@ Future<void> main() async {
       ),
     )
   );
-  Eraser.clearAllAppNotifications();  
 }
 
 Future<void> _signInFirebaseAnonymously() async {
@@ -68,11 +65,6 @@ void _setDefaults() {
   defaultsService.setDefaults();    
 }
 
-Future<void> _initPushNotifications() async {
-  final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();
-  await pushNotificationsService.init();
-} 
-
 class MWBConnectApp extends StatefulWidget {
   final String _mixpanelToken;
 
@@ -83,17 +75,25 @@ class MWBConnectApp extends StatefulWidget {
 }
 
 class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserver {
-  MixpanelAPI _mixpanel;
+  MixpanelAPI? _mixpanel;
   String _mixpanelToken;
 
   _MWBConnectAppState(this._mixpanelToken);
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (AppLifecycleState.resumed == state) {
-      Eraser.clearAllAppNotifications();
-    }
+  initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      Future<void>.delayed(const Duration(milliseconds: 500), () async {
+        await _initPushNotifications();
+      });
+    }); 
   }
+
+  Future<void> _initPushNotifications() async {
+    final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();
+    await pushNotificationsService.init();
+  }     
 
   Widget _buildWaitingScreen() {
     return MaterialApp(

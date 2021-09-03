@@ -1,7 +1,7 @@
 class Tokens {
-  String userId;
-  String accessToken; 
-  String refreshToken;
+  String? userId;
+  String? accessToken; 
+  String? refreshToken;
 
   Tokens({this.userId, this.accessToken, this.refreshToken});
 
@@ -11,7 +11,7 @@ class Tokens {
     refreshToken: json['refreshToken'] != null ? json['refreshToken'] : null
   );  
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'userId': userId,
       'accessToken': accessToken,

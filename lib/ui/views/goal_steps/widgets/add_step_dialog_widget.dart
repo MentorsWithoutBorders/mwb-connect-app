@@ -9,27 +9,27 @@ import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AddStepDialog extends StatefulWidget {
-  const AddStepDialog({Key key, this.steps})
+  const AddStepDialog({Key? key, this.steps})
     : super(key: key);  
 
-  final List<StepModel> steps;
+  final List<StepModel>? steps;
 
   @override
   State<StatefulWidget> createState() => _AddStepDialogState();
 }
 
 class _AddStepDialogState extends State<AddStepDialog> {
-  CommonViewModel _commonProvider;
-  GoalsViewModel _goalsProvider;
-  StepsViewModel _stepsProvider;
+  CommonViewModel? _commonProvider;
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _stepText;
+  String? _stepText;
   bool _isAddingStep = false;
   
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }
 
   void _afterLayout(_) {
@@ -37,8 +37,8 @@ class _AddStepDialogState extends State<AddStepDialog> {
   }
   
   Future<void> _getFormHeight() async {
-    final RenderBox box = _formKey.currentContext.findRenderObject();
-    _commonProvider.setDialogInputHeight(box.size.height);
+    final RenderBox box = _formKey.currentContext?.findRenderObject() as RenderBox;
+    _commonProvider?.setDialogInputHeight(box.size.height);
   }  
 
   Widget _showAddStepDialog() {
@@ -92,8 +92,8 @@ class _AddStepDialogState extends State<AddStepDialog> {
               color: Colors.orange
             )
           ),
-          validator: (String value) {
-            if (value.isEmpty) {
+          validator: (String? value) {
+            if (value?.isEmpty == true) {
               return 'steps.add_step_error'.tr();
             } 
             return null;
@@ -101,12 +101,12 @@ class _AddStepDialogState extends State<AddStepDialog> {
           onChanged: (String value) {
             Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
-                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);             
-                _formKey.currentState.validate();
+                WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);             
+                _formKey.currentState?.validate();
               }
             });
           },
-          onSaved: (String value) => _stepText = value
+          onSaved: (String? value) => _stepText = value
         )
       )
     ); 
@@ -136,8 +136,8 @@ class _AddStepDialogState extends State<AddStepDialog> {
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
             ),
             onPressed: () async {
-              if (_formKey.currentState.validate() && !_isAddingStep) {
-                _formKey.currentState.save();
+              if (_formKey.currentState?.validate() == true && !_isAddingStep) {
+                _formKey.currentState?.save();
                 await _addStep();
                 Navigator.pop(context);
               } 
@@ -160,7 +160,7 @@ class _AddStepDialogState extends State<AddStepDialog> {
     setState(() {
       _isAddingStep = true;
     });
-    await _stepsProvider.addStep(goalId: _goalsProvider.selectedGoal.id, stepText: _stepText, isSubStep: false);
+    await _stepsProvider?.addStep(goalId: _goalsProvider?.selectedGoal?.id, stepText: _stepText, isSubStep: false);
   }
 
   @override

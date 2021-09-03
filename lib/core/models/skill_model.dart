@@ -1,6 +1,6 @@
 class Skill {
-  String id;
-  String name;
+  String? id;
+  String? name;
 
   Skill({this.id, this.name});
 
@@ -9,7 +9,7 @@ class Skill {
     name = json['name'] ?? '';
   }
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'id': id,
       'name': name

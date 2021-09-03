@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class UpdateStepDialog extends StatefulWidget {
-  const UpdateStepDialog({Key key})
+  const UpdateStepDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -16,16 +16,16 @@ class UpdateStepDialog extends StatefulWidget {
 }
 
 class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProviderStateMixin {
-  CommonViewModel _commonProvider;
-  StepsViewModel _stepsProvider;
+  CommonViewModel? _commonProvider;
+  StepsViewModel? _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _stepText;
+  String? _stepText;
   bool _isUpdatingStep = false;
   
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }
 
   void _afterLayout(_) {
@@ -33,8 +33,8 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   }
   
   void _getFormHeight() {
-    RenderBox box = _formKey.currentContext.findRenderObject();
-    _commonProvider.setDialogInputHeight(box.size.height);
+    RenderBox box = _formKey.currentContext?.findRenderObject() as RenderBox;
+    _commonProvider?.setDialogInputHeight(box.size.height);
   }  
 
   Widget _showUpdateStepDialog(BuildContext context) {
@@ -88,9 +88,9 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
               color: Colors.orange
             )
           ),
-          initialValue: _stepsProvider.selectedStep.text,
+          initialValue: _stepsProvider?.selectedStep?.text,
           validator: (value) {
-            if (value.isEmpty) {
+            if (value?.isEmpty == true) {
               return 'step_dialog.update_step_error'.tr();
             }
             return null;
@@ -98,12 +98,12 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
           onChanged: (String value) {
             Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
-                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-                _formKey.currentState.validate();
+                WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+                _formKey.currentState?.validate();
               }
             });
           },
-          onSaved: (String value) => _stepText = value
+          onSaved: (String? value) => _stepText = value
         )
       )
     );
@@ -133,8 +133,8 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ),
             onPressed: () async {
-              if (_formKey.currentState.validate() && !_isUpdatingStep) {
-                _formKey.currentState.save();
+              if (_formKey.currentState?.validate() == true && !_isUpdatingStep) {
+                _formKey.currentState?.save();
                 await _updateStep();
                 Navigator.pop(context);
               }                    
@@ -157,9 +157,9 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
     setState(() {
       _isUpdatingStep = true;
     });    
-    final StepModel step = _stepsProvider.selectedStep;
+    final StepModel step = _stepsProvider?.selectedStep as StepModel;
     step.text = _stepText;
-    await _stepsProvider.updateStep(step, _stepsProvider.selectedStep.id);
+    await _stepsProvider?.updateStep(step, _stepsProvider?.selectedStep?.id);
   }
 
   @override

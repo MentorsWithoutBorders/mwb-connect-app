@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class Steps extends StatefulWidget {
-  const Steps({Key key})
+  const Steps({Key? key})
     : super(key: key);  
 
   @override
@@ -19,8 +19,8 @@ class Steps extends StatefulWidget {
 }
 
 class _StepsState extends State<Steps> {
-  GoalsViewModel _goalsProvider;  
-  StepsViewModel _stepsProvider;  
+  GoalsViewModel? _goalsProvider;  
+  StepsViewModel? _stepsProvider;  
   final Axis _scrollDirection = Axis.vertical;  
   final AutoScrollController _scrollController = AutoScrollController();
   bool _isRetrievingSteps = false;
@@ -35,25 +35,26 @@ class _StepsState extends State<Steps> {
 
   void _setShouldShowTutorialChevrons() {
     if (_addStepKey.currentContext != null) {
-      RenderBox addStepBox = _addStepKey.currentContext.findRenderObject();
+      RenderBox addStepBox = _addStepKey.currentContext?.findRenderObject() as RenderBox;
       final Offset position = addStepBox.localToGlobal(Offset.zero); 
       final double screenHeight = MediaQuery.of(context).size.height;
       if (screenHeight - position.dy < 80) {
-        if (!_stepsProvider.shouldShowTutorialChevrons && _stepsProvider.isTutorialPreviewsAnimationCompleted) {
-          _stepsProvider.setShouldShowTutorialChevrons(true);
+        if (_stepsProvider?.shouldShowTutorialChevrons == false && _stepsProvider?.isTutorialPreviewsAnimationCompleted == true) {
+          _stepsProvider?.setShouldShowTutorialChevrons(true);
         }
       } else {
-        if (_stepsProvider.shouldShowTutorialChevrons && _stepsProvider.isTutorialPreviewsAnimationCompleted) {
-          _stepsProvider.setShouldShowTutorialChevrons(false);
+        if (_stepsProvider?.shouldShowTutorialChevrons == true && _stepsProvider?.isTutorialPreviewsAnimationCompleted == true) {
+          _stepsProvider?.setShouldShowTutorialChevrons(false);
         }
       }
     }
   }
   
   void _scrollToStep() {
-    if (![-1,0].contains(_stepsProvider.previousStepIndex)) {
-      _scrollController.scrollToIndex(_stepsProvider.previousStepIndex - 1, preferPosition: AutoScrollPosition.begin);
-      _stepsProvider.previousStepIndex = -1;
+    int previousIndex = _stepsProvider?.previousStepIndex as int;
+    if (![-1,0].contains(previousIndex)) {
+      _scrollController.scrollToIndex(previousIndex - 1, preferPosition: AutoScrollPosition.begin);
+      _stepsProvider?.previousStepIndex = -1;
     }
   }
   
@@ -68,13 +69,13 @@ class _StepsState extends State<Steps> {
               scrollDirection: _scrollDirection,
               controller: _scrollController,
               shrinkWrap: true,
-              itemCount: _stepsProvider.steps.length,
+              itemCount: _stepsProvider?.steps?.length,
               itemBuilder: (BuildContext buildContext, int index) =>
                 AutoScrollTag(
                   key: ValueKey<int>(index),
                   controller: _scrollController,
                   index: index,
-                  child: StepCard(step: _stepsProvider.steps[index])
+                  child: StepCard(step: _stepsProvider?.steps?[index])
                 )
             )
           ),
@@ -102,7 +103,7 @@ class _StepsState extends State<Steps> {
           showDialog(
             context: context,
             builder: (_) => AnimatedDialog(
-              widgetInside: AddStepDialog(steps: _stepsProvider.steps)
+              widgetInside: AddStepDialog(steps: _stepsProvider?.steps)
             ),
           );
         }        
@@ -117,7 +118,7 @@ class _StepsState extends State<Steps> {
   
   Widget _showContent() {
     if (_stepsRetrieved) {  
-      WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+      WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
       return _showSteps();
     } else {
       return const Padding(
@@ -130,7 +131,7 @@ class _StepsState extends State<Steps> {
   Future<void> _getSteps() async {
     if (!_isRetrievingSteps) { 
       _isRetrievingSteps = true; 
-      await _stepsProvider.getSteps(_goalsProvider.selectedGoal.id);
+      await _stepsProvider?.getSteps(_goalsProvider?.selectedGoal?.id as String);
       setState(() {
         _stepsRetrieved = true;
       });

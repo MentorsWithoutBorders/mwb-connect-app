@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/tutorials/tutorial_view.dart';
 
 class TutorialPreviews extends StatefulWidget {
-  const TutorialPreviews({Key key})
+  const TutorialPreviews({Key? key})
     : super(key: key);  
   
   @override
@@ -19,10 +19,10 @@ class TutorialPreviews extends StatefulWidget {
 }
 
 class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProviderStateMixin {
-  StepsViewModel _stepsProvider;
+  StepsViewModel? _stepsProvider;
   final PageController _pageController = PageController(viewportFraction: 1, keepPage: true);
-  AnimationController _animationController;
-  Animation<double> _animation;
+  AnimationController? _animationController;
+  Animation<double>? _animation;
   final GlobalKey _stackKey = GlobalKey();
   final GlobalKey _pageIndicatorKey = GlobalKey();
   final int _animationDuration = 300;
@@ -35,40 +35,40 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
     _setAnimationController();
   }
 
   void _setAnimationController() { 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
-    _animation = Tween<double>(begin: _previewsClosedHeight, end: _previewsOpenHeight).animate(_animationController)
+    _animation = Tween<double>(begin: _previewsClosedHeight, end: _previewsOpenHeight).animate(_animationController as AnimationController)
       ..addListener(() {
         setState(() {});
       })
       ..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
-          _stepsProvider.setIsTutorialPreviewsAnimationCompleted(true);
-          if (!_stepsProvider.shouldShowTutorialChevrons) {
-            _stepsProvider.setShouldShowTutorialChevrons(false);
+          _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(true);
+          if (_stepsProvider?.shouldShowTutorialChevrons == false) {
+            _stepsProvider?.setShouldShowTutorialChevrons(false);
           } else {
-            _stepsProvider.setShouldShowTutorialChevrons(true);
+            _stepsProvider?.setShouldShowTutorialChevrons(true);
           }
         }
       });
-    _animationController.forward();     
+    _animationController?.forward();     
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }  
 
   void _afterLayout(_) {
-    final RenderBox textBox = _stackKey.currentContext.findRenderObject();
-    final RenderBox pageIndicatorBox = _pageIndicatorKey.currentContext.findRenderObject();
+    final RenderBox textBox = _stackKey.currentContext?.findRenderObject() as RenderBox;
+    final RenderBox pageIndicatorBox = _pageIndicatorKey.currentContext?.findRenderObject() as RenderBox;
     setState(() {
       _textHeight = textBox.size.height;
       _pageIndicatorHeight = pageIndicatorBox.size.height + 2;
@@ -81,7 +81,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
   Widget _showTutorialPreviews(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 12.0),
-      height: _animation.value,
+      height: _animation?.value,
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
@@ -157,13 +157,13 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     );
   }
 
-  Widget _showChevron({bool isUp}) {
+  Widget _showChevron({bool? isUp}) {
     return AnimatedOpacity(
-      opacity: _stepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+      opacity: _stepsProvider?.shouldShowTutorialChevrons == true ? 1.0 : 0.0,
       duration: Duration(milliseconds: _animationDuration),
       child: Transform(
         alignment: Alignment.center,
-        transform: !isUp ? Matrix4.rotationX(math.pi) : Matrix4.rotationY(math.pi),
+        transform: isUp == false ? Matrix4.rotationX(math.pi) : Matrix4.rotationY(math.pi),
         child: Image.asset(
           'assets/images/chevron.png',
           width: 18,
@@ -177,8 +177,8 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     setState(() {
       _isOpen = false;
     });
-    _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
-    _animationController.reverse();
+    _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false);
+    _animationController?.reverse();
   }  
 
   Widget _showPreviewsClosed() {
@@ -198,7 +198,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
           ),
           Expanded(
             child: AnimatedOpacity(
-              opacity: _stepsProvider.shouldShowTutorialChevrons ? 1.0 : 0.0,
+              opacity: _stepsProvider?.shouldShowTutorialChevrons == true ? 1.0 : 0.0,
               duration: Duration(milliseconds: _animationDuration),              
               child: Center(
                 child: GestureDetector(
@@ -239,26 +239,22 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     setState(() {
       _isOpen = true;
     });    
-    _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false);
-    _animationController.forward();
+    _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false);
+    _animationController?.forward();
   }
 
   Widget _buildTextStack(BuildContext context, List<String> previews) {
     Widget carousel;
-    if (_textHeight == null) {
-      carousel = Container();
-    } else {
-      carousel = Container(
-        height: _textHeight,
-        child: PageView.builder(
-          controller: _pageController,
-          itemBuilder: (BuildContext context, int itemIndex) {
-            return _buildCarouselItem(context, previews[itemIndex]);
-          },
-          itemCount: previews.length,
-        ),
-      );
-    }
+    carousel = Container(
+      height: _textHeight,
+      child: PageView.builder(
+        controller: _pageController,
+        itemBuilder: (BuildContext context, int itemIndex) {
+          return _buildCarouselItem(context, previews[itemIndex]);
+        },
+        itemCount: previews.length,
+      ),
+    );
 
     final List<Column> previewItems = previews
       .map((String item) => Column(children: [

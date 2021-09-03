@@ -13,11 +13,8 @@ class UpdateAppService {
 
   Future<AppVersion> getCurrentVersion() async {
     http.Response response = await _api.getHTTP(url: '/updates');
-    AppVersion appVersion;
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      appVersion = AppVersion.fromJson(json);
-    }
+    var json = jsonDecode(response.body);
+    AppVersion appVersion = AppVersion.fromJson(json);
     return appVersion;
   }
 }

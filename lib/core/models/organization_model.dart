@@ -1,6 +1,6 @@
 class Organization {
-  String id;
-  String name;
+  String? id;
+  String? name;
 
   Organization({this.id, this.name});
 
@@ -9,7 +9,7 @@ class Organization {
     name = json['name'] ?? '';
   }
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'id': id,
       'name': name

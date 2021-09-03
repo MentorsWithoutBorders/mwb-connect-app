@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/push_notification_type.dart';
+import 'package:mwb_connect_app/core/models/log_entry.model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/models/fcm_token_model.dart';
@@ -28,10 +29,12 @@ class PushNotificationsService {
   
   Future<void> init() async {
     if (_storageService.userId != null) {
-      // For iOS request permission first.    
-      _firebaseMessaging.requestPermission();
-      await deleteFCMToken();
-      String token = await _firebaseMessaging.getToken();
+      // For iOS request permission first.
+      if (_storageService.isFCMPermissionRequested != true) {
+        _storageService.isFCMPermissionRequested = true;
+        _firebaseMessaging.requestPermission();
+      }
+      String token = await _firebaseMessaging.getToken() as String;
       print('FirebaseMessaging token: $token');
       FCMToken fcmToken = FCMToken(token: token);
       await _addFCMToken(fcmToken);
@@ -58,32 +61,37 @@ class PushNotificationsService {
     return pushNotificationType;
   }
 
-  void showPushNotification({RemoteMessage event, bool isOpenApp}) {
-    switch (_getPushNotificationType(event.data['type'])) {
-      case PushNotificationType.normal:
-        if (!isOpenApp) {
-          _showNormalPushNotification(event);
-        }
-        break;
-      case PushNotificationType.lessonRequest:
-        if (!isOpenApp) {
-          _showLessonRequestPushNotification(event);
-        }
-        break;        
-      case PushNotificationType.afterLesson:
-        _showAfterLessonPushNotification();
-        break;
-      default:
-        if (!isOpenApp) {
-          _showNormalPushNotification(event);
-        }
+  void showPushNotification({required RemoteMessage event, required bool isOpenApp}) {
+    if (_shouldShowPushNotification()) {
+      switch (_getPushNotificationType(event.data['type'])) {
+        case PushNotificationType.normal:
+          if (!isOpenApp) {
+            _showNormalPushNotification(event);
+          }
+          break;
+        case PushNotificationType.lessonRequest:
+          if (!isOpenApp) {
+            _showLessonRequestPushNotification(event);
+          }
+          break;        
+        case PushNotificationType.afterLesson:
+          _showAfterLessonPushNotification();
+          break;
+        default:
+          if (!isOpenApp) {
+            _showNormalPushNotification(event);
+          }
+      }
+      final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
+      final DateTime now = DateTime.now();
+      _storageService.lastPNShownDateTime = dateFormat.format(now);
     }
   }
 
   void _showNormalPushNotification(event) {
     if (event != null && event.notification.body.isNotEmpty) {
       showDialog(
-        context: NavigationService.instance.getCurrentContext(),
+        context: NavigationService.instance.getCurrentContext() as BuildContext,
         builder: (BuildContext context) {
           return WillPopScope(
             onWillPop: () => _reloadApp(context),
@@ -103,7 +111,7 @@ class PushNotificationsService {
   void _showLessonRequestPushNotification(event) {
     if (event != null && event.notification.body.isNotEmpty) {
       showDialog(
-        context: NavigationService.instance.getCurrentContext(),
+        context: NavigationService.instance.getCurrentContext() as BuildContext,
         builder: (BuildContext context) {
           return WillPopScope(
             onWillPop: () => _reloadApp(context),
@@ -121,40 +129,35 @@ class PushNotificationsService {
   }  
 
   void _showAfterLessonPushNotification() {
-    bool isMentor = _storageService.isMentor;
-    final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
-    final DateTime now = DateTime.now();
-    if (_shouldShowAfterLessonPushNotification()) {
-      if (isMentor) {
-        showDialog(
-          context: NavigationService.instance.getCurrentContext(),
-          builder: (_) => Center(
-            child: AnimatedDialog(
-              widgetInside: TaughtTodayDialog()
-            ),
+    bool? isMentor = _storageService.isMentor;
+    if (isMentor != null && isMentor == true) {
+      showDialog(
+        context: NavigationService.instance.getCurrentContext() as BuildContext,
+        builder: (_) => Center(
+          child: AnimatedDialog(
+            widgetInside: TaughtTodayDialog()
+          )
+        )
+      );
+    } else {
+      showDialog(
+        context: NavigationService.instance.getCurrentContext() as BuildContext,
+        builder: (_) => Center(
+          child: AnimatedDialog(
+            widgetInside: LearnedTodayDialog()
           ),
-        );
-      } else {
-        showDialog(
-          context: NavigationService.instance.getCurrentContext(),
-          builder: (_) => Center(
-            child: AnimatedDialog(
-              widgetInside: LearnedTodayDialog()
-            ),
-          ),
-        );      
-      }
-      _storageService.lastAfterLessonShownDateTime = dateFormat.format(now);
+        ),
+      );      
     }
   }
   
-  bool _shouldShowAfterLessonPushNotification() {
+  bool _shouldShowPushNotification() {
     final DateTime now = DateTime.now();
-    DateTime lastAfterLessonShownDateTime = DateTime.now();
-    if (_storageService.lastAfterLessonShownDateTime != null) {
-      lastAfterLessonShownDateTime = DateTime.parse(_storageService.lastAfterLessonShownDateTime);
+    DateTime lastPNShownDateTime = DateTime.now();
+    if (_storageService.lastPNShownDateTime != null) {
+      lastPNShownDateTime = DateTime.parse(_storageService.lastPNShownDateTime as String);
     }
-    if (_storageService.lastAfterLessonShownDateTime == null || now.difference(lastAfterLessonShownDateTime).inHours >= 1) {
+    if (_storageService.lastPNShownDateTime == null || now.difference(lastPNShownDateTime).inSeconds >= 3) {
       return true;
     } else {
       return false;

@@ -10,18 +10,18 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class EditAvailability extends StatefulWidget {
-  const EditAvailability({Key key, @required this.index})
+  const EditAvailability({Key? key, @required this.index})
     : super(key: key); 
 
-  final int index;
+  final int? index;
 
   @override
   State<StatefulWidget> createState() => _EditAvailabilityState();
 }
 
 class _EditAvailabilityState extends State<EditAvailability> {
-  ProfileViewModel _profileProvider;
-  Availability _availability;
+  ProfileViewModel? _profileProvider;
+  Availability? _availability;
   bool _shouldShowError = false;
   bool _isInit = false;
 
@@ -36,7 +36,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   }
 
   void _initAvalability() {
-    _availability = _profileProvider.user.availabilities[widget.index];
+    _availability = _profileProvider?.user?.availabilities?[widget.index!];
   }
   
   Widget _showEditAvailabilityDialog() {
@@ -76,7 +76,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
           key: const Key(AppKeys.dayOfWeekDropdown),
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
-          value: _availability.dayOfWeek
+          value: _availability?.dayOfWeek
         ),
       ),
     );
@@ -93,9 +93,9 @@ class _EditAvailabilityState extends State<EditAvailability> {
     return items;
   }  
 
-  void _setDayOfWeek(String dayOfWeek) {
+  void _setDayOfWeek(String? dayOfWeek) {
     setState(() {
-      _availability.dayOfWeek = dayOfWeek;
+      _availability?.dayOfWeek = dayOfWeek;
     });
   }
 
@@ -146,7 +146,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeFrom,
-        value: _availability.time.from
+        value: _availability?.time?.from
       ),
     );
   }
@@ -157,9 +157,9 @@ class _EditAvailabilityState extends State<EditAvailability> {
     });
   }
 
-  void _setTimeFrom(String time) {
+  void _setTimeFrom(String? time) {
     setState(() {
-      _availability.time.from = time;
+      _availability?.time?.from = time;
     });
   }    
 
@@ -173,14 +173,14 @@ class _EditAvailabilityState extends State<EditAvailability> {
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeTo,
-        value: _availability.time.to
+        value: _availability?.time?.to
       ),
     );
   }
   
-  void _setTimeTo(String time) {
+  void _setTimeTo(String? time) {
     setState(() {
-      _availability.time.to = time;
+      _availability?.time?.to = time;
     });
   }    
   
@@ -237,9 +237,9 @@ class _EditAvailabilityState extends State<EditAvailability> {
   }
 
   void _updateAvailability() {
-    if (_profileProvider.isAvailabilityValid(_availability)) {
+    if (_profileProvider?.isAvailabilityValid(_availability!) == true) {
       Navigator.pop(context, true);
-      _profileProvider.updateAvailability(widget.index, _availability);
+      _profileProvider?.updateAvailability(widget.index!, _availability!);
     } else {
       setState(() {
         _shouldShowError = true;

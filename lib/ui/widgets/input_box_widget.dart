@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class InputBox extends StatelessWidget {
-  final bool autofocus;
-  final String hint;
-  final String text;
-  final TextCapitalization textCapitalization;
-  final Function(String) inputChangedCallback;
+  final bool? autofocus;
+  final String? hint;
+  final String? text;
+  final TextCapitalization? textCapitalization;
+  final Function(String)? inputChangedCallback;
 
   InputBox({
-    Key key,
+    Key? key,
     @required this.autofocus,
     this.hint,
     this.text,
@@ -21,8 +21,8 @@ class InputBox extends StatelessWidget {
   Widget _showInput() {
     return TextFormField(
       key: key,
-      autofocus: autofocus,
-      textCapitalization: textCapitalization,
+      autofocus: autofocus!,
+      textCapitalization: textCapitalization!,
       style: const TextStyle(
         fontSize: 14.0,
       ),
@@ -54,7 +54,7 @@ class InputBox extends StatelessWidget {
         )
       ),
       onChanged: (String value) {
-        inputChangedCallback(value);
+        inputChangedCallback!(value);
       }
     );
   }

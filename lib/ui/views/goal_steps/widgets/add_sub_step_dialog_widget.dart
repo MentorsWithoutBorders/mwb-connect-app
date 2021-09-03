@@ -9,27 +9,27 @@ import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AddSubStepDialog extends StatefulWidget {
-  const AddSubStepDialog({Key key, this.steps})
+  const AddSubStepDialog({Key? key, this.steps})
     : super(key: key);  
 
-  final List<StepModel> steps;
+  final List<StepModel>? steps;
 
   @override
   State<StatefulWidget> createState() => _AddSubStepDialogState();
 }
 
 class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProviderStateMixin {
-  CommonViewModel _commonProvider;
-  GoalsViewModel _goalsProvider;
-  StepsViewModel _stepsProvider;
+  CommonViewModel? _commonProvider;
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _stepText;
+  String? _stepText;
   bool _isAddingStep = false;    
   
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }
 
   void _afterLayout(_) {
@@ -37,8 +37,8 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
   }
   
   Future<void> _getFormHeight() async {
-    RenderBox box = _formKey.currentContext.findRenderObject();
-    _commonProvider.setDialogInputHeight(box.size.height);
+    RenderBox box = _formKey.currentContext?.findRenderObject() as RenderBox;
+    _commonProvider?.setDialogInputHeight(box.size.height);
   }  
 
   Widget _showAddSubStepDialog(BuildContext context) {
@@ -92,8 +92,8 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
               color: Colors.orange
             )
           ),
-          validator: (String value) {
-            if (value.isEmpty) {
+          validator: (String? value) {
+            if (value?.isEmpty == true) {
               return 'step_dialog.add_sub_step_error'.tr();
             }
             return null;
@@ -101,12 +101,12 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
           onChanged: (String value) {
             Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) { 
-                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-                _formKey.currentState.validate();
+                WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+                _formKey.currentState?.validate();
               }
             });
           },
-          onSaved: (String value) => _stepText = value
+          onSaved: (String? value) => _stepText = value
         )
       )
     );
@@ -136,8 +136,8 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0),
             ),
             onPressed: () async {
-              if (_formKey.currentState.validate() && !_isAddingStep) {
-                _formKey.currentState.save();
+              if (_formKey.currentState?.validate() == true && !_isAddingStep) {
+                _formKey.currentState?.save();
                 await _addSubStep();
                 Navigator.pop(context);
               }
@@ -160,7 +160,7 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
     setState(() {
       _isAddingStep = true;
     });
-    await _stepsProvider.addStep(goalId: _goalsProvider.selectedGoal.id, stepText: _stepText, isSubStep: true);
+    await _stepsProvider?.addStep(goalId: _goalsProvider?.selectedGoal?.id, stepText: _stepText, isSubStep: true);
   }
 
   @override

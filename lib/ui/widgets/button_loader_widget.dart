@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ButtonLoader extends StatefulWidget {
-  const ButtonLoader({Key key, this.color})
+  const ButtonLoader({Key? key, this.color})
     : super(key: key); 
 
-  final Color color;
+  final Color? color;
 
   @override
   State<StatefulWidget> createState() => _ButtonLoaderState();

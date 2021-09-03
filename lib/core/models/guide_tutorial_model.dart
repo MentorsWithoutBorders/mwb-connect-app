@@ -1,6 +1,6 @@
 class GuideTutorial {
-  List<String> skills;
-  List<String> tutorialUrls;
+  List<String>? skills;
+  List<String>? tutorialUrls;
 
   GuideTutorial({this.skills, this.tutorialUrls});
 
@@ -9,7 +9,7 @@ class GuideTutorial {
     tutorialUrls = json['tutorialUrls']?.cast<String>() ?? [];
   }
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'skills': skills,
       'tutorialUrls': tutorialUrls

@@ -9,23 +9,23 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class UpdateAppView extends StatefulWidget {
-  const UpdateAppView({Key key, this.isForced})
+  const UpdateAppView({Key? key, this.isForced})
     : super(key: key); 
 
-  final bool isForced;
+  final bool? isForced;
 
   @override
   State<StatefulWidget> createState() => _UpdateAppViewState();
 }
 
 class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserver {
-  Directory _appDocsDir;  
+  Directory? _appDocsDir;  
   bool _isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     _setAppDirectory();
   }
 
@@ -38,7 +38,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }   
 
@@ -112,7 +112,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
                     )
                   )
                 ),
-                if (!widget.isForced) Padding(
+                if (widget.isForced == false) Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: InkWell(
                     child: Container(
@@ -151,7 +151,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   }
 
   File _fileFromDocsDir(String filename) {
-    final String pathName = p.join(_appDocsDir.path, filename);
+    final String pathName = p.join(_appDocsDir?.path as String, filename);
     return File(pathName);
   }
 
@@ -159,7 +159,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
     final TargetPlatform platform = Theme.of(context).platform;
     String url = '';
     if (platform == TargetPlatform.iOS) {
-      url = '';
+      url = 'https://apps.apple.com/us/app/mwb-connect/id1582502052';
     } else if (platform == TargetPlatform.android) {
       url = 'https://play.google.com/store/apps/details?id=com.mwbconnect.app';
     }
@@ -171,14 +171,14 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   }
 
   Future<bool> _onWillPop() async {
-    if (!widget.isForced) {
+    if (widget.isForced == false) {
       Navigator.of(context).pop(null);
     }
     return Future<bool>.value(false);
   }  
 
   Widget _showLeftIcon() {
-    if (!widget.isForced) {
+    if (widget.isForced == false) {
       return IconButton(
         icon: const Icon(Icons.close),
         onPressed: () => Navigator.of(context).pop(null),

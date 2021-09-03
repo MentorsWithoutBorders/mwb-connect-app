@@ -23,4 +23,7 @@ class AppConstants {
   static const String meetingUrlType = 'Google Meet/Zoom';
   static const int minLessonsNumberRecurrence = 2;
   static const int maxLessonsNumberRecurrence = 10;
+  static const int mentorWeeksTraining = 4;
+  static const int studentWeeksTraining = 12;
+  
 }

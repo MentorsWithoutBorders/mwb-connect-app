@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/services/authentication_service.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
+import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
+import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 import 'package:mwb_connect_app/ui/views/others/privacy_view.dart';
 
 class DrawerWidget extends StatefulWidget {
-  const DrawerWidget({Key key, this.logoutCallback})
+  const DrawerWidget({Key? key, this.logoutCallback})
     : super(key: key);   
 
-  final VoidCallback logoutCallback;
+  final VoidCallback? logoutCallback;
 
   @override
   State<StatefulWidget> createState() => _DrawerWidgetState();
@@ -20,14 +28,71 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final AuthService _authService = locator<AuthService>();
+  LessonRequestViewModel? _lessonRequestProvider;
+  ConnectWithMentorViewModel? _connectWithMentorProvider;  
+  CommonViewModel? _commonProvider;  
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
 
   Future<void> _logout() async {
-    widget.logoutCallback();
+    widget.logoutCallback!();
     await _authService.logout();
   }
 
+  void _goToTraining() {
+    if (_commonProvider!.getIsMentor() == true) {
+      _goToGoalMentor();
+    } else if (_commonProvider!.getIsMentor() == false) {
+      _goToGoalStudent();
+    }
+  }
+
+  void _goToGoalMentor() {
+    if (_lessonRequestProvider?.goal != null) {
+      _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
+      _goToGoalStepsMentor();
+    } else {
+      Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalStepsMentor());
+    }
+  }
+  
+  void _goToGoalStepsMentor() {
+    if (_goalsProvider?.selectedGoal != null) {
+      _stepsProvider?.setShouldShowTutorialChevrons(false);
+      _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
+      _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
+      int quizNumber = _lessonRequestProvider?.quizNumber as int;
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider?.refreshTrainingInfo());
+    }
+  }
+  
+  void _goToGoalStudent() {
+    if (_connectWithMentorProvider?.goal != null) {
+      _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
+      _goToGoalStepsStudent();
+    } else {
+      Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalStepsStudent());
+    }
+  }
+
+  void _goToGoalStepsStudent() {
+    if (_goalsProvider?.selectedGoal != null) {
+      _stepsProvider?.setShouldShowTutorialChevrons(false);
+      _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
+      _connectWithMentorProvider?.setGoal(_goalsProvider?.selectedGoal);
+      int quizNumber = _connectWithMentorProvider?.quizNumber as int;
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider?.refreshTrainingInfo());
+    }
+  }    
+
   @override
   Widget build(BuildContext context) {
+    _commonProvider = Provider.of<CommonViewModel>(context);
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context); 
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -71,6 +136,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
             },
           ),
+          ListTile(
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 5.0),
+              child: IconTheme(
+                data: IconThemeData(
+                  color: AppColors.SILVER
+                ),
+                child: Icon(Icons.model_training),
+              )
+            ),
+            dense: true,
+            title: Text('drawer.training'.tr()),
+            onTap: () {
+              Navigator.pop(context);
+              _goToTraining();
+            },
+          ), 
           ListTile(
             leading: const Padding(
               padding: EdgeInsets.only(left: 5.0),

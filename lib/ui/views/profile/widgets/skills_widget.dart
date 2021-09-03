@@ -8,24 +8,24 @@ import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/typeahead_field_widget.dart';
 
 class Skills extends StatefulWidget {
-  const Skills({Key key, @required this.index})
+  const Skills({Key? key, @required this.index})
     : super(key: key);
     
-  final int index;    
+  final int? index;    
 
   @override
   State<StatefulWidget> createState() => _SkillsState();
 }
 
 class _SkillsState extends State<Skills> {
-  ProfileViewModel _profileProvider;
+  ProfileViewModel? _profileProvider;
   final TextEditingController _typeAheadController = TextEditingController();
   final GlobalKey _keyTypeAhead = GlobalKey();
   String _query = '';
 
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
-    final List<Skill> skills = _profileProvider.user.field.subfields[widget.index].skills;
+    final List<Skill>? skills = _profileProvider?.user?.field?.subfields?[widget.index!].skills;
     if (skills != null && skills.isNotEmpty) {
       for (int i = 0; i < skills.length; i++) {
         final Widget skillWidget = Padding(
@@ -33,8 +33,8 @@ class _SkillsState extends State<Skills> {
           child: Tag(
             key: Key(AppKeys.skillTag + i.toString()),
             color: AppColors.TAN_HIDE,
-            id: skills[i].id,
-            text: skills[i].name,
+            id: skills[i].id as String,
+            text: skills[i].name as String,
             textKey: Key(AppKeys.skillText + i.toString()),
             deleteImg: 'assets/images/delete_circle_icon.png',
             deleteKey: Key(AppKeys.deleteSkillBtn + i.toString()),
@@ -63,7 +63,7 @@ class _SkillsState extends State<Skills> {
           height: inputHeight,
           child: TypeAheadField(
             key: _keyTypeAhead,
-            options: _profileProvider.getSkillSuggestions(_query, widget.index),
+            options: _profileProvider?.getSkillSuggestions(_query, widget.index!) as List<String>,
             inputKey: const Key(AppKeys.addSkillsField),
             inputDecoration: InputDecoration(
               filled: true,
@@ -73,7 +73,7 @@ class _SkillsState extends State<Skills> {
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 5.0),
-              hintText: _profileProvider.getSkillHintText(widget.index),
+              hintText: _profileProvider?.getSkillHintText(widget.index!),
               hintStyle: const TextStyle(
                 fontSize: 14.0,
                 color: AppColors.SILVER
@@ -105,15 +105,15 @@ class _SkillsState extends State<Skills> {
   }
 
   void _doScroll() {
-    final RenderBox renderBoxTypeahead = _keyTypeAhead.currentContext.findRenderObject();
+    final RenderBox renderBoxTypeahead = _keyTypeAhead.currentContext?.findRenderObject() as RenderBox;
     final Offset positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    _profileProvider.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
+    _profileProvider?.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
   }  
 
   void _addSkill(String skill) {
-    if (_profileProvider.addSkill(skill, widget.index)) {
+    if (_profileProvider?.addSkill(skill, widget.index!) == true) {
       _resetInputText();
     }
   }
@@ -131,7 +131,7 @@ class _SkillsState extends State<Skills> {
   }
   
   void _deleteSkill(String skillId) {
-    _profileProvider.deleteSkill(skillId, widget.index);
+    _profileProvider?.deleteSkill(skillId, widget.index!);
   }
 
   @override

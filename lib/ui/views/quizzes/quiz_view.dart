@@ -8,22 +8,22 @@ import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 
 class QuizView extends StatefulWidget {
-  const QuizView({Key key, @required this.quizNumber})
+  const QuizView({Key? key, @required this.quizNumber})
     : super(key: key); 
   
-  final int quizNumber;
+  final int? quizNumber;
 
   @override
   State<StatefulWidget> createState() => _QuizState();
 }
 
 class _QuizState extends State<QuizView> {
-  QuizzesViewModel _quizProvider;
+  QuizzesViewModel? _quizProvider;
   final ScrollController _scrollController = ScrollController();  
   final int _maxOptions = 3;
   int _selectedIndex = -1;
-  bool _isCorrect;
-  String _answer;
+  bool? _isCorrect;
+  String? _answer;
 
   @override
   void dispose() {
@@ -32,9 +32,9 @@ class _QuizState extends State<QuizView> {
   }    
 
   Widget _showQuiz() {
-    final bool isMentor = _quizProvider.isMentor ?? false;
+    final bool isMentor = _quizProvider?.isMentor ?? false;
     final String type = isMentor ? 'mentors' : 'students';
-    final int quizNumber = widget.quizNumber;
+    final int quizNumber = widget.quizNumber!;
     final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.title'.tr();
     final String quizTutorialText = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.text'.tr();
     final String question = 'quizzes.$type.quiz$quizNumber.question'.tr();
@@ -126,7 +126,7 @@ class _QuizState extends State<QuizView> {
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColors.MYSTIC)
                           ),
-                          child: _showOptions(options, _answer)
+                          child: _showOptions(options, _answer!)
                         )
                       ]
                     ),
@@ -171,7 +171,7 @@ class _QuizState extends State<QuizView> {
       itemBuilder: (BuildContext context, int index) => Container(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
         decoration: BoxDecoration(
-          color: _selectedIndex != null && _selectedIndex == index
+          color: _selectedIndex == index
             ? AppColors.SOLITUDE
             : Colors.white,            
           borderRadius: BorderRadius.only(
@@ -262,9 +262,9 @@ class _QuizState extends State<QuizView> {
   }
 
   Future<void> _addQuiz() async {
-    bool isClosed = _isCorrect == null ? true : null;
+    bool? isClosed = _isCorrect == null ? true : null;
     final Quiz quiz = Quiz(number: widget.quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
-    await _quizProvider.addQuiz(quiz);
+    await _quizProvider?.addQuiz(quiz);
   }
 
   bool _checkIncorrectAnswer(int index, String answer) {

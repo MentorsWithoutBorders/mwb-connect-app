@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class Dropdown<T> extends StatelessWidget {
-  final List<DropdownMenuItem<T>> dropdownMenuItemList;
-  final Function onTapped;
-  final ValueChanged<T> onChanged;
-  final T value;
+  final List<DropdownMenuItem<T>>? dropdownMenuItemList;
+  final VoidCallback? onTapped;
+  final ValueChanged<T?>? onChanged;
+  final T? value;
 
   Dropdown({
-    Key key,
+    Key? key,
     @required this.dropdownMenuItemList,
     this.onTapped,
     @required this.onChanged,
@@ -38,7 +38,7 @@ class Dropdown<T> extends StatelessWidget {
           ),
           items: dropdownMenuItemList,
           onChanged: onChanged,
-          onTap: onTapped,
+          onTap: () => onTapped,
           value: value,
         ),
       ),

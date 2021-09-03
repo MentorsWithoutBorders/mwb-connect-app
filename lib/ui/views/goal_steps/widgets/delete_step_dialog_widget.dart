@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class DeleteStepDialog extends StatefulWidget {
-  const DeleteStepDialog({Key key})
+  const DeleteStepDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -14,8 +14,8 @@ class DeleteStepDialog extends StatefulWidget {
 }
 
 class _DeleteStepDialogState extends State<DeleteStepDialog> with TickerProviderStateMixin {
-  StepsViewModel _stepsProvider;
-  List<String> subSteps = [];
+  StepsViewModel? _stepsProvider;
+  List<String>? subSteps = [];
   bool _isDeletingStep = false;
   
   Widget _showDeleteStepDialog(BuildContext context) {
@@ -35,7 +35,7 @@ class _DeleteStepDialogState extends State<DeleteStepDialog> with TickerProvider
   Widget _showTitle() {
     return Center(
       child: Text(
-        subSteps.isNotEmpty ? 
+        subSteps != null && subSteps!.isNotEmpty ? 
           'step_dialog.delete_step_sub_steps_message'.tr() : 
           'step_dialog.delete_step_message'.tr(),
         textAlign: TextAlign.center,
@@ -51,7 +51,7 @@ class _DeleteStepDialogState extends State<DeleteStepDialog> with TickerProvider
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
       child: Text(
-        _stepsProvider.selectedStep.text,
+        _stepsProvider?.selectedStep?.text as String,
         style: const TextStyle(
           fontSize: 14,
         )
@@ -101,18 +101,18 @@ class _DeleteStepDialogState extends State<DeleteStepDialog> with TickerProvider
     );
   }
 
-  Future<void> _deleteStep(List<String> subSteps) async {
+  Future<void> _deleteStep(List<String>? subSteps) async {
     setState(() {
       _isDeletingStep = true;
     });     
-    await _stepsProvider.deleteStep(_stepsProvider.selectedStep.id);
+    await _stepsProvider?.deleteStep(_stepsProvider?.selectedStep?.id as String);
     Navigator.pop(context);    
   } 
 
   @override
   Widget build(BuildContext context) {
     _stepsProvider = Provider.of<StepsViewModel>(context);
-    subSteps = _stepsProvider.getSubSteps(_stepsProvider.selectedStep.id);
+    subSteps = _stepsProvider?.getSubSteps(_stepsProvider?.selectedStep?.id);
 
     return _showDeleteStepDialog(context);
   }

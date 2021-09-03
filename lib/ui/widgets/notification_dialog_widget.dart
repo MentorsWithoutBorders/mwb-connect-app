@@ -4,12 +4,12 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class NotificationDialog extends StatefulWidget {
-  const NotificationDialog({Key key, this.text, this.buttonText, this.shouldReload})
+  const NotificationDialog({Key? key, this.text, this.buttonText, this.shouldReload})
     : super(key: key);
 
-  final String text;
-  final String buttonText;
-  final bool shouldReload;
+  final String? text;
+  final String? buttonText;
+  final bool? shouldReload;
     
   @override
   State<StatefulWidget> createState() => _NotificationDialogState();
@@ -48,11 +48,11 @@ class _NotificationDialogState extends State<NotificationDialog> {
   }
 
   Widget _showText() {
-    String text = widget.text != null ? widget.text : '';
+    String? text = widget.text != null ? widget.text : '';
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Text(
-        text,
+        text!,
         textAlign: TextAlign.center,
         style: const TextStyle(
           fontSize: 14,
@@ -74,11 +74,11 @@ class _NotificationDialogState extends State<NotificationDialog> {
           padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
         ),
         child: Text(
-          widget.buttonText,
+          widget.buttonText!,
           style: const TextStyle(color: Colors.white)
         ),
         onPressed: () async {
-          if (widget.shouldReload) {
+          if (widget.shouldReload == true) {
             _reloadApp();
           } else {
             Navigator.of(context).pop();

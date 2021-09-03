@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class AddAvailability extends StatefulWidget {
-  const AddAvailability({Key key})
+  const AddAvailability({Key? key})
     : super(key: key); 
 
   @override
@@ -19,8 +19,8 @@ class AddAvailability extends StatefulWidget {
 }
 
 class _AddAvailabilityState extends State<AddAvailability> {
-  ProfileViewModel _profileProvider;
-  Availability _availability;
+  ProfileViewModel? _profileProvider;
+  Availability? _availability;
   bool _shouldShowError = false;
   final String _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
   final String _defaultTimeFrom = '10am';
@@ -73,7 +73,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
           key: const Key(AppKeys.dayOfWeekDropdown),
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
-          value: _availability.dayOfWeek
+          value: _availability?.dayOfWeek
         ),
       ),
     );
@@ -90,9 +90,9 @@ class _AddAvailabilityState extends State<AddAvailability> {
     return items;
   }  
 
-  void _setDayOfWeek(String dayOfWeek) {
+  void _setDayOfWeek(String? dayOfWeek) {
     setState(() {
-      _availability.dayOfWeek = dayOfWeek;
+      _availability?.dayOfWeek = dayOfWeek;
     });
   }
 
@@ -130,14 +130,14 @@ class _AddAvailabilityState extends State<AddAvailability> {
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeFrom,
-        value: _availability.time.from
+        value: _availability?.time?.from
       ),
     );
   }  
 
-  void _setTimeFrom(String time) {
+  void _setTimeFrom(String? time) {
     setState(() {
-      _availability.time.from = time;
+      _availability?.time?.from = time;
     });
   } 
   
@@ -151,14 +151,14 @@ class _AddAvailabilityState extends State<AddAvailability> {
         dropdownMenuItemList: _buildTimeDropdown(),
         onTapped: _hideError,
         onChanged: _setTimeTo,
-        value: _availability.time.to
+        value: _availability?.time?.to
       ),
     );
   }
   
-  void _setTimeTo(String time) {
+  void _setTimeTo(String? time) {
     setState(() {
-      _availability.time.to = time;
+      _availability?.time?.to = time;
     });
   }     
 
@@ -234,9 +234,9 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
   void _addAvailability() {
-    if (_profileProvider.isAvailabilityValid(_availability)) {
+    if (_profileProvider?.isAvailabilityValid(_availability!) == true) {
       Navigator.pop(context, true);
-      _profileProvider.addAvailability(_availability);
+      _profileProvider?.addAvailability(_availability!);
     } else {
       setState(() {
         _shouldShowError = true;

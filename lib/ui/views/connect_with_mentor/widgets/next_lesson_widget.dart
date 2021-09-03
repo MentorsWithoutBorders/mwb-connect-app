@@ -12,7 +12,7 @@ import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_next
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class NextLesson extends StatefulWidget {
-  const NextLesson({Key key})
+  const NextLesson({Key? key})
     : super(key: key); 
 
   @override
@@ -20,8 +20,8 @@ class NextLesson extends StatefulWidget {
 }
 
 class _NextLessonState extends State<NextLesson> {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
-  String _url = '';
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
+  String? _url = '';
 
   Widget _showNextLessonCard() {
     return Padding(
@@ -46,34 +46,34 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showText() {
-    if (!_connectWithMentorProvider.isNextLesson) {
+    if (_connectWithMentorProvider?.isNextLesson == false) {
       return SizedBox.shrink();
     }    
-    Lesson nextLesson = _connectWithMentorProvider.nextLesson;
-    if (!nextLesson.isRecurrent) {
+    Lesson? nextLesson = _connectWithMentorProvider?.nextLesson;
+    if (nextLesson?.isRecurrent == false) {
       return _showSingleLessonText(nextLesson);
     } else {
       return _showRecurringLessonText(nextLesson);
     }
   }
 
-  Widget _showSingleLessonText(Lesson nextLesson) {
-    DateTime nextLessonDateTime = nextLesson.dateTime;   
+  Widget _showSingleLessonText(Lesson? nextLesson) {
+    DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;   
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    String name = nextLesson.mentor.name;
-    String subfield = nextLesson.subfield.name.toLowerCase();
+    String name = nextLesson?.mentor?.name as String;
+    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String date = dateFormat.format(nextLessonDateTime);
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
-    String urlType = Utils.getUrlType(nextLesson.meetingUrl);
+    String urlType = Utils.getUrlType(nextLesson?.meetingUrl as String);
     String at = 'common.at'.tr();
     String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, subfield, date, time, timeZone, urlType]);
     String firstPart = text.substring(name.length, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    _url = nextLesson.meetingUrl;
+    _url = nextLesson?.meetingUrl;
 
     return Wrap(
       children: [
@@ -130,7 +130,7 @@ class _NextLessonState extends State<NextLesson> {
           child: Center(
             child: InkWell(
               child: Text(
-                _url,
+                _url as String,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -146,33 +146,33 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Future<void> _launchMeetingUrl() async {
-    if (await canLaunch(_url)) {
-      await launch(_url);
+    if (await canLaunch(_url as String)) {
+      await launch(_url as String);
     } else {
       throw 'Could not launch $_url';
     }    
   }   
 
-  Widget _showRecurringLessonText(Lesson nextLesson) {
-    DateTime nextLessonDateTime = nextLesson.dateTime;
+  Widget _showRecurringLessonText(Lesson? nextLesson) {
+    DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    String name = nextLesson.mentor.name;
-    String subfield = nextLesson.subfield.name.toLowerCase();
+    String name = nextLesson?.mentor?.name as String;
+    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String lessonDate = dateFormat.format(nextLessonDateTime);
     String dayOfWeek = lessonDate.substring(0, lessonDate.indexOf(','));
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
-    String endRecurrentDate = dateFormat.format(_connectWithMentorProvider.getCorrectEndRecurrenceDate());
+    String endRecurrentDate = dateFormat.format(_connectWithMentorProvider?.getCorrectEndRecurrenceDate() as DateTime);
     endRecurrentDate = endRecurrentDate.substring(endRecurrentDate.indexOf(',') + 2);
-    String urlType = Utils.getUrlType(nextLesson.meetingUrl);
+    String urlType = Utils.getUrlType(nextLesson?.meetingUrl as String);
     String at = 'common.at'.tr();
     String text = 'connect_with_mentor.scheduled_recurring_lesson'.tr(args: [name, subfield, dayOfWeek, endRecurrentDate, lessonDate, time, timeZone, urlType]);
     String firstPart = text.substring(name.length, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(lessonDate));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    _url = nextLesson.meetingUrl;
+    _url = nextLesson?.meetingUrl;
 
     return Wrap(
       children: [
@@ -229,7 +229,7 @@ class _NextLessonState extends State<NextLesson> {
           child: Center(
             child: InkWell(
               child: Text(
-                _url,
+                _url as String,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -269,7 +269,7 @@ class _NextLessonState extends State<NextLesson> {
 
   void _showCancelLessonDialog() {
     Widget cancelLessonWidget;
-    if (_connectWithMentorProvider.nextLesson.isRecurrent) {
+    if (_connectWithMentorProvider?.nextLesson?.isRecurrent == true) {
       cancelLessonWidget = CancelNextLessonOptionsDialog(context: context);
     } else {
       cancelLessonWidget = CancelNextLessonDialog();

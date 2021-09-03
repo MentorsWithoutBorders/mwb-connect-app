@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/forgot_password_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class ForgotPasswordView extends StatefulWidget {
-  const ForgotPasswordView({Key key})
+  const ForgotPasswordView({Key? key})
     : super(key: key); 
 
   @override
@@ -17,38 +18,34 @@ class ForgotPasswordView extends StatefulWidget {
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   final PageController _controller = PageController(viewportFraction: 1, keepPage: true);
-  final KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
-  int _keyboardVisibilitySubscriberId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
-  String _email;
-  String _errorMessage;
+  String? _email;
+  String? _errorMessage;
   bool _changeButtonPressed = false;
 
   @override
   @protected
   void initState() {
     super.initState();
-    _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
-      onChange: (bool visible) {
-        if (visible) {
-          Future<void>.delayed(const Duration(milliseconds: 100), () {
-            _scrollController.animateTo(
-              _scrollController.position.maxScrollExtent,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 300),
-            );
-          });
-        }
-      },
-    );
+    KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();   
+    keyboardVisibilityController.onChange.listen((bool visible) {
+      if (visible) {
+        Future<void>.delayed(const Duration(milliseconds: 100), () {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
+        });
+      }
+    });    
     _errorMessage = '';
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
     super.dispose();
   }
 
@@ -170,8 +167,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             color: AppColors.SOLITUDE
           )
         ), 
-        validator: (String value) {
-          if (value.isEmpty) {
+        validator: (String? value) {
+          if (value?.isEmpty == true) {
             return 'forgot_password.email_not_valid'.tr();
           } else {
             return null;
@@ -184,21 +181,21 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           });          
           Future<void>.delayed(const Duration(milliseconds: 20), () {        
             if (value.isNotEmpty) {
-              _formKey.currentState.validate();
+              _formKey.currentState?.validate();
             }
           });
         },             
-        onSaved: (String value) => _email = value.trim(),
+        onSaved: (String? value) => _email = value?.trim(),
       ),
     );
   }
 
   Widget _showErrorMessage() {
-    if (_errorMessage.isNotEmpty && _errorMessage != null) {
+    if (_errorMessage?.isNotEmpty == true && _errorMessage != null) {
       return Padding(
         padding: const EdgeInsets.only(left: 20.0, top: 20.0),
         child: Text(
-          _errorMessage,
+          _errorMessage!,
           style: const TextStyle(
             fontSize: 13.0,
             color: AppColors.SOLITUDE,
@@ -250,15 +247,15 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     _setErrorMessage('');
     if (_validateAndSave()) {
       try {
-        await _resetPassword(_email);
-      } catch (e) {
+        await _resetPassword(_email!);
+      } on ErrorModel catch (e) {
         print('Error: $e');
         _setErrorMessage(e.message);
       }
     }
   }
 
-  void _setErrorMessage(String error) {
+  void _setErrorMessage(String? error) {
     setState(() {
       _errorMessage = error;
     });    
@@ -266,9 +263,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   // Check if form is valid
   bool _validateAndSave() {
-    final FormState form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
+    final FormState? form = _formKey.currentState;
+    if (form?.validate() == true) {
+      form?.save();
       return true;
     }
     return false;
@@ -284,7 +281,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   }
 
  void _goToConfirmation() {
-    _controller.animateToPage(_controller.page.toInt() + 1,
+   int page = _controller.page?.toInt() as int;
+    _controller.animateToPage(page + 1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease
     );

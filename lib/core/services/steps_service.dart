@@ -11,36 +11,27 @@ class StepsService {
 
   Future<List<StepModel>> getSteps(String goalId) async {
     http.Response response = await _api.getHTTP(url: '/goals/$goalId/steps');
-    List<StepModel> steps = [];
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      steps = List<StepModel>.from(json.map((model) => StepModel.fromJson(model)));      
-    }
+    var json = jsonDecode(response.body);
+    List<StepModel> steps = List<StepModel>.from(json.map((model) => StepModel.fromJson(model)));      
     return steps;
   }
 
   Future<StepModel> getStepById(String goalId, String id) async {
     http.Response response = await _api.getHTTP(url: '/steps/$id');
-    StepModel step;
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      step = StepModel.fromJson(json);
-    }
+    var json = jsonDecode(response.body);
+    StepModel step = StepModel.fromJson(json);
     return step;
   }
 
-  Future<StepModel> addStep(String goalId, StepModel step) async {
+  Future<StepModel> addStep(String? goalId, StepModel step) async {
     http.Response response = await _api.postHTTP(url: '/goals/$goalId/steps', data: step.toJson());  
-    StepModel addedStep;
-    if (response != null) {
-      var json = jsonDecode(response.body);
-      addedStep = StepModel.fromJson(json);
-      _storageService.lastStepAddedId = addedStep.id;
-    }
+    var json = jsonDecode(response.body);
+    StepModel addedStep = StepModel.fromJson(json);
+     _storageService.lastStepAddedId = addedStep.id;
     return addedStep;
   }  
 
-  Future<void> updateStep(StepModel step, String id) async {
+  Future<void> updateStep(StepModel step, String? id) async {
     await _api.putHTTP(url: '/steps/$id', data: step.toJson());  
     return ;
   }  

@@ -19,7 +19,7 @@ import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class NextLesson extends StatefulWidget {
-  const NextLesson({Key key})
+  const NextLesson({Key? key})
     : super(key: key); 
 
   @override
@@ -27,7 +27,7 @@ class NextLesson extends StatefulWidget {
 }
 
 class _NextLessonState extends State<NextLesson> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   String _url = '';
   bool _isUpdatingRecurrence = false;
 
@@ -48,7 +48,7 @@ class _NextLessonState extends State<NextLesson> {
               _showStudents(),
               _showLink(),
               _showGuide(),
-              if (_lessonRequestProvider.isNextLesson) LessonRecurrence(),
+              if (_lessonRequestProvider?.isNextLesson == true) LessonRecurrence(),
               _showButtons()
             ]
           )
@@ -58,26 +58,26 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showText() {
-    if (!_lessonRequestProvider.isNextLesson) {
+    if (_lessonRequestProvider?.isNextLesson == false) {
       return SizedBox.shrink();
     }
-    Lesson nextLesson = _lessonRequestProvider.nextLesson;
-    DateTime nextLessonDateTime = nextLesson.dateTime;
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
+    DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    String subfield = nextLesson.subfield.name.toLowerCase();
+    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String date = dateFormat.format(nextLessonDateTime);
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
-    String studentPlural = plural('student', nextLesson.students.length);
+    String studentPlural = plural('student', nextLesson?.students?.length as int);
     String text = 'lesson_request.lesson_scheduled'.tr(args: [subfield, date, time, timeZone, studentPlural]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.indexOf('('));
     String fourthPart = text.substring(text.indexOf('('));
-    _url = nextLesson.meetingUrl;
+    _url = nextLesson?.meetingUrl as String;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
@@ -149,7 +149,7 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Widget _showStudents() {
-    List<User> students = _lessonRequestProvider.nextLesson.students;
+    List<User>? students = _lessonRequestProvider?.nextLesson?.students;
     return Container(
       margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 5.0),
@@ -160,7 +160,7 @@ class _NextLessonState extends State<NextLesson> {
         padding: const EdgeInsets.all(0),
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: students.length,
+        itemCount: students?.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
@@ -180,13 +180,13 @@ class _NextLessonState extends State<NextLesson> {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${students[index].name}',
+                          text: '${students?[index].name}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold
                           )
                         ),
                         TextSpan(
-                          text: ' - ${students[index].organization.name} ('
+                          text: ' - ${students?[index].organization?.name} ('
                         ),
                         TextSpan(
                           text: 'lesson_request.notes_previous_mentors'.tr(),
@@ -199,7 +199,7 @@ class _NextLessonState extends State<NextLesson> {
                             showDialog(
                               context: context,
                               builder: (_) => AnimatedDialog(
-                                widgetInside: LessonsNotesDialog(student: students[index])
+                                widgetInside: LessonsNotesDialog(student: students?[index])
                               ),
                             );
                           } 
@@ -352,7 +352,7 @@ class _NextLessonState extends State<NextLesson> {
 
   void _showCancelLessonDialog() {
     Widget cancelLessonWidget;
-    if (_lessonRequestProvider.nextLesson.isRecurrent) {
+    if (_lessonRequestProvider?.nextLesson?.isRecurrent == true) {
       cancelLessonWidget = CancelNextLessonOptionsDialog(context: context);
     } else {
       cancelLessonWidget = CancelNextLessonDialog();
@@ -367,7 +367,7 @@ class _NextLessonState extends State<NextLesson> {
   
   Future<void> _updateLessonRecurrence() async {
     _setIsUpdatingRecurrence(true);   
-    await _lessonRequestProvider.updateLessonRecurrence();
+    await _lessonRequestProvider?.updateLessonRecurrence();
     _showToast();
     _setIsUpdatingRecurrence(false);
   }

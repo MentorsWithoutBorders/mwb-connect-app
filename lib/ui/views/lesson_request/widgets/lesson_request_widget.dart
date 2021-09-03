@@ -10,7 +10,7 @@ import 'package:mwb_connect_app/ui/views/lesson_request/widgets/accept_lesson_re
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class LessonRequest extends StatefulWidget {
-  const LessonRequest({Key key})
+  const LessonRequest({Key? key})
     : super(key: key); 
 
   @override
@@ -18,7 +18,7 @@ class LessonRequest extends StatefulWidget {
 }
 
 class _LessonRequestState extends State<LessonRequest> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
 
   Widget _showLessonRequestCard() {
     return Padding(
@@ -43,14 +43,14 @@ class _LessonRequestState extends State<LessonRequest> {
   }
 
   Widget _showText() {
-    LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
-    DateTime lessonRequestDateTime = lessonRequest.lessonDateTime;
+    LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
+    DateTime lessonRequestDateTime = lessonRequest?.lessonDateTime as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    String name = lessonRequest.student.name;
-    String organization = lessonRequest.student.organization.name;
-    String subfield = lessonRequest.subfield.name.toLowerCase();
+    String name = lessonRequest?.student?.name as String;
+    String organization = lessonRequest?.student?.organization?.name as String;
+    String subfield = lessonRequest?.subfield?.name?.toLowerCase() as String;
     String date = dateFormat.format(lessonRequestDateTime);
     String time = timeFormat.format(lessonRequestDateTime);
     String timeZone = now.timeZoneName;

@@ -18,6 +18,7 @@ import 'package:mwb_connect_app/core/services/support_request_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/services/update_app_service.dart';
+import 'package:mwb_connect_app/core/services/logger_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
@@ -54,6 +55,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => DownloadService());
   locator.registerLazySingleton(() => AnalyticsService());
   locator.registerLazySingleton(() => UpdateAppService());
+  locator.registerLazySingleton(() => LoggerService());
   locator.registerLazySingleton(() => CommonViewModel());
   locator.registerLazySingleton(() => RootViewModel());
   locator.registerLazySingleton(() => LoginSignupViewModel());

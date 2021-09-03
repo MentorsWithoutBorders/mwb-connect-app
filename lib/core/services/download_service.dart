@@ -106,21 +106,19 @@ class DownloadService {
     final List<Tutorial> tutorialsList = await _getTutorials();
     final Map<String, List<String>> tutorials = {};
     tutorialsList.forEach((tutorial) { 
-      tutorials[tutorial.type] = tutorial.sections;
+      tutorials[tutorial.type as String] = tutorial.sections as List<String>;
     });
     if (tutorials.isNotEmpty) {
       storageService.tutorials = tutorials;
     }  
     // Get quizzes settings
     final QuizSettings quizSettings = await _getQuizSettings();
-    if (quizSettings != null) {
-      if (quizSettings.studentWeeklyCount != null) {
-        storageService.quizzesStudentWeeklyCount = quizSettings.studentWeeklyCount;
-      }
-      if (quizSettings.mentorWeeklyCount != null) {
-        storageService.quizzesMentorWeeklyCount = quizSettings.mentorWeeklyCount;
-      }
-    }  
+    if (quizSettings.studentWeeklyCount != null) {
+      storageService.quizzesStudentWeeklyCount = quizSettings.studentWeeklyCount;
+    }
+    if (quizSettings.mentorWeeklyCount != null) {
+      storageService.quizzesMentorWeeklyCount = quizSettings.mentorWeeklyCount;
+    }
   }
 
   Future<void> getImages() async {
@@ -150,7 +148,7 @@ class DownloadService {
     final String url = await ref.getDownloadURL();
     final String localImage = directory.path +'/images/' + image + '.png';    
     await ref.getMetadata().then((FullMetadata value) async {
-      final int remoteImageSize = value.size;
+      final int? remoteImageSize = value.size;
       int localImageSize = 0;
       final File localImageFile = File(localImage);
       if (localImageFile.existsSync()) {
@@ -165,7 +163,7 @@ class DownloadService {
   Future<void> _downloadImage(String url, File file) async {
     final StreamController<ImageChunkEvent> chunkEvents = StreamController<ImageChunkEvent>();
     try {
-      assert(url != null && url.isNotEmpty);
+      assert(url.isNotEmpty);
 
       final Uri resolved = Uri.base.resolve(url);
       final HttpClientRequest request = await HttpClient().getUrl(resolved);
@@ -176,7 +174,7 @@ class DownloadService {
 
       final Uint8List bytes = await consolidateHttpClientResponseBytes(
         response,
-        onBytesReceived: (int cumulative, int total) {
+        onBytesReceived: (int cumulative, int? total) {
           chunkEvents.add(ImageChunkEvent(
             cumulativeBytesLoaded: cumulative,
             expectedTotalBytes: total,
@@ -186,10 +184,7 @@ class DownloadService {
       if (bytes.lengthInBytes == 0) {
         throw Exception('NetworkImage is an empty file: $resolved');
       }
-
-      if (file != null) {
-        file.writeAsBytes(bytes, flush: true);
-      }
+      file.writeAsBytes(bytes, flush: true);
     } finally {
       chunkEvents.close();
     }
@@ -197,21 +192,15 @@ class DownloadService {
 
   Future<List<Tutorial>> _getTutorials() async {
     http.Response response = await _api.getHTTP(url: '/tutorials');
-    List<Tutorial> tutorials = [];
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      tutorials = List<Tutorial>.from(json.map((model) => Tutorial.fromJson(model)));      
-    }
+    var json = jsonDecode(response.body);
+    List<Tutorial> tutorials = List<Tutorial>.from(json.map((model) => Tutorial.fromJson(model)));      
     return tutorials;
   }
 
   Future<QuizSettings> _getQuizSettings() async {
     http.Response response = await _api.getHTTP(url: '/quizzes_settings');
-    QuizSettings quizSettings;
-    if (response != null && response.body != null) {
-      var json = jsonDecode(response.body);
-      quizSettings = QuizSettings.fromJson(json);
-    }
+    var json = jsonDecode(response.body);
+    QuizSettings quizSettings = QuizSettings.fromJson(json);
     return quizSettings;
   } 
 

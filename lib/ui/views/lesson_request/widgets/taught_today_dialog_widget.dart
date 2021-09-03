@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
@@ -10,7 +10,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class TaughtTodayDialog extends StatefulWidget {
-  const TaughtTodayDialog({Key key})
+  const TaughtTodayDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -18,7 +18,7 @@ class TaughtTodayDialog extends StatefulWidget {
 }
 
 class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
-  LessonRequestViewModel _lessonRequestProvider;  
+  LessonRequestViewModel? _lessonRequestProvider;  
   final ScrollController _scrollController = ScrollController();  
   final GlobalKey _skillsListKey = GlobalKey();
   int _skillsNumber = 0;
@@ -37,15 +37,14 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   }
 
   void _initKeyboard() {
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        if (visible) {
-          _isKeyboardOpen = true;
-        } else {
-          _isKeyboardOpen = false;
-        }
+    KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();   
+    keyboardVisibilityController.onChange.listen((bool visible) {
+      if (visible) {
+        _isKeyboardOpen = true;
+      } else {
+        _isKeyboardOpen = false;
       }
-    );    
+    });    
   } 
 
   Widget _showTaughtTodayDialog() {
@@ -81,16 +80,25 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
 
   Widget _showText() {
     int studentsNumber = 0;
-    if (_lessonRequestProvider.previousLesson != null && _lessonRequestProvider.previousLesson.students != null) {
-      studentsNumber = _lessonRequestProvider.previousLesson.students.length;
+    bool isRecurrent = false;
+    String today = '';
+    if (_lessonRequestProvider?.previousLesson != null) {
+      if (_lessonRequestProvider?.previousLesson?.students != null) {
+        studentsNumber = _lessonRequestProvider?.previousLesson?.students?.length as int;
+      }
+      if (_lessonRequestProvider?.previousLesson?.isRecurrent != null) {
+        isRecurrent = _lessonRequestProvider?.previousLesson?.isRecurrent as bool;
+      }
     }
     String studentPlural = plural('student', studentsNumber);
     String pronoun = studentsNumber == 1 ? 'common.him_her'.tr() : 'common.them'.tr();
+    String recurrence = isRecurrent ? 'lesson_request.taught_today_recurrence'.tr() : 'lesson_request.taught_today_next_lesson'.tr();
+    today = isRecurrent ? ' ' + 'common.today'.tr() : '';
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
-        'lesson_request.taught_today_text'.tr(args: [studentPlural, pronoun]),
+        'lesson_request.taught_today_text'.tr(args: [studentPlural, recurrence, pronoun, today]),
         textAlign: TextAlign.justify,
         style: const TextStyle(
           fontSize: 12.0,
@@ -102,9 +110,9 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   }
 
   Widget _showSkills() {
-    List<Skill> skills = _lessonRequestProvider.skills != null ? _lessonRequestProvider.skills : [];
-    _skillsNumber = skills.length;
-    _initSkillCheckBoxes(skills);
+    List<Skill>? skills = _lessonRequestProvider?.skills != null ? _lessonRequestProvider?.skills : [];
+    _skillsNumber = skills?.length as int;
+    _initSkillCheckBoxes(skills!);
     List<Widget> skillWidgets = [];
     for (int i = 0; i < _skillsNumber; i++) {
       Widget skillWidget = Row(
@@ -123,7 +131,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
           Expanded(
             child: InkWell(
               child: Text(
-                skills[i].name,
+                skills[i].name as String,
                 style: TextStyle(
                   fontSize: 12.0,
                   color: _selectedSkills[i] ? Colors.black : AppColors.DOVE_GRAY
@@ -140,7 +148,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     }
 
     if (_areSkillsRetrieved) {
-      WidgetsBinding.instance.addPostFrameCallback(_afterSkillsLoaded);
+      WidgetsBinding.instance?.addPostFrameCallback(_afterSkillsLoaded);
       return Stack(
         children: [
           Offstage(
@@ -160,8 +168,8 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
                 Animation<double> thumbAnimation,
                 Animation<double> labelAnimation,
                 double height, {
-                Text labelText,
-                BoxConstraints labelConstraints
+                Text? labelText,
+                BoxConstraints? labelConstraints
               }) {
                 return FadeTransition(
                   opacity: thumbAnimation,
@@ -184,17 +192,17 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     }
   }
 
-  Widget _showSkillsListView(List<Widget> skillWidgets, GlobalKey key) {
+  BoxScrollView _showSkillsListView(List<Widget>? skillWidgets, GlobalKey? key) {
     return ListView(
       key: key,
       shrinkWrap: key == null ? false : true,
       controller: key == null ? _scrollController : null,
-      children: skillWidgets
+      children: skillWidgets!
     );    
   }
 
   void _afterSkillsLoaded(_) {
-    final RenderBox skillsBox = _skillsListKey.currentContext.findRenderObject();
+    final RenderBox skillsBox = _skillsListKey.currentContext?.findRenderObject() as RenderBox;
     _calculateSkillsBoxParams(skillsBox.size.height);
   }
 
@@ -297,8 +305,8 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
 
   Future<void> _submitTaughtToday() async {
     _setIsSubmitting(true);
-    await _lessonRequestProvider.addStudentSkills(_selectedSkills);
-    await _lessonRequestProvider.addStudentsLessonNotes(_lessonNote);
+    await _lessonRequestProvider?.addStudentSkills(_selectedSkills);
+    await _lessonRequestProvider?.addStudentsLessonNotes(_lessonNote);
     _showToast();
   }
 
@@ -322,10 +330,32 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   
   Future<void> _getSkills() async {
     if (!_areSkillsRetrieved) {
-      await _lessonRequestProvider.getSkills();
+      await _lessonRequestProvider?.getSkills();
       _areSkillsRetrieved = true;
     }
-  }  
+  } 
+  
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }
+  
+  Future<bool> _onWillPop() async {
+    if (!checkEmptySkills() || _lessonNote.isNotEmpty) {
+      await _submitTaughtToday();
+    }
+    return true;
+  }
+
+  bool checkEmptySkills() {
+    bool isEmpty = true;
+    for (bool selectedSkill in _selectedSkills) {
+      if (selectedSkill == true) {
+        isEmpty = false;
+        break;
+      }
+    }
+    return isEmpty;
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -334,7 +364,16 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     return FutureBuilder<void>(
       future: _getSkills(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return _showTaughtTodayDialog();
+        return WillPopScope(
+          onWillPop: _onWillPop,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              _unfocus();
+            },
+            child: _showTaughtTodayDialog()
+          ),
+        );
       }
     );
   }

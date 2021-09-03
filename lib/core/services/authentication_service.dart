@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -28,14 +29,14 @@ class AuthService {
     user.id = tokens.userId;
     _setTokens(tokens);
     await _setUserStorage(user);
-    return tokens.userId;
+    return tokens.userId!;
   }
 
   Future<String> login(User user) async {
     http.Response response;
     try {
       response = await _api.postHTTP(url: '/login', data: user.toJson());
-    } catch(error) {
+    } on ErrorModel catch(error) {
       throw(error);
     }
     var json = jsonDecode(response.body);
@@ -43,7 +44,7 @@ class AuthService {
     user.id = tokens.userId;
     _setTokens(tokens);
     await _setUserStorage(user);
-    return tokens.userId;    
+    return tokens.userId!;    
   }
   
   Future<void> _setUserStorage(User user) async {

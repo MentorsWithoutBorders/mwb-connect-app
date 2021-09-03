@@ -22,7 +22,7 @@ class AnalyticsService {
     // );
   }
 
-  void sendEvent({String eventName, dynamic properties}) {
+  void sendEvent({required String eventName, dynamic properties}) {
     // Segment.track(
     //   eventName: eventName,
     //   properties: properties,

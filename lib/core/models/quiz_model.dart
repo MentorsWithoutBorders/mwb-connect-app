@@ -1,7 +1,7 @@
 class Quiz {
-  int number;
-  bool isCorrect;
-  bool isClosed;
+  int? number;
+  bool? isCorrect;
+  bool? isClosed;
 
   Quiz({this.number, this.isCorrect, this.isClosed});
 
@@ -10,7 +10,7 @@ class Quiz {
     isCorrect = json['isCorrect'],
     isClosed = json['isClosed'];
 
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'number': number,
       'isCorrect': isCorrect,

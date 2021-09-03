@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class UpdateGoalDialog extends StatefulWidget {
-  const UpdateGoalDialog({Key key})
+  const UpdateGoalDialog({Key? key})
     : super(key: key);  
 
   @override
@@ -16,16 +16,16 @@ class UpdateGoalDialog extends StatefulWidget {
 }
 
 class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProviderStateMixin {
-  CommonViewModel _commonProvider;
-  GoalsViewModel _goalsProvider;
+  CommonViewModel? _commonProvider;
+  GoalsViewModel? _goalsProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _goalText;
+  String? _goalText;
   bool _isUpdatingGoal = false;  
   
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }
 
   void _afterLayout(_) {
@@ -33,8 +33,8 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
   }
   
   void _getFormHeight() {
-    RenderBox box = _formKey.currentContext.findRenderObject();
-    _commonProvider.setDialogInputHeight(box.size.height);
+    RenderBox box = _formKey.currentContext?.findRenderObject() as RenderBox;
+    _commonProvider?.setDialogInputHeight(box.size.height);
   }  
 
   Widget _showUpdateGoalDialog(BuildContext context) {
@@ -88,9 +88,9 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
               color: Colors.orange
             )
           ),
-          initialValue: _goalsProvider.selectedGoal.text,
-          validator: (String value) {
-            if (value.isEmpty) {
+          initialValue: _goalsProvider?.selectedGoal?.text,
+          validator: (String? value) {
+            if (value?.isEmpty == true) {
               return 'goal_dialog.update_goal_error'.tr();
             }
             return null;
@@ -98,12 +98,12 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
           onChanged: (String value) {
             Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {      
-                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-                _formKey.currentState.validate();
+                WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+                _formKey.currentState?.validate();
               }
             });
           },
-          onSaved: (String value) => _goalText = value
+          onSaved: (String? value) => _goalText = value
         )
       )
     ); 
@@ -133,8 +133,8 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ),  
             onPressed: () async {
-              if (_formKey.currentState.validate() && !_isUpdatingGoal) {
-                _formKey.currentState.save();
+              if (_formKey.currentState?.validate() == true && !_isUpdatingGoal) {
+                _formKey.currentState?.save();
                 await _updateGoal();
                 Navigator.pop(context);
               }                    
@@ -157,9 +157,9 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
     setState(() {
       _isUpdatingGoal = true;
     });      
-    final Goal goal = _goalsProvider.selectedGoal;
+    final Goal goal = _goalsProvider?.selectedGoal as Goal;
     goal.text = _goalText;
-    await _goalsProvider.updateGoal(goal, _goalsProvider.selectedGoal.id);
+    await _goalsProvider?.updateGoal(goal, _goalsProvider?.selectedGoal?.id as String);
   }
 
   @override

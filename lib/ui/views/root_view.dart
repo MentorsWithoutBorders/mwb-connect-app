@@ -19,7 +19,7 @@ enum AuthStatus {
 }
 
 class RootView extends StatefulWidget {
-  const RootView({Key key})
+  const RootView({Key? key})
     : super(key: key);   
 
   @override
@@ -27,20 +27,20 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
-  RootViewModel _rootProvider;
-  GoalsViewModel _goalsProvider;
+  RootViewModel? _rootProvider;
+  GoalsViewModel? _goalsProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
-  String _userId = '';
+  String? _userId = '';
 
   void _loginCallback() {
     setState(() {
-      _userId = _rootProvider.getUserId();
+      _userId = _rootProvider?.getUserId() as String;
       _authStatus = AuthStatus.LOGGED_IN;
     });
   }
 
   void _logoutCallback() {
-    _goalsProvider.setSelectedGoal(null);
+    _goalsProvider?.setSelectedGoal(null);
     setState(() {
       _authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = '';
@@ -70,14 +70,14 @@ class _RootViewState extends State<RootView> {
 
   void _setCurrentUser() {
     setState(() {
-      _userId = _rootProvider.getUserId();
+      _userId = _rootProvider?.getUserId();
       _authStatus = _userId == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
     });
   }    
   
   Future<void> _init() async {
     _setCurrentUser();   
-    await _rootProvider.getIsMentor();
+    await _rootProvider?.getIsMentor();
   }
 
   @override
@@ -91,13 +91,12 @@ class _RootViewState extends State<RootView> {
         switch (_authStatus) {
           case AuthStatus.NOT_DETERMINED:
             return _buildWaitingScreen();
-            break;
           case AuthStatus.NOT_LOGGED_IN:
             return OnboardingView(
               loginCallback: _loginCallback
             );
           case AuthStatus.LOGGED_IN:
-            bool isMentor = _rootProvider.isMentor;
+            bool? isMentor = _rootProvider?.isMentor;
             if (isMentor != null) {
               if (isMentor) {
                 return _showLessonRequestView();
@@ -106,7 +105,6 @@ class _RootViewState extends State<RootView> {
               }
             } else
               return _buildWaitingScreen();
-            break;              
           default:
             return _buildWaitingScreen();            
         }

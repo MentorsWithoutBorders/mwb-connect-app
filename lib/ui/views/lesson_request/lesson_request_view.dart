@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/solve_quiz_add_step_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/training_completed_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/standing_by_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/next_lesson_widget.dart';
@@ -19,26 +20,26 @@ import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class LessonRequestView extends StatefulWidget {
-  LessonRequestView({Key key, this.logoutCallback})
+  LessonRequestView({Key? key, this.logoutCallback})
     : super(key: key);  
 
-  final VoidCallback logoutCallback;
+  final VoidCallback? logoutCallback;
 
   @override
   State<StatefulWidget> createState() => _LessonRequestViewState();
 }
 
 class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindingObserver {
-  LessonRequestViewModel _lessonRequestProvider;
-  GoalsViewModel _goalsProvider;
-  CommonViewModel _commonProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
+  GoalsViewModel? _goalsProvider;
+  CommonViewModel? _commonProvider;
   bool _isInit = false;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
+    WidgetsBinding.instance?.addObserver(this);
+  } 
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -64,16 +65,16 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   }  
 
   bool _checkAppReload() {
-    return _commonProvider.checkAppReload();
+    return _commonProvider?.checkAppReload() as bool;
   }    
   
   void _setPreferences() {
-    _commonProvider.setPreferences();   
+    _commonProvider?.setPreferences();   
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }  
   
@@ -85,10 +86,11 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (_lessonRequestProvider.shouldShowTraining) SolveQuizAddStep(),
-          if (!_lessonRequestProvider.isNextLesson && !_lessonRequestProvider.isLessonRequest) StandingBy(),
-          if (_lessonRequestProvider.isLessonRequest) LessonRequest(),
-          if (_lessonRequestProvider.isNextLesson) NextLesson()
+          if (_lessonRequestProvider?.shouldShowTraining == true) SolveQuizAddStep(),
+          if (_lessonRequestProvider?.shouldShowTraining == false && _lessonRequestProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
+          if (_lessonRequestProvider?.isNextLesson == false && _lessonRequestProvider?.isLessonRequest == false) StandingBy(),
+          if (_lessonRequestProvider?.isLessonRequest == true) LessonRequest(),
+          if (_lessonRequestProvider?.isNextLesson == true) NextLesson()
         ]
       )
     );
@@ -96,7 +98,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
 
   Widget _showTitle() {
     String title = 'lesson_request.title'.tr();
-    if (_lessonRequestProvider.isNextLesson) {
+    if (_lessonRequestProvider?.isNextLesson == true) {
       title = 'lesson_request.scheduled_lesson'.tr();
     }
     return Container(
@@ -116,29 +118,30 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   }
   
   Future<void> _init() async {
-    if (!_isInit) {
+    if (!_isInit && _lessonRequestProvider != null) {
       await Future.wait([
-        _lessonRequestProvider.getGoal(),
-        _lessonRequestProvider.getLastStepAdded(),
-        _lessonRequestProvider.getQuizNumber(),
-        _lessonRequestProvider.getLessonRequest(),
-        _lessonRequestProvider.getNextLesson(),
-        _lessonRequestProvider.getPreviousLesson()
+        _lessonRequestProvider!.getGoal(),
+        _lessonRequestProvider!.getLastStepAdded(),
+        _lessonRequestProvider!.getQuizNumber(),
+        _lessonRequestProvider!.getLessonRequest(),
+        _lessonRequestProvider!.getNextLesson(),
+        _lessonRequestProvider!.getPreviousLesson(),
       ]);
       _setSelectedGoal();
       _showExpiredLessonRequest();
       _showCanceledLessonRequest();      
+      await _commonProvider!.initPushNotifications();
       _isInit = true;
     }
   }
 
   void _setSelectedGoal() {
-    _goalsProvider.setSelectedGoal(_lessonRequestProvider.goal);
+    _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
   }
 
   void _showExpiredLessonRequest() {
-    if (_lessonRequestProvider.shouldShowExpired) {
-      _lessonRequestProvider.shouldShowExpired = false;
+    if (_lessonRequestProvider?.shouldShowExpired == true) {
+      _lessonRequestProvider?.shouldShowExpired = false;
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -155,8 +158,8 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   }
 
   void _showCanceledLessonRequest() {
-    if (_lessonRequestProvider.shouldShowCanceled) {
-      _lessonRequestProvider.shouldShowCanceled = false;
+    if (_lessonRequestProvider?.shouldShowCanceled == true) {
+      _lessonRequestProvider?.shouldShowCanceled = false;
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -195,7 +198,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
               resizeToAvoidBottomInset: false,
               body: _showContent(),
               drawer: DrawerWidget(
-                logoutCallback: widget.logoutCallback
+                logoutCallback: widget.logoutCallback as VoidCallback
               )
             )
           ],

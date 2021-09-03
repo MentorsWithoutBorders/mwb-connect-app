@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/training_completed_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
@@ -17,32 +18,33 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 
 class ConnectWithMentorView extends StatefulWidget {
-  ConnectWithMentorView({Key key, this.logoutCallback})
+  ConnectWithMentorView({Key? key, this.logoutCallback})
     : super(key: key);  
 
-  final VoidCallback logoutCallback;
+  final VoidCallback? logoutCallback;
 
   @override
   State<StatefulWidget> createState() => _ConnectWithMentorViewState();
 }
 
 class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with WidgetsBindingObserver {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
-  GoalsViewModel _goalsProvider;
-  CommonViewModel _commonProvider;
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
+  GoalsViewModel? _goalsProvider;
+  CommonViewModel? _commonProvider;
   bool _isInit = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   } 
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _isInit = false;
-      if (!_checkAppReload()) {
+      _setTimeZone();
+      if (_checkAppReload() == false) {
         _setPreferences();
         setState(() {});
         _init();
@@ -50,6 +52,10 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       _checkUpdate();
     }
   }
+
+  void _setTimeZone() {
+    _commonProvider?.setTimeZone();
+  }  
 
   Future<void> _checkUpdate() async {
     final UpdateAppViewModel updatesProvider = locator<UpdateAppViewModel>();
@@ -61,17 +67,17 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     }    
   } 
   
-  bool _checkAppReload() {
-    return _commonProvider.checkAppReload();
+  bool? _checkAppReload() {
+    return _commonProvider?.checkAppReload();
   }    
   
   void _setPreferences() {
-    _commonProvider.setPreferences();   
+    _commonProvider?.setPreferences();   
   }  
   
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }    
 
@@ -82,10 +88,11 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (_connectWithMentorProvider.shouldShowTraining) SolveQuizAddStep(),
-          if (_connectWithMentorProvider.isNextLesson) NextLesson(),
-          if (!_connectWithMentorProvider.isNextLesson && !_connectWithMentorProvider.isLessonRequest) FindAvailableMentor(),
-          if (_connectWithMentorProvider.isLessonRequest) FindingAvailableMentor()
+          if (_connectWithMentorProvider?.shouldShowTraining == true) SolveQuizAddStep(),
+          if (_connectWithMentorProvider?.shouldShowTraining == false && _connectWithMentorProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),          
+          if (_connectWithMentorProvider?.isNextLesson == true) NextLesson(),
+          if (_connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false) FindAvailableMentor(),
+          if (_connectWithMentorProvider?.isLessonRequest == true) FindingAvailableMentor()
         ]
       )
     );
@@ -109,21 +116,22 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   }  
   
   Future<void> _init() async {
-    if (!_isInit) {
+    if (!_isInit && _connectWithMentorProvider != null) {
       await Future.wait([
-        _connectWithMentorProvider.getGoal(),
-        _connectWithMentorProvider.getLastStepAdded(),
-        _connectWithMentorProvider.getQuizNumber(),
-        _connectWithMentorProvider.getLessonRequest(),
-        _connectWithMentorProvider.getNextLesson()
+        _connectWithMentorProvider!.getGoal(),
+        _connectWithMentorProvider!.getLastStepAdded(),
+        _connectWithMentorProvider!.getQuizNumber(),
+        _connectWithMentorProvider!.getLessonRequest(),
+        _connectWithMentorProvider!.getNextLesson(),
       ]);
       _setSelectedGoal();
+      await _commonProvider!.initPushNotifications();
       _isInit = true;
     }
   }
 
   void _setSelectedGoal() {
-    _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
+    _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
   }  
 
   @override
@@ -149,7 +157,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
               resizeToAvoidBottomInset: false,
               body: _showContent(),
               drawer: DrawerWidget(
-                logoutCallback: widget.logoutCallback
+                logoutCallback: widget.logoutCallback as VoidCallback
               )
             )
           ],

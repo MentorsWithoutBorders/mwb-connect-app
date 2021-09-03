@@ -7,21 +7,22 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class StepCard extends StatefulWidget {
-  const StepCard({Key key, @required this.step}): 
+  const StepCard({Key? key, @required this.step}): 
     super(key: key);
 
-  final StepModel step;
+  final StepModel? step;
 
   @override
   State<StatefulWidget> createState() => _StepCardState();
 }
 
 class _StepCardState extends State<StepCard> {
-  StepsViewModel _stepsProvider;
+  StepsViewModel? _stepsProvider;
   
   Widget _showStepCard(BuildContext context) {
+    int stepLevel = widget.step?.level as int;
     return Padding(
-      padding: EdgeInsets.fromLTRB(widget.step.level * 20.0 + 16.0, 3.0, 16.0, 10.0),
+      padding: EdgeInsets.fromLTRB(stepLevel * 20.0 + 16.0, 3.0, 16.0, 10.0),
       child: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -35,13 +36,13 @@ class _StepCardState extends State<StepCard> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
-                  child: _showBullet(widget.step.level)
+                  child: _showBullet(stepLevel)
                 ),
                 Expanded(
                   child:Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Text(
-                      widget.step.text,
+                      widget.step?.text as String,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 15.0
@@ -80,7 +81,7 @@ class _StepCardState extends State<StepCard> {
 
     return GestureDetector(
       onTap: () {
-        _stepsProvider.setSelectedStep(widget.step);
+        _stepsProvider?.setSelectedStep(widget.step);
         showDialog(
           context: context,
           builder: (_) => AnimatedDialog(

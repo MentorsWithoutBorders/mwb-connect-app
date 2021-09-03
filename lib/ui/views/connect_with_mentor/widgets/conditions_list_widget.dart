@@ -4,12 +4,12 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class ConditionsList extends StatelessWidget {
-  final String quizzes;
-  final bool shouldShowQuizzes;
-  final bool shouldShowStep;
+  final String? quizzes;
+  final bool? shouldShowQuizzes;
+  final bool? shouldShowStep;
 
   const ConditionsList({
-    Key key,
+    Key? key,
     @required this.quizzes,
     @required this.shouldShowQuizzes,
     @required this.shouldShowStep
@@ -25,7 +25,7 @@ class ConditionsList extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Wrap(
         children: <Widget>[
-          if (shouldShowQuizzes) Padding(
+          if (shouldShowQuizzes == true) Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: Row(
               children: <Widget>[
@@ -47,7 +47,7 @@ class ConditionsList extends StatelessWidget {
                           text: 'lesson_request.solve'.tr()
                         ),
                         TextSpan(
-                          text: ' ' + quizzes + ' ',
+                          text: ' ' + quizzes! + ' ',
                           style: const TextStyle(
                             color: AppColors.TANGO
                           )
@@ -77,7 +77,7 @@ class ConditionsList extends StatelessWidget {
               ],
             ),
           ),
-          if (shouldShowStep) Padding(
+          if (shouldShowStep == true) Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: Row(
               children: <Widget>[

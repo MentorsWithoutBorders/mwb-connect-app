@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
@@ -10,11 +9,10 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
-import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
 
 class SolveQuizAddStep extends StatefulWidget {
-  const SolveQuizAddStep({Key key})
+  const SolveQuizAddStep({Key? key})
     : super(key: key); 
 
   @override
@@ -22,15 +20,15 @@ class SolveQuizAddStep extends StatefulWidget {
 }
 
 class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
-  ConnectWithMentorViewModel _connectWithMentorProvider;
-  GoalsViewModel _goalsProvider;
-  StepsViewModel _stepsProvider;
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
   final String _defaultLocale = Platform.localeName;
 
   Widget _showSolveQuizAddStepCard() {
-    String quizzes = _connectWithMentorProvider.getQuizzesLeft();
-    bool shouldShowQuizzes = _connectWithMentorProvider.getShouldShowQuizzes();
-    bool shouldShowStep = _connectWithMentorProvider.getShouldShowAddStep();
+    String? quizzes = _connectWithMentorProvider?.getQuizzesLeft();
+    bool? shouldShowQuizzes = _connectWithMentorProvider?.getShouldShowQuizzes();
+    bool? shouldShowStep = _connectWithMentorProvider?.getShouldShowAddStep();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -51,8 +49,8 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
                   children: [
                     _showTopText(),
                     ConditionsList(quizzes: quizzes, shouldShowQuizzes: shouldShowQuizzes, shouldShowStep: shouldShowStep),
-                    if (!_connectWithMentorProvider.shouldReceiveCertificate()) _showNextDeadline(),
-                    if (_connectWithMentorProvider.shouldReceiveCertificate()) _showReceiveCertificate(),
+                    if (_connectWithMentorProvider?.shouldReceiveCertificate() == false) _showNextDeadline(),
+                    if (_connectWithMentorProvider?.shouldReceiveCertificate() == true) _showReceiveCertificate(),
                     _showGoButton()
                   ]
                 )
@@ -72,6 +70,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
           'connect_with_mentor.solve_quiz_add_step'.tr(),
           style: const TextStyle(
             color: AppColors.TANGO,
+            fontSize: 16.0,
             fontWeight: FontWeight.bold
           )
         ),
@@ -81,7 +80,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   Widget _showTopText() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String certificateDate = dateFormat.format(_connectWithMentorProvider.getCertificateDate());
+    String certificateDate = dateFormat.format(_connectWithMentorProvider?.getCertificateDate() as DateTime);
     String text = 'connect_with_mentor.conditions_certificate'.tr(args: [certificateDate]);
     String and = 'common.and'.tr();
     String firstPart = text.substring(0, text.indexOf(and));
@@ -117,8 +116,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   
   Widget _showNextDeadline() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String deadline = dateFormat.format(_connectWithMentorProvider.getNextDeadline());
-    Color deadlineColor = !_connectWithMentorProvider.isOverdue() ? AppColors.TANGO : AppColors.MONZA;
+    String deadline = dateFormat.format(_connectWithMentorProvider?.getNextDeadline() as DateTime);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: RichText(
@@ -136,32 +134,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
             TextSpan(
               text: deadline,
               style: TextStyle(
-                color: deadlineColor,
-                fontWeight: FontWeight.bold
-              )
-            ),
-            if (_connectWithMentorProvider.isOverdue()) TextSpan(
-              text: ' (' + 'connect_with_mentor.overdue'.tr() + ' ',
-              style: TextStyle(
-                color: AppColors.MONZA,
-                fontWeight: FontWeight.bold
-              )
-            ),
-            if (_connectWithMentorProvider.isOverdue()) TextSpan(
-              text: 'connect_with_mentor.contact_support'.tr(),
-              style: const TextStyle(
-                decoration: TextDecoration.underline,
-                color: AppColors.MONZA,
-                fontWeight: FontWeight.bold
-              ),
-              recognizer: TapGestureRecognizer()..onTap = () {
-                Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
-              }                      
-            ),
-            if (_connectWithMentorProvider.isOverdue()) TextSpan(
-              text: ')',
-              style: TextStyle(
-                color: AppColors.MONZA,
+                color: AppColors.TANGO,
                 fontWeight: FontWeight.bold
               )
             )
@@ -173,7 +146,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   Widget _showReceiveCertificate() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
         child: Text(
         'connect_with_mentor.congratulations_certificate'.tr(),
         style: const TextStyle(
@@ -208,8 +181,8 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoal() {
-    if (_connectWithMentorProvider.goal != null) {
-      _goalsProvider.setSelectedGoal(_connectWithMentorProvider.goal);
+    if (_connectWithMentorProvider?.goal != null) {
+      _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
       _goToGoalSteps();
     } else {
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
@@ -217,12 +190,12 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoalSteps() {
-    if (_goalsProvider.selectedGoal != null) {
-      _stepsProvider.setShouldShowTutorialChevrons(false);
-      _stepsProvider.setIsTutorialPreviewsAnimationCompleted(false); 
-      _connectWithMentorProvider.setGoal(_goalsProvider.selectedGoal);
-      int quizNumber = _connectWithMentorProvider.quizNumber;
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider.refreshTrainingInfo());
+    if (_goalsProvider?.selectedGoal != null) {
+      _stepsProvider?.setShouldShowTutorialChevrons(false);
+      _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
+      _connectWithMentorProvider?.setGoal(_goalsProvider?.selectedGoal);
+      int quizNumber = _connectWithMentorProvider?.quizNumber as int;
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider?.refreshTrainingInfo());
     }
   }  
 

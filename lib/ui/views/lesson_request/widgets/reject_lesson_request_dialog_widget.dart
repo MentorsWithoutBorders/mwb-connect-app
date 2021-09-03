@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class RejectLessonRequestDialog extends StatefulWidget {
-  const RejectLessonRequestDialog({Key key})
+  const RejectLessonRequestDialog({Key? key})
     : super(key: key);
     
   @override
@@ -16,7 +16,7 @@ class RejectLessonRequestDialog extends StatefulWidget {
 }
 
 class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
-  LessonRequestViewModel _lessonRequestProvider;
+  LessonRequestViewModel? _lessonRequestProvider;
   bool _isRejectingLessonRequest = false;  
 
   Widget _showRejectLessonRequestDialog() {
@@ -50,14 +50,14 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
   }
 
   Widget _showText() {
-    LessonRequestModel lessonRequest = _lessonRequestProvider.lessonRequest;
-    DateTime lessonRequestDateTime = lessonRequest.lessonDateTime;
+    LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
+    DateTime lessonRequestDateTime = lessonRequest?.lessonDateTime as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
-    String name = lessonRequest.student.name;
-    String organization = lessonRequest.student.organization.name;
-    String subfield = lessonRequest.subfield.name.toLowerCase();
+    String name = lessonRequest?.student?.name as String;
+    String organization = lessonRequest?.student?.organization?.name as String;
+    String subfield = lessonRequest?.subfield?.name?.toLowerCase() as String;
     String date = dateFormat.format(lessonRequestDateTime);
     String time = timeFormat.format(lessonRequestDateTime);
     String timeZone = now.timeZoneName;
@@ -169,7 +169,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
 
   Future<void> _rejectLessonRequest() async {  
     _setIsRejectingLessonRequest(true);
-    await _lessonRequestProvider.rejectLessonRequest();
+    await _lessonRequestProvider?.rejectLessonRequest();
   }
   
   void _setIsRejectingLessonRequest(bool isRejecting) {

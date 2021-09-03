@@ -10,7 +10,7 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 
 class AvailabilityStartDate extends StatefulWidget {
-  const AvailabilityStartDate({Key key})
+  const AvailabilityStartDate({Key? key})
     : super(key: key); 
 
   @override
@@ -18,27 +18,27 @@ class AvailabilityStartDate extends StatefulWidget {
 }
 
 class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
-  ProfileViewModel _profileProvider;
-  AvailabilityStart _availabilityStart;
+  ProfileViewModel? _profileProvider;
+  AvailabilityStart? _availabilityStart;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_initSelectedDate);
+    WidgetsBinding.instance?.addPostFrameCallback(_initSelectedDate);
   }  
 
   void _initSelectedDate(_) {
-    final User user = _profileProvider.user;
+    final User? user = _profileProvider?.user;
     setState(() {
-      _availabilityStart = user.isAvailable ? AvailabilityStart.now : AvailabilityStart.later;
+      _availabilityStart = user?.isAvailable == true ? AvailabilityStart.now : AvailabilityStart.later;
     });
-    if (user.availableFrom == null || user.availableFrom.isBefore(DateTime.now())) {
+    if (user?.availableFrom == null || user!.availableFrom!.isBefore(DateTime.now())) {
       _setAvailableFrom(DateTime.now());
     }
   }  
 
   Widget _showAvailabilityStartDate() {
-    String date = _profileProvider.getAvailabilityStartDate();
+    String? date = _profileProvider?.getAvailabilityStartDate();
     return Wrap(
       children: [
         _showTitle(),
@@ -55,8 +55,8 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                       key: const Key(AppKeys.currentlyAvailableRadio),
                       value: AvailabilityStart.now,
                       groupValue: _availabilityStart,
-                      onChanged: (AvailabilityStart value) {
-                        _setIsAvailable(value);
+                      onChanged: (AvailabilityStart? value) {
+                        _setIsAvailable(value!);
                       },
                     ),
                   ),
@@ -79,8 +79,8 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                       key: const Key(AppKeys.availableFromRadio),
                       value: AvailabilityStart.later,
                       groupValue: _availabilityStart,
-                      onChanged: (AvailabilityStart value) {
-                        _setIsAvailable(value);
+                      onChanged: (AvailabilityStart? value) {
+                        _setIsAvailable(value!);
                       },
                     ),
                   ),
@@ -101,7 +101,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                         child: Row(
                           children: [
                             Text(
-                              date,
+                              date!,
                               key: const Key(AppKeys.availableFromDate),
                               style: const TextStyle(
                                 fontSize: 14, 
@@ -142,7 +142,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   void _setIsAvailable(AvailabilityStart value) {
     _unfocus();
     final bool isAvailable = value == AvailabilityStart.now ? true : false;
-    _profileProvider.setIsAvailable(isAvailable);
+    _profileProvider?.setIsAvailable(isAvailable);
     setState(() {
       _availabilityStart = value;
     });    
@@ -151,7 +151,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   Future<void> _selectDate(BuildContext context) async {
     _unfocus();
     final TargetPlatform platform = Theme.of(context).platform;
-    final DateTime availableFrom = _profileProvider.user.availableFrom;
+    final DateTime availableFrom = _profileProvider?.user?.availableFrom as DateTime;
     if (platform == TargetPlatform.iOS) {
       return Utils.showDatePickerIOS(context: context, initialDate: availableFrom, setDate: _setAvailableFrom);
     } else {
@@ -160,7 +160,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }
 
   void _setAvailableFrom(DateTime picked) {
-    _profileProvider.setAvailableFrom(picked);
+    _profileProvider?.setAvailableFrom(picked);
   }
 
   Widget _showTitle() {
@@ -177,7 +177,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   }
   
   void _unfocus() {
-    _profileProvider.shouldUnfocus = true;
+    _profileProvider?.shouldUnfocus = true;
   }  
 
   @override
