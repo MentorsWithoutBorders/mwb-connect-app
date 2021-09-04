@@ -100,7 +100,8 @@
     "cancel_lesson_recurrence": "Cancel lesson recurrence",
     "cancel_recurring_lesson": "Cancel recurring lesson",
     "cancel_only_next_lesson": "Cancel only next lesson",
-    "cancel_entire_lesson_recurrence": "Cancel entire lesson recurrence"
+    "cancel_entire_lesson_recurrence": "Cancel entire lesson recurrence",
+    "contact_support": "contact support"
 	},
 	"onboarding": {
 		"mental_process_goal_steps_onboarding": {
@@ -185,7 +186,6 @@
 		"add_step": "add at least {} until the next deadline for achieving your goal",
     "one_new_step": "1 new step",    
     "overdue": "overdue, please",
-    "contact_support": "contact support",
     "congratulations_certificate": "Congratulations, you will soon receive your MWB certificate!",
 		"next_lesson": "For your next lesson, we will look for an available mentor in accordance with what you have learned so far and the availability from ",
 		"interval_between_lessons": "Please keep in mind that there will be an interval of at least 1 week between 2 consecutive lessons.",
@@ -303,7 +303,11 @@
     "title": "{} week of training completed",
     "text": "You have completed the {} week of training but if you want to add more steps to your plan and/or go through the training tutorials, please feel free to",
     "use_this_link": "use this link"
-  },			
+  },
+  "lessons_stopped": {
+    "title": "Lessons stopped",
+    "text": "Unfortunately we are not able to offer more lessons but if you would like to become a mentor in our group after you will gain some professional experience, please feel free to"
+  },	  
 	"tutorials": { 
 		"mental_process_goal_steps": {
 			"title": "Adding steps",

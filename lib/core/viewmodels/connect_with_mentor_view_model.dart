@@ -100,6 +100,8 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();
 
+  bool get shouldStopLessons => nextLesson != null && nextLesson?.shouldStop == true;
+
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
 
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest?.id != null && lessonRequest?.isCanceled != true;

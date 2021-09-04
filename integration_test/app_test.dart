@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
+// import 'package:integration_test/integration_test.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/main.dart' as app;
 import '../test/ui/views/profile/widgets/name_widget_test.dart';
@@ -12,7 +12,7 @@ import '../test/ui/views/profile/widgets/availability_list_widget_test.dart';
 import '../test/ui/views/profile/widgets/lessons_widget_test.dart';
 
 void main() async {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  // IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   
   testWidgets("App test", (WidgetTester tester) async {
     app.main(); 

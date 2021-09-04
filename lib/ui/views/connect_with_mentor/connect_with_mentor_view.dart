@@ -12,6 +12,7 @@ import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/training_co
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_stopped_widget.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -91,8 +92,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
           if (_connectWithMentorProvider?.shouldShowTraining == true) SolveQuizAddStep(),
           if (_connectWithMentorProvider?.shouldShowTraining == false && _connectWithMentorProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),          
           if (_connectWithMentorProvider?.isNextLesson == true) NextLesson(),
-          if (_connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false) FindAvailableMentor(),
-          if (_connectWithMentorProvider?.isLessonRequest == true) FindingAvailableMentor()
+          if (_connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false && _connectWithMentorProvider?.shouldStopLessons != true) FindAvailableMentor(),
+          if (_connectWithMentorProvider?.isLessonRequest == true && _connectWithMentorProvider?.shouldStopLessons != true) FindingAvailableMentor(),
+          if (_connectWithMentorProvider?.shouldStopLessons == true) LessonsStopped()
         ]
       )
     );

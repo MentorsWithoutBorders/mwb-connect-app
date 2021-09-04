@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/gestures.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
+
+class LessonsStopped extends StatefulWidget {
+  const LessonsStopped({Key? key})
+    : super(key: key); 
+
+  @override
+  State<StatefulWidget> createState() => _LessonsStoppedState();
+}
+
+class _LessonsStoppedState extends State<LessonsStopped> {
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
+
+  Widget _showLessonsStoppedCard() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+      child: Card(
+        elevation: 3.0,
+        margin: const EdgeInsets.only(bottom: 15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ), 
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Wrap(
+            children: [
+              _showTitle(),
+              Container(
+                padding: const EdgeInsets.only(left: 3.0),
+                child: _showText()
+              )
+            ],
+          )
+        ),
+      ),
+    );
+  }
+
+  Widget _showTitle() {
+    return Container(
+      margin: const EdgeInsets.only(top: 3.0, bottom: 15.0),
+      child: Center(
+        child: Text(
+          'lessons_stopped.title'.tr(),
+          style: const TextStyle(
+            color: AppColors.TANGO,
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold
+          )
+        ),
+      ),
+    );
+  }    
+
+  Widget _showText() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.DOVE_GRAY,
+            height: 1.5
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'lessons_stopped.text'.tr() + ' ',             
+            ),
+            TextSpan(
+              text: 'common.contact_support'.tr(),
+              style: const TextStyle(
+                decoration: TextDecoration.underline
+              ),
+              recognizer: TapGestureRecognizer()..onTap = () {
+                _goToSupport();
+              } 
+            ),
+            TextSpan(
+              text: '.'
+            )
+          ]
+        )
+      ),
+    );
+  }
+ 
+  void _goToSupport() {
+    Navigator.push(context, MaterialPageRoute<SupportView>(builder: (_) => SupportView()));
+  } 
+  
+  @override
+  Widget build(BuildContext context) {
+    _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+
+    return _showLessonsStoppedCard();
+  }
+}
