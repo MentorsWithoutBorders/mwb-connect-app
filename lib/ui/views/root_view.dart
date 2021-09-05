@@ -15,7 +15,7 @@ final GetIt getIt = GetIt.instance;
 enum AuthStatus {
   NOT_DETERMINED,
   NOT_LOGGED_IN,
-  LOGGED_IN,
+  LOGGED_IN
 }
 
 class RootView extends StatefulWidget {
@@ -76,7 +76,7 @@ class _RootViewState extends State<RootView> {
   }    
   
   Future<void> _init() async {
-    _setCurrentUser();   
+    _setCurrentUser();
     await _rootProvider?.getIsMentor();
   }
 
@@ -87,7 +87,7 @@ class _RootViewState extends State<RootView> {
 
     return FutureBuilder<void>(
       future: _init(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {    
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         switch (_authStatus) {
           case AuthStatus.NOT_DETERMINED:
             return _buildWaitingScreen();
@@ -106,7 +106,7 @@ class _RootViewState extends State<RootView> {
             } else
               return _buildWaitingScreen();
           default:
-            return _buildWaitingScreen();            
+            return _buildWaitingScreen();
         }
       }
     );

@@ -5,7 +5,8 @@ import 'package:mwb_connect_app/core/services/api_service.dart';
 class LoggerService {
   final ApiService _api = locator<ApiService>();
 
-  Future<void> addLogEntry(LogEntry logEntry) async {
+  Future<void> addLogEntry(String text) async {
+    LogEntry logEntry = LogEntry(text: text);
     await _api.postHTTP(url: '/logger', data: logEntry.toJson());
   }
 }
