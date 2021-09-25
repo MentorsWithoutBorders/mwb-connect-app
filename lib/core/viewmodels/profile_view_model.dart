@@ -145,8 +145,9 @@ class ProfileViewModel extends ChangeNotifier {
   String getSkillHintText(int index) {
     Subfield? subfield = getSelectedSubfield(index);
     String hint = '';
-    if (subfield?.skills != null) {
-      hint = '(e.g. ';
+    List<Skill>? subfieldSkills = subfield?.skills;
+    if (subfieldSkills != null && subfieldSkills.length > 0) {
+      hint = '(' + 'common.eg'.tr() +' ';
       int hintsNumber = 3;
       List<Skill>? subfieldSkills = subfield?.skills;
       if (subfieldSkills != null && subfieldSkills.length < 3) {
@@ -158,9 +159,9 @@ class ProfileViewModel extends ChangeNotifier {
           hint += skill + ', ';
         }
       }
-      hint += 'etc.)';
-      hint = 'profile.add_skills'.tr(args: [hint]);
+      hint += 'common.etc'.tr() + ')';
     }
+    hint = 'profile.add_skills'.tr(args: [hint]);
     return hint;
   }
 

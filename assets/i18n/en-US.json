@@ -81,6 +81,8 @@
 		"more": "more",
 		"go": "Go",    
 		"ok": "Ok",
+    "eg": "e.g.",
+    "etc": "etc.",
 		"yes_cancel": "Yes, cancel",
 		"yes_reject": "Yes, reject",
 		"abort": "Abort",
