@@ -164,11 +164,11 @@ class _NextLessonState extends State<NextLesson> {
     String dayOfWeek = lessonDate.substring(0, lessonDate.indexOf(','));
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
-    String endRecurrentDate = dateFormat.format(_connectWithMentorProvider?.getCorrectEndRecurrenceDate() as DateTime);
-    endRecurrentDate = endRecurrentDate.substring(endRecurrentDate.indexOf(',') + 2);
+    String endRecurrenceDate = dateFormat.format(_connectWithMentorProvider?.getCorrectEndRecurrenceDate() as DateTime);
+    endRecurrenceDate = endRecurrenceDate.substring(endRecurrenceDate.indexOf(',') + 2);
     String urlType = Utils.getUrlType(nextLesson?.meetingUrl as String);
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.scheduled_recurring_lesson'.tr(args: [name, subfield, dayOfWeek, endRecurrentDate, lessonDate, time, timeZone, urlType]);
+    String text = 'connect_with_mentor.scheduled_recurring_lesson'.tr(args: [name, subfield, dayOfWeek, endRecurrenceDate, lessonDate, time, timeZone, urlType]);
     String firstPart = text.substring(name.length, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(lessonDate));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);

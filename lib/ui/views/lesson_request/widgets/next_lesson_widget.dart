@@ -60,6 +60,18 @@ class _NextLessonState extends State<NextLesson> {
   Widget _showText() {
     if (_lessonRequestProvider?.isNextLesson == false) {
       return SizedBox.shrink();
+    }    
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
+    if (nextLesson?.isRecurrent == false) {
+      return _showSingleLessonText(nextLesson);
+    } else {
+      return _showRecurringLessonText(nextLesson);
+    }
+  }  
+
+  Widget _showSingleLessonText(Lesson? nextLesson) {
+    if (_lessonRequestProvider?.isNextLesson == false) {
+      return SizedBox.shrink();
     }
     Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
@@ -148,11 +160,106 @@ class _NextLessonState extends State<NextLesson> {
     );
   }
 
+
+  Widget _showRecurringLessonText(Lesson? nextLesson) {
+    if (_lessonRequestProvider?.isNextLesson == false) {
+      return SizedBox.shrink();
+    }
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
+    DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateTime now = DateTime.now();
+    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
+    String lessonDate = dateFormat.format(nextLessonDateTime);
+    String dayOfWeek = lessonDate.substring(0, lessonDate.indexOf(','));    
+    String time = timeFormat.format(nextLessonDateTime);
+    String timeZone = now.timeZoneName;
+    String endRecurrenceDate = dateFormat.format(_lessonRequestProvider?.getCorrectEndRecurrenceDate() as DateTime);
+    endRecurrenceDate = endRecurrenceDate.substring(endRecurrenceDate.indexOf(',') + 2);    
+    String at = 'common.at'.tr();
+    String studentPlural = plural('student', nextLesson?.students?.length as int);
+    String text = 'lesson_request.lesson_scheduled_recurring'.tr(args: [subfield, dayOfWeek, endRecurrenceDate, lessonDate, time, timeZone, studentPlural]);
+    String firstPart = text.substring(0, text.indexOf(subfield));
+    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(lessonDate));
+    String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.indexOf('('));
+    String fourthPart = text.substring(text.indexOf('('));
+    _url = nextLesson?.meetingUrl as String;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.DOVE_GRAY,
+            height: 1.5
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: firstPart
+            ),
+            TextSpan(
+              text: subfield
+            ),
+            TextSpan(
+              text: secondPart
+            ),
+            TextSpan(
+              text: 'common.on'.tr() + ' '
+            ),
+            TextSpan(
+              text: lessonDate,
+              style: const TextStyle(
+                color: AppColors.TANGO
+              ) 
+            ),
+            TextSpan(
+              text: ' ' + at + ' '
+            ),
+            TextSpan(
+              text: time + ' ' + timeZone,
+              style: const TextStyle(
+                color: AppColors.TANGO
+              ) 
+            ),
+            TextSpan(
+              text: thirdPart
+            ),
+            TextSpan(
+              text: fourthPart,
+              style: const TextStyle(
+                fontStyle: FontStyle.italic
+              )
+            ),
+            TextSpan(
+              text: ' ' + 'common.your_profile'.tr(),
+              style: const TextStyle(
+                decoration: TextDecoration.underline,
+                fontStyle: FontStyle.italic
+              ),
+              recognizer: TapGestureRecognizer()..onTap = () {
+                Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
+              } 
+            ),
+            TextSpan(
+              text: '):',
+              style: const TextStyle(
+                fontStyle: FontStyle.italic
+              )
+            )
+          ]
+        )
+      ),
+    );
+  }  
+
   Widget _showStudents() {
     List<User>? students = _lessonRequestProvider?.nextLesson?.students;
     return Container(
       margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 5.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 5.0),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.SILVER)
       ),

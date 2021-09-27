@@ -237,6 +237,7 @@
     "cancel_lesson_recurrence_text": "Are you sure you want to cancel the entire lesson recurrence?\n(the {} will be assigned to another mentor)",
 		"reject_lesson_request_text": "Are you sure you want to reject the {} lesson with {} from {} on {} at {} {}?\n(the student will be assigned to another mentor)",
 		"lesson_scheduled": "You have scheduled a {} lesson {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",
+		"lesson_scheduled_recurring": "You have scheduled a recurring {} lesson every {} until {}. The next lesson will be {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",    
 		"lesson_link": "The link for the lesson is: ",
     "change_url": "Change link",
     "update_lesson_recurrence": "Update lesson recurrence",

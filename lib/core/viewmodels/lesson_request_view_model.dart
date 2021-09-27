@@ -108,6 +108,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   
   Future<void> getNextLesson() async {
     nextLesson = await _lessonRequestService.getNextLesson();
+    initLessonRecurrence();
   }
 
   Future<void> cancelNextLesson({bool? isSingleLesson}) async {
@@ -242,6 +243,7 @@ class LessonRequestViewModel extends ChangeNotifier {
       nextLesson = Lesson(isRecurrent: isRecurrent);
     } else if (nextLesson?.isRecurrent == null || nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int < 7) {
       nextLesson?.isRecurrent = false;
+      nextLesson?.endRecurrenceDateTime = nextLesson?.dateTime?.add(Duration(days: 7));
     }
   }
 
@@ -371,7 +373,18 @@ class LessonRequestViewModel extends ChangeNotifier {
       }
     }
     notifyListeners();
-  }   
+  } 
+  
+  DateTime getCorrectEndRecurrenceDate() {
+    int days = 0;
+    if (isNextLesson == true && nextLesson?.endRecurrenceDateTime != null && nextLesson?.dateTime != null) {
+      days = nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int;
+      if (days % 7 != 0) {
+        days = days - days % 7;
+      }
+    }
+    return Jiffy(nextLesson?.dateTime).add(days: days).dateTime;
+  }  
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
