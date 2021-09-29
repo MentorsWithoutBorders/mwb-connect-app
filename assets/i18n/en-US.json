@@ -261,6 +261,7 @@
 		"my_goals": "My goals",
 		"first_goal": "My goal",
 		"first_goal_label": "Let's start by setting a clear goal:",
+		"first_goal_sublabel": "(it can be a personal or professional goal, not necessarily related to mentoring)",
 		"first_goal_placeholder": "e.g. I want to increase my salary by 50% in 2 years",
 		"first_goal_start": "Start",
 		"add_goal": "Add goal",

@@ -49,15 +49,32 @@ class _FirstGoalState extends State<FirstGoal> {
                   opacity: _isStartButtonVisible ? 1.0 : 0.0,
                   duration: Duration(milliseconds: _opacityDuration),
                   child: Container(
-                    margin: const EdgeInsets.only(top: 40.0, left: 20.0),    
-                    width: 400.0,
-                    child: Text(
-                      'goals.first_goal_label'.tr(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: Colors.white),
-                    )
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    alignment: Alignment.topLeft,
+                    child: Wrap(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
+                          child: Text(
+                            'goals.first_goal_label'.tr(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.0,
+                              color: Colors.white),
+                          )
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Text(
+                            'goals.first_goal_sublabel'.tr(),
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 12.0,
+                              color: Colors.white),
+                          )
+                        )
+                      ]
+                    ),
                   )
                 ),
                 AnimatedContainer(
