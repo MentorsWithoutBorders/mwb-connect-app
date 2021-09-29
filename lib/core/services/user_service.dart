@@ -21,6 +21,7 @@ class UserService {
       }      
       if (user?.isMentor != null) {
         _storageService.isMentor = user?.isMentor;
+        _storageService.fieldName = user?.field?.name;
         List<Subfield>? subfields = user?.field?.subfields;
         if (user?.isMentor == false && subfields != null && subfields.length > 0) {
           _storageService.subfieldId = subfields[0].id;

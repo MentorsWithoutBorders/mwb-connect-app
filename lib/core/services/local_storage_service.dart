@@ -33,6 +33,9 @@ class LocalStorageService {
   String? get registeredOn => _getFromDisk('registeredOn');
   set registeredOn(String? value) => _saveToDisk('registeredOn', value);  
 
+  String? get fieldName => _getFromDisk('fieldName');
+  set fieldName(String? value) => _saveToDisk('fieldName', value);  
+
   String? get subfieldId => _getFromDisk('subfieldId');
   set subfieldId(String? value) => _saveToDisk('subfieldId', value);
 

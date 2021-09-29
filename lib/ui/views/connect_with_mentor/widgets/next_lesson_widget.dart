@@ -63,15 +63,15 @@ class _NextLessonState extends State<NextLesson> {
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
     String name = nextLesson?.mentor?.name as String;
-    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
+    String fieldName = _connectWithMentorProvider?.fieldName as String;
     String date = dateFormat.format(nextLessonDateTime);
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
     String urlType = Utils.getUrlType(nextLesson?.meetingUrl as String);
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, subfield, date, time, timeZone, urlType]);
-    String firstPart = text.substring(name.length, text.indexOf(subfield));
-    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
+    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, fieldName, date, time, timeZone, urlType]);
+    String firstPart = text.substring(name.length, text.indexOf(fieldName));
+    String secondPart = text.substring(text.indexOf(fieldName) + fieldName.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
     _url = nextLesson?.meetingUrl;
 
@@ -98,7 +98,7 @@ class _NextLessonState extends State<NextLesson> {
                   text: firstPart
                 ),
                 TextSpan(
-                  text: subfield
+                  text: fieldName
                 ),
                 TextSpan(
                   text: secondPart
@@ -159,7 +159,7 @@ class _NextLessonState extends State<NextLesson> {
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
     String name = nextLesson?.mentor?.name as String;
-    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
+    String fieldName = _connectWithMentorProvider?.fieldName as String;
     String lessonDate = dateFormat.format(nextLessonDateTime);
     String dayOfWeek = lessonDate.substring(0, lessonDate.indexOf(','));
     String time = timeFormat.format(nextLessonDateTime);
@@ -168,9 +168,9 @@ class _NextLessonState extends State<NextLesson> {
     endRecurrenceDate = endRecurrenceDate.substring(endRecurrenceDate.indexOf(',') + 2);
     String urlType = Utils.getUrlType(nextLesson?.meetingUrl as String);
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.scheduled_recurring_lesson'.tr(args: [name, subfield, dayOfWeek, endRecurrenceDate, lessonDate, time, timeZone, urlType]);
-    String firstPart = text.substring(name.length, text.indexOf(subfield));
-    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(lessonDate));
+    String text = 'connect_with_mentor.scheduled_recurring_lesson'.tr(args: [name, fieldName, dayOfWeek, endRecurrenceDate, lessonDate, time, timeZone, urlType]);
+    String firstPart = text.substring(name.length, text.indexOf(fieldName));
+    String secondPart = text.substring(text.indexOf(fieldName) + fieldName.length, text.indexOf(lessonDate));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
     _url = nextLesson?.meetingUrl;
 
@@ -197,7 +197,7 @@ class _NextLessonState extends State<NextLesson> {
                   text: firstPart
                 ),
                 TextSpan(
-                  text: subfield
+                  text: fieldName
                 ),
                 TextSpan(
                   text: secondPart

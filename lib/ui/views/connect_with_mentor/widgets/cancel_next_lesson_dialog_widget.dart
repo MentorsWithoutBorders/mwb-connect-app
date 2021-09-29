@@ -58,14 +58,14 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
     DateTime now = DateTime.now();
     String name = nextLesson?.mentor?.name as String;
-    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
+    String fieldName = _connectWithMentorProvider?.fieldName as String;
     String date = dateFormat.format(nextLessonDateTime);
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.cancel_lesson_text'.tr(args: [subfield, name, date, time, timeZone]);
-    String firstPart = text.substring(0, text.indexOf(subfield));
-    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(name));
+    String text = 'connect_with_mentor.cancel_lesson_text'.tr(args: [fieldName, name, date, time, timeZone]);
+    String firstPart = text.substring(0, text.indexOf(fieldName));
+    String secondPart = text.substring(text.indexOf(fieldName) + fieldName.length, text.indexOf(name));
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
@@ -82,7 +82,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
               text: firstPart
             ),
             TextSpan(
-              text: subfield
+              text: fieldName
             ),
             TextSpan(
               text: secondPart
