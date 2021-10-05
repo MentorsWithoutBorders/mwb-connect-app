@@ -10,7 +10,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/utils/lesson_recurrence_type.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
-import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
@@ -25,48 +25,37 @@ class LessonRecurrence extends StatefulWidget {
 class _LessonRecurrenceState extends State<LessonRecurrence> {
   LessonRequestViewModel? _lessonRequestProvider;
   final String _defaultLocale = Platform.localeName;
-  int? _lessonsNumber;
-  LessonRecurrenceType? _lessonRecurrenceType;
 
   @override
-  void didChangeDependencies() {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+  void initState() {
+    super.initState();
     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
-    super.didChangeDependencies();
   }
   
   void _afterLayout(_) {
     _lessonRequestProvider?.initLessonRecurrence();
-    if (_lessonRequestProvider?.isNextLesson == true && _lessonRequestProvider?.nextLesson?.isRecurrent == true) {
-      _setLessonRecurrenceType(_lessonRequestProvider?.getLessonRecurrenceType());
-      _setSelectedLessonsNumber(_lessonRequestProvider?.calculateLessonsNumber(_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime) as int);
-    } else {
-      _setLessonRecurrenceType(LessonRecurrenceType.lessons);
-      _setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
-      _setEndRecurrenceDate(null);
-    }
   }
 
   Widget _showLessonRecurrence() {
+    LessonRecurrenceModel? lessonRecurrence = _lessonRequestProvider?.lessonRecurrence;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 5.0, 10.0),
       child: Wrap(
         children: [
-          _showSetRecurrence(),
-          _showRecurrenceTypes()
+          _showSetRecurrence(lessonRecurrence),
+          _showRecurrenceTypes(lessonRecurrence)
         ]
       )
     );
   }
 
-  Widget _showSetRecurrence() {
+  Widget _showSetRecurrence(LessonRecurrenceModel? lessonRecurrence) {
     LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
-    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
     DateTime lessonDateTime = DateTime.now();
     if (_lessonRequestProvider?.isLessonRequest == true) {
       lessonDateTime = lessonRequest?.lessonDateTime as DateTime;
     } else if (_lessonRequestProvider?.isNextLesson == true) {
-      lessonDateTime = nextLesson?.dateTime as DateTime;
+      lessonDateTime = lessonRecurrence?.dateTime as DateTime;
     }
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
@@ -95,7 +84,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 width: 40.0,
                 height: 35.0,                      
                 child: Checkbox(
-                  value: _lessonRequestProvider?.nextLesson?.isRecurrent != null ? _lessonRequestProvider?.nextLesson?.isRecurrent : false,
+                  value: lessonRecurrence?.isRecurrent != null ? lessonRecurrence?.isRecurrent : false,
                   onChanged: (value) {
                     _setIsRecurrent();
                   },
@@ -147,13 +136,13 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     _lessonRequestProvider?.setIsLessonRecurrent();
   }
   
-  Widget _showRecurrenceTypes() {
+  Widget _showRecurrenceTypes(LessonRecurrenceModel? lessonRecurrence) {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
     String date = '';
-    if (_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime != null) {
-      date = dateFormat.format(_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime as DateTime).capitalize();
+    if (lessonRecurrence?.endRecurrenceDateTime != null) {
+      date = dateFormat.format(lessonRecurrence?.endRecurrenceDateTime as DateTime).capitalize();
     }
-    bool isRecurrent = _lessonRequestProvider?.nextLesson?.isRecurrent != null ? _lessonRequestProvider?.nextLesson?.isRecurrent as bool : false;
+    bool isRecurrent = lessonRecurrence?.isRecurrent != null ? lessonRecurrence?.isRecurrent as bool : false;
     return IgnorePointer(
       ignoring: !isRecurrent,
       child: Opacity(
@@ -169,14 +158,14 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     height: 35.0,                      
                     child: Radio<LessonRecurrenceType>(
                       value: LessonRecurrenceType.lessons,
-                      groupValue: _lessonRecurrenceType,
+                      groupValue: lessonRecurrence?.type,
                       onChanged: (LessonRecurrenceType? value) {
                         _unfocus();
                         _setLessonRecurrenceType(value);
                       },
                     ),
                   ),
-                  _showLessonsNumber(),
+                  _showLessonsNumber(lessonRecurrence),
                   InkWell(
                     child: Text(
                       plural('lesson', 2),
@@ -199,7 +188,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     height: 35.0,                      
                     child: Radio<LessonRecurrenceType>(
                       value: LessonRecurrenceType.date,
-                      groupValue: _lessonRecurrenceType,
+                      groupValue: lessonRecurrence?.type,
                       onChanged: (LessonRecurrenceType? value) {
                         _unfocus();
                         _setLessonRecurrenceType(value);
@@ -230,7 +219,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                     onTap: () {
                       _unfocus();
                       _setLessonRecurrenceType(LessonRecurrenceType.date);  
-                      _selectDate();
+                      _selectDate(lessonRecurrence);
                     }                        
                   )
                 ],
@@ -242,7 +231,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     );
   }
 
-  Widget _showLessonsNumber() {
+  Widget _showLessonsNumber(LessonRecurrenceModel? lessonRecurrence) {
     return Container(
       width: 65.0,
       height: 30.0,
@@ -251,7 +240,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
         dropdownMenuItemList: _buildNumbers(),
         onTapped: _setLessonsOption,
         onChanged: _changeLessonsNumber,
-        value: _lessonsNumber
+        value: lessonRecurrence?.lessonsNumber
       ),
     );
   }
@@ -262,15 +251,12 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
 
   void _changeLessonsNumber(int? number) {
     _setSelectedLessonsNumber(number!);
-    _setEndRecurrenceDate(null);
+    _lessonRequestProvider?.setEndRecurrenceDate();
   }
 
   void _setSelectedLessonsNumber(int number) {
-    if (mounted) {
-      setState(() {
-        _lessonsNumber = number;
-      });
-    }
+    _lessonRequestProvider?.setSelectedLessonsNumber(number);
+    _lessonRequestProvider?.setLessonRecurrenceType(LessonRecurrenceType.lessons);
   }     
 
   List<DropdownMenuItem<int>> _buildNumbers() {
@@ -296,19 +282,14 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
   
   void _setLessonRecurrenceType(LessonRecurrenceType? recurrenceType) {
-    if (mounted) {
-      setState(() {
-        _lessonRecurrenceType = recurrenceType;
-      });
-    }
     _lessonRequestProvider?.setLessonRecurrenceType(recurrenceType!);  
   }
 
-  Future<void> _selectDate() async {
+  Future<void> _selectDate(LessonRecurrenceModel? lessonRecurrence) async {
     final TargetPlatform platform = Theme.of(context).platform;
     DateTime minRecurrenceDate = _lessonRequestProvider?.getMinRecurrenceDate() as DateTime;
     DateTime maxRecurrenceDate = _lessonRequestProvider?.getMaxRecurrenceDate() as DateTime;
-    DateTime endRecurrenceDateTime = _lessonRequestProvider?.nextLesson?.endRecurrenceDateTime as DateTime;
+    DateTime endRecurrenceDateTime = lessonRecurrence?.endRecurrenceDateTime as DateTime;
     if (platform == TargetPlatform.iOS) {
       return Utils.showDatePickerIOS(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     } else {
@@ -317,10 +298,8 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
 
   void _setEndRecurrenceDate(DateTime? picked) {
-    _lessonRequestProvider?.setEndRecurrenceDate(picked: picked, lessonsNumber: _lessonsNumber);
-    if (picked != null) {
-      _setSelectedLessonsNumber(_lessonRequestProvider?.calculateLessonsNumber(_lessonRequestProvider?.nextLesson?.endRecurrenceDateTime) as int);
-    }
+    _lessonRequestProvider?.setEndRecurrenceDate(picked: picked);
+    _lessonRequestProvider?.setLessonRecurrenceType(LessonRecurrenceType.date);
   }
 
   void _unfocus() {
@@ -329,6 +308,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
 
   @override
   Widget build(BuildContext context) {
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
     return _showLessonRecurrence();
   }
 }

@@ -32,6 +32,9 @@ class _NextLessonState extends State<NextLesson> {
   bool _isUpdatingRecurrence = false;
 
   Widget _showNextLessonCard() {
+    if (_lessonRequestProvider?.isNextLesson == false) {
+      return SizedBox.shrink();
+    }
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -60,20 +63,16 @@ class _NextLessonState extends State<NextLesson> {
   Widget _showText() {
     if (_lessonRequestProvider?.isNextLesson == false) {
       return SizedBox.shrink();
-    }    
+    }
     Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
-    if (nextLesson?.isRecurrent == false) {
-      return _showSingleLessonText(nextLesson);
-    } else {
+    if (_lessonRequestProvider?.isLessonRecurrent == true) {
       return _showRecurringLessonText(nextLesson);
+    } else {
+      return _showSingleLessonText(nextLesson);
     }
   }  
 
   Widget _showSingleLessonText(Lesson? nextLesson) {
-    if (_lessonRequestProvider?.isNextLesson == false) {
-      return SizedBox.shrink();
-    }
-    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
@@ -162,10 +161,6 @@ class _NextLessonState extends State<NextLesson> {
 
 
   Widget _showRecurringLessonText(Lesson? nextLesson) {
-    if (_lessonRequestProvider?.isNextLesson == false) {
-      return SizedBox.shrink();
-    }
-    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);

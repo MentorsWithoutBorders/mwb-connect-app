@@ -10,6 +10,7 @@ import 'package:mwb_connect_app/utils/lesson_recurrence_type.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
@@ -32,6 +33,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   String? quizzes;
   Lesson? nextLesson;
   Lesson? previousLesson;
+  LessonRecurrenceModel lessonRecurrence = LessonRecurrenceModel();
   List<Skill>? skills;
   List<LessonNote>? lessonsNotes;
   List<GuideTutorial>? guideTutorials;
@@ -90,6 +92,9 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   Future<void> acceptLessonRequest(String meetingUrl, BuildContext context) async {
     nextLesson?.meetingUrl = meetingUrl;
+    nextLesson?.isRecurrent = lessonRecurrence.isRecurrent;
+    nextLesson?.endRecurrenceDateTime = lessonRecurrence.endRecurrenceDateTime;
+    nextLesson?.isRecurrenceDateSelected = lessonRecurrence.isRecurrenceDateSelected;    
     Lesson acceptedLessonRequest = await _lessonRequestService.acceptLessonRequest(lessonRequest?.id, nextLesson);
     if (acceptedLessonRequest.id != null) {
       nextLesson = acceptedLessonRequest;
@@ -121,15 +126,19 @@ class LessonRequestViewModel extends ChangeNotifier {
     if (isNextLesson) {
       Lesson lesson = Lesson(
         id: nextLesson?.id,
-        isRecurrent: nextLesson?.isRecurrent,
-        endRecurrenceDateTime: nextLesson?.endRecurrenceDateTime,
-        isRecurrenceDateSelected: nextLesson?.isRecurrenceDateSelected
+        isRecurrent: lessonRecurrence.isRecurrent,
+        endRecurrenceDateTime: lessonRecurrence.endRecurrenceDateTime,
+        isRecurrenceDateSelected: lessonRecurrence.isRecurrenceDateSelected
       );
       if (lesson.isRecurrent == false) {
         lesson.isRecurrent = true;
         lesson.endRecurrenceDateTime = nextLesson?.dateTime;
       }    
       await _lessonRequestService.updateLessonRecurrence(lesson);
+      nextLesson?.isRecurrent = lesson.isRecurrent;
+      nextLesson?.endRecurrenceDateTime = lesson.endRecurrenceDateTime;
+      nextLesson?.isRecurrenceDateSelected = lesson.isRecurrenceDateSelected;
+      notifyListeners();
     }
   }    
 
@@ -180,6 +189,8 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();
+
+  bool get isLessonRecurrent => nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int > 7;
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
 
@@ -238,40 +249,67 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   void initLessonRecurrence() {
-    if (nextLesson == null || nextLesson?.id == null) {
-      bool? isRecurrent = nextLesson?.isRecurrent == null ? false : nextLesson?.isRecurrent;
-      nextLesson = Lesson(isRecurrent: isRecurrent);
-    } else if (nextLesson?.isRecurrent == null || nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int < 7) {
-      nextLesson?.isRecurrent = false;
-      nextLesson?.endRecurrenceDateTime = nextLesson?.dateTime?.add(Duration(days: 7));
+    if (isNextLesson == true && nextLesson?.isRecurrent == true) {
+      if (isLessonRecurrent) {
+        lessonRecurrence.isRecurrent = true;
+        lessonRecurrence.dateTime = nextLesson?.dateTime;
+        lessonRecurrence.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime;
+        setSelectedLessonsNumber(calculateLessonsNumber(lessonRecurrence.endRecurrenceDateTime));
+        setLessonRecurrenceType(getLessonRecurrenceType());
+      } else {
+        setDisabledLessonRecurrence();
+      }
+    } else {
+      setDisabledLessonRecurrence();
     }
   }
 
-  void setEndRecurrenceDate({DateTime? picked, int? lessonsNumber}) {
+  void setDisabledLessonRecurrence() {
+    lessonRecurrence.isRecurrent = false;
+    lessonRecurrence.endRecurrenceDateTime = lessonRecurrence.dateTime?.add(Duration(days: 7));
+    setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
+    setEndRecurrenceDate();    
+    setLessonRecurrenceType(LessonRecurrenceType.lessons);
+  }
+
+  void setSelectedLessonsNumber(int number) {
+    lessonRecurrence.lessonsNumber = number;
+    notifyListeners();
+  }
+
+  void setEndRecurrenceDate({DateTime? picked}) {
     if (picked != null) {
-      nextLesson?.endRecurrenceDateTime = picked;
+      lessonRecurrence.endRecurrenceDateTime = picked;
       if (isLessonRequest) {
-        nextLesson?.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime?.copyWith(hour: lessonRequest?.lessonDateTime?.hour as int);
+        lessonRecurrence.endRecurrenceDateTime = lessonRecurrence.endRecurrenceDateTime?.copyWith(hour: lessonRequest?.lessonDateTime?.hour as int);
       } else if (isNextLesson) {
-        nextLesson?.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime?.copyWith(hour: nextLesson?.dateTime?.hour as int);
-      }      
+        lessonRecurrence.endRecurrenceDateTime = lessonRecurrence.endRecurrenceDateTime?.copyWith(hour: nextLesson?.dateTime?.hour as int);
+      }
+      setSelectedLessonsNumber(calculateLessonsNumber(lessonRecurrence.endRecurrenceDateTime));
     } else {
       if (isLessonRequest == true) {
-        int duration = (lessonsNumber! - 1) * 7;
-        nextLesson?.endRecurrenceDateTime = lessonRequest?.lessonDateTime?.add(Duration(days: duration));
+        int duration = (lessonRecurrence.lessonsNumber - 1) * 7;
+        lessonRecurrence.endRecurrenceDateTime = lessonRequest?.lessonDateTime?.add(Duration(days: duration));
       } else if (isNextLesson) {
-        int duration = (lessonsNumber! - 1) * 7;
-        nextLesson?.endRecurrenceDateTime = nextLesson?.dateTime?.add(Duration(days: duration));
+        int duration = (lessonRecurrence.lessonsNumber - 1) * 7;
+        lessonRecurrence.endRecurrenceDateTime = nextLesson?.dateTime?.add(Duration(days: duration));
       }
     }
+    notifyListeners();
   }
 
-  void setLessonRecurrenceType(LessonRecurrenceType recurrenceType) {
+  void setLessonRecurrenceType(LessonRecurrenceType? recurrenceType) {
     if (recurrenceType == LessonRecurrenceType.date) {
-      nextLesson?.isRecurrenceDateSelected = true;
+      lessonRecurrence.type = LessonRecurrenceType.date;
+      lessonRecurrence.isRecurrenceDateSelected = true;
     } else if (recurrenceType == LessonRecurrenceType.lessons) {
-      nextLesson?.isRecurrenceDateSelected = false;
+      lessonRecurrence.type = LessonRecurrenceType.lessons;
+      lessonRecurrence.isRecurrenceDateSelected = false;
+    } else {
+      lessonRecurrence.type = LessonRecurrenceType.lessons;
+      lessonRecurrence.isRecurrenceDateSelected = false;
     }
+    notifyListeners();
   }
 
   LessonRecurrenceType? getLessonRecurrenceType() {
@@ -365,12 +403,10 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
   
   void setIsLessonRecurrent() {
-    if (nextLesson != null) {
-      if (nextLesson?.isRecurrent == true) {
-        nextLesson?.isRecurrent = false;
-      } else {
-        nextLesson?.isRecurrent = true;
-      }
+    if (lessonRecurrence.isRecurrent == true) {
+      lessonRecurrence.isRecurrent = false;
+    } else {
+      lessonRecurrence.isRecurrent = true;
     }
     notifyListeners();
   } 
