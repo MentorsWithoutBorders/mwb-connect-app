@@ -91,11 +91,13 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   Future<void> acceptLessonRequest(String meetingUrl, BuildContext context) async {
-    nextLesson?.meetingUrl = meetingUrl;
-    nextLesson?.isRecurrent = lessonRecurrence.isRecurrent;
-    nextLesson?.endRecurrenceDateTime = lessonRecurrence.endRecurrenceDateTime;
-    nextLesson?.isRecurrenceDateSelected = lessonRecurrence.isRecurrenceDateSelected;    
-    Lesson acceptedLessonRequest = await _lessonRequestService.acceptLessonRequest(lessonRequest?.id, nextLesson);
+    Lesson lesson = Lesson(
+      isRecurrent: lessonRecurrence.isRecurrent,
+      endRecurrenceDateTime: lessonRecurrence.endRecurrenceDateTime,
+      isRecurrenceDateSelected: lessonRecurrence.isRecurrenceDateSelected,
+      meetingUrl: meetingUrl
+    );     
+    Lesson acceptedLessonRequest = await _lessonRequestService.acceptLessonRequest(lessonRequest?.id, lesson);
     if (acceptedLessonRequest.id != null) {
       nextLesson = acceptedLessonRequest;
       lessonRequest?.id = null;
@@ -129,11 +131,7 @@ class LessonRequestViewModel extends ChangeNotifier {
         isRecurrent: lessonRecurrence.isRecurrent,
         endRecurrenceDateTime: lessonRecurrence.endRecurrenceDateTime,
         isRecurrenceDateSelected: lessonRecurrence.isRecurrenceDateSelected
-      );
-      if (lesson.isRecurrent == false) {
-        lesson.isRecurrent = true;
-        lesson.endRecurrenceDateTime = nextLesson?.dateTime;
-      }    
+      );   
       await _lessonRequestService.updateLessonRecurrence(lesson);
       nextLesson?.isRecurrent = lesson.isRecurrent;
       nextLesson?.endRecurrenceDateTime = lesson.endRecurrenceDateTime;
@@ -190,7 +188,7 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();
 
-  bool get isLessonRecurrent => nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int > 7;
+  bool get isLessonRecurrent => nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int >= 7;
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
 
@@ -249,10 +247,10 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   void initLessonRecurrence() {
-    if (isNextLesson == true && nextLesson?.isRecurrent == true) {
+    if (isNextLesson == true) {
+      lessonRecurrence.dateTime = nextLesson?.dateTime;
       if (isLessonRecurrent) {
         lessonRecurrence.isRecurrent = true;
-        lessonRecurrence.dateTime = nextLesson?.dateTime;
         lessonRecurrence.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime;
         setSelectedLessonsNumber(calculateLessonsNumber(lessonRecurrence.endRecurrenceDateTime));
         setLessonRecurrenceType(getLessonRecurrenceType());
