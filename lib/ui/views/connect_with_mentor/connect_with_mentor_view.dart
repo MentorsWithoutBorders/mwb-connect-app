@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
@@ -31,6 +32,7 @@ class ConnectWithMentorView extends StatefulWidget {
 class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with WidgetsBindingObserver {
   ConnectWithMentorViewModel? _connectWithMentorProvider;
   GoalsViewModel? _goalsProvider;
+  QuizzesViewModel? _quizzesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
 
@@ -89,8 +91,8 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (_connectWithMentorProvider?.shouldShowTraining == true) SolveQuizAddStep(),
-          if (_connectWithMentorProvider?.shouldShowTraining == false && _connectWithMentorProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),          
+          if (shouldShowTraining() == true) SolveQuizAddStep(),
+          if (shouldShowTraining() == false && _connectWithMentorProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),          
           if (_connectWithMentorProvider?.isNextLesson == true) NextLesson(),
           if (_connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false && _connectWithMentorProvider?.shouldStopLessons != true) FindAvailableMentor(),
           if (_connectWithMentorProvider?.isLessonRequest == true && _connectWithMentorProvider?.shouldStopLessons != true) FindingAvailableMentor(),
@@ -99,6 +101,8 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       )
     );
   }
+
+  bool shouldShowTraining() => _connectWithMentorProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;
 
   Widget _showTitle() {
     return Container(
@@ -122,9 +126,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       await Future.wait([
         _connectWithMentorProvider!.getGoal(),
         _connectWithMentorProvider!.getLastStepAdded(),
-        _connectWithMentorProvider!.getQuizNumber(),
         _connectWithMentorProvider!.getLessonRequest(),
         _connectWithMentorProvider!.getNextLesson(),
+        _quizzesProvider!.getQuizNumber(),
       ]);
       _setSelectedGoal();
       await _commonProvider!.initPushNotifications();
@@ -140,6 +144,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
 
     return FutureBuilder<void>(

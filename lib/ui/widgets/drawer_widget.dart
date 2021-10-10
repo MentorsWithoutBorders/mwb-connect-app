@@ -9,6 +9,7 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
@@ -33,6 +34,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   CommonViewModel? _commonProvider;  
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
+  QuizzesViewModel? _quizzesProvider;
 
   Future<void> _logout() async {
     widget.logoutCallback!();
@@ -61,10 +63,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       _stepsProvider?.setShouldShowTutorialChevrons(false);
       _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
       _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
-      int quizNumber = _lessonRequestProvider?.quizNumber as int;
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider?.refreshTrainingInfo());
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _refreshTrainingInfoMentor());
     }
   }
+
+  void _refreshTrainingInfoMentor() {
+    _lessonRequestProvider?.refreshTrainingStepInfo();
+    _quizzesProvider?.refreshTrainingQuizzesInfo();
+  }  
   
   void _goToGoalStudent() {
     if (_connectWithMentorProvider?.goal != null) {
@@ -80,10 +86,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       _stepsProvider?.setShouldShowTutorialChevrons(false);
       _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
       _connectWithMentorProvider?.setGoal(_goalsProvider?.selectedGoal);
-      int quizNumber = _connectWithMentorProvider?.quizNumber as int;
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _connectWithMentorProvider?.refreshTrainingInfo());
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _refreshTrainingInfoStudent());
     }
-  }    
+  }
+  
+  void _refreshTrainingInfoStudent() {
+    _connectWithMentorProvider?.refreshTrainingStepInfo();
+    _quizzesProvider?.refreshTrainingQuizzesInfo();
+  }   
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +102,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context); 
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context); 
 
     return Drawer(
       child: ListView(

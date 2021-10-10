@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/solve_quiz_add_step_widget.dart';
@@ -32,6 +33,7 @@ class LessonRequestView extends StatefulWidget {
 class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindingObserver {
   LessonRequestViewModel? _lessonRequestProvider;
   GoalsViewModel? _goalsProvider;
+  QuizzesViewModel? _quizzesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
 
@@ -86,8 +88,8 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (_lessonRequestProvider?.shouldShowTraining == true) SolveQuizAddStep(),
-          if (_lessonRequestProvider?.shouldShowTraining == false && _lessonRequestProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
+          if (shouldShowTraining() == true) SolveQuizAddStep(),
+          if (shouldShowTraining() == false && _lessonRequestProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
           if (_lessonRequestProvider?.isNextLesson == false && _lessonRequestProvider?.isLessonRequest == false) StandingBy(),
           if (_lessonRequestProvider?.isLessonRequest == true) LessonRequest(),
           if (_lessonRequestProvider?.isNextLesson == true) NextLesson()
@@ -95,6 +97,8 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
       )
     );
   }
+
+  bool shouldShowTraining() => _lessonRequestProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
 
   Widget _showTitle() {
     String title = 'lesson_request.title'.tr();
@@ -122,10 +126,10 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
       await Future.wait([
         _lessonRequestProvider!.getGoal(),
         _lessonRequestProvider!.getLastStepAdded(),
-        _lessonRequestProvider!.getQuizNumber(),
         _lessonRequestProvider!.getLessonRequest(),
         _lessonRequestProvider!.getNextLesson(),
         _lessonRequestProvider!.getPreviousLesson(),
+        _quizzesProvider!.getQuizNumber(),
       ]);
       _setSelectedGoal();
       _showExpiredLessonRequest();
@@ -179,6 +183,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
 
     return FutureBuilder<void>(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/conditions_list_widget.dart';
 
@@ -15,7 +16,8 @@ class FindMentorDialog extends StatefulWidget {
 }
 
 class _FindMentorDialogState extends State<FindMentorDialog> {
-  ConnectWithMentorViewModel? _connectWithMentorProvider;  
+  ConnectWithMentorViewModel? _connectWithMentorProvider;
+  QuizzesViewModel? _quizzesProvider;
 
   Widget _showFindMentorDialog() {
     return Container(
@@ -63,8 +65,8 @@ class _FindMentorDialogState extends State<FindMentorDialog> {
   }
   
   Widget _showConditionsList() {
-    String? quizzes = _connectWithMentorProvider?.getQuizzesLeft();
-    bool? shouldShowQuizzes = _connectWithMentorProvider?.getShouldShowQuizzes();
+    String? quizzes = _quizzesProvider?.getQuizzesLeft();
+    bool? shouldShowQuizzes = _quizzesProvider?.getShouldShowQuizzes();
     bool? shouldShowStep = _connectWithMentorProvider?.getShouldShowAddStep();
 
     return Padding(
@@ -100,6 +102,7 @@ class _FindMentorDialogState extends State<FindMentorDialog> {
   @override
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context);
 
     return _showFindMentorDialog();
   }

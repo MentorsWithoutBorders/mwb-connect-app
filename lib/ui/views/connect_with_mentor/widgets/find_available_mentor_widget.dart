@@ -74,7 +74,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 12.0,
                 color: AppColors.DOVE_GRAY,
                 height: 1.2
               ),
@@ -104,7 +104,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
             'connect_with_mentor.interval_between_lessons'.tr(),
             textAlign: TextAlign.justify,
             style: const TextStyle(
-              fontSize: 12,
+              fontSize: 12.0,
               color: AppColors.DOVE_GRAY,
               height: 1.2
             )

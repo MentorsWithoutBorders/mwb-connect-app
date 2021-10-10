@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/editable_goal_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/tutorial_previews_widget.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/widgets/steps_widget.dart';
@@ -8,16 +10,15 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalStepsView extends StatefulWidget {
-  const GoalStepsView({Key? key, this.quizNumber})
+  const GoalStepsView({Key? key})
     : super(key: key);
     
-  final int? quizNumber;
-
   @override
   State<StatefulWidget> createState() => _GoalStepsViewState();
 }
 
 class _GoalStepsViewState extends State<GoalStepsView> {
+  QuizzesViewModel? _quizProvider;
 
   Widget _showGoalSteps(bool isHorizontal) {
     return Stack(
@@ -45,19 +46,22 @@ class _GoalStepsViewState extends State<GoalStepsView> {
   }
 
   Future<void> _showQuiz(_) async {
-    if (widget.quizNumber != 0) {
+    if (_quizProvider?.quizNumber != 0) {
       await Future<void>.delayed(const Duration(milliseconds: 500));
-      showDialog(
-        context: context,
-        builder: (_) => AnimatedDialog(
-          widgetInside: QuizView(quizNumber: widget.quizNumber as int)
-        ),
-      );
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (_) => AnimatedDialog(
+            widgetInside: QuizView()
+          ),
+        );
+      }
     }    
   }  
 
   @override
   Widget build(BuildContext context) {
+    _quizProvider = Provider.of<QuizzesViewModel>(context);    
     WidgetsBinding.instance?.addPostFrameCallback(_showQuiz);
 
     return Scaffold(

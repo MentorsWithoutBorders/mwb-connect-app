@@ -21,7 +21,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   final GoalsService _goalsService = locator<GoalsService>(); 
   Goal? goal;
   StepModel? lastStepAdded;
-  int? quizNumber;
   LessonRequestModel? lessonRequest;
   Lesson? nextLesson;
   Lesson? previousLesson;
@@ -44,10 +43,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     lastStepAdded = await _connectWithMentorService.getLastStepAdded();
   }
 
-  Future<void> getQuizNumber() async {
-    quizNumber = await _quizzesService.getQuizNumber();
-  }
-  
   Future<void> getLessonRequest() async {
     lessonRequest = await _connectWithMentorService.getLessonRequest();
   }
@@ -98,8 +93,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     await _connectWithMentorService.setMentorPresence(previousLesson?.id, isMentorPresent);
   }
 
-  bool get shouldShowTraining => getShouldShowQuizzes() || getShouldShowAddStep();
-
   bool get shouldStopLessons => nextLesson != null && nextLesson?.shouldStop == true;
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
@@ -108,11 +101,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   String get fieldName => _storageService.fieldName != null ? (_storageService.fieldName as String).toLowerCase() : 'common.remote'.tr();
 
-  void refreshTrainingInfo() {
-    if (_storageService.quizNumber != null) {
-      quizNumber = _storageService.quizNumber;
-      _storageService.quizNumber = null;
-    }
+  void refreshTrainingStepInfo() {
     if (_storageService.lastStepAddedId != null) {
       lastStepAdded?.id = _storageService.lastStepAddedId;
       lastStepAdded?.dateTime = DateTime.now();
@@ -121,29 +110,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     notifyListeners();
   }  
 
-  String getQuizzesLeft() {
-    int? weeklyCount = _storageService.quizzesMentorWeeklyCount;
-    String quizzesLeft = '';
-    if (weeklyCount != null && quizNumber != null) {
-      int quizzesNumber = weeklyCount - ((quizNumber! - 1) % weeklyCount);
-      String quizzesPlural = plural('quiz', quizzesNumber);
-      quizzesLeft = quizzesNumber.toString();
-      if (quizzesNumber < weeklyCount) {
-        quizzesLeft += ' ' + 'common.more'.tr();
-      }
-      quizzesLeft += ' ' + quizzesPlural;
-    }
-    return quizzesLeft;
-  }
-
-  bool getShouldShowQuizzes() {
-    if (quizNumber != 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  
   bool getShouldShowAddStep() {
     DateTime nextDeadline = getNextDeadline() as DateTime;
     DateTime now = Utils.resetTime(DateTime.now());

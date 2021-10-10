@@ -8,11 +8,9 @@ import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 
 class QuizView extends StatefulWidget {
-  const QuizView({Key? key, @required this.quizNumber})
+  const QuizView({Key? key})
     : super(key: key); 
   
-  final int? quizNumber;
-
   @override
   State<StatefulWidget> createState() => _QuizState();
 }
@@ -32,9 +30,9 @@ class _QuizState extends State<QuizView> {
   }    
 
   Widget _showQuiz() {
+    final int quizNumber = _quizProvider?.quizNumber ?? 0;
     final bool isMentor = _quizProvider?.isMentor ?? false;
     final String type = isMentor ? 'mentors' : 'students';
-    final int quizNumber = widget.quizNumber!;
     final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.title'.tr();
     final String quizTutorialText = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.text'.tr();
     final String question = 'quizzes.$type.quiz$quizNumber.question'.tr();
@@ -50,7 +48,7 @@ class _QuizState extends State<QuizView> {
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
       height: MediaQuery.of(context).size.height * 0.7,
-      padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20.0),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0)
@@ -102,7 +100,7 @@ class _QuizState extends State<QuizView> {
                           child: HtmlWidget(quizTutorialText)
                         ),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
+                          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 15.0),
                           decoration: BoxDecoration(
                             border: Border(
                               top: BorderSide(width: 1.0, color: AppColors.MYSTIC)
@@ -110,23 +108,58 @@ class _QuizState extends State<QuizView> {
                           )
                         ),
                         Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Center(
+                            child: Text(
+                              'Quiz 1 of 3',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.BERMUDA_GRAY
+                              )
+                            ),
+                          )
+                        ), 
+                        Padding(
                           padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
                           child: Text(
                             question,
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.0,
                               color: AppColors.ALLPORTS,
                               fontWeight: FontWeight.bold
                             )
                           )
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
-                          padding: const EdgeInsets.fromLTRB(0.0, 5.0, 10.0, 5.0),
+                          margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 10.0),
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColors.MYSTIC)
                           ),
                           child: _showOptions(options, _answer!)
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, bottom: 5.0),
+                          child: Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: AppColors.PACIFIC_BLUE,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                padding: const EdgeInsets.fromLTRB(35.0, 0.0, 35.0, 0.0),
+                              ), 
+                              onPressed: () async {
+
+                              },
+                              child: Text(
+                                'Next quiz', 
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.white
+                                )
+                              )
+                            )
+                          ),
                         )
                       ]
                     ),
@@ -173,13 +206,7 @@ class _QuizState extends State<QuizView> {
         decoration: BoxDecoration(
           color: _selectedIndex == index
             ? AppColors.SOLITUDE
-            : Colors.white,            
-          borderRadius: BorderRadius.only(
-            topLeft: index == 0 ? const Radius.circular(4.0) : Radius.zero,
-            topRight: index == 0 ? const Radius.circular(4.0) : Radius.zero,
-            bottomLeft: index == options.length - 1 ? const Radius.circular(4.0) : Radius.zero,
-            bottomRight: index == options.length - 1  ? const Radius.circular(4.0) : Radius.zero,             
-          )
+            : Colors.white 
         ),
         child: ListTile(
           dense: true,
@@ -263,8 +290,11 @@ class _QuizState extends State<QuizView> {
 
   Future<void> _addQuiz() async {
     bool? isClosed = _isCorrect == null ? true : null;
-    final Quiz quiz = Quiz(number: widget.quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
-    await _quizProvider?.addQuiz(quiz);
+    final int quizNumber = _quizProvider?.quizNumber ?? 0;
+    if (quizNumber != 0) {
+      final Quiz quiz = Quiz(number: quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
+      await _quizProvider?.addQuiz(quiz);
+    }
   }
 
   bool _checkIncorrectAnswer(int index, String answer) {

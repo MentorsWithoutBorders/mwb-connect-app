@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 
@@ -21,6 +22,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
   LessonRequestViewModel? _lessonRequestProvider;
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
+  QuizzesViewModel? _quizzesProvider;
 
   Widget _showTrainingCompletedCard() {
     return Padding(
@@ -112,9 +114,13 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
       _stepsProvider?.setShouldShowTutorialChevrons(false);
       _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
       _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
-      int quizNumber = _lessonRequestProvider?.quizNumber as int;
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView(quizNumber: quizNumber))).then((value) => _lessonRequestProvider?.refreshTrainingInfo());
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _refreshTrainingInfo());
     }
+  }
+
+  void _refreshTrainingInfo() {
+    _lessonRequestProvider?.refreshTrainingStepInfo();
+    _quizzesProvider?.refreshTrainingQuizzesInfo();
   }
   
   @override
@@ -122,6 +128,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context); 
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context); 
 
     return _showTrainingCompletedCard();
   }
