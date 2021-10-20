@@ -6,6 +6,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class QuizView extends StatefulWidget {
   const QuizView({Key? key})
@@ -16,12 +17,32 @@ class QuizView extends StatefulWidget {
 }
 
 class _QuizState extends State<QuizView> {
-  QuizzesViewModel? _quizProvider;
-  final ScrollController _scrollController = ScrollController();  
+  QuizzesViewModel? _quizzesProvider;
+  final ScrollController _scrollController = ScrollController();
+  int _quizNumber = 1;
+  int _nextQuizNumber = 1;
   final int _maxOptions = 3;
   int _selectedIndex = -1;
-  bool? _isCorrect;
   String? _answer;
+  bool? _isCorrect;
+  bool _shouldShowLoader = false;
+  bool _shouldShowNextButton = false;
+  bool _shouldShowTryAgainButton = false;
+  bool _shouldShowCompletedMessage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(_initQuizNumber);
+  }  
+
+  void _initQuizNumber(_) {
+    _quizzesProvider!.calculateQuizNumber();
+    _quizzesProvider!.calculateQuizNumberIndex();
+    setState(() {
+      _quizNumber = _quizzesProvider!.quizNumber;
+    });
+  }    
 
   @override
   void dispose() {
@@ -30,20 +51,21 @@ class _QuizState extends State<QuizView> {
   }    
 
   Widget _showQuiz() {
-    final int quizNumber = _quizProvider?.quizNumber ?? 0;
-    final bool isMentor = _quizProvider?.isMentor ?? false;
+    final bool isMentor = _quizzesProvider?.isMentor ?? false;
+    final int index = _quizzesProvider?.quizNumberIndex ?? 1;
+    final int quizzesCount = _quizzesProvider?.quizzes.length ?? 1;
     final String type = isMentor ? 'mentors' : 'students';
-    final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.title'.tr();
-    final String quizTutorialText = 'quiz_tutorials.$type.quiz_tutorial$quizNumber.text'.tr();
-    final String question = 'quizzes.$type.quiz$quizNumber.question'.tr();
+    final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$_quizNumber.title'.tr();
+    final String quizTutorialText = 'quiz_tutorials.$type.quiz_tutorial$_quizNumber.text'.tr();
+    final String question = 'quizzes.$type.quiz$_quizNumber.question'.tr();
     final List<String> options = [];
     for (int i = 1; i <= _maxOptions; i++) {
-      final String option = 'quizzes.$type.quiz$quizNumber.option$i'.tr();
+      final String option = 'quizzes.$type.quiz$_quizNumber.option$i'.tr();
       if (!option.contains('quizzes')) {
         options.add(option);
       }
     }
-    _answer = 'quizzes.$type.quiz$quizNumber.answer'.tr();
+    _answer = 'quizzes.$type.quiz$_quizNumber.answer'.tr();
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
@@ -57,7 +79,7 @@ class _QuizState extends State<QuizView> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
+            padding: const EdgeInsets.only(bottom: 25.0),
             child: Wrap(
               children: [
                 Center(
@@ -111,7 +133,7 @@ class _QuizState extends State<QuizView> {
                           padding: const EdgeInsets.only(bottom: 12.0),
                           child: Center(
                             child: Text(
-                              'Quiz 1 of 3',
+                              'Quiz $index of $quizzesCount',
                               style: const TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.BERMUDA_GRAY
@@ -131,36 +153,16 @@ class _QuizState extends State<QuizView> {
                           )
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 10.0),
+                          margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColors.MYSTIC)
                           ),
                           child: _showOptions(options, _answer!)
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, bottom: 5.0),
-                          child: Center(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: AppColors.PACIFIC_BLUE,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                padding: const EdgeInsets.fromLTRB(35.0, 0.0, 35.0, 0.0),
-                              ), 
-                              onPressed: () async {
-
-                              },
-                              child: Text(
-                                'Next quiz', 
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.white
-                                )
-                              )
-                            )
-                          ),
-                        )
+                        if (_shouldShowLoader == true) _showLoader(),
+                        if (_shouldShowNextButton == true) _showNextButton(),
+                        if (_shouldShowTryAgainButton == true) _showTryAgainButton(),
+                        if (_shouldShowCompletedMessage == true) _showCompletedMessage(),
                       ]
                     ),
                   )
@@ -168,25 +170,149 @@ class _QuizState extends State<QuizView> {
               )
             )
           ),
-          Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: AppColors.BERMUDA_GRAY,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)
-                ),
-                padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-              ), 
-              onPressed: () async {
-                _closeDialog();
-              },
-              child: Text(
-                'common.close'.tr(), 
-                style: const TextStyle(color: Colors.white)
+          _showCloseButton()
+        ],
+      )
+    );
+  }
+
+  Widget _showLoader() {
+    return Container(
+      height: 45.0,
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Center(
+        child: Loader(color: AppColors.PACIFIC_BLUE)
+      ),
+    );
+  }
+
+  Widget _showNextButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, bottom: 5.0),
+      child: Center(
+        child: Container(
+          height: 30.0,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.PACIFIC_BLUE,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(35.0, 0.0, 35.0, 0.0),
+            ), 
+            onPressed: () async {
+              _showNextQuiz();
+            },
+            child: Text(
+              'Next quiz', 
+              style: const TextStyle(
+                fontSize: 14.0,
+                color: Colors.white
               )
             )
-          )
+          ),
+        )
+      ),
+    );
+  }
+
+  void _showNextQuiz() {
+    setState(() {
+      _selectedIndex = -1;
+      _shouldShowNextButton = false;
+      _quizNumber = _nextQuizNumber;
+    });
+    _quizzesProvider!.calculateQuizNumberIndex();
+    _scrollToTop();
+  }
+
+  Future<void> _scrollToTop() async {
+    _scrollController.animateTo(
+      _scrollController.position.minScrollExtent,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+    );    
+  }      
+
+  Widget _showTryAgainButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, bottom: 5.0),
+      child: Center(
+        child: Container(
+          height: 30.0,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.PACIFIC_BLUE,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(35.0, 0.0, 35.0, 0.0),
+            ), 
+            onPressed: () async {
+              _showSameQuiz();
+            },
+            child: Text(
+              'Try again', 
+              style: const TextStyle(
+                fontSize: 14.0,
+                color: Colors.white
+              )
+            )
+          ),
+        )
+      ),
+    );
+  }
+  
+  void _showSameQuiz() {
+    setState(() {
+      _selectedIndex = -1;
+      _shouldShowTryAgainButton = false;
+    });
+    _scrollToTop();
+  }  
+
+  Widget _showCompletedMessage() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+      child: Flex(
+        direction: Axis.horizontal,
+        children: [
+          Expanded(
+            child: Text(
+              'Congratulations! You have solved all the quizzes for the current week of training.',
+              style: const TextStyle(
+                fontSize: 12.0,
+                color: AppColors.ALLPORTS,
+                height: 1.3
+              ),
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _showCloseButton() {
+    return Center(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: AppColors.BERMUDA_GRAY,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)
+          ),
+          padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+        ), 
+        onPressed: () async {
+          _closeDialog();
+        },
+        child: Text(
+          'common.close'.tr(), 
+          style: const TextStyle(color: Colors.white)
+        )
       )
     );
   }
@@ -274,9 +400,11 @@ class _QuizState extends State<QuizView> {
         ),
       ),
     );
-  }
+  } 
   
   Future<void> _onSelected(int index, String answer) async {
+    _setShowLoader(true);
+    await _scrollToBottom();
     if ((index + 1).toString() == answer) {
       _isCorrect = true;
     } else {
@@ -285,17 +413,68 @@ class _QuizState extends State<QuizView> {
     setState(() {
       _selectedIndex = index;
     });
-    await _addQuiz();
+    _addQuiz();
+    _setShowLoader(false);
   }
 
-  Future<void> _addQuiz() async {
+  void _setShowLoader(bool shouldShowLoader) {
+    setState(() {
+      _shouldShowLoader = shouldShowLoader;
+    });   
+  }
+
+  Future<void> _scrollToBottom() async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.fastOutSlowIn,
+    );    
+  }   
+
+  void _addQuiz() {
     bool? isClosed = _isCorrect == null ? true : null;
-    final int quizNumber = _quizProvider?.quizNumber ?? 0;
-    if (quizNumber != 0) {
-      final Quiz quiz = Quiz(number: quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
-      await _quizProvider?.addQuiz(quiz);
+    if (_quizNumber != 0) {
+      final Quiz quiz = Quiz(number: _quizNumber, isCorrect: _isCorrect, isClosed: isClosed);
+      if (_isCorrect == false) {
+        _setShowTryAgainButton(true);
+        _quizzesProvider?.addQuiz(quiz);
+      } else {
+        _nextQuizNumber = _quizzesProvider?.addQuiz(quiz) as int;
+        if (mounted) {
+          if (quiz.isClosed != true) {
+            if (_nextQuizNumber != 0) {
+              _setShowNextButton(true);
+            } else {
+              _setShowCompletedMessage(true);
+            }
+          } else {
+            _setShowNextButton(false);
+            _setShowTryAgainButton(false);
+            _setShowCompletedMessage(false);
+          }
+        }
+      }
     }
   }
+
+  void _setShowNextButton(bool shouldShowNextButton) {
+    setState(() {
+      _shouldShowNextButton = shouldShowNextButton;
+    });   
+  }
+
+  void _setShowTryAgainButton(bool shouldShowTryAgainButton) {
+    setState(() {
+      _shouldShowTryAgainButton = shouldShowTryAgainButton;
+    });   
+  }  
+
+  void _setShowCompletedMessage(bool shouldShowCompletedMessage) {
+    setState(() {
+      _shouldShowCompletedMessage = shouldShowCompletedMessage;
+    });   
+  }  
 
   bool _checkIncorrectAnswer(int index, String answer) {
     return _selectedIndex != -1 && index == _selectedIndex && answer != (index + 1).toString();
@@ -319,7 +498,7 @@ class _QuizState extends State<QuizView> {
 
   @override
   Widget build(BuildContext context) {
-    _quizProvider = Provider.of<QuizzesViewModel>(context);
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context);
 
     return WillPopScope(
       onWillPop: _onWillPop,

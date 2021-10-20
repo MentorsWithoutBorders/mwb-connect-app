@@ -28,7 +28,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   final String _defaultLocale = Platform.localeName;  
 
   Widget _showSolveQuizAddStepCard() {
-    String? quizzes = _quizzesProvider?.getQuizzesLeft();
+    String? quizzes = _quizzesProvider?.getRemainingQuizzesText();
     bool? shouldShowQuizzes = _quizzesProvider?.getShouldShowQuizzes();
     bool? shouldShowStep = _lessonRequestProvider?.getShouldShowAddStep();
 

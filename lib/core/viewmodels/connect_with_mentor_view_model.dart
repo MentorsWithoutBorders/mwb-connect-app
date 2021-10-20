@@ -12,12 +12,10 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
-import 'package:mwb_connect_app/core/services/quizzes_service.dart';
 
 class ConnectWithMentorViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final ConnectWithMentorService _connectWithMentorService = locator<ConnectWithMentorService>();
-  final QuizzesService _quizzesService = locator<QuizzesService>();
   final GoalsService _goalsService = locator<GoalsService>(); 
   Goal? goal;
   StepModel? lastStepAdded;

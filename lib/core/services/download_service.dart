@@ -110,14 +110,6 @@ class DownloadService {
     });
     if (tutorials.isNotEmpty) {
       storageService.tutorials = tutorials;
-    }  
-    // Get quizzes settings
-    final QuizSettings quizSettings = await _getQuizSettings();
-    if (quizSettings.studentWeeklyCount != null) {
-      storageService.quizzesStudentWeeklyCount = quizSettings.studentWeeklyCount;
-    }
-    if (quizSettings.mentorWeeklyCount != null) {
-      storageService.quizzesMentorWeeklyCount = quizSettings.mentorWeeklyCount;
     }
   }
 

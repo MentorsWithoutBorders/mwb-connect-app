@@ -46,7 +46,8 @@ class _GoalStepsViewState extends State<GoalStepsView> {
   }
 
   Future<void> _showQuiz(_) async {
-    if (_quizProvider?.quizNumber != 0) {
+    int remainingQuizzes = _quizProvider!.calculateRemainingQuizzes();
+    if (remainingQuizzes > 0) {
       await Future<void>.delayed(const Duration(milliseconds: 500));
       if (mounted) {
         showDialog(

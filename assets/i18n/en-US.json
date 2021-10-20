@@ -234,7 +234,7 @@
     "send_url_error": "Please enter a valid {} URL",
 		"cancel_next_lesson": "Cancel lesson",
 		"reject_lesson_request": "Reject lesson request",
-		"cancel_next_lesson_text": "Are you sure you want to cancel the {} lesson from {} at {} {}?\n(the {} will be assigned to another mentor)",
+		"cancel_next_lesson_text": "Are you sure you want to cancel the {} lesson from {} at {} {}?",
     "cancel_lesson_recurrence_text": "Are you sure you want to cancel the entire lesson recurrence?\n(the {} will be assigned to another mentor)",
 		"reject_lesson_request_text": "Are you sure you want to reject the {} lesson with {} from {} on {} at {} {}?\n(the student will be assigned to another mentor)",
 		"lesson_scheduled": "You have scheduled a {} lesson {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",

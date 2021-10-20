@@ -1,6 +1,6 @@
 name: mwb_connect_app
 description: MWBConnect
-version: 1.0.4+24
+version: 1.0.4+27
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

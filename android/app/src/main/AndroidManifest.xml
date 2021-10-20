@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mwbconnect.app">
-   <application
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
         android:label="MWB Connect"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
 
         <meta-data

@@ -14,7 +14,7 @@ class ApiService {
   Map<String, String> getHeaders() {
     String? accessToken = _storageService.accessToken;
     Map<String, String> headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
       'Authorization': '$accessToken',
     };

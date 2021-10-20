@@ -129,7 +129,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         _lessonRequestProvider!.getLessonRequest(),
         _lessonRequestProvider!.getNextLesson(),
         _lessonRequestProvider!.getPreviousLesson(),
-        _quizzesProvider!.getQuizNumber(),
+        _quizzesProvider!.getQuizzes(),
       ]);
       _setSelectedGoal();
       _showExpiredLessonRequest();

@@ -10,14 +10,47 @@ class QuizzesViewModel extends ChangeNotifier {
   final QuizzesService _quizzesService = locator<QuizzesService>();
   final LocalStorageService _storageService = locator<LocalStorageService>();
   int quizNumber = 0;
+  int quizNumberIndex = 1;
+  List<Quiz> quizzes = [];
 
-  Future<void> getQuizNumber() async {
-    quizNumber = await _quizzesService.getQuizNumber();
+  Future<void> getQuizzes() async {
+    quizzes = await _quizzesService.getQuizzes();
+    calculateQuizNumber();
+  }
+  
+  void calculateQuizNumber() {
+    quizNumber = 0;
+    for (int i = 0; i < quizzes.length; i++) {
+      if (quizzes[i].isCorrect != true) {
+        quizNumber = quizzes[i].number as int;
+        break;
+      }
+    }
   }
 
-  Future<void> addQuiz(Quiz quiz) async {
-    _storageService.quizNumber = await _quizzesService.addQuiz(quiz);
-    return ;
+  void calculateQuizNumberIndex() {
+    quizNumberIndex = 1;
+    for (int i = 0; i < quizzes.length; i++) {
+      if (quizzes[i].isCorrect != true) {
+        quizNumberIndex = i + 1;
+        break;
+      }
+    }
+  }  
+
+  int addQuiz(Quiz quiz) {
+    if (quiz.isCorrect == true) {
+      for (int i = 0; i < quizzes.length; i++) {
+        if (quizzes[i].number == quiz.number) {
+          quizzes[i].isCorrect = true;
+          break;
+        }
+      }    
+      calculateQuizNumber();
+    }
+    _storageService.quizNumber = quizNumber;
+    _quizzesService.addQuiz(quiz);
+    return _storageService.quizNumber as int;
   }
 
   void refreshTrainingQuizzesInfo() {   
@@ -28,23 +61,30 @@ class QuizzesViewModel extends ChangeNotifier {
     notifyListeners();
   }  
 
-  String getQuizzesLeft() {
-    int? weeklyCount = _storageService.quizzesMentorWeeklyCount;
-    String quizzesLeft = '';
-    if (weeklyCount != null) {
-      int quizzesNumber = weeklyCount - ((quizNumber - 1) % weeklyCount);
-      String quizzesPlural = plural('quiz', quizzesNumber);
-      quizzesLeft = quizzesNumber.toString();
-      if (quizzesNumber < weeklyCount) {
-        quizzesLeft += ' ' + 'common.more'.tr();
+  int calculateRemainingQuizzes() {
+    int remainingQuizzes = 0;
+    for (int i = 0; i < quizzes.length; i++) {
+      if (quizzes[i].isCorrect != true) {
+        remainingQuizzes++;
       }
-      quizzesLeft += ' ' + quizzesPlural;
-    }
-    return quizzesLeft;
+    }    
+    return remainingQuizzes;
   }
 
+  String getRemainingQuizzesText() {
+    int remainingQuizzes = calculateRemainingQuizzes();
+    String quizzesPlural = plural('quiz', remainingQuizzes);
+    String remainingQuizzesText = remainingQuizzes.toString();
+    if (remainingQuizzes < quizzes.length) {
+      remainingQuizzesText += ' ' + 'common.more'.tr();
+    }
+    remainingQuizzesText += ' ' + quizzesPlural;
+    return remainingQuizzesText;
+  }  
+
   bool getShouldShowQuizzes() {
-    if (quizNumber != 0) {
+    int remainingQuizzes = calculateRemainingQuizzes();
+    if (remainingQuizzes > 0) {
       return true;
     } else {
       return false;

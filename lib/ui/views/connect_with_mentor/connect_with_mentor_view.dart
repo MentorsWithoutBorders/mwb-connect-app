@@ -128,7 +128,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
         _connectWithMentorProvider!.getLastStepAdded(),
         _connectWithMentorProvider!.getLessonRequest(),
         _connectWithMentorProvider!.getNextLesson(),
-        _quizzesProvider!.getQuizNumber(),
+        _quizzesProvider!.getQuizzes(),
       ]);
       _setSelectedGoal();
       await _commonProvider!.initPushNotifications();

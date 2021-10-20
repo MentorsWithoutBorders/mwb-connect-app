@@ -19,12 +19,10 @@ import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
-import 'package:mwb_connect_app/core/services/quizzes_service.dart';
 
 class LessonRequestViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
-  final QuizzesService _quizzesService = locator<QuizzesService>();
   final GoalsService _goalsService = locator<GoalsService>();
   Goal? goal;
   StepModel? lastStepAdded;
