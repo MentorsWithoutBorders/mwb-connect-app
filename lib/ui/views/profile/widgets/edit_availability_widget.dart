@@ -238,8 +238,8 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   void _updateAvailability() {
     if (_profileProvider?.isAvailabilityValid(_availability!) == true) {
-      Navigator.pop(context, true);
       _profileProvider?.updateAvailability(widget.index!, _availability!);
+      Navigator.pop(context, true);
     } else {
       setState(() {
         _shouldShowError = true;

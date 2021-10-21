@@ -235,8 +235,8 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   void _addAvailability() {
     if (_profileProvider?.isAvailabilityValid(_availability!) == true) {
-      Navigator.pop(context, true);
       _profileProvider?.addAvailability(_availability!);
+      Navigator.pop(context, true);
     } else {
       setState(() {
         _shouldShowError = true;
