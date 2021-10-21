@@ -64,12 +64,13 @@ class _NextLessonState extends State<NextLesson> {
     DateTime now = DateTime.now();
     String name = nextLesson?.mentor?.name as String;
     String fieldName = _connectWithMentorProvider?.fieldName as String;
+    String article = Utils.getIndefiniteArticle(fieldName);
     String date = dateFormat.format(nextLessonDateTime);
     String time = timeFormat.format(nextLessonDateTime);
     String timeZone = now.timeZoneName;
     String urlType = Utils.getUrlType(nextLesson?.meetingUrl as String);
     String at = 'common.at'.tr();
-    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, fieldName, date, time, timeZone, urlType]);
+    String text = 'connect_with_mentor.scheduled_lesson'.tr(args: [name, article, fieldName, date, time, timeZone, urlType]);
     String firstPart = text.substring(name.length, text.indexOf(fieldName));
     String secondPart = text.substring(text.indexOf(fieldName) + fieldName.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);

@@ -236,5 +236,13 @@ class Utils {
         week = 'numerals.nth'.tr(args: [weekNumber.toString()]);
     }
     return week;
-  }        
+  }
+  
+  static String getIndefiniteArticle(String noun) {
+    String article = 'common.a'.tr();
+    if (AppConstants.vowels.contains(noun[0])) {
+      article = 'common.an'.tr();
+    }
+    return article;
+  }
 }
