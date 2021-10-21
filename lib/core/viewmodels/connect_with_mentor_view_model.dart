@@ -36,10 +36,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   void setGoal(Goal? goal) {
     this.goal = goal;
   }  
-  
-  Future<void> getLastStepAdded() async {
-    lastStepAdded = await _connectWithMentorService.getLastStepAdded();
-  }
 
   Future<void> getLessonRequest() async {
     lessonRequest = await _connectWithMentorService.getLessonRequest();
@@ -99,17 +95,8 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   String get fieldName => _storageService.fieldName != null ? (_storageService.fieldName as String).toLowerCase() : 'common.remote'.tr();
 
-  void refreshTrainingStepInfo() {
-    if (_storageService.lastStepAddedId != null) {
-      lastStepAdded?.id = _storageService.lastStepAddedId;
-      lastStepAdded?.dateTime = DateTime.now();
-      _storageService.lastStepAddedId = null;
-    }    
-    notifyListeners();
-  }  
-
   bool getShouldShowAddStep() {
-    DateTime nextDeadline = getNextDeadline() as DateTime;
+    DateTime nextDeadline = Utils.getNextDeadline() as DateTime;
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
     int limit = now.difference(registeredOn).inDays > 7 ? 7 : 8;
@@ -130,45 +117,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     return date;
   }
 
-  DateTime? getNextDeadline() {
-    Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
-    Jiffy deadline = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
-    if (deadline.isSame(now)) {
-      deadline.add(weeks: 1);
-    } else {
-      while (deadline.isBefore(now, Units.DAY)) {
-        deadline.add(weeks: 1);
-      }
-    }
-    return deadline.dateTime;
-  }
-
-  String getTrainingWeek() {
-    Jiffy nextDeadline = Jiffy(getNextDeadline());
-    Jiffy date = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
-    int weekNumber = 0;
-    while (date.isSameOrBefore(nextDeadline, Units.DAY)) {
-      date.add(weeks: 1);
-      weekNumber++;
-    }
-    weekNumber--;
-    String week = '';
-    switch (weekNumber) {
-      case 1:
-        week = 'numerals.first'.tr();
-        break;
-      case 2: 
-        week = 'numerals.second'.tr();
-        break;
-      case 3: 
-        week = 'numerals.third'.tr();
-        break;
-      default:
-        week = 'numerals.nth'.tr(args: [weekNumber.toString()]);
-    }
-    return week;
-  }
-
   bool shouldShowTrainingCompleted() {
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
@@ -177,7 +125,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   bool shouldReceiveCertificate() {
     DateTime certificateDate = Utils.resetTime(getCertificateDate() as DateTime);
-    DateTime deadLine = Utils.resetTime(getNextDeadline() as DateTime);
+    DateTime deadLine = Utils.resetTime(Utils.getNextDeadline() as DateTime);
     return certificateDate.difference(deadLine).inDays <= 0;
   }
 

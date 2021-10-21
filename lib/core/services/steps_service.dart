@@ -23,11 +23,17 @@ class StepsService {
     return step;
   }
 
+  Future<StepModel> getLastStepAdded() async {
+    http.Response response = await _api.getHTTP(url: '/last_step_added');
+    var json = jsonDecode(response.body);
+    StepModel step = StepModel.fromJson(json);
+    return step;
+  }    
+
   Future<StepModel> addStep(String? goalId, StepModel step) async {
     http.Response response = await _api.postHTTP(url: '/goals/$goalId/steps', data: step.toJson());  
     var json = jsonDecode(response.body);
     StepModel addedStep = StepModel.fromJson(json);
-     _storageService.lastStepAddedId = addedStep.id;
     return addedStep;
   }  
 

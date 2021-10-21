@@ -41,12 +41,6 @@ class LocalStorageService {
 
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
   set tutorials(Map<String, dynamic> value) => _saveToDisk('tutorials', value);
-  
-  int? get quizNumber => _getFromDisk('quizNumber');
-  set quizNumber(int? value) => _saveToDisk('quizNumber', value);
-
-  String? get lastStepAddedId => _getFromDisk('lastStepAddedId');
-  set lastStepAddedId(String? value) => _saveToDisk('lastStepAddedId', value);
 
   bool? get shouldAppReload => _getFromDisk('shouldAppReload');
   set shouldAppReload(bool? value) => _saveToDisk('shouldAppReload', value);

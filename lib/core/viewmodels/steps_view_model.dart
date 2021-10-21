@@ -2,13 +2,17 @@ import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/services/steps_service.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class StepsViewModel extends ChangeNotifier {
   final StepsService _stepsService = locator<StepsService>();  
+  final LocalStorageService _storageService = locator<LocalStorageService>();  
   List<StepModel>? steps;
   StepModel? selectedStep;
+  StepModel lastStepAdded = StepModel();
   int previousStepIndex = -1;
   bool isTutorialPreviewsAnimationCompleted = false;
   bool shouldShowTutorialChevrons = false;  
@@ -23,6 +27,22 @@ class StepsViewModel extends ChangeNotifier {
     return await _stepsService.getStepById(goalId, id);
   }
 
+  Future<void> getLastStepAdded() async {
+    lastStepAdded = await _stepsService.getLastStepAdded();
+  }
+  
+  bool getShouldShowAddStep() {
+    DateTime nextDeadline = Utils.getNextDeadline() as DateTime;
+    DateTime now = Utils.resetTime(DateTime.now());
+    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
+    int limit = now.difference(registeredOn).inDays > 7 ? 7 : 8;
+    if (lastStepAdded.id != null && nextDeadline.difference(Utils.resetTime(lastStepAdded.dateTime as DateTime)).inDays < limit) {
+      return false;
+    } else {
+      return true;
+    }
+  }  
+
   Future<void> addStep({String? goalId, String? stepText, bool? isSubStep}) async {
     int level = 0;
     String? parentId;
@@ -34,6 +54,8 @@ class StepsViewModel extends ChangeNotifier {
     final int index = getCurrentIndex(steps: steps, parentId: parentId) + 1; 
     final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: parentId);       
     StepModel stepAdded = await _stepsService.addStep(goalId, step);
+    lastStepAdded.id = stepAdded.id;
+    lastStepAdded.dateTime = DateTime.now();    
     _addStepToList(stepAdded);
     _setAddedStepIndex(stepAdded);
   }

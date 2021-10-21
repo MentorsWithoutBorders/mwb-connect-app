@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
@@ -25,7 +24,6 @@ class LessonRequestViewModel extends ChangeNotifier {
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
   final GoalsService _goalsService = locator<GoalsService>();
   Goal? goal;
-  StepModel? lastStepAdded;
   LessonRequestModel? lessonRequest;
   String? quizzes;
   Lesson? nextLesson;
@@ -50,10 +48,6 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   void setGoal(Goal? goal) {
     this.goal = goal;
-  }  
-
-  Future<void> getLastStepAdded() async {
-    lastStepAdded = await _lessonRequestService.getLastStepAdded();
   }
 
   Future<void> getLessonRequest() async {
@@ -189,27 +183,6 @@ class LessonRequestViewModel extends ChangeNotifier {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
   }
 
-  void refreshTrainingStepInfo() {   
-    if (_storageService.lastStepAddedId != null) {
-      lastStepAdded?.id = _storageService.lastStepAddedId;
-      lastStepAdded?.dateTime = DateTime.now();
-      _storageService.lastStepAddedId = null;
-    }    
-    notifyListeners();
-  }
-
-  bool getShouldShowAddStep() {
-    DateTime nextDeadline = getNextDeadline() as DateTime;
-    DateTime now = Utils.resetTime(DateTime.now());
-    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
-    int limit = now.difference(registeredOn).inDays > 7 ? 7 : 8;
-    if (lastStepAdded?.id != null && nextDeadline.difference(Utils.resetTime(lastStepAdded?.dateTime as DateTime)).inDays < limit) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   void initLessonRecurrence() {
     if (isNextLesson == true) {
       lessonRecurrence.dateTime = nextLesson?.dateTime;
@@ -317,45 +290,6 @@ class LessonRequestViewModel extends ChangeNotifier {
       }
     }
     return lessonsNumber;
-  }
-
-  DateTime? getNextDeadline() {
-    Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
-    Jiffy deadline = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
-    if (deadline.isSame(now)) {
-      deadline.add(weeks: 1);
-    } else {
-      while (deadline.isBefore(now, Units.DAY)) {
-        deadline.add(weeks: 1);
-      }
-    }
-    return deadline.dateTime;
-  }
-
-  String getTrainingWeek() {
-    Jiffy nextDeadline = Jiffy(getNextDeadline());
-    Jiffy date = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
-    int weekNumber = 0;
-    while (date.isSameOrBefore(nextDeadline, Units.DAY)) {
-      date.add(weeks: 1);
-      weekNumber++;
-    }
-    weekNumber--;
-    String week = '';
-    switch (weekNumber) {
-      case 1:
-        week = 'numerals.first'.tr();
-        break;
-      case 2: 
-        week = 'numerals.second'.tr();
-        break;
-      case 3: 
-        week = 'numerals.third'.tr();
-        break;
-      default:
-        week = 'numerals.nth'.tr(args: [weekNumber.toString()]);
-    }
-    return week;
   }
 
   bool shouldShowTrainingCompleted() {

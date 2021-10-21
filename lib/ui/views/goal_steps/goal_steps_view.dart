@@ -19,6 +19,7 @@ class GoalStepsView extends StatefulWidget {
 
 class _GoalStepsViewState extends State<GoalStepsView> {
   QuizzesViewModel? _quizProvider;
+  bool _isQuizDialogOpen = false;
 
   Widget _showGoalSteps(bool isHorizontal) {
     return Stack(
@@ -49,13 +50,14 @@ class _GoalStepsViewState extends State<GoalStepsView> {
     int remainingQuizzes = _quizProvider!.calculateRemainingQuizzes();
     if (remainingQuizzes > 0) {
       await Future<void>.delayed(const Duration(milliseconds: 500));
-      if (mounted) {
+      if (mounted && !_isQuizDialogOpen) {
+        _isQuizDialogOpen = true;
         showDialog(
           context: context,
           builder: (_) => AnimatedDialog(
             widgetInside: QuizView()
           ),
-        );
+        ).then((_) => _isQuizDialogOpen = false);
       }
     }    
   }  

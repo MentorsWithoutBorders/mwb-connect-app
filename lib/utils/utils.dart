@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Utils {
   static final String _defaultLocale = Platform.localeName;
+  static final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');
   static List<String> get periodUnits => 'common.period_units'.tr().split(', ');
@@ -194,5 +197,44 @@ class Utils {
         );
       }
     );
-  }      
+  }
+
+  static DateTime? getNextDeadline() {
+    Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
+    Jiffy deadline = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    if (deadline.isSame(now)) {
+      deadline.add(weeks: 1);
+    } else {
+      while (deadline.isBefore(now, Units.DAY)) {
+        deadline.add(weeks: 1);
+      }
+    }
+    return deadline.dateTime;
+  }
+
+  static String getTrainingWeek() {
+    Jiffy nextDeadline = Jiffy(getNextDeadline());
+    Jiffy date = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    int weekNumber = 0;
+    while (date.isSameOrBefore(nextDeadline, Units.DAY)) {
+      date.add(weeks: 1);
+      weekNumber++;
+    }
+    weekNumber--;
+    String week = '';
+    switch (weekNumber) {
+      case 1:
+        week = 'numerals.first'.tr();
+        break;
+      case 2: 
+        week = 'numerals.second'.tr();
+        break;
+      case 3: 
+        week = 'numerals.third'.tr();
+        break;
+      default:
+        week = 'numerals.nth'.tr(args: [weekNumber.toString()]);
+    }
+    return week;
+  }        
 }

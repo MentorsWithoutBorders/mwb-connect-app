@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 
@@ -22,7 +22,6 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
   LessonRequestViewModel? _lessonRequestProvider;
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
-  QuizzesViewModel? _quizzesProvider;
 
   Widget _showTrainingCompletedCard() {
     return Padding(
@@ -50,7 +49,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
   }
 
   Widget _showTitle() {
-    String week = _lessonRequestProvider!.getTrainingWeek();
+    String week = Utils.getTrainingWeek();
     return Container(
       margin: const EdgeInsets.only(top: 3.0, bottom: 15.0),
       child: Center(
@@ -67,7 +66,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
   }    
 
   Widget _showText() {
-    String week = _lessonRequestProvider!.getTrainingWeek();
+    String week = Utils.getTrainingWeek();
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: RichText(
@@ -114,21 +113,15 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
       _stepsProvider?.setShouldShowTutorialChevrons(false);
       _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
       _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _refreshTrainingInfo());
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
     }
   }
 
-  void _refreshTrainingInfo() {
-    _lessonRequestProvider?.refreshTrainingStepInfo();
-    _quizzesProvider?.refreshTrainingQuizzesInfo();
-  }
-  
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context); 
-    _quizzesProvider = Provider.of<QuizzesViewModel>(context); 
 
     return _showTrainingCompletedCard();
   }

@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
@@ -33,6 +34,7 @@ class LessonRequestView extends StatefulWidget {
 class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindingObserver {
   LessonRequestViewModel? _lessonRequestProvider;
   GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
   QuizzesViewModel? _quizzesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
@@ -98,7 +100,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
     );
   }
 
-  bool shouldShowTraining() => _lessonRequestProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
+  bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
 
   Widget _showTitle() {
     String title = 'lesson_request.title'.tr();
@@ -125,10 +127,10 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
     if (!_isInit && _lessonRequestProvider != null) {
       await Future.wait([
         _lessonRequestProvider!.getGoal(),
-        _lessonRequestProvider!.getLastStepAdded(),
         _lessonRequestProvider!.getLessonRequest(),
         _lessonRequestProvider!.getNextLesson(),
         _lessonRequestProvider!.getPreviousLesson(),
+        _stepsProvider!.getLastStepAdded(),
         _quizzesProvider!.getQuizzes(),
       ]);
       _setSelectedGoal();
@@ -183,6 +185,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
 

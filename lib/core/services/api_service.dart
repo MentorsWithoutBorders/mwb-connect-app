@@ -142,8 +142,6 @@ class ApiService {
     _storageService.userEmail = null;
     _storageService.userName = '';
     _storageService.isMentor = null;
-    _storageService.quizNumber = null;
-    _storageService.lastStepAddedId = null;
     _storageService.shouldAppReload = null;
     _storageService.lastUpdateShownDateTime = null;
     _storageService.lastPNShownDateTime = null;

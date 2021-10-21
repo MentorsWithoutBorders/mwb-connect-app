@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
@@ -30,7 +31,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   Widget _showSolveQuizAddStepCard() {
     String? quizzes = _quizzesProvider?.getRemainingQuizzesText();
     bool? shouldShowQuizzes = _quizzesProvider?.getShouldShowQuizzes();
-    bool? shouldShowStep = _lessonRequestProvider?.getShouldShowAddStep();
+    bool? shouldShowStep = _stepsProvider?.getShouldShowAddStep();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -97,7 +98,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   Widget _showNextDeadline() {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
-    String deadline = dateFormat.format(_lessonRequestProvider?.getNextDeadline() as DateTime);
+    String deadline = dateFormat.format(Utils.getNextDeadline() as DateTime);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: RichText(
@@ -162,13 +163,8 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
       _stepsProvider?.setShouldShowTutorialChevrons(false);
       _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
       _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView())).then((value) => _refreshTrainingInfo());
+      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
     }
-  }
-
-  void _refreshTrainingInfo() {
-    _lessonRequestProvider?.refreshTrainingStepInfo();
-    _quizzesProvider?.refreshTrainingQuizzesInfo();
   }
 
   @override

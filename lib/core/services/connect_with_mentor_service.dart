@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
-import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
@@ -10,13 +9,6 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 
 class ConnectWithMentorService {
   final ApiService _api = locator<ApiService>();
-
-  Future<StepModel> getLastStepAdded() async {
-    http.Response response = await _api.getHTTP(url: '/last_step_added');
-    var json = jsonDecode(response.body);
-    StepModel step = StepModel.fromJson(json);
-    return step;
-  }
 
   Future<LessonRequestModel> getLessonRequest() async {
     http.Response response = await _api.getHTTP(url: '/lesson_request');

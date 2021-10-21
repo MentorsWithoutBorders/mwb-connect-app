@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
@@ -32,6 +33,7 @@ class ConnectWithMentorView extends StatefulWidget {
 class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with WidgetsBindingObserver {
   ConnectWithMentorViewModel? _connectWithMentorProvider;
   GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
   QuizzesViewModel? _quizzesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
@@ -125,9 +127,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     if (!_isInit && _connectWithMentorProvider != null) {
       await Future.wait([
         _connectWithMentorProvider!.getGoal(),
-        _connectWithMentorProvider!.getLastStepAdded(),
         _connectWithMentorProvider!.getLessonRequest(),
         _connectWithMentorProvider!.getNextLesson(),
+        _stepsProvider!.getLastStepAdded(),
         _quizzesProvider!.getQuizzes(),
       ]);
       _setSelectedGoal();
@@ -144,6 +146,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
 

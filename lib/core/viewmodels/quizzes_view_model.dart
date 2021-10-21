@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/core/services/quizzes_service.dart';
 class QuizzesViewModel extends ChangeNotifier {
   final QuizzesService _quizzesService = locator<QuizzesService>();
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  int quizNumber = 0;
+  int quizNumber = 1;
   int quizNumberIndex = 1;
   List<Quiz> quizzes = [];
 
@@ -47,19 +47,11 @@ class QuizzesViewModel extends ChangeNotifier {
         }
       }    
       calculateQuizNumber();
+      notifyListeners();
     }
-    _storageService.quizNumber = quizNumber;
     _quizzesService.addQuiz(quiz);
-    return _storageService.quizNumber as int;
+    return quizNumber;
   }
-
-  void refreshTrainingQuizzesInfo() {   
-    if (_storageService.quizNumber != null) {
-      quizNumber = _storageService.quizNumber ?? 0;
-      _storageService.quizNumber = null;
-    }   
-    notifyListeners();
-  }  
 
   int calculateRemainingQuizzes() {
     int remainingQuizzes = 0;
