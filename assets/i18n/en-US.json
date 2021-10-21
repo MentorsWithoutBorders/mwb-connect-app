@@ -492,6 +492,10 @@
   },
 	"quizzes": {
     "solve_quiz_subtitle": "(please solve the quiz at the end)",
+    "quiz_of": "Quiz {} of {}",
+    "next_quiz": "Next quiz",
+    "try_again": "Try again",
+    "quizzes_solved": "Congratulations! You have solved all the quizzes for the current week of training.",
     "mentors": {
       "quiz1": {
         "question": "How can our students make the plans for achieving their goals clearer and clearer in their minds?",

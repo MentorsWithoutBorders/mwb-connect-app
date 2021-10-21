@@ -133,7 +133,7 @@ class _QuizState extends State<QuizView> {
                           padding: const EdgeInsets.only(bottom: 12.0),
                           child: Center(
                             child: Text(
-                              'Quiz $index of $quizzesCount',
+                              'quizzes.quiz_of'.tr(args: [index.toString(), quizzesCount.toString()]),
                               style: const TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.BERMUDA_GRAY
@@ -204,7 +204,7 @@ class _QuizState extends State<QuizView> {
               _showNextQuiz();
             },
             child: Text(
-              'Next quiz', 
+              'quizzes.next_quiz'.tr(), 
               style: const TextStyle(
                 fontSize: 14.0,
                 color: Colors.white
@@ -252,7 +252,7 @@ class _QuizState extends State<QuizView> {
               _showSameQuiz();
             },
             child: Text(
-              'Try again', 
+              'quizzes.try_again'.tr(), 
               style: const TextStyle(
                 fontSize: 14.0,
                 color: Colors.white
@@ -280,7 +280,7 @@ class _QuizState extends State<QuizView> {
         children: [
           Expanded(
             child: Text(
-              'Congratulations! You have solved all the quizzes for the current week of training.',
+              'quizzes.quizzes_solved'.tr(),
               style: const TextStyle(
                 fontSize: 12.0,
                 color: AppColors.ALLPORTS,
