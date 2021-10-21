@@ -95,18 +95,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   String get fieldName => _storageService.fieldName != null ? (_storageService.fieldName as String).toLowerCase() : 'common.remote'.tr();
 
-  bool getShouldShowAddStep() {
-    DateTime nextDeadline = Utils.getNextDeadline() as DateTime;
-    DateTime now = Utils.resetTime(DateTime.now());
-    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
-    int limit = now.difference(registeredOn).inDays > 7 ? 7 : 8;
-    if (lastStepAdded?.id != null && nextDeadline.difference(Utils.resetTime(lastStepAdded?.dateTime as DateTime)).inDays < limit) {
-      return false;
-    } else {
-      return true;
-    }
-  }  
-
   DateTime? getCertificateDate() {
     DateTime registeredOn = DateTime.parse(_storageService.registeredOn as String);
     registeredOn = Utils.resetTime(registeredOn);

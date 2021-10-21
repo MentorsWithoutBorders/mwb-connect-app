@@ -104,7 +104,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     );
   }
 
-  bool shouldShowTraining() => _connectWithMentorProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;
+  bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;
 
   Widget _showTitle() {
     return Container(

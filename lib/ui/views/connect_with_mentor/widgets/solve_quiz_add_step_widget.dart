@@ -31,7 +31,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   Widget _showSolveQuizAddStepCard() {
     String? quizzes = _quizzesProvider?.getRemainingQuizzesText();
     bool? shouldShowQuizzes = _quizzesProvider?.getShouldShowQuizzes();
-    bool? shouldShowStep = _connectWithMentorProvider?.getShouldShowAddStep();
+    bool? shouldShowStep = _stepsProvider?.getShouldShowAddStep();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
