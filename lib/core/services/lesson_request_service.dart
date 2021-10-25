@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -15,16 +13,14 @@ class LessonRequestService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
 
   Future<LessonRequestModel> getLessonRequest() async {
-    http.Response response = await _api.getHTTP(url: '/lesson_request');
-    var json = jsonDecode(response.body);
-    LessonRequestModel lessonRequest = LessonRequestModel.fromJson(json);
+    Map<String, dynamic> response = await _api.getHTTP(url: '/lesson_request');
+    LessonRequestModel lessonRequest = LessonRequestModel.fromJson(response);
     return lessonRequest;
   }
 
   Future<Lesson> acceptLessonRequest(String? id, Lesson? nextLesson) async {
-    http.Response response = await _api.postHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: nextLesson?.toJson());  
-    var json = jsonDecode(response.body);
-    nextLesson = Lesson.fromJson(json);
+    Map<String, dynamic> response = await _api.postHTTP(url: '/lesson_requests/$id/accept_lesson_request', data: nextLesson?.toJson());  
+    nextLesson = Lesson.fromJson(response);
     return nextLesson;
   }  
 
@@ -39,9 +35,8 @@ class LessonRequestService {
   }    
   
   Future<Lesson> getNextLesson() async {
-    http.Response response = await _api.getHTTP(url: '/next_lesson');
-    var json = jsonDecode(response.body);
-    Lesson nextLesson = Lesson.fromJson(json);
+    Map<String, dynamic> response = await _api.getHTTP(url: '/next_lesson');
+    Lesson nextLesson = Lesson.fromJson(response);
     return nextLesson;
   }
 
@@ -69,48 +64,43 @@ class LessonRequestService {
   } 
 
   Future<Lesson> getPreviousLesson() async {
-    http.Response response = await _api.getHTTP(url: '/previous_lesson');
-    var json = jsonDecode(response.body);
-    Lesson previousLesson = Lesson.fromJson(json);
+    Map<String, dynamic> response = await _api.getHTTP(url: '/previous_lesson');
+    Lesson previousLesson = Lesson.fromJson(response);
     return previousLesson;
   }
   
   Future<List<LessonNote>> getLessonsNotes(String studentId) async {
-    http.Response response = await _api.getHTTP(url: '/users/$studentId/lessons_notes');
-    var json = jsonDecode(response.body);
-    List<LessonNote> lessonsNotes = List<LessonNote>.from(json.map((model) => LessonNote.fromJson(model)));      
+    dynamic response = await _api.getHTTP(url: '/users/$studentId/lessons_notes');
+    List<LessonNote> lessonsNotes = List<LessonNote>.from(response.map((model) => LessonNote.fromJson(model)));      
     return lessonsNotes;
   }
   
   Future<List<GuideTutorial>> getGuideTutorials(String? lessonId) async {
-    http.Response response = await _api.getHTTP(url: '/lessons/$lessonId/guide_tutorials');
-    var json = jsonDecode(response.body);
-    List<GuideTutorial> guideTutorials = List<GuideTutorial>.from(json.map((model) => GuideTutorial.fromJson(model)));      
+    dynamic response = await _api.getHTTP(url: '/lessons/$lessonId/guide_tutorials');
+    List<GuideTutorial> guideTutorials = List<GuideTutorial>.from(response.map((model) => GuideTutorial.fromJson(model)));      
     return guideTutorials;
   }
   
   Future<List<GuideRecommendation>> getGuideRecommendations(String? lessonId) async {
-    http.Response response = await _api.getHTTP(url: '/lessons/$lessonId/guide_recommendations');
-    var json = jsonDecode(response.body);
-    List<GuideRecommendation> guideRecommendations = List<GuideRecommendation>.from(json.map((model) => GuideRecommendation.fromJson(model)));      
+    dynamic response = await _api.getHTTP(url: '/lessons/$lessonId/guide_recommendations');
+    List<GuideRecommendation> guideRecommendations = List<GuideRecommendation>.from(response.map((model) => GuideRecommendation.fromJson(model)));      
     return guideRecommendations;
   }  
 
   Future<List<Skill>> getSkills(String? subfieldId) async {
     String? userId = _storageService.userId;
-    http.Response response = await _api.getHTTP(url: '/users/$userId/subfields/$subfieldId/skills');
-    var json = jsonDecode(response.body);
-    List<Skill> skills = List<Skill>.from(json.map((model) => Skill.fromJson(model)));      
+    dynamic response = await _api.getHTTP(url: '/users/$userId/subfields/$subfieldId/skills');
+    List<Skill> skills = List<Skill>.from(response.map((model) => Skill.fromJson(model)));      
     return skills;
   }
   
   Future<void> addStudentSkills(String? lessonId, List<String> skills) async {
-    await _api.putHTTP(url: '/lessons/$lessonId/skills', data: skills);
+    // await _api.putHTTP(url: '/lessons/$lessonId/skills', data: skills);
     return ;
   }
 
   Future<void> addStudentsLessonNotes(String? lessonId, LessonNote lessonNote) async {
-    await _api.postHTTP(url: '/lessons/$lessonId/notes', data: lessonNote);
+    await _api.postHTTP(url: '/lessons/$lessonId/notes', data: lessonNote.toJson());
     return ;
   }  
 }

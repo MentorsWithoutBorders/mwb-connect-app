@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -10,30 +8,26 @@ class StepsService {
   final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<List<StepModel>> getSteps(String goalId) async {
-    http.Response response = await _api.getHTTP(url: '/goals/$goalId/steps');
-    var json = jsonDecode(response.body);
-    List<StepModel> steps = List<StepModel>.from(json.map((model) => StepModel.fromJson(model)));      
+    dynamic response = await _api.getHTTP(url: '/goals/$goalId/steps');
+    List<StepModel> steps = List<StepModel>.from(response.map((model) => StepModel.fromJson(model)));      
     return steps;
   }
 
   Future<StepModel> getStepById(String goalId, String id) async {
-    http.Response response = await _api.getHTTP(url: '/steps/$id');
-    var json = jsonDecode(response.body);
-    StepModel step = StepModel.fromJson(json);
+    Map<String, dynamic> response = await _api.getHTTP(url: '/steps/$id');
+    StepModel step = StepModel.fromJson(response);
     return step;
   }
 
   Future<StepModel> getLastStepAdded() async {
-    http.Response response = await _api.getHTTP(url: '/last_step_added');
-    var json = jsonDecode(response.body);
-    StepModel step = StepModel.fromJson(json);
+    Map<String, dynamic> response = await _api.getHTTP(url: '/last_step_added');
+    StepModel step = StepModel.fromJson(response);
     return step;
   }    
 
   Future<StepModel> addStep(String? goalId, StepModel step) async {
-    http.Response response = await _api.postHTTP(url: '/goals/$goalId/steps', data: step.toJson());  
-    var json = jsonDecode(response.body);
-    StepModel addedStep = StepModel.fromJson(json);
+    Map<String, dynamic> response = await _api.postHTTP(url: '/goals/$goalId/steps', data: step.toJson());  
+    StepModel addedStep = StepModel.fromJson(response);
     return addedStep;
   }  
 

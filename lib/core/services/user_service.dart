@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/core/models/timezone_model.dart';
 import 'package:quiver/strings.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -34,9 +32,8 @@ class UserService {
   }
 
   Future<User> getUserDetails() async {
-    http.Response response = await _api.getHTTP(url: '/user');
-    var json = jsonDecode(response.body);
-    User user = User.fromJson(json);
+    Map<String, dynamic> response = await _api.getHTTP(url: '/user');
+    User user = User.fromJson(response);
     return user;
   }
 

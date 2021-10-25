@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -9,6 +11,7 @@ import 'package:mwb_connect_app/core/models/error_model.dart';
 class ApiService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final String baseUrl = 'https://mwbtraining.co/staging/api/v1';
+  static const platform = MethodChannel('com.mwbconnect.app/api');
   bool refreshingToken = false;
   
   Map<String, String> getHeaders() {
@@ -21,95 +24,178 @@ class ApiService {
     return headers;    
   }
 
-  Future<http.Response> getHTTP({required String url}) async {
-    final response = await http.get(
-      Uri.parse(baseUrl + url), 
-      headers: getHeaders()
-    );
-    if (response.statusCode == 200) {
-      return response;
-    } else if (response.statusCode == 400) {
-      throw(ErrorModel(message: _getError(response)));
-    } else if (response.statusCode == 401) {
-      throw(ErrorModel(message: _getError(response)));
-      // if (!refreshingToken) {
-      //   await _refreshToken();
-      // }
-      // if (_storageService.refreshToken != null) {
-      //   return getHTTP(url: url);
-      // }      
+  Future<dynamic> getHTTP({required String url}) async {    
+    String finalUrl = baseUrl + url;
+    dynamic responseBody;
+    int statusCode = 0;
+    if (Platform.isAndroid) {
+      String accessToken = _storageService.accessToken ?? '';
+      final response = await platform.invokeMethod('getHTTP', {'url': finalUrl, 'accessToken': accessToken});
+      final responseMap = response as Map<Object?, Object?>;
+      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+        statusCode = int.parse(responseMap['statusCode'] as String);
+        final responseData = responseMap['data'] as String;
+        try {
+          responseBody = jsonDecode(responseData);
+        } catch (e) {}
+      }
+    } else {
+      final response = await http.get(
+        Uri.parse(finalUrl), 
+        headers: getHeaders(),
+      );
+      statusCode = response.statusCode;
+      try {
+        responseBody = jsonDecode(response.body);
+      } catch (e) {}
     }
-    return response;
+    switch (statusCode) {
+      case 200:
+        return responseBody;
+      case 400: 
+        throw(ErrorModel(message: _getError(responseBody)));
+      case 401: 
+        throw(ErrorModel(message: _getError(responseBody)));
+        // if (!refreshingToken) {
+        //   await _refreshToken();      
+        // }
+        // if (_storageService.refreshToken != null) {      
+        //   return await postHTTP(url: url, data: data);
+        // }                
+    }    
+    return responseBody; 
   }
 
-  Future<http.Response> postHTTP({required String url, dynamic data}) async {
-    final response = await http.post(
-      Uri.parse(baseUrl + url), 
-      headers: getHeaders(),
-      body: json.encode(data)
-    );
-    if (response.statusCode == 200) {
-      return response;
-    } else if (response.statusCode == 400) {
-      throw(ErrorModel(message: _getError(response)));
-    } else if (response.statusCode == 401) {
-      throw(ErrorModel(message: _getError(response)));
-      // if (!refreshingToken) {
-      //   await _refreshToken();      
-      // }
-      // if (_storageService.refreshToken != null) {      
-      //   return await postHTTP(url: url, data: data);
-      // }
+  Future<dynamic> postHTTP({required String url, Map<String, Object?>? data}) async { 
+    String finalUrl = baseUrl + url;
+    dynamic responseBody;
+    int statusCode = 0;
+    if (Platform.isAndroid) {
+      String accessToken = _storageService.accessToken ?? '';
+      final response = await platform.invokeMethod('postHTTP', {'url': finalUrl, 'data': data, 'accessToken': accessToken});
+      final responseMap = response as Map<Object?, Object?>;
+      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+        statusCode = int.parse(responseMap['statusCode'] as String);
+        final responseData = responseMap['data'] as String;
+        try {
+          responseBody = jsonDecode(responseData);
+        } catch (e) {}
+      }
+    } else {
+      final response = await http.post(
+        Uri.parse(finalUrl), 
+        headers: getHeaders(),
+        body: json.encode(data)
+      );
+      statusCode = response.statusCode;
+      try {
+        responseBody = jsonDecode(response.body);
+      } catch (e) {}
     }
-    return response;
+    switch (statusCode) {
+      case 200:
+        return responseBody;
+      case 400: 
+        throw(ErrorModel(message: _getError(responseBody)));
+      case 401: 
+        throw(ErrorModel(message: _getError(responseBody)));
+        // if (!refreshingToken) {
+        //   await _refreshToken();      
+        // }
+        // if (_storageService.refreshToken != null) {      
+        //   return await postHTTP(url: url, data: data);
+        // }                
+    }      
+    return responseBody;
   }
 
-  Future<http.Response> putHTTP({required String url, dynamic data}) async {
-    final response = await http.put(
-      Uri.parse(baseUrl + url), 
-      headers: getHeaders(),
-      body: json.encode(data)
-    );
-    if (response.statusCode == 200) {
-      return response;
-    } else if (response.statusCode == 400) {
-      throw(ErrorModel(message: _getError(response)));
-    } else if (response.statusCode == 401) {
-      throw(ErrorModel(message: _getError(response)));
-      // if (!refreshingToken) {
-      //   await _refreshToken();       
-      // }
-      // if (_storageService.refreshToken != null) {
-      //   return await putHTTP(url: url, data: data);
-      // }
+  Future<dynamic> putHTTP({required String url, Map<String, Object?>? data}) async {
+   String finalUrl = baseUrl + url;
+    dynamic responseBody;
+    int statusCode = 0;
+    if (Platform.isAndroid) {
+      String accessToken = _storageService.accessToken ?? '';
+      final response = await platform.invokeMethod('putHTTP', {'url': finalUrl, 'data': data, 'accessToken': accessToken});
+      final responseMap = response as Map<Object?, Object?>;
+      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+        statusCode = int.parse(responseMap['statusCode'] as String);
+        final responseData = responseMap['data'] as String;
+        try {
+          responseBody = jsonDecode(responseData);
+        } catch (e) {}
+      }
+    } else {
+      final response = await http.put(
+        Uri.parse(finalUrl), 
+        headers: getHeaders(),
+        body: json.encode(data)
+      );
+      statusCode = response.statusCode;
+      try {
+        responseBody = jsonDecode(response.body);
+      } catch (e) {}
     }
-    return response;
+    switch (statusCode) {
+      case 200:
+        return responseBody;
+      case 400: 
+        throw(ErrorModel(message: _getError(responseBody)));
+      case 401: 
+        throw(ErrorModel(message: _getError(responseBody)));
+        // if (!refreshingToken) {
+        //   await _refreshToken();      
+        // }
+        // if (_storageService.refreshToken != null) {      
+        //   return await postHTTP(url: url, data: data);
+        // }                
+    }        
+    return responseBody;
   }
   
-  Future<http.Response> deleteHTTP({required String url}) async {
-    final response = await http.delete(
-      Uri.parse(baseUrl + url), 
-      headers: getHeaders()
-    );
-    if (response.statusCode == 200) {
-      return response;
-    } else if (response.statusCode == 400) {
-      throw(ErrorModel(message: _getError(response)));
-    } else if (response.statusCode == 401) {
-      throw(ErrorModel(message: _getError(response)));
-      // if (!refreshingToken) {
-      //   await _refreshToken();    
-      // }
-      // if (_storageService.refreshToken != null) {      
-      //   return await deleteHTTP(url: url);
-      // }
+  Future<dynamic> deleteHTTP({required String url}) async {
+    String finalUrl = baseUrl + url;
+    dynamic responseBody;
+    int statusCode = 0;
+    if (Platform.isAndroid) {
+      String accessToken = _storageService.accessToken ?? '';
+      final response = await platform.invokeMethod('deleteHTTP', {'url': finalUrl, 'accessToken': accessToken});
+      final responseMap = response as Map<Object?, Object?>;
+      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+        statusCode = int.parse(responseMap['statusCode'] as String);
+        final responseData = responseMap['data'] as String;
+        try {
+          responseBody = jsonDecode(responseData);
+        } catch (e) {}
+      }
+    } else {
+      final response = await http.delete(
+        Uri.parse(finalUrl), 
+        headers: getHeaders()
+      );
+      statusCode = response.statusCode;
+      try {
+        responseBody = jsonDecode(response.body);
+      } catch (e) {}
     }
-    return response;
+    switch (statusCode) {
+      case 200:
+        return responseBody;
+      case 400: 
+        throw(ErrorModel(message: _getError(responseBody)));
+      case 401: 
+        throw(ErrorModel(message: _getError(responseBody)));
+        // if (!refreshingToken) {
+        //   await _refreshToken();      
+        // }
+        // if (_storageService.refreshToken != null) {      
+        //   return await postHTTP(url: url, data: data);
+        // }                
+    }      
+    return responseBody;
   }
 
-  String? _getError(http.Response response) {
-    var json = jsonDecode(response.body);
-    ErrorModel error = ErrorModel.fromJson(json);
+  String? _getError(dynamic responseBody) {
+    ErrorModel error = ErrorModel.fromJson(responseBody);
     return error.message;
   }  
 

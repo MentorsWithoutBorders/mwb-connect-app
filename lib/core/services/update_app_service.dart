@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/core/models/app_version_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -12,9 +10,8 @@ class UpdateAppService {
   }  
 
   Future<AppVersion> getCurrentVersion() async {
-    http.Response response = await _api.getHTTP(url: '/updates');
-    var json = jsonDecode(response.body);
-    AppVersion appVersion = AppVersion.fromJson(json);
+    Map<String, dynamic> response = await _api.getHTTP(url: '/updates');
+    AppVersion appVersion = AppVersion.fromJson(response);
     return appVersion;
   }
 }

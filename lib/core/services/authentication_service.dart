@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
@@ -18,14 +16,13 @@ class AuthService {
   final PushNotificationsService pushNotificationsService = locator<PushNotificationsService>();
 
   Future<String> signUp(User user) async {
-    http.Response response;
+    dynamic response;
     try {    
       response = await _api.postHTTP(url: '/signup', data: user.toJson());
     } catch(error) {
       throw(error);
     }      
-    var json = jsonDecode(response.body);
-    Tokens tokens = Tokens.fromJson(json);
+    Tokens tokens = Tokens.fromJson(response);
     user.id = tokens.userId;
     _setTokens(tokens);
     await _setUserStorage(user);
@@ -33,14 +30,13 @@ class AuthService {
   }
 
   Future<String> login(User user) async {
-    http.Response response;
+    dynamic response;
     try {
       response = await _api.postHTTP(url: '/login', data: user.toJson());
     } on ErrorModel catch(error) {
       throw(error);
     }
-    var json = jsonDecode(response.body);
-    Tokens tokens = Tokens.fromJson(json);
+    Tokens tokens = Tokens.fromJson(response);
     user.id = tokens.userId;
     _setTokens(tokens);
     await _setUserStorage(user);

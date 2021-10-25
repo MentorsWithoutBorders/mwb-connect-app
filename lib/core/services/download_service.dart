@@ -11,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/tutorial_model.dart';
-import 'package:mwb_connect_app/core/models/quiz_settings_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
@@ -183,18 +182,10 @@ class DownloadService {
   }
 
   Future<List<Tutorial>> _getTutorials() async {
-    http.Response response = await _api.getHTTP(url: '/tutorials');
-    var json = jsonDecode(response.body);
-    List<Tutorial> tutorials = List<Tutorial>.from(json.map((model) => Tutorial.fromJson(model)));      
+    dynamic response = await _api.getHTTP(url: '/tutorials');
+    List<Tutorial> tutorials = List<Tutorial>.from(response.map((model) => Tutorial.fromJson(model)));      
     return tutorials;
   }
-
-  Future<QuizSettings> _getQuizSettings() async {
-    http.Response response = await _api.getHTTP(url: '/quizzes_settings');
-    var json = jsonDecode(response.body);
-    QuizSettings quizSettings = QuizSettings.fromJson(json);
-    return quizSettings;
-  } 
 
   Future<void> showFiles() async {
     final Directory directory = await getApplicationDocumentsDirectory();
