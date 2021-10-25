@@ -7,7 +7,10 @@ class QuizzesService {
 
   Future<List<Quiz>> getQuizzes() async {
     dynamic response = await _api.getHTTP(url: '/quizzes');
-    List<Quiz> quizzes = List<Quiz>.from(response.map((model) => Quiz.fromJson(model)));      
+    List<Quiz> quizzes = [];
+    if (response != null) {
+      quizzes = List<Quiz>.from(response.map((model) => Quiz.fromJson(model)));
+    }
     return quizzes;
   }  
 

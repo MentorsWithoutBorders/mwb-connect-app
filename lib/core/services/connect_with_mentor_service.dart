@@ -51,7 +51,10 @@ class ConnectWithMentorService {
 
   Future<List<Skill>> getMentorSkills(String? mentorId, String? subfieldId) async {
     dynamic response = await _api.getHTTP(url: '/users/$mentorId/subfields/$subfieldId/skills');
-    List<Skill> skills = List<Skill>.from(response.map((model) => Skill.fromJson(model)));      
+    List<Skill> skills = [];
+    if (response != null) {
+      skills = List<Skill>.from(response.map((model) => Skill.fromJson(model)));
+    }
     return skills;
   }
 

@@ -71,26 +71,38 @@ class LessonRequestService {
   
   Future<List<LessonNote>> getLessonsNotes(String studentId) async {
     dynamic response = await _api.getHTTP(url: '/users/$studentId/lessons_notes');
-    List<LessonNote> lessonsNotes = List<LessonNote>.from(response.map((model) => LessonNote.fromJson(model)));      
+    List<LessonNote> lessonsNotes = [];
+    if (response != null) {
+      lessonsNotes = List<LessonNote>.from(response.map((model) => LessonNote.fromJson(model)));  
+    }
     return lessonsNotes;
   }
   
   Future<List<GuideTutorial>> getGuideTutorials(String? lessonId) async {
     dynamic response = await _api.getHTTP(url: '/lessons/$lessonId/guide_tutorials');
-    List<GuideTutorial> guideTutorials = List<GuideTutorial>.from(response.map((model) => GuideTutorial.fromJson(model)));      
+    List<GuideTutorial> guideTutorials = [];
+    if (response != null) {
+      guideTutorials = List<GuideTutorial>.from(response.map((model) => GuideTutorial.fromJson(model)));
+    }
     return guideTutorials;
   }
   
   Future<List<GuideRecommendation>> getGuideRecommendations(String? lessonId) async {
     dynamic response = await _api.getHTTP(url: '/lessons/$lessonId/guide_recommendations');
-    List<GuideRecommendation> guideRecommendations = List<GuideRecommendation>.from(response.map((model) => GuideRecommendation.fromJson(model)));      
+    List<GuideRecommendation> guideRecommendations = [];
+    if (response != null) {
+      guideRecommendations = List<GuideRecommendation>.from(response.map((model) => GuideRecommendation.fromJson(model)));
+    }
     return guideRecommendations;
   }  
 
   Future<List<Skill>> getSkills(String? subfieldId) async {
     String? userId = _storageService.userId;
     dynamic response = await _api.getHTTP(url: '/users/$userId/subfields/$subfieldId/skills');
-    List<Skill> skills = List<Skill>.from(response.map((model) => Skill.fromJson(model)));      
+    List<Skill> skills = [];
+    if (response != null) {
+      skills = List<Skill>.from(response.map((model) => Skill.fromJson(model)));
+    }
     return skills;
   }
   

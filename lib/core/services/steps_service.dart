@@ -1,15 +1,16 @@
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 
 class StepsService {
   final ApiService _api = locator<ApiService>();
-  final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   Future<List<StepModel>> getSteps(String goalId) async {
     dynamic response = await _api.getHTTP(url: '/goals/$goalId/steps');
-    List<StepModel> steps = List<StepModel>.from(response.map((model) => StepModel.fromJson(model)));      
+    List<StepModel> steps = [];
+    if (response != null) {
+      steps = List<StepModel>.from(response.map((model) => StepModel.fromJson(model)));      
+    }    
     return steps;
   }
 

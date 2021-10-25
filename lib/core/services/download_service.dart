@@ -183,7 +183,10 @@ class DownloadService {
 
   Future<List<Tutorial>> _getTutorials() async {
     dynamic response = await _api.getHTTP(url: '/tutorials');
-    List<Tutorial> tutorials = List<Tutorial>.from(response.map((model) => Tutorial.fromJson(model)));      
+    List<Tutorial> tutorials  = [];
+    if (response != null) {
+      tutorials = List<Tutorial>.from(response.map((model) => Tutorial.fromJson(model)));      
+    }
     return tutorials;
   }
 

@@ -7,7 +7,10 @@ class GoalsService {
 
   Future<List<Goal>> getGoals() async {
     dynamic response = await _api.getHTTP(url: '/goals');
-    List<Goal> goals = List<Goal>.from(response.map((model) => Goal.fromJson(model)));      
+    List<Goal> goals = [];
+    if (response != null) {
+      goals = List<Goal>.from(response.map((model) => Goal.fromJson(model)));      
+    }    
     return goals;
   }
 
