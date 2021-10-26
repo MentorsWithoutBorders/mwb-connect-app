@@ -4,6 +4,7 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/ids_model.dart';
 
 class ConnectWithMentorService {
   final ApiService _api = locator<ApiService>();
@@ -59,7 +60,11 @@ class ConnectWithMentorService {
   }
 
   Future<void> addSkills(List<String>? skillIds, String? subfieldId) async {
-    // await _api.postHTTP(url: '/user/subfields/$subfieldId/skills', data: skillIds);
+    Ids ids = Ids(listIds: []);
+    if (skillIds != null) {
+      ids = Ids(listIds: skillIds);
+    }
+    await _api.postHTTP(url: '/user/subfields/$subfieldId/skills', data: ids.toJson());
     return ;
   }  
   

@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
+import 'package:mwb_connect_app/core/models/ids_model.dart';
 
 class LessonRequestService {
   final ApiService _api = locator<ApiService>();
@@ -106,8 +107,9 @@ class LessonRequestService {
     return skills;
   }
   
-  Future<void> addStudentSkills(String? lessonId, List<String> skills) async {
-    // await _api.putHTTP(url: '/lessons/$lessonId/skills', data: skills);
+  Future<void> addStudentSkills(String? lessonId, List<String> skillIds) async {
+    Ids ids = Ids(listIds: skillIds);
+    await _api.putHTTP(url: '/lessons/$lessonId/skills', data: ids.toJson());
     return ;
   }
 
