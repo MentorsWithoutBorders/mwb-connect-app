@@ -15,6 +15,7 @@ import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_stopped_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_disabled.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -88,17 +89,20 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
 
   Widget _showConnectWithMentor() {
    final double statusBarHeight = MediaQuery.of(context).padding.top;
+   final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
+   final isMentoringEnabled = _commonProvider!.appFlags.isMentoringEnabled;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (shouldShowTraining() == true) SolveQuizAddStep(),
-          if (shouldShowTraining() == false && _connectWithMentorProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),          
-          if (_connectWithMentorProvider?.isNextLesson == true) NextLesson(),
-          if (_connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false && _connectWithMentorProvider?.shouldStopLessons != true) FindAvailableMentor(),
-          if (_connectWithMentorProvider?.isLessonRequest == true && _connectWithMentorProvider?.shouldStopLessons != true) FindingAvailableMentor(),
-          if (_connectWithMentorProvider?.shouldStopLessons == true) LessonsStopped()
+          if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
+          if (isTrainingEnabled && shouldShowTraining() == false && _connectWithMentorProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
+          if (isMentoringEnabled && _connectWithMentorProvider?.isNextLesson == true) NextLesson(),
+          if (isMentoringEnabled && _connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false && _connectWithMentorProvider?.shouldStopLessons != true) FindAvailableMentor(),
+          if (isMentoringEnabled && _connectWithMentorProvider?.isLessonRequest == true && _connectWithMentorProvider?.shouldStopLessons != true) FindingAvailableMentor(),
+          if (isMentoringEnabled && _connectWithMentorProvider?.shouldStopLessons == true) LessonsStopped(),
+          if (!isMentoringEnabled) LessonsDisabled()
         ]
       )
     );
@@ -131,6 +135,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
         _connectWithMentorProvider!.getNextLesson(),
         _stepsProvider!.getLastStepAdded(),
         _quizzesProvider!.getQuizzes(),
+        _commonProvider!.getAppFlags()
       ]);
       _setSelectedGoal();
       await _commonProvider!.initPushNotifications();

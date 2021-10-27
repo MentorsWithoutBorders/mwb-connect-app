@@ -85,13 +85,14 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
 
   Widget _showLessonRequest() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (shouldShowTraining() == true) SolveQuizAddStep(),
-          if (shouldShowTraining() == false && _lessonRequestProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
+          if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
+          if (isTrainingEnabled && shouldShowTraining() == false && _lessonRequestProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
           if (_lessonRequestProvider?.isNextLesson == false && _lessonRequestProvider?.isLessonRequest == false) StandingBy(),
           if (_lessonRequestProvider?.isLessonRequest == true) LessonRequest(),
           if (_lessonRequestProvider?.isNextLesson == true) NextLesson()
@@ -132,6 +133,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         _lessonRequestProvider!.getPreviousLesson(),
         _stepsProvider!.getLastStepAdded(),
         _quizzesProvider!.getQuizzes(),
+        _commonProvider!.getAppFlags()
       ]);
       _setSelectedGoal();
       _showExpiredLessonRequest();

@@ -4,16 +4,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 
-class LessonsStopped extends StatefulWidget {
-  const LessonsStopped({Key? key})
+class LessonsDisabled extends StatefulWidget {
+  const LessonsDisabled({Key? key})
     : super(key: key); 
 
   @override
-  State<StatefulWidget> createState() => _LessonsStoppedState();
+  State<StatefulWidget> createState() => _LessonsDisabledState();
 }
 
-class _LessonsStoppedState extends State<LessonsStopped> {
-  Widget _showLessonsStoppedCard() {
+class _LessonsDisabledState extends State<LessonsDisabled> {
+  Widget _showLessonsDisabledCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -43,7 +43,7 @@ class _LessonsStoppedState extends State<LessonsStopped> {
       margin: const EdgeInsets.only(top: 3.0, bottom: 15.0),
       child: Center(
         child: Text(
-          'lessons_stopped.title'.tr(),
+          'lessons_disabled.title'.tr(),
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,
@@ -67,7 +67,7 @@ class _LessonsStoppedState extends State<LessonsStopped> {
           ),
           children: <TextSpan>[
             TextSpan(
-              text: 'lessons_stopped.text'.tr() + ' ',             
+              text: 'lessons_disabled.text'.tr() + ' ',             
             ),
             TextSpan(
               text: 'common.contact_support'.tr(),
@@ -93,6 +93,6 @@ class _LessonsStoppedState extends State<LessonsStopped> {
   
   @override
   Widget build(BuildContext context) {
-    return _showLessonsStoppedCard();
+    return _showLessonsDisabledCard();
   }
 }

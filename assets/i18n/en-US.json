@@ -314,7 +314,11 @@
   "lessons_stopped": {
     "title": "Lessons stopped",
     "text": "Unfortunately we are not able to offer more lessons but if you would like to become a mentor in our group after you will gain some professional experience, please feel free to"
-  },	  
+  },
+  "lessons_disabled": {
+    "title": "Lessons disabled",
+    "text": "Unfortunately your lesson requests have been disabled. If you would like to enable them, please"
+  },  
 	"tutorials": { 
 		"mental_process_goal_steps": {
 			"title": "Adding steps",

@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 
@@ -23,7 +22,6 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
   ConnectWithMentorViewModel? _connectWithMentorProvider;
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
-  QuizzesViewModel? _quizzesProvider;
 
   Widget _showTrainingCompletedCard() {
     return Padding(

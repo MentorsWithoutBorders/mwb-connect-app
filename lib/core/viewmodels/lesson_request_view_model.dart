@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/utils/lesson_recurrence_type.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
-import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';

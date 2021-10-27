@@ -8,14 +8,18 @@ import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
+import 'package:mwb_connect_app/core/services/app_flags_service.dart';
+import 'package:mwb_connect_app/core/models/app_flags_model.dart';
 
 import '../../service_locator.dart';
 
 class CommonViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final DownloadService _downloadService = locator<DownloadService>();  
+  final DownloadService _downloadService = locator<DownloadService>();
+  final AppFlagsService _appFlagsService = locator<AppFlagsService>();  
   double dialogInputHeight = 0.0;
   dynamic location;
+  AppFlags appFlags = AppFlags(isTrainingEnabled: true, isMentoringEnabled: true);  
 
   bool? getIsMentor() {
     return _storageService.isMentor;
@@ -44,7 +48,11 @@ class CommonViewModel extends ChangeNotifier {
     offset = offsetList[0] + ':' + offsetList[1];
     TimeZoneModel timeZoneModel = TimeZoneModel(abbreviation: now.timeZoneName, name: timeZoneName, offset: offset);    
     userService.setUserTimeZone(timeZoneModel);
-  }    
+  } 
+
+  Future<void> getAppFlags() async {
+    appFlags = await _appFlagsService.getAppFlags();
+  }     
 
   void setPreferences() {
     _downloadService.downloadLocales().then((value) {
