@@ -32,7 +32,7 @@
                  Flutter's first frame. -->
             <meta-data
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
-              android:resource="@drawable/launch_background"
+              android:resource="@drawable/background_splash"
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
