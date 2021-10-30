@@ -56,7 +56,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
           }
         }
       });
-    _animationController?.forward();     
+    _animationController?.forward();
   }
 
   @override

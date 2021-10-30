@@ -103,7 +103,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
         style: const TextStyle(
           fontSize: 12.0,
           color: AppColors.DOVE_GRAY,
-          height: 1.2
+          height: 1.4
         )
       ),
     );

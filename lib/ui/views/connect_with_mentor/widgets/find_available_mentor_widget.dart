@@ -76,7 +76,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
               style: const TextStyle(
                 fontSize: 12.0,
                 color: AppColors.DOVE_GRAY,
-                height: 1.2
+                height: 1.4
               ),
               children: <TextSpan>[
                 TextSpan(
@@ -106,7 +106,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
             style: const TextStyle(
               fontSize: 12.0,
               color: AppColors.DOVE_GRAY,
-              height: 1.2
+              height: 1.4
             )
           ),
         )
