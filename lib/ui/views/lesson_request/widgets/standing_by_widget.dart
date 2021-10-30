@@ -67,7 +67,7 @@ class _StandingByState extends State<StandingBy> {
           style: const TextStyle(
             fontSize: 12,
             color: AppColors.DOVE_GRAY,
-            height: 1.5
+            height: 1.4
           ),
           children: <TextSpan>[
             TextSpan(

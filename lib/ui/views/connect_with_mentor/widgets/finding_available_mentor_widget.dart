@@ -45,7 +45,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
         style: const TextStyle(
           fontSize: 18,
           color: AppColors.DOVE_GRAY,
-          height: 1.5
+          height: 1.4
         )
       ),
     ); 

@@ -78,7 +78,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
                             _time as String,
                             style: const TextStyle(
                               fontSize: 16.0,
-                              height: 1.5
+                              height: 1.4
                             ),
                           )
                         ),

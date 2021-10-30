@@ -33,8 +33,8 @@ class ConnectWithMentorService {
   }   
 
   Future<void> cancelNextLesson(Lesson? lesson, bool? isSingleLesson) async {
-    dynamic data = {};
-    Lesson lessonData = Lesson(mentor: User(id: lesson?.mentor?.id));
+    Map<String, Object?> data = {};
+    Lesson lessonData = Lesson(mentor: User(id: lesson?.mentor?.id), isRecurrent: lesson?.isRecurrent);
     if (isSingleLesson == true && lesson?.isRecurrent == true) {
       lessonData.dateTime = lesson?.dateTime;
     }

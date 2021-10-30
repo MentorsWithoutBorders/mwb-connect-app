@@ -42,11 +42,12 @@ class LessonRequestService {
   }
 
   Future<void> cancelNextLesson(Lesson? lesson, bool? isSingleLesson) async {
-    dynamic data = {};
+    Map<String, Object?> data = {};
+    Lesson lessonData = Lesson(isRecurrent: lesson?.isRecurrent);
     if (isSingleLesson == true && lesson?.isRecurrent == true) {
-      Lesson lessonData = Lesson(dateTime: lesson?.dateTime);
-      data = lessonData.toJson();
+      lessonData.dateTime = lesson?.dateTime;
     }
+    data = lessonData.toJson();
     String? id = lesson?.id;
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: data);  
     return ;
