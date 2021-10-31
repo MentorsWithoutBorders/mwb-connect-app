@@ -1,4 +1,5 @@
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 
 class Field {
   String? id;
@@ -36,10 +37,21 @@ class Field {
         subfieldsList.add({
           'id': subfields[i].id, 
           'name': subfields[i].name, 
-          'skills': subfields[i].skills
+          'skills': _skillsToJson(subfields[i].skills)
         });      
       }
     }
     return subfieldsList;    
   }
+
+  List<Map<String,dynamic>> _skillsToJson(List<Skill>? skills) {
+    List<Map<String,dynamic>> skillsList = [];
+    if (skills != null) {
+      for (int i = 0; i < skills.length; i++) {
+        skillsList.add(skills[i].toJson());      
+      }
+    }
+    return skillsList;    
+  }
+
 }
