@@ -30,7 +30,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     super.initState();
     KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();   
     keyboardVisibilityController.onChange.listen((bool visible) {
-      if (visible) {
+      if (visible && _scrollController.hasClients) {
         Future<void>.delayed(const Duration(milliseconds: 100), () {
           _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
