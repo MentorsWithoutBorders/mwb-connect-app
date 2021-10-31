@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/push_notification_type.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/services/logger_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/models/fcm_token_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -17,6 +18,7 @@ import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 class PushNotificationsService {
   final ApiService _api = locator<ApiService>();
   final LocalStorageService _storageService = locator<LocalStorageService>();
+  final LoggerService _loggerService = locator<LoggerService>();
 
   PushNotificationsService._();
 
@@ -31,16 +33,28 @@ class PushNotificationsService {
       // For iOS request permission first.
       if (_storageService.isFCMPermissionRequested != true) {
         _storageService.isFCMPermissionRequested = true;
+        _loggerService.addLogEntry('requesting permission');
         _firebaseMessaging.requestPermission();
       }
       String token = await _firebaseMessaging.getToken() as String;
       print('FirebaseMessaging token: $token');
       FCMToken fcmToken = FCMToken(token: token);
       await _addFCMToken(fcmToken);
+      _loggerService.addLogEntry('token added: ' + token);
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
+        String notification = '';
+        if (event.notification != null && event.notification?.body != null) {
+          notification = event.notification?.body as String;
+        }
+        _loggerService.addLogEntry('PN pressed: ' + notification);
         showPushNotification(event: event, isOpenApp: true);
       });       
       FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+        String notification = '';
+        if (event.notification != null && event.notification?.body != null) {
+          notification = event.notification?.body as String;
+        }        
+        _loggerService.addLogEntry('attempt show PN inside app: ' + notification);
         showPushNotification(event: event, isOpenApp: false);
       }); 
     }
@@ -89,6 +103,7 @@ class PushNotificationsService {
 
   void _showNormalPushNotification(event) {
     if (event != null && event.notification.body.isNotEmpty) {
+      _loggerService.addLogEntry('showing PN inside app: ' + event.notification.body);
       showDialog(
         context: NavigationService.instance.getCurrentContext() as BuildContext,
         builder: (BuildContext context) {
@@ -109,6 +124,7 @@ class PushNotificationsService {
 
   void _showLessonRequestPushNotification(event) {
     if (event != null && event.notification.body.isNotEmpty) {
+      _loggerService.addLogEntry('showing PN inside app: ' + event.notification.body);
       showDialog(
         context: NavigationService.instance.getCurrentContext() as BuildContext,
         builder: (BuildContext context) {
@@ -130,6 +146,7 @@ class PushNotificationsService {
   void _showAfterLessonPushNotification() {
     bool? isMentor = _storageService.isMentor;
     if (isMentor != null && isMentor == true) {
+      _loggerService.addLogEntry('showing PN after lesson for mentor');
       showDialog(
         context: NavigationService.instance.getCurrentContext() as BuildContext,
         builder: (_) => Center(
@@ -139,6 +156,7 @@ class PushNotificationsService {
         )
       );
     } else {
+      _loggerService.addLogEntry('showing PN after lesson for student');
       showDialog(
         context: NavigationService.instance.getCurrentContext() as BuildContext,
         builder: (_) => Center(
