@@ -404,7 +404,7 @@ class _QuizState extends State<QuizView> {
   }
 
   Future<void> _scrollToBottom() async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: Duration(milliseconds: 300),
