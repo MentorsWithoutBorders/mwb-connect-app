@@ -18,7 +18,7 @@ class GoalStepsView extends StatefulWidget {
 }
 
 class _GoalStepsViewState extends State<GoalStepsView> {
-  QuizzesViewModel? _quizProvider;
+  QuizzesViewModel? _quizzesProvider;
   bool _isQuizDialogOpen = false;
 
   Widget _showGoalSteps(bool isHorizontal) {
@@ -47,10 +47,11 @@ class _GoalStepsViewState extends State<GoalStepsView> {
   }
 
   Future<void> _showQuiz(_) async {
-    int remainingQuizzes = _quizProvider!.calculateRemainingQuizzes();
+    int remainingQuizzes = _quizzesProvider!.calculateRemainingQuizzes();
+    bool wasQuizDialogClosed = _quizzesProvider!.wasClosed;
     if (remainingQuizzes > 0) {
       await Future<void>.delayed(const Duration(milliseconds: 500));
-      if (mounted && !_isQuizDialogOpen) {
+      if (mounted && !_isQuizDialogOpen && !wasQuizDialogClosed) {
         _isQuizDialogOpen = true;
         showDialog(
           context: context,
@@ -64,7 +65,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
 
   @override
   Widget build(BuildContext context) {
-    _quizProvider = Provider.of<QuizzesViewModel>(context);    
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context);    
     WidgetsBinding.instance?.addPostFrameCallback(_showQuiz);
 
     return Scaffold(

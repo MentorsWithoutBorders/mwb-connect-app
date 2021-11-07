@@ -150,6 +150,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoal() {
+    _quizzesProvider!.wasClosed = false;
     if (_lessonRequestProvider?.goal != null) {
       _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
       _goToGoalSteps();

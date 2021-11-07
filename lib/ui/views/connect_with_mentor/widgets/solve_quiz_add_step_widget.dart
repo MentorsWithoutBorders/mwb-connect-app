@@ -170,6 +170,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   void _goToGoal() {
+    _quizzesProvider!.wasClosed = false;
     if (_connectWithMentorProvider?.goal != null) {
       _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
       _goToGoalSteps();

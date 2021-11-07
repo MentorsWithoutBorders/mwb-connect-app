@@ -25,7 +25,6 @@ class _QuizState extends State<QuizView> {
   int _selectedIndex = -1;
   String? _answer;
   bool? _isCorrect;
-  bool _shouldShowLoader = false;
   bool _shouldShowNextButton = false;
   bool _shouldShowTryAgainButton = false;
   bool _shouldShowCompletedMessage = false;
@@ -159,7 +158,6 @@ class _QuizState extends State<QuizView> {
                           ),
                           child: _showOptions(options, _answer!)
                         ),
-                        if (_shouldShowLoader == true) _showLoader(),
                         if (_shouldShowNextButton == true) _showNextButton(),
                         if (_shouldShowTryAgainButton == true) _showTryAgainButton(),
                         if (_shouldShowCompletedMessage == true) _showCompletedMessage(),
@@ -173,16 +171,6 @@ class _QuizState extends State<QuizView> {
           _showCloseButton()
         ],
       )
-    );
-  }
-
-  Widget _showLoader() {
-    return Container(
-      height: 45.0,
-      padding: const EdgeInsets.only(bottom: 5.0),
-      child: Center(
-        child: Loader(color: AppColors.PACIFIC_BLUE)
-      ),
     );
   }
 
@@ -403,8 +391,6 @@ class _QuizState extends State<QuizView> {
   } 
   
   Future<void> _onSelected(int index, String answer) async {
-    _setShowLoader(true);
-    await _scrollToBottom();
     if ((index + 1).toString() == answer) {
       _isCorrect = true;
     } else {
@@ -414,13 +400,7 @@ class _QuizState extends State<QuizView> {
       _selectedIndex = index;
     });
     _addQuiz();
-    _setShowLoader(false);
-  }
-
-  void _setShowLoader(bool shouldShowLoader) {
-    setState(() {
-      _shouldShowLoader = shouldShowLoader;
-    });   
+    await _scrollToBottom();
   }
 
   Future<void> _scrollToBottom() async {

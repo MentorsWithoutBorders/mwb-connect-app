@@ -12,6 +12,7 @@ class QuizzesViewModel extends ChangeNotifier {
   int quizNumber = 1;
   int quizNumberIndex = 1;
   List<Quiz> quizzes = [];
+  bool wasClosed = false;
 
   Future<void> getQuizzes() async {
     quizzes = await _quizzesService.getQuizzes();
@@ -45,7 +46,8 @@ class QuizzesViewModel extends ChangeNotifier {
           quizzes[i].isCorrect = true;
           break;
         }
-      }    
+      }
+      wasClosed = true;
       calculateQuizNumber();
       notifyListeners();
     }
