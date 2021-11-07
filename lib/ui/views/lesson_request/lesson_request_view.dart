@@ -49,14 +49,16 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       _isInit = false;
-      if (!_checkAppReload()) {
-        _setPreferences();
-        setState(() {});
-        await _init();
-      }
+      _setTimeZone();
+      setState(() {});
+      _init();
       _checkUpdate();
-    }  
+    }
   }
+
+  void _setTimeZone() {
+    _commonProvider?.setTimeZone();
+  }   
 
   Future<void> _checkUpdate() async {
     final UpdateAppViewModel updatesProvider = locator<UpdateAppViewModel>();
@@ -67,14 +69,6 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
     }    
   }  
-
-  bool _checkAppReload() {
-    return _commonProvider?.checkAppReload() as bool;
-  }    
-  
-  void _setPreferences() {
-    _commonProvider?.setPreferences();   
-  }
 
   @override
   void dispose() {

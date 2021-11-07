@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/models/app_version_model.dart';
@@ -58,7 +59,7 @@ class UpdateAppViewModel extends ChangeNotifier {
     if (_storageService.lastUpdateShownDateTime != null) {
       lastUpdateShownDateTime = DateTime.parse(_storageService.lastUpdateShownDateTime as String);
     }
-    if (_storageService.lastUpdateShownDateTime == null || now.difference(lastUpdateShownDateTime).inDays >= 7) {
+    if (_storageService.lastUpdateShownDateTime == null || Utils.getDSTAdjustedDifferenceInDays(now, lastUpdateShownDateTime) >= 7) {
       return true;
     } else {
       return false;

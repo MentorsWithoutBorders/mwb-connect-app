@@ -1,6 +1,6 @@
 name: mwb_connect_app
 description: MWBConnect
-version: 1.0.4+33
+version: 1.0.5+34
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -29,6 +29,7 @@ dependencies:
   google_fonts: ^2.1.0
   url_launcher: ^6.0.9
   package_info: ^2.0.2
+  easy_localization: ^3.0.0
   flutter_local_notifications: ^9.0.1
   flutter_native_timezone: ^2.0.0
   flutter_widget_from_html_core: ^0.8.1
@@ -42,10 +43,6 @@ dependencies:
   rxdart: ^0.27.2
   uuid: ^3.0.5
   enum_to_string: ^2.0.1
-
-  easy_localization:
-    git:
-      url: git://github.com/MentorsWithoutBorders/easy_localization.git
 
 dev_dependencies:
   flutter_test:

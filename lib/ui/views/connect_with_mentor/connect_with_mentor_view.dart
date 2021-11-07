@@ -50,11 +50,8 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     if (state == AppLifecycleState.resumed) {
       _isInit = false;
       _setTimeZone();
-      if (_checkAppReload() == false) {
-        _setPreferences();
-        setState(() {});
-        _init();
-      }
+      setState(() {});
+      _init();
       _checkUpdate();
     }
   }
@@ -71,15 +68,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
     }    
-  } 
-  
-  bool? _checkAppReload() {
-    return _commonProvider?.checkAppReload();
-  }    
-  
-  void _setPreferences() {
-    _commonProvider?.setPreferences();   
-  }  
+  }   
   
   @override
   void dispose() {

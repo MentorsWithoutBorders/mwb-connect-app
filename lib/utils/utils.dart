@@ -78,7 +78,7 @@ class Utils {
     DateFormat timeFormat = DateFormat('h:ma');
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
-      date = Jiffy(date).add(days: 1).dateTime;
+      date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
     }
     List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
     List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
@@ -99,7 +99,7 @@ class Utils {
     DateFormat timeFormat = DateFormat('ha');    
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
-      date = Jiffy(date).add(days: 1).dateTime;
+      date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
     }
     List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
     List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
@@ -204,23 +204,37 @@ class Utils {
     Jiffy deadline = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
     if (deadline.isSame(now)) {
       deadline.add(weeks: 1);
+      deadline = Jiffy(getDSTAdjustedDateTime(deadline.dateTime));
     } else {
       while (deadline.isBefore(now, Units.DAY)) {
         deadline.add(weeks: 1);
+        deadline = Jiffy(getDSTAdjustedDateTime(deadline.dateTime));
       }
     }
     return deadline.dateTime;
   }
 
-  static String getTrainingWeek() {
-    Jiffy nextDeadline = Jiffy(getNextDeadline());
-    Jiffy date = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
-    int weekNumber = 0;
-    while (date.isSameOrBefore(nextDeadline, Units.DAY)) {
-      date.add(weeks: 1);
-      weekNumber++;
+  static DateTime getDSTAdjustedDateTime(DateTime dateTime) {
+    if (dateTime.hour == 23) {
+      dateTime = dateTime.subtract(Duration(hours: 23));
+      dateTime = dateTime.add(Duration(days: 1));
+    } else if (dateTime.hour == 1) {
+      dateTime = dateTime.subtract(Duration(hours: 1));
     }
-    weekNumber--;
+    return dateTime;
+  }
+
+  static int getDSTAdjustedDifferenceInDays(DateTime dateTime1, DateTime dateTime2) {
+    int differenceInHours = dateTime1.difference(dateTime2).inHours;
+    int differenceInDays = dateTime1.difference(dateTime2).inDays;
+    if (differenceInHours % 24 == 23) {
+      differenceInDays += 1;
+    }
+    return differenceInDays;
+  }  
+
+  static String getTrainingWeek() {
+    int weekNumber = getTrainingWeekNumber();
     String week = '';
     switch (weekNumber) {
       case 1:
@@ -237,6 +251,19 @@ class Utils {
     }
     return week;
   }
+
+  static int getTrainingWeekNumber() {
+    Jiffy nextDeadline = Jiffy(getNextDeadline());
+    Jiffy dateFromRegisteredOn = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    int weekNumber = 0;
+    while (dateFromRegisteredOn.isSameOrBefore(nextDeadline, Units.DAY)) {
+      dateFromRegisteredOn.add(weeks: 1);
+      dateFromRegisteredOn = Jiffy(getDSTAdjustedDateTime(dateFromRegisteredOn.dateTime));
+      weekNumber++;
+    }
+    weekNumber--;
+    return weekNumber;
+  }  
   
   static String getIndefiniteArticle(String noun) {
     String article = 'common.a'.tr();

@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutuate_mixpanel/flutuate_mixpanel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -36,14 +34,12 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
   await _signInFirebaseAnonymously();
-  await _initAppDirectory();
 
-  Directory directory = await getApplicationDocumentsDirectory();
   runApp(
     Phoenix(
       child: EasyLocalization(
         supportedLocales: [Locale('en', 'US')],
-        path: directory.path+'/i18n',
+        path: 'assets/i18n',
         fallbackLocale: const Locale('en', 'US'),
         child: MWBConnectApp(AppConstants.mixpanelToken)
       ),

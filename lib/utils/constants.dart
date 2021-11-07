@@ -23,6 +23,6 @@ class AppConstants {
   static const int minLessonsNumberRecurrence = 2;
   static const int maxLessonsNumberRecurrence = 10;
   static const int mentorWeeksTraining = 4;
-  static const int studentWeeksTraining = 12;
-  
+  static const int studentWeeksTraining = 13;
+  static const int studentQuizzes = 12;
 }

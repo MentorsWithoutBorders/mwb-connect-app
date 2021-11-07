@@ -35,8 +35,8 @@ class StepsViewModel extends ChangeNotifier {
     DateTime nextDeadline = Utils.getNextDeadline() as DateTime;
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
-    int limit = now.difference(registeredOn).inDays > 7 ? 7 : 8;
-    if (lastStepAdded.id != null && nextDeadline.difference(Utils.resetTime(lastStepAdded.dateTime as DateTime)).inDays < limit) {
+    int limit = Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) > 7 ? 7 : 8;
+    if (lastStepAdded.id != null && Utils.getDSTAdjustedDifferenceInDays(nextDeadline, Utils.resetTime(lastStepAdded.dateTime as DateTime)) < limit) {
       return false;
     } else {
       return true;

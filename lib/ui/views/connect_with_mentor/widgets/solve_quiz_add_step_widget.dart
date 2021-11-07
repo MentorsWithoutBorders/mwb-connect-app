@@ -52,8 +52,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
                   children: [
                     _showTopText(),
                     ConditionsList(quizzes: quizzes, shouldShowQuizzes: shouldShowQuizzes, shouldShowStep: shouldShowStep),
-                    if (_connectWithMentorProvider?.shouldReceiveCertificate() == false) _showNextDeadline(),
-                    if (_connectWithMentorProvider?.shouldReceiveCertificate() == true) _showReceiveCertificate(),
+                    _showNextDeadline(),
                     _showGoButton()
                   ]
                 )
@@ -146,19 +145,6 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
       )
     );
   }
-
-  Widget _showReceiveCertificate() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
-        child: Text(
-        'connect_with_mentor.congratulations_certificate'.tr(),
-        style: const TextStyle(
-          color: AppColors.EMERALD,
-          fontWeight: FontWeight.bold
-        )
-      ),
-    );
-  }  
 
   Widget _showGoButton() {
     return Center(

@@ -207,11 +207,9 @@ packages:
   easy_localization:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "4ccc1626ca93fa81f35dca4979be2702329c2929"
-      url: "git://github.com/MentorsWithoutBorders/easy_localization.git"
-    source: git
+      name: easy_localization
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "3.0.0"
   easy_logger:
     dependency: transitive

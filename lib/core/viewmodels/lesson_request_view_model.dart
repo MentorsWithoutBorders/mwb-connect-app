@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
@@ -283,9 +283,9 @@ class LessonRequestViewModel extends ChangeNotifier {
     int lessonsNumber = AppConstants.minLessonsNumberRecurrence;
     if (endRecurrenceDate != null) {
       if (isLessonRequest) {
-        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(lessonRequest?.lessonDateTime as DateTime)).inDays ~/ 7 + 1;
+        lessonsNumber = endRecurrenceDate.difference(lessonRequest?.lessonDateTime as DateTime).inDays ~/ 7 + 1;
       } else if (isNextLesson) {
-        lessonsNumber = endRecurrenceDate.difference(Utils.resetTime(nextLesson?.dateTime as DateTime)).inDays ~/ 7 + 1;
+        lessonsNumber = endRecurrenceDate.difference(nextLesson?.dateTime as DateTime).inDays ~/ 7 + 1;        
       }
     }
     return lessonsNumber;
@@ -294,7 +294,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   bool shouldShowTrainingCompleted() {
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
-    return now.difference(registeredOn).inDays <= 7 * AppConstants.mentorWeeksTraining;
+    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) <= 7 * AppConstants.mentorWeeksTraining;
   }
   
   void setIsLessonRecurrent() {

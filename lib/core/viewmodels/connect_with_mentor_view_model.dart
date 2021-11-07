@@ -96,10 +96,9 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   String get fieldName => _storageService.fieldName != null ? (_storageService.fieldName as String).toLowerCase() : 'common.remote'.tr();
 
   DateTime? getCertificateDate() {
-    DateTime registeredOn = DateTime.parse(_storageService.registeredOn as String);
-    registeredOn = Utils.resetTime(registeredOn);
-    DateTime? date;
+    DateTime date = DateTime.now();
     if (_storageService.registeredOn != null) {
+      DateTime registeredOn = DateTime.parse(_storageService.registeredOn as String);
       date = Jiffy(registeredOn).add(months: 3).dateTime;
     }
     return date;
@@ -108,14 +107,8 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   bool shouldShowTrainingCompleted() {
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
-    return now.difference(registeredOn).inDays <= 7 * AppConstants.studentWeeksTraining;
+    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) <= 7 * AppConstants.studentWeeksTraining;
   }  
-
-  bool shouldReceiveCertificate() {
-    DateTime certificateDate = Utils.resetTime(getCertificateDate() as DateTime);
-    DateTime deadLine = Utils.resetTime(Utils.getNextDeadline() as DateTime);
-    return certificateDate.difference(deadLine).inDays <= 0;
-  }
 
   DateTime getCorrectEndRecurrenceDate() {
     int days = 0;
