@@ -39,8 +39,8 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
             children: [
-              _showTitle(),
-              Container(
+              if (shouldShowReceiveCertificate() == false) _showTitle(),
+              if (shouldShowReceiveCertificate() == false) Container(
                 padding: const EdgeInsets.only(left: 3.0),
                 child: _showText()
               ),
@@ -110,6 +110,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
       padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
       child: Text(
         'connect_with_mentor.congratulations_certificate'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: AppColors.EMERALD,
           fontWeight: FontWeight.bold

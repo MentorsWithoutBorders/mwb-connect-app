@@ -107,7 +107,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   bool shouldShowTrainingCompleted() {
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
-    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) <= 7 * AppConstants.studentWeeksTraining;
+    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) <= 7 * (AppConstants.studentWeeksTraining + 7);
   }  
 
   DateTime getCorrectEndRecurrenceDate() {
