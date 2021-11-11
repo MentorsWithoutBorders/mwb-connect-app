@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
@@ -27,26 +26,15 @@ class ApiService {
   Future<dynamic> getHTTP({required String url}) async {    
     String finalUrl = baseUrl + url;
     dynamic responseBody;
-    int statusCode = 0;
-    if (Platform.isAndroid) {
-      String accessToken = _storageService.accessToken ?? '';
-      final response = await platform.invokeMethod('getHTTP', {'url': finalUrl, 'accessToken': accessToken});
-      final responseMap = response as Map<Object?, Object?>;
-      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
-        statusCode = int.parse(responseMap['statusCode'] as String);
-        final responseData = responseMap['data'] as String;
-        try {
-          responseBody = jsonDecode(responseData);
-        } catch (e) {}
-      }
-    } else {
-      final response = await http.get(
-        Uri.parse(finalUrl), 
-        headers: getHeaders(),
-      );
-      statusCode = response.statusCode;
+    int statusCode = 200;
+    String accessToken = _storageService.accessToken ?? '';
+    final response = await platform.invokeMethod('getHTTP', {'url': finalUrl, 'accessToken': accessToken});
+    final responseMap = response as Map<Object?, Object?>;
+    if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+      statusCode = int.parse(responseMap['statusCode'] as String);
+      final responseData = responseMap['data'] as String;
       try {
-        responseBody = jsonDecode(response.body);
+        responseBody = jsonDecode(responseData);
       } catch (e) {}
     }
     switch (statusCode) {
@@ -62,34 +50,22 @@ class ApiService {
         // if (_storageService.refreshToken != null) {      
         //   return await postHTTP(url: url);
         // }                
-    }    
+    }     
     return responseBody; 
   }
 
   Future<dynamic> postHTTP({required String url, Map<String, Object?>? data}) async { 
     String finalUrl = baseUrl + url;
     dynamic responseBody;
-    int statusCode = 0;
-    if (Platform.isAndroid) {
-      String accessToken = _storageService.accessToken ?? '';
-      final response = await platform.invokeMethod('postHTTP', {'url': finalUrl, 'data': data, 'accessToken': accessToken});
-      final responseMap = response as Map<Object?, Object?>;
-      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
-        statusCode = int.parse(responseMap['statusCode'] as String);
-        final responseData = responseMap['data'] as String;
-        try {
-          responseBody = jsonDecode(responseData);
-        } catch (e) {}
-      }
-    } else {
-      final response = await http.post(
-        Uri.parse(finalUrl), 
-        headers: getHeaders(),
-        body: json.encode(data)
-      );
-      statusCode = response.statusCode;
+    int statusCode = 200;
+    String accessToken = _storageService.accessToken ?? '';
+    final response = await platform.invokeMethod('postHTTP', {'url': finalUrl, 'data': data, 'accessToken': accessToken});
+    final responseMap = response as Map<Object?, Object?>;
+    if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+      statusCode = int.parse(responseMap['statusCode'] as String);
+      final responseData = responseMap['data'] as String;
       try {
-        responseBody = jsonDecode(response.body);
+        responseBody = jsonDecode(responseData);
       } catch (e) {}
     }
     switch (statusCode) {
@@ -103,36 +79,24 @@ class ApiService {
         //   await _refreshToken();      
         // }
         // if (_storageService.refreshToken != null) {      
-        //   return await postHTTP(url: url, data: data);
+        //   return await postHTTP(url: url);
         // }                
-    }      
+    }     
     return responseBody;
   }
 
   Future<dynamic> putHTTP({required String url, Map<String, Object?>? data}) async {
-   String finalUrl = baseUrl + url;
+    String finalUrl = baseUrl + url;
     dynamic responseBody;
-    int statusCode = 0;
-    if (Platform.isAndroid) {
-      String accessToken = _storageService.accessToken ?? '';
-      final response = await platform.invokeMethod('putHTTP', {'url': finalUrl, 'data': data, 'accessToken': accessToken});
-      final responseMap = response as Map<Object?, Object?>;
-      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
-        statusCode = int.parse(responseMap['statusCode'] as String);
-        final responseData = responseMap['data'] as String;
-        try {
-          responseBody = jsonDecode(responseData);
-        } catch (e) {}
-      }
-    } else {
-      final response = await http.put(
-        Uri.parse(finalUrl), 
-        headers: getHeaders(),
-        body: json.encode(data)
-      );
-      statusCode = response.statusCode;
+    int statusCode = 200;
+    String accessToken = _storageService.accessToken ?? '';
+    final response = await platform.invokeMethod('putHTTP', {'url': finalUrl, 'data': data, 'accessToken': accessToken});
+    final responseMap = response as Map<Object?, Object?>;
+    if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+      statusCode = int.parse(responseMap['statusCode'] as String);
+      final responseData = responseMap['data'] as String;
       try {
-        responseBody = jsonDecode(response.body);
+        responseBody = jsonDecode(responseData);
       } catch (e) {}
     }
     switch (statusCode) {
@@ -146,35 +110,24 @@ class ApiService {
         //   await _refreshToken();      
         // }
         // if (_storageService.refreshToken != null) {      
-        //   return await postHTTP(url: url, data: data);
+        //   return await postHTTP(url: url);
         // }                
-    }        
+    }     
     return responseBody;
   }
   
   Future<dynamic> deleteHTTP({required String url}) async {
     String finalUrl = baseUrl + url;
     dynamic responseBody;
-    int statusCode = 0;
-    if (Platform.isAndroid) {
-      String accessToken = _storageService.accessToken ?? '';
-      final response = await platform.invokeMethod('deleteHTTP', {'url': finalUrl, 'accessToken': accessToken});
-      final responseMap = response as Map<Object?, Object?>;
-      if (responseMap['statusCode'] != null && responseMap['data'] != null) {
-        statusCode = int.parse(responseMap['statusCode'] as String);
-        final responseData = responseMap['data'] as String;
-        try {
-          responseBody = jsonDecode(responseData);
-        } catch (e) {}
-      }
-    } else {
-      final response = await http.delete(
-        Uri.parse(finalUrl), 
-        headers: getHeaders()
-      );
-      statusCode = response.statusCode;
+    int statusCode = 200;
+    String accessToken = _storageService.accessToken ?? '';
+    final response = await platform.invokeMethod('deleteHTTP', {'url': finalUrl, 'accessToken': accessToken});
+    final responseMap = response as Map<Object?, Object?>;
+    if (responseMap['statusCode'] != null && responseMap['data'] != null) {
+      statusCode = int.parse(responseMap['statusCode'] as String);
+      final responseData = responseMap['data'] as String;
       try {
-        responseBody = jsonDecode(response.body);
+        responseBody = jsonDecode(responseData);
       } catch (e) {}
     }
     switch (statusCode) {
@@ -188,9 +141,9 @@ class ApiService {
         //   await _refreshToken();      
         // }
         // if (_storageService.refreshToken != null) {      
-        //   return await postHTTP(url: url, data: data);
+        //   return await postHTTP(url: url);
         // }                
-    }      
+    }     
     return responseBody;
   }
 
