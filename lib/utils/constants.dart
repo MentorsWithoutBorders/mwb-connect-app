@@ -16,7 +16,7 @@ class AppConstants {
   static const bool notificationsEnabled = true;
   static const String notificationsTime = '21:00';
   static const String dateTimeFormat = 'yyyy-MM-dd HH:mm:ss';
-  static const String dateFormat = 'MMM dd, yyyy';
+  static const String dateFormat = 'MMM d, yyyy';
   static const String dateFormatLesson = 'EEEE, MMM dd';
   static const String timeFormatLesson = 'h:mm a';
   static const String meetingUrlType = 'Google Meet/Zoom';

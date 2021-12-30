@@ -5,20 +5,19 @@ import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/ids_model.dart';
+import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 
 class ConnectWithMentorService {
   final ApiService _api = locator<ApiService>();
 
   Future<LessonRequestModel> getLessonRequest() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/lesson_request');
-    LessonRequestModel lessonRequest = LessonRequestModel.fromJson(response);
-    return lessonRequest;
+    return LessonRequestModel.fromJson(response);
   }
 
   Future<LessonRequestModel> sendLessonRequest() async {
     Map<String, dynamic> response = await _api.postHTTP(url: '/lesson_requests', data: {});
-    LessonRequestModel lessonRequest = LessonRequestModel.fromJson(response);
-    return lessonRequest;
+    return LessonRequestModel.fromJson(response);
   }  
 
   Future<void> cancelLessonRequest(String? id) async {
@@ -28,8 +27,7 @@ class ConnectWithMentorService {
   
   Future<Lesson> getNextLesson() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/next_lesson');
-    Lesson nextLesson = Lesson.fromJson(response);
-    return nextLesson;
+    return Lesson.fromJson(response);
   }   
 
   Future<void> cancelNextLesson(Lesson? lesson, bool? isSingleLesson) async {
@@ -46,9 +44,8 @@ class ConnectWithMentorService {
 
   Future<Lesson> getPreviousLesson() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/previous_lesson');
-    Lesson previousLesson = Lesson.fromJson(response);
-    return previousLesson;
-  }   
+    return Lesson.fromJson(response);
+  }
 
   Future<List<Skill>> getMentorSkills(String? mentorId, String? subfieldId) async {
     dynamic response = await _api.getHTTP(url: '/users/$mentorId/subfields/$subfieldId/skills');
@@ -73,4 +70,9 @@ class ConnectWithMentorService {
     await _api.putHTTP(url: '/lessons/$id/mentor_presence', data: lesson.toJson());  
     return ;
   }
+
+  Future<StudentCertificate> getCertificateSent() async {
+    Map<String, dynamic> response = await _api.getHTTP(url: '/admin/students_certificates/certificate_sent');
+    return StudentCertificate.fromJson(response);
+  }  
 }

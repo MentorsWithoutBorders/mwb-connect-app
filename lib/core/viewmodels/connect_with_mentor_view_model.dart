@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
@@ -23,6 +24,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   Lesson? nextLesson;
   Lesson? previousLesson;
   List<Skill>? mentorSkills;
+  StudentCertificate? studentCertificate;
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
@@ -70,6 +72,10 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     await getPreviousLesson();
     mentorSkills = await _connectWithMentorService.getMentorSkills(previousLesson?.mentor?.id, previousLesson?.subfield?.id);
   }
+
+  Future<void> getCertificateSent() async {
+    studentCertificate = await _connectWithMentorService.getCertificateSent();
+  }  
   
   Future<void> addSkills(List<bool> selectedSkills) async {
     List<String> skillIds = [];

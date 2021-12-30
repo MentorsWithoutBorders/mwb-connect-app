@@ -39,12 +39,12 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
             children: [
-              if (shouldShowReceiveCertificate() == false) _showTitle(),
-              if (shouldShowReceiveCertificate() == false) Container(
+              if (!shouldShowReceiveCertificate() || isCertificateSent()) _showTitle(),
+              if (!shouldShowReceiveCertificate() || isCertificateSent()) Container(
                 padding: const EdgeInsets.only(left: 3.0),
                 child: _showText()
               ),
-              if (shouldShowReceiveCertificate() == true) _showReceiveCertificate(),              
+              if (shouldShowReceiveCertificate() && !isCertificateSent()) _showReceiveCertificate(),              
             ],
           )
         ),
@@ -52,15 +52,18 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
     );
   }
 
-  bool shouldShowReceiveCertificate() => Utils.getTrainingWeekNumber() >= AppConstants.studentWeeksTraining && _quizzesProvider!.quizzes[_quizzesProvider!.quizzes.length - 1].number == AppConstants.studentQuizzes;
+  bool shouldShowReceiveCertificate() => Utils.getTrainingWeekNumber() >= AppConstants.studentWeeksTraining && (_quizzesProvider!.quizzes.length == 0 || _quizzesProvider!.quizzes[_quizzesProvider!.quizzes.length - 1].number == AppConstants.studentQuizzes);
+
+  bool isCertificateSent() => _connectWithMentorProvider?.studentCertificate?.isCertificateSent as bool;
 
   Widget _showTitle() {
     String week = Utils.getTrainingWeek();
+    String title = isCertificateSent() ? 'connect_with_mentor.training_title'.tr() : 'training_completed.title'.tr(args: [week]);
     return Container(
       margin: const EdgeInsets.only(top: 3.0, bottom: 15.0),
       child: Center(
         child: Text(
-          'training_completed.title'.tr(args: [week]),
+          title,
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,
@@ -73,6 +76,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
 
   Widget _showText() {
     String week = Utils.getTrainingWeek();
+    String text = isCertificateSent() ? 'training_completed.add_more_steps'.tr() : 'training_completed.text'.tr(args: [week]);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: RichText(
@@ -85,7 +89,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
           ),
           children: <TextSpan>[
             TextSpan(
-              text: 'training_completed.text'.tr(args: [week]) + ' ',             
+              text: text + ' ',             
             ),
             TextSpan(
               text: 'training_completed.use_this_link'.tr(),

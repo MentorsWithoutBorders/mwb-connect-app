@@ -69,7 +69,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
       margin: const EdgeInsets.only(bottom: 15.0),
       child: Center(
         child: Text(
-          'connect_with_mentor.solve_quiz_add_step'.tr(),
+          'connect_with_mentor.training_title'.tr(),
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,
