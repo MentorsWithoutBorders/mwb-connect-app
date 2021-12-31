@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
 class Dropdown<T> extends StatelessWidget {
@@ -15,7 +14,7 @@ class Dropdown<T> extends StatelessWidget {
     @required this.onChanged,
     @required this.value,
   }) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +37,7 @@ class Dropdown<T> extends StatelessWidget {
           ),
           items: dropdownMenuItemList,
           onChanged: onChanged,
-          onTap: () => onTapped,
+          onTap: onTapped,
           value: value,
         ),
       ),
