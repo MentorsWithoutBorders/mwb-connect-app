@@ -52,9 +52,9 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   Widget _showSetRecurrence(LessonRecurrenceModel? lessonRecurrence) {
     LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
     DateTime lessonDateTime = DateTime.now();
-    if (_lessonRequestProvider?.isLessonRequest == true) {
+    if (_lessonRequestProvider?.isLessonRequest == true && lessonRequest?.lessonDateTime != null) {
       lessonDateTime = lessonRequest?.lessonDateTime as DateTime;
-    } else if (_lessonRequestProvider?.isNextLesson == true) {
+    } else if (_lessonRequestProvider?.isNextLesson == true && lessonRecurrence?.dateTime != null) {
       lessonDateTime = lessonRecurrence?.dateTime as DateTime;
     }
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);

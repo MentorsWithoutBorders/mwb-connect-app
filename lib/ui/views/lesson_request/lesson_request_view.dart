@@ -74,8 +74,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
-  }  
-  
+  }
 
   Widget _showLessonRequest() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
