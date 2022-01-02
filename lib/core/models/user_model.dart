@@ -15,7 +15,6 @@ class User {
   bool? isMentor;
   Organization? organization;
   Field? field;
-  List<Subfield>? subfields;
   TimeZoneModel? timeZone;
   List<Availability>? availabilities;
   bool? isAvailable;
@@ -23,7 +22,7 @@ class User {
   LessonsAvailability? lessonsAvailability;
   DateTime? registeredOn;
 
-  User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.subfields, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
@@ -59,13 +58,13 @@ class User {
   }  
   
   List<Availability> _availabilitiesFromJson(List<Map<String, dynamic>>? json) {
-    final List<Availability> availabilityList = [];
+    final List<Availability> availabilitiesList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
-        availabilityList.add(Utils.getAvailabilityToLocal(Availability.fromJson(json[i])));
+        availabilitiesList.add(Utils.getAvailabilityToLocal(Availability.fromJson(json[i])));
       }
     }
-    return availabilityList;
+    return availabilitiesList;
   }
 
   LessonsAvailability? _lessonsAvailabilityFromJson(Map<String, dynamic>? json, bool isMentor) {
@@ -99,13 +98,13 @@ class User {
   } 
 
   List<Map<String, dynamic>> _availabilitiesToJson(List<Availability>? availabilities) {
-    List<Map<String,dynamic>> availabilityList = [];
+    List<Map<String,dynamic>> availabilitiesList = [];
     if (availabilities != null) {
       for (int i = 0; i < availabilities.length; i++) {
-        availabilityList.add(Utils.getAvailabilityToUtc(availabilities[i]).toJson());
+        availabilitiesList.add(Utils.getAvailabilityToUtc(availabilities[i]).toJson());
       }
     }
-    return availabilityList;
+    return availabilitiesList;
   }
   
   Map<String, dynamic>? _timeZoneToJson(TimeZoneModel? timezone) {

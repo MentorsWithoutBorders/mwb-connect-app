@@ -213,6 +213,11 @@
     "learned_today_sent": "The lesson info has been added successfully",
 		"mentor_not_present": "The mentor didn't show up"
 	},
+  "available_mentors": {
+    "title": "Find mentor",
+    "choose_availability": "Choose availability:",
+    "choose_subfield": "Choose subfield:"
+  },
 	"lesson_request": {
 		"title": "Lesson request",
 		"scheduled_lesson": "Scheduled lesson",

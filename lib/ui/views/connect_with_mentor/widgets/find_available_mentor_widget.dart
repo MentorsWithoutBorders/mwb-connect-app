@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors/available_mentors_view.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class FindAvailableMentor extends StatefulWidget {
@@ -88,7 +89,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
                     decoration: TextDecoration.underline
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () {
-                    Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
+                    _goToProfile();
                   } 
                 ),
                 TextSpan(
@@ -114,6 +115,10 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
     );
   }
 
+  void _goToProfile() {
+    Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));    
+  }
+
   Widget _showFindMentorButton() {
     return Center(
       child: Container(
@@ -136,12 +141,17 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _sendLessonRequest();
+            // await _sendLessonRequest();
+            _goToAvailableMentors();
           }
         ),
       ),
     );
   }
+
+  void _goToAvailableMentors() {
+    Navigator.push(context, MaterialPageRoute<AvailableMentorsView>(builder: (_) => AvailableMentorsView()));    
+  }  
   
   Future<void> _sendLessonRequest() async {  
     _setIsSendingLessonRequest(true);

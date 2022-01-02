@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
@@ -11,15 +10,15 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/availability_item_widge
 import 'package:mwb_connect_app/ui/views/profile/widgets/add_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
-class AvailabilityList extends StatefulWidget {
-  const AvailabilityList({Key? key})
+class AvailabilitiesList extends StatefulWidget {
+  const AvailabilitiesList({Key? key})
     : super(key: key); 
 
   @override
-  State<StatefulWidget> createState() => _AvailabilityListState();
+  State<StatefulWidget> createState() => _AvailabilitiesListState();
 }
 
-class _AvailabilityListState extends State<AvailabilityList> with TickerProviderStateMixin {
+class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProviderStateMixin {
   ProfileViewModel? _profileProvider;
 
   Widget _showAvailability() {
@@ -28,7 +27,7 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
       children: [
         _showTitle(),
         _showTimezone(),
-        _showAvailabilityList(),
+        _showAvailabilitiesList(),
         _showAddAvailabilityButton()
       ]
     );
@@ -52,11 +51,11 @@ class _AvailabilityListState extends State<AvailabilityList> with TickerProvider
     return const UserTimezone();
   }
 
-  Widget _showAvailabilityList() {
+  Widget _showAvailabilitiesList() {
     final List<Widget> availabilityWidgets = [];
-    final List<Availability>? availabilityList = _profileProvider?.user?.availabilities;
-    if (availabilityList != null) {
-      for (int i = 0; i < availabilityList.length; i++) {
+    final List<Availability>? availabilitiesList = _profileProvider?.user?.availabilities;
+    if (availabilitiesList != null) {
+      for (int i = 0; i < availabilitiesList.length; i++) {
         availabilityWidgets.add(AvailabilityItem(index: i));
       }
     }

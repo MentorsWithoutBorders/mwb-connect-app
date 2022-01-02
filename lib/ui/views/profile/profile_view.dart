@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_start_date_widget.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/availability_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/availabilities_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/lessons_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -97,7 +97,7 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               if (_profileProvider?.user?.isMentor == true) AvailabilityStartDate(),
               if (_profileProvider?.user?.isMentor == true) _showDivider(),
-              AvailabilityList(),
+              AvailabilitiesList(),
             ],
           )
         ),

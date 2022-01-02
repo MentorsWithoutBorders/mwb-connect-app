@@ -14,7 +14,7 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/availability_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/availabilities_list_widget.dart';
 
 import '../../../../utils/widget_loader.dart';
 
@@ -32,7 +32,7 @@ Future<void> main() async {
 
   group('Availability list widget tests:', () {
     final WidgetLoader widgetLoader = WidgetLoader();
-    final Widget availabilityListWidget = widgetLoader.createWidget(widget: AvailabilityList(), jsonFile: jsonFile);
+    final Widget availabilitiesListWidget = widgetLoader.createWidget(widget: AvailabilitiesList(), jsonFile: jsonFile);
     final ProfileViewModel profileViewModel = locator<ProfileViewModel>();
 
     setUpAll(() async {
@@ -49,56 +49,56 @@ Future<void> main() async {
 
     testWidgets('Availability list widget shows up test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(availabilityListWidget);
+        await tester.pumpWidget(availabilitiesListWidget);
         await tester.pump();
-        await AvailabilityListWidgetTest.widgetShowsUpTest();
+        await AvailabilitiesListWidgetTest.widgetShowsUpTest();
       });
     });
 
     testWidgets('Add availability items test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(availabilityListWidget);
+        await tester.pumpWidget(availabilitiesListWidget);
         await tester.pump();
-        await AvailabilityListWidgetTest.addItemsTest(tester);
+        await AvailabilitiesListWidgetTest.addItemsTest(tester);
       });
     });
     
     testWidgets('Add availability item with merge test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(availabilityListWidget);
+        await tester.pumpWidget(availabilitiesListWidget);
         await tester.pump();
-        await AvailabilityListWidgetTest.addItemWithMergeTest(tester);
+        await AvailabilitiesListWidgetTest.addItemWithMergeTest(tester);
       });
     });
 
     testWidgets('Edit availability item test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(availabilityListWidget);
+        await tester.pumpWidget(availabilitiesListWidget);
         await tester.pump();
-        await AvailabilityListWidgetTest.editItemTest(tester);
+        await AvailabilitiesListWidgetTest.editItemTest(tester);
       });
     });
 
     testWidgets('Edit availability item with merge test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(availabilityListWidget);
+        await tester.pumpWidget(availabilitiesListWidget);
         await tester.pump();
-        await AvailabilityListWidgetTest.editItemWithMergeTest(tester);
+        await AvailabilitiesListWidgetTest.editItemWithMergeTest(tester);
       });
     });     
     
     testWidgets('Delete availability item test', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(availabilityListWidget);
+        await tester.pumpWidget(availabilitiesListWidget);
         await tester.pump();
-        await AvailabilityListWidgetTest.deleteItemTest(tester);
+        await AvailabilitiesListWidgetTest.deleteItemTest(tester);
       });
     });
   });
 }
 
 // ignore: avoid_classes_with_only_static_members
-class AvailabilityListWidgetTest {
+class AvailabilitiesListWidgetTest {
   static Finder availabilityItem0 = find.byKey(const Key(AppKeys.availabilityItem + '0'));
   static Finder availabilityItem1 = find.byKey(const Key(AppKeys.availabilityItem + '1'));
   static Finder deleteAvailabilityBtn0 = find.byKey(const Key(AppKeys.deleteAvailabilityBtn + '0'));

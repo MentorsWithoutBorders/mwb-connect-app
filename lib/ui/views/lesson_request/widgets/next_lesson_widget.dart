@@ -311,15 +311,15 @@ class _NextLessonState extends State<NextLesson> {
                         TextSpan(
                           text: ')'
                         )
-                      ],
+                      ]
                     )
                   )
                 )
-              ],
-            ),
+              ]
+            )
           );
-        },
-      ),
+        }
+      )
     );
   }
 

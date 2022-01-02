@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
@@ -50,15 +49,15 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                 children: <Widget>[
                   SizedBox(
                     width: 40.0,
-                    height: 35.0,                      
+                    height: 35.0,
                     child: Radio<AvailabilityStart>(
                       key: const Key(AppKeys.currentlyAvailableRadio),
                       value: AvailabilityStart.now,
                       groupValue: _availabilityStart,
                       onChanged: (AvailabilityStart? value) {
                         _setIsAvailable(value!);
-                      },
-                    ),
+                      }
+                    )
                   ),
                   InkWell(
                     key: const Key(AppKeys.currentlyAvailableText),

@@ -64,12 +64,12 @@ void main() async {
     await AvailabilityStartDateWidgetTest.changeDateTest(tester);
     // Availability test
     // Initial values: isAvailable = true; availabilities list = empty
-    await AvailabilityListWidgetTest.widgetShowsUpTest();
-    await AvailabilityListWidgetTest.addItemsTest(tester);
-    await AvailabilityListWidgetTest.addItemWithMergeTest(tester);
-    await AvailabilityListWidgetTest.editItemTest(tester);
-    await AvailabilityListWidgetTest.editItemWithMergeTest(tester);
-    await AvailabilityListWidgetTest.deleteItemTest(tester);
+    await AvailabilitiesListWidgetTest.widgetShowsUpTest();
+    await AvailabilitiesListWidgetTest.addItemsTest(tester);
+    await AvailabilitiesListWidgetTest.addItemWithMergeTest(tester);
+    await AvailabilitiesListWidgetTest.editItemTest(tester);
+    await AvailabilitiesListWidgetTest.editItemWithMergeTest(tester);
+    await AvailabilitiesListWidgetTest.deleteItemTest(tester);
     // Lessons availability test
     // Initial value: minInterval = 2 weeks
     await LessonsWidgetTest.widgetShowsUpTest();
