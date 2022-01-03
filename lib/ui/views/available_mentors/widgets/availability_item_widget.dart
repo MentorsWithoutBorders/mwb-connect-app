@@ -55,6 +55,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
 
   void _setAvailabilityOption(String? value) {
     _availableMentorsProvider?.setAvailabilityOptionId(value);
+    _availableMentorsProvider?.setErrorMessage('');
   }
 
   Widget _showDayOfWeek() {

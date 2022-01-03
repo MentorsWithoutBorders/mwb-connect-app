@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/ui/views/available_mentors/widgets/available_mentor_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors/widgets/available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -30,6 +30,7 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   void _afterLayout(_) {
     _availableMentorsProvider?.setAvailabilityOptionId(null);
     _availableMentorsProvider?.setSubfieldOptionId(null);
+    _availableMentorsProvider?.setErrorMessage('');
   }  
 
   Widget _showAvailableMentors() {

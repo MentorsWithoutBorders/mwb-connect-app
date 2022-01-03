@@ -50,7 +50,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
       }
     }
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: Wrap(
         children: availabilityWidgets
       )

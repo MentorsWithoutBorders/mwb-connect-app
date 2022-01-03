@@ -216,7 +216,11 @@
   "available_mentors": {
     "title": "Find mentor",
     "choose_availability": "Choose availability:",
-    "choose_subfield": "Choose subfield:"
+    "choose_subfield": "Choose subfield:",
+    "send_request": "Send request",
+    "please_select_error": "Please select",
+    "subfield_error": "a subfield",
+    "availability_error": "an availability"
   },
 	"lesson_request": {
 		"title": "Lesson request",

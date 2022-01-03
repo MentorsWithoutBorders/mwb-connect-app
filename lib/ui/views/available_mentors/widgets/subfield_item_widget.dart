@@ -54,6 +54,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
 
   void _setSubfieldOption(String? value) {
     _availableMentorsProvider?.setSubfieldOptionId(value);
+    _availableMentorsProvider?.setErrorMessage('');
   }
 
   Widget _showSubfield() {
