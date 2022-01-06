@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/availabilities_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/subfields_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors/widgets/edit_lessons_start_time_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -82,20 +85,29 @@ class _AvailableMentorState extends State<AvailableMentor> {
           ), 
           child: Text('available_mentors.send_request'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            _sendRequest();
+            _sendLessonRequest();
           }
         )
       )
     );
   }
 
-  void _sendRequest() {
+  void _sendLessonRequest() {
     _availableMentorsProvider?.setSelectedMentorId(widget.mentor?.id);
     _availableMentorsProvider?.setErrorMessage('');
     if (_availableMentorsProvider!.isLessonRequestValid(widget.mentor as User)) {
-
+      _showEditAvailabilityDialog();
     }
   }
+
+  void _showEditAvailabilityDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: EditLessonsStartTime()
+      )
+    );     
+  }  
 
   Widget _showError() {
     String _errorMessage = _availableMentorsProvider!.errorMessage;
