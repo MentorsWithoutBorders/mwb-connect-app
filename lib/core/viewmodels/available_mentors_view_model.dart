@@ -113,59 +113,49 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     final Availability availability = getSelectedAvailability();
     String timeFrom = availability.time?.from as String;
     String timeTo = availability.time?.to as String;
-    String timeFromHoursMinutes = timeFrom.replaceAll(RegExp(r'[^0-9:]'), '');
-    String timeToHoursMinutes = timeTo.replaceAll(RegExp(r'[^0-9:]'), '');
-    if (!timeFrom.contains(':')) {
-      timeFromHoursMinutes = timeFrom.replaceAll(RegExp(r'[^0-9]'), '');
-    }
-    if (!timeTo.contains(':')) {
-      timeToHoursMinutes = timeTo.replaceAll(RegExp(r'[^0-9]'), '');
-    }
-    int timeFromHours = int.parse(timeFromHoursMinutes.split(':')[0]);
-    int timeToHours = int.parse(timeToHoursMinutes.split(':')[0]);
-    String timeFromModifier = timeFrom.replaceAll(timeFromHoursMinutes, '');
-    String timeToModifier = timeTo.replaceAll(timeToHoursMinutes, '');
+    int timeFromHours = Utils.convertTime12to24(timeFrom)[0];
+    int timeToHours = Utils.convertTime12to24(timeTo)[0];
 
     List<String> hoursList = [];
-    if (timeFromModifier == 'am') {
-      if (timeToModifier == 'am') {
-        if (timeFromHours < timeToHours) {
-          hoursList = addHours(hoursList, timeFromHours, timeToHours - 1, 'am');
-        } else {
-          hoursList = addHours(hoursList, timeFromHours, 11, 'am');
-          hoursList.add('12pm');
-          hoursList = addHours(hoursList, 1, 11, 'pm');
-        }
-      } else {
-        hoursList = addHours(hoursList, timeFromHours, 11, 'am');
-        hoursList.add('12pm');
-        if (timeToHours != 12 && timeToHours > 1) {
-          hoursList = addHours(hoursList, 1, timeToHours - 1, 'pm');
-        }
-      }
+    if (timeFromHours < timeToHours) {
+      hoursList = _setHours(timeFromHours, timeToHours);
     } else {
-      if (timeToModifier == 'am') {
-        if (timeFromHours == 12) {
-          hoursList.add('12pm');
-          hoursList = addHours(hoursList, 1, 11, 'pm');
-        } else {
-          hoursList = addHours(hoursList, timeFromHours, 11, 'pm');
-        }
-      } else {
-        if (timeFromHours == 12) {
-          hoursList.add('12pm');
-          hoursList = addHours(hoursList, 1, timeToHours - 1, 'pm');
-        } else {
-          hoursList = addHours(hoursList, timeFromHours, timeToHours - 1, 'pm');
-        }        
-      }      
+      hoursList = _setHours(timeFromHours, 24);
     }
     return hoursList;
   }
   
-  List<String> addHours(List<String> hoursList, int from, int to, String modifier) {
+  List<String> _setHours(int from, int to) {
+    List<String> hoursList = [];
+    if (from < 12) {
+      if (to < 12) {
+        hoursList = _addHours(hoursList, from, to - 1, 'am');
+      } else {
+        hoursList = _addHours(hoursList, from, 11, 'am');
+        if (to > 12) {
+          hoursList.add('12pm');
+          hoursList = _addHours(hoursList, 1, to - 13, 'pm');
+        }
+      }
+    } else {
+      if (from == 12) {
+        hoursList.add('12pm');
+        hoursList = _addHours(hoursList, from - 11, to - 13, 'pm');
+      } else {
+        hoursList = _addHours(hoursList, from - 12, to - 13, 'pm');
+      }
+    }
+
+    return hoursList;
+  }
+
+  List<String> _addHours(List<String> hoursList, int from, int to, String modifier) {
     for (int i = from; i <= to; i++) {
-      hoursList.add(i.toString() + modifier);
+      if (i == 0) {
+        hoursList.add('12am');
+      } else {
+        hoursList.add(i.toString() + modifier);
+      }
     }
     return hoursList;
   }
