@@ -118,15 +118,15 @@ class AvailableMentorsViewModel extends ChangeNotifier {
 
     List<String> hoursList = [];
     if (timeFromHours < timeToHours) {
-      hoursList = _setHours(timeFromHours, timeToHours);
+      hoursList = _setHours(hoursList, timeFromHours, timeToHours);
     } else {
-      hoursList = _setHours(timeFromHours, 24);
+      hoursList = _setHours(hoursList, timeFromHours, 24);
+      hoursList = _setHours(hoursList, 0, timeToHours);
     }
     return hoursList;
   }
   
-  List<String> _setHours(int from, int to) {
-    List<String> hoursList = [];
+  List<String> _setHours(List<String> hoursList, int from, int to) {
     if (from < 12) {
       if (to < 12) {
         hoursList = _addHours(hoursList, from, to - 1, 'am');
