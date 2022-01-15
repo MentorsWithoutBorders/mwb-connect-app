@@ -13,4 +13,9 @@ class AvailableMentorsService {
     }    
     return availableMentors;
   }
+
+  Future<void> sendCustomLessonRequest(User? user) async {
+    await _api.postHTTP(url: '/lesson_requests/send_custom_lesson_request', data: user?.toJson());
+  }  
+
 }

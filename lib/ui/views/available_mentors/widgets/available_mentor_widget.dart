@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -26,7 +25,7 @@ class _AvailableMentorState extends State<AvailableMentor> {
 
   Widget _showAvailableMentor() {
     String errorMessage = _availableMentorsProvider!.errorMessage;
-    String? selectedMentorId = _availableMentorsProvider?.selectedMentorId;
+    String? selectedMentorId = _availableMentorsProvider?.selectedMentor?.id;
     bool shouldShowError = selectedMentorId != null && selectedMentorId == widget.mentor?.id && errorMessage !='';
     return AppCard(
       child: Wrap(
@@ -85,16 +84,20 @@ class _AvailableMentorState extends State<AvailableMentor> {
           ), 
           child: Text('available_mentors.send_request'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            _sendLessonRequest();
+            _editAvailability();
           }
         )
       )
     );
   }
 
-  void _sendLessonRequest() {
-    _availableMentorsProvider?.setSelectedMentorId(widget.mentor?.id);
+  void _editAvailability() {
     _availableMentorsProvider?.setErrorMessage('');
+    _availableMentorsProvider?.setSelectedMentor(null);
+    _availableMentorsProvider?.setLessonRequestButtonId(widget.mentor?.id);
+    _availableMentorsProvider?.setDefaultSubfield(widget.mentor as User);
+    _availableMentorsProvider?.setDefaultAvailability(widget.mentor as User);
+    _availableMentorsProvider?.setSelectedMentor(widget.mentor);
     if (_availableMentorsProvider!.isLessonRequestValid(widget.mentor as User)) {
       _showEditAvailabilityDialog();
     }
@@ -106,7 +109,11 @@ class _AvailableMentorState extends State<AvailableMentor> {
       builder: (_) => AnimatedDialog(
         widgetInside: EditLessonsStartTime()
       )
-    );     
+    ).then((shouldGoBack) {
+      if (shouldGoBack == true) {
+        Navigator.pop(context, true);
+      }
+    });     
   }  
 
   Widget _showError() {

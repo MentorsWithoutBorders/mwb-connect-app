@@ -9,8 +9,10 @@ import 'package:mwb_connect_app/ui/views/available_mentors/available_mentors_vie
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class FindAvailableMentor extends StatefulWidget {
-  const FindAvailableMentor({Key? key})
-    : super(key: key); 
+  const FindAvailableMentor({Key? key, this.shouldReloadCallback})
+    : super(key: key);
+    
+  final VoidCallback? shouldReloadCallback;    
 
   @override
   State<StatefulWidget> createState() => _FindAvailableMentorState();
@@ -142,15 +144,18 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
           ),
           onPressed: () async {
             // await _sendLessonRequest();
-            _goToAvailableMentors();
+            await _goToAvailableMentors();
           }
         ),
       ),
     );
   }
 
-  void _goToAvailableMentors() {
-    Navigator.push(context, MaterialPageRoute<AvailableMentorsView>(builder: (_) => AvailableMentorsView()));    
+  Future<void> _goToAvailableMentors() async {
+    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableMentorsView()));  
+    if (shouldReload == true) {
+      widget.shouldReloadCallback!();
+    }
   }  
   
   Future<void> _sendLessonRequest() async {  

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class EditLessonsStartTime extends StatefulWidget {
   const EditLessonsStartTime({Key? key})
@@ -17,22 +19,7 @@ class EditLessonsStartTime extends StatefulWidget {
 
 class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
   AvailableMentorsViewModel? _availableMentorsProvider;
-  Availability? _availability;
-  bool _isInit = false;
-
-  @override
-  void didChangeDependencies() {
-    if (!_isInit) {  
-      _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
-      _initAvalability();
-      _isInit = true;
-    }
-    super.didChangeDependencies();
-  }
-
-  void _initAvalability() {
-    _availability = _availableMentorsProvider?.getSelectedAvailability();
-  }
+  bool _isSendingLessonRequest = false;  
   
   Widget _showEditLessonsStartTimeDialog() {
     return Container(
@@ -64,7 +51,9 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
   }
 
   Widget _showTimeFromDropdown() {
-    String dayOfWeek = _availability?.dayOfWeek as String;
+    Availability? availability = _availableMentorsProvider?.selectedMentor?.availabilities![0];
+    String selectedLessonStartTime = _availableMentorsProvider?.selectedLessonStartTime as String;
+    String dayOfWeek = availability?.dayOfWeek as String;
     return Wrap(
       children: <Widget>[
         Padding(
@@ -84,17 +73,15 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
           child: Dropdown(
             dropdownMenuItemList: _buildTimeDropdown(),
             onChanged: _setTimeFrom,
-            value: _availability?.time?.from
+            value: selectedLessonStartTime
           ),
         )
       ]
     );
   }
 
-  void _setTimeFrom(String? time) {
-    setState(() {
-      _availability?.time?.from = time;
-    });
+  void _setTimeFrom(String? timeFrom) {
+    _availableMentorsProvider?.setSelectedLessonStartTime(timeFrom as String);
   }    
 
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
@@ -130,26 +117,36 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 12.0, 25.0, 12.0)
           ), 
-          onPressed: () {
-            _sendLessonRequest();
+          onPressed: () async {
+            await _sendLessonRequest();
           },
-          child: Text(
+          child: !_isSendingLessonRequest ? Text(
             'available_mentors.send_request'.tr(),
-            style: const TextStyle(
-              color: Colors.white
-            )
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 56.0,
+            height: 16.0,
+            child: ButtonLoader()
           )
         )
       ]
     ); 
   }
 
-  void _sendLessonRequest() {
-
+  Future<void> _sendLessonRequest() async {
+    setState(() {
+      _isSendingLessonRequest = true;
+    });
+    User? mentor = _availableMentorsProvider?.selectedMentor;
+    _availableMentorsProvider?.setSelectedMentor(mentor);    
+    await _availableMentorsProvider?.sendCustomLessonRequest();
+    Navigator.pop(context, true);
   }
 
   @override
   Widget build(BuildContext context) {
+    _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
+
     return _showEditLessonsStartTimeDialog();
   }
 }

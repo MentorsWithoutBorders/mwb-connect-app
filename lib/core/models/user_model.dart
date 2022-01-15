@@ -119,7 +119,8 @@ class User {
   }    
 
   Map<String, dynamic>? _lessonsAvailabilityToJson(LessonsAvailability? lessonsAvailability) {
-    if (lessonsAvailability != null) {
+    if (lessonsAvailability != null && lessonsAvailability.minInterval != null 
+        && lessonsAvailability.minIntervalUnit != null && lessonsAvailability.maxStudents != null) {
       return {
         'minInterval': lessonsAvailability.minInterval,
         'minIntervalUnit': lessonsAvailability.minIntervalUnitToEng,

@@ -88,7 +88,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
           if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _connectWithMentorProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
           if (isMentoringEnabled && _connectWithMentorProvider?.isNextLesson == true) NextLesson(),
-          if (isMentoringEnabled && _connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false && _connectWithMentorProvider?.shouldStopLessons != true) FindAvailableMentor(),
+          if (isMentoringEnabled && _connectWithMentorProvider?.isNextLesson == false && _connectWithMentorProvider?.isLessonRequest == false && _connectWithMentorProvider?.shouldStopLessons != true) FindAvailableMentor(shouldReloadCallback: _shouldReloadCallback),
           if (isMentoringEnabled && _connectWithMentorProvider?.isLessonRequest == true && _connectWithMentorProvider?.shouldStopLessons != true) FindingAvailableMentor(),
           if (isMentoringEnabled && _connectWithMentorProvider?.shouldStopLessons == true) LessonsStopped(),
           if (!isMentoringEnabled) LessonsDisabled()
@@ -98,6 +98,12 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   }
 
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;
+
+  void _shouldReloadCallback() {
+    _isInit = false;
+    setState(() {});
+    _init();    
+  }  
 
   Widget _showTitle() {
     return Container(

@@ -8,7 +8,6 @@ import 'package:mwb_connect_app/ui/views/goal_steps/widgets/first_goal_widget.da
 import 'package:mwb_connect_app/ui/views/goals/widgets/goal_card_widget.dart';
 import 'package:mwb_connect_app/ui/views/goals/widgets/add_goal_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class GoalsView extends StatefulWidget {

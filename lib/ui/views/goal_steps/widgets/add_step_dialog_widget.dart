@@ -139,7 +139,6 @@ class _AddStepDialogState extends State<AddStepDialog> {
               if (_formKey.currentState?.validate() == true && !_isAddingStep) {
                 _formKey.currentState?.save();
                 await _addStep();
-                Navigator.pop(context);
               } 
             },
             child: !_isAddingStep ? Text(
@@ -161,6 +160,7 @@ class _AddStepDialogState extends State<AddStepDialog> {
       _isAddingStep = true;
     });
     await _stepsProvider?.addStep(goalId: _goalsProvider?.selectedGoal?.id, stepText: _stepText, isSubStep: false);
+    Navigator.pop(context);
   }
 
   @override

@@ -18,8 +18,8 @@ class ConnectWithMentorService {
   Future<LessonRequestModel> sendLessonRequest() async {
     Map<String, dynamic> response = await _api.postHTTP(url: '/lesson_requests', data: {});
     return LessonRequestModel.fromJson(response);
-  }  
-
+  }
+  
   Future<void> cancelLessonRequest(String? id) async {
     await _api.putHTTP(url: '/lesson_requests/$id/cancel_lesson_request', data: {});  
     return ;

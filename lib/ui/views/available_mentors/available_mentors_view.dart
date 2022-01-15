@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/available_mentor_widget.dart';
-import 'package:mwb_connect_app/ui/views/available_mentors/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
@@ -65,7 +64,7 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
       }
     );
   }
-  
+
   Widget _showTitle() {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
@@ -90,7 +89,7 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
       ]);      
       _isAvailableMentorsRetrieved = true;
     }
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
