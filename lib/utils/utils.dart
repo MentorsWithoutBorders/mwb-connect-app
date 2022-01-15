@@ -75,7 +75,7 @@ class Utils {
 
   static Availability getAvailabilityToUtc(Availability availability) {
     DateFormat dayOfWeekFormat = DateFormat('EEEE');
-    DateFormat timeFormat = DateFormat('h:ma');
+    DateFormat timeFormat = DateFormat('h:mma');
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
       date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
@@ -263,7 +263,20 @@ class Utils {
     }
     weekNumber--;
     return weekNumber;
-  }  
+  }
+  
+  static String getNextDayOfWeek(String dayOfWeek) {
+    for (int i = 0; i < daysOfWeek.length; i++) {
+      if (dayOfWeek == daysOfWeek[i]) {
+        if (i == daysOfWeek.length - 1) {
+          return daysOfWeek[0];
+        } else {
+          return daysOfWeek[i+1];
+        }
+      }
+    }
+    return dayOfWeek;
+  }
   
   static String getIndefiniteArticle(String noun) {
     String article = 'common.a'.tr();
