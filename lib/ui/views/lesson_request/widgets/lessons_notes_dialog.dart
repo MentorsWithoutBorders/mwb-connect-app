@@ -152,7 +152,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),
-          padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
+          padding: const EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 5.0),
         ),
         child: Text(
           'common.close'.tr(),

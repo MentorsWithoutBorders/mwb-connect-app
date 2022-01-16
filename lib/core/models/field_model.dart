@@ -24,7 +24,7 @@ class Field {
 
   Map<String, Object?> toJson() {
     return {
-      'id': id ,
+      'id': id,
       'name': name,
       'subfields': _subfieldsToJson(subfields)
     };

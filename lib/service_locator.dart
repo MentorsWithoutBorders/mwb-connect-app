@@ -13,6 +13,7 @@ import 'package:mwb_connect_app/core/services/steps_service.dart';
 import 'package:mwb_connect_app/core/services/quizzes_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
+import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
 import 'package:mwb_connect_app/core/services/notifications_service.dart';
 import 'package:mwb_connect_app/core/services/support_request_service.dart';
@@ -53,6 +54,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => QuizzesService());
   locator.registerLazySingleton(() => ConnectWithMentorService());
   locator.registerLazySingleton(() => AvailableMentorsService());
+  locator.registerLazySingleton(() => FieldsGoalsService());
   locator.registerLazySingleton(() => LessonRequestService());
   locator.registerLazySingleton(() => NotificationsService());
   locator.registerLazySingleton(() => SupportRequestService());

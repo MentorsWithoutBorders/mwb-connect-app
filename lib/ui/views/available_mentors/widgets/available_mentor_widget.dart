@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
@@ -8,7 +9,9 @@ import 'package:mwb_connect_app/ui/views/available_mentors/widgets/availabilitie
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/subfields_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/edit_lessons_start_time_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
-import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/webview_dialog.dart';
+
 
 class AvailableMentor extends StatefulWidget {
   const AvailableMentor({Key? key, @required this.mentor})
@@ -56,15 +59,48 @@ class _AvailableMentorState extends State<AvailableMentor> {
   }
 
   Widget _showMentorFieldName() {
+    String fieldName = widget.mentor?.field?.name as String;
+    String? whyChooseUrl = _availableMentorsProvider?.getWhyChooseUrl(widget.mentor?.field?.id as String);
+
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
       width: double.infinity,
-      child: Text(
-        widget.mentor?.field?.name as String,
-        style: const TextStyle(
-          color: AppColors.DOVE_GRAY
+      child: RichText(
+        text: TextSpan(
+          style: const TextStyle(
+            color: AppColors.DOVE_GRAY,
+            height: 1.4
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: fieldName
+            ),
+            TextSpan(
+              text: ' ('
+            ),
+            TextSpan(
+              text: 'available_mentors.why_choose_field'.tr(args: [fieldName.toLowerCase()]),
+              style: const TextStyle(
+                color: Colors.blue,
+                fontSize: 12.0,
+                fontStyle: FontStyle.italic,
+                decoration: TextDecoration.underline
+              ),
+              recognizer: TapGestureRecognizer()..onTap = () {
+                showDialog(
+                  context: context,
+                  builder: (_) => AnimatedDialog(
+                    widgetInside: WebView(url: whyChooseUrl)
+                  )
+                );
+              } 
+            ),
+            TextSpan(
+              text: ')'
+            )
+          ]
         )
-      ),
+      )
     );
   }
   

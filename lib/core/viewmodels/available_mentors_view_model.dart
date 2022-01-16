@@ -7,19 +7,22 @@ import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
+import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
 
 class AvailableMentorsViewModel extends ChangeNotifier {
   final AvailableMentorsService _availableMentorsService = locator<AvailableMentorsService>();
+  final FieldsGoalsService _fieldsGoalsService = locator<FieldsGoalsService>();
+  List<User> availableMentors = [];
+  List<FieldGoal> fieldsGoals = [];
   User? selectedMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
   String? lessonRequestButtonId;
   String? selectedLessonStartTime;
   String errorMessage = '';
-
-  List<User> availableMentors = [];
 
   Future<void> getAvailableMentors() async {
     availableMentors = await _availableMentorsService.getAvailableMentors();
@@ -28,9 +31,21 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     _sortAvailabilities();
   }
 
+  Future<void> getFieldsGoals() async {
+    fieldsGoals = await _fieldsGoalsService.getFieldsGoals();
+  }   
+
   Future<void> sendCustomLessonRequest() async {
     await _availableMentorsService.sendCustomLessonRequest(selectedMentor);
-  }  
+  }
+  
+  String? getWhyChooseUrl(String fieldId) {
+    for (FieldGoal fieldGoal in fieldsGoals) {
+      if (fieldGoal.fieldId == fieldId) {
+        return fieldGoal.whyChooseUrl;
+      }
+    }
+  }
 
   void _sortAvailabilities() {
     for (User mentor in availableMentors) {

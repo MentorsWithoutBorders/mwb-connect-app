@@ -389,11 +389,11 @@ class _NextLessonState extends State<NextLesson> {
               context: context,
               builder: (_) => AnimatedDialog(
                 widgetInside: LessonGuideDialog()
-              ),
+              )
             )
           }
-        ),
-      ),
+        )
+      )
     );
   }
 

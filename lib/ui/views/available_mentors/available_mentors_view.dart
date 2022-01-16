@@ -85,7 +85,8 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   Future<void> _getAvailableMentors() async {
     if (!_isAvailableMentorsRetrieved && _availableMentorsProvider != null) {
       await Future.wait([
-        _availableMentorsProvider!.getAvailableMentors()
+        _availableMentorsProvider!.getAvailableMentors(),
+        _availableMentorsProvider!.getFieldsGoals()
       ]);      
       _isAvailableMentorsRetrieved = true;
     }

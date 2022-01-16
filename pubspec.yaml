@@ -33,6 +33,7 @@ dependencies:
   flutter_local_notifications: ^9.0.1
   flutter_native_timezone: ^2.0.0
   flutter_widget_from_html_core: ^0.8.1
+  flutter_inappwebview: ^5.3.2
   jiffy: ^4.1.0
   quiver: ^3.0.1+1
   smooth_page_indicator: ^1.0.0+2

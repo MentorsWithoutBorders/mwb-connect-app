@@ -199,6 +199,7 @@
 		"conditions_find_mentor": "In order to connect with a mentor for the next lesson, you’ll have to do the following first:",
 		"find_available_mentor": "Find an available mentor",
 		"finding_available_mentor": "Finding an available mentor for the next lesson...",
+		"waiting_mentor": "Waiting for the mentor to approve your lesson request...",
 		"cancel_lesson_request": "Cancel lesson request",
 		"cancel_lesson_request_text": "Are you sure you want to cancel the lesson request?",
 		"scheduled_lesson": "{} has scheduled {} {} lesson with you on {} at {} {} and you’ll use the following {} link:",
@@ -215,6 +216,7 @@
 	},
   "available_mentors": {
     "title": "Find mentor",
+    "why_choose_field": "why choose {}?",
     "choose_availability": "Choose availability:",
     "choose_subfield": "Choose subfield:",
     "send_request": "Send request",
