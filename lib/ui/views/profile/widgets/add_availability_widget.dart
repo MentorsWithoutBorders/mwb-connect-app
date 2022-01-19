@@ -54,7 +54,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   Widget _showTitle() {
     return Center(
       child: Text(
-        'profile.add_availability'.tr(),
+        'common.add_availability'.tr(),
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
@@ -105,12 +105,12 @@ class _AddAvailabilityState extends State<AddAvailability> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 4.0, right: 3.0),
-              child: Text('profile.availability_from'.tr())
+              child: Text('common.availability_from'.tr())
             ),
             _showTimeFromDropdown(),
             Padding(
               padding: const EdgeInsets.fromLTRB(5.0, 4.0, 5.0, 0.0),
-              child: Text('profile.availability_to'.tr())
+              child: Text('common.availability_to'.tr())
             ),
             _showTimeToDropdown()
           ]
@@ -166,7 +166,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
       child: Text(
-        'profile.availability_error'.tr(),
+        'common.availability_error'.tr(),
         style: TextStyle(
           fontSize: 13.0,
           color: AppColors.MONZA
@@ -234,7 +234,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
   void _addAvailability() {
-    if (_profileProvider?.isAvailabilityValid(_availability!) == true) {
+    if (Utils.isAvailabilityValid(_availability!) == true) {
       _profileProvider?.addAvailability(_availability!);
       Navigator.pop(context, true);
     } else {

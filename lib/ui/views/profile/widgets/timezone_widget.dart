@@ -20,7 +20,7 @@ class _UserTimezoneState extends State<UserTimezone> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 12.0),
       child: Text(
-        'profile.availability_timezone'.tr(args: [now.timeZoneName]),
+        'common.availability_timezone'.tr(args: [now.timeZoneName]),
         style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.DOVE_GRAY,

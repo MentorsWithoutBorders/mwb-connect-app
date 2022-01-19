@@ -106,6 +106,15 @@
     "cancel_recurring_lesson": "Cancel recurring lesson",
     "cancel_only_next_lesson": "Cancel only next lesson",
     "cancel_entire_lesson_recurrence": "Cancel entire lesson recurrence",
+    "availability": "Availability",
+    "available_days_times": "Available days/times:",
+    "availability_timezone": "All times are in {} time zone.",    
+		"add_availability": "Add availability",
+		"edit_availability": "Edit availability",
+		"availability_from": "From",
+		"availability_to": "to",
+    "availabilities_merged": "The following availabilities have been merged:",
+    "availability_error": "\"From\" time cannot be equal to or after \"to\" time",
     "contact_support": "contact support"
 	},
 	"onboarding": {
@@ -171,17 +180,8 @@
 		"subfields": "Subfields",
 		"add_subfield": "Add subfield",
 		"add_skills": "Add skills {}",
-		"availability": "Availability",
-		"available_days_times": "Available days/times",
-		"availability_timezone": "All times are in {} time zone.",
-		"add_availability": "Add availability",
-		"edit_availability": "Edit availability",
-		"availability_from": "From",
-		"availability_to": "to",
-		"availability_error": "\"From\" time cannot be equal to or after \"to\" time",
 		"currently_available": "I'm currently available",
-		"available_starting_from": "I'm available starting from:",
-		"availabilities_merged": "The following availabilities have been merged:"		
+		"available_starting_from": "I'm available starting from:"
 	},
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",
@@ -216,6 +216,7 @@
 	},
   "available_mentors": {
     "title": "Find mentor",
+    "title_filters": "Filter available mentors",
     "why_choose_field": "why choose {}?",
     "choose_availability": "Choose availability:",
     "choose_subfield": "Choose subfield:",

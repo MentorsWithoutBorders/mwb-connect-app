@@ -17,18 +17,20 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   final FieldsGoalsService _fieldsGoalsService = locator<FieldsGoalsService>();
   List<User> availableMentors = [];
   List<FieldGoal> fieldsGoals = [];
+  List<Availability> filterAvailabilities = [];
   User? selectedMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
   String? lessonRequestButtonId;
   String? selectedLessonStartTime;
   String errorMessage = '';
+  String availabilityMergedMessage = '';
 
   Future<void> getAvailableMentors() async {
     availableMentors = await _availableMentorsService.getAvailableMentors();
     setSelectedMentor(null);
     setSelectedLessonStartTime(null);
-    _sortAvailabilities();
+    _sortMentorsAvailabilities();
   }
 
   Future<void> getFieldsGoals() async {
@@ -47,13 +49,13 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     }
   }
 
-  void _sortAvailabilities() {
+  void _sortMentorsAvailabilities() {
     for (User mentor in availableMentors) {
       mentor.availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
       mentor.availabilities?.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
     }
     notifyListeners();
-  }  
+  }
 
   void setSelectedMentor(User? mentor) {
     if (mentor != null) {
@@ -246,4 +248,37 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     }
     return hoursList;
   }
+
+  void addAvailability(Availability availability) {
+    filterAvailabilities.add(availability);
+    _sortFilterAvailabilities();
+    List mergedAvailabilities = Utils.getMergedAvailabilities(filterAvailabilities, availabilityMergedMessage);
+    filterAvailabilities = mergedAvailabilities[0];
+    availabilityMergedMessage = mergedAvailabilities[1];
+    notifyListeners();
+  }
+  
+  void _sortFilterAvailabilities() {
+    filterAvailabilities.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
+    filterAvailabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
+    notifyListeners();
+  }
+  
+  void updateAvailability(int index, Availability newAvailability) {
+    filterAvailabilities[index] = newAvailability;
+    _sortFilterAvailabilities();
+    List mergedAvailabilities = Utils.getMergedAvailabilities(filterAvailabilities, availabilityMergedMessage);
+    filterAvailabilities = mergedAvailabilities[0];
+    availabilityMergedMessage = mergedAvailabilities[1];
+    notifyListeners();
+  }
+  
+  void deleteAvailability(int index) {
+    filterAvailabilities.removeAt(index);
+    notifyListeners();
+  }  
+
+  void resetAvailabilityMergedMessage() {
+    availabilityMergedMessage = '';
+  }  
 }

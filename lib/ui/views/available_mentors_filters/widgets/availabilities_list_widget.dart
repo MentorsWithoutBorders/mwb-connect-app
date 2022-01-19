@@ -4,10 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/timezone_widget.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/availability_item_widget.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/add_availability_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors_filters/widgets/availability_item_widget.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors_filters/widgets/add_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilitiesList extends StatefulWidget {
@@ -19,14 +18,13 @@ class AvailabilitiesList extends StatefulWidget {
 }
 
 class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProviderStateMixin {
-  ProfileViewModel? _profileProvider;
+  AvailableMentorsViewModel? _availableMentorsProvider;
 
   Widget _showAvailability() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _showTitle(),
-        _showTimezone(),
         _showAvailabilitiesList(),
         _showAddAvailabilityButton()
       ]
@@ -34,11 +32,10 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   }
 
   Widget _showTitle() {
-    String title = _profileProvider?.user?.isMentor == true ? 'common.available_days_times'.tr() : 'common.availability'.tr();
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
-        title,
+        'common.available_days_times'.tr(),
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
@@ -47,13 +44,9 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
     );
   }
 
-  Widget _showTimezone() {
-    return const UserTimezone();
-  }
-
   Widget _showAvailabilitiesList() {
     final List<Widget> availabilityWidgets = [];
-    final List<Availability>? availabilitiesList = _profileProvider?.user?.availabilities;
+    final List<Availability>? availabilitiesList = _availableMentorsProvider?.filterAvailabilities;
     if (availabilitiesList != null) {
       for (int i = 0; i < availabilitiesList.length; i++) {
         availabilityWidgets.add(AvailabilityItem(index: i));
@@ -88,16 +81,15 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   }
 
   void _showAddAvailabilityDialog() {
-    _unfocus();
     showDialog(
       context: context,
       builder: (_) => const AnimatedDialog(
         widgetInside: AddAvailability()
       ),
     ).then((shouldShowToast) {
-      if (shouldShowToast && _profileProvider?.availabilityMergedMessage.isNotEmpty == true) {
+      if (shouldShowToast && _availableMentorsProvider?.availabilityMergedMessage.isNotEmpty == true) {
         _showToast(context);
-        _profileProvider?.resetAvailabilityMergedMessage();
+        _availableMentorsProvider?.resetAvailabilityMergedMessage();
       }
     });     
   }
@@ -107,7 +99,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
     scaffold.showSnackBar(
       SnackBar(
         key: const Key(AppKeys.toast),
-        content: Text(_profileProvider?.availabilityMergedMessage as String),
+        content: Text(_availableMentorsProvider?.availabilityMergedMessage as String),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
@@ -115,14 +107,9 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
     );
   }
 
-  void _unfocus() {
-    _profileProvider?.shouldUnfocus = true;
-  }   
-
-
   @override
   Widget build(BuildContext context) {
-    _profileProvider = Provider.of<ProfileViewModel>(context);
+    _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
       
     return _showAvailability();
   }

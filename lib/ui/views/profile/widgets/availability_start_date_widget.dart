@@ -90,7 +90,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
                         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                         child: InkWell(
                           key: const Key(AppKeys.availableFromText),
-                          child: Text('profile.available_starting_from'.tr()),
+                          child: Text('common.available_starting_from'.tr()),
                           onTap: () {
                             _setIsAvailable(AvailabilityStart.later);
                           }
@@ -166,7 +166,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
       child: Text(
-        'profile.availability'.tr(),
+        'common.availability'.tr(),
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold

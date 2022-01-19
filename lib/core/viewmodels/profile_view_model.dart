@@ -19,10 +19,9 @@ class ProfileViewModel extends ChangeNotifier {
   final String _defaultLocale = Platform.localeName;
   User? user;
   List<Field>? fields;
-  String availabilityMergedMessage = '';
-  bool _mergedAvailabilityLastShown = false;
   bool _shouldUnfocus = false;
   double scrollOffset = 0;
+  String availabilityMergedMessage = '';    
 
   Future<void> getUserDetails() async {
     user = await _userService.getUserDetails();
@@ -237,7 +236,12 @@ class ProfileViewModel extends ChangeNotifier {
       date = dateFormat.format(user?.availableFrom as DateTime).capitalize();
     }
     return date;
-  }  
+  }
+  
+  void resetAvailabilityMergedMessage() {
+    availabilityMergedMessage = '';
+    notifyListeners();
+  }
 
   void setIsAvailable(bool isAvailable) {
     user?.isAvailable = isAvailable;
@@ -254,7 +258,9 @@ class ProfileViewModel extends ChangeNotifier {
   void addAvailability(Availability availability) {
     user?.availabilities?.add(availability);
     _sortAvailabilities();
-    _mergeAvailabilityTimes();
+    List mergedAvailabilities = Utils.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
+    user?.availabilities = mergedAvailabilities[0];
+    availabilityMergedMessage = mergedAvailabilities[1];
     setUserDetails(user);
     notifyListeners();
   }
@@ -262,7 +268,9 @@ class ProfileViewModel extends ChangeNotifier {
   void updateAvailability(int index, Availability newAvailability) {
     user?.availabilities?[index] = newAvailability;
     _sortAvailabilities();
-    _mergeAvailabilityTimes();
+    List mergedAvailabilities = Utils.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
+    user?.availabilities = mergedAvailabilities[0];
+    availabilityMergedMessage = mergedAvailabilities[1];
     setUserDetails(user);
     notifyListeners();
   }
@@ -271,70 +279,6 @@ class ProfileViewModel extends ChangeNotifier {
     user?.availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
     user?.availabilities?.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
     notifyListeners();
-  }
-
-  void _mergeAvailabilityTimes() {
-    final List<Availability> availabilities = [];
-    for (final String dayOfWeek in Utils.daysOfWeek) {
-      final List<Availability> dayAvailabilities = [];
-      final List<Availability>? userAvailabilities = user?.availabilities;
-      if (userAvailabilities != null) {
-        for (final Availability availability in userAvailabilities) {
-          if (availability.dayOfWeek == dayOfWeek) {
-            dayAvailabilities.add(availability);
-          }
-        }
-      }
-      final List<Availability> merged = [];
-      int mergedLastTo = -1;
-      _mergedAvailabilityLastShown = false;
-      for (final Availability availability in dayAvailabilities) {
-        if (merged.isNotEmpty) {
-          mergedLastTo = Utils.convertTime12to24(merged.last.time?.to as String)[0];
-        }
-        final int availabilityFrom = Utils.convertTime12to24(availability.time?.from as String)[0];
-        final int availabilityTo = Utils.convertTime12to24(availability.time?.to as String)[0];
-        if (merged.isEmpty || mergedLastTo < availabilityFrom) {
-          merged.add(availability);
-        } else {
-          if (mergedLastTo < availabilityTo) {
-            _setAvailabilityMergedMessage(availability, merged);
-            merged.last.time?.to = availability.time?.to;
-          } else {
-            _setAvailabilityMergedMessage(availability, merged);
-          }
-        }
-      }
-      availabilities.addAll(merged);
-    }
-    user?.availabilities = availabilities;
-  }
-
-  void _setAvailabilityMergedMessage(Availability availability, List<Availability> merged) {
-    if (availabilityMergedMessage.isEmpty) {
-      availabilityMergedMessage = 'profile.availabilities_merged'.tr() + '\n';
-    }    
-    if (!_mergedAvailabilityLastShown) {
-      String dayOfWeek = merged.last.dayOfWeek as String;
-      String timeFrom = merged.last.time?.from as String;
-      String timeTo = merged.last.time?.to as String;
-      availabilityMergedMessage += dayOfWeek + ' ' + 'common.from'.tr() + ' ' + timeFrom + ' ' + 'common.to'.tr() + ' ' + timeTo + '\n';
-      _mergedAvailabilityLastShown = true;
-    }
-    String dayOfWeek = availability.dayOfWeek as String;
-    String timeFrom = availability.time?.from as String;
-    String timeTo = availability.time?.to as String;    
-    availabilityMergedMessage += dayOfWeek + ' ' + 'common.from'.tr() + ' ' + timeFrom + ' ' + 'common.to'.tr() + ' ' + timeTo + '\n';
-  }
-
-  void resetAvailabilityMergedMessage() {
-    availabilityMergedMessage = '';
-  }
-
-  bool isAvailabilityValid(Availability availability) {
-    final int timeFrom = Utils.convertTime12to24(availability.time?.from as String)[0];
-    final int timeTo = Utils.convertTime12to24(availability.time?.to as String)[0];
-    return timeFrom < timeTo || timeFrom != timeTo && timeTo == 0;
   }
 
   void deleteAvailability(int index) {

@@ -5,7 +5,8 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class EditAvailability extends StatefulWidget {
@@ -19,7 +20,8 @@ class EditAvailability extends StatefulWidget {
 }
 
 class _EditAvailabilityState extends State<EditAvailability> {
-  ProfileViewModel? _profileProvider;
+  AvailableMentorsViewModel? _availableMentorsProvider;
+  CommonViewModel? _commonProvider;  
   Availability? _availability;
   bool _shouldShowError = false;
   bool _isInit = false;
@@ -27,7 +29,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   @override
   void didChangeDependencies() {
     if (!_isInit) {  
-      _profileProvider = Provider.of<ProfileViewModel>(context);
+      _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
       _initAvalability();
       _isInit = true;
     }
@@ -35,7 +37,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   }
 
   void _initAvalability() {
-    _availability = _profileProvider?.user?.availabilities?[widget.index!];
+    _availability = _availableMentorsProvider?.filterAvailabilities[widget.index!];
   }
   
   Widget _showEditAvailabilityDialog() {
@@ -237,7 +239,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   void _updateAvailability() {
     if (Utils.isAvailabilityValid(_availability!) == true) {
-      _profileProvider?.updateAvailability(widget.index!, _availability!);
+      _availableMentorsProvider?.updateAvailability(widget.index!, _availability!);
       Navigator.pop(context, true);
     } else {
       setState(() {
@@ -248,6 +250,8 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   @override
   Widget build(BuildContext context) {
+    _commonProvider = Provider.of<CommonViewModel>(context);
+
     return _showEditAvailabilityDialog();
   }
 }

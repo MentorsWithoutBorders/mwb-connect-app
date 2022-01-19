@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors_filters/available_mentors_filters_view.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
@@ -39,16 +40,9 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          _showFiltersCard(),
           _showMentorsCards()
         ]
       )
-    );
-  }
-
-  Widget _showFiltersCard() {
-    return AppCard(
-      child: Center(child: Text('Filters'))
     );
   }
 
@@ -66,11 +60,8 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   }
 
   Widget _showTitle() {
-    return Container(
-      padding: const EdgeInsets.only(right: 50.0),
-      child: Center(
-        child: Text('available_mentors.title'.tr()),
-      )
+    return Center(
+      child: Text('available_mentors.title'.tr()),
     );
   }
   
@@ -81,6 +72,10 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
       return const Loader();
     }
   }
+
+  void _goToFilters() {
+    Navigator.push(context, MaterialPageRoute<AvailableMentorsFiltersView>(builder: (_) => AvailableMentorsFiltersView()));
+  }  
 
   Future<void> _getAvailableMentors() async {
     if (!_isAvailableMentorsRetrieved && _availableMentorsProvider != null) {
@@ -107,7 +102,21 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
               appBar: AppBar(
                 title: _showTitle(),
                 backgroundColor: Colors.transparent,          
-                elevation: 0.0
+                elevation: 0.0,
+                actions: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0, right: 20.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        _goToFilters();
+                      },
+                      child: Icon(
+                        Icons.filter_list,
+                        size: 26.0
+                      )
+                    )
+                  )
+                ]
               ),
               extendBodyBehindAppBar: true,
               body: _showContent()

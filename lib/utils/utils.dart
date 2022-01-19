@@ -15,6 +15,7 @@ import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 class Utils {
   static final String _defaultLocale = Platform.localeName;
   static final LocalStorageService _storageService = locator<LocalStorageService>();  
+  static bool _mergedAvailabilityLastShown = false;  
 
   static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');
   static List<String> get periodUnits => 'common.period_units'.tr().split(', ');
@@ -76,12 +77,12 @@ class Utils {
   static Availability getAvailabilityToUtc(Availability availability) {
     DateFormat dayOfWeekFormat = DateFormat('EEEE');
     DateFormat timeFormat = DateFormat('h:mma');
-    DateTime date = Utils.resetTime(DateTime.now());
+    DateTime date = resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
-      date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
+      date = getDSTAdjustedDateTime(date.add(Duration(days: 1)));
     }
-    List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
-    List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
+    List<int> availabilityTimeFrom = convertTime12to24(availability.time?.from as String);
+    List<int> availabilityTimeTo = convertTime12to24(availability.time?.to as String);
     final DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0], minute: availabilityTimeFrom[1]).toUtc();
     final DateTime timeTo = date.copyWith(hour: availabilityTimeTo[0], minute: availabilityTimeTo[1]).toUtc();
     return Availability(
@@ -97,12 +98,12 @@ class Utils {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
     DateFormat dayOfWeekFormat = DateFormat('EEEE');
     DateFormat timeFormat = DateFormat('ha');    
-    DateTime date = Utils.resetTime(DateTime.now());
+    DateTime date = resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
-      date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
+      date = getDSTAdjustedDateTime(date.add(Duration(days: 1)));
     }
-    List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
-    List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
+    List<int> availabilityTimeFrom = convertTime12to24(availability.time?.from as String);
+    List<int> availabilityTimeTo = convertTime12to24(availability.time?.to as String);
     final DateTime timeFrom = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeFrom[0], minute: availabilityTimeFrom[1]).toString()).toLocal();
     final DateTime timeTo = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeTo[0], minute: availabilityTimeTo[1]).toString()).toLocal();
     return Availability(
@@ -200,8 +201,8 @@ class Utils {
   }
 
   static DateTime? getNextDeadline() {
-    Jiffy now = Jiffy(Utils.resetTime(DateTime.now()));
-    Jiffy deadline = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    Jiffy now = Jiffy(resetTime(DateTime.now()));
+    Jiffy deadline = Jiffy(resetTime(DateTime.parse(_storageService.registeredOn as String)));
     if (deadline.isSame(now)) {
       deadline.add(weeks: 1);
       deadline = Jiffy(getDSTAdjustedDateTime(deadline.dateTime));
@@ -254,7 +255,7 @@ class Utils {
 
   static int getTrainingWeekNumber() {
     Jiffy nextDeadline = Jiffy(getNextDeadline());
-    Jiffy dateFromRegisteredOn = Jiffy(Utils.resetTime(DateTime.parse(_storageService.registeredOn as String)));
+    Jiffy dateFromRegisteredOn = Jiffy(resetTime(DateTime.parse(_storageService.registeredOn as String)));
     int weekNumber = 0;
     while (dateFromRegisteredOn.isSameOrBefore(nextDeadline, Units.DAY)) {
       dateFromRegisteredOn.add(weeks: 1);
@@ -285,4 +286,64 @@ class Utils {
     }
     return article;
   }
+
+  static bool isAvailabilityValid(Availability availability) {
+    final int timeFrom = convertTime12to24(availability.time?.from as String)[0];
+    final int timeTo = convertTime12to24(availability.time?.to as String)[0];
+    return timeFrom < timeTo || timeFrom != timeTo && timeTo == 0;
+  }
+
+  static List getMergedAvailabilities(List<Availability>? userAvailabilities, String availabilityMergedMessage) {
+    final List<Availability> availabilities = [];
+    for (final String dayOfWeek in daysOfWeek) {
+      final List<Availability> dayAvailabilities = [];
+      if (userAvailabilities != null) {
+        for (final Availability availability in userAvailabilities) {
+          if (availability.dayOfWeek == dayOfWeek) {
+            dayAvailabilities.add(availability);
+          }
+        }
+      }
+      final List<Availability> merged = [];
+      int mergedLastTo = -1;
+      _mergedAvailabilityLastShown = false;
+      for (final Availability availability in dayAvailabilities) {
+        if (merged.isNotEmpty) {
+          mergedLastTo = convertTime12to24(merged.last.time?.to as String)[0];
+        }
+        final int availabilityFrom = convertTime12to24(availability.time?.from as String)[0];
+        final int availabilityTo = convertTime12to24(availability.time?.to as String)[0];
+        if (merged.isEmpty || mergedLastTo < availabilityFrom) {
+          merged.add(availability);
+        } else {
+          if (mergedLastTo < availabilityTo) {
+            availabilityMergedMessage = _setAvailabilityMergedMessage(availability, merged, availabilityMergedMessage);
+            merged.last.time?.to = availability.time?.to;
+          } else {
+            availabilityMergedMessage = _setAvailabilityMergedMessage(availability, merged, availabilityMergedMessage);
+          }
+        }
+      }
+      availabilities.addAll(merged);
+    }
+    return [availabilities, availabilityMergedMessage];
+  }
+
+  static String _setAvailabilityMergedMessage(Availability availability, List<Availability> merged, String availabilityMergedMessage) {
+    if (availabilityMergedMessage.isEmpty) {
+      availabilityMergedMessage = 'common.availabilities_merged'.tr() + '\n';
+    }    
+    if (!_mergedAvailabilityLastShown) {
+      String dayOfWeek = merged.last.dayOfWeek as String;
+      String timeFrom = merged.last.time?.from as String;
+      String timeTo = merged.last.time?.to as String;
+      availabilityMergedMessage += dayOfWeek + ' ' + 'common.from'.tr() + ' ' + timeFrom + ' ' + 'common.to'.tr() + ' ' + timeTo + '\n';
+      _mergedAvailabilityLastShown = true;
+    }
+    String dayOfWeek = availability.dayOfWeek as String;
+    String timeFrom = availability.time?.from as String;
+    String timeTo = availability.time?.to as String;    
+    availabilityMergedMessage += dayOfWeek + ' ' + 'common.from'.tr() + ' ' + timeFrom + ' ' + 'common.to'.tr() + ' ' + timeTo + '\n';
+    return availabilityMergedMessage;
+  }  
 }

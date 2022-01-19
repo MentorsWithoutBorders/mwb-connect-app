@@ -5,40 +5,39 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/core/models/time_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
-class EditAvailability extends StatefulWidget {
-  const EditAvailability({Key? key, @required this.index})
+class AddAvailability extends StatefulWidget {
+  const AddAvailability({Key? key})
     : super(key: key); 
 
-  final int? index;
-
   @override
-  State<StatefulWidget> createState() => _EditAvailabilityState();
+  State<StatefulWidget> createState() => _AddAvailabilityState();
 }
 
-class _EditAvailabilityState extends State<EditAvailability> {
-  ProfileViewModel? _profileProvider;
+class _AddAvailabilityState extends State<AddAvailability> {
+  AvailableMentorsViewModel? _availableMentorsProvider;
+  CommonViewModel? _commonProvider;
   Availability? _availability;
   bool _shouldShowError = false;
-  bool _isInit = false;
+  final String _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
+  final String _defaultTimeFrom = '10am';
+  final String _defaultTimeTo = '2pm';
 
   @override
-  void didChangeDependencies() {
-    if (!_isInit) {  
-      _profileProvider = Provider.of<ProfileViewModel>(context);
-      _initAvalability();
-      _isInit = true;
-    }
-    super.didChangeDependencies();
-  }
-
-  void _initAvalability() {
-    _availability = _profileProvider?.user?.availabilities?[widget.index!];
+  void initState() {
+    super.initState();
+    _initAvalability();
   }
   
-  Widget _showEditAvailabilityDialog() {
+  void _initAvalability() {
+    _availability = Availability(dayOfWeek: _defaultDayOfWeek, time: Time(from: _defaultTimeFrom, to: _defaultTimeTo));
+  }  
+
+  Widget _showAddAvailabilityDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -56,7 +55,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   Widget _showTitle() {
     return Center(
       child: Text(
-        'common.edit_availability'.tr(),
+        'common.add_availability'.tr(),
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold
@@ -100,11 +99,11 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   Widget _showTimeDropdowns() {
     return Column(
-      children: [
+      children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
+          children: [
             Padding(
               padding: const EdgeInsets.only(top: 4.0, right: 3.0),
               child: Text('common.availability_from'.tr())
@@ -122,19 +121,6 @@ class _EditAvailabilityState extends State<EditAvailability> {
     );
   }
 
-  Widget _showError() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
-      child: Text(
-        'common.availability_error'.tr(),
-        style: const TextStyle(
-          fontSize: 13.0,
-          color: AppColors.MONZA
-        )
-      )
-    );
-  }
-  
   Widget _showTimeFromDropdown() {
     return Container(
       width: 80.0,
@@ -148,20 +134,14 @@ class _EditAvailabilityState extends State<EditAvailability> {
         value: _availability?.time?.from
       ),
     );
-  }
-
-  void _hideError() {
-    setState(() {
-      _shouldShowError = false;
-    });
-  }
+  }  
 
   void _setTimeFrom(String? time) {
     setState(() {
       _availability?.time?.from = time;
     });
-  }    
-
+  } 
+  
   Widget _showTimeToDropdown() {
     return Container(
       width: 80.0,
@@ -181,7 +161,26 @@ class _EditAvailabilityState extends State<EditAvailability> {
     setState(() {
       _availability?.time?.to = time;
     });
-  }    
+  }     
+
+  Widget _showError() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Text(
+        'common.availability_error'.tr(),
+        style: TextStyle(
+          fontSize: 13.0,
+          color: AppColors.MONZA
+        )
+      )
+    );
+  }
+
+  void _hideError() {
+    setState(() {
+      _shouldShowError = false;
+    });
+  }   
   
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
     final List<String> times = Utils.buildHoursList();
@@ -221,10 +220,10 @@ class _EditAvailabilityState extends State<EditAvailability> {
               padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
             ), 
             onPressed: () {
-              _updateAvailability();
+              _addAvailability();
             },
             child: Text(
-              'common.update'.tr(),
+              'common.add'.tr(),
               style: const TextStyle(
                 color: Colors.white
               )
@@ -235,9 +234,9 @@ class _EditAvailabilityState extends State<EditAvailability> {
     ); 
   }
 
-  void _updateAvailability() {
+  void _addAvailability() {
     if (Utils.isAvailabilityValid(_availability!) == true) {
-      _profileProvider?.updateAvailability(widget.index!, _availability!);
+      _availableMentorsProvider?.addAvailability(_availability!);
       Navigator.pop(context, true);
     } else {
       setState(() {
@@ -248,6 +247,9 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   @override
   Widget build(BuildContext context) {
-    return _showEditAvailabilityDialog();
+    _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
+    _commonProvider = Provider.of<CommonViewModel>(context);
+
+    return _showAddAvailabilityDialog();
   }
 }

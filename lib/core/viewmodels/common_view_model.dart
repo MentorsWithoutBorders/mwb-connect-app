@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/timezone.dart';
 import 'package:mwb_connect_app/core/models/timezone_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -10,7 +11,6 @@ import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/app_flags_service.dart';
 import 'package:mwb_connect_app/core/models/app_flags_model.dart';
-
 import '../../service_locator.dart';
 
 class CommonViewModel extends ChangeNotifier {
@@ -19,7 +19,7 @@ class CommonViewModel extends ChangeNotifier {
   final AppFlagsService _appFlagsService = locator<AppFlagsService>();  
   double dialogInputHeight = 0.0;
   dynamic location;
-  AppFlags appFlags = AppFlags(isTrainingEnabled: true, isMentoringEnabled: true);  
+  AppFlags appFlags = AppFlags(isTrainingEnabled: true, isMentoringEnabled: true);
 
   bool? getIsMentor() {
     return _storageService.isMentor;
@@ -73,5 +73,5 @@ class CommonViewModel extends ChangeNotifier {
     } else {
       return false;
     }
-  }   
+  }  
 }
