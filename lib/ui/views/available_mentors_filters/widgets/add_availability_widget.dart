@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class AddAvailability extends StatefulWidget {
@@ -20,7 +20,6 @@ class AddAvailability extends StatefulWidget {
 
 class _AddAvailabilityState extends State<AddAvailability> {
   AvailableMentorsViewModel? _availableMentorsProvider;
-  CommonViewModel? _commonProvider;
   Availability? _availability;
   bool _shouldShowError = false;
   final String _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
@@ -235,7 +234,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
   }
 
   void _addAvailability() {
-    if (Utils.isAvailabilityValid(_availability!) == true) {
+    if (UtilsAvailabilities.isAvailabilityValid(_availability!) == true) {
       _availableMentorsProvider?.addAvailability(_availability!);
       Navigator.pop(context, true);
     } else {
@@ -248,7 +247,6 @@ class _AddAvailabilityState extends State<AddAvailability> {
   @override
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
-    _commonProvider = Provider.of<CommonViewModel>(context);
 
     return _showAddAvailabilityDialog();
   }

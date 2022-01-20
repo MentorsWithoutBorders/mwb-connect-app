@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -18,13 +20,17 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   List<User> availableMentors = [];
   List<FieldGoal> fieldsGoals = [];
   List<Availability> filterAvailabilities = [];
+  List<Field>? fields = [];
   User? selectedMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
   String? lessonRequestButtonId;
   String? selectedLessonStartTime;
-  String errorMessage = '';
+  Field filterField = Field();
   String availabilityMergedMessage = '';
+  double scrollOffset = 0;  
+  String errorMessage = '';
+  bool _shouldUnfocus = false;
 
   Future<void> getAvailableMentors() async {
     availableMentors = await _availableMentorsService.getAvailableMentors();
@@ -35,7 +41,11 @@ class AvailableMentorsViewModel extends ChangeNotifier {
 
   Future<void> getFieldsGoals() async {
     fieldsGoals = await _fieldsGoalsService.getFieldsGoals();
-  }   
+  }
+  
+  Future<void> getFields() async {
+    fields = await _availableMentorsService.getFields();
+  }  
 
   Future<void> sendCustomLessonRequest() async {
     await _availableMentorsService.sendCustomLessonRequest(selectedMentor);
@@ -71,7 +81,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
           setSelectedLessonStartTime(timeFrom);
         }
       } else {
-        final Availability availabilityUtc = Utils.getAvailabilityToUtc(selectedMentor?.availabilities![0] as Availability);
+        final Availability availabilityUtc = UtilsAvailabilities.getAvailabilityToUtc(selectedMentor?.availabilities![0] as Availability);
         final List<int> availabilityTimeFrom = Utils.convertTime12to24(availabilityUtc.time?.from as String);
         final List<int> lessonStartTime = Utils.convertTime12to24(selectedLessonStartTime as String);
         final DateTime date = Utils.resetTime(DateTime.now());
@@ -252,7 +262,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   void addAvailability(Availability availability) {
     filterAvailabilities.add(availability);
     _sortFilterAvailabilities();
-    List mergedAvailabilities = Utils.getMergedAvailabilities(filterAvailabilities, availabilityMergedMessage);
+    List mergedAvailabilities = UtilsAvailabilities.getMergedAvailabilities(filterAvailabilities, availabilityMergedMessage);
     filterAvailabilities = mergedAvailabilities[0];
     availabilityMergedMessage = mergedAvailabilities[1];
     notifyListeners();
@@ -267,7 +277,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   void updateAvailability(int index, Availability newAvailability) {
     filterAvailabilities[index] = newAvailability;
     _sortFilterAvailabilities();
-    List mergedAvailabilities = Utils.getMergedAvailabilities(filterAvailabilities, availabilityMergedMessage);
+    List mergedAvailabilities = UtilsAvailabilities.getMergedAvailabilities(filterAvailabilities, availabilityMergedMessage);
     filterAvailabilities = mergedAvailabilities[0];
     availabilityMergedMessage = mergedAvailabilities[1];
     notifyListeners();
@@ -276,9 +286,201 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   void deleteAvailability(int index) {
     filterAvailabilities.removeAt(index);
     notifyListeners();
+  }
+
+ 
+  void setField(Field field) {
+    if (filterField.id != field.id) {
+      filterField = Field(id: field.id, name: field.name, subfields: []);
+      notifyListeners();
+    }
+  }
+
+  Field getSelectedField() {
+    return fields!.firstWhere((field) => field.id == filterField.id);
+  }
+
+  void setSubfield(Subfield subfield, int index) {
+    subfield.skills = [];
+    List<Subfield>? filterSubfields = filterField.subfields;
+    if (filterSubfields != null && index < filterSubfields.length) {
+      filterField.subfields?[index] = subfield;
+    } else {
+      filterField.subfields?.add(subfield);
+    }
+    notifyListeners();
+  }  
+
+  List<Subfield> getSubfields(int index) {
+    final List<Subfield>? subfields = fields?[_getSelectedFieldIndex()].subfields;
+    final List<Subfield>? filterSubfields = filterField.subfields;
+    final List<Subfield> filteredSubfields = [];
+    if (subfields != null) {
+      for (final Subfield subfield in subfields) {
+        if (filterSubfields != null && !_containsSubfield(filterSubfields, subfield) || 
+            subfield.name == filterSubfields?[index].name) {
+          filteredSubfields.add(subfield);
+        }
+      }
+    }
+    return filteredSubfields;
+  }
+
+  int _getSelectedFieldIndex() {
+    final List<Field>? fields = this.fields;
+    final Field? selectedField = filterField;
+    return fields!.indexWhere((Field field) => field.id == selectedField?.id);
+  }
+
+  bool _containsSubfield(List<Subfield> subfields, Subfield subfield) {
+    bool contains = false;
+    for (int i = 0; i < subfields.length; i++) {
+      if (subfield.name == subfields[i].name) {
+        contains = true;
+        break;
+      }
+    }
+    return contains;
+  }
+
+ Subfield? getSelectedFilterSubfield(int index) {
+    Subfield? selectedSubfield;
+    final List<Subfield>? subfields = fields?[_getSelectedFieldIndex()].subfields;
+    final List<Subfield>? filterSubfields = filterField.subfields;
+    if (subfields != null) {
+      for (final Subfield subfield in subfields) {
+        if (subfield.name == filterSubfields?[index].name) {
+          selectedSubfield = subfield;
+          break;
+        }
+      }
+    }
+    return selectedSubfield;
+  }  
+
+  void addSubfield() {
+    final List<Subfield>? subfields = fields?[_getSelectedFieldIndex()].subfields;
+    final List<Subfield>? filterSubfields = filterField.subfields;
+    if (subfields != null && filterSubfields != null) {
+      for (final Subfield subfield in subfields) {
+        if (!_containsSubfield(filterSubfields, subfield)) {
+          setSubfield(Subfield(id: subfield.id, name: subfield.name), filterSubfields.length+1);
+          break;
+        }
+      }
+    }
+    notifyListeners();
+  }
+  
+  void deleteSubfield(int index) {
+    filterField.subfields?.removeAt(index);
+    notifyListeners();
+  }
+
+  String getSkillHintText(int index) {
+    Subfield? subfield = getSelectedFilterSubfield(index);
+    String hint = '';
+    List<Skill>? subfieldSkills = subfield?.skills;
+    if (subfieldSkills != null && subfieldSkills.length > 0) {
+      hint = '(' + 'common.eg'.tr() +' ';
+      int hintsNumber = 3;
+      List<Skill>? subfieldSkills = subfield?.skills;
+      if (subfieldSkills != null && subfieldSkills.length < 3) {
+        hintsNumber = subfieldSkills.length;
+      }
+      for (int i = 0; i < hintsNumber; i++) {
+        if (subfieldSkills?[i].name != null) {
+          String skill = subfieldSkills?[i].name as String;
+          hint += skill + ', ';
+        }
+      }
+      hint += 'common.etc'.tr() + ')';
+    }
+    hint = 'available_mentors.add_skills'.tr(args: [hint]);
+    return hint;
+  }  
+  
+  List<String> getSkillSuggestions(String query, int index) {
+    List<String> matches = [];
+    Subfield? subfield = getSelectedFilterSubfield(index);
+    List<Skill>? subfieldSkills = subfield?.skills;
+    List<Skill>? filterSkills = filterField.subfields?[index].skills;
+    if (filterSkills != null && subfieldSkills != null) {
+      for (final Skill skill in subfieldSkills) {
+        bool shouldAdd = true;
+        for (final Skill userSkill in filterSkills) {
+          if (skill.id == userSkill.id) {
+            shouldAdd = false;
+            break;
+          }
+        }
+        if (shouldAdd) {
+          matches.add(skill.name as String);
+        }
+      }
+      matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    }
+    return matches;
+  }
+
+  bool addSkill(String skill, int index) {
+    Skill? skillToAdd = _setSkillToAdd(skill, index);
+    if (skillToAdd != null) {
+      filterField.subfields?[index].skills?.add(skillToAdd);
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  Skill? _setSkillToAdd(String skill, int index) {
+    Skill? skillToAdd;
+    List<Skill>? skills = filterField.subfields?[index].skills;
+    if (skills != null) {
+      for (int i = 0; i < skills.length; i++) {
+        if (skill.toLowerCase() == skills[i].name?.toLowerCase()) {
+          return null;
+        }
+      }
+    }
+    Subfield? subfield = getSelectedFilterSubfield(index);
+    List<Skill>? subfieldSkills = subfield?.skills;
+    if (subfieldSkills != null) {
+      for (int i = 0; i < subfieldSkills.length; i++) {
+        if (skill.toLowerCase() == subfieldSkills[i].name?.toLowerCase()) {
+          skillToAdd = subfieldSkills[i];
+          break;
+        }
+      }
+    }
+    return skillToAdd;
+  }
+
+  void deleteSkill(String skillId, int index) {
+    Skill? skill = filterField.subfields?[index].skills?.firstWhere((skill) => skill.id == skillId);
+    filterField.subfields?[index].skills?.remove(skill);
+    notifyListeners();
   }  
 
   void resetAvailabilityMergedMessage() {
     availabilityMergedMessage = '';
+  }  
+  
+  void setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {
+    final double height = screenHeight - statusBarHeight - 340;
+    if (positionDy > height) {
+      scrollOffset = 100;
+    } else if (positionDy < height - 50) {
+      scrollOffset = positionDy - height;
+    }
+  }    
+  
+  bool get shouldUnfocus => _shouldUnfocus;
+  set shouldUnfocus(bool unfocus) {
+    _shouldUnfocus = unfocus;
+    if (shouldUnfocus) {
+      notifyListeners();
+    }
   }  
 }

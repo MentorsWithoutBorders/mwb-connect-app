@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/utils_datepickers.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
@@ -291,9 +290,9 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     DateTime maxRecurrenceDate = _lessonRequestProvider?.getMaxRecurrenceDate() as DateTime;
     DateTime endRecurrenceDateTime = lessonRecurrence?.endRecurrenceDateTime as DateTime;
     if (platform == TargetPlatform.iOS) {
-      return Utils.showDatePickerIOS(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
+      return UtilsDatePickers.showDatePickerIOS(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     } else {
-      return Utils.showDatePickerAndroid(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
+      return UtilsDatePickers.showDatePickerAndroid(context: context, initialDate: endRecurrenceDateTime, firstDate: minRecurrenceDate, lastDate: maxRecurrenceDate, setDate: _setEndRecurrenceDate);
     }
   }
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/subfield_dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors_filters/widgets/subfield_dropdown_widget.dart';
 
 class Subfields extends StatefulWidget {
   const Subfields({Key? key})
@@ -17,11 +16,11 @@ class Subfields extends StatefulWidget {
 }
 
 class _SubfieldsState extends State<Subfields> {
-  ProfileViewModel? _profileProvider;    
+  AvailableMentorsViewModel? _availableMentorsProvider;    
 
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<Subfield>? userSubfields = _profileProvider?.user?.field?.subfields;
+    final List<Subfield>? userSubfields = _availableMentorsProvider?.filterField.subfields;
     subfieldWidgets.add(Label(text: 'common.subfields'.tr()));
     if (userSubfields != null) {
       for (int i = 0; i < userSubfields.length; i++) {
@@ -36,7 +35,6 @@ class _SubfieldsState extends State<Subfields> {
   Widget _showAddSubfieldButton() {
     return Center(
       child: ElevatedButton(
-        key: const Key(AppKeys.addSubfieldBtn),
         style: ElevatedButton.styleFrom(
           elevation: 1.0,
           primary: AppColors.MONZA,
@@ -55,16 +53,16 @@ class _SubfieldsState extends State<Subfields> {
 
   void _addSubfield() {
     _unfocus();
-    _profileProvider?.addSubfield();    
+    _availableMentorsProvider?.addSubfield();    
   }
 
   void _unfocus() {
-    _profileProvider?.shouldUnfocus = true;
+    _availableMentorsProvider?.shouldUnfocus = true;
   }
   
   @override
   Widget build(BuildContext context) {
-    _profileProvider = Provider.of<ProfileViewModel>(context);
+    _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
 
     return _showSubfields();
   }

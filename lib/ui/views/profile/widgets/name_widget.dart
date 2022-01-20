@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
-import 'package:mwb_connect_app/ui/views/profile/widgets/label_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 
 class Name extends StatefulWidget {

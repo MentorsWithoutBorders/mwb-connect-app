@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/ui/views/available_mentors_filters/available_men
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 
 class AvailableMentorsView extends StatefulWidget {
   const AvailableMentorsView({Key? key})
@@ -81,7 +80,8 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
     if (!_isAvailableMentorsRetrieved && _availableMentorsProvider != null) {
       await Future.wait([
         _availableMentorsProvider!.getAvailableMentors(),
-        _availableMentorsProvider!.getFieldsGoals()
+        _availableMentorsProvider!.getFieldsGoals(),
+        _availableMentorsProvider!.getFields()
       ]);      
       _isAvailableMentorsRetrieved = true;
     }

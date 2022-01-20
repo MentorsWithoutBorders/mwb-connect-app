@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/core/models/organization_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
@@ -60,7 +61,7 @@ class User {
     final List<Availability> availabilitiesList = [];
     if (json != null) {
       for (int i = 0; i < json.length; i++) {
-        availabilitiesList.add(Utils.getAvailabilityToLocal(Availability.fromJson(json[i])));
+        availabilitiesList.add(UtilsAvailabilities.getAvailabilityToLocal(Availability.fromJson(json[i])));
       }
     }
     return availabilitiesList;
@@ -100,7 +101,7 @@ class User {
     List<Map<String,dynamic>> availabilitiesList = [];
     if (availabilities != null) {
       for (int i = 0; i < availabilities.length; i++) {
-        availabilitiesList.add(Utils.getAvailabilityToUtc(availabilities[i]).toJson());
+        availabilitiesList.add(UtilsAvailabilities.getAvailabilityToUtc(availabilities[i]).toJson());
       }
     }
     return availabilitiesList;

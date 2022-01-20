@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
@@ -236,7 +237,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   }
 
   void _updateAvailability() {
-    if (Utils.isAvailabilityValid(_availability!) == true) {
+    if (UtilsAvailabilities.isAvailabilityValid(_availability!) == true) {
       _profileProvider?.updateAvailability(widget.index!, _availability!);
       Navigator.pop(context, true);
     } else {

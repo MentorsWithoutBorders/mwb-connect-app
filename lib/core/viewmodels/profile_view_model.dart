@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
@@ -258,7 +259,7 @@ class ProfileViewModel extends ChangeNotifier {
   void addAvailability(Availability availability) {
     user?.availabilities?.add(availability);
     _sortAvailabilities();
-    List mergedAvailabilities = Utils.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
+    List mergedAvailabilities = UtilsAvailabilities.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
     user?.availabilities = mergedAvailabilities[0];
     availabilityMergedMessage = mergedAvailabilities[1];
     setUserDetails(user);
@@ -268,7 +269,7 @@ class ProfileViewModel extends ChangeNotifier {
   void updateAvailability(int index, Availability newAvailability) {
     user?.availabilities?[index] = newAvailability;
     _sortAvailabilities();
-    List mergedAvailabilities = Utils.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
+    List mergedAvailabilities = UtilsAvailabilities.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
     user?.availabilities = mergedAvailabilities[0];
     availabilityMergedMessage = mergedAvailabilities[1];
     setUserDetails(user);

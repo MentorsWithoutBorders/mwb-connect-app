@@ -107,14 +107,18 @@
     "cancel_only_next_lesson": "Cancel only next lesson",
     "cancel_entire_lesson_recurrence": "Cancel entire lesson recurrence",
     "availability": "Availability",
+    "available_starting_from": "I'm available starting from:",    
     "available_days_times": "Available days/times:",
-    "availability_timezone": "All times are in {} time zone.",    
+    "availability_timezone": "All times are in {} time zone.",
 		"add_availability": "Add availability",
 		"edit_availability": "Edit availability",
 		"availability_from": "From",
 		"availability_to": "to",
     "availabilities_merged": "The following availabilities have been merged:",
     "availability_error": "\"From\" time cannot be equal to or after \"to\" time",
+		"field": "Field",
+		"subfields": "Subfields",
+		"add_subfield": "Add subfield",    
     "contact_support": "contact support"
 	},
 	"onboarding": {
@@ -171,17 +175,13 @@
 	},
 	"profile": {
 		"title": "My profile",
-		"field": "Field",
 		"lessons": "Lessons",
 		"min_interval_lessons": "Minimum interval between lesson requests:",
 		"max_students_lessons": "Maximum number of students per lesson:",
 		"name": "Name",
 		"name_placeholder": "Enter name",
-		"subfields": "Subfields",
-		"add_subfield": "Add subfield",
 		"add_skills": "Add skills {}",
-		"currently_available": "I'm currently available",
-		"available_starting_from": "I'm available starting from:"
+		"currently_available": "I'm currently available"
 	},
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",
@@ -225,7 +225,8 @@
     "subfield_error": "a subfield",
     "availability_error": "an availability",
     "lessons_start_time": "Lessons start time",
-    "preferred_start_time": "Please select your preferred start time for the lessons on {}s (each lesson will be 1 / 1.5 hours long):"
+    "preferred_start_time": "Please select your preferred start time for the lessons on {}s (each lesson will be 1 / 1.5 hours long):",
+    "add_skills": "Add skills {}"
   },
 	"lesson_request": {
 		"title": "Lesson request",

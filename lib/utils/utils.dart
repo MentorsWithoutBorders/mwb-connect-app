@@ -74,47 +74,6 @@ class Utils {
     return hoursList;
   }
 
-  static Availability getAvailabilityToUtc(Availability availability) {
-    DateFormat dayOfWeekFormat = DateFormat('EEEE');
-    DateFormat timeFormat = DateFormat('h:mma');
-    DateTime date = resetTime(DateTime.now());
-    while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
-      date = getDSTAdjustedDateTime(date.add(Duration(days: 1)));
-    }
-    List<int> availabilityTimeFrom = convertTime12to24(availability.time?.from as String);
-    List<int> availabilityTimeTo = convertTime12to24(availability.time?.to as String);
-    final DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0], minute: availabilityTimeFrom[1]).toUtc();
-    final DateTime timeTo = date.copyWith(hour: availabilityTimeTo[0], minute: availabilityTimeTo[1]).toUtc();
-    return Availability(
-      dayOfWeek: dayOfWeekFormat.format(timeFrom),
-      time: Time(
-        from: timeFormat.format(timeFrom).toLowerCase(),
-        to: timeFormat.format(timeTo).toLowerCase()
-      )
-    );
-  }
-  
-  static Availability getAvailabilityToLocal(Availability availability) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
-    DateFormat dayOfWeekFormat = DateFormat('EEEE');
-    DateFormat timeFormat = DateFormat('ha');    
-    DateTime date = resetTime(DateTime.now());
-    while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
-      date = getDSTAdjustedDateTime(date.add(Duration(days: 1)));
-    }
-    List<int> availabilityTimeFrom = convertTime12to24(availability.time?.from as String);
-    List<int> availabilityTimeTo = convertTime12to24(availability.time?.to as String);
-    final DateTime timeFrom = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeFrom[0], minute: availabilityTimeFrom[1]).toString()).toLocal();
-    final DateTime timeTo = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeTo[0], minute: availabilityTimeTo[1]).toString()).toLocal();
-    return Availability(
-      dayOfWeek: dayOfWeekFormat.format(timeFrom),
-      time: Time(
-        from: timeFormat.format(timeFrom).toLowerCase(),
-        to: timeFormat.format(timeTo).toLowerCase()
-      )
-    );
-  }   
-
   static DateTime resetTime(DateTime dateTime) {
     return dateTime.subtract(Duration(hours: dateTime.hour, minutes: dateTime.minute, seconds: dateTime.second, milliseconds: dateTime.millisecond, microseconds: dateTime.microsecond));
   }
@@ -131,73 +90,6 @@ class Utils {
     } else {
       return '';
     }
-  }
-
-  static Future<void> showDatePickerAndroid({BuildContext? context, DateTime? initialDate, DateTime? firstDate, DateTime? lastDate, Function? setDate}) async {
-    final DateTime now = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context as BuildContext,
-      locale: Locale(_defaultLocale.split('_')[0], _defaultLocale.split('_')[1]),
-      initialDate: initialDate as DateTime,
-      firstDate: firstDate != null ? firstDate : now,
-      lastDate: lastDate != null ? lastDate : DateTime(now.year + 4),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light(),
-          child: child!,
-        );
-      }
-    );
-    if (picked != null && picked != initialDate) {
-      setDate!(picked);
-    }
-  }
-
-  static void showDatePickerIOS({BuildContext? context, DateTime? initialDate, DateTime? firstDate, DateTime? lastDate, Function? setDate}) async {
-    final DateTime now = DateTime.now();
-    showModalBottomSheet(
-      context: context as BuildContext,
-      builder: (BuildContext builder) {
-        return Wrap(
-          children: [
-            Container(
-              color: AppColors.WILD_SAND,
-              height: 40.0,
-              child: InkWell(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                  child: Text(
-                    'common.done'.tr(),
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.blue
-                    ), 
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ),
-            Container(
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-              color: Colors.white,
-              child: CupertinoDatePicker(
-                mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (DateTime? picked) {
-                  if (picked != null && picked != initialDate) {
-                    setDate!(picked);
-                  }
-                },
-                initialDateTime: Jiffy(now).isBefore(Jiffy(initialDate!), Units.DAY) ? initialDate : now,
-                minimumDate: firstDate != null ? firstDate : now,
-                maximumDate: lastDate != null ? lastDate : DateTime(now.year + 4),
-              ),
-            ),
-          ],
-        );
-      }
-    );
   }
 
   static DateTime? getNextDeadline() {
@@ -286,64 +178,4 @@ class Utils {
     }
     return article;
   }
-
-  static bool isAvailabilityValid(Availability availability) {
-    final int timeFrom = convertTime12to24(availability.time?.from as String)[0];
-    final int timeTo = convertTime12to24(availability.time?.to as String)[0];
-    return timeFrom < timeTo || timeFrom != timeTo && timeTo == 0;
-  }
-
-  static List getMergedAvailabilities(List<Availability>? userAvailabilities, String availabilityMergedMessage) {
-    final List<Availability> availabilities = [];
-    for (final String dayOfWeek in daysOfWeek) {
-      final List<Availability> dayAvailabilities = [];
-      if (userAvailabilities != null) {
-        for (final Availability availability in userAvailabilities) {
-          if (availability.dayOfWeek == dayOfWeek) {
-            dayAvailabilities.add(availability);
-          }
-        }
-      }
-      final List<Availability> merged = [];
-      int mergedLastTo = -1;
-      _mergedAvailabilityLastShown = false;
-      for (final Availability availability in dayAvailabilities) {
-        if (merged.isNotEmpty) {
-          mergedLastTo = convertTime12to24(merged.last.time?.to as String)[0];
-        }
-        final int availabilityFrom = convertTime12to24(availability.time?.from as String)[0];
-        final int availabilityTo = convertTime12to24(availability.time?.to as String)[0];
-        if (merged.isEmpty || mergedLastTo < availabilityFrom) {
-          merged.add(availability);
-        } else {
-          if (mergedLastTo < availabilityTo) {
-            availabilityMergedMessage = _setAvailabilityMergedMessage(availability, merged, availabilityMergedMessage);
-            merged.last.time?.to = availability.time?.to;
-          } else {
-            availabilityMergedMessage = _setAvailabilityMergedMessage(availability, merged, availabilityMergedMessage);
-          }
-        }
-      }
-      availabilities.addAll(merged);
-    }
-    return [availabilities, availabilityMergedMessage];
-  }
-
-  static String _setAvailabilityMergedMessage(Availability availability, List<Availability> merged, String availabilityMergedMessage) {
-    if (availabilityMergedMessage.isEmpty) {
-      availabilityMergedMessage = 'common.availabilities_merged'.tr() + '\n';
-    }    
-    if (!_mergedAvailabilityLastShown) {
-      String dayOfWeek = merged.last.dayOfWeek as String;
-      String timeFrom = merged.last.time?.from as String;
-      String timeTo = merged.last.time?.to as String;
-      availabilityMergedMessage += dayOfWeek + ' ' + 'common.from'.tr() + ' ' + timeFrom + ' ' + 'common.to'.tr() + ' ' + timeTo + '\n';
-      _mergedAvailabilityLastShown = true;
-    }
-    String dayOfWeek = availability.dayOfWeek as String;
-    String timeFrom = availability.time?.from as String;
-    String timeTo = availability.time?.to as String;    
-    availabilityMergedMessage += dayOfWeek + ' ' + 'common.from'.tr() + ' ' + timeFrom + ' ' + 'common.to'.tr() + ' ' + timeTo + '\n';
-    return availabilityMergedMessage;
-  }  
 }
