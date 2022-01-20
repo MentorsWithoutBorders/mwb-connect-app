@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/skills_widget.dart';
@@ -20,6 +22,18 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   ProfileViewModel? _profileProvider;  
   Subfield? _selectedSubfield;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+  }
+  
+  void _afterLayout(_) {
+    final Field? userField = _profileProvider?.user?.field;
+    final List<Field>? fields = _profileProvider?.fields;     
+    _setSelectedSubfield(UtilsFields.getSelectedSubfield(widget.index!, userField, fields) as Subfield);
+  }    
+
   Widget _showSubfieldDropdown() {
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -31,18 +45,19 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
               Expanded(
                 child: Column(
                   children: [
-                    Container(
-                    height: 50.0,
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    if (_selectedSubfield != null) Container(
+                      height: 50.0,
+                      padding: const EdgeInsets.only(bottom: 10.0),
                       child: Dropdown<Subfield>(
                         key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
                         dropdownMenuItemList: _buildSubfieldDropdown(),
                         onTapped: _unfocus,
                         onChanged: _changeSubfield,
-                        value: _selectedSubfield!
+                        value: _selectedSubfield
                       ),
                     ),
-                    Skills(index: widget.index)
+                    if (_selectedSubfield == null) SizedBox.shrink(),
+                    if (_selectedSubfield != null) Skills(index: widget.index)
                   ],
                 ),
               ),
@@ -78,14 +93,14 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
     final List<DropdownMenuItem<Subfield>> items = [];
-    List<Subfield>? subfields = _profileProvider?.getSubfields(widget.index!);
-    if (subfields != null) {
-      for (final Subfield subfield in subfields) {
-        items.add(DropdownMenuItem<Subfield>(
-          value: subfield,
-          child: Text(subfield.name as String),
-        ));
-      }
+    final Field? userField = _profileProvider?.user?.field;
+    final List<Field>? fields = _profileProvider?.fields;    
+    List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, userField, fields);
+    for (final Subfield subfield in subfields) {
+      items.add(DropdownMenuItem<Subfield>(
+        value: subfield,
+        child: Text(subfield.name as String),
+      ));
     }
     return items;
   }  
@@ -108,7 +123,6 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
-    _setSelectedSubfield(_profileProvider?.getSelectedSubfield(widget.index!) as Subfield);
 
     return _showSubfieldDropdown();
   }

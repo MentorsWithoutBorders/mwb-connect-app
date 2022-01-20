@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/utils_fields.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors_filters/widgets/skills_widget.dart';
@@ -19,6 +21,18 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   AvailableMentorsViewModel? _availableMentorsProvider;  
   Subfield? _selectedSubfield;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+  }
+  
+  void _afterLayout(_) {
+    List<Field> fields = _availableMentorsProvider?.fields as List<Field>;
+    Field filterField = _availableMentorsProvider?.filterField as Field;
+    _setSelectedSubfield(UtilsFields.getSelectedSubfield(widget.index!, filterField, fields) as Subfield);
+  }     
+
   Widget _showSubfieldDropdown() {
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -30,17 +44,18 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
               Expanded(
                 child: Column(
                   children: [
-                    Container(
-                    height: 50.0,
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    if (_selectedSubfield != null) Container(
+                      height: 50.0,
+                      padding: const EdgeInsets.only(bottom: 10.0),
                       child: Dropdown<Subfield>(
                         dropdownMenuItemList: _buildSubfieldDropdown(),
                         onTapped: _unfocus,
                         onChanged: _changeSubfield,
-                        value: _selectedSubfield!
+                        value: _selectedSubfield
                       ),
                     ),
-                    Skills(index: widget.index)
+                    if (_selectedSubfield == null) SizedBox.shrink(),
+                    if (_selectedSubfield != null) Skills(index: widget.index),
                   ],
                 ),
               ),
@@ -75,14 +90,14 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
     final List<DropdownMenuItem<Subfield>> items = [];
-    List<Subfield>? subfields = _availableMentorsProvider?.getSubfields(widget.index!);
-    if (subfields != null) {
-      for (final Subfield subfield in subfields) {
-        items.add(DropdownMenuItem<Subfield>(
-          value: subfield,
-          child: Text(subfield.name as String),
-        ));
-      }
+    List<Field> fields = _availableMentorsProvider?.fields as List<Field>;
+    Field filterField = _availableMentorsProvider?.filterField as Field;
+    List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, filterField, fields);
+    for (final Subfield subfield in subfields) {
+      items.add(DropdownMenuItem<Subfield>(
+        value: subfield,
+        child: Text(subfield.name as String),
+      ));
     }
     return items;
   }  
@@ -105,7 +120,6 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   @override
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
-    _setSelectedSubfield(_availableMentorsProvider?.getSelectedFilterSubfield(widget.index!) as Subfield);
 
     return _showSubfieldDropdown();
   }

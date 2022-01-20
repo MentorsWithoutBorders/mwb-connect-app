@@ -19,6 +19,16 @@ class _FieldDropdownState extends State<FieldDropdown> {
   ProfileViewModel? _profileProvider;
   Field? _selectedField;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+  }
+  
+  void _afterLayout(_) {
+    _setSelectedField(_profileProvider?.getSelectedField() as Field);
+  }    
+
   Widget _showFieldDropdown() {
     return Container(
       height: 55.0,
@@ -65,7 +75,6 @@ class _FieldDropdownState extends State<FieldDropdown> {
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
-    _setSelectedField(_profileProvider?.getSelectedField() as Field);
 
     return Wrap(
       children: [

@@ -18,6 +18,16 @@ class _FieldDropdownState extends State<FieldDropdown> {
   AvailableMentorsViewModel? _availableMentorsProvider;
   Field? _selectedField;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+  }
+  
+  void _afterLayout(_) {
+    _setSelectedField(_availableMentorsProvider?.getSelectedField() as Field);
+  }    
+
   Widget _showFieldDropdown() {
     return Container(
       height: 55.0,
@@ -63,7 +73,6 @@ class _FieldDropdownState extends State<FieldDropdown> {
   @override
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
-    // _setSelectedField(_availableMentorsProvider?.getSelectedField() as Field);
 
     return Wrap(
       children: [

@@ -13,6 +13,7 @@ import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
 import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
+import 'package:mwb_connect_app/utils/utils_fields.dart';
 
 class AvailableMentorsViewModel extends ChangeNotifier {
   final AvailableMentorsService _availableMentorsService = locator<AvailableMentorsService>();
@@ -20,7 +21,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   List<User> availableMentors = [];
   List<FieldGoal> fieldsGoals = [];
   List<Availability> filterAvailabilities = [];
-  List<Field>? fields = [];
+  List<Field> fields = [];
   User? selectedMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
@@ -287,7 +288,6 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     filterAvailabilities.removeAt(index);
     notifyListeners();
   }
-
  
   void setField(Field field) {
     if (filterField.id != field.id) {
@@ -297,7 +297,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   }
 
   Field getSelectedField() {
-    return fields!.firstWhere((field) => field.id == filterField.id);
+    return fields.firstWhere((field) => field.id == filterField.id);
   }
 
   void setSubfield(Subfield subfield, int index) {
@@ -309,61 +309,14 @@ class AvailableMentorsViewModel extends ChangeNotifier {
       filterField.subfields?.add(subfield);
     }
     notifyListeners();
-  }  
-
-  List<Subfield> getSubfields(int index) {
-    final List<Subfield>? subfields = fields?[_getSelectedFieldIndex()].subfields;
-    final List<Subfield>? filterSubfields = filterField.subfields;
-    final List<Subfield> filteredSubfields = [];
-    if (subfields != null) {
-      for (final Subfield subfield in subfields) {
-        if (filterSubfields != null && !_containsSubfield(filterSubfields, subfield) || 
-            subfield.name == filterSubfields?[index].name) {
-          filteredSubfields.add(subfield);
-        }
-      }
-    }
-    return filteredSubfields;
   }
-
-  int _getSelectedFieldIndex() {
-    final List<Field>? fields = this.fields;
-    final Field? selectedField = filterField;
-    return fields!.indexWhere((Field field) => field.id == selectedField?.id);
-  }
-
-  bool _containsSubfield(List<Subfield> subfields, Subfield subfield) {
-    bool contains = false;
-    for (int i = 0; i < subfields.length; i++) {
-      if (subfield.name == subfields[i].name) {
-        contains = true;
-        break;
-      }
-    }
-    return contains;
-  }
-
- Subfield? getSelectedFilterSubfield(int index) {
-    Subfield? selectedSubfield;
-    final List<Subfield>? subfields = fields?[_getSelectedFieldIndex()].subfields;
-    final List<Subfield>? filterSubfields = filterField.subfields;
-    if (subfields != null) {
-      for (final Subfield subfield in subfields) {
-        if (subfield.name == filterSubfields?[index].name) {
-          selectedSubfield = subfield;
-          break;
-        }
-      }
-    }
-    return selectedSubfield;
-  }  
 
   void addSubfield() {
-    final List<Subfield>? subfields = fields?[_getSelectedFieldIndex()].subfields;
+    final List<Subfield>? subfields = fields[UtilsFields.getSelectedFieldIndex(filterField, fields)].subfields;
     final List<Subfield>? filterSubfields = filterField.subfields;
     if (subfields != null && filterSubfields != null) {
       for (final Subfield subfield in subfields) {
-        if (!_containsSubfield(filterSubfields, subfield)) {
+        if (!UtilsFields.containsSubfield(filterSubfields, subfield)) {
           setSubfield(Subfield(id: subfield.id, name: subfield.name), filterSubfields.length+1);
           break;
         }
@@ -377,54 +330,8 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getSkillHintText(int index) {
-    Subfield? subfield = getSelectedFilterSubfield(index);
-    String hint = '';
-    List<Skill>? subfieldSkills = subfield?.skills;
-    if (subfieldSkills != null && subfieldSkills.length > 0) {
-      hint = '(' + 'common.eg'.tr() +' ';
-      int hintsNumber = 3;
-      List<Skill>? subfieldSkills = subfield?.skills;
-      if (subfieldSkills != null && subfieldSkills.length < 3) {
-        hintsNumber = subfieldSkills.length;
-      }
-      for (int i = 0; i < hintsNumber; i++) {
-        if (subfieldSkills?[i].name != null) {
-          String skill = subfieldSkills?[i].name as String;
-          hint += skill + ', ';
-        }
-      }
-      hint += 'common.etc'.tr() + ')';
-    }
-    hint = 'available_mentors.add_skills'.tr(args: [hint]);
-    return hint;
-  }  
-  
-  List<String> getSkillSuggestions(String query, int index) {
-    List<String> matches = [];
-    Subfield? subfield = getSelectedFilterSubfield(index);
-    List<Skill>? subfieldSkills = subfield?.skills;
-    List<Skill>? filterSkills = filterField.subfields?[index].skills;
-    if (filterSkills != null && subfieldSkills != null) {
-      for (final Skill skill in subfieldSkills) {
-        bool shouldAdd = true;
-        for (final Skill userSkill in filterSkills) {
-          if (skill.id == userSkill.id) {
-            shouldAdd = false;
-            break;
-          }
-        }
-        if (shouldAdd) {
-          matches.add(skill.name as String);
-        }
-      }
-      matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
-    }
-    return matches;
-  }
-
   bool addSkill(String skill, int index) {
-    Skill? skillToAdd = _setSkillToAdd(skill, index);
+    Skill? skillToAdd = UtilsFields.setSkillToAdd(skill, index, filterField, fields);
     if (skillToAdd != null) {
       filterField.subfields?[index].skills?.add(skillToAdd);
       notifyListeners();
@@ -432,29 +339,6 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     } else {
       return false;
     }
-  }
-  
-  Skill? _setSkillToAdd(String skill, int index) {
-    Skill? skillToAdd;
-    List<Skill>? skills = filterField.subfields?[index].skills;
-    if (skills != null) {
-      for (int i = 0; i < skills.length; i++) {
-        if (skill.toLowerCase() == skills[i].name?.toLowerCase()) {
-          return null;
-        }
-      }
-    }
-    Subfield? subfield = getSelectedFilterSubfield(index);
-    List<Skill>? subfieldSkills = subfield?.skills;
-    if (subfieldSkills != null) {
-      for (int i = 0; i < subfieldSkills.length; i++) {
-        if (skill.toLowerCase() == subfieldSkills[i].name?.toLowerCase()) {
-          skillToAdd = subfieldSkills[i];
-          break;
-        }
-      }
-    }
-    return skillToAdd;
   }
 
   void deleteSkill(String skillId, int index) {
