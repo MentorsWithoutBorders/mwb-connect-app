@@ -20,10 +20,10 @@ class _SubfieldsState extends State<Subfields> {
 
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<Subfield>? userSubfields = _availableMentorsProvider?.filterField.subfields;
+    final List<Subfield>? filterSubfields = _availableMentorsProvider?.filterField.subfields;
     subfieldWidgets.add(Label(text: 'common.subfields'.tr()));
-    if (userSubfields != null) {
-      for (int i = 0; i < userSubfields.length; i++) {
+    if (filterSubfields != null) {
+      for (int i = 0; i < filterSubfields.length; i++) {
         final Widget subfield = SubfieldDropdown(index: i);
         subfieldWidgets.add(subfield);
       }

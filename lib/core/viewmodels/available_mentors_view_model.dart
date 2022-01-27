@@ -46,12 +46,49 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   
   Future<void> getFields() async {
     fields = await _availableMentorsService.getFields();
+    _setOptionAllFields();
   }  
 
   Future<void> sendCustomLessonRequest() async {
     await _availableMentorsService.sendCustomLessonRequest(selectedMentor);
   }
-  
+
+  void _setOptionAllFields() {
+    Field fieldAll = Field(id: 'all', name: 'available_mentors.all_fields'.tr());
+    fields.insert(0, fieldAll);
+    for (Field field in fields) {
+      if (field.subfields != null) {
+        Subfield subfieldAll = Subfield(
+          id: 'all', 
+          name: 'available_mentors.all_subfields'.tr(),
+          skills: setAllSkills(field)
+        );
+        field.subfields?.insert(0, subfieldAll);
+      }
+    }
+    setField(fieldAll);
+  }
+
+  List<Skill> setAllSkills(Field field) {
+    List<Skill> allSkills = [];
+    List<Subfield> subfields = [];
+    if (field.subfields != null) {
+      subfields = field.subfields as List<Subfield>;
+    }
+    for (Subfield subfield in subfields) {
+      List<Skill> skills = [];
+      if (subfield.skills != null) {
+        skills = subfield.skills as List<Skill>;
+      }
+      for (Skill skill in skills) {
+        allSkills.add(skill);
+      }
+    }
+    return allSkills;
+  }  
+
+  bool get isAllFieldsSelected => filterField.id == 'all';
+
   String? getWhyChooseUrl(String fieldId) {
     for (FieldGoal fieldGoal in fieldsGoals) {
       if (fieldGoal.fieldId == fieldId) {
@@ -291,7 +328,17 @@ class AvailableMentorsViewModel extends ChangeNotifier {
  
   void setField(Field field) {
     if (filterField.id != field.id) {
-      filterField = Field(id: field.id, name: field.name, subfields: []);
+      filterField = Field(
+        id: field.id, 
+        name: field.name, 
+        subfields: [
+          Subfield(
+            id: 'all', 
+            name: 'available_mentors.all_subfields'.tr(),
+            skills: []
+          )
+        ]
+      );
       notifyListeners();
     }
   }

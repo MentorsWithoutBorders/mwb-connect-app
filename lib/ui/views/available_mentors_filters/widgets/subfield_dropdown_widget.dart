@@ -30,7 +30,10 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   void _afterLayout(_) {
     List<Field> fields = _availableMentorsProvider?.fields as List<Field>;
     Field filterField = _availableMentorsProvider?.filterField as Field;
-    _setSelectedSubfield(UtilsFields.getSelectedSubfield(widget.index!, filterField, fields) as Subfield);
+    Subfield? selectedSubfield = UtilsFields.getSelectedSubfield(widget.index!, filterField, fields);
+    if (selectedSubfield != null) {
+      _setSelectedSubfield(selectedSubfield);
+    }
   }     
 
   Widget _showSubfieldDropdown() {

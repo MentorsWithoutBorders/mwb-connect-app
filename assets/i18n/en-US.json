@@ -219,6 +219,8 @@
     "title_filters": "Filter available mentors",
     "why_choose_field": "why choose {}?",
     "choose_availability": "Choose availability:",
+    "all_fields": "All fields",
+    "all_subfields": "All subfields",
     "choose_subfield": "Choose subfield:",
     "send_request": "Send request",
     "please_select_error": "Please select",

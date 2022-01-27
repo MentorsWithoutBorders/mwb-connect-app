@@ -27,7 +27,7 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
   
   void _afterLayout(_) {
 
-  }  
+  }
 
   Widget _showAvailableMentorsFilters() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -50,11 +50,12 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
   }
 
   Widget _showFieldsCard() {
+    bool isAllFieldsSelected = _availableMentorsProvider?.isAllFieldsSelected as bool;
     return AppCard(
       child: Wrap(
         children: [
           FieldDropdown(),
-          Subfields()
+          if (!isAllFieldsSelected) Subfields()
         ],
       )
     );
