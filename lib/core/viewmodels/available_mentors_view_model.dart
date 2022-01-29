@@ -22,19 +22,24 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   List<FieldGoal> fieldsGoals = [];
   List<Availability> filterAvailabilities = [];
   List<Field> fields = [];
+  Field filterField = Field();
   User? selectedMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
   String? lessonRequestButtonId;
   String? selectedLessonStartTime;
-  Field filterField = Field();
   String availabilityMergedMessage = '';
   double scrollOffset = 0;  
   String errorMessage = '';
   bool _shouldUnfocus = false;
 
   Future<void> getAvailableMentors() async {
-    availableMentors = await _availableMentorsService.getAvailableMentors();
+    _removeOptionAllFilterField();
+    User filter = User(
+      field: _removeOptionAllFilterField(),
+      availabilities: filterAvailabilities
+    );
+    availableMentors = await _availableMentorsService.getAvailableMentors(filter);
     setSelectedMentor(null);
     setSelectedLessonStartTime(null);
     _sortMentorsAvailabilities();
@@ -46,14 +51,14 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   
   Future<void> getFields() async {
     fields = await _availableMentorsService.getFields();
-    _setOptionAllFields();
+    _setOptionAllFilterField();
   }  
 
   Future<void> sendCustomLessonRequest() async {
     await _availableMentorsService.sendCustomLessonRequest(selectedMentor);
   }
 
-  void _setOptionAllFields() {
+  void _setOptionAllFilterField() {
     Field fieldAll = Field(id: 'all', name: 'available_mentors.all_fields'.tr());
     fields.insert(0, fieldAll);
     for (Field field in fields) {
@@ -67,6 +72,22 @@ class AvailableMentorsViewModel extends ChangeNotifier {
       }
     }
     setField(fieldAll);
+  }
+
+  Field _removeOptionAllFilterField() {
+    Field field = Field.fromJson(filterField.toJson());
+    if (field.id == 'all') {
+      return Field();
+    } else {
+      if (field.subfields != null && field.subfields!.length > 0) {
+        for (int i = 0; i < field.subfields!.length; i++) {
+          if (field.subfields![i].id == 'all' && (field.subfields![i].skills == null || field.subfields![i].skills!.length == 0)) {
+            field.subfields!.removeAt(i);
+          }
+        }
+      }
+    }
+    return field;
   }
 
   List<Skill> setAllSkills(Field field) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
@@ -37,7 +38,8 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
         padding: const EdgeInsets.only(top: 0.0),
         children: [
           _showDaysTimesCard(),
-          _showFieldsCard()
+          _showFieldsCard(),
+          _showSetFiltersButton()
         ]
       )
     );
@@ -58,6 +60,29 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
           if (!isAllFieldsSelected) Subfields()
         ],
       )
+    );
+  }
+  
+  Widget _showSetFiltersButton() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: AppColors.JAPANESE_LAUREL,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            elevation: 2.0,
+            padding: const EdgeInsets.fromLTRB(30.0, 12.0, 30.0, 12.0)          
+          ),
+          child: Text('available_mentors.apply_filters'.tr(), style: const TextStyle(color: Colors.white)),
+          onPressed: () {
+            _availableMentorsProvider?.getAvailableMentors();
+            Navigator.pop(context);
+          }        
+        )
+      ),
     );
   }  
 

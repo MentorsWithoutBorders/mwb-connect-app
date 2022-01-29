@@ -221,6 +221,7 @@
     "choose_availability": "Choose availability:",
     "all_fields": "All fields",
     "all_subfields": "All subfields",
+    "apply_filters": "Apply filters",
     "choose_subfield": "Choose subfield:",
     "send_request": "Send request",
     "please_select_error": "Please select",
