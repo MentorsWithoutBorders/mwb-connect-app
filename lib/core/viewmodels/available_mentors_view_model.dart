@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
+import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -13,15 +15,14 @@ import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
 import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
-import 'package:mwb_connect_app/utils/utils_fields.dart';
 
 class AvailableMentorsViewModel extends ChangeNotifier {
   final AvailableMentorsService _availableMentorsService = locator<AvailableMentorsService>();
   final FieldsGoalsService _fieldsGoalsService = locator<FieldsGoalsService>();
   List<User> availableMentors = [];
   List<FieldGoal> fieldsGoals = [];
-  List<Availability> filterAvailabilities = [];
   List<Field> fields = [];
+  List<Availability> filterAvailabilities = [];
   Field filterField = Field();
   User? selectedMentor;
   String? availabilityOptionId;
@@ -29,8 +30,10 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   String? lessonRequestButtonId;
   String? selectedLessonStartTime;
   String availabilityMergedMessage = '';
-  double scrollOffset = 0;  
   String errorMessage = '';
+  int pageNumber = 1;
+  double scrollOffset = 0;
+  bool isAvailableMentorsRetrieved = false;
   bool _shouldUnfocus = false;
 
   Future<void> getAvailableMentors() async {
@@ -39,10 +42,17 @@ class AvailableMentorsViewModel extends ChangeNotifier {
       field: _removeOptionAllFilterField(),
       availabilities: filterAvailabilities
     );
-    availableMentors = await _availableMentorsService.getAvailableMentors(filter);
-    setSelectedMentor(null);
-    setSelectedLessonStartTime(null);
-    _sortMentorsAvailabilities();
+    if (pageNumber > (availableMentors.length / AppConstants.availableMentorsResultsPerPage).ceil()) {
+      isAvailableMentorsRetrieved = false;
+      List<User> mentors = await _availableMentorsService.getAvailableMentors(filter, pageNumber);
+      if (mentors.length == 0) {
+        pageNumber--;
+      }
+      availableMentors += mentors;
+      setSelectedMentor(null);
+      setSelectedLessonStartTime(null);
+      _sortMentorsAvailabilities();
+    }
   }
 
   Future<void> getFieldsGoals() async {
@@ -434,5 +444,16 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     if (shouldUnfocus) {
       notifyListeners();
     }
+  }
+
+  void resetValues() {
+    isAvailableMentorsRetrieved = false;
+    availableMentors = [];
+    fieldsGoals = [];
+    fields = [];
+    filterAvailabilities = [];
+    filterField = Field();
+    selectedMentor = null;
+    pageNumber = 1;
   }  
 }

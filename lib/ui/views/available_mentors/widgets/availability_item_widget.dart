@@ -61,7 +61,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
   Widget _showDayOfWeek() {
     final String? dayOfWeek = widget.availability?.dayOfWeek;   
     return Container(
-      width: 70.0,
+      width: 85.0,
       child: Text(
         '$dayOfWeek:',
         style: const TextStyle(

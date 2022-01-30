@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors_filters/available_mentors_filters_view.dart';
@@ -18,7 +19,7 @@ class AvailableMentorsView extends StatefulWidget {
 
 class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   AvailableMentorsViewModel? _availableMentorsProvider;
-  bool _isAvailableMentorsRetrieved = false;
+  bool _isFirstLoad = true;
 
   @override
   void initState() {
@@ -32,31 +33,47 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
     _availableMentorsProvider?.setErrorMessage('');
   }  
 
-  Widget _showAvailableMentors() {
+  Widget _showAvailableMentors({bool isLoading = false}) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    List<User> mentors = _availableMentorsProvider?.availableMentors as List<User>;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
-      child: ListView(
-        padding: const EdgeInsets.only(top: 0.0),
-        children: [
-          _showMentorsCards()
-        ]
+      child: InViewNotifierList(
+        padding: const EdgeInsets.all(0),
+        isInViewPortCondition:
+            (double deltaTop, double deltaBottom, double vpHeight) {
+          return deltaTop < (0.5 * vpHeight) && deltaBottom > (0.5 * vpHeight);
+        },
+        itemCount: mentors.length + 1,
+        builder: (BuildContext context, int index) {
+          return InViewNotifierWidget(
+            id: '$index',
+            builder: (BuildContext context, bool isInView, Widget? child) {
+              if (isInView && index == mentors.length - 2) {
+                _getMoreAvailableMentors();
+              }
+              if (index == mentors.length) {
+                if (isLoading) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Loader(),
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              }
+              return AvailableMentor(mentor: mentors[index]);
+            }
+          );
+        },
       )
     );
   }
 
-  Widget _showMentorsCards() {
-    List<User> mentors = _availableMentorsProvider?.availableMentors as List<User>;
-    return ListView.builder(
-      padding: const EdgeInsets.all(0),
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: mentors.length,
-      itemBuilder: (context, index) {
-        return AvailableMentor(mentor: mentors[index]);
-      }
-    );
-  }
+  void _getMoreAvailableMentors() {
+    _availableMentorsProvider?.pageNumber++;
+    _availableMentorsProvider?.getAvailableMentors();
+  }  
 
   Widget _showTitle() {
     return Center(
@@ -65,10 +82,16 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   }
   
   Widget _showContent() {
-    if (_isAvailableMentorsRetrieved) {
-      return _showAvailableMentors();
+    bool isAvailableMentorsRetrieved = _availableMentorsProvider?.isAvailableMentorsRetrieved as bool;
+    int pageNumber = _availableMentorsProvider?.pageNumber as int;
+    if (isAvailableMentorsRetrieved) {
+      return _showAvailableMentors(isLoading: false);
     } else {
-      return const Loader();
+      if (pageNumber == 1) {
+        return const Loader();
+      } else {
+        return _showAvailableMentors(isLoading: true);
+      }
     }
   }
 
@@ -77,15 +100,28 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   }  
 
   Future<void> _getAvailableMentors() async {
-    if (!_isAvailableMentorsRetrieved && _availableMentorsProvider != null) {
-      await Future.wait([
-        _availableMentorsProvider!.getAvailableMentors(),
-        _availableMentorsProvider!.getFieldsGoals(),
-        _availableMentorsProvider!.getFields()
-      ]);      
-      _isAvailableMentorsRetrieved = true;
+    bool isAvailableMentorsRetrieved = _availableMentorsProvider?.isAvailableMentorsRetrieved as bool;
+    if (isAvailableMentorsRetrieved == false && _availableMentorsProvider != null) {
+      if (_isFirstLoad) {
+        await Future.wait([
+          _availableMentorsProvider!.getAvailableMentors(),
+          _availableMentorsProvider!.getFieldsGoals(),
+          _availableMentorsProvider!.getFields()
+        ]);
+        _isFirstLoad = false;
+      } else {
+        await Future.wait([
+          _availableMentorsProvider!.getAvailableMentors()
+        ]);        
+      }
+      _availableMentorsProvider?.isAvailableMentorsRetrieved = true;
     }
   }
+
+  Future<bool> _resetValues(BuildContext context) async {
+    _availableMentorsProvider?.resetValues();
+    return true;
+  }   
 
   @override
   Widget build(BuildContext context) {
@@ -94,34 +130,37 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
     return FutureBuilder<void>(
       future: _getAvailableMentors(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return Stack(
-          children: <Widget>[
-            const BackgroundGradient(),
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                title: _showTitle(),
-                backgroundColor: Colors.transparent,          
-                elevation: 0.0,
-                actions: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.0, right: 20.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        _goToFilters();
-                      },
-                      child: Icon(
-                        Icons.filter_list,
-                        size: 26.0
+        return WillPopScope(
+          onWillPop: () => _resetValues(context),
+          child: Stack(
+            children: <Widget>[
+              const BackgroundGradient(),
+              Scaffold(
+                backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  title: _showTitle(),
+                  backgroundColor: Colors.transparent,          
+                  elevation: 0.0,
+                  actions: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0, right: 20.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          _goToFilters();
+                        },
+                        child: Icon(
+                          Icons.filter_list,
+                          size: 26.0
+                        )
                       )
                     )
-                  )
-                ]
-              ),
-              extendBodyBehindAppBar: true,
-              body: _showContent()
-            )
-          ],
+                  ]
+                ),
+                extendBodyBehindAppBar: true,
+                body: _showContent()
+              )
+            ],
+          )
         );
       }
     );

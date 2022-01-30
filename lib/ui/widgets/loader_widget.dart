@@ -27,7 +27,7 @@ class _LoaderState extends State<Loader> with TickerProviderStateMixin {
 
   @override
   dispose() {
-    _animationController?.dispose(); // you need this
+    _animationController?.dispose();
     super.dispose();
   }
 

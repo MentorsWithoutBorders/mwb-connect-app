@@ -78,13 +78,19 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
           ),
           child: Text('available_mentors.apply_filters'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
-            _availableMentorsProvider?.getAvailableMentors();
-            Navigator.pop(context);
+            _getAvailableMentors();
           }        
         )
       ),
     );
-  }  
+  }
+  
+  void _getAvailableMentors() {
+    _availableMentorsProvider?.availableMentors = [];
+    _availableMentorsProvider?.pageNumber = 1;
+    _availableMentorsProvider?.getAvailableMentors();
+    Navigator.pop(context);    
+  }
 
   Widget _showTitle() {
     return Container(
