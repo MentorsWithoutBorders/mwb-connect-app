@@ -87,9 +87,7 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
   
   void _getAvailableMentors() {
     _availableMentorsProvider?.availableMentors = [];
-    _availableMentorsProvider?.pageNumber = 1;
-    _availableMentorsProvider?.getAvailableMentors();
-    Navigator.pop(context);    
+    Navigator.pop(context, true);    
   }
 
   Widget _showTitle() {

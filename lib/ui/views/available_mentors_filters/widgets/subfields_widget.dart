@@ -53,7 +53,7 @@ class _SubfieldsState extends State<Subfields> {
 
   void _addSubfield() {
     _unfocus();
-    _availableMentorsProvider?.addSubfield();    
+    _availableMentorsProvider?.addSubfield();
   }
 
   void _unfocus() {

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors_filters/widgets/skills_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
@@ -37,6 +38,9 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }     
 
   Widget _showSubfieldDropdown() {
+    List<Field> fields = _availableMentorsProvider?.fields as List<Field>;
+    Field filterField = _availableMentorsProvider?.filterField as Field;
+    final List<String>? skills = UtilsFields.getSkillSuggestions('', widget.index!, filterField, fields);
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Column(
@@ -58,12 +62,12 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
                       ),
                     ),
                     if (_selectedSubfield == null) SizedBox.shrink(),
-                    if (_selectedSubfield != null) Skills(index: widget.index),
-                  ],
-                ),
+                    if (_selectedSubfield != null && skills != null && skills.length > 0) Skills(index: widget.index)
+                  ]
+                )
               ),
               _showDeleteSubfield()
-            ],
+            ]
           )
         ],
       )

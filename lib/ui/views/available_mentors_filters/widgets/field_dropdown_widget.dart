@@ -55,9 +55,11 @@ class _FieldDropdownState extends State<FieldDropdown> {
     return items;
   }  
 
-  void _changeField(Field? field) {
+  void _changeField(Field? field) async {
     _setSelectedField(field!);
     _availableMentorsProvider?.setField(field);
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+    _availableMentorsProvider?.addSubfield();
   }
   
   void _setSelectedField(Field field) {

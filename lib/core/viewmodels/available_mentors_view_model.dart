@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
@@ -20,6 +19,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   final AvailableMentorsService _availableMentorsService = locator<AvailableMentorsService>();
   final FieldsGoalsService _fieldsGoalsService = locator<FieldsGoalsService>();
   List<User> availableMentors = [];
+  List<User> newAvailableMentors = [];
   List<FieldGoal> fieldsGoals = [];
   List<Field> fields = [];
   List<Availability> filterAvailabilities = [];
@@ -31,44 +31,36 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   String? selectedLessonStartTime;
   String availabilityMergedMessage = '';
   String errorMessage = '';
-  int pageNumber = 1;
   double scrollOffset = 0;
-  bool isAvailableMentorsRetrieved = false;
   bool _shouldUnfocus = false;
 
-  Future<void> getAvailableMentors() async {
+  Future<void> getAvailableMentors({int pageNumber = 1}) async {
     _removeOptionAllFilterField();
     User filter = User(
       field: _removeOptionAllFilterField(),
       availabilities: filterAvailabilities
     );
-    if (pageNumber > (availableMentors.length / AppConstants.availableMentorsResultsPerPage).ceil()) {
-      isAvailableMentorsRetrieved = false;
-      List<User> mentors = await _availableMentorsService.getAvailableMentors(filter, pageNumber);
-      if (mentors.length == 0) {
-        pageNumber--;
-      }
-      availableMentors += mentors;
-      setSelectedMentor(null);
-      setSelectedLessonStartTime(null);
-      _sortMentorsAvailabilities();
-    }
-  }
-
-  Future<void> getFieldsGoals() async {
-    fieldsGoals = await _fieldsGoalsService.getFieldsGoals();
+    newAvailableMentors = await _availableMentorsService.getAvailableMentors(filter, pageNumber);
+    newAvailableMentors = _sortMentorsAvailabilities(newAvailableMentors);
+    availableMentors += newAvailableMentors;
+    setSelectedMentor(null);
+    setSelectedLessonStartTime(null);    
   }
   
   Future<void> getFields() async {
     fields = await _availableMentorsService.getFields();
-    _setOptionAllFilterField();
-  }  
+    setOptionAllFilterField();
+  }
+
+  Future<void> getFieldsGoals() async {
+    fieldsGoals = await _fieldsGoalsService.getFieldsGoals();
+  }    
 
   Future<void> sendCustomLessonRequest() async {
     await _availableMentorsService.sendCustomLessonRequest(selectedMentor);
   }
 
-  void _setOptionAllFilterField() {
+  void setOptionAllFilterField() {
     Field fieldAll = Field(id: 'all', name: 'available_mentors.all_fields'.tr());
     fields.insert(0, fieldAll);
     for (Field field in fields) {
@@ -128,12 +120,12 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     }
   }
 
-  void _sortMentorsAvailabilities() {
-    for (User mentor in availableMentors) {
+  List<User> _sortMentorsAvailabilities(List<User> mentors) {
+    for (User mentor in mentors) {
       mentor.availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
       mentor.availabilities?.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
     }
-    notifyListeners();
+    return mentors;
   }
 
   void setSelectedMentor(User? mentor) {
@@ -357,18 +349,12 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     notifyListeners();
   }
  
-  void setField(Field field) {
+  void setField(Field field) async {
     if (filterField.id != field.id) {
       filterField = Field(
         id: field.id, 
         name: field.name, 
-        subfields: [
-          Subfield(
-            id: 'all', 
-            name: 'available_mentors.all_subfields'.tr(),
-            skills: []
-          )
-        ]
+        subfields: []
       );
       notifyListeners();
     }
@@ -395,7 +381,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     if (subfields != null && filterSubfields != null) {
       for (final Subfield subfield in subfields) {
         if (!UtilsFields.containsSubfield(filterSubfields, subfield)) {
-          setSubfield(Subfield(id: subfield.id, name: subfield.name), filterSubfields.length+1);
+          setSubfield(Subfield(id: subfield.id, name: subfield.name), filterSubfields.length + 1);
           break;
         }
       }
@@ -447,13 +433,11 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   }
 
   void resetValues() {
-    isAvailableMentorsRetrieved = false;
     availableMentors = [];
     fieldsGoals = [];
     fields = [];
     filterAvailabilities = [];
     filterField = Field();
     selectedMentor = null;
-    pageNumber = 1;
   }  
 }
