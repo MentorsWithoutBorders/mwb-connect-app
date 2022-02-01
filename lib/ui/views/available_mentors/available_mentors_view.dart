@@ -62,12 +62,12 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
     } catch (error) {
       _pagingController.error = error;
     }
-  }  
+  }
   
   void _afterLayout(_) {
     _availableMentorsProvider?.setAvailabilityOptionId(null);
     _availableMentorsProvider?.setSubfieldOptionId(null);
-    _availableMentorsProvider?.setErrorMessage('');
+    _availableMentorsProvider?.setErrorMessage('');    
   }  
 
   Widget _showAvailableMentors() {

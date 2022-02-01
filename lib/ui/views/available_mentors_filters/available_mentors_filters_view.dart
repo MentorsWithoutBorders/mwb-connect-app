@@ -19,16 +19,13 @@ class AvailableMentorsFiltersView extends StatefulWidget {
 
 class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersView> {
   AvailableMentorsViewModel? _availableMentorsProvider;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
-  }
+  final ScrollController _scrollController = ScrollController();
   
-  void _afterLayout(_) {
-
-  }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }  
 
   Widget _showAvailableMentorsFilters() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -39,6 +36,7 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
           Flexible(
             fit: FlexFit.loose,
             child: ListView(
+              controller: _scrollController,
               padding: const EdgeInsets.only(top: 0.0),
               shrinkWrap: true,
               children: [
@@ -114,28 +112,61 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
     );
   }
 
+  void _afterLayout(_) {
+    if (_availableMentorsProvider?.shouldUnfocus == true) {
+      _unfocus();
+      _availableMentorsProvider?.shouldUnfocus = false;
+    }
+
+    if (_availableMentorsProvider?.scrollOffset != 0) {
+      _scrollToPosition(_availableMentorsProvider?.scrollOffset as double);
+      _availableMentorsProvider?.scrollOffset = 0;
+    }    
+  }
+
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }
+
+  void _scrollToPosition(double offset) {
+    Future<void>.delayed(const Duration(milliseconds: 1000), () {
+      _scrollController.animateTo(
+        _scrollController.position.pixels + offset,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
+    });
+  }    
+
   @override
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
 
-    return Stack(
-      children: <Widget>[
-        const BackgroundGradient(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: _showTitle(),
-            backgroundColor: Colors.transparent,          
-            elevation: 0.0,
-            leading: IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () => Navigator.of(context).pop(null),
-            )
-          ),
-          extendBodyBehindAppBar: true,
-          body: _showAvailableMentorsFilters()
-        )
-      ],
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+
+    return GestureDetector(
+      onTap: () {
+        _unfocus();
+      },
+      child: Stack(
+        children: <Widget>[
+          const BackgroundGradient(),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: _showTitle(),
+              backgroundColor: Colors.transparent,          
+              elevation: 0.0,
+              leading: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.of(context).pop(null),
+              )
+            ),
+            extendBodyBehindAppBar: true,
+            body: _showAvailableMentorsFilters()
+          )
+        ],
+      ),
     );
   }
 }
