@@ -81,8 +81,19 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  void deleteSubfield(int index) {
-    user?.field?.subfields?.removeAt(index);
+  void deleteSubfield(int index) async {
+    List<Subfield> updatedSubfields = [];
+    if (user?.field?.subfields != null) {
+      for (int i = 0; i < (user?.field?.subfields!.length as int); i++) {
+        if (i != index) {
+          updatedSubfields.add(user?.field?.subfields![i] as Subfield);
+        }
+      }
+    }
+    user?.field?.subfields = [];
+    notifyListeners();
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+    user?.field?.subfields = updatedSubfields;
     setUserDetails(user);
     notifyListeners();
   }

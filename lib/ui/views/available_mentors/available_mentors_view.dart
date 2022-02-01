@@ -101,11 +101,11 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   }
 
   Future<void> _goToFilters() async {
-    final result = await Navigator.push(
+    final shouldRefresh = await Navigator.push(
       context,
       MaterialPageRoute<bool>(builder: (_) => AvailableMentorsFiltersView())
     );    
-    if (result == true) {
+    if (shouldRefresh == true) {
       _pageNumber = 1;
       _pagingController.refresh();    
     };
@@ -139,7 +139,7 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
                       _goToFilters();
                     },
                     child: Icon(
-                      Icons.filter_list,
+                      Icons.tune,
                       size: 26.0
                     )
                   )

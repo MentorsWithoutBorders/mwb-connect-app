@@ -34,14 +34,22 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
-      child: ListView(
-        padding: const EdgeInsets.only(top: 0.0),
+      child: Column(
         children: [
-          _showDaysTimesCard(),
-          _showFieldsCard(),
-          _showSetFiltersButton()
-        ]
-      )
+          Flexible(
+            fit: FlexFit.loose,
+            child: ListView(
+              padding: const EdgeInsets.only(top: 0.0),
+              shrinkWrap: true,
+              children: [
+                _showDaysTimesCard(),
+                _showFieldsCard(),
+              ]
+            ),
+          ),
+          _showApplyFiltersButton()
+        ],
+      ),
     );
   }
 
@@ -53,20 +61,27 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
 
   Widget _showFieldsCard() {
     bool isAllFieldsSelected = _availableMentorsProvider?.isAllFieldsSelected as bool;
-    return AppCard(
-      child: Wrap(
-        children: [
-          FieldDropdown(),
-          if (!isAllFieldsSelected) Subfields()
-        ],
+    return Card(
+      elevation: 3.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Wrap(
+          children: [
+            FieldDropdown(),
+            if (!isAllFieldsSelected) Subfields()
+          ],
+        )
       )
     );
   }
   
-  Widget _showSetFiltersButton() {
+  Widget _showApplyFiltersButton() {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
+      child: Container(
+        margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: AppColors.JAPANESE_LAUREL,

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors_filters/widgets/skills_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
@@ -43,33 +42,29 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
     final List<String>? skills = UtilsFields.getSkillSuggestions('', widget.index!, filterField, fields);
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    if (_selectedSubfield != null) Container(
-                      height: 50.0,
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Dropdown<Subfield>(
-                        dropdownMenuItemList: _buildSubfieldDropdown(),
-                        onTapped: _unfocus,
-                        onChanged: _changeSubfield,
-                        value: _selectedSubfield
-                      ),
-                    ),
-                    if (_selectedSubfield == null) SizedBox.shrink(),
-                    if (_selectedSubfield != null && skills != null && skills.length > 0) Skills(index: widget.index)
-                  ]
-                )
-              ),
-              _showDeleteSubfield()
-            ]
-          )
-        ],
+          Expanded(
+            child: Column(
+              children: [
+                if (_selectedSubfield?.id != null) Container(
+                  height: 50.0,
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Dropdown<String>(
+                    dropdownMenuItemList: _buildSubfieldDropdown(),
+                    onTapped: _unfocus,
+                    onChanged: _changeSubfield,
+                    value: _selectedSubfield?.id
+                  ),
+                ),
+                if (_selectedSubfield?.id == null) SizedBox.shrink(),
+                if (_selectedSubfield?.id != null && skills != null && skills.length > 0) Skills(index: widget.index)
+              ]
+            )
+          ),
+          _showDeleteSubfield()
+        ]
       )
     );
   }
@@ -89,29 +84,38 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
     );
   }
 
-  void _deleteSubfield() async {
+  void _deleteSubfield() {
     _unfocus();
-    await Future<void>.delayed(const Duration(milliseconds: 20));
     _availableMentorsProvider?.deleteSubfield(widget.index!);
   }
 
-  List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
-    final List<DropdownMenuItem<Subfield>> items = [];
+  List<DropdownMenuItem<String>> _buildSubfieldDropdown() {
+    final List<DropdownMenuItem<String>> items = [];
     List<Field> fields = _availableMentorsProvider?.fields as List<Field>;
     Field filterField = _availableMentorsProvider?.filterField as Field;
     List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, filterField, fields);
     for (final Subfield subfield in subfields) {
-      items.add(DropdownMenuItem<Subfield>(
-        value: subfield,
+      items.add(DropdownMenuItem<String>(
+        value: subfield.id,
         child: Text(subfield.name as String),
       ));
     }
     return items;
   }  
 
-  void _changeSubfield(Subfield? subfield) {
-    _setSelectedSubfield(subfield!);
-    _availableMentorsProvider?.setSubfield(Subfield(id: subfield.id, name: subfield.name), widget.index!);
+  void _changeSubfield(String? selectedSubfieldId) {
+    final Field? filterField = _availableMentorsProvider?.filterField;
+    final List<Field>? fields = _availableMentorsProvider?.fields;      
+    List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, filterField, fields);
+    Subfield? selectedSubfield;
+    for (final Subfield subfield in subfields) {
+      if (subfield.id == selectedSubfieldId) {
+        selectedSubfield = Subfield.fromJson(subfield.toJson());
+        break;
+      }
+    }     
+    _setSelectedSubfield(selectedSubfield as Subfield);
+    _availableMentorsProvider?.setSubfield(selectedSubfield, widget.index!);
   }
   
   void _setSelectedSubfield(Subfield subfield) {

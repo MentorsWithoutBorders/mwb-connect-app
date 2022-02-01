@@ -34,19 +34,23 @@ class _SubfieldsState extends State<Subfields> {
 
   Widget _showAddSubfieldButton() {
     return Center(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 1.0,
-          primary: AppColors.MONZA,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)
-          ),
-          padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0)
-        ), 
-        child: Text('common.add_subfield'.tr(), style: TextStyle(color: Colors.white)),
-        onPressed: () {
-          _addSubfield();
-        }
+      child: Container(
+        height: 30.0,
+        margin: const EdgeInsets.only(top: 5.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 1.0,
+            primary: AppColors.MONZA,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0)
+            ),
+            padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0)
+          ), 
+          child: Text('common.add_subfield'.tr(), style: TextStyle(color: Colors.white)),
+          onPressed: () {
+            _addSubfield();
+          }
+        ),
       ),
     );
   }

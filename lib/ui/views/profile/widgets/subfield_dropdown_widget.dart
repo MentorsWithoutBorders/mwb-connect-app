@@ -28,42 +28,38 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }
   
-  void _afterLayout(_) {
+  void _afterLayout(_) async {
     final Field? userField = _profileProvider?.user?.field;
-    final List<Field>? fields = _profileProvider?.fields;     
+    final List<Field>? fields = _profileProvider?.fields;
     _setSelectedSubfield(UtilsFields.getSelectedSubfield(widget.index!, userField, fields) as Subfield);
   }    
 
   Widget _showSubfieldDropdown() {
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    if (_selectedSubfield != null) Container(
-                      height: 50.0,
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Dropdown<Subfield>(
-                        key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
-                        dropdownMenuItemList: _buildSubfieldDropdown(),
-                        onTapped: _unfocus,
-                        onChanged: _changeSubfield,
-                        value: _selectedSubfield
-                      ),
-                    ),
-                    if (_selectedSubfield == null) SizedBox.shrink(),
-                    if (_selectedSubfield != null) Skills(index: widget.index)
-                  ],
+          Expanded(
+            child: Column(
+              children: [
+                if (_selectedSubfield?.id != null) Container(
+                  height: 50.0,
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Dropdown<String>(
+                    key: Key(AppKeys.subfieldDropdown + widget.index.toString()),
+                    dropdownMenuItemList: _buildSubfieldDropdown(),
+                    onTapped: _unfocus,
+                    onChanged: _changeSubfield,
+                    value: _selectedSubfield?.id
+                  )
                 ),
-              ),
-              _showDeleteSubfield()
-            ],
-          )
+                if (_selectedSubfield?.id == null) SizedBox.shrink(),
+                if (_selectedSubfield?.id != null) Skills(index: widget.index)
+              ]
+            )
+          ),
+          _showDeleteSubfield()
         ],
       )
     );
@@ -91,23 +87,33 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
     _profileProvider?.deleteSubfield(widget.index!);
   }
 
-  List<DropdownMenuItem<Subfield>> _buildSubfieldDropdown() {
-    final List<DropdownMenuItem<Subfield>> items = [];
+  List<DropdownMenuItem<String>> _buildSubfieldDropdown() {
+    final List<DropdownMenuItem<String>> items = [];
     final Field? userField = _profileProvider?.user?.field;
     final List<Field>? fields = _profileProvider?.fields;    
     List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, userField, fields);
     for (final Subfield subfield in subfields) {
-      items.add(DropdownMenuItem<Subfield>(
-        value: subfield,
+      items.add(DropdownMenuItem<String>(
+        value: subfield.id,
         child: Text(subfield.name as String),
       ));
     }
     return items;
   }  
 
-  void _changeSubfield(Subfield? subfield) {
-    _setSelectedSubfield(subfield!);
-    _profileProvider?.setSubfield(Subfield(id: subfield.id, name: subfield.name), widget.index!);
+  void _changeSubfield(String? selectedSubfieldId) {
+    final Field? userField = _profileProvider?.user?.field;
+    final List<Field>? fields = _profileProvider?.fields;      
+    List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, userField, fields);
+    Subfield? selectedSubfield;
+    for (final Subfield subfield in subfields) {
+      if (subfield.id == selectedSubfieldId) {
+        selectedSubfield = Subfield.fromJson(subfield.toJson());
+        break;
+      }
+    } 
+    _setSelectedSubfield(selectedSubfield as Subfield);
+    _profileProvider?.setSubfield(selectedSubfield, widget.index!);
   }
   
   void _setSelectedSubfield(Subfield subfield) {

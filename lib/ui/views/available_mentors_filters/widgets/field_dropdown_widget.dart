@@ -29,25 +29,29 @@ class _FieldDropdownState extends State<FieldDropdown> {
   }    
 
   Widget _showFieldDropdown() {
-    return Container(
-      height: 55.0,
-      padding: const EdgeInsets.only(bottom: 15.0),
-      child: Dropdown(
-        dropdownMenuItemList: _buildFieldDropdown(),
-        onTapped: _unfocus,
-        onChanged: _changeField,
-        value: _selectedField
-      ),
+    return Wrap(
+      children: [
+        if (_selectedField?.id != null) Container(
+          height: 55.0,
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: Dropdown<String>(
+            dropdownMenuItemList: _buildFieldDropdown(),
+            onTapped: _unfocus,
+            onChanged: _changeField,
+            value: _selectedField?.id
+          ),
+        ),
+      ],
     );
   }
 
-  List<DropdownMenuItem<Field>> _buildFieldDropdown() {
-    final List<DropdownMenuItem<Field>> items = [];
+  List<DropdownMenuItem<String>> _buildFieldDropdown() {
+    final List<DropdownMenuItem<String>> items = [];
     List<Field>? fields = _availableMentorsProvider?.fields;
     if (fields != null) {
       for (final Field field in fields) {
         items.add(DropdownMenuItem(
-          value: field,
+          value: field.id,
           child: Text(field.name as String),
         ));
       }
@@ -55,10 +59,20 @@ class _FieldDropdownState extends State<FieldDropdown> {
     return items;
   }  
 
-  void _changeField(Field? field) async {
-    _setSelectedField(field!);
-    _availableMentorsProvider?.setField(field);
-    await Future<void>.delayed(const Duration(milliseconds: 100));
+  void _changeField(String? selectedFieldId) async {
+    List<Field>? fields = _availableMentorsProvider?.fields;
+    Field? selectedField;
+    if (fields != null) {
+      for (final Field field in fields) {
+        if (field.id == selectedFieldId) {
+          selectedField = Field.fromJson(field.toJson());
+          break;
+        }
+      }
+    }
+    _setSelectedField(selectedField as Field);
+    _availableMentorsProvider?.setField(selectedField);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
     _availableMentorsProvider?.addSubfield();
   }
   

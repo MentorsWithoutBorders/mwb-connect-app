@@ -60,22 +60,25 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
     );
   }
 
-  Widget _showAddAvailabilityButton() {
+  Widget _showAddAvailabilityButton() {  
     return Center(
-      child: ElevatedButton(
-        key: const Key(AppKeys.addAvailabilityBtn),
-        style: ElevatedButton.styleFrom(
-          elevation: 1.0,
-          primary: AppColors.MONZA,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)
-          ),
-          padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-        ), 
-        child: Text('common.add_availability'.tr(), style: const TextStyle(color: Colors.white)),
-        onPressed: () {
-          _showAddAvailabilityDialog();
-        }
+      child: Container(
+        height: 30.0,
+        child: ElevatedButton(
+          key: const Key(AppKeys.addAvailabilityBtn),
+          style: ElevatedButton.styleFrom(
+            elevation: 1.0,
+            primary: AppColors.MONZA,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0)
+            ),
+            padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+          ), 
+          child: Text('common.add_availability'.tr(), style: const TextStyle(color: Colors.white)),
+          onPressed: () {
+            _showAddAvailabilityDialog();
+          }
+        ),
       ),
     );
   }

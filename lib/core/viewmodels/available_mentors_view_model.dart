@@ -389,8 +389,19 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  void deleteSubfield(int index) {
-    filterField.subfields?.removeAt(index);
+  void deleteSubfield(int index) async {
+    List<Subfield> updatedSubfields = [];
+    if (filterField.subfields != null) {
+      for (int i = 0; i < filterField.subfields!.length; i++) {
+        if (i != index) {
+          updatedSubfields.add(filterField.subfields![i]);
+        }
+      }
+    }
+    filterField.subfields = [];
+    notifyListeners();
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+    filterField.subfields = updatedSubfields;
     notifyListeners();
   }
 
