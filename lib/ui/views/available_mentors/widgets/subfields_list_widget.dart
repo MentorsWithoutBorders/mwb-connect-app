@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/subfield_item_widget.dart';
 
 class SubfieldsList extends StatefulWidget {
-  const SubfieldsList({Key? key, @required this.mentorId, @required this.subfields})
+  const SubfieldsList({Key? key, @required this.mentor})
     : super(key: key); 
 
-  final String? mentorId;
-  final List<Subfield>? subfields;
+  final User? mentor;
 
   @override
   State<StatefulWidget> createState() => _SubfieldsListState();
@@ -41,12 +41,17 @@ class _SubfieldsListState extends State<SubfieldsList> with TickerProviderStateM
   }
 
   Widget _showSubfieldsList() {
+    final List<Subfield>? subfields = widget.mentor?.field?.subfields;
     final List<Widget> subfieldWidgets = [];
-    if (widget.subfields != null) {
-      for (int i = 0; i < widget.subfields!.length; i++) {
-        String mentorId = widget.mentorId as String;
+    if (subfields != null) {
+      for (int i = 0; i < subfields.length; i++) {
+        String mentorId = widget.mentor?.id as String;
         String id = mentorId + '-s-' + i.toString();
-        subfieldWidgets.add(SubfieldItem(id: id, subfield: widget.subfields![i]));
+        subfieldWidgets.add(SubfieldItem(
+          id: id, 
+          subfield: subfields[i],
+          mentorName: widget.mentor?.name,
+        ));
       }
     }
     return Padding(

@@ -39,7 +39,7 @@ class _StepCardState extends State<StepCard> {
                   child: _showBullet(stepLevel)
                 ),
                 Expanded(
-                  child:Padding(
+                  child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Text(
                       widget.step?.text as String,

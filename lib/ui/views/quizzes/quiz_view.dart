@@ -6,7 +6,6 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
-import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class QuizView extends StatefulWidget {
   const QuizView({Key? key})

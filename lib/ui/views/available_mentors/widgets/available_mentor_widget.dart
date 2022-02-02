@@ -35,8 +35,8 @@ class _AvailableMentorState extends State<AvailableMentor> {
         children: [
           _showMentorName(),
           _showMentorFieldName(),
-          SubfieldsList(mentorId: widget.mentor?.id, subfields: widget.mentor?.field?.subfields),
-          AvailabilitiesList(mentorId: widget.mentor?.id, availabilities: widget.mentor?.availabilities),
+          SubfieldsList(mentor: widget.mentor),
+          AvailabilitiesList(mentor: widget.mentor),
           if (shouldShowError) _showError(),
           _showSendRequestButton()
         ],
@@ -82,7 +82,7 @@ class _AvailableMentorState extends State<AvailableMentor> {
               text: 'available_mentors.why_choose_field'.tr(args: [fieldName.toLowerCase()]),
               style: const TextStyle(
                 color: Colors.blue,
-                fontSize: 12.0,
+                fontSize: 13.0,
                 fontStyle: FontStyle.italic,
                 decoration: TextDecoration.underline
               ),

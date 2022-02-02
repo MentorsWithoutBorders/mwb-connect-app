@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/widgets/availability_item_widget.dart';
 
 class AvailabilitiesList extends StatefulWidget {
-  const AvailabilitiesList({Key? key, @required this.mentorId, @required this.availabilities})
+  const AvailabilitiesList({Key? key, @required this.mentor})
     : super(key: key); 
 
-  final String? mentorId;
-  final List<Availability>? availabilities;
+  final User? mentor;
 
   @override
   State<StatefulWidget> createState() => _AvailabilitiesListState();
@@ -41,12 +41,13 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   }
 
   Widget _showAvailabilitiesList() {
+    final List<Availability>? availabilities = widget.mentor?.availabilities;    
     final List<Widget> availabilityWidgets = [];
-    if (widget.availabilities != null) {
-      for (int i = 0; i < widget.availabilities!.length; i++) {
-        String mentorId = widget.mentorId as String;
+    if (availabilities != null) {
+      for (int i = 0; i < availabilities.length; i++) {
+        String mentorId = widget.mentor?.id as String;
         String id = mentorId + '-a-' + i.toString();
-        availabilityWidgets.add(AvailabilityItem(id: id, availability: widget.availabilities![i]));
+        availabilityWidgets.add(AvailabilityItem(id: id, availability: availabilities[i]));
       }
     }
     return Padding(
