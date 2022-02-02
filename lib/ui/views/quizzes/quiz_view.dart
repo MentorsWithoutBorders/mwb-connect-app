@@ -337,11 +337,11 @@ class _QuizState extends State<QuizView> {
                         width: 16.0,
                         height: 16.0,
                         decoration: BoxDecoration(
-                          color: _checkCorrectAnswer(index, answer) ? Colors.greenAccent : AppColors.MYSTIC,
+                          color: _selectedIndex == index && _checkCorrectAnswer(index, answer) ? Colors.greenAccent : AppColors.MYSTIC,
                           shape: BoxShape.circle,
                           border: Border.all(
                             width: 1,
-                            color: _checkCorrectAnswer(index, answer) ? AppColors.TURQUOISE : AppColors.BOTTICELLI,
+                            color: _selectedIndex == index && _checkCorrectAnswer(index, answer) ? AppColors.TURQUOISE : AppColors.BOTTICELLI,
                             style: BorderStyle.solid
                           )
                         ),
@@ -354,7 +354,7 @@ class _QuizState extends State<QuizView> {
                           height: 8.0
                         )
                       ),
-                      if (_checkCorrectAnswer(index, answer)) Container (
+                      if (_selectedIndex == index && _checkCorrectAnswer(index, answer)) Container (
                         padding: const EdgeInsets.all(4.0),
                         child: Image.asset(
                           'assets/images/correct_icon.png',
