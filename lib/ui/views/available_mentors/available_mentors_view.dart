@@ -82,7 +82,7 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
             mentor: item,
           ),
           firstPageProgressIndicatorBuilder: (_) => Padding(
-            padding: const EdgeInsets.only(bottom: 50.0),
+            padding: const EdgeInsets.only(bottom: 100.0),
             child: Loader()
           ),
           newPageProgressIndicatorBuilder: (_) => Padding(
@@ -111,17 +111,17 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
     };
   }  
 
-  Future<bool> _resetValues(BuildContext context) async {
+  Future<bool> _onWillPop(BuildContext context) async {
     _availableMentorsProvider?.resetValues();
     return true;
-  }   
+  }
 
   @override
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
 
     return WillPopScope(
-      onWillPop: () => _resetValues(context),
+      onWillPop: () => _onWillPop(context),
       child: Stack(
         children: <Widget>[
           const BackgroundGradient(),

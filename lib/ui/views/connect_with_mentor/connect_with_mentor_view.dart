@@ -127,6 +127,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       await Future.wait([
         _connectWithMentorProvider!.getGoal(),
         _connectWithMentorProvider!.getLessonRequest(),
+        _connectWithMentorProvider!.getPreviousLesson(),
         _connectWithMentorProvider!.getNextLesson(),
         _connectWithMentorProvider!.getCertificateSent(),
         _stepsProvider!.getLastStepAdded(),

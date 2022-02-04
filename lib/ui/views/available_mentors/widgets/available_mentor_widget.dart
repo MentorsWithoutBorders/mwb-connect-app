@@ -129,11 +129,11 @@ class _AvailableMentorState extends State<AvailableMentor> {
 
   void _editAvailability() {
     _availableMentorsProvider?.setErrorMessage('');
-    _availableMentorsProvider?.setSelectedMentor(null);
+    _availableMentorsProvider?.setSelectedMentor(mentor: null);
     _availableMentorsProvider?.setLessonRequestButtonId(widget.mentor?.id);
     _availableMentorsProvider?.setDefaultSubfield(widget.mentor as User);
     _availableMentorsProvider?.setDefaultAvailability(widget.mentor as User);
-    _availableMentorsProvider?.setSelectedMentor(widget.mentor);
+    _availableMentorsProvider?.setSelectedMentor(mentor: widget.mentor);
     if (_availableMentorsProvider!.isLessonRequestValid(widget.mentor as User)) {
       _showEditAvailabilityDialog();
     }
@@ -149,8 +149,8 @@ class _AvailableMentorState extends State<AvailableMentor> {
       if (shouldGoBack == true) {
         Navigator.pop(context, true);
       }
-    });     
-  }  
+    });
+  } 
 
   Widget _showError() {
     String _errorMessage = _availableMentorsProvider!.errorMessage;
@@ -167,7 +167,7 @@ class _AvailableMentorState extends State<AvailableMentor> {
         ),
       )
     );
-  }    
+  }
 
   @override
   Widget build(BuildContext context) {

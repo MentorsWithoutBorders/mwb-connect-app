@@ -43,7 +43,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     newAvailableMentors = await _availableMentorsService.getAvailableMentors(filter, pageNumber);
     newAvailableMentors = _sortMentorsAvailabilities(newAvailableMentors);
     availableMentors += newAvailableMentors;
-    setSelectedMentor(null);
+    setSelectedMentor(mentor: null);
     setSelectedLessonStartTime(null);    
   }
   
@@ -128,15 +128,15 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     return mentors;
   }
 
-  void setSelectedMentor(User? mentor) {
+  void setSelectedMentor({User? mentor, Subfield? subfield, Availability? availability}) {
     if (mentor != null) {
       if (selectedMentor == null) {
         selectedMentor = User(id: mentor.id);
         selectedMentor?.field = Field(
           id: mentor.field?.id,
-          subfields: [getSelectedSubfield()]
+          subfields: subfield != null ? [subfield] : [getSelectedSubfield()]
         );
-        selectedMentor?.availabilities = [getSelectedAvailability()];
+        selectedMentor?.availabilities = availability != null ? [availability] : [getSelectedAvailability()];
         final String? timeFrom = selectedMentor?.availabilities![0].time?.from;
         if (timeFrom != null) {
           setSelectedLessonStartTime(timeFrom);
@@ -450,5 +450,6 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     filterAvailabilities = [];
     filterField = Field();
     selectedMentor = null;
+    selectedLessonStartTime = null;
   }  
 }

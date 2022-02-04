@@ -137,10 +137,16 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
       _isSendingLessonRequest = true;
     });
     User? mentor = _availableMentorsProvider?.selectedMentor;
-    _availableMentorsProvider?.setSelectedMentor(mentor);    
+    _availableMentorsProvider?.setSelectedMentor(mentor: mentor);    
     await _availableMentorsProvider?.sendCustomLessonRequest();
+    await _resetValues(context);
     Navigator.pop(context, true);
   }
+
+  Future<bool> _resetValues(BuildContext context) async {
+    _availableMentorsProvider?.resetValues();
+    return true;
+  }     
 
   @override
   Widget build(BuildContext context) {

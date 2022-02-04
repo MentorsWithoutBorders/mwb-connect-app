@@ -100,6 +100,9 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
   
   void _getAvailableMentors() {
     _availableMentorsProvider?.availableMentors = [];
+    _availableMentorsProvider?.setErrorMessage('');
+    _availableMentorsProvider?.setAvailabilityOptionId(null);
+    _availableMentorsProvider?.setSubfieldOptionId(null);
     Navigator.pop(context, true);    
   }
 

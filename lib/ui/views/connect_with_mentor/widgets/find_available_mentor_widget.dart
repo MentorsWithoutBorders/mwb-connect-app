@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_options_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/available_mentors_view.dart';
-import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class FindAvailableMentor extends StatefulWidget {
   const FindAvailableMentor({Key? key, this.shouldReloadCallback})
@@ -20,7 +22,6 @@ class FindAvailableMentor extends StatefulWidget {
 
 class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerProviderStateMixin {
   ConnectWithMentorViewModel? _connectWithMentorProvider;
-  bool _isSendingLessonRequest = false;
 
   Widget _showFindAvailableMentorCard() {
     return Padding(
@@ -122,6 +123,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
   }
 
   Widget _showFindMentorButton() {
+    Lesson? previousLesson = _connectWithMentorProvider?.previousLesson;
     return Center(
       child: Container(
         height: 30.0,
@@ -135,19 +137,19 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
             ),
             padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
           ),
-          child: !_isSendingLessonRequest ? Text(
+          child: Text(
             'connect_with_mentor.find_mentor'.tr(),
             style: const TextStyle(color: Colors.white)
-          ) : SizedBox(
-            width: 75.0,
-            child: ButtonLoader(),
           ),
           onPressed: () async {
-            // await _sendLessonRequest();
-            await _goToAvailableMentors();
+            if (previousLesson?.mentor != null) {
+              _showOptionsDialog();
+            } else {
+              await _goToAvailableMentors();
+            }
           }
-        ),
-      ),
+        )
+      )
     );
   }
 
@@ -156,19 +158,25 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
     if (shouldReload == true) {
       widget.shouldReloadCallback!();
     }
-  }  
+  }
   
-  Future<void> _sendLessonRequest() async {  
-    _setIsSendingLessonRequest(true);
-    await _connectWithMentorProvider?.sendLessonRequest();
-    _setIsSendingLessonRequest(false);
-  }
-
-  void _setIsSendingLessonRequest(bool isSending) {
-    setState(() {
-      _isSendingLessonRequest = isSending;
-    });  
-  }
+  void _showOptionsDialog() {
+    Lesson? previousLesson = _connectWithMentorProvider?.previousLesson;
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: FindAvailableMentorOptionsDialog(
+          mentor: previousLesson?.mentor,
+          shouldReloadCallback: widget.shouldReloadCallback,
+          context: context
+        )
+      )
+    ).then((shouldReload) {
+      if (shouldReload == true) {
+        widget.shouldReloadCallback!();
+      }
+    });     
+  }   
 
   @override
   Widget build(BuildContext context) {
