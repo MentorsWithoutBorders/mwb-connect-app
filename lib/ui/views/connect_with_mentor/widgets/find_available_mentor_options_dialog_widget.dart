@@ -164,6 +164,7 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
     _availableMentorsProvider?.setSelectedMentor(mentor: widget.mentor);    
     await _availableMentorsProvider?.sendCustomLessonRequest();
     await _resetValues(context);
+    _availableMentorsProvider?.mergeAvailabilities();
     Navigator.pop(context, true);
   }  
   

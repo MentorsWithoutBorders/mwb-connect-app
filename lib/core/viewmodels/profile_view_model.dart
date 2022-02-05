@@ -27,7 +27,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<void> getUserDetails() async {
     user = await _userService.getUserDetails();
-    _sortAvailabilities();
+    user?.availabilities = UtilsAvailabilities.getSortedAvailabilities(user?.availabilities);
   }
 
   Future<void> getFields() async {
@@ -154,7 +154,7 @@ class ProfileViewModel extends ChangeNotifier {
   
   void addAvailability(Availability availability) {
     user?.availabilities?.add(availability);
-    _sortAvailabilities();
+    user?.availabilities = UtilsAvailabilities.getSortedAvailabilities(user?.availabilities);
     List mergedAvailabilities = UtilsAvailabilities.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
     user?.availabilities = mergedAvailabilities[0];
     availabilityMergedMessage = mergedAvailabilities[1];
@@ -164,17 +164,11 @@ class ProfileViewModel extends ChangeNotifier {
 
   void updateAvailability(int index, Availability newAvailability) {
     user?.availabilities?[index] = newAvailability;
-    _sortAvailabilities();
+    user?.availabilities = UtilsAvailabilities.getSortedAvailabilities(user?.availabilities);
     List mergedAvailabilities = UtilsAvailabilities.getMergedAvailabilities(user?.availabilities, availabilityMergedMessage);
     user?.availabilities = mergedAvailabilities[0];
     availabilityMergedMessage = mergedAvailabilities[1];
     setUserDetails(user);
-    notifyListeners();
-  }
-
-  void _sortAvailabilities() {
-    user?.availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
-    user?.availabilities?.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
     notifyListeners();
   }
 

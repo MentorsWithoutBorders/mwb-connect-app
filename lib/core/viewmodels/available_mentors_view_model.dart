@@ -5,7 +5,6 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
-import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -14,10 +13,12 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
+import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
 
 class AvailableMentorsViewModel extends ChangeNotifier {
   final AvailableMentorsService _availableMentorsService = locator<AvailableMentorsService>();
+  final UserService _userService = locator<UserService>();
   final FieldsGoalsService _fieldsGoalsService = locator<FieldsGoalsService>();
   List<User> availableMentors = [];
   List<User> newAvailableMentors = [];
@@ -61,6 +62,13 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   Future<void> sendCustomLessonRequest() async {
     await _availableMentorsService.sendCustomLessonRequest(selectedMentor);
   }
+
+  void mergeAvailabilities() async {
+    User student = await _userService.getUserDetails();
+    student.availabilities = UtilsAvailabilities.getSortedAvailabilities(student.availabilities);
+    student.availabilities = UtilsAvailabilities.getMergedAvailabilities(student.availabilities, '')[0];
+    _userService.setUserDetails(student);
+  } 
 
   void setOptionAllFilterField() {
     Field fieldAll = Field(id: 'all', name: 'available_mentors.all_fields'.tr());

@@ -56,6 +56,12 @@ class UtilsAvailabilities {
     return timeFrom < timeTo || timeFrom != timeTo && timeTo == 0;
   }
 
+  static List<Availability>? getSortedAvailabilities(List<Availability>? availabilities) {
+    availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
+    availabilities?.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
+    return availabilities;
+  }   
+
   static List getMergedAvailabilities(List<Availability>? userAvailabilities, String availabilityMergedMessage) {
     final List<Availability> availabilities = [];
     for (final String dayOfWeek in Utils.daysOfWeek) {

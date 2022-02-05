@@ -140,6 +140,7 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
     _availableMentorsProvider?.setSelectedMentor(mentor: mentor);    
     await _availableMentorsProvider?.sendCustomLessonRequest();
     await _resetValues(context);
+    _availableMentorsProvider?.mergeAvailabilities();
     Navigator.pop(context, true);
   }
 
