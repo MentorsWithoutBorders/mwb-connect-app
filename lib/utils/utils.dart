@@ -1,21 +1,12 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/datetime_extension.dart';
-import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Utils {
-  static final String _defaultLocale = Platform.localeName;
   static final LocalStorageService _storageService = locator<LocalStorageService>();  
-  static bool _mergedAvailabilityLastShown = false;  
 
   static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');
   static List<String> get periodUnits => 'common.period_units'.tr().split(', ');
@@ -170,6 +161,14 @@ class Utils {
     }
     return dayOfWeek;
   }
+
+  static DateTime setDayOfWeek(DateTime dateTime, String newDayOfWeek) {
+    String dayOfWeek = DateFormat(AppConstants.dayOfWeekFormat).format(dateTime);
+    while (dayOfWeek != newDayOfWeek) {
+      dateTime.add(Duration(days: 1));
+    }
+    return dateTime;
+  }  
   
   static String getIndefiniteArticle(String noun) {
     String article = 'common.a'.tr();

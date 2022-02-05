@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
@@ -150,10 +150,10 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
     Subfield? subfield = previousLesson?.subfield;
     DateTime lessonDateTime = previousLesson?.dateTime as DateTime;
     Availability? availability = Availability(
-      dayOfWeek: DateFormat('EEEE').format(lessonDateTime),
+      dayOfWeek: DateFormat(AppConstants.dayOfWeekFormat).format(lessonDateTime),
       time: Time(
-        from: DateFormat('h:mma').format(lessonDateTime),
-        to: DateFormat('h:mma').format(lessonDateTime)
+        from: DateFormat(AppConstants.timeFormat).format(lessonDateTime),
+        to: DateFormat(AppConstants.timeFormat).format(lessonDateTime)
       )
     );
     setState(() {

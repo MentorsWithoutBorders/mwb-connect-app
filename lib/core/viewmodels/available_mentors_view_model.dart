@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
@@ -10,8 +9,10 @@ import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/models/field_goal_model.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/time_model.dart';
+import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
 import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
 
@@ -41,6 +42,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
       availabilities: filterAvailabilities
     );
     newAvailableMentors = await _availableMentorsService.getAvailableMentors(filter, pageNumber);
+    newAvailableMentors = _splitMentorsAvailabilities(newAvailableMentors);
     newAvailableMentors = _sortMentorsAvailabilities(newAvailableMentors);
     availableMentors += newAvailableMentors;
     setSelectedMentor(mentor: null);
@@ -120,6 +122,29 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     }
   }
 
+  List<User> _splitMentorsAvailabilities(List<User> mentors) {
+    for (User mentor in mentors) {
+      List<Availability> availabilities = [];
+      for (Availability availability in mentor.availabilities as List<Availability>) {
+        if (Utils.convertTime12to24(availability.time?.from as String)[0] > Utils.convertTime12to24(availability.time?.to as String)[0]) {
+          availabilities.add(Availability(
+            dayOfWeek: Utils.getNextDayOfWeek(availability.dayOfWeek as String),
+            time: Time(
+              from: '12am',
+              to: availability.time?.to
+            )
+          ));
+          availability.time?.to = '12am';
+          availabilities.add(availability);
+        } else {
+          availabilities.add(availability);
+        }
+      }
+      mentor.availabilities = availabilities;
+    }
+    return mentors;
+  }  
+
   List<User> _sortMentorsAvailabilities(List<User> mentors) {
     for (User mentor in mentors) {
       mentor.availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
@@ -142,15 +167,6 @@ class AvailableMentorsViewModel extends ChangeNotifier {
           setSelectedLessonStartTime(timeFrom);
         }
       } else {
-        final Availability availabilityUtc = UtilsAvailabilities.getAvailabilityToUtc(selectedMentor?.availabilities![0] as Availability);
-        final List<int> availabilityTimeFrom = Utils.convertTime12to24(availabilityUtc.time?.from as String);
-        final List<int> lessonStartTime = Utils.convertTime12to24(selectedLessonStartTime as String);
-        final DateTime date = Utils.resetTime(DateTime.now());
-        final DateTime timeFromUtc = date.copyWith(hour: availabilityTimeFrom[0]).toUtc();
-        final DateTime lessonStartTimeUtc = date.copyWith(hour: lessonStartTime[0]).toUtc();
-        if (lessonStartTimeUtc.isBefore(timeFromUtc)) {
-          selectedMentor?.availabilities![0].dayOfWeek = Utils.getNextDayOfWeek(selectedMentor?.availabilities![0].dayOfWeek as String);
-        }
         selectedMentor?.availabilities![0].time?.from = selectedLessonStartTime;
       }
     } else {
@@ -305,7 +321,6 @@ class AvailableMentorsViewModel extends ChangeNotifier {
         hoursList = _addHours(hoursList, from - 12, to - 13, 'pm');
       }
     }
-
     return hoursList;
   }
 
