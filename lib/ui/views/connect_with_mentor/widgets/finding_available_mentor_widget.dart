@@ -38,9 +38,9 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
 
   Widget _showText() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 35.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 30.0),
       child: Text(
-        'connect_with_mentor.finding_available_mentor'.tr(),
+        'connect_with_mentor.waiting_mentor'.tr(),
         textAlign: TextAlign.center,
         style: const TextStyle(
           fontSize: 18,
@@ -65,7 +65,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
             ),
             padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
           ), 
-          child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('connect_with_mentor.cancel_request'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
             showDialog(
               context: context,

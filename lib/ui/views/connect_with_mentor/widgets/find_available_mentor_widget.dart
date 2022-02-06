@@ -70,51 +70,17 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
   }   
 
   Widget _showTopText() {
-    return Wrap(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: RichText(
-            textAlign: TextAlign.justify,
-            text: TextSpan(
-              style: const TextStyle(
-                fontSize: 12.0,
-                color: AppColors.DOVE_GRAY,
-                height: 1.4
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'connect_with_mentor.next_lesson'.tr(),             
-                ),
-                TextSpan(
-                  text: 'common.your_profile'.tr(),
-                  style: const TextStyle(
-                    decoration: TextDecoration.underline
-                  ),
-                  recognizer: TapGestureRecognizer()..onTap = () {
-                    _goToProfile();
-                  } 
-                ),
-                TextSpan(
-                  text: '.'
-                )
-              ]
-            )
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Text(
+        'connect_with_mentor.next_lesson'.tr(),
+        textAlign: TextAlign.justify,
+        style: const TextStyle(
+          fontSize: 12.0,
+          color: AppColors.DOVE_GRAY,
+          height: 1.4
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: Text(
-            'connect_with_mentor.interval_between_lessons'.tr(),
-            textAlign: TextAlign.justify,
-            style: const TextStyle(
-              fontSize: 12.0,
-              color: AppColors.DOVE_GRAY,
-              height: 1.4
-            )
-          ),
-        )
-      ],
+      )
     );
   }
 

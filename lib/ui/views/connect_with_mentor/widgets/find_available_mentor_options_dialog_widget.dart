@@ -114,7 +114,7 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
         ),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.only(bottom: 15.0),
+          padding: const EdgeInsets.only(bottom: 20.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: AppColors.ALLPORTS,
@@ -129,17 +129,23 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
             child: Text('connect_with_mentor.find_new_mentor'.tr(), style: const TextStyle(color: Colors.white))
           )
         ),
-        InkWell(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Center(                      
-              child: Text('common.abort'.tr(), style: const TextStyle(color: Colors.grey))
-            )
+        Center(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.BERMUDA_GRAY,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              padding: const EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 5.0),
+            ),
+            child: Text(
+              'common.close'.tr(),
+              style: const TextStyle(color: Colors.white)
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            }
           ),
-          onTap: () {
-            Navigator.pop(widget.context!);
-          },
         )
       ]
     );
