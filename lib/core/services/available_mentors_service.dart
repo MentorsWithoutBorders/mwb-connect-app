@@ -1,3 +1,4 @@
+import 'package:mwb_connect_app/core/models/lesson_request_result_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -22,10 +23,5 @@ class AvailableMentorsService {
       fields = List<Field>.from(response.map((model) => Field.fromJson(model)));
     }
     return fields;
-  }  
-
-  Future<void> sendCustomLessonRequest(User? user) async {
-    await _api.postHTTP(url: '/lesson_requests/send_custom_lesson_request', data: user?.toJson());
-  }  
-
+  }
 }

@@ -199,6 +199,7 @@
 		"send_request_previous_mentor": "Send request to previous mentor",
 		"find_new_mentor_text": "or you can search for a new mentor:",
 		"find_new_mentor": "Find new mentor",
+		"mentor_unavailable": "Unfortunately the selected mentor has already been contacted by a different student. Please select another mentor.",
 		"finding_available_mentor": "Finding an available mentor for the next lesson...",
 		"waiting_mentor": "Waiting for the mentor to approve your lesson request...",
 		"cancel_request": "Cancel request",

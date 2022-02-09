@@ -4,9 +4,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_request_result_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class EditLessonsStartTime extends StatefulWidget {
   const EditLessonsStartTime({Key? key})
@@ -138,15 +141,30 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
     });
     User? mentor = _availableMentorsProvider?.selectedMentor;
     _availableMentorsProvider?.setSelectedMentor(mentor: mentor);    
-    await _availableMentorsProvider?.sendCustomLessonRequest();
+    LessonRequestResult lessonRequestResult = await _availableMentorsProvider?.sendCustomLessonRequest() as LessonRequestResult;
     await _resetValues(context);
     _availableMentorsProvider?.mergeAvailabilities();
-    Navigator.pop(context, true);
+    if (lessonRequestResult.id != null) {
+      Navigator.pop(context, true);
+    } else {
+      Navigator.pop(context, false);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AnimatedDialog(
+            widgetInside: NotificationDialog(
+              text: 'connect_with_mentor.mentor_unavailable'.tr(), 
+              buttonText: 'common.ok'.tr(),
+              shouldReload: true
+            )
+          );
+        }
+      );      
+    }
   }
 
-  Future<bool> _resetValues(BuildContext context) async {
+  Future<void> _resetValues(BuildContext context) async {
     _availableMentorsProvider?.resetValues();
-    return true;
   }     
 
   @override

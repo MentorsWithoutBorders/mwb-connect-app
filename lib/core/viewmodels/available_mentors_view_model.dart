@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/models/lesson_request_result_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
@@ -13,11 +14,13 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
+import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
 
 class AvailableMentorsViewModel extends ChangeNotifier {
   final AvailableMentorsService _availableMentorsService = locator<AvailableMentorsService>();
+  final ConnectWithMentorService _connectWithMentorService = locator<ConnectWithMentorService>();
   final UserService _userService = locator<UserService>();
   final FieldsGoalsService _fieldsGoalsService = locator<FieldsGoalsService>();
   List<User> availableMentors = [];
@@ -59,8 +62,8 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     fieldsGoals = await _fieldsGoalsService.getFieldsGoals();
   }    
 
-  Future<void> sendCustomLessonRequest() async {
-    await _availableMentorsService.sendCustomLessonRequest(selectedMentor);
+  Future<LessonRequestResult> sendCustomLessonRequest() async {
+    return await _connectWithMentorService.sendCustomLessonRequest(selectedMentor);
   }
 
   void mergeAvailabilities() async {
