@@ -55,7 +55,7 @@ class _GoalDialogState extends State<GoalDialog> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.PACIFIC_BLUE,
+                primary: AppColors.ALLPORTS,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )

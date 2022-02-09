@@ -130,22 +130,25 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
           )
         ),
         Center(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: AppColors.BERMUDA_GRAY,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
-              ),
-              padding: const EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 5.0),
+          child: SizedBox(
+            height: 30.0,
+            child: TextButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  side: const BorderSide(color: AppColors.BERMUDA_GRAY)
+                )
+              ),       
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'common.close'.tr(),
+                style: const TextStyle(color: AppColors.BERMUDA_GRAY)
+              )
             ),
-            child: Text(
-              'common.close'.tr(),
-              style: const TextStyle(color: Colors.white)
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            }
-          ),
+          )
         )
       ]
     );

@@ -225,13 +225,13 @@ class _NextLessonState extends State<NextLesson> {
               text: thirdPart
             ),
             TextSpan(
-              text: fourthPart,
+              text: fourthPart + ' ',
               style: const TextStyle(
                 fontStyle: FontStyle.italic
               )
             ),
             TextSpan(
-              text: ' ' + 'common.your_profile'.tr(),
+              text: 'common.your_profile'.tr(),
               style: const TextStyle(
                 decoration: TextDecoration.underline,
                 fontStyle: FontStyle.italic
