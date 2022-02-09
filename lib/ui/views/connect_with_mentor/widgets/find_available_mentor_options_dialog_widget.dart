@@ -5,12 +5,15 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_request_result_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/ui/views/available_mentors/available_mentors_view.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class FindAvailableMentorOptionsDialog extends StatefulWidget {
@@ -171,10 +174,26 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
     _availableMentorsProvider?.setSelectedMentor(mentor: null);    
     _availableMentorsProvider?.setSelectedMentor(mentor: widget.mentor, subfield: subfield, availability: availability);    
     _availableMentorsProvider?.setSelectedMentor(mentor: widget.mentor);    
-    await _availableMentorsProvider?.sendCustomLessonRequest();
+    LessonRequestResult lessonRequestResult = await _availableMentorsProvider?.sendCustomLessonRequest() as LessonRequestResult;
     await _resetValues(context);
     _availableMentorsProvider?.mergeAvailabilities();
-    Navigator.pop(context, true);
+    if (lessonRequestResult.id != null) {
+      Navigator.pop(context, true);
+    } else {
+      Navigator.pop(context, false);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AnimatedDialog(
+            widgetInside: NotificationDialog(
+              text: 'connect_with_mentor.previous_mentor_unavailable'.tr(), 
+              buttonText: 'common.ok'.tr(),
+              shouldReload: true
+            )
+          );
+        }
+      );      
+    }
   }  
   
   Future<void> _goToAvailableMentors() async {

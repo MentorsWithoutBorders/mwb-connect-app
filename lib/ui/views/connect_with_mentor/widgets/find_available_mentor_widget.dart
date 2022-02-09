@@ -84,10 +84,6 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
     );
   }
 
-  void _goToProfile() {
-    Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));    
-  }
-
   Widget _showFindMentorButton() {
     Lesson? previousLesson = _connectWithMentorProvider?.previousLesson;
     return Center(

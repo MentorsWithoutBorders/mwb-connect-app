@@ -153,7 +153,7 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
         builder: (BuildContext context) {
           return AnimatedDialog(
             widgetInside: NotificationDialog(
-              text: 'connect_with_mentor.mentor_unavailable'.tr(), 
+              text: 'connect_with_mentor.selected_mentor_unavailable'.tr(), 
               buttonText: 'common.ok'.tr(),
               shouldReload: true
             )
