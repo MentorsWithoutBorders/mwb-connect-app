@@ -79,7 +79,7 @@ class _NotificationDialogState extends State<NotificationDialog> {
         ),
         onPressed: () async {
           if (widget.shouldReload == true) {
-            _reloadApp();
+            _closeOrReloadApp();
           } else {
             Navigator.of(context).pop();
           }
@@ -88,12 +88,20 @@ class _NotificationDialogState extends State<NotificationDialog> {
     );
   } 
 
-  void _reloadApp() {
-    Phoenix.rebirth(context);
+  Future<bool> _closeOrReloadApp() async {
+    if (widget.shouldReload == true) {
+      Phoenix.rebirth(context);
+    } else {
+      Navigator.of(context).pop();
+    }    
+    return true;
   }
   
   @override
   Widget build(BuildContext context) {
-    return _showNotificationDialog();
+    return WillPopScope(
+      onWillPop: _closeOrReloadApp,
+      child: _showNotificationDialog()
+    );
   }
 }
