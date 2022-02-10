@@ -11,7 +11,7 @@ class RootViewModel extends ChangeNotifier {
   bool? isMentor;
 
   Future<void> getIsMentor() async {
-    if (_storageService.userId != null && _storageService.isMentor == null) {
+    if (_storageService.userId != null) {
       User user = await _userService.getUserDetails();
       _userService.setUserStorage(user: user);
       isMentor = user.isMentor;
