@@ -183,33 +183,6 @@ class ProfileViewModel extends ChangeNotifier {
     setUserDetails(user);
     notifyListeners();
   }
-    
-  String? getPeriodUnitPlural(String unit, int number) {
-    String? unitPlural;
-    if (Utils.periodUnits.contains(unit)) {
-      unitPlural = plural(unit, number);
-    } else {
-      if (Utils.getPeriodUnitsPlural().contains(unit)) {
-        unitPlural = plural(Utils.periodUnits[Utils.getPeriodUnitsPlural().indexOf(unit)], number);
-      }
-    }
-    return unitPlural;    
-  }
-
-  String? getPeriodUnitSingular(String unit, int number) {
-    String? unitSingular;
-    if (Utils.periodUnits.contains(unit)) {
-      unitSingular = unit;
-    } else {
-      for (final String periodUnit in Utils.periodUnits) {
-        if (plural(periodUnit, number) == unit) {
-          unitSingular = periodUnit;
-          break;
-        }
-      }
-    }
-    return unitSingular;    
-  }  
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

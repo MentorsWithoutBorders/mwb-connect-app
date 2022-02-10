@@ -70,7 +70,7 @@ class User {
   LessonsAvailability? _lessonsAvailabilityFromJson(Map<String, dynamic>? json, bool isMentor) {
     LessonsAvailability? lessonsAvailability;
     if (isMentor) {
-      lessonsAvailability = LessonsAvailability(minInterval: json?['minInterval'], minIntervalUnit: json?['minIntervalUnit'], maxStudents: json?['maxStudents']);
+      lessonsAvailability = LessonsAvailability(maxStudents: json?['maxStudents']);
     }
     return lessonsAvailability;
   }
@@ -120,11 +120,8 @@ class User {
   }    
 
   Map<String, dynamic>? _lessonsAvailabilityToJson(LessonsAvailability? lessonsAvailability) {
-    if (lessonsAvailability != null && lessonsAvailability.minInterval != null 
-        && lessonsAvailability.minIntervalUnit != null && lessonsAvailability.maxStudents != null) {
+    if (lessonsAvailability != null && lessonsAvailability.maxStudents != null) {
       return {
-        'minInterval': lessonsAvailability.minInterval,
-        'minIntervalUnit': lessonsAvailability.minIntervalUnitToEng,
         'maxStudents': lessonsAvailability.maxStudents,
       };
     } else {
@@ -134,15 +131,7 @@ class User {
 }
 
 class LessonsAvailability {
-  int? minInterval;
-  String? minIntervalUnit;
   int? maxStudents;
 
-  LessonsAvailability({this.minInterval, this.minIntervalUnit, this.maxStudents}) {
-    if (minIntervalUnit != null) {
-      minIntervalUnit = Utils.translatePeriodUnitFromEng(minIntervalUnit as String);
-    }
-  }
-
-  String get minIntervalUnitToEng => Utils.translatePeriodUnitToEng(minIntervalUnit as String);  
+  LessonsAvailability({this.maxStudents}) {}
 }

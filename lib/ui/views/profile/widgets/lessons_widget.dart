@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
@@ -21,6 +20,18 @@ class _LessonsState extends State<Lessons> {
   ProfileViewModel? _profileProvider;
   LessonsAvailability? _lessonsAvailability;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+  }
+  
+  void _afterLayout(_) {
+    setState(() {
+      _lessonsAvailability = _profileProvider?.user?.lessonsAvailability;
+    });
+  }     
+
   Widget _showLessons() {
     return Wrap(
       children: [
@@ -29,8 +40,6 @@ class _LessonsState extends State<Lessons> {
           padding: const EdgeInsets.only(left: 3.0),
           child: Wrap(
             children: [
-              Label(text: 'profile.min_interval_lessons'.tr()),
-              _showMinInterval(),
               Label(text: 'profile.max_students_lessons'.tr()),
               _showMaxStudents()
             ]
@@ -52,43 +61,6 @@ class _LessonsState extends State<Lessons> {
       ),
     );
   }  
-
-  Widget _showMinInterval() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 7.0),
-      child: Row(
-        children: [
-          Container(
-            width: 50.0,
-            height: 45.0,
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Dropdown(
-              key: const Key(AppKeys.minIntervalDropdown),
-              dropdownMenuItemList: _buildNumbers(),
-              onTapped: _unfocus,
-              onChanged: _changeMinInterval,
-              value: _lessonsAvailability?.minInterval
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0)
-          ),
-          Container(
-            width: 100.0,
-            height: 45.0,
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Dropdown(
-              key: const Key(AppKeys.minIntervalUnitDropdown),
-              dropdownMenuItemList: _buildMinIntervalUnitsDropdown(),
-              onTapped: _unfocus,
-              onChanged: _changeMinIntervalUnit,
-              value: _profileProvider?.getPeriodUnitPlural(_lessonsAvailability?.minIntervalUnit as String, _lessonsAvailability?.minInterval as int)
-            ),
-          ),
-        ]
-      ),
-    );
-  }
 
   Widget _showMaxStudents() {
     return Row(
@@ -120,39 +92,6 @@ class _LessonsState extends State<Lessons> {
     return items;
   }
   
-  List<DropdownMenuItem<String>> _buildMinIntervalUnitsDropdown() {
-    final List<DropdownMenuItem<String>> items = [];
-    for (final String periodUnit in Utils.periodUnits) {
-      items.add(DropdownMenuItem(
-        value: _profileProvider?.getPeriodUnitPlural(periodUnit, _lessonsAvailability?.minInterval as int),
-        child: Text(_profileProvider?.getPeriodUnitPlural(periodUnit, _lessonsAvailability?.minInterval as int) as String))
-      );
-    }
-    return items;
-  }
-  
-  void _changeMinInterval(int? number) {
-    _setSelectedMinInterval(number!);
-    _updateLessonsAvailability();
-  }
-  
-  void _setSelectedMinInterval(int number) {
-    setState(() {
-      _lessonsAvailability?.minInterval = number;
-    });
-  }
-  
-  void _changeMinIntervalUnit(String? unit) {
-    _setSelectedMinIntervalUnit(unit!);
-    _updateLessonsAvailability();
-  }
-  
-  void _setSelectedMinIntervalUnit(String unit) {
-    setState(() {
-      _lessonsAvailability?.minIntervalUnit = _profileProvider?.getPeriodUnitPlural(unit, _lessonsAvailability?.minInterval as int);
-    });
-  }
-
   void _changeMaxStudents(int? number) {
     _setSelectedMaxStudents(number!);
     _updateLessonsAvailability();
@@ -167,22 +106,14 @@ class _LessonsState extends State<Lessons> {
   void _unfocus() {
     _profileProvider?.shouldUnfocus = true;
   }
-  
-  void _setLessonsAvailability() {
-    setState(() {
-      _lessonsAvailability = _profileProvider?.user?.lessonsAvailability;
-    });
-  }
 
   void _updateLessonsAvailability() {
-    _lessonsAvailability?.minIntervalUnit = _profileProvider?.getPeriodUnitSingular(_lessonsAvailability?.minIntervalUnit as String, _lessonsAvailability?.minInterval as int);
     _profileProvider?.updateLessonsAvailability(_lessonsAvailability!);
   }
 
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
-    _setLessonsAvailability();
 
     return _showLessons();
   }

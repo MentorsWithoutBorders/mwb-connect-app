@@ -9,15 +9,6 @@ class Utils {
   static final LocalStorageService _storageService = locator<LocalStorageService>();  
 
   static List<String> get daysOfWeek => 'common.days_of_week'.tr().split(', ');
-  static List<String> get periodUnits => 'common.period_units'.tr().split(', ');
-  
-  static List<String> getPeriodUnitsPlural() {
-    List<String> periodUnitsPlural = [];
-    for (final String periodUnit in periodUnits) {
-      periodUnitsPlural.add(plural(periodUnit, 2));
-    }
-    return periodUnitsPlural;
-  }    
 
   static String translateDayOfWeekToEng(String dayOfWeek) {
     return AppConstants.daysOfWeekEng[daysOfWeek.indexOf(dayOfWeek)];
@@ -26,14 +17,6 @@ class Utils {
   static String translateDayOfWeekFromEng(String dayOfWeek) {
     return daysOfWeek[AppConstants.daysOfWeekEng.indexOf(dayOfWeek)];
   }
-
-  static String translatePeriodUnitToEng(String periodUnit) {
-    return AppConstants.periodUnitsEng[periodUnits.indexOf(periodUnit)];
-  }
-
-  static String translatePeriodUnitFromEng(String periodUnit) {
-    return periodUnits[AppConstants.periodUnitsEng.indexOf(periodUnit)];
-  }   
 
   static List<int> convertTime12to24(String time12h) {
     String time = time12h.replaceAll(RegExp(r'[^0-9:]'), '');
