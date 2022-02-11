@@ -4,10 +4,11 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 
 class AnimatedDialog extends StatefulWidget {
-  const AnimatedDialog({Key? key, @required this.widgetInside})
+  const AnimatedDialog({Key? key, @required this.widgetInside, this.marginBottom})
     : super(key: key); 
 
   final Widget? widgetInside;
+  final double? marginBottom;
 
   @override
   State<StatefulWidget> createState() => AnimatedDialogState();
@@ -44,7 +45,7 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
     KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();   
     keyboardVisibilityController.onChange.listen((bool visible) {
       if (visible && mounted) {
-        double marginBottom = 120.0;
+        double marginBottom = widget.marginBottom != null ? widget.marginBottom as double : 120.0;
         final double screenHeight = MediaQuery.of(context).size.height;
         // if (_containerHeight / 2 + 220 > screenHeight / 2) {
         //   marginBottom += (_containerHeight / 2 + 220 - screenHeight / 2) + 120;

@@ -9,7 +9,6 @@ import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
-import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
@@ -25,7 +24,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   LessonRequestModel? lessonRequest;
   Lesson? nextLesson;
   Lesson? previousLesson;
-  List<Skill>? mentorSkills;
   StudentCertificate? studentCertificate;
 
   Future<void> getGoal() async {
@@ -70,31 +68,10 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     previousLesson = await _connectWithMentorService.getPreviousLesson();
   }  
   
-  Future<void> getMentorSkills() async {
-    await getPreviousLesson();
-    mentorSkills = await _connectWithMentorService.getMentorSkills(previousLesson?.mentor?.id, previousLesson?.subfield?.id);
-  }
-
   Future<void> getCertificateSent() async {
     studentCertificate = await _connectWithMentorService.getCertificateSent();
   }  
   
-  Future<void> addSkills(List<bool> selectedSkills) async {
-    List<String> skillIds = [];
-    for (int i = 0; i < selectedSkills.length; i++) {
-      if (selectedSkills[i] == true) {
-        skillIds.add(mentorSkills?[i].id as String);
-      }
-    }
-    if (previousLesson != null && previousLesson?.subfield != null) {
-      await _connectWithMentorService.addSkills(skillIds, previousLesson?.subfield?.id);
-    }
-  }
-
-  Future<void> setMentorPresence(bool isMentorPresent) async {
-    await _connectWithMentorService.setMentorPresence(previousLesson?.id, isMentorPresent);
-  }
-
   bool get shouldStopLessons => nextLesson != null && nextLesson?.shouldStop == true;
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;

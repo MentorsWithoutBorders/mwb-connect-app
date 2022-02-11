@@ -10,7 +10,6 @@ import 'package:mwb_connect_app/core/services/logger_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/models/fcm_token_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/learned_today_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/taught_today_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
@@ -151,20 +150,11 @@ class PushNotificationsService {
         context: NavigationService.instance.getCurrentContext() as BuildContext,
         builder: (_) => Center(
           child: AnimatedDialog(
-            widgetInside: TaughtTodayDialog()
+            widgetInside: TaughtTodayDialog(),
+            marginBottom: 200.0,
           )
         )
       );
-    } else {
-      _loggerService.addLogEntry('showing PN after lesson for student');
-      showDialog(
-        context: NavigationService.instance.getCurrentContext() as BuildContext,
-        builder: (_) => Center(
-          child: AnimatedDialog(
-            widgetInside: LearnedTodayDialog()
-          ),
-        ),
-      );      
     }
   }
   

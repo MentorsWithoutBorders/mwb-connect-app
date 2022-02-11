@@ -13,11 +13,10 @@ class Lesson {
   bool? isRecurrent;
   bool? isRecurrenceDateSelected;
   DateTime? endRecurrenceDateTime;  
-  bool? isMentorPresent;
   bool? isCanceled;
   bool shouldStop = false;
 
-  Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.isRecurrent, this.isRecurrenceDateSelected, this.endRecurrenceDateTime, this.isMentorPresent, this.isCanceled, this.shouldStop = false});
+  Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.isRecurrent, this.isRecurrenceDateSelected, this.endRecurrenceDateTime, this.isCanceled, this.shouldStop = false});
 
   Lesson.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
@@ -30,7 +29,6 @@ class Lesson {
     isRecurrent = json['isRecurrent'];
     isRecurrenceDateSelected = json['isRecurrenceDateSelected'];
     endRecurrenceDateTime = json['endRecurrenceDateTime'] != null ? dateFormat.parseUTC(json['endRecurrenceDateTime']).toLocal() : null;
-    isMentorPresent = json['isMentorPresent'];
     isCanceled = json['isCanceled'];
     shouldStop = json['shouldStop'] ?? false;
   }
@@ -69,7 +67,6 @@ class Lesson {
       'isRecurrent': isRecurrent,
       'isRecurrenceDateSelected': isRecurrent != null && isRecurrent == true ? isRecurrenceDateSelected : null,
       'endRecurrenceDateTime': isRecurrent != null && isRecurrent == true && endRecurrenceDateTime != null ? dateFormat.format(endRecurrenceDateTime!.toUtc()) : null,
-      'isMentorPresent': isMentorPresent,
       'isCanceled': isCanceled
     };
   }

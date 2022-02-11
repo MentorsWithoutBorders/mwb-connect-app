@@ -210,13 +210,7 @@
 		"scheduled_recurring_lesson": "{} has scheduled a recurring {} lesson with you every {} until {}. The next lesson will be on {} at {} {} and you’ll use the following {} link:",
 		"cancel_lesson": "Cancel lesson",
 		"cancel_lesson_text": "Are you sure you don't want attend the {} lesson with {} on {}, {} at {} {}?",
-    "cancel_lesson_recurrence_text": "Are you sure you don't want to attend any of the lessons in this recurrence?",
-		"learned_today": "What I learned today",
-		"learned_today_text": "In order to connect you with an appropriate mentor {}, please select from the following list what you have learned from today’s mentor:",
-    "learned_today_next_lesson": "for the next lesson",
-    "learned_today_recurrence": "after you complete the current lesson recurrence",
-    "learned_today_sent": "The lesson info has been added successfully",
-		"mentor_not_present": "The mentor didn't show up"
+    "cancel_lesson_recurrence_text": "Are you sure you don't want to attend any of the lessons in this recurrence?"
 	},
   "available_mentors": {
     "title": "Find mentor",
@@ -277,12 +271,12 @@
     "lesson_guide_tutorials_text": "During the lesson, you can use one or more of the following tutorials:",
     "recommendations": "recommendations",
 		"taught_today": "What I taught today",
-		"taught_today_text": "In order for us to connect your {} from today with an appropriate mentor {}, please select from the following list what you have taught {}{}:",
+		"taught_today_text": "Kindly add a few quick notes regarding today's lesson that might be useful for yourself or for the future mentors of today's {}:",
     "taught_today_next_lesson": "for the next lesson",
     "taught_today_recurrence": "after you complete the current lesson recurrence",
-    "taught_today_sent": "The lesson information has been sent successfully",
-    "throughout_recurrence": "throughout the entire lesson recurrence",
-    "quick_notes_placeholder": "Please also add some quick notes..."
+    "taught_today_sent": "The lesson notes have been sent successfully",
+    "quick_notes_placeholder": "Add your notes here...",
+    "throughout_recurrence": "throughout the entire lesson recurrence"
 	},
 	"goals": {
 		"my_goals": "My goals",

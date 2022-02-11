@@ -10,7 +10,6 @@ import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
-import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
@@ -28,7 +27,6 @@ class LessonRequestViewModel extends ChangeNotifier {
   Lesson? nextLesson;
   Lesson? previousLesson;
   LessonRecurrenceModel lessonRecurrence = LessonRecurrenceModel();
-  List<Skill>? skills;
   List<LessonNote>? lessonsNotes;
   List<GuideTutorial>? guideTutorials;
   List<GuideRecommendation>? guideRecommendations;
@@ -154,23 +152,6 @@ class LessonRequestViewModel extends ChangeNotifier {
       await _lessonRequestService.addStudentsLessonNotes(previousLesson?.id, lessonNote);
     }
   }    
-
-  Future<void> getSkills() async {
-    await getPreviousLesson();
-    skills = await _lessonRequestService.getSkills(previousLesson?.subfield?.id);
-  }
-  
-  Future<void> addStudentSkills(List<bool> selectedSkills) async {
-    List<String> skillIds = [];
-    for (int i = 0; i < selectedSkills.length; i++) {
-      if (selectedSkills[i] == true) {
-        skillIds.add(skills?[i].id as String);
-      }
-    }
-    if (previousLesson != null && previousLesson?.id != null) {
-      await _lessonRequestService.addStudentSkills(previousLesson?.id, skillIds);
-    }
-  }
 
   bool get isLessonRecurrent => nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int >= 7;
 

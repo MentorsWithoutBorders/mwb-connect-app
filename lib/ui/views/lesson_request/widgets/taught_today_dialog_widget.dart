@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
-import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class TaughtTodayDialog extends StatefulWidget {
@@ -19,33 +16,8 @@ class TaughtTodayDialog extends StatefulWidget {
 
 class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
   LessonRequestViewModel? _lessonRequestProvider;  
-  final ScrollController _scrollController = ScrollController();  
-  final GlobalKey _skillsListKey = GlobalKey();
-  int _skillsNumber = 0;
-  List<bool> _selectedSkills = [];
-  double _skillsHeight = 0.0;
-  double _scrollThumbHeight = 20.0;
   String _lessonNote = '';
-  bool _isKeyboardOpen = false;
-  bool _areSkillsRetrieved = false;
   bool _isSubmitting = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initKeyboard();
-  }
-
-  void _initKeyboard() {
-    KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();   
-    keyboardVisibilityController.onChange.listen((bool visible) {
-      if (visible) {
-        _isKeyboardOpen = true;
-      } else {
-        _isKeyboardOpen = false;
-      }
-    });    
-  } 
 
   Widget _showTaughtTodayDialog() {
     return Container(
@@ -55,7 +27,6 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
         children: <Widget>[
           _showTitle(),
           _showText(),
-          _showSkills(),
           _showLessonNoteInput(),
           _showSubmitButton()
         ]
@@ -80,25 +51,16 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
 
   Widget _showText() {
     int studentsNumber = 0;
-    bool isRecurrent = false;
-    String today = '';
     if (_lessonRequestProvider?.previousLesson != null) {
       if (_lessonRequestProvider?.previousLesson?.students != null) {
         studentsNumber = _lessonRequestProvider?.previousLesson?.students?.length as int;
       }
-      if (_lessonRequestProvider?.previousLesson?.isRecurrent != null) {
-        isRecurrent = _lessonRequestProvider?.previousLesson?.isRecurrent as bool;
-      }
     }
     String studentPlural = plural('student', studentsNumber);
-    String pronoun = studentsNumber == 1 ? 'common.him_her'.tr() : 'common.them'.tr();
-    String recurrence = isRecurrent ? 'lesson_request.taught_today_recurrence'.tr() : 'lesson_request.taught_today_next_lesson'.tr();
-    today = isRecurrent ? ' ' + 'common.today'.tr() : '';
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
-        'lesson_request.taught_today_text'.tr(args: [studentPlural, recurrence, pronoun, today]),
+        'lesson_request.taught_today_text'.tr(args: [studentPlural]),
         textAlign: TextAlign.justify,
         style: const TextStyle(
           fontSize: 12.0,
@@ -109,144 +71,9 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     );
   }
 
-  Widget _showSkills() {
-    List<Skill>? skills = _lessonRequestProvider?.skills != null ? _lessonRequestProvider?.skills : [];
-    _skillsNumber = skills?.length as int;
-    _initSkillCheckBoxes(skills!);
-    List<Widget> skillWidgets = [];
-    for (int i = 0; i < _skillsNumber; i++) {
-      Widget skillWidget = Row(
-        children: <Widget>[
-          SizedBox(
-            width: 40.0,
-            height: 35.0,
-            child: Checkbox(
-              activeColor: AppColors.TANGO,
-              value: _selectedSkills[i],
-              onChanged: (value) {
-                _setSelectedSkills(i);
-              },
-            ),
-          ),
-          Expanded(
-            child: InkWell(
-              child: Text(
-                skills[i].name as String,
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: _selectedSkills[i] ? Colors.black : AppColors.DOVE_GRAY
-                )
-              ),
-              onTap: () {
-                _setSelectedSkills(i);
-              }
-            ),
-          )
-        ]
-      );
-      skillWidgets.add(skillWidget);
-    }
-
-    if (_areSkillsRetrieved) {
-      WidgetsBinding.instance?.addPostFrameCallback(_afterSkillsLoaded);
-      return Stack(
-        children: [
-          Offstage(
-            offstage: true,
-            child: _showSkillsListView(skillWidgets, _skillsListKey)
-          ),
-          Container(
-            height: _skillsHeight,
-            padding: const EdgeInsets.only(left: 50.0, bottom: 20.0),
-            child: DraggableScrollbar(
-              controller: _scrollController,
-              child: _showSkillsListView(skillWidgets, null),
-              heightScrollThumb: _scrollThumbHeight,
-              backgroundColor: AppColors.SILVER,
-              scrollThumbBuilder: (
-                Color backgroundColor,
-                Animation<double> thumbAnimation,
-                Animation<double> labelAnimation,
-                double height, {
-                Text? labelText,
-                BoxConstraints? labelConstraints
-              }) {
-                return FadeTransition(
-                  opacity: thumbAnimation,
-                  child: Container(
-                    height: height,
-                    width: 5.0,
-                    color: backgroundColor,
-                  )
-                );
-              }        
-            )
-          ),
-        ],
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 50.0),
-        child: Loader(color: AppColors.DOVE_GRAY)
-      );
-    }
-  }
-
-  BoxScrollView _showSkillsListView(List<Widget>? skillWidgets, GlobalKey? key) {
-    return ListView(
-      key: key,
-      shrinkWrap: key == null ? false : true,
-      controller: key == null ? _scrollController : null,
-      children: skillWidgets!
-    );    
-  }
-
-  void _afterSkillsLoaded(_) {
-    final RenderBox skillsBox = _skillsListKey.currentContext?.findRenderObject() as RenderBox;
-    _calculateSkillsBoxParams(skillsBox.size.height);
-  }
-
-  void _calculateSkillsBoxParams(double skillsBoxHeight) {
-    double scrollThumbHeight = 20.0;
-    if (!_isKeyboardOpen) {
-      if (skillsBoxHeight > 170) {
-        scrollThumbHeight = 170 / (_skillsNumber / 4);
-        _setSkillsBoxParams(170, scrollThumbHeight);
-      } else {
-        _setSkillsBoxParams(skillsBoxHeight + 20, 0);
-      }
-    } else {
-      if (skillsBoxHeight > 70) {
-        scrollThumbHeight = 70 / (_skillsNumber / 2);
-        _setSkillsBoxParams(70, scrollThumbHeight);
-      } else {
-        _setSkillsBoxParams(skillsBoxHeight + 20, 0);
-      }
-    }   
-  }
-
-  void _setSkillsBoxParams(double skillsHeight, double scrollThumbHeight) {
-    setState(() {
-      _skillsHeight = skillsHeight;
-      _scrollThumbHeight = scrollThumbHeight;
-    });     
-  }    
-
-  void _initSkillCheckBoxes(List<Skill> skills) {
-    for (int i = 0; i < skills.length; i++) {
-      _selectedSkills.add(false);
-    }
-  }
-
-  void _setSelectedSkills(int index) {
-    setState(() {
-      _selectedSkills[index] = !_selectedSkills[index];
-    });
-  }
-
   Widget _showLessonNoteInput() {
     return Container(
-      height: 80.0,
+      height: 120.0,
       margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 20.0),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.SILVER),
@@ -305,7 +132,6 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
 
   Future<void> _submitTaughtToday() async {
     _setIsSubmitting(true);
-    await _lessonRequestProvider?.addStudentSkills(_selectedSkills);
     await _lessonRequestProvider?.addStudentsLessonNotes(_lessonNote);
     _showToast();
   }
@@ -328,53 +154,30 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
     });  
   }    
   
-  Future<void> _getSkills() async {
-    if (!_areSkillsRetrieved) {
-      await _lessonRequestProvider?.getSkills();
-      _areSkillsRetrieved = true;
-    }
-  } 
-  
   void _unfocus() {
     FocusScope.of(context).unfocus();
   }
   
   Future<bool> _onWillPop() async {
-    if (!checkEmptySkills() || _lessonNote.isNotEmpty) {
+    if (_lessonNote.isNotEmpty) {
       await _submitTaughtToday();
     }
     return true;
-  }
-
-  bool checkEmptySkills() {
-    bool isEmpty = true;
-    for (bool selectedSkill in _selectedSkills) {
-      if (selectedSkill == true) {
-        isEmpty = false;
-        break;
-      }
-    }
-    return isEmpty;
   }
   
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
 
-    return FutureBuilder<void>(
-      future: _getSkills(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return WillPopScope(
-          onWillPop: _onWillPop,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              _unfocus();
-            },
-            child: _showTaughtTodayDialog()
-          ),
-        );
-      }
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          _unfocus();
+        },
+        child: _showTaughtTodayDialog()
+      ),
     );
   }
 }
