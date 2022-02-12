@@ -128,7 +128,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),          
           prefixIcon: Container(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, bottom: 3.0),
             child: const Icon(
               Icons.person,
               color: Colors.white,
@@ -206,9 +206,9 @@ class _LoginSignupViewState extends State<LoginSignupView> {
           fontSize: 15.0
         ),
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),          
+          contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
           prefixIcon: Container(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, bottom: 3.0),
             child: const Icon(
               Icons.mail,
               color: Colors.white,
@@ -288,8 +288,8 @@ class _LoginSignupViewState extends State<LoginSignupView> {
         ),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0), 
-          prefixIcon: const Padding(
-            padding: EdgeInsets.only(left: 10.0),
+          prefixIcon: Container(
+            padding: EdgeInsets.only(left: 10.0, bottom: 3.0),
             child: Icon(
               Icons.lock,
               color: Colors.white,

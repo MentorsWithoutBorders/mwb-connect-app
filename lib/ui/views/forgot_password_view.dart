@@ -130,7 +130,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),          
           prefixIcon: Container(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, bottom: 3.0),
             child: const Icon(
               Icons.mail,
               color: Colors.white,
