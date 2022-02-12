@@ -88,7 +88,34 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
           newPageProgressIndicatorBuilder: (_) => Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: Loader(),
-          )
+          ),
+          noItemsFoundIndicatorBuilder: (_) => _showNoItemsFoundIndicator()
+        )
+      )
+    );
+  }
+
+  Widget _showNoItemsFoundIndicator() {
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.7,
+        padding: const EdgeInsets.only(top: 30.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'available_mentors.no_mentors_found'.tr(),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                height: 1.4
+              )
+            )
+          ]
         )
       )
     );

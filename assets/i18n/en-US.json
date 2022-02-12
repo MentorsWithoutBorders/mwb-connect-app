@@ -230,7 +230,8 @@
     "add_skills": "Add skills {}",
     "apply_filters": "Apply filters",
     "lessons_start_time": "Lessons start time",
-    "preferred_start_time": "Please select your preferred start time for the lessons on {}s (each lesson will be 1 / 1.5 hours long):"
+    "preferred_start_time": "Please select your preferred start time for the lessons on {}s (each lesson will be 1 / 1.5 hours long):",
+    "no_mentors_found": "No available mentors found for the specified criteria"
   },
 	"lesson_request": {
 		"title": "Lesson request",
