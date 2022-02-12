@@ -76,7 +76,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
 
-  bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest?.id != null && lessonRequest?.isCanceled != true;
+  bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest?.id != null && lessonRequest?.isRejected != true && lessonRequest?.isCanceled != true;
 
   String get fieldName => _storageService.fieldName != null ? (_storageService.fieldName as String).toLowerCase() : 'common.remote'.tr();
 
