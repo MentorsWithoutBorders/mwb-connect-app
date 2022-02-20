@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/models/lesson_request_result_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -13,6 +14,7 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/models/field_goal_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_request_result_model.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
@@ -43,7 +45,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     _removeOptionAllFilterField();
     User filter = User(
       field: _removeOptionAllFilterField(),
-      availabilities: filterAvailabilities
+      availabilities: getAdjustedFilterAvailabilities(filterAvailabilities)
     );
     newAvailableMentors = await _availableMentorsService.getAvailableMentors(filter, pageNumber);
     newAvailableMentors = _splitMentorsAvailabilities(newAvailableMentors);
@@ -65,6 +67,27 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   Future<LessonRequestResult> sendCustomLessonRequest() async {
     return await _connectWithMentorService.sendCustomLessonRequest(selectedMentor);
   }
+
+  List<Availability> getAdjustedFilterAvailabilities(List<Availability> filterAvailabilities) {
+    List<Availability> adjustedFilterAvailabilities = [];
+    for (Availability availability in filterAvailabilities) {
+      DateFormat timeFormat = DateFormat('ha');    
+      DateTime date = Utils.resetTime(DateTime.now());
+      List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
+      DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0]);
+      if (availabilityTimeFrom[0] > 0) {
+        timeFrom = timeFrom.subtract(Duration(hours: 1));
+      }
+      adjustedFilterAvailabilities.add(Availability(
+        dayOfWeek: availability.dayOfWeek,
+        time: Time(
+          from: timeFormat.format(timeFrom).toLowerCase(),
+          to: availability.time?.to
+        )
+      ));
+    }
+    return adjustedFilterAvailabilities;
+  } 
 
   void mergeAvailabilities() async {
     User student = await _userService.getUserDetails();

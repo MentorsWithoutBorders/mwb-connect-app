@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/core/models/organization_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
