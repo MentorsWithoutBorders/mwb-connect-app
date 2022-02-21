@@ -70,8 +70,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
       child: RichText(
         text: TextSpan(
           style: const TextStyle(
-            color: AppColors.DOVE_GRAY,
-            height: 1.4
+            color: AppColors.DOVE_GRAY
           ),
           children: <TextSpan>[
             TextSpan(
