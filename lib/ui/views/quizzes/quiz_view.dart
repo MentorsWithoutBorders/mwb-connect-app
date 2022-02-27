@@ -49,21 +49,19 @@ class _QuizState extends State<QuizView> {
   }    
 
   Widget _showQuiz() {
-    final bool isMentor = _quizzesProvider?.isMentor ?? false;
     final int index = _quizzesProvider?.quizNumberIndex ?? 1;
     final int quizzesCount = _quizzesProvider?.quizzes.length ?? 1;
-    final String type = isMentor ? 'mentors' : 'students';
-    final String quizTutorialTitle = 'quiz_tutorials.$type.quiz_tutorial$_quizNumber.title'.tr();
-    final String quizTutorialText = 'quiz_tutorials.$type.quiz_tutorial$_quizNumber.text'.tr();
-    final String question = 'quizzes.$type.quiz$_quizNumber.question'.tr();
+    final String quizTutorialTitle = 'quiz_tutorials.quiz_tutorial$_quizNumber.title'.tr();
+    final String quizTutorialText = 'quiz_tutorials.quiz_tutorial$_quizNumber.text'.tr();
+    final String question = 'quizzes.quiz$_quizNumber.question'.tr();
     final List<String> options = [];
     for (int i = 1; i <= _maxOptions; i++) {
-      final String option = 'quizzes.$type.quiz$_quizNumber.option$i'.tr();
+      final String option = 'quizzes.quiz$_quizNumber.option$i'.tr();
       if (!option.contains('quizzes')) {
         options.add(option);
       }
     }
-    _answer = 'quizzes.$type.quiz$_quizNumber.answer'.tr();
+    _answer = 'quizzes.quiz$_quizNumber.answer'.tr();
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,

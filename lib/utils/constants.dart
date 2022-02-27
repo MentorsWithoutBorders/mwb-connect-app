@@ -9,8 +9,8 @@ class AppConstants {
   ];
   static const Map<String, List<String>> tutorials = {
     'mental_process_goal_steps': ['main', 'ideas', 'energy', 'confidence', 'extra_benefits'],
-    'relaxation_method': ['main', 'how_to_relax', 'why_count_down', 'interruptions', 'fast_slow_relaxation', 'when_to_relax'],
-    'super_focus_method': ['main', 'in_your_head']
+    'relaxation_method': ['main', 'how_to_relax'],
+    'super_focus_method': ['main', 'joyful_productivity', 'extra_energy']
   };
   static const bool notificationsEnabled = true;
   static const String notificationsTime = '21:00';
