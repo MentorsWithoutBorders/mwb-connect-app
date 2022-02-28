@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
@@ -29,6 +30,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   List<User> newAvailableMentors = [];
   List<FieldGoal> fieldsGoals = [];
   List<Field> fields = [];
+  Map<String, String> fieldIconFilePaths = {};
   List<Availability> filterAvailabilities = [];
   Field filterField = Field();
   User? selectedMentor;
@@ -57,6 +59,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   
   Future<void> getFields() async {
     fields = await _availableMentorsService.getFields();
+    await _getFieldIconFilePaths();
     setOptionAllFilterField();
   }
 
@@ -66,6 +69,22 @@ class AvailableMentorsViewModel extends ChangeNotifier {
 
   Future<LessonRequestResult> sendCustomLessonRequest() async {
     return await _connectWithMentorService.sendCustomLessonRequest(selectedMentor);
+  }
+
+  Future<void> _getFieldIconFilePaths() async {
+    for (Field field in fields) {
+      String fieldName = field.name?.toLowerCase().replaceAll(' ', '-') as String;
+      String filePath = '';
+      try {
+        final String fieldIconFile = 'assets/images/fields/' + fieldName + '.png';
+        await rootBundle.load(fieldIconFile);
+        filePath = fieldIconFile;
+      } catch(_) {
+        final Reference ref = FirebaseStorage.instance.ref().child('images').child(fieldName + '.png');
+        filePath = await ref.getDownloadURL();
+      }      
+      fieldIconFilePaths.putIfAbsent(field.name as String, () => filePath);
+    }
   }
 
   List<Availability> getAdjustedFilterAvailabilities(List<Availability> filterAvailabilities) {

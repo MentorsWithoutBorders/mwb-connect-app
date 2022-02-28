@@ -16,7 +16,7 @@ import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/next_lesson
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_stopped_widget.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_disabled.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_disabled_widget.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';

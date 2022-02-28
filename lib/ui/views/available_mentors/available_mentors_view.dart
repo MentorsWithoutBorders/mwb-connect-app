@@ -42,11 +42,14 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       if (_availableMentorsProvider?.fields.length == 0) {
-        await Future.wait([
-          _availableMentorsProvider!.getAvailableMentors(pageNumber: _pageNumber),
-          _availableMentorsProvider!.getFields(),
-          _availableMentorsProvider!.getFieldsGoals()
-        ]);
+        if (_pageNumber == 1) {
+          await Future.wait([
+            _availableMentorsProvider!.getAvailableMentors(pageNumber: _pageNumber),
+            _availableMentorsProvider!.getFieldsGoals()
+          ]);
+        } else {
+          await _availableMentorsProvider!.getAvailableMentors(pageNumber: _pageNumber);
+        }
       } else {
         await _availableMentorsProvider?.getAvailableMentors(pageNumber: _pageNumber);
       }
@@ -138,46 +141,38 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
     };
   }  
 
-  Future<bool> _onWillPop(BuildContext context) async {
-    _availableMentorsProvider?.resetValues();
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
 
-    return WillPopScope(
-      onWillPop: () => _onWillPop(context),
-      child: Stack(
-        children: <Widget>[
-          const BackgroundGradient(),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              title: _showTitle(),
-              backgroundColor: Colors.transparent,          
-              elevation: 0.0,
-              actions: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0, right: 20.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      _goToFilters();
-                    },
-                    child: Icon(
-                      Icons.tune,
-                      size: 26.0
-                    )
+    return Stack(
+      children: <Widget>[
+        const BackgroundGradient(),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: _showTitle(),
+            backgroundColor: Colors.transparent,          
+            elevation: 0.0,
+            actions: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 10.0, right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    _goToFilters();
+                  },
+                  child: Icon(
+                    Icons.tune,
+                    size: 26.0
                   )
                 )
-              ]
-            ),
-            extendBodyBehindAppBar: true,
-            body: _showAvailableMentors()
-          )
-        ],
-      )
+              )
+            ]
+          ),
+          extendBodyBehindAppBar: true,
+          body: _showAvailableMentors()
+        )
+      ],
     );
   }
 }
