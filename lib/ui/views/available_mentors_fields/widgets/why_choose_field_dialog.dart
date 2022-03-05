@@ -110,7 +110,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 20.0),
+                    padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
                     child: HtmlWidget(fieldDescription)
                   ),
                   _showExtractedFrom()
