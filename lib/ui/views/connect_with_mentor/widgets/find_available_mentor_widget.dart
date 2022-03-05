@@ -135,6 +135,8 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
     ).then((shouldReload) {
       if (shouldReload == true) {
         widget.shouldReloadCallback!();
+      } else if (shouldReload == false) {
+        _goToAvailableMentorsFields();
       }
     });     
   }   

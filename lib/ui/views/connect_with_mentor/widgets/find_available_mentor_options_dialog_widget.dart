@@ -11,7 +11,6 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
-import 'package:mwb_connect_app/ui/views/available_mentors_fields/available_mentors_fields_view.dart';
 import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
@@ -126,8 +125,7 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
               )
             ),
             onPressed: () async {
-              await _goToAvailableMentorsFields();
-              Navigator.pop(context);
+              Navigator.pop(context, false);
             },
             child: Text('connect_with_mentor.find_new_mentor'.tr(), style: const TextStyle(color: Colors.white))
           )
@@ -195,13 +193,6 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
       );      
     }
   }  
-  
-  Future<void> _goToAvailableMentorsFields() async {
-    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableMentorsFieldsView(shouldReloadCallback: widget.shouldReloadCallback)));
-    if (shouldReload == true) {
-      widget.shouldReloadCallback!();
-    }
-  }
 
   Future<bool> _resetValues(BuildContext context) async {
     _availableMentorsProvider?.resetValues();
