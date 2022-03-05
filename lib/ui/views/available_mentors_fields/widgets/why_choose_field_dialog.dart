@@ -204,16 +204,18 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
           'connect_with_mentor.find_mentor'.tr(),
           style: const TextStyle(color: Colors.white)
         ),
-        onPressed: () {
-          _setField();
+        onPressed: () async {
+          await _setField();
           Navigator.pop(context, true);
         }
       )
     );
   }  
 
-  void _setField() {
+  Future<void> _setField() async {
     _availableMentorsProvider?.setField(widget.field as Field);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    _availableMentorsProvider?.addSubfield();    
   }
 
   @override

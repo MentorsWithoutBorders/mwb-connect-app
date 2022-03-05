@@ -128,40 +128,48 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
       _pageNumber = 1;
       _pagingController.refresh();    
     };
+  }
+  
+  Future<bool> _onWillPop(BuildContext context) async {
+    _availableMentorsProvider?.resetValues();
+    return true;
   }  
 
   @override
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
 
-    return Stack(
-      children: <Widget>[
-        const BackgroundGradient(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: _showTitle(),
-            backgroundColor: Colors.transparent,          
-            elevation: 0.0,
-            actions: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 10.0, right: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    _goToFilters();
-                  },
-                  child: Icon(
-                    Icons.tune,
-                    size: 26.0
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Stack(
+        children: <Widget>[
+          const BackgroundGradient(),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: _showTitle(),
+              backgroundColor: Colors.transparent,          
+              elevation: 0.0,
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _goToFilters();
+                    },
+                    child: Icon(
+                      Icons.tune,
+                      size: 26.0
+                    )
                   )
                 )
-              )
-            ]
-          ),
-          extendBodyBehindAppBar: true,
-          body: _showAvailableMentors()
-        )
-      ],
+              ]
+            ),
+            extendBodyBehindAppBar: true,
+            body: _showAvailableMentors()
+          )
+        ],
+      ),
     );
   }
 }

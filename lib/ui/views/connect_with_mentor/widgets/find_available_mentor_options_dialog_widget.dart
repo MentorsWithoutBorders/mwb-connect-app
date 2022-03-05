@@ -178,7 +178,7 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
     if (lessonRequestResult.id != null) {
       Navigator.pop(context, true);
     } else {
-      Navigator.pop(context, false);
+      Navigator.pop(context);
       showDialog(
         context: context,
         builder: (BuildContext context) {

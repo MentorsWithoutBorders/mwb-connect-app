@@ -513,8 +513,6 @@ class AvailableMentorsViewModel extends ChangeNotifier {
 
   void resetValues() {
     availableMentors = [];
-    fieldsGoals = [];
-    fields = [];
     filterAvailabilities = [];
     filterField = Field();
     selectedMentor = null;
