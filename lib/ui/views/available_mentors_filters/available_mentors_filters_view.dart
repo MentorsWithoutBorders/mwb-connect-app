@@ -70,7 +70,7 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
           children: [
             FieldDropdown(),
             if (!isAllFieldsSelected) Subfields()
-          ],
+          ]
         )
       )
     );

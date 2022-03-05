@@ -46,7 +46,7 @@ class _QuizState extends State<QuizView> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }    
+  }
 
   Widget _showQuiz() {
     final int index = _quizzesProvider?.quizNumberIndex ?? 1;

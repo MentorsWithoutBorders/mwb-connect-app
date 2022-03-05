@@ -41,18 +41,7 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      if (_availableMentorsProvider?.fields.length == 0) {
-        if (_pageNumber == 1) {
-          await Future.wait([
-            _availableMentorsProvider!.getAvailableMentors(pageNumber: _pageNumber),
-            _availableMentorsProvider!.getFieldsGoals()
-          ]);
-        } else {
-          await _availableMentorsProvider!.getAvailableMentors(pageNumber: _pageNumber);
-        }
-      } else {
-        await _availableMentorsProvider?.getAvailableMentors(pageNumber: _pageNumber);
-      }
+      await _availableMentorsProvider?.getAvailableMentors(pageNumber: _pageNumber);
       final newItems = _availableMentorsProvider?.newAvailableMentors;
       _pageNumber++;
       final isLastPage = newItems!.length < AppConstants.availableMentorsResultsPerPage;

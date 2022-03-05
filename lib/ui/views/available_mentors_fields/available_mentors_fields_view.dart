@@ -5,12 +5,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors_fields/widgets/why_choose_field_dialog.dart';
+import 'package:mwb_connect_app/ui/views/available_mentors/available_mentors_view.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class AvailableMentorsFieldsView extends StatefulWidget {
-  const AvailableMentorsFieldsView({Key? key})
-    : super(key: key);   
+  const AvailableMentorsFieldsView({Key? key, this.shouldReloadCallback})
+    : super(key: key);  
+
+  final VoidCallback? shouldReloadCallback;
 
   @override
   State<StatefulWidget> createState() => _AvailableMentorsFieldsViewState();
@@ -44,48 +49,77 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
     Map<String, String> fieldIconFilePaths = _availableMentorsProvider?.fieldIconFilePaths as Map<String, String>;
     String iconFilePath = fieldIconFilePaths[field.name] as String;
     bool isLocal = !iconFilePath.contains('firebase');
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(20.0))
-      ),
-      child: Wrap(
-        children: [
-          Center(
-            child: Container(
-              width: width * 0.9,
-              height: height * 0.87,
-              padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
-              child: isLocal ? Image.asset(iconFilePath) : 
-                CachedNetworkImage(
-                  imageUrl: iconFilePath,
-                  placeholder: (context, url) => Center(
-                    child: Loader(color: AppColors.TANGO),
-                  ),
-                  errorWidget: (context, url, error) => Icon(Icons.error)
+    return GestureDetector(
+      onTap: () {
+        _goToWhyChooseField(field);
+      },
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20.0))
+        ),
+        child: Wrap(
+          children: [
+            Center(
+              child: Container(
+                width: width * 0.9,
+                height: height * 0.87,
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
+                child: isLocal ? Image.asset(iconFilePath) : 
+                  CachedNetworkImage(
+                    imageUrl: iconFilePath,
+                    placeholder: (context, url) => Center(
+                      child: Loader(color: AppColors.TANGO),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error)
+                  )
+              )
+            ),
+            Container(
+              height: 32.0,
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+              child: Center(
+                child: Text(
+                  field.name as String,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.DOVE_GRAY
+                  )
                 )
-            )
-          ),
-          Container(
-            height: 32.0,
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-            child: Center(
-              child: Text(
-                field.name as String,
-                textAlign: TextAlign.center
               )
             )
-          )
-        ]
-      )
+          ]
+        )
+      ),
     );
   }
 
+  void _goToWhyChooseField(Field field) {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: WhyChooseFieldDialog(field: field)
+      )
+    ).then((shouldGoToAvailableMentors) {
+      if (shouldGoToAvailableMentors == true) {
+        _goToAvailableMentors();
+      }
+    });    
+  }
+
+  Future<void> _goToAvailableMentors() async {
+    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableMentorsView()));  
+    if (shouldReload == true) {
+      widget.shouldReloadCallback!();
+      Navigator.pop(context);
+    }
+  }  
+
   Widget _showTitle() {
     return Container(
-      padding: const EdgeInsets.only(right: 50.0),
+      padding: const EdgeInsets.only(right: 55.0),
       child: Center(
         child: Text('available_mentors.title'.tr()),
       ),
@@ -107,7 +141,10 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
 
   Future<void> _getFields() async {
     if (!_areFieldsRetrieved && _availableMentorsProvider != null) {
-      await _availableMentorsProvider?.getFields();      
+      await Future.wait([
+        _availableMentorsProvider!.getFields(),
+        _availableMentorsProvider!.getFieldsGoals()
+      ]);      
       _areFieldsRetrieved = true;
     }
   }   
