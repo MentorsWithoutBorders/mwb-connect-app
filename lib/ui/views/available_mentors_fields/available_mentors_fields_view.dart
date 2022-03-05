@@ -31,7 +31,7 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
     return Padding(
       padding: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 0.0), 
       child: GridView.builder(
-        padding: const EdgeInsets.only(top: 10.0),
+        padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
         itemCount: fields.length > 0 ? fields.length - 1 : 0,
         itemBuilder: (context, index) => _showFieldItem(fields[index + 1]),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
