@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
@@ -166,7 +167,18 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
                 appBar: AppBar(
                   title: _showTitle(),
                   backgroundColor: Colors.transparent,          
-                  elevation: 0.0
+                  elevation: 0.0,
+                  leading: GestureDetector(
+                    onTap: () async { 
+                      _onWillPop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Platform.isIOS ? Icon(
+                      Icons.arrow_back_ios_new
+                    ) : Icon(
+                      Icons.arrow_back
+                    )
+                  )
                 ),
                 extendBodyBehindAppBar: true,
                 body: _showContent()

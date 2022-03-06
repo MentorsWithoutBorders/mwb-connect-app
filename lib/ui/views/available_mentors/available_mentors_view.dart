@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -150,6 +151,17 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
               title: _showTitle(),
               backgroundColor: Colors.transparent,          
               elevation: 0.0,
+              leading: GestureDetector(
+                onTap: () async { 
+                  _onWillPop(context);
+                  Navigator.pop(context);
+                },
+                child: Platform.isIOS ? Icon(
+                  Icons.arrow_back_ios_new
+                ) : Icon(
+                  Icons.arrow_back
+                )
+              ),
               actions: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 10.0, right: 20.0),
