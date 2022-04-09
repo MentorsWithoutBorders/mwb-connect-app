@@ -160,10 +160,10 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
     Subfield? subfield = previousLesson?.subfield;
     DateTime lessonDateTime = previousLesson?.dateTime as DateTime;
     Availability? availability = Availability(
-      dayOfWeek: DateFormat(AppConstants.dayOfWeekFormat).format(lessonDateTime),
+      dayOfWeek: DateFormat(AppConstants.dayOfWeekFormat, 'en').format(lessonDateTime),
       time: Time(
-        from: DateFormat(AppConstants.timeFormat).format(lessonDateTime),
-        to: DateFormat(AppConstants.timeFormat).format(lessonDateTime)
+        from: DateFormat(AppConstants.timeFormat, 'en').format(lessonDateTime),
+        to: DateFormat(AppConstants.timeFormat, 'en').format(lessonDateTime)
       )
     );
     setState(() {

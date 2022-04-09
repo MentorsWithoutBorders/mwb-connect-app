@@ -19,7 +19,7 @@ class LessonRequestModel {
   LessonRequestModel({this.id, this.student, this.mentor, this.subfield, this.lessonDateTime, this.sentDateTime, this.isCanceled, this.isRejected, this.isExpired, this.wasCanceledShown, this.wasExpiredShown});
 
   LessonRequestModel.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     id = json['id'];
     student = _userFromJson(json['student']);
     mentor = _userFromJson(json['mentor']);
@@ -46,7 +46,7 @@ class LessonRequestModel {
   }     
 
   Map<String, Object?> toJson() {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);   
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');   
     return {
       'id': id,
       'student': student != null ? student?.toJson() : null,

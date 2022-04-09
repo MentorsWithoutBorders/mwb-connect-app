@@ -9,14 +9,14 @@ class LessonNote {
   LessonNote({this.lessonId, this.text, this.dateTime});
 
   LessonNote.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     lessonId = json['lessonId'];
     text = json['text'];
     dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']).toLocal() : null;
   }
 
   Map<String, Object?> toJson() {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     return {
       'lessonId': lessonId,
       'text': text,

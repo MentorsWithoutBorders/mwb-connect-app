@@ -1,53 +1,138 @@
 {
-	"zi": {
-		"zero": "zile",
-		"one": "zi",
-		"two": "zile",
-		"few": "zile",			
-		"many": "zile",
-		"other": "zile"
+	"day": {
+		"zero": "days",
+		"one": "day",
+		"two": "days",
+		"few": "days",			
+		"many": "days",
+		"other": "days"
 	},
-	"saptamana": {
-		"zero": "saptamani",
-		"one": "saptamana",
-		"two": "saptamani",
-		"few": "saptamani",			
-		"many": "saptamani",
-		"other": "saptamani"
+	"week": {
+		"zero": "weeks",
+		"one": "week",
+		"two": "weeks",
+		"few": "weeks",			
+		"many": "weeks",
+		"other": "weeks"
 	},
-	"luna": {
-		"zero": "luni",
-		"one": "luna",
-		"two": "luni",
-		"few": "luni",
-		"many": "luni",
-		"other": "luni"
+	"month": {
+		"zero": "months",
+		"one": "month",
+		"two": "months",
+		"few": "months",
+		"many": "months",
+		"other": "months"
 	},
-	"an": {
-		"zero": "ani",
-		"one": "an",
-		"two": "ani",
-		"few": "ani",			
-		"many": "ani",
-		"other": "ani"
+	"year": {
+		"zero": "years",
+		"one": "year",
+		"two": "years",
+		"few": "years",			
+		"many": "years",
+		"other": "years"
 	},
+  "numerals": {
+    "first": "1st",
+    "second": "2nd",
+    "third": "3rd",
+    "nth": "{}th"
+  },
+	"student": {
+		"zero": "students",
+		"one": "student",
+		"two": "students",
+		"few": "students",			
+		"many": "students",
+		"other": "students"
+	}, 
+	"lesson": {
+		"zero": "lessons",
+		"one": "lesson",
+		"two": "lessons",
+		"few": "lessons",			
+		"many": "lessons",
+		"other": "lessons"
+	},
+	"quiz": {
+		"zero": "quizzes",
+		"one": "quiz",
+		"two": "quizzes",
+		"few": "quizzes",			
+		"many": "quizzes",
+		"other": "quizzes"
+	},  
 	"common": {
 		"cancel": "Cancel",
-		"days_of_week": "Luni, Marti, Miercuri, Joi, Vineri, Sambata, Duminica",
-		"period_units": "zi, saptamana, luna, an"				
+		"close": "Close",
+		"add": "Add",
+		"done": "Done",
+		"update": "Update",
+		"submit": "Submit",
+		"accept": "Accept",
+		"reject": "Reject",
+		"send": "Send",
+		"from": "from",
+		"to": "to",
+		"and": "and",
+		"or": "or",
+		"at": "at",
+		"on": "on",
+    "the": "the",
+		"more": "more",
+		"go": "Go",    
+		"ok": "Ok",
+    "eg": "e.g.",
+    "etc": "etc.",
+    "a": "a",
+    "an": "an",
+		"yes_cancel": "Yes, cancel",
+		"yes_reject": "Yes, reject",
+		"abort": "Abort",
+		"no_abort": "No, abort",
+    "him_her": "him/her",
+    "them": "them",
+    "today": "today",
+    "remote": "remote",
+		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
+    "notification": "Notification",
+		"period_units": "day, week, month, year",
+    "next_deadline": "Next deadline:",
+		"your_profile": "your profile",
+    "try_again": "There has been an error, please try again",
+		"mental_process_goal_steps": "Mental process goal/steps",
+		"relaxation_method": "Relaxation method",
+		"super_focus_method": "Super-focus method",
+    "cancel_lesson_recurrence": "Cancel lesson recurrence",
+    "cancel_recurring_lesson": "Cancel recurring lesson",
+    "cancel_only_next_lesson": "Cancel only next lesson",
+    "cancel_entire_lesson_recurrence": "Cancel entire lesson recurrence",
+    "availability": "Availability",
+    "available_starting_from": "I'm available starting from:",    
+    "available_days_times": "Available days/times:",
+    "availability_timezone": "All times are in {} time zone.",
+		"add_availability": "Add availability",
+		"edit_availability": "Edit availability",
+		"availability_from": "From",
+		"availability_to": "to",
+    "availabilities_merged": "The following availabilities have been merged:",
+    "availability_error": "\"From\" time cannot be equal to or after \"to\" time",
+		"field": "Field",
+		"subfields": "Subfields",
+		"add_subfield": "Add subfield",    
+    "contact_support": "contact support"
 	},
 	"onboarding": {
 		"mental_process_goal_steps_onboarding": {
 			"title": "Achieve your goals",
-			"text": "Learn how to generate a continuous stream of ideas, energy and confidence channelled towards your goals"
+			"text": "Learn from our mentors how to become a passionate professional in your field of interest and how to gain independence in the pursuit of your goals."
 		},
 		"relaxation_method_onboarding": {
 			"title": "Enjoy the process",
-			"text": "Learn a very simple relaxation method that you can use whenever you feel any negative states while planning and taking steps towards your goals"
+			"text": "Learn a very simple relaxation method that you can use whenever you experience any negative states while planning and taking steps towards your goals."
 		},
 		"super_focus_method_onboarding": {
 			"title": "Improve your focus",
-			"text": "Learn how to immerse yourself fully in each and every step that you take"
+			"text": "Learn how to immerse yourself fully in each and every step that you take."
 		},
 		"login": "Login",
 		"get_started": "Get started"					
@@ -67,33 +152,140 @@
 		"title": "Get started",
 		"full_name": "Full name",
 		"action": "Create account",
-		"login": "Have an account? Sign in"
+		"login": "Have an account? Sign in",
+		"not_approved": "You have to be a student from one of our partner NGOs or an employee of one of our partner companies."		
 	},
 	"forgot_password": {
 		"title": "Forgot password",
 		"email_label": "Please enter your email:",
 		"link_label": "You will receive a reset password link",
 		"email": "Email",
-		"email_empty": "Email can't be empty",
+		"email_not_valid": "Please enter a valid email address",
 		"next": "Next",
 		"email_sent": "We've sent you an email, please click on the link that you'll find in the message and you'll be able to reset your password."
 	},
 	"drawer": {
 		"profile": "My profile",
+		"training": "Training",
 		"notifications": "Notifications",
 		"support": "Support",
 		"feedback": "Send feedback",
-		"terms": "Terms of usage",
+		"privacy": "Privacy policy",
 		"logout": "Logout"
 	},
 	"profile": {
-		"title": "My profile"
-	},	
+		"title": "My profile",
+		"lessons": "Lessons",
+		"min_interval_lessons": "Minimum interval between lesson requests:",
+		"max_students_lessons": "Maximum number of students per lesson:",
+		"name": "Name",
+		"name_placeholder": "Enter name",
+		"add_skills": "Add skills {}",
+		"currently_available": "I'm currently available"
+	},
+	"connect_with_mentor": {
+		"title": "Connect with a mentor",
+		"training_title": "MWB training",
+		"conditions_certificate": "In order to receive the MWB certificate on {} and connect with a mentor for the next lesson, you’ll have to do the following:",
+		"solve": "solve until the next deadline",
+		"add_step": "add at least {} until the next deadline for achieving your goal",
+    "one_new_step": "1 new step",    
+    "overdue": "overdue, please",
+    "congratulations_certificate": "Congratulations, you will soon receive your MWB certificate!",
+		"next_lesson": "We will connect you with one of our available mentors for your next lesson.",
+		"find_mentor": "Find mentor",
+		"find_available_mentor": "Find an available mentor",
+		"send_request_previous_mentor_text": "You can send a new lesson request to your previous mentor, {}:",
+		"send_request_previous_mentor": "Send request to previous mentor",
+		"find_new_mentor_text": "or you can search for a new mentor:",
+		"find_new_mentor": "Find new mentor",
+		"selected_mentor_unavailable": "Unfortunately the selected mentor has already been contacted by another student. Please select a different mentor.",
+		"previous_mentor_unavailable": "Unfortunately your previous mentor has already been contacted by another student. Please find a new mentor.",
+		"finding_available_mentor": "Finding an available mentor for the next lesson...",
+		"waiting_mentor": "Waiting for the mentor to approve your lesson request...",
+		"cancel_request": "Cancel request",
+		"cancel_lesson_request": "Cancel lesson request",
+		"cancel_lesson_request_text": "Are you sure you want to cancel the lesson request?",
+		"scheduled_lesson": "{} has scheduled {} {} lesson with you on {} at {} {} and you’ll use the following {} link:",
+		"scheduled_recurring_lesson": "{} has scheduled a recurring {} lesson with you every {} until {}. The next lesson will be on {} at {} {} and you’ll use the following {} link:",
+		"cancel_lesson": "Cancel lesson",
+		"cancel_lesson_text": "Are you sure you don't want attend the {} lesson with {} on {}, {} at {} {}?",
+    "cancel_lesson_recurrence_text": "Are you sure you don't want to attend any of the lessons in this recurrence?"
+	},
+  "available_mentors": {
+    "title": "Find mentor",
+    "title_filters": "Filter available mentors",
+    "why_choose_field": "Why choose {}?",
+    "extracted_from": "Extracted from: ",
+    "choose_availability": "Choose availability:",
+    "title_skills": "Skills",
+    "see_skills": "see skills",
+    "skills_text": "{} has added the following skills for {}:",
+    "send_request": "Send request",
+    "please_select_error": "Please select",
+    "all_fields": "All fields",
+    "all_subfields": "All subfields",
+    "choose_subfield": "Choose subfield:",
+    "subfield_error": "a subfield",
+    "availability_error": "an availability",
+    "add_skills": "Add skills {}",
+    "apply_filters": "Apply filters",
+    "lessons_start_time": "Lessons start time",
+    "preferred_start_time": "Please select your preferred start time for the lessons on {}s (each lesson will be 1 / 1.5 hours long):",
+    "no_mentors_found": "No available mentors found for the specified criteria"
+  },
+	"lesson_request": {
+		"title": "Lesson request",
+		"scheduled_lesson": "Scheduled lesson",
+    "training_title": "MWB training",
+    "training_text": "In order to guide the students more efficiently in achieving their goals, please follow our training methodology for one month:",
+		"solve": "solve until the next deadline",
+		"add_step": "add at least {} until the next deadline for achieving a medium or long-term goal that you set for yourself",
+    "one_new_step": "1 new step",
+    "overdue": "overdue",
+    "show_request": "Show request",
+		"standing_by": "Standing by for a lesson request",
+		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills and availability that you’ve specified in ",
+		"lesson_request_text": "{} from {} would like to do a {} lesson on {} at {} {}",
+    "lesson_request_expired": "We're sorry but the lesson request has expired (each lesson request is available for 1h).",
+    "lesson_request_canceled": "We're sorry but the lesson request has been canceled.",
+    "lesson_request_recurrence_text": "Schedule recurring lesson every {} at {} {} (can also be done after the single lesson is scheduled)",
+    "next_lesson_recurrence_text": "Schedule recurring lesson every {} at {} {} (can also be done during the lesson or up to 3 hours after the lesson)",
+    "lesson_recurrence_until": "Until: ",
+		"send_url": "Send Google Meet/Zoom link",
+		"paste_url": "Please paste the link here:",
+    "send_url_error": "Please enter a valid {} URL",
+		"cancel_next_lesson": "Cancel lesson",
+		"reject_lesson_request": "Reject lesson request",
+		"cancel_next_lesson_text": "Are you sure you want to cancel the {} lesson from {} at {} {}?",
+    "cancel_lesson_recurrence_text": "Are you sure you want to cancel the entire lesson recurrence?\n(the {} will be assigned to another mentor)",
+		"reject_lesson_request_text": "Are you sure you want to reject the {} lesson with {} from {} on {} at {} {}?\n(the student will be assigned to another mentor)",
+		"lesson_scheduled": "You have scheduled {} {} lesson {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",
+		"lesson_scheduled_recurring": "You have scheduled a recurring {} lesson every {} until {}. The next lesson will be {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",    
+		"lesson_link": "The link for the lesson is: ",
+    "change_url": "Change link",
+    "update_lesson_recurrence": "Update lesson recurrence",
+    "lesson_recurrence_updated": "The lesson recurrence has been updated",
+    "notes_previous_mentors": "see notes from previous mentors",
+    "no_notes_previous_mentors": "There are no lesson notes from previous mentors.",
+    "see_lesson_guide_link": "See the lesson guide",
+    "lesson_guide": "Lesson guide",
+    "lesson_guide_tutorials_text": "During the lesson, you can use one or more of the following tutorials:",
+    "recommendations": "recommendations",
+		"taught_today": "What I taught today",
+		"taught_today_text": "Kindly add a few quick notes regarding today's lesson that might be useful for yourself or for the future mentors of today's {}:",
+    "taught_today_next_lesson": "for the next lesson",
+    "taught_today_recurrence": "after you complete the current lesson recurrence",
+    "taught_today_sent": "The lesson notes have been sent successfully",
+    "quick_notes_placeholder": "Add your notes here...",
+    "throughout_recurrence": "throughout the entire lesson recurrence"
+	},
 	"goals": {
 		"my_goals": "My goals",
-		"first_goal": "First goal",
+		"first_goal": "My goal",
 		"first_goal_label": "Let's start by setting a clear goal:",
-		"first_goal_placeholder": "e.g. I want to have $100K in the bank",
+		"first_goal_sublabel": "(it can be a personal or professional goal, not necessarily related to mentoring)",
+		"first_goal_placeholder": "e.g. I want to increase my salary by 50% in 2 years",
 		"first_goal_start": "Start",
 		"add_goal": "Add goal",
 		"add_goal_error": "Please enter goal",
@@ -134,188 +326,242 @@
 		"delete_step": "Delete step",
 		"delete_step_message": "Are you sure you want to delete this step?",
 		"delete_step_sub_steps_message": "Are you sure you want to delete this step with all its sub-steps?"
-	},			
+	},
+  "training_completed": {
+    "title": "{} week of training completed",
+    "text": "You have completed the {} week of training but if you want to add more steps to your plan and/or go through the training tutorials, please feel free to",
+    "add_more_steps": "You have completed the MWB training but if you want to add more steps to your plan and/or go through the training tutorials, please feel free to",
+    "use_this_link": "use this link"
+  },
+  "lessons_stopped": {
+    "title": "Lessons stopped",
+    "text": "Unfortunately we are not able to offer more lessons but if you would like to become a mentor in our group after you will gain some professional experience, please feel free to"
+  },
+  "lessons_disabled": {
+    "title": "Lessons disabled",
+    "text": "Unfortunately your lesson requests have been disabled. If you would like to enable them, please"
+  },  
 	"tutorials": { 
 		"mental_process_goal_steps": {
 			"title": "Adding steps",
 			"preview": {
-				"text": "You will only feel motivated enough to take steps towards your goal if the plan for achieving it will become clearer and clearer. For this, you just need to ask yourself on a regular basis: “What else can I do in order to reach my goal?” then add below the ideas that you come up with and act on them gradually.",
+				"text": "You will only feel motivated enough to take steps towards your goal if the plan for achieving it will become clearer and clearer in your mind. For this, you just need to ask yourself on a regular basis: “what else can I do in order to reach my goal?”, add below some of the ideas that you come up with and act on them gradually.",
 				"link": "Find out why"
 			},
 			"main": {
 				"title": "",
-				"text": "<span style=\"text-align:justify\">In order to achieve any goal, you need to generate a continuous stream of <b>ideas, energy and confidence</b> channelled towards that goal and the way to do this is very simple: <ul><li>think about the moment in the future when your goal will become real</li><li>ask yourself on a regular basis (preferably at least once a day) <b>\"what else can I do in order to get there?\"</b></li><li>put into practice the ideas that you come up with whenever you feel it’s appropriate to do so.</li></ul></span>"
+				"text": "<div align=\"justify\">In order to achieve any goal, you need to generate a continuous stream of <b>ideas, energy, and confidence</b> channeled towards that goal and the way to do this is very simple: <ul><li>think about the moment in the future when your goal will become real</li><li>ask yourself on a regular basis (preferably at least once a day) <b>\"what else can I do in order to achieve my goal?\"</b></li><li>put into practice the ideas that you come up with whenever you feel it’s appropriate to do so.</li></ul><div align=\"justify\">"
 			},			
 			"ideas": {
 				"title": "Why we get ideas",
-				"text": "<span style=\"text-align:justify\">Your subconscious mind is the warehouse of everything that you've seen, heard, felt, done, thought throughout your life and when you think about a clear goal and then you ask yourself \"what else can I do in order to achieve it?\", what happens is that <b>you are gradually extracting ideas from this enormous warehouse of resources</b> that you have at your disposal.<br><br> As you act on the ideas that you're getting, you put in new information because you see, hear, feel, do, think new things so the next time when you think again about your goal and the steps to achieve it, you get even more ideas and this is how <b>the plan for achieving your goal becomes clearer and clearer in your mind</b> and by taking the steps that are part of this plan, you get closer and closer to your goal.</span>"
+				"text": "<div align=\"justify\">Your subconscious mind is the warehouse of everything that you've seen, heard, felt, done, and thought throughout your life so when you think about a clear goal and then you ask yourself \"what else can I do in order to achieve it?\", what happens is that <b>you are gradually extracting ideas from this enormous warehouse of resources</b> that you have at your disposal.<br><br> As you act on the ideas that you're getting, you put in new information because you see, hear, feel, do, think new things so the next time you ask yourself again \"what else can I do in order to achieve my goal?\", you get even more ideas. This is how <b>the plan for reaching your goal becomes clearer and clearer in your mind</b> and by taking the steps that are part of this plan, you get closer and closer to your goal.<div>"
 			},
 			"energy": {
 				"title": "Why we get energy",
-				"text": "<span style=\"text-align:justify\">The simple mental process of thinking about your goal and asking yourself \"what else can I do in order to achieve it?\" on a regular basis <b>will gradually become a very powerful habit</b> and because habits drive most of what we do, you will feel more and more energy for putting into practice the ideas that are part of your plan.<br><br> The reason for this is that the mental process goal/steps will gradually get transferred to your subconscious mind which will keep it running on auto-pilot, in the background, on an infinite loop and since this part of the mind is a tremendously powerful force that you have within yourself, any process that it keeps running in the background has the tendency of pushing the body to act according to the steps that are part of that process.</span>"
+				"text": "<div align=\"justify\">The simple mental process of thinking about your goal and asking yourself \"what else can I do in order to achieve it?\" on a regular basis <b>will gradually become a very powerful habit</b> and because habits drive most of what we do throughout our lives, you will feel more and more energy for putting into practice the ideas that are part of your plan.<br><br> The reason for this is that the mental process goal/steps will gradually get transferred to your subconscious mind which will keep it running on auto-pilot, in the background, on an infinite loop and because this part of the mind is a tremendously powerful force that you have within yourself, <b>any process that it keeps running in the background has the tendency of pushing the body to act according to the steps that are part of that process</b>.</div>"
 			},
 			"confidence": {
 				"title": "Why we get confidence",
-				"text": "<span style=\"text-align:justify\"><b>The subconscious mind cannot tell the difference between imagination and reality</b> so if you think about your goal and the steps to achieve it on a regular basis, you’ll feel that you’ve already gone through this process in reality multiple times and this will give you more and more confidence that you’ll actually reach your goal.</span>"
+				"text": "<div align=\"justify\"><b>The subconscious mind cannot tell the difference between imagination and reality</b> so if you think about your goal and the steps to achieve it on a regular basis, you’ll feel that you’ve already gone through this process in reality multiple times and this will give you more and more confidence that you’ll actually reach your goal.</div>"
 			},
 			"extra_benefits": {
 				"title": "Extra benefits",
-				"text": "<span style=\"text-align:justify\">In addition to the benefits mentioned previously, there are 3 other very important reasons for running the mental process goal/steps on a regular basis: <ul><li>even when you don’t get new ideas, you will still generate more energy and confidence channelled towards your goal.</li><li>you’ll be able to figure out in advance many obstacles that you might encounter and this will give you enough time to prepare a plan B, plan C, etc. for those scenarios.</li><li>any change in the overall plan can lead to a significant change in the next immediate steps to follow.</li></ul></span>"
+				"text": "<div align=\"justify\">In addition to the benefits mentioned previously, there are 3 other very important reasons for running the mental process goal/steps on a regular basis: <ul><li>even when you don’t get new ideas, you will still generate more energy, and confidence channeled towards your goal.</li><li>you’ll be able to figure out in advance many obstacles that you might encounter and this will give you enough time to prepare a plan B, plan C, etc. for those scenarios.</li><li>any change in the overall plan can lead to a significant change in the next immediate steps to follow.</li></ul></div>"
 			}					
 		},
 		"relaxation_method": {
 			"title": "Relaxation method",
 			"preview": {
-				"text": "The only real problem you’ll encounter while planning and taking steps towards your goal will be the fact that at times you’ll get impatient, frustrated, confused, bored, worried, stressed, etc. and it’s very important to relax quickly and efficiently in those moments.",
+				"text": "The only real problem you’ll encounter while planning and taking steps towards your goal will be the fact that at times you’ll get a bit impatient, frustrated, confused, bored, worried, stressed, etc. and it’s very important to relax quickly and efficiently in those moments.",
 				"link": "Find out how"
 			},
 			"main": {
 				"title": "",
-				"text": "<span style=\"text-align:justify\">While pursuing your goals, you will inevitably encounter various negative states such as anger, frustration, discouragement, worry, boredom, stress etc. and the longer you let these negative states manifest themselves, the more you’ll lose patience, joy and efficiency and there’s also a very high chance that you’ll give up at some point.<br><br>The best thing to do in those moments is to <b>relax efficiently</b> because your body needs to feel good and relaxation is the most accessible feel-good state that we have at our disposal.</span>"
+				"text": "<div align=\"justify\">While pursuing your goals, you will inevitably encounter various negative states such as anger, frustration, discouragement, worry, boredom, stress, etc. and the longer you let these negative states manifest themselves, the more you’ll lose patience, joy, and efficiency and there’s also a very high chance that you’ll give up at some point.<br><br>The best thing to do in those moments is to <b>relax efficiently</b> because your body needs to feel good and relaxation is the most accessible feel-good state that we have at our disposal.</div>"
 			},
 			"how_to_relax": {
 				"title": "How to relax",
-				"text": "<span style=\"text-align:justify\">With your eyes open or closed, standing up, sitting on a chair or lying down, you just need to do the following: <ul><li>think of the number 10 and focus on how you're letting the forehead relax</li><li>think of 9 and focus on how you’re letting the neck relax</li><li>think of 8 and focus on how you’re letting the shoulders relax</li><li>think of 7 and focus on how you’re letting the arms relax</li><li>... and so on until you reach 1 and you focus on how you’re letting the feet relax</li><li><b>at the end you think of 0 and you keep focusing on how you're letting the entire body relax until you reach a really feel-good, relaxed state.</b></li></ul>This last step is the most important one by far because from 10 to 1 you’re just preparing the body to relax and you should never expect to be relaxed enough by the time you get to 1. The real relaxation comes when you think of 0 and you keep focusing on how you’re letting the entire body relax until you get to that really feel-good, relaxed state.<br><br>Sometimes you’ll have to keep your focus there for a few seconds, other times for a few tens of seconds but you’ll notice that <b>the more you focus on how you’re letting the entire body relax, the more relaxed your body will feel</b>, which means that you have complete control over the degree of relaxation that you want to get to. And your goal should always be to get to that really feel-good, relaxed state whenever you use this method.</span>"
-			},
-			"why_count_down": {
-				"title": "Why count down",
-				"text": "<span style=\"text-align:justify\">The negative states that you experience are actually caused by some negative thoughts which are either conscious or unconscious and what you need first and foremost in those moments is to direct your mind towards other thoughts, preferably positive ones.<br><br>This is not that easy to do though especially when you’re feeling very frustrated, angry, discouraged, stressed, etc. and that’s why <b>numbers will work very well for this purpose as they are very clear, neutral thoughts which are guaranteed to take your mind away from the negative thoughts that have caused the negative states in the first place</b>. And if with each number that you think of you also let a part of the body relax and at the end the entire body, you’ll be able to get to that nice, feel-good, relaxed state very quickly.</span>"
-			},
-			"interruptions": {
-				"title": "Interruptions",
-				"text": "<span style=\"text-align:justify\">While doing this relaxation you’ll notice that various thoughts will distract you. All you need to do in those moments is to simply <b>realize that you got interrupted and continue from the number where the interruption happened</b> (if you remember it, if not you can just continue from any number you want). The important thing is to <b>never go back from 10</b> because sometimes you’ll have so many interruptions that if you keep going back from 10 you’ll never be able to finish the relaxation process.</span>"
-			},
-			"fast_slow_relaxation": {
-				"title": "Fast and slow relaxation",
-				"text": "<span style=\"text-align:justify\">There’s a fast way and a slow way of doing this relaxation, the only difference between them being that in the slow version you have 3–4 second intervals between 10 and 9, 9 and 8 and so on, whereas in the fast version you do the countdown faster, without these intervals but <b>in both versions the most important part remains what you do when you get to 0: keep focusing on how you’re letting the entire body relax until you reach that really feel-good, relaxed state.</b><br><br>The only part that's fast in the fast relaxation is the countdown from 10 to 1. Without doing the part at 0, the fast relaxation will never work and the slow one will only work very rarely.</span>"
-			},
-			"when_to_relax": {
-				"title": "When to relax",
-				"text": "<span style=\"text-align:justify\">The general rule of thumb is to <b>do the fast relaxation immediately when you feel any negative state</b>. Why immediately? Because the more you let any negative state manifest itself, the more you lose patience, joy and efficiency and any problem you encounter seems much bigger than it actually is.<br><br>There will be many times though when some negative states will keep coming back again and again and if you relax immediately in those moments it will feel more frustrating than relaxing. So only in those situations it’s best to let the negative emotions manifest themselves for a while and only then do the fast relaxation again.<br><br>If however you notice that some negative states keep coming back stronger and stronger and just by doing the fast relaxation you are not able to transition to a consistent feel-good state, then you need to take a bit more time to do the slow relaxation. This can happen anytime, anywhere but you’ll need at least 2–3 minutes of quiet time in order to do it efficiently.<br><br>You also need to keep in mind that if your body is in movement and you get into a negative state at some point, you have to stop the body first and only then relax.</span>"
+				"text": "<div align=\"justify\"><u><b>Quick relaxation:</b></u><br>Most of the time, the negative emotions that you'll feel won't be very intense so all you need to do in those moments is to <b>just let the entire body relax for a few seconds (or minutes if necessary)</b> and then continue taking the necessary steps for achieving your goals.<br><br><u><b>Deep relaxation:</b><br></u>When the negative states get more intense, you can use the <b>progressive muscle relaxation technique (deep relaxation)</b> in the following way:<ul><li>tense your shoulders for 2-3 seconds and then let them relax</li><li>tense your arms for 2-3 seconds and then let them relax</li><li>tense your chest for 2-3 seconds and then let it relax</li><li>tense your torso for 2-3 seconds and then let it relax</li><li>tense your upper legs for 2-3 seconds and then let them relax</li><li>tense your lower legs and feet for 2-3 seconds and then let them relax</li><li>tense your entire body for 4-5 seconds and then <b>focus on how you're letting it relax until you reach a very relaxed, pleasant state.</b></li></ul>After you use this relaxation technique, you'll notice how you'll be able to continue the journey towards your goals with a lot more patience, joy, and efficiency.</div>"
 			}
 		},
 		"super_focus_method": {
 			"title": "Super-focus method",
 			"preview": {
-				"text": "When you feel deeply engaged in an activity, you enjoy doing it much more and you are also very efficient at it. In order for this to happen, you just need to learn how to really focus on the process.",
+				"text": "When you feel deeply engaged in any activity, you enjoy doing that activity much more and you are also very efficient at it. In order for this to happen, you just need to learn how to really focus on each and every step that you're taking.",
 				"link": "Find out how"
 			},
 			"main": {
 				"title": "",
-				"text": "<span style=\"text-align:justify\">As you know from the relaxation method, when you get interrupted by various thoughts during the relaxation process you just need to realize that you got interrupted and continue from where you were when the interruption happened and it will feel just as if nothing had interrupted you in the first place. It turns out that this method works amazingly well for any activity.<br><br>To give you an example, let’s say that you’re reading something and your mind starts drifting away at some point. When this happens, you just need to:<ul><li>realize that you’re not focusing on the reading activity anymore</li><li><b>immediately switch your focus back</b> to what you are reading.</li></ul>If you do this every time you get distracted by other thoughts, you’ll notice how you will get more and more immersed in the reading activity and you’ll feel the pure joy of being there entirely. Reading is of course only one example and this will work just as well for any other activity.</span>"
+				"text": "<div align=\"justify\">While planning and taking steps towards your goals, you'll notice that many times you'll get distracted by various other thoughts. If you consider that those thoughts are not necessarily urgent to think about and/or act upon, <b>you just need to continue from where you were when the interruption happened</b>. Also, before you switch your focus back, it's best to relax using either the quick or the deep relaxation method.<br><br>To give you an example, let’s say that you’re reading something and your mind starts drifting away at some point. When this happens, you just need to:<ul><li>realize that you’re not focusing on the reading activity anymore</li><li>relax using either the quick or the deep relaxation method</li><li><b>switch your focus back</b> to what you are reading.</li></ul>If you do this every time you get distracted by other thoughts, you’ll notice how you will get more and more immersed in the reading activity and you’ll feel the pure joy of being there entirely. Reading is of course just one example and this will work very well for any other activity.</div>"
 			},
-			"in_your_head": {
-				"title": "In your head",
-				"text": "<span style=\"text-align:justify\">When you don't feel that much energy to take the next step towards you goal, you can do the following:<ul><li>remind yourself of the final goal</li><li>review the main steps that you can take in order to reach it</li><li><b>do the activity which corresponds to the next step for 2-3 minutes in your head, applying the super-focus method to it</b>: whenever you get interrupted by other thoughts, you just continue from where you got interrupted.</li></ul>By doing this, you'll notice that when you take that next step in reality you'll feel much more focused and energized.</span>"
+      "joyful_productivity": {
+				"title": "Joyful productivity",
+				"text": "<div align=\"justify\">In order to really enjoy the journey towards your goals and feel incredibly productive each and every day, it's best to divide your working days into multiple <b>30 mins - 1h chunks of applying the super-focus method combined with the quick or deep relaxation when needed</b>, while doing the following:<ul><li>think of the next step that you need to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li>repeat the previous points for each and every step that you want to take.</li></ul>Always keep in mind that <b>if you're not feeling joy while taking steps towards your goals for 5 mins, 10 mins, 15 mins, and so on, it means that you're not applying the super-focus method or the relaxation methods when needed</b>.</div>"
+			},	
+			"extra_energy": {
+				"title": "Extra energy",
+				"text": "<div align=\"justify\">You can also get an energy boost by doing the following from time to time:<ul><li>remind yourself of the final goal</li><li>review in your mind the main steps that you can take in order to reach it</li><li><b>do the activity that corresponds to the next step for 1-2 minutes in your head, applying the super-focus method to it</b>: whenever you get interrupted by other thoughts, you just continue from where you got interrupted.</li></ul>By doing this, you'll notice that when you take the next step in reality, you'll feel much more focused and energized.<br><br>Another way of generating extra energy is <b>by thinking about what you have just accomplished with your previous step and how you executed it</b>, applying again the super-focus method to this remembering process.</div>"
 			}			
 		}					
 	},
-	"quiz": {
-		"close": "Close",
-		"learn_link": "Learn",
-		"more_link": "more",
-		"close_window_timer_message": "You can close this window in {timerStart} seconds",
-		"close_window_message": "You can now close this window"
+  "quiz_tutorials": {
+    "quiz_tutorial1": {
+      "title": "Mental process goal/steps",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">In order to achieve any goal, you need to generate a continuous stream of <b>ideas, energy, and confidence</b> channeled towards that goal and the way to do this is very simple: <ul><li>you have to think about the moment in the future when your goal will become real</li><li>ask yourself on a regular basis (preferably at least once a day) <b>\"what else can I do in order to achieve my goal?\"</b></li><li>put into practice the ideas that you come up with whenever you feel it’s appropriate to do so.</li></ul>The ideas will come from the enormous <b>warehouse of resources</b> that we all have at our disposal which is <b>the subconscious mind</b>, and with each and every idea that you get, the plan for achieving your goal will become clearer and clearer in your mind.</span></div>"
+    },
+    "quiz_tutorial2": {
+      "title": "Quick and deep relaxation",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">While pursuing your goals, you will inevitably experience various negative states such as anger, frustration, discouragement, worry, boredom, stress, etc. and the longer you let these negative states manifest themselves, the more you’ll lose patience, joy, and efficiency and there’s also a very high chance that you’ll give up at some point.<br><br>The best thing you can do when you feel any negative emotions is to <b>relax efficiently</b> because your body needs to feel good and relaxation is the most accessible feel-good state that we all have at our disposal.<br><br><u><b>Quick relaxation:</b></u><br>Most of the time, the negative emotions that you'll feel won't be very intense so all you need to do in those moments is to <b>just let the entire body relax for a few seconds (or minutes if necessary)</b> and then continue taking the necessary steps for achieving your goals.<br><br><u><b>Deep relaxation:</b><br></u>When the negative states get more intense, you can use the <b>progressive muscle relaxation technique (deep relaxation)</b> in the following way:<ul><li>tense your shoulders for 2-3 seconds and then let them relax</li><li>tense your arms for 2-3 seconds and then let them relax</li><li>tense your chest for 2-3 seconds and then let it relax</li><li>tense your torso for 2-3 seconds and then let it relax</li><li>tense your upper legs for 2-3 seconds and then let them relax</li><li>tense your lower legs and feet for 2-3 seconds and then let them relax</li><li>tense your entire body for 4-5 seconds and then <b>focus on how you're letting it relax until you reach a very relaxed, pleasant state</b></li></ul>After you use this relaxation technique, you'll notice how you'll be able to continue the journey towards your goals with a lot more patience, joy, and efficiency.</span></div>"
+    },
+    "quiz_tutorial3": {
+      "title": "Super-focus method",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">While planning and taking steps towards your goals, you will also get distracted by various thoughts which will prevent you from keeping your focus on the tasks at hand. What you need to do in those moments is to simply <b>realize that you got distracted and immediately switch your focus back to the steps that you are taking</b> (unless the distracting thoughts are related to something which is really urgent to think about and/or act upon).<br><br>If you do this every time you get distracted by other thoughts, you will notice how you will become more and more immersed in each and every step that you are taking and you will feel the pure joy of being there entirely.</span></div>"
+    },
+    "quiz_tutorial4": {
+      "title": "Getting ideas",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">The main benefit of asking yourself each and every day <b>\"what else can I do in order to achieve my goal?\"</b> is the fact that you will be able to build a clearer and clearer plan in your mind for reaching your goal.<br>That's because when you ask yourself this very simple yet extremely powerful question, what you actually do is that <b>you keep searching for ideas in your subconscious mind</b> which is the warehouse of everything that you’ve seen, heard, felt, done, and thought throughout your life.</span></div>"
+    },
+    "quiz_tutorial5": {
+      "title": "Quick and deep relaxation",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Because relaxing efficiently is so important whenever you encounter various negative states, we'll review the quick and deep relaxation methods once more.<br><br><u><b>Quick relaxation:</b></u><br>Most of the time, the negative emotions that you'll feel won't be very intense so all you need to do in those moments is to <b>just let the entire body relax for a few seconds (or minutes if necessary)</b> and then continue taking the necessary steps for achieving your goals.<br><br><u><b>Deep relaxation:</b><br></u>When the negative states get more intense, you can use the <b>progressive muscle relaxation technique (deep relaxation)</b> in the following way:<ul><li>tense your shoulders for 2-3 seconds and then let them relax</li><li>tense your arms for 2-3 seconds and then let them relax</li><li>tense your chest for 2-3 seconds and then let it relax</li><li>tense your torso for 2-3 seconds and then let it relax</li><li>tense your upper legs for 2-3 seconds and then let them relax</li><li>tense your lower legs and feet for 2-3 seconds and then let them relax</li><li>tense your entire body for 4-5 seconds and then <b>focus on how you're letting it relax until you reach a very relaxed, pleasant state</b></li></ul>After you use this relaxation technique, you'll notice how you'll be able to continue the journey towards your goals with a lot more patience, joy, and efficiency.</span></div>"
+    },
+    "quiz_tutorial6": {
+      "title": "Joyful productivity",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">In order to really enjoy the journey towards your goals and feel incredibly productive each and every day, it's best to divide your working days into multiple <b>30 mins - 1h chunks of applying the super-focus method combined with the quick or deep relaxation when needed</b>, while doing the following:<ul><li>think of the next step that you need to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li>repeat the previous points for each and every step that you want to take.</li></ul>Always keep in mind that <b>if you're not feeling joy while taking steps towards your goals for 5 mins, 10 mins, 15 mins, and so on, it means that you're not applying the super-focus method or the relaxation methods when needed</b>.</span></div>"
+    },
+    "quiz_tutorial7": {
+      "title": "Energy",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">By asking yourself on a regular basis <b>\"what else can I do in order to achieve my goal?\"</b>, you won't get only ideas but you will also generate more and more energy to act on those ideas because the mental process goal/steps will gradually get transferred to your subconscious mind, which <b>will keep it running on auto-pilot, in the background, on an infinite loop</b>.<br><br>The subconscious mind is a tremendously powerful force that we have within ourselves and <b>any process that it keeps running in the background has the tendency of pushing the body in the direction of the goal which is at the end of that process</b>.</span></div>"
+    },     
+    "quiz_tutorial8": {
+      "title": "Confidence",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Apart from ideas and energy, you will also get more and more confidence that you can reach your goal whenever you keep asking yourself <b>\"what else can I do in order to achieve my goal?\"</b><br><br>This will happen because <b>the subconscious mind simply cannot tell the difference between imagination and reality</b>, which means that for any process that we run in our minds, we feel that we’ve already gone through that process in reality multiple times and this gives us more and more confidence that we’ll actually reach our goals.</span></div>"
+    },     
+    "quiz_tutorial9": {
+      "title": "Extra energy",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">You can also get an energy boost by doing the following from time to time:<ul><li>remind yourself of the final goal</li><li>review in your mind the main steps that you can take in order to reach it</li><li><b>do the activity that corresponds to the next step for 1-2 minutes in your head, applying the super-focus method to it (combined with the quick or deep relaxation when needed)</b></li></ul>By doing this, you'll notice that when you take the next step in reality, you'll feel much more focused and energized.<br><br>Another way of generating extra energy is by <b>thinking about what you have just accomplished with your previous step and how you executed it</b>, applying again the super-focus method to this remembering process.</span></div>"
+    },     
+    "quiz_tutorial10": {
+      "title": "Ideas, energy, and confidence",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">To recap, you have to keep asking yourself on a regular basis <b>\"what else can I do in order to achieve my goal?\"</b> so that you can build a clearer and clearer plan in your mind for achieving your goal.<br><br>At the same time, this very simple yet extremely powerful question will allow you to generate more and more <b>energy and confidence</b> to put your ideas into practice because your subconscious mind will keep the process running on auto-pilot in the background, and it will also reinforce the feeling that you've already taken all the steps and achieved your goal multiple times in the past.</span></div>"
+    },
+    "quiz_tutorial11": {
+      "title": "Quick and deep relaxation",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Most of the time, the negative emotions that you'll feel won't be very intense so all you need to do in those moments is to <b>just let the entire body relax for a few seconds (or minutes if necessary)</b> and then continue taking the necessary steps for achieving your goals.<br><br>When the negative states get more intense, you can use the <b>progressive muscle relaxation technique (deep relaxation)</b> in the following way:<ul><li>tense your shoulders for 2-3 seconds and then let them relax</li><li>tense your arms for 2-3 seconds and then let them relax</li><li>tense your chest for 2-3 seconds and then let it relax</li><li>tense your torso for 2-3 seconds and then let it relax</li><li>tense your upper legs for 2-3 seconds and then let them relax</li><li>tense your lower legs and feet for 2-3 seconds and then let them relax</li><li>tense your entire body for 4-5 seconds and then <b>focus on how you're letting it relax until you reach a very relaxed, pleasant state</b></li></ul>After you use this relaxation technique, you'll notice how you'll be able to continue the journey towards your goals with a lot more patience, joy, and efficiency.</span></div>"
+    },
+    "quiz_tutorial12": {
+      "title": "Focused and joyful productivity",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">The super-focus method allows you to immerse yourself more and more fully in each and every step that you are taking and it's just about <b>realizing when you get distracted by other thoughts and switching your focus back to the activity at hand</b>.<br><br>Also, in order to really enjoy the journey towards your goals and feel incredibly productive each and every day, it's best to divide your working days into multiple <b>30 mins - 1h chunks of applying the super-focus method combined with the quick or deep relaxation when needed</b>, while doing the following:<ul><li>think of the next step that you need to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li>repeat the previous points for each and every step that you want to take.</li></ul>Always keep in mind that <b>if you're not feeling joy while taking steps towards your goals for 5 mins, 10 mins, 15 mins, and so on, it means that you're not applying the super-focus method or the relaxation methods when needed</b>.</span></div>"
+    }             
+  },
+	"quizzes": {
+    "solve_quiz_subtitle": "(please solve the quiz at the end)",
+    "quiz_of": "Quiz {} of {}",
+    "next_quiz": "Next quiz",
+    "try_again": "Try again",
+    "quizzes_solved": "Congratulations! You have solved all the quizzes for the current week of training.",
+    "quiz1": {
+      "question": "How do we make the plan for achieving a certain goal clearer and clearer in our minds?",
+      "option1": "By visualizing the necessary steps to achieve our goal and by adding deadlines to these steps.",
+      "option2": "By having a strong belief that we can achieve our goal.",
+      "option3": "By asking ourselves on a regular basis \"what else can I do in order to achieve my goal?\"",
+      "answer": "3"
+    },
+    "quiz2": {
+      "question": "How do we apply the deep relaxation method?",
+      "option1": "By tensing and relaxing each part of the body and then the entire body.",
+      "option2": "By eliminating any distractions and relaxing the entire body at once.",
+      "option3": "By laying down and feeling the natural sensation of our breathing for a few minutes.",
+      "answer": "1"
+    },
+    "quiz3": {
+      "question": "How can we focus and immerse ourselves more fully in each step that we are taking?",
+      "option1": "By eliminating any distractions in our path.",
+      "option2": "By switching our focus back to the activity at hand every time we get interrupted by various other thoughts.",
+      "option3": "By reminding ourselves of our goals and by making sure that we are taking the right steps for achieving them.",
+      "answer": "2"			
+    }, 
+    "quiz4": {
+      "question": "Where do the ideas come from when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
+      "option1": "The ideas come from our subconscious mind, which is the warehouse of everything that we've seen, heard, felt, done, and thought throughout our lives.",
+      "option2": "The ideas come from preparation and thinking positively all the time.",
+      "option3": "The ideas can only come by chance.",
+      "answer": "1"			
+    },
+    "quiz5": {
+      "question": "How do we apply the quick relaxation method?",
+      "option1": "By letting the entire body relax for a few seconds (or minutes if necessary).",
+      "option2": "By breathing deeply a few times.",
+      "option3": "By repeating to ourselves \"I am very relaxed\" for a few times.",
+      "answer": "1"	
+    },
+    "quiz6": {
+      "question": "How can we be extremely productive while enjoying ourselves at the same time?",
+      "option1": "By rewarding ourselves every time we have completed a task, no matter how small that task might be.",
+      "option2": "By doing work only when we feel excited about it and taking time off whenever we don't feel motivated enough.",
+      "option3": "By applying the super-focus method while taking steps towards our goals and by relaxing whenever needed.",
+      "answer": "3"		
+    },      
+    "quiz7": {
+      "question": "Why do we get more and more energy when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
+      "option1": "Because it becomes very clear to us what really drives us to achieve our goals and we feel more motivated as a result.",
+      "option2": "Because the subconscious mind keeps pushing the body to act according to the steps that are part of our plan.",
+      "option3": "Because energy is all around us and we just need to tap into it.",
+      "answer": "2"
+    }, 
+    "quiz8": {
+      "question": "Why do we get more and more confidence when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
+      "option1": "Because in this way we are able to focus better on our goals and we aren't letting worry and doubt stop us.",
+      "option2": "Because this question allows us to develop a positive and resilient mindset, leading to greater trust in ourselves.",
+      "option3": "Because the subconscious mind cannot tell the difference between imagination and reality.",
+      "answer": "3"
+    }, 
+    "quiz9": {
+      "question": "How can we generate even more energy for taking the necessary steps to achieve our goals?",
+      "option1": "By thinking about our final goal and some of the steps to achieve it, applying the super-focus method and relaxation methods to this process.",
+      "option2": "By dropping our attachment to comfort because this can sabotage our energy and we'll find ourselves procrastinating over and over again.",
+      "option3": "By simply getting started because most of the time we feel tired just by thinking about the magnitude of the tasks that are in front of us.",
+      "answer": "1"		
+    }, 
+    "quiz10": {
+      "question": "How do we make the plan for achieving a certain goal clearer and clearer in our minds?",
+      "option1": "By visualizing the necessary steps to achieve our goal and by adding deadlines to these steps.",
+      "option2": "By having a strong belief that we can achieve our goal.",
+      "option3": "By asking ourselves on a regular basis \"what else can I do in order to achieve my goal?\"",
+      "answer": "3"
+    },
+    "quiz11": {
+      "question": "How do we apply the deep relaxation method?",
+      "option1": "By eliminating any distractions and relaxing the entire body at once.",
+      "option2": "By tensing and relaxing each part of the body and then the entire body.",
+      "option3": "By laying down and feeling the natural sensation of our breathing for a few minutes.",
+      "answer": "2"
+    },	
+    "quiz12": {
+      "question": "How can we be extremely productive while enjoying ourselves at the same time?",
+      "option1": "By combining the super-focus method with the quick or deep relaxation while taking steps towards our goals.",
+      "option2": "By doing work only when we feel excited about it and taking time off whenever we don't feel motivated enough.",
+      "option3": "By rewarding ourselves every time we have completed a task, no matter how small that task might be.",
+      "answer": "1"		
+    }
 	},
-	"quizzes": { 
-		"quiz1": {
-			"question": "How do we make the plan for achieving a certain goal become clearer and clearer in our minds?",
-			"option1": "By visualizing the necessary steps to achieve our goal.",
-			"option2": "By asking ourselves on a regular basis \"what else can I do in order to achieve my goal?\"",
-			"option3": "By having a strong belief that we can achieve our goal.",
-			"answer": "2",
-			"tutorial_type": "mental_process_goal_steps",
-			"tutorial_section": "ideas"
-		},
-		"quiz2": {
-			"question": "Which is the most important part of the 10-to-0 relaxation method?",
-			"option1": "Counting down from 10 to 0.",
-			"option2": "Having 3-4 second intervals between the numbers.",
-			"option3": "When we get to 0, we focus on how we’re letting the entire body relax until we reach a very relaxed state.",
-			"answer": "3",
-			"tutorial_type": "relaxation_method",
-			"tutorial_section": "how_to_relax"
-		},
-		"quiz3": {
-			"question": "Apart from ideas, what do we get when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-			"option1": "Energy and confidence to put into practice the ideas that we come up with.",
-			"option2": "Nothing, this question only generates ideas.",
-			"option3": "Clarity for visualizing our goals.",
-			"answer": "1",
-			"tutorial_type": "mental_process_goal_steps",
-			"tutorial_section": "main"			
-		},
-		"quiz4": {
-			"question": "What happens when we count down from 10 to 1, letting each part of the body relax?",
-			"option1": "We get to feel a very pleasant, relaxed state.",
-			"option2": "We become very focused.",
-			"option3": "We feel a mild relaxation because from 10 to 1 we're just preparing the body to relax.",
-			"answer": "3",
-			"tutorial_type": "relaxation_method",
-			"tutorial_section": "how_to_relax"	
-		},
-		"quiz5": {
-			"question": "Why do we get ideas when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-			"option1": "Because this mental process becomes a very powerful habit.",
-			"option2": "Because our subconscious mind is a huge warehouse of resources and we can keep extracting ideas from there.",
-			"option3": "Because our subconscious mind cannot tell the difference between imagination and reality.",
-			"answer": "2",
-			"tutorial_type": "mental_process_goal_steps",
-			"tutorial_section": "ideas"				
-		},
-		"quiz6": {
-			"question": "What should we do if we get interrupted by various thoughts during the 10-to-0 relaxation process?",
-			"option1": "Restart the relaxation process from 10.",
-			"option2": "Continue from the number where we got interrupted, no matter how many times we get interrupted.",
-			"option3": "Give up because we won't be able to relax if we get these interruptions.",
-			"answer": "2",
-			"tutorial_type": "relaxation_method",
-			"tutorial_section": "interruptions"				
-		},			
-		"quiz7": {
-			"question": "Why do we get energy when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-			"option1": "Because this mental process becomes a very powerful habit.",
-			"option2": "Because our subconscious mind is a huge warehouse of resources and we can keep extracting ideas from there.",
-			"option3": "Because our subconscious mind cannot tell the difference between imagination and reality.",
-			"answer": "1",
-			"tutorial_type": "mental_process_goal_steps",
-			"tutorial_section": "energy"				
-		},
-		"quiz8": {
-			"question": "How can we immerse ourselves more fully into any activity that we're doing?",
-			"option1": "We try to eliminate any distractions.",
-			"option2": "We just switch our focus back to that activity every time we get interrupted by various thoughts.",
-			"option3": "We remind ourselves of our goal.",
-			"answer": "2",
-			"tutorial_type": "super_focus_method",
-			"tutorial_section": "main"				
-		},			
-		"quiz9": {
-			"question": "Why do we get confidence when we keep asking ourselves \"what else can I do in order to achieve my goal?\"",
-			"option1": "Because this mental process becomes a very powerful habit.",
-			"option2": "Because our subconscious mind is a huge warehouse of resources and we can keep extracting ideas from there.",
-			"option3": "Because our subconscious mind cannot tell the difference between imagination and reality.",
-			"answer": "3",
-			"tutorial_type": "mental_process_goal_steps",
-			"tutorial_section": "confidence"				
-		},
-		"quiz10": {
-			"question": "Which version of the relaxation method should we use more often?",
-			"option1": "We can use either the fast or the slow version as often as we want.",
-			"option2": "The slow one because it allows us to relax more deeply.",
-			"option3": "The fast one because it takes 30 seconds or less to complete.",
-			"answer": "3",
-			"tutorial_type": "relaxation_method",
-			"tutorial_section": "fast_slow_relaxation"				
-		}						
-	},
+  "fields_descriptions": {
+    "programming": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">These days, there are very few jobs that don’t involve some level of technology use. But while most people are quite happy to simply be at the user end of that technology, you may be someone who wants to get stuck in and get involved in creating the systems and interfaces that other people use.<br><br><b>Reasons to pursue a programming career:</b><ol><li style=\"margin-bottom: 8px\"><b>You have opportunities without a degree.</b><br>Many organisations don’t require programming candidates to have a formal degree. They will be more interested in looking at your ability to learn on the job, your ability to work as part of a team and your willingness to tackle challenges. There is a huge amount of training courses available for major languages such as JavaScript, Python, Java, PHP, HTML, CSS and more – some of which you can learn to master in a matter of months.</li><li style=\"margin-bottom: 8px\"><b>You will be in demand.</b><br>The job market for programmers is excellent overall, but depending on what you choose to specialise in, you can become highly sought after. Industries such as banking, utilities and manufacturing are investing heavily in software development at the moment, but each sector will have their own specialist requirements. Whatever your main focus is, it’s a good idea to aim to have more than one area of expertise. This means that you’d be able to rapidly move into an alternative role in case your primary programming language becomes obsolete or less popular.</li><li style=\"margin-bottom: 8px\"><b>You will be a valued team member.</b><br>Teamwork is absolutely critical in all types of software development. The end solution will always depend on every member of the team making a valuable contribution, which makes you an important piece of the puzzle. In a modern business environment, programmers need to use a range of ‘people skills’ to engage and communicate with their colleagues and customers. You will be expected to share your knowledge and relay information that helps the entire team to make progress. More and more organisations adopt methodologies like Agile software development, which focuses heavily on creating a collaborative atmosphere where everyone adds value and learns from each other. This in turn results in faster delivery and higher quality of the end solution.</li><li style=\"margin-bottom: 8px\"><b>You will be constantly learning.</b><br>Programmers are on a constant learning journey. This can of course be said for most roles in business, but programmers do need to stay particularly well informed about new technological solutions and innovations. The ability to harness new ideas or platforms can make all the difference when it comes to a business’ ability to stay competitive in the marketplace. Many employers will work with you to build a development plan that allows you to do sponsored training and get various qualifications that will benefit you as well as the business.</li><li style=\"margin-bottom: 8px\"><b>You will have fun.</b><br>If you are a natural problem-solver, you will enjoy the process of creating software features and fixing bugs. You will get a great sense of achievement and satisfaction from delivering a solution that improves – perhaps even revolutionises – the way a business operates. And if you have been careful to choose an employer who knows how to reward its teams’ performance, you will get plenty of recognition for your contributions!</li></ol></span></div>",
+    "product_management": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Product management is building something from scratch or adding new features to an existing product. For example, building a complete e-commerce product itself or adding a search feature in an e-commerce product. However, it is not limited to that. It also comprises seeing the results of your hard work when the users are finding value in what you have built and continuously working towards building the best products for them.<br><br>Gathering information from different sources, prioritizing the tasks in hand, delegating the tasks, and delivering the final product that caters to the consumer’s needs are some of the things that a product manager actively does. Irrespective of what a PM does, they need to ensure that the product is aligned with the business goals.<br><br>You will find product managers working in start-ups as well as established companies handling consumer products, B2B products, B2C products, internal products, and so on. But at the core of everything they deliver a product that customers want and are willing to pay for. To do this, a product manager needs to be someone who has a vision and the ability to drive decisions and lead through influence.<br><br><b>Why should you consider a career in product management?</b><ol><li style=\"margin-bottom: 8px\">The role has a HUGE learning scope as it requires you to work with multiple cross-functional teams. Working with engineering, design, research, marketing, business, analytics, sales, support, and content teams is going to enrich your domain knowledge and experience. The skills that you will acquire through daily collaborations, communications, challenges, and frequent decision-making are going to turn you into a great leader for your career ahead.</li><li style=\"margin-bottom: 8px\">It is going to be addictive to solve users’ problems, seeing how the product you have built is being used by your end-users, and how it is impacting someone’s life.</li><li style=\"margin-bottom: 8px\">You will also get to communicate with the top leadership of the organization which will help you understand the vision of the organization better. Seeing the bigger picture will help you in making the right decisions for your product and organization.</li><li style=\"margin-bottom: 8px\">You will find the role flexible as you will be the one who will be driving the decisions and prioritizations of the tasks (of course in alignment with the business as already mentioned above.)</li></ol></span></div>",
+    "design": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Graphic design is an incredible career choice for those with a creative vision for their future. By entering a career which is increasingly digital, you can work from anywhere in the world. With in-demand graphic design skills, you can choose to find steady work in a multinational organization, work with local businesses on ad campaigns, or you could freelance, picking your own clients and working to your own schedule.<br><br>Designers use typography, photographs, illustrations, and graphic elements to construct messages that attract attention, cause us to think about their meaning, and stay in our memories over time.<br><br>Today, designers are increasingly working in the digital sphere. This means that graphic design is appearing across the internet and in apps. Design is becoming increasingly dynamic thanks to the adoption of technology in graphic design.<br><br>The location for a graphic designer’s work can vary radically, providing daily challenges that mean a designer’s job is always creative and interesting. They may work on adverts in physical media such as billboards, on the side of buses or in magazines and newspapers. Designers also design websites, and entire brand identities for companies that will be used across all their visual communications.<br><br><b>Reasons to choose a career in graphic design:</b><ol><li style=\"margin-bottom: 8px\"><b>You get paid for being creative.</b><br>At the heart of a graphic designer’s work is their creative spirit and when you become a graphic designer, you get to apply this every day. A graphic designer has to challenge themselves with deeper creative questions about how to express a message in a design. You’ll be involved in using color, shapes and symbols to express ideas that are at the heart of whatever campaign you’re working on.</li><li style=\"margin-bottom: 8px\"><b>You have the chance to make a difference.</b><br>When you’re a graphic designer, you can be involved in rewarding work that actually makes a difference in the world. You might work on governmental advertising campaigns that make a huge difference in society, encouraging people to give blood or take up the flu vaccine. Or maybe you’ll help local businesses spread the word about their wares, helping independent traders find new markets. In any case, graphic design is an outward looking profession and you’ll get to see tangible results in the real world.</li><li style=\"margin-bottom: 8px\"><b>Work from anywhere in the world.</b><br>The days of graphic designers only having the option to work with physical mediums are limited. Nowadays a fine understanding of Photoshop software, a laptop and a sketchpad are all the tools that a graphic designer needs to ply their trade. You won’t be tied to a desk or office, giving you incredible freedom to explore the world.<br><br>In an increasingly digital age, remote working is becoming more popular and more widely accepted by employers. This gives you the opportunity to travel while you work, or set up shop wherever you please.</li><li style=\"margin-bottom: 8px\"><b>You get to be your own boss.</b><br>In a visual and digital world there’s always going to be a demand for graphic designers. By manipulating the very medium in which companies communicate – graphics – you’re a valuable asset to any organization. Whilst there are always steady jobs for the designers looking to settle down, more graphic designers are choosing to freelance these days, giving you ultimate control over your working life.<br><br>In some cases, designers are even setting up their own design agencies. By building your client base you can turn your design work into your own business, building your own range of products from ad campaigns to newly designed fonts. As a graphic designer, the world’s your oyster.</li><li style=\"margin-bottom: 8px\"><b>Varied opportunities.</b><br>The world runs on a visual basis and almost every sector and industry needs graphic designers to tell their story. You could work for multinational brands like Apple, Google or Gucci. Charities rely on graphic designers to appeal to their audience, generating the necessary avenues of funding for their outreach projects. You can work for the government on messaging campaigns, encouraging folks to get out and vote or to understand government administrative systems such as tax and visas. Many of the world’s largest organizations have their own in-house team of designers and they’re always recruiting new, creative talent.<br><br>With a graphic design background, you speak a global language and there are a wide range of roles that you can fill. By upskilling in marketing, you can lead ad campaigns for the biggest agencies or by learning coding you could be building apps. Design is at the heart of so many jobs that graphic designers are never lacking in new opportunities.</li><li style=\"margin-bottom: 8px\"><b>Get onboard with digital.</b><br>The world is becoming increasingly digital and, as a global pandemic rocked the world in 2020, we’re spending more time than ever in virtual environments. Graphic designers are well placed to leverage this digital turn as they’re versed in the use of software to create incredible designs.<br><br>Digital design roles are on the rise and the demand for these positions is translating into increasingly lucrative salaries. Take advantage of a digital surge to maximize your income and your freedom to work from anywhere in the world.</li><li style=\"margin-bottom: 8px\"><b>Shape people’s feelings and actions.</b><br>Although ad campaigns or app designs are often ephemeral and a campaign may run for a few months or return once a year at Christmas, what lasts is the impression that your work leaves on its audience. Graphic design is art and the best examples leave a lasting mark on those who witness it.<br><br>Pursuing a career in graphic design gives you the tools to change hearts and minds, influencing people to give to charity or change their behavior in important, socially conscious ways. As a graphic designer your legacy isn’t just beautiful design, it’s marked changes in the way people live their lives.</li><li style=\"margin-bottom: 8px\"><b>Never get bored.</b><br>When you’re a graphic designer, no two days of work are ever the same. Working with visual mediums means that graphic designers bring together a wide range of elements, from typography and abstract graphics to coloring and logos. On any individual campaign you have so many creative directions to explore.<br><br>What’s more, creativity is great for your overall health. Creativity has been linked to reduced stress and anxiety and can even boost your immune system. Turning your passion into a profession through graphic design can have wide ranging benefits on your physical and emotional well-being.<br><br>Further, graphic designers who choose to freelance get to pick and choose their work to stay creatively engaged. You could spend one day designing social media posts for an independent business and the next work with a multinational organization developing long-term branding strategy. By working with a variety of clients in a creative way, you can guarantee that work never becomes a grind.</li><li style=\"margin-bottom: 8px\"><b>Have fun while you work!</b><br>By choosing a creative industry, you’ll surround yourself with vibrant individuals. Graphic design departments are filled with people who enjoy exploring the world around them, coming up with creative solutions to complex problems. Design studios are vibrant and exciting places to work thanks to the people that fill them.<br><br>If putting on a suit and tie everyday sounds like a bleak future, then design studios might be a place where you can express yourself. Generally speaking, these are fantastic and fulfilling environments in which to pursue your career – relaxed dress codes, creatively decorated offices and flexible patterns of work are the norm in design departments. Immerse yourself in a world of creativity and you’ll reap the benefits, having fun at work.</li></ol></span></div>",
+    "customer_support": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Customer service is a fantastic job. It’s unfairly considered as a “backup career” because customer support reps can enter the industry with any experience level and background. But customer service is at the core of a company’s success, making it one of the most vital roles you can play after product and sales. It allows you to impact the bottom line at your company while forging meaningful connections with your teammates and customers.<br><br>In fact, customer service might be the most important job at a company. According to Microsoft, 90% of consumers choose to do business with a company based on the quality of its customer service. You yourself might feel that way. How many times have you stopped doing business with a company because of a poor customer support experience? As a customer support rep, you’d directly impact how much revenue your company makes from returning customers.<br><br><b>Best reasons to work in customer support:</b><ol><li style=\"margin-bottom: 8px\"><b>You’ll develop your emotional intelligence.</b><br>It's a given that you'll develop people skills while working in a customer-facing role. And, although there can be challenges to working on the phones with customers all day, the skills and strategies you'll develop far outweigh those challenges.<br><br>You'll be helping customers solve a variety of different problems, which could have a huge impact on their personal or professional life. Your ability to empathize and wield social skills will be critical to build rapport with customers and get the information you need to help them.<br><br>In the face of difficult customers or combative language, you'll need to tap into your sense of self-regulation to calmly and effectively de-escalate customers so you can better assist them. During those tough days when you don't feel like you can make another phone call (we all have them), you’ll go into your senses of motivation and self-awareness to keep yourself on-track and positive so you can buckle down and get everything done.<br><br>Studies have shown that these people skills are linked more closely with success in the workplace than cognitive intelligence — especially when it comes to management. Starting your career in customer support sets you on the right track for building and growing these skills. (Plus, they're helpful for effective interpersonal relationship communication and collaboration, too.)</li><li style=\"margin-bottom: 8px\"><b>You’ll learn your product or service, inside and out.</b><br>To be successful in customer support, you need to understand every aspect of your product or service so you can quickly answer questions and resolve issues for your customers. But this isn't just a benefit for the people who will get the information they need ASAP — it's a big win for you, too.<br><br>Learning about your product or service helps you become a subject matter expert — which can open a ton of different doors for you as you grow in your career.<br><br>For example, by practicing teaching your customers how to use your product or service, you'll be able to specialize in training and onboarding new members of your customer support team and take on a leadership role. If you prefer writing, you might be able to start writing knowledge base articles or blog posts for your organization to supplement one-off customer support interactions. Or, you could use your creative side to create step-by-step product walkthrough videos to help your customers and build your online presence.<br><br>Regardless of the avenue you decide to take, an in-depth product or service knowledge will help you become an expert — on your team, within your organization, and in your industry.</li><li style=\"margin-bottom: 8px\"><b>You’ll build transferable skills.</b><br>Building your subject matter expertise will help you grow within your customer support team — but you'll also learn valuable skills that you can use to snag a new role if you want to branch out even further.<br><br><b>Sales skills</b><br>Working with customers will teach you exactly how customers can use your company's product or service to achieve their goals. You can use this knowledge and experience if you decided to move into sales. Social proof is an effective selling tool, and if you can tell prospects on the phone exactly how your product or service has helped other customers, they might be more interested in closing a deal with you.<br><br><b>Marketing skills</b><br>Product knowledge is incredibly valuable for your marketing team, too. Whether you want to write for the blog, conduct product and market research, or manage social media support channels, in-depth product expertise and killer communication skills could help you land a role on your marketing team.<br><br><b>Product development skills</b><br>If you know the product inside and out, you might be able to build it, too. If you develop some chops for product development — whether that consists of software engineering, outreach, or vendor management — you might be able to use your wealth of knowledge to facilitate a transition away from the phones. You can then work behind-the-scenes to build the product you're servicing.</li><li style=\"margin-bottom: 8px\"><b>You’ll learn how to effectively solve problems.</b><br>At the heart of it, customer support is about reactively helping your customers and solving their problems. And whether it's a quick fix or a multi-step process, every customer problem will require creative thinking, people skills, and expertise to solve.<br><br>The ability to solve problems quickly, effectively, and diplomatically is critical for any job — whether it's in customer support or not. The ability to problem-solve is the building block of being able to prioritize, project manage, and resolve conflicts, and these skills are required if you want to earn promotions, manage a team, and use your influence and expertise to achieve your goals.</li><li style=\"margin-bottom: 8px\"><b>You’ll master different communication mediums.</b><br>Many customer service teams require reps to work on different support channels. This means you'll go from working with customers on the phone one day to emailing them the next. But, as you continue to bounce between the various communication mediums your company offers, you'll eventually master the art of digital conversation.</li><li style=\"margin-bottom: 8px\"><b>You’ll collaborate with a diverse team.</b><br>Customer support teams aren't always your typical tech-oriented group. Many are full of interesting individuals who have unique personalities and perspectives.<br><br>This is helpful for growing your career as well. Being exposed to an array of different perspectives can help you find solutions to problems that you might not realize exist. It can also change your opinion on an issue after looking at it from an angle that you hadn't considered before. Situations like these where our perspective is challenged not only help us grow as professionals but as people, too.</li><li style=\"margin-bottom: 8px\"><b>You’ll learn to work remotely.</b><br>One growing trend in customer service is remote work. As customer service technology continues to enable reps to work from home, more customer service teams are taking advantage of this opportunity.<br><br>But, remote work isn't just a nice perk. It's a skill you'll need to develop, regardless of the career you pursue. As the cost of office space continues to rise and more positions go remote, you might soon find your role has become fully-remote as well. And, while this might not change what you do for a living, it will certainly change how you do it.<br><br>Getting exposure to remote work in a customer service role is great experience for any career. It challenges you to master your daily workflow without the immediate assistance of your surrounding colleagues. You learn how to independently troubleshoot problems and how to teach yourself solutions when no one is near to help.</li><li style=\"margin-bottom: 8px\"><b>You can build a network within your organization.</b><br>When you work in customer support, you might not always know the answer to a customer question. You might have to share customer feedback with important stakeholders. Or you might have insights to share that change how your company's leadership thinks about your ideal buyer persona.<br><br>To achieve any of the above, you'll have to pull knowledge from the people around you — your colleagues. If you can build a network of coworkers with different skillsets and expertise from you, not only will you be able to quickly and effectively get your job done, but you'll build a network of new opportunities for growth and professional development, too.<br><br>Whether you aspire to a long career in the customer support space, or you're simply eager to get your foot in the door at an innovative company, a job in customer support will teach you valuable skills that you'll need, again and again, over the course of your career.</li><li style=\"margin-bottom: 8px\"><b>You’ll directly impact the bottom line at your company.</b><br>When it comes to a company’s financial performance, it’s all too easy to overemphasize the role of sales and marketing in the firm’s success. But one can argue that customer service is truly the differentiating factor between a company that fails and one that succeeds.<br><br>The service experience makes the difference between a one-time customer and a loyal customer that keeps returning to the brand. Knowing that you’ll have such a big, real-world impact is one of the greatest perks of working in customer support. You’re not crunching numbers or looking at spreadsheets all day. Something as simple as a single positive phone call with a customer can end up turning into an upsell deal later.<br><br>That’s not to say it won’t be hard. Keeping a positive attitude while working in customer service is especially difficult when customers are being harsh and even illogical. But a bad customer is a customer you won’t want to keep. A good customer, however, can turn into a brand advocate after an excellent customer service experience — bringing in more referral business than a marketing campaign would.</li></ol></span></div>",
+    "human_resources": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">When it comes to finding a fulfilling career path that focuses on helping others and having a positive impact, there are a variety of fields from which to choose. Careers in human resources specialize in serving the employees of a company and helping develop their growth and fulfillment in the workplace.<br><br>Human resources, or HR, is the department within a business or organization that supervises the management and development of employees. From administrative tasks to promoting a positive working environment, HR professionals deal with multiple parts of the business to manage the lives of employees.<br><br>This includes recruitment, training and hiring practices for new employees as well as training, development and compensation for existing employees. HR departments also handle conflict resolution and compliance.<br><br><b>Why should I work in Human Resources?</b><br><br>Careers in human resources, and the opportunity to work with people and help improve the lives of employees, can be fulfilling. Here are 7 reasons you may want to consider a career in HR:<ol><li style=\"margin-bottom: 8px\"><b>Help others.</b><br>HR professionals work directly with their fellow employees, helping them develop professionally so they can be their best selves in the workplace. From promoting professional development to resolving conflicts in the office, roles in human resources work directly to support employees and guide them along in their careers.</li><li style=\"margin-bottom: 8px\"><b>Position of influence.</b><br>Human resources employees have a unique perspective when it comes to their business or organization. Because they understand the finer details of how choices affect employees as well as management, they can often influence decisions for the good of the business and their fellow employees.</li><li style=\"margin-bottom: 8px\"><b>Stable career.</b><br>Regardless of industry, there will always be a need for professionals who can oversee the hiring, onboarding and retention of employees. Likewise, technology cannot easily substitute the interpersonal responsibilities of an HR department, making it a career choice that will last.</li><li style=\"margin-bottom: 8px\"><b>Problem-solving.</b><br>HR professionals are in charge of dealing with complex issues that arise in the workplace with sophistication. If you enjoy problem-solving and working through complicated interpersonal situations with others, you might appreciate the sort of work you will get to do with a career in HR.</li><li style=\"margin-bottom: 8px\"><b>Create a positive working environment.</b><br>Working in HR will give you the opportunity to influence the well-being and productivity of employees in the workplace, creating a more positive workplace culture.<br><br>For example, HR departments in many companies host professional development events or promote wellness programs targeted towards employees. These events contribute to a sense of company culture and increase motivation as well as talent retention.</li><li style=\"margin-bottom: 8px\"><b>Work for people.</b><br>Many individuals find their purpose is best fulfilled when they work directly with, and for others.<br><br>Whether it is guiding an employee through a promotion or helping new hires acclimate to the workplace, a career in human resources guarantees that you will work to help others find satisfaction and gratification in what they do.</li><li style=\"margin-bottom: 8px\"><b>Diverse roles and exciting things to do.</b><br>Because human resources is such a diverse and multifaceted industry, every day on the job will look different. If you enjoy a career that presents variety, the pace of a job in human resources will be one that you can keep up with.</li></ol></span></div>",
+    "project_management": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Project management is the process of organizing the project plan, project objectives, milestones, and deliverables of a project, as well as managing team members, timelines, and budgets to ensure that successful projects are delivered.<br><br>Project managers are in charge of planning, managing, and executing various projects. Effective project management entails assessing project feasibility, creating a project management plan, identifying key project deliverables — breaking them down into more manageable tasks, and assigning them to teams and staff. And finally, ensuring the project runs smoothly from start to finish.<br><br><b>Why you should consider a career in project management</b><br><br>A career in project management means you will likely be an integral part of all critical new initiatives at your company.<br><br>If you choose a career in project management, expect to be learning … constantly. Every project, every team, every task is unique. And while there is project management software that will make your life easier, every day is different.<ol><li style=\"margin-bottom: 8px\"><b>Straightforward career path.</b><br>Not all jobs have a clear career path. Some can be dead ends — not ideal. Still, others are wavy, with lateral moves likely — okay, if that fits your personality. However, project management career paths tend to have a straight-line trajectory.<br><br>A possible path may begin as an internship during college followed by a project coordinator. That role often leads to an assistant project manager, then project manager, then lead/senior project manager. At this point, you begin managing bigger teams and often move into a director or VP position. Project managers are typically a good fit for future COOs as well, thanks to operations experience.</li><li style=\"margin-bottom: 8px\"><b>Good salary.</b><br>According to a recent PMI report, “demand over the next 10 years for project managers is growing faster than demand for workers in other occupations.” It’s projected that “by 2027, employers will need nearly 88 million individuals in project management-oriented roles.” And jobs in high demand tend to command higher salaries.</li><li style=\"margin-bottom: 8px\"><b>Lots of industry options.</b><br>Some job types are specific to a handful of industries. For example, there are not a lot of physicians working at SaaS companies … nor are there many (or any, for that matter) construction workers working in the ER.<br><br>However, when it comes to project management, you can pretty much pick your industry: construction, architecture, software development, health care, law, finance, energy, and so on.</li><li style=\"margin-bottom: 8px\"><b>Uniqueness.</b><br>Projects are unique and temporary. Each new product development is a unique undertaking compared to the implementation of a new software system — one and done.<br><br>Additionally, executing on any strategic initiative requires a different set of initiatives this year compared to 3 or 5 or 10 years ago.<br><br>Although project managers often learn lessons from their past projects, they are continually leading and guiding a new and unique initiative every time.</li><li style=\"margin-bottom: 8px\"><b>Expand your knowledge.</b><br>While a project management role presupposes the need to know a lot about coordinating (project) teams, there’s still a lot you need to learn to achieve the best results.<br><br>Learning can come in the form of seminars and books and other skills-based learning initiatives. Additionally, you can learn from your colleagues, co-workers, and other industry experts.</li><li style=\"margin-bottom: 8px\"><b>Become more attentive to details.</b><br>Attention to detail is a primary requirement for most jobs. For a project management job, it’s essential. The finer details have a considerable impact on the overall output.<br><br>A career in project management helps you notice these details and ultimately predict how each of them might influence the project. With this knowledge, you will quickly build strategies and hone new ideas for purposes of team cooperation.</li><li style=\"margin-bottom: 8px\"><b>Make an impact.</b><br>Many people are continually looking to be in a position that’s meaningful and worthwhile to ensure they make a positive contribution to an industry or company.<br><br>In project management, you can work with different team members and feel challenged by problems that should be solved with a job that doesn’t leave you bored. As a project manager, you will feel rewarded when you keep your project schedules on track, meet the budget, and collaborate with colleagues to ensure everything runs efficiently.<br><br>Project managers help companies improve efficiency and save money to improve the organization’s performance as a whole. Although you will have a long list of responsibilities, you could make a positive impact on people around you. It is easy for you to remain stimulated in the role because you need to create new strategies that require you to experiment with different techniques that can help you meet your stakeholder’s needs.<br><br>If you want to pursue a career that allows you to feel fulfilled, working in project management will greatly enhance your professional life. You will feel stimulated and challenged in a position that will enable you to change industries and benefit anyone around you with the unique skills you develop.</li></ol></span></div>"    
+  },
 	"update_app": {
 		"title": "New version available",
-		"text": "We recommend that you update to the latest version. You can keep using this app while downloading the update."
+		"text": "We recommend that you update to the latest version. You can keep using this app while downloading the update.",
+    "update_now": "Update now",
+    "later": "Later"
 	},
 	"notifications": {
 		"title": "Notifications",
-		"label": "Daily notifications",
+		"label": "Training notifications",
 		"time": "Time",
 		"done": "Done"
 	},
@@ -336,11 +582,10 @@
 		"send": "Send",
 		"confirmation": "Thank you for your feedback, we will use it for future improvement."
 	},	
-	"terms": {
-		"title": "Terms of usage",
-		"text_title": "Privacy Policy & Terms of Service",
+	"privacy": {
+		"title": "Privacy policy",
 		"last_updated_label": "Last updated:",
-		"last_updated": "Jan 10th, 2021",
-		"text": "By installing our mobile or web application or in any way using or accessing our Services, you accept this Privacy Policy & Terms of Service (“Terms”) and the processing of your personal data."
+		"last_updated": "Aug 20th, 2021",
+		"text": "<div align=\"justify\" style=\"font-size: 12px; line-height: 1.2\">Mentors Without Borders (“we” or “us” or “our”) respects the privacy of our users (“user” or “you”). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our mobile application (the “Application”). Please read this Privacy Policy carefully. IF YOU DO NOT AGREE WITH THE TERMS OF THIS PRIVACY POLICY, PLEASE DO NOT ACCESS THE APPLICATION.<br><br>We reserve the right to make changes to this Privacy Policy at any time and for any reason. We will alert you about any changes by updating the “Last updated” date of this Privacy Policy. You are encouraged to periodically review this Privacy Policy to stay informed of updates. You will be deemed to have been made aware of, will be subject to, and will be deemed to have accepted the changes in any revised Privacy Policy by your continued use of the Application after the date such revised Privacy Policy is posted.<br><br>This Privacy Policy does not apply to the third-party online/mobile store from which you install the Application, which may also collect and use data about you. We are not responsible for any of the data collected by any such third party.<br><br><b>COLLECTION OF YOUR INFORMATION</b><br>We may collect information about you in a variety of ways.  The information we may collect via the Application depends on the content and materials you use, and includes:<br><br><b>Personal Data</b><br>Demographic and other personally identifiable information (such as your name and email address) that you voluntarily give to us when choosing to participate in various activities related to the Application, such as scheduling lessons, chatting, sending feedback, etc. If you choose to share data about yourself via your profile or other interactive areas of the Application, please be advised that all data you disclose in these areas is public and your data will be accessible to anyone who accesses the Application.<br><br><b>Derivative Data</b><br>Information our servers automatically collect when you access the Application, such as your native actions that are integral to the Application, including posting and accepting lesson requests, canceling lessons, adding lesson notes, goals and steps, and solving quizzes.<br><br><b>Geo-Location Information</b><br>We may request access or permission to and track location-based information from your mobile device, either continuously or while you are using the Application, to provide location-based services. If you wish to change our access or permissions, you may do so in your device’s settings.<br><br><b>Mobile Device Access</b><br>We may request access or permission to certain features from your mobile device, including your mobile device’s calendar, camera, contacts, reminders, storage, and other features. If you wish to change our access or permissions, you may do so in your device’s settings.<br><br><b>Mobile Device Data</b><br>Device information such as your mobile device ID number, model, and manufacturer, version of your operating system, phone number, country, location, and any other data you choose to provide.<br><br><b>Push Notifications</b><br>We may request to send you push notifications regarding your account or the Application. If you wish to opt-out from receiving these types of communications, you may turn them off in your device’s settings.<br><br><b>Third-Party Data</b><br>Information from third parties, such as personal information or network friends, if you connect your account to the third party and grant the Application permission to access this information.<br><br><b>USE OF YOUR INFORMATION</b><br>Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Application to:<ol><li>Create and manage your account.</li><li>Compile anonymous statistical data and analysis for use internally.</li><li>Assist law enforcement and respond to subpoena.</li><li>Email you regarding your account.</li><li>Enable user-to-user communications.</li><li>Generate a personal profile about you to make future visits to the Application more personalized.</li><li>Increase the efficiency and operation of the Application.</li><li>Monitor and analyze usage and trends to improve your experience with the Application.</li><li>Notify you of updates to the Application.</li><li>Request feedback and contact you about your use of the Application.</li><li>Resolve disputes and troubleshoot problems.</li><li>Send you a newsletter.</li><li>Solicit support for the Application.</li></ol><br><b>DISCLOSURE OF YOUR INFORMATION</b><br>We may share information we have collected about you in certain situations. Your information may be disclosed as follows:<br><br><b>By Law or to Protect Rights</b><br>If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others, we may share your information as permitted or required by any applicable law, rule, or regulation.<br><br><b>Third-Party Service Providers</b><br>We may share your information with third parties that perform services for us or on our behalf, including data analysis, email delivery and hosting services.<br><br><b>Interactions with Other Users</b><br>If you interact with other users of the Application, those users may see your name and other information that we consider to be relevant as part of this interaction.<br><br><b>Online Postings</b><br>When you post comments, contributions or other content to the Application, your posts may be viewed by all users.<br><br><b>Analytics</b><br>We may also partner with selected third-party vendors, such as Google Analytics, Mixpanel,  and others, to allow tracking services on the Application to, among other things, analyze and track users’ use of the Application, determine the popularity of certain content, and better understand online activity. By accessing the Application, you consent to the collection and use of your information by these third-party vendors.<br><br><b>SECURITY OF YOUR INFORMATION</b><br>We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse. Any information disclosed online is vulnerable to interception and misuse by unauthorized parties. Therefore, we cannot guarantee complete security if you provide personal information.<br><br><b>POLICY FOR CHILDREN</b><br>We do not knowingly solicit information from or market to children under the age of 13. If you become aware of any data we have collected from children under age 13, please contact us using the contact information provided below.<br><br><b>OPTIONS REGARDING YOUR INFORMATION</b><br><b>Account Information</b><br>You may at any time review or change the information in your account or terminate your account by:<ul><li>Logging into your account settings and updating your account</li><li>Contacting us using the contact information provided below</li></ul>Upon your request to terminate your account, we will deactivate or delete your account and information from our active databases. However, some information may be retained in our files to prevent fraud, troubleshoot problems, assist with any investigations and/or comply with legal requirements.<br><br><b>Emails and Communications</b><br>If you no longer wish to receive correspondence, emails, or other communications from us, you may opt-out by contacting us using the contact information provided below.<br><br><b>CALIFORNIA PRIVACY RIGHTS</b><br>If you are under 18 years of age, reside in California, and have a registered account with the Application, you have the right to request removal of unwanted data that you publicly post on the Application. To request removal of such data, please contact us using the contact information provided below, and include the email address associated with your account and a statement that you reside in California.  We will make sure the data is not publicly displayed on the Application, but please be aware that the data may not be completely or comprehensively removed from our systems.<br><br><b>CONTACT US</b><br>If you have questions or comments about this Privacy Policy, please contact us at:<br><br>Mentors Without Borders<br>Str. Alexandru Lapusneanu, nr. 4 B<br>Bacau, 600296<br>Romania<br>Mobile: +40 742805664<br>Email: edmond@mentorswithoutborders.net</div>"
 	}
 }

@@ -75,8 +75,8 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showSingleLessonText(Lesson? nextLesson) {
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String article = Utils.getIndefiniteArticle(subfield);
@@ -164,8 +164,8 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showRecurringLessonText(Lesson? nextLesson) {
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String lessonDate = dateFormat.format(nextLessonDateTime);

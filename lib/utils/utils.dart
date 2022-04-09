@@ -146,7 +146,7 @@ class Utils {
   }
 
   static DateTime setDayOfWeek(DateTime dateTime, String newDayOfWeek) {
-    String dayOfWeek = DateFormat(AppConstants.dayOfWeekFormat).format(dateTime);
+    String dayOfWeek = DateFormat(AppConstants.dayOfWeekFormat, 'en').format(dateTime);
     while (dayOfWeek != newDayOfWeek) {
       dateTime.add(Duration(days: 1));
     }

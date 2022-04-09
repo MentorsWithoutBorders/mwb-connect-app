@@ -56,8 +56,8 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     } else if (_lessonRequestProvider?.isNextLesson == true && lessonRecurrence?.dateTime != null) {
       lessonDateTime = lessonRecurrence?.dateTime as DateTime;
     }
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String date = dateFormat.format(lessonDateTime);
     date = date.substring(0, date.indexOf(','));
@@ -136,7 +136,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }
   
   Widget _showRecurrenceTypes(LessonRecurrenceModel? lessonRecurrence) {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
     String date = '';
     if (lessonRecurrence?.endRecurrenceDateTime != null) {
       date = dateFormat.format(lessonRecurrence?.endRecurrenceDateTime as DateTime).capitalize();

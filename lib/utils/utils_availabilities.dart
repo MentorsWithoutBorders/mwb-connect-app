@@ -10,8 +10,8 @@ class UtilsAvailabilities {
   static bool _mergedAvailabilityLastShown = false;  
 
   static Availability getAvailabilityToUtc(Availability availability) {
-    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormat);
+    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormat, 'en');
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
       date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
@@ -30,9 +30,9 @@ class UtilsAvailabilities {
   }
   
   static Availability getAvailabilityToLocal(Availability availability) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
-    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat);
-    DateFormat timeFormat = DateFormat('ha');    
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
+    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    DateFormat timeFormat = DateFormat('ha', 'en');    
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
       date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));

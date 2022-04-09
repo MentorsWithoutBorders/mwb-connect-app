@@ -28,7 +28,7 @@ class UpdateAppViewModel extends ChangeNotifier {
       build: packageVersionBuild
     );    
     _updateAppService.sendAppVersion(currentAppVersion);
-    final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
     final DateTime now = DateTime.now();
     if (!_shouldShowUpdate()) {
       return UpdateStatus.NO_UPDATE;

@@ -45,8 +45,8 @@ class _LessonRequestState extends State<LessonRequest> {
   Widget _showText() {
     LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
     DateTime lessonRequestDateTime = lessonRequest?.lessonDateTime as DateTime;
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String name = lessonRequest?.student?.name as String;
     String organization = lessonRequest?.student?.organization?.name as String;

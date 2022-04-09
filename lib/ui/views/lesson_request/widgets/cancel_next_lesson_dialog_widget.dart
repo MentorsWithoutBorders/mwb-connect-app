@@ -55,8 +55,8 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     }
     Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
     String date = dateFormat.format(nextLessonDateTime);

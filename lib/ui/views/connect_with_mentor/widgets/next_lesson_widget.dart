@@ -59,8 +59,8 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showSingleLessonText(Lesson? nextLesson) {
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;   
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String name = nextLesson?.mentor?.name as String;
     String fieldName = _connectWithMentorProvider?.fieldName as String;
@@ -156,8 +156,8 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showRecurringLessonText(Lesson? nextLesson) {
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson);
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String name = nextLesson?.mentor?.name as String;
     String fieldName = _connectWithMentorProvider?.fieldName as String;

@@ -12,7 +12,7 @@ class StepModel {
   StepModel({this.id, this.parentId, this.text, this.level, this.index, this.dateTime});
 
   StepModel.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     id = json['id'];
     parentId = json['parentId'];
     text = json['text'] ?? '';
@@ -22,7 +22,7 @@ class StepModel {
   }
 
   Map<String, Object?> toJson() {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     return {
       'parentId': parentId,
       'text': text,

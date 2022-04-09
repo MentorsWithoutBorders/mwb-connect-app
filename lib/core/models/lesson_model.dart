@@ -19,7 +19,7 @@ class Lesson {
   Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.isRecurrent, this.isRecurrenceDateSelected, this.endRecurrenceDateTime, this.isCanceled, this.shouldStop = false});
 
   Lesson.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     id = json['id'];
     students = _studentsFromJson(json['students']?.cast<Map<String,dynamic>>());
     mentor = _mentorFromJson(json['mentor']);
@@ -56,7 +56,7 @@ class Lesson {
   }    
 
   Map<String, Object?> toJson() {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
     return {
       'id': id,
       'student': _studentsToJson(students),

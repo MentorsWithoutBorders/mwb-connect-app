@@ -94,7 +94,7 @@ class PushNotificationsService {
             _showNormalPushNotification(event);
           }
       }
-      final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat);
+      final DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
       final DateTime now = DateTime.now();
       _storageService.lastPNShownDateTime = dateFormat.format(now);
     }

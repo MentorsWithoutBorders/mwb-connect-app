@@ -81,7 +81,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }   
 
   Widget _showTopText() {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
     String certificateDate = dateFormat.format(_connectWithMentorProvider?.getCertificateDate() as DateTime);
     String text = 'connect_with_mentor.conditions_certificate'.tr(args: [certificateDate]);
     String and = 'common.and'.tr();
@@ -117,7 +117,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
   
   Widget _showNextDeadline() {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
     String deadline = dateFormat.format(Utils.getNextDeadline() as DateTime);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),

@@ -24,7 +24,7 @@ class User {
   User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
 
   User.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     id = json['id'].toString();
     name = json['name'].toString();
     email = json['email'].toString();
@@ -75,7 +75,7 @@ class User {
   }
 
   Map<String, Object?> toJson() {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     Map<String, Object?> userMap = {
       'id': id,
       'name': name,

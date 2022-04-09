@@ -97,7 +97,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   }
 
   Widget _showNextDeadline() {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
     String deadline = dateFormat.format(Utils.getNextDeadline() as DateTime);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),

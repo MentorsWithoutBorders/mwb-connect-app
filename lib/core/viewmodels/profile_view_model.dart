@@ -127,7 +127,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   String getAvailabilityStartDate() {
-    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, _defaultLocale);
+    final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
     String date = dateFormat.format(DateTime.now()).capitalize();
     if (user?.availableFrom != null) {
       date = dateFormat.format(user?.availableFrom as DateTime).capitalize();

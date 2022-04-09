@@ -90,7 +90,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
   List<Availability> getAdjustedFilterAvailabilities(List<Availability> filterAvailabilities) {
     List<Availability> adjustedFilterAvailabilities = [];
     for (Availability availability in filterAvailabilities) {
-      DateFormat timeFormat = DateFormat('ha');    
+      DateFormat timeFormat = DateFormat('ha', 'en');    
       DateTime date = Utils.resetTime(DateTime.now());
       List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
       DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0]);

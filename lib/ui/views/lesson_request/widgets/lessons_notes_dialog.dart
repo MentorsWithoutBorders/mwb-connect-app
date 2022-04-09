@@ -56,7 +56,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
   Widget _showLessonsNotes(bool isHorizontal) {
     List<LessonNote>? lessonsNotes = _lessonRequestProvider?.lessonsNotes != null ? _lessonRequestProvider?.lessonsNotes : [];
     List<Widget> lessonNoteWidgets = [];
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormat);
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
     if (lessonsNotes != null) {
       for (LessonNote lessonNote in lessonsNotes) {
         String lessonNoteDate = dateFormat.format(lessonNote.dateTime as DateTime);

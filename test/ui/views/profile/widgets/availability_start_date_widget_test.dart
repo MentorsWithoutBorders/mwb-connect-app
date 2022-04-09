@@ -83,7 +83,7 @@ class AvailabilityStartDateWidgetTest {
   static Finder availableFromText = find.byKey(const Key(AppKeys.availableFromText));
   static Finder availableFromDate = find.byKey(const Key(AppKeys.availableFromDate));
   static Finder editCalendarIcon = find.byKey(const Key(AppKeys.editCalendarIcon));
-  static DateFormat dateFormat = DateFormat('MMM dd, yyyy');
+  static DateFormat dateFormat = DateFormat('MMM dd, yyyy', 'en');
 
   static Future<void> widgetShowsUpTest() async {
     expect(find.text('I\'m currently available'), findsOneWidget);
