@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
@@ -56,26 +57,41 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
     Availability? availability = _availableMentorsProvider?.selectedMentor?.availabilities![0];
     String selectedLessonStartTime = _availableMentorsProvider?.selectedLessonStartTime as String;
     String dayOfWeek = availability?.dayOfWeek as String;
+    String preferredStartTime = 'available_mentors.preferred_start_time'.tr(args: [dayOfWeek]);
     return Wrap(
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(bottom: 15.0, right: 3.0),
-          child: Text(
-            'available_mentors.preferred_start_time'.tr(args: [dayOfWeek]),
-            style: const TextStyle(
-              fontSize: 13.0,
-              color: AppColors.DOVE_GRAY
-            )
-          )
+          child: HtmlWidget(preferredStartTime)
         ),
-        Container(
-          width: 80.0,
-          height: 30.0,
-          margin: const EdgeInsets.only(bottom: 15.0),
-          child: Dropdown(
-            dropdownMenuItemList: _buildTimeDropdown(),
-            onChanged: _setTimeFrom,
-            value: selectedLessonStartTime
+        Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 80.0,
+                height: 30.0,
+                child: Dropdown(
+                  dropdownMenuItemList: _buildTimeDropdown(),
+                  onChanged: _setTimeFrom,
+                  value: selectedLessonStartTime
+                )
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                  child: Text(
+                    'available_mentors.lesson_duration'.tr(),
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      fontStyle: FontStyle.italic,
+                      color: AppColors.DOVE_GRAY
+                    )
+                  ),
+                ),
+              )
+            ]
           ),
         )
       ]

@@ -220,7 +220,7 @@
     "choose_availability": "Choose availability:",
     "title_skills": "Skills",
     "see_skills": "see skills",
-    "skills_text": "{} has added the following skills for {}:",
+    "skills_text": "{} can teach the following skills (and more) for {}:",
     "send_request": "Send request",
     "please_select_error": "Please select",
     "all_fields": "All fields",
@@ -231,7 +231,8 @@
     "add_skills": "Add skills {}",
     "apply_filters": "Apply filters",
     "lessons_start_time": "Lessons start time",
-    "preferred_start_time": "Please select your preferred start time for the lessons on {}s (each lesson will be 1 / 1.5 hours long):",
+    "preferred_start_time": "<span style=\"color: #646464; line-height: 1.3\">Please select your <b>preferred start time</b> for the lessons on {}s:</span>",
+    "lesson_duration": "(each lesson will be 1 / 1.5 hours long)",
     "no_mentors_found": "No available mentors found for the specified criteria"
   },
 	"lesson_request": {
