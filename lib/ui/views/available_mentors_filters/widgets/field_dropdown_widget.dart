@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
@@ -73,7 +74,10 @@ class _FieldDropdownState extends State<FieldDropdown> {
     _setSelectedField(selectedField as Field);
     _availableMentorsProvider?.setField(selectedField);
     await Future<void>.delayed(const Duration(milliseconds: 50));
-    _availableMentorsProvider?.addSubfield();
+    List<Subfield>? filterSubfields = _availableMentorsProvider?.filterField.subfields;
+    if (filterSubfields != null && filterSubfields.length == 0) {
+      _availableMentorsProvider?.addSubfield();
+    }
   }
   
   void _setSelectedField(Field field) {
