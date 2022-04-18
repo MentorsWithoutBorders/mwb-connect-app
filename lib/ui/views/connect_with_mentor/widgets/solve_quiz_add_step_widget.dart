@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -26,7 +25,6 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
   QuizzesViewModel? _quizzesProvider;
-  final String _defaultLocale = Platform.localeName;
 
   Widget _showSolveQuizAddStepCard() {
     String? quizzes = _quizzesProvider?.getRemainingQuizzesText();
@@ -172,9 +170,9 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   void _goToGoal() {
     _quizzesProvider!.wasClosed = false;
     if (_connectWithMentorProvider?.goal != null) {
-      _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
       _goToGoalSteps();
     } else {
+      _connectWithMentorProvider?.addLogEntry('goal is null in solve_quiz_add_step_widget');
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
     }
   }

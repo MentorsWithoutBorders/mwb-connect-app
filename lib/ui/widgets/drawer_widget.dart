@@ -52,6 +52,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
       _goToGoalStepsMentor();
     } else {
+      _lessonRequestProvider?.addLogEntry('goal is null in drawer_widget');
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalStepsMentor());
     }
   }
@@ -70,6 +71,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
       _goToGoalStepsStudent();
     } else {
+      _connectWithMentorProvider?.addLogEntry('goal is null in drawer_widget');
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalStepsStudent());
     }
   }

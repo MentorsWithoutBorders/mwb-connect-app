@@ -13,11 +13,13 @@ import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
+import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class ConnectWithMentorViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final ConnectWithMentorService _connectWithMentorService = locator<ConnectWithMentorService>();
   final GoalsService _goalsService = locator<GoalsService>();
+  final LoggerService _loggerService = locator<LoggerService>();
   User? selectedMentor;
   Goal? goal;
   StepModel? lastStepAdded;
@@ -31,6 +33,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     if (goals.isNotEmpty) {
       setGoal(goals[0]);
     } else {
+      addLogEntry('setting goal to null in getGoal()');
       setGoal(null);
     }
   }
@@ -104,5 +107,9 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
       }
     }
     return Jiffy(nextLesson?.dateTime).add(days: days).dateTime;
+  }
+
+  void addLogEntry(String text) {
+    _loggerService.addLogEntry(text);
   }
 }

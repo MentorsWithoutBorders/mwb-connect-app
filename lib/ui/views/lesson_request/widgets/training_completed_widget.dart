@@ -104,6 +104,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
       _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
       _goToGoalSteps();
     } else {
+      _lessonRequestProvider?.addLogEntry('goal is null in training_completed_widget');
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
     }
   }

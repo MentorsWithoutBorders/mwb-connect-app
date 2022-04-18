@@ -16,11 +16,13 @@ import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
+import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class LessonRequestViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
   final GoalsService _goalsService = locator<GoalsService>();
+  final LoggerService _loggerService = locator<LoggerService>();
   Goal? goal;
   LessonRequestModel? lessonRequest;
   String? quizzes;
@@ -39,6 +41,7 @@ class LessonRequestViewModel extends ChangeNotifier {
     if (goals.isNotEmpty) {
       setGoal(goals[0]);
     } else {
+      addLogEntry('setting goal to null in getGoal()');
       setGoal(null);
     }
   }
@@ -305,4 +308,8 @@ class LessonRequestViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void addLogEntry(String text) {
+    _loggerService.addLogEntry(text);
+  }  
 }

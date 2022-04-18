@@ -26,7 +26,6 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
   QuizzesViewModel? _quizzesProvider;
-  final String _defaultLocale = Platform.localeName;  
 
   Widget _showSolveQuizAddStepCard() {
     String? quizzes = _quizzesProvider?.getRemainingQuizzesText();
@@ -152,9 +151,9 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
   void _goToGoal() {
     _quizzesProvider!.wasClosed = false;
     if (_lessonRequestProvider?.goal != null) {
-      _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
       _goToGoalSteps();
     } else {
+      _lessonRequestProvider?.addLogEntry('goal is null in solve_quiz_add_step_widget');
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
     }
   }
