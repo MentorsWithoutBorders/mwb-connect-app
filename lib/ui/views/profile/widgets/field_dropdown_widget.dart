@@ -55,9 +55,10 @@ class _FieldDropdownState extends State<FieldDropdown> {
     List<Field>? fields = _profileProvider?.fields;
     if (fields != null) {
       for (final Field field in fields) {
+        String? fieldName = field.name == 'Other' ? 'Choose field' : field.name;
         items.add(DropdownMenuItem(
           value: field.id as String,
-          child: Text(field.name as String),
+          child: Text(fieldName as String),
         ));
       }
     }
