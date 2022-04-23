@@ -8,15 +8,15 @@ import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
-class LessonRecurrence extends StatefulWidget {
-  const LessonRecurrence({Key? key})
+class AddLessonsDialog extends StatefulWidget {
+  const AddLessonsDialog({Key? key})
     : super(key: key); 
 
   @override
-  State<StatefulWidget> createState() => _LessonRecurrenceState();
+  State<StatefulWidget> createState() => _AddLessonsDialogState();
 }
 
-class _LessonRecurrenceState extends State<LessonRecurrence> {
+class _AddLessonsDialogState extends State<AddLessonsDialog> {
   LessonRequestViewModel? _lessonRequestProvider;
 
   @override
@@ -29,7 +29,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     _lessonRequestProvider?.initLessonRecurrence();
   }
 
-  Widget _showLessonRecurrence() {
+  Widget _showAddLessonsDialog() {
     LessonRecurrenceModel? lessonRecurrence = _lessonRequestProvider?.lessonRecurrence;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 10.0),
@@ -81,7 +81,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     DateTime lessonDateTime = DateTime.now();
     if (lessonRequest?.lessonDateTime != null) {
       lessonDateTime = lessonRequest?.lessonDateTime as DateTime;
-    }    
+    }  
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
@@ -241,6 +241,6 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   @override
   Widget build(BuildContext context) {
     _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
-    return _showLessonRecurrence();
+    return _showAddLessonsDialog();
   }
 }

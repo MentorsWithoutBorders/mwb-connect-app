@@ -10,14 +10,13 @@ import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lessons_notes_dialog.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_guide_dialog.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/add_lessons_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_options_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_guide_dialog.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lessons_notes_dialog.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class NextLesson extends StatefulWidget {
   const NextLesson({Key? key})
@@ -52,7 +51,6 @@ class _NextLessonState extends State<NextLesson> {
               _showStudents(),
               _showLink(),
               _showGuide(),
-              if (_lessonRequestProvider?.isNextLesson == true) LessonRecurrence(),
               _showButtons()
             ]
           )
@@ -415,18 +413,12 @@ class _NextLessonState extends State<NextLesson> {
                   ),
                   padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
                 ), 
-                onPressed: () async {
-                  if (!_isUpdatingRecurrence) {
-                    await _updateLessonRecurrence();
-                  }
+                onPressed: () {
+                  _showAddLessonsDialog();
                 },
-                child: !_isUpdatingRecurrence ? Text(
-                  'lesson_request.update_lesson_recurrence'.tr(),
+                child: Text(
+                  'lesson_request.add_lessons'.tr(),
                   style: const TextStyle(color: Colors.white)
-                ) : SizedBox(
-                  width: 161.0,
-                  height: 16.0,
-                  child: ButtonLoader(),
                 )
               ),
             ),
@@ -453,6 +445,15 @@ class _NextLessonState extends State<NextLesson> {
       ),
     );
   }
+
+  void _showAddLessonsDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: AddLessonsDialog()
+      ),
+    );    
+  }  
 
   void _showCancelLessonDialog() {
     Widget cancelLessonWidget;

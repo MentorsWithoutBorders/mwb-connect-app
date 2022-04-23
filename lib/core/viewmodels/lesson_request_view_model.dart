@@ -5,7 +5,6 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
-import 'package:mwb_connect_app/utils/lesson_recurrence_type.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
@@ -173,7 +172,6 @@ class LessonRequestViewModel extends ChangeNotifier {
         lessonRecurrence.isRecurrent = true;
         lessonRecurrence.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime;
         setSelectedLessonsNumber(calculateLessonsNumber(lessonRecurrence.endRecurrenceDateTime));
-        setLessonRecurrenceType(getLessonRecurrenceType());
       } else {
         setDisabledLessonRecurrence();
       }
@@ -187,7 +185,6 @@ class LessonRequestViewModel extends ChangeNotifier {
     lessonRecurrence.endRecurrenceDateTime = lessonRecurrence.dateTime?.add(Duration(days: 7));
     setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
     setEndRecurrenceDate();    
-    setLessonRecurrenceType(LessonRecurrenceType.lessons);
   }
 
   void setSelectedLessonsNumber(int number) {
@@ -214,33 +211,7 @@ class LessonRequestViewModel extends ChangeNotifier {
       }
     }
     notifyListeners();
-  }
-
-  void setLessonRecurrenceType(LessonRecurrenceType? recurrenceType) {
-    if (recurrenceType == LessonRecurrenceType.date) {
-      lessonRecurrence.type = LessonRecurrenceType.date;
-      lessonRecurrence.isRecurrenceDateSelected = true;
-    } else if (recurrenceType == LessonRecurrenceType.lessons) {
-      lessonRecurrence.type = LessonRecurrenceType.lessons;
-      lessonRecurrence.isRecurrenceDateSelected = false;
-    } else {
-      lessonRecurrence.type = LessonRecurrenceType.lessons;
-      lessonRecurrence.isRecurrenceDateSelected = false;
-    }
-    notifyListeners();
-  }
-
-  LessonRecurrenceType? getLessonRecurrenceType() {
-    if (nextLesson?.isRecurrenceDateSelected != null) {
-      if (nextLesson?.isRecurrenceDateSelected == true) {
-        return LessonRecurrenceType.date;
-      } else {
-        return LessonRecurrenceType.lessons;
-      }
-    } else {
-      return LessonRecurrenceType.lessons;
-    }
-  }  
+  } 
 
   DateTime? getMinRecurrenceDate() {
     DateTime? minRecurrenceDate;
