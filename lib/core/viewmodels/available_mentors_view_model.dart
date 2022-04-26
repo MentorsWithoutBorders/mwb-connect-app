@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
@@ -47,9 +48,10 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     _removeOptionAllFilterField();
     User filter = User(
       field: _removeOptionAllFilterField(),
-      availabilities: getAdjustedFilterAvailabilities(filterAvailabilities)
+      availabilities: _adjustFilterAvailabilities(filterAvailabilities)
     );
     newAvailableMentors = await _availableMentorsService.getAvailableMentors(filter, pageNumber);
+    newAvailableMentors = _adjustMentorsAvailabilities(newAvailableMentors);
     newAvailableMentors = _splitMentorsAvailabilities(newAvailableMentors);
     newAvailableMentors = _sortMentorsAvailabilities(newAvailableMentors);
     availableMentors += newAvailableMentors;
@@ -87,7 +89,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     }
   }
 
-  List<Availability> getAdjustedFilterAvailabilities(List<Availability> filterAvailabilities) {
+  List<Availability> _adjustFilterAvailabilities(List<Availability> filterAvailabilities) {
     List<Availability> adjustedFilterAvailabilities = [];
     for (Availability availability in filterAvailabilities) {
       DateFormat timeFormat = DateFormat('ha', 'en');    
@@ -175,6 +177,34 @@ class AvailableMentorsViewModel extends ChangeNotifier {
     }
   }
 
+  List<User> _adjustMentorsAvailabilities(List<User> mentors) {
+    for (User mentor in mentors) {
+      List<Availability> availabilities = [];
+      for (Availability availability in mentor.availabilities as List<Availability>) {
+        DateFormat timeFormat = DateFormat('ha', 'en');    
+        DateTime date = Utils.resetTime(DateTime.now());
+        List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
+        List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
+        DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0]);
+        DateTime timeTo = date.copyWith(hour: availabilityTimeTo[0]);
+        bool hasScheduledLesson = mentor.hasScheduledLesson ?? false;
+        if (!hasScheduledLesson && availabilityTimeFrom[1] > 0) {
+          timeFrom = timeFrom.add(Duration(hours: 1));
+          timeTo = timeTo.add(Duration(hours: 1));
+        }
+        availabilities.add(Availability(
+          dayOfWeek: availability.dayOfWeek,
+          time: Time(
+            from: timeFormat.format(timeFrom).toLowerCase(),
+            to: timeFormat.format(timeTo).toLowerCase()
+          )
+        ));
+      }
+      mentor.availabilities = availabilities;
+    }
+    return mentors;
+  }
+
   List<User> _splitMentorsAvailabilities(List<User> mentors) {
     for (User mentor in mentors) {
       List<Availability> availabilities = [];
@@ -196,7 +226,7 @@ class AvailableMentorsViewModel extends ChangeNotifier {
       mentor.availabilities = availabilities;
     }
     return mentors;
-  }  
+  }
 
   List<User> _sortMentorsAvailabilities(List<User> mentors) {
     for (User mentor in mentors) {

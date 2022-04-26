@@ -20,8 +20,9 @@ class User {
   DateTime? availableFrom;
   LessonsAvailability? lessonsAvailability;
   DateTime? registeredOn;
+  bool? hasScheduledLesson;
 
-  User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn});
+  User({this.id, this.name, this.email, this.password, this.isMentor, this.organization, this.field, this.timeZone, this.availabilities, this.isAvailable, this.availableFrom, this.lessonsAvailability, this.registeredOn, this.hasScheduledLesson});
 
   User.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
@@ -38,6 +39,7 @@ class User {
     availableFrom = json['availableFrom'] != null ? dateFormat.parseUTC(json['availableFrom']).toLocal() : null;
     lessonsAvailability = _lessonsAvailabilityFromJson(json['lessonsAvailability'], isMentor!);
     registeredOn = json['registeredOn'] != null ? dateFormat.parseUTC(json['registeredOn']).toLocal() : null;
+    hasScheduledLesson = json['hasScheduledLesson'] ?? false;
   }
 
   Organization _organizationFromJson(Map<String, dynamic> json) {
@@ -89,6 +91,7 @@ class User {
       'isAvailable': isAvailable,
       'availableFrom': availableFrom != null ? dateFormat.format(availableFrom!.toUtc()) : null,
       'registeredOn': registeredOn != null ? dateFormat.format(registeredOn!.toUtc()) : null,
+      'hasScheduledLesson': hasScheduledLesson
     };
     if (_lessonsAvailabilityToJson(lessonsAvailability) != null) {
       userMap.putIfAbsent('lessonsAvailability', () => _lessonsAvailabilityToJson(lessonsAvailability));

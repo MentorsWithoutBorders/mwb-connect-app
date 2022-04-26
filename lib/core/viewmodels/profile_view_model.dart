@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
-import 'package:mwb_connect_app/core/services/user_service.dart';
-import 'package:mwb_connect_app/core/services/profile_service.dart';
+import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
+import 'package:mwb_connect_app/core/models/time_model.dart';
+import 'package:mwb_connect_app/core/services/user_service.dart';
+import 'package:mwb_connect_app/core/services/profile_service.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();
@@ -24,7 +27,30 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<void> getUserDetails() async {
     user = await _userService.getUserDetails();
+    user?.availabilities = _adjustAvailabilitiesTimeFormat(user?.availabilities);
     user?.availabilities = UtilsAvailabilities.getSortedAvailabilities(user?.availabilities);
+  }
+
+  List<Availability>? _adjustAvailabilitiesTimeFormat(List<Availability>? availabilities) {
+    List<Availability>? adjustedAvailabilities = [];
+    if (availabilities != null) {
+      for (Availability availability in availabilities) {
+        DateFormat timeFormat = DateFormat('ha', 'en');    
+        DateTime date = Utils.resetTime(DateTime.now());
+        List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
+        List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
+        DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0]);
+        DateTime timeTo = date.copyWith(hour: availabilityTimeTo[0]);
+        adjustedAvailabilities.add(Availability(
+          dayOfWeek: availability.dayOfWeek,
+          time: Time(
+            from: timeFormat.format(timeFrom).toLowerCase(),
+            to: timeFormat.format(timeTo).toLowerCase()
+          )
+        ));
+      }
+    }
+    return adjustedAvailabilities;
   }
 
   Future<void> getFields() async {

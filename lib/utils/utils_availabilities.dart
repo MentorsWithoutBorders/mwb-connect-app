@@ -32,7 +32,7 @@ class UtilsAvailabilities {
   static Availability getAvailabilityToLocal(Availability availability) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
-    DateFormat timeFormat = DateFormat('ha', 'en');    
+    DateFormat timeFormat = DateFormat('h:mma', 'en');    
     DateTime date = Utils.resetTime(DateTime.now());
     while (dayOfWeekFormat.format(date) != availability.dayOfWeek) {
       date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
@@ -41,10 +41,6 @@ class UtilsAvailabilities {
     List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
     DateTime timeFrom = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeFrom[0], minute: availabilityTimeFrom[1]).toString()).toLocal();
     DateTime timeTo = dateFormat.parseUTC(date.copyWith(hour: availabilityTimeTo[0], minute: availabilityTimeTo[1]).toString()).toLocal();
-    if (availabilityTimeFrom[1] > 0) {
-      timeFrom = timeFrom.add(Duration(hours: 1));
-      timeTo = timeTo.add(Duration(hours: 1));
-    }
     return Availability(
       dayOfWeek: dayOfWeekFormat.format(timeFrom),
       time: Time(
