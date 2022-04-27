@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -46,7 +45,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
             children: [
               _showTitle(),
               Container(
-                padding: const EdgeInsets.only(left: 3.0),
+                padding: const EdgeInsets.only(left: 3.0, right: 3.0),
                 child: Wrap(
                   children: [
                     _showTopText(),
@@ -86,7 +85,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
       child: Text(
         text,
         style: const TextStyle(
-          fontSize: 12,
+          fontSize: 12.0,
           color: AppColors.DOVE_GRAY,
           height: 1.3
         ),

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
-import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AddLessonsDialog extends StatefulWidget {
   const AddLessonsDialog({Key? key})
-    : super(key: key); 
+    : super(key: key);  
 
   @override
   State<StatefulWidget> createState() => _AddLessonsDialogState();
@@ -18,7 +18,15 @@ class AddLessonsDialog extends StatefulWidget {
 
 class _AddLessonsDialogState extends State<AddLessonsDialog> {
   LessonRequestViewModel? _lessonRequestProvider;
+  int _lessonsNumber = 1;
+  bool _isAddingLessons = false;
 
+  @override
+  void didChangeDependencies() {
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    super.didChangeDependencies();
+  }
+  
   @override
   void initState() {
     super.initState();
@@ -30,19 +38,36 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
   }
 
   Widget _showAddLessonsDialog() {
-    LessonRecurrenceModel? lessonRecurrence = _lessonRequestProvider?.lessonRecurrence;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 10.0),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
       child: Wrap(
-        children: [
-          _showLessonsNumber(lessonRecurrence),
-          _showLessonsText(lessonRecurrence)
+        children: <Widget>[
+          _showTitle(),
+          _showLessonsNumber(),
+          _showLessonsText(),
+          _showButtons()
         ]
       )
     );
   }
-  
-  Widget _showLessonsNumber(LessonRecurrenceModel? lessonRecurrence) {
+
+  Widget _showTitle() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 25.0),
+      child: Center(
+        child: Text(
+          'lesson_request.add_lessons'.tr(),
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+          )
+        )
+      ),
+    );
+  }
+
+  Widget _showLessonsNumber() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Wrap(
@@ -50,7 +75,7 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
           Padding(
             padding: const EdgeInsets.only(left: 2.0, bottom: 6.0),
             child: Text(
-              'lesson_request.lessons_number'.tr(),
+              'lesson_request.lessons_to_add'.tr(),
               style: const TextStyle(
                 fontSize: 13.0,
                 color: AppColors.DOVE_GRAY
@@ -66,181 +91,179 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
                 child: Dropdown(
                   dropdownMenuItemList: _buildNumbers(),
                   onChanged: _changeLessonsNumber,
-                  value: lessonRecurrence?.lessonsNumber
-                ),
+                  value: _lessonsNumber
+                )
               )
             ]
-          ),
-        ],
-      ),
+          )
+        ]
+      )
     );
   }
 
-  Widget _showLessonsText(LessonRecurrenceModel? lessonRecurrence) {
-    LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
+  Widget _showLessonsText() {
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
     DateTime lessonDateTime = DateTime.now();
-    if (lessonRequest?.lessonDateTime != null) {
-      lessonDateTime = lessonRequest?.lessonDateTime as DateTime;
-    }  
+    if (nextLesson?.endRecurrenceDateTime != null) {
+      lessonDateTime = nextLesson?.endRecurrenceDateTime as DateTime;
+    } else {
+      lessonDateTime = nextLesson?.dateTime as DateTime;
+    }
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String date = dateFormat.format(lessonDateTime);
     String time = timeFormat.format(lessonDateTime);
     String timeZone = now.timeZoneName;
-    String text = '';
-    int lessonsNumber = _lessonRequestProvider?.lessonRecurrence.lessonsNumber as int;
-    if (_lessonRequestProvider?.lessonRecurrence.lessonsNumber == 1) {
-      text = 'lesson_request.lesson_request_single_lesson_text'.tr(args: [date, time, timeZone]);
-      return _showSingleLessonText(text, date, time, timeZone);
-    } else {
-      String dayOfWeek = date.substring(0, date.indexOf(','));
-      String startDate = date.substring(date.indexOf(',') + 2);
-      DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: (lessonsNumber - 1) * 7));
-      String endDate = dateFormat.format(endRecurrenceDateTime).substring(date.indexOf(',') + 2);
-      text = 'lesson_request.lesson_request_recurrence_text'.tr(args: [dayOfWeek, startDate, endDate, time, timeZone]);
-      return _showLessonRecurrenceText(text, dayOfWeek, startDate, endDate, time, timeZone);
-    }   
-  }
-  
-  Widget _showSingleLessonText(String text, String date, String time, String timeZone) {
-    String firstPart = text.substring(0, text.indexOf(date));
-    String secondPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    String at = 'common.at'.tr();
-    return Padding(
-      padding: const EdgeInsets.only(left: 2.0, bottom: 6.0),
-      child: InkWell(
-        child: RichText(
-          text: TextSpan(
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.DOVE_GRAY,
-              height: 1.4
-            ),
-            children: <TextSpan>[
-              TextSpan(
-                text: firstPart
-              ),
-              TextSpan(
-                text: date,
-                style: const TextStyle(
-                  color: AppColors.TANGO
-                ) 
-              ),
-              TextSpan(
-                text: ' ' + at + ' '
-              ),
-              TextSpan(
-                text: time + ' ' + timeZone,
-                style: const TextStyle(
-                  color: AppColors.TANGO
-                ) 
-              ),
-              TextSpan(
-                text: secondPart
-              ),
-            ],
-          )
-        ),
-        onTap: () {
-          _unfocus();
-        }            
-      )
-    );
+    String dayOfWeek = date.substring(0, date.indexOf(','));
+    DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: _lessonsNumber * 7));
+    String endDate = dateFormat.format(endRecurrenceDateTime).substring(date.indexOf(',') + 2);
+    String text = 'lesson_request.lesson_request_recurrence_text'.tr(args: [dayOfWeek, time, timeZone, endDate]);
+    return _showLessonRecurrenceText(text, dayOfWeek, time, timeZone, endDate);
   }
 
-  Widget _showLessonRecurrenceText(String text, String dayOfWeek, String startDate, String endDate, String time, String timeZone) {
+  Widget _showLessonRecurrenceText(String text, String dayOfWeek, String time, String timeZone, String endDate) {
     String at = 'common.at'.tr();
-    String from = 'common.from'.tr();
     String until = 'common.until'.tr();
     String firstPart = text.substring(0, text.indexOf(dayOfWeek));
     return Padding(
-      padding: const EdgeInsets.only(left: 2.0, bottom: 6.0),
-      child: InkWell(
-        child: RichText(
-          text: TextSpan(
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.DOVE_GRAY,
-              height: 1.4
+      padding: const EdgeInsets.only(left: 2.0, bottom: 15.0),
+      child: RichText(
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 13.0,
+            color: AppColors.DOVE_GRAY,
+            height: 1.4
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: firstPart
             ),
-            children: <TextSpan>[
-              TextSpan(
-                text: firstPart
-              ),
-              TextSpan(
-                text: dayOfWeek,
-                style: const TextStyle(
-                  color: AppColors.TANGO
-                )
-              ),
-              TextSpan(
-                text: ' ' + from + ' '
-              ),
-              TextSpan(
-                text: startDate,
-                style: const TextStyle(
-                  color: AppColors.TANGO
-                )
-              ),
-              TextSpan(
-                text: ' ' + until + ' '
-              ),
-              TextSpan(
-                text: endDate,
-                style: const TextStyle(
-                  color: AppColors.TANGO
-                )
-              ),
-              TextSpan(
-                text: ' ' + at + ' '
-              ),
-              TextSpan(
-                text: time + ' ' + timeZone,
-                style: const TextStyle(
-                  color: AppColors.TANGO
-                ) 
-              ),
-              TextSpan(
-                text: '.'
+            TextSpan(
+              text: dayOfWeek,
+              style: const TextStyle(
+                color: AppColors.TANGO
               )
-            ],
-          )
-        ),
-        onTap: () {
-          _unfocus();
-        }            
+            ),
+            TextSpan(
+              text: ' ' + at + ' '
+            ),
+            TextSpan(
+              text: time + ' ' + timeZone,
+              style: const TextStyle(
+                color: AppColors.TANGO
+              ) 
+            ),
+            TextSpan(
+              text: ' ' + until + ' '
+            ),
+            TextSpan(
+              text: endDate,
+              style: const TextStyle(
+                color: AppColors.TANGO
+              )
+            ),
+            TextSpan(
+              text: '.'
+            )
+          ],
+        )
       )
     );
   }  
 
   void _changeLessonsNumber(int? number) {
-    _setSelectedLessonsNumber(number!);
-    _lessonRequestProvider?.setEndRecurrenceDate();
+    setState(() {
+      _lessonsNumber = number as int;
+    });
   }
-
-  void _setSelectedLessonsNumber(int number) {
-    _lessonRequestProvider?.setSelectedLessonsNumber(number);
-  }     
 
   List<DropdownMenuItem<int>> _buildNumbers() {
     final List<DropdownMenuItem<int>> items = [];
-    for (int i = AppConstants.minLessonsNumberRecurrence; i <= AppConstants.maxLessonsNumberRecurrence; i++) {
+    for (int i = 1; i <= AppConstants.maxLessonsNumberRecurrence; i++) {
       items.add(DropdownMenuItem(
         value: i,
         child: Text(i.toString()),
       ));
     }
     return items;
-  }  
-  
-  void _unfocus() {
-    FocusScope.of(context).unfocus();
   }
 
+  Widget _showButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        InkWell(
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
+            child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
+          ),
+          onTap: () {
+            _closeDialog();
+          },
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: AppColors.JAPANESE_LAUREL,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
+          ),
+          child: !_isAddingLessons ? Text(
+            'lesson_request.add_lessons'.tr(),
+            style: const TextStyle(color: Colors.white)
+          ) : SizedBox(
+            width: 78.0,
+            child: ButtonLoader(),
+          ),
+          onPressed: () async {
+            await _addLessons();
+          }
+        )
+      ]
+    );
+  } 
+
+  void _closeDialog() {
+    Navigator.pop(context);
+  }
+
+  Future<void> _addLessons() async {
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
+    DateTime lessonDateTime = DateTime.now();
+    if (nextLesson?.endRecurrenceDateTime != null) {
+      lessonDateTime = nextLesson?.endRecurrenceDateTime as DateTime;
+    } else {
+      lessonDateTime = nextLesson?.dateTime as DateTime;
+    }
+    DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: _lessonsNumber * 7));
+    _setIsAddingLessons(true);
+    await _lessonRequestProvider?.updateLessonRecurrence(endRecurrenceDateTime);
+    _showToast();
+    Navigator.pop(context);
+  }
+  
+  void _setIsAddingLessons(bool isAddingLessons) {
+    setState(() {
+      _isAddingLessons = isAddingLessons;
+    });  
+  }
+
+  void _showToast() {
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text('lesson_request.lesson_recurrence_updated'.tr()),
+        action: SnackBarAction(
+          label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
+        ),
+      ),
+    );
+  }      
+  
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
     return _showAddLessonsDialog();
   }
 }

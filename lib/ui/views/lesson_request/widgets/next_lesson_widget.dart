@@ -29,7 +29,6 @@ class NextLesson extends StatefulWidget {
 class _NextLessonState extends State<NextLesson> {
   LessonRequestViewModel? _lessonRequestProvider;
   String _url = '';
-  bool _isUpdatingRecurrence = false;
 
   Widget _showNextLessonCard() {
     if (_lessonRequestProvider?.isNextLesson == false) {
@@ -64,10 +63,10 @@ class _NextLessonState extends State<NextLesson> {
       return SizedBox.shrink();
     }
     Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
-    if (_lessonRequestProvider?.isLessonRecurrent == true) {
-      return _showRecurringLessonText(nextLesson);
-    } else {
+    if (nextLesson?.endRecurrenceDateTime == null || nextLesson?.dateTime == nextLesson?.endRecurrenceDateTime) {
       return _showSingleLessonText(nextLesson);
+    } else {
+      return _showRecurringLessonText(nextLesson);
     }
   }  
 
@@ -91,9 +90,9 @@ class _NextLessonState extends State<NextLesson> {
     _url = nextLesson?.meetingUrl as String;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 15.0),
       child: RichText(
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
             fontSize: 12,
@@ -173,18 +172,19 @@ class _NextLessonState extends State<NextLesson> {
     String endRecurrenceDate = dateFormat.format(_lessonRequestProvider?.getCorrectEndRecurrenceDate() as DateTime);
     endRecurrenceDate = endRecurrenceDate.substring(endRecurrenceDate.indexOf(',') + 2);    
     String at = 'common.at'.tr();
+    String until = 'common.until'.tr();
     String studentPlural = plural('student', nextLesson?.students?.length as int);
     String text = 'lesson_request.lesson_scheduled_recurring'.tr(args: [subfield, dayOfWeek, endRecurrenceDate, lessonDate, time, timeZone, studentPlural]);
-    String firstPart = text.substring(0, text.indexOf(subfield));
-    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(lessonDate));
+    String firstPart = text.substring(0, text.indexOf(dayOfWeek));
+    String secondPart = text.substring(text.indexOf(endRecurrenceDate) + endRecurrenceDate.length, text.indexOf(lessonDate));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.indexOf('('));
     String fourthPart = text.substring(text.indexOf('('));
     _url = nextLesson?.meetingUrl as String;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 15.0),
       child: RichText(
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
             fontSize: 12,
@@ -196,7 +196,19 @@ class _NextLessonState extends State<NextLesson> {
               text: firstPart
             ),
             TextSpan(
-              text: subfield
+              text: dayOfWeek,
+              style: const TextStyle(
+                color: AppColors.TANGO
+              ) 
+            ),
+            TextSpan(
+              text: ' ' + until + ' '
+            ),
+            TextSpan(
+              text: endRecurrenceDate,
+              style: const TextStyle(
+                color: AppColors.TANGO
+              )
             ),
             TextSpan(
               text: secondPart
@@ -417,7 +429,7 @@ class _NextLessonState extends State<NextLesson> {
                   _showAddLessonsDialog();
                 },
                 child: Text(
-                  'lesson_request.add_lessons'.tr(),
+                  'lesson_request.add_more_lessons'.tr(),
                   style: const TextStyle(color: Colors.white)
                 )
               ),
@@ -469,31 +481,6 @@ class _NextLessonState extends State<NextLesson> {
       ),
     );    
   }
-  
-  Future<void> _updateLessonRecurrence() async {
-    _setIsUpdatingRecurrence(true);   
-    await _lessonRequestProvider?.updateLessonRecurrence();
-    _showToast();
-    _setIsUpdatingRecurrence(false);
-  }
-
-  void _setIsUpdatingRecurrence(bool isUpdating) {
-    setState(() {
-      _isUpdatingRecurrence = isUpdating;
-    });      
-  }
-
-  void _showToast() {
-    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text('lesson_request.lesson_recurrence_updated'.tr()),
-        action: SnackBarAction(
-          label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
-        ),
-      ),
-    );
-  }  
 
   @override
   Widget build(BuildContext context) {

@@ -98,8 +98,8 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
       String startDate = date.substring(date.indexOf(',') + 2);
       DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: (lessonsNumber - 1) * 7));
       String endDate = dateFormat.format(endRecurrenceDateTime).substring(date.indexOf(',') + 2);
-      text = 'lesson_request.lesson_request_recurrence_text'.tr(args: [dayOfWeek, startDate, endDate, time, timeZone]);
-      return _showLessonRecurrenceText(text, dayOfWeek, startDate, endDate, time, timeZone);
+      text = 'lesson_request.lesson_request_recurrence_text'.tr(args: [dayOfWeek, time, timeZone, startDate, endDate]);
+      return _showLessonRecurrenceText(text, dayOfWeek, time, timeZone, startDate, endDate);
     }   
   }
   
@@ -149,7 +149,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     );
   }
 
-  Widget _showLessonRecurrenceText(String text, String dayOfWeek, String startDate, String endDate, String time, String timeZone) {
+  Widget _showLessonRecurrenceText(String text, String dayOfWeek, String time, String timeZone, String startDate, String endDate) {
     String at = 'common.at'.tr();
     String from = 'common.from'.tr();
     String until = 'common.until'.tr();
@@ -175,6 +175,15 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 )
               ),
               TextSpan(
+                text: ' ' + at + ' '
+              ),
+              TextSpan(
+                text: time + ' ' + timeZone,
+                style: const TextStyle(
+                  color: AppColors.TANGO
+                ) 
+              ),
+              TextSpan(
                 text: ' ' + from + ' '
               ),
               TextSpan(
@@ -191,15 +200,6 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 style: const TextStyle(
                   color: AppColors.TANGO
                 )
-              ),
-              TextSpan(
-                text: ' ' + at + ' '
-              ),
-              TextSpan(
-                text: time + ' ' + timeZone,
-                style: const TextStyle(
-                  color: AppColors.TANGO
-                ) 
               ),
               TextSpan(
                 text: '.'

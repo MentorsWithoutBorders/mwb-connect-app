@@ -110,20 +110,16 @@ class LessonRequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateLessonRecurrence() async {
-    if (isNextLesson) {
-      Lesson lesson = Lesson(
-        id: nextLesson?.id,
-        isRecurrent: lessonRecurrence.isRecurrent,
-        endRecurrenceDateTime: lessonRecurrence.endRecurrenceDateTime,
-        isRecurrenceDateSelected: lessonRecurrence.isRecurrenceDateSelected
-      );   
-      await _lessonRequestService.updateLessonRecurrence(lesson);
-      nextLesson?.isRecurrent = lesson.isRecurrent;
-      nextLesson?.endRecurrenceDateTime = lesson.endRecurrenceDateTime;
-      nextLesson?.isRecurrenceDateSelected = lesson.isRecurrenceDateSelected;
-      notifyListeners();
-    }
+  Future<void> updateLessonRecurrence(DateTime endRecurrenceDateTime) async {
+    Lesson lesson = Lesson(
+      id: nextLesson?.id,
+      isRecurrent: true,
+      endRecurrenceDateTime: endRecurrenceDateTime,
+    );   
+    await _lessonRequestService.updateLessonRecurrence(lesson);
+    nextLesson?.isRecurrent = lesson.isRecurrent;
+    nextLesson?.endRecurrenceDateTime = endRecurrenceDateTime;
+    notifyListeners();
   }    
 
   Future<void> changeLessonUrl(String meetingUrl) async {
