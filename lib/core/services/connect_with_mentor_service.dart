@@ -1,4 +1,5 @@
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_result_model.dart';
@@ -37,8 +38,9 @@ class ConnectWithMentorService {
 
   Future<void> cancelNextLesson(Lesson? lesson, bool? isSingleLesson) async {
     Map<String, Object?> data = {};
-    Lesson lessonData = Lesson(mentor: User(id: lesson?.mentor?.id), isRecurrent: lesson?.isRecurrent);
-    if (isSingleLesson == true && lesson?.isRecurrent == true) {
+    Lesson lessonData = Lesson(mentor: User(id: lesson?.mentor?.id));
+    bool isLessonRecurrent = Utils.isLessonRecurrent(lesson?.dateTime as DateTime, lesson?.endRecurrenceDateTime);
+    if (isSingleLesson == true && isLessonRecurrent) {
       lessonData.dateTime = lesson?.dateTime;
     }
     data = lessonData.toJson();

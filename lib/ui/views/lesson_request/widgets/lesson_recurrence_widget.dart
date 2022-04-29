@@ -18,6 +18,16 @@ class LessonRecurrence extends StatefulWidget {
 class _LessonRecurrenceState extends State<LessonRecurrence> {
   LessonRequestViewModel? _lessonRequestProvider;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+  }
+  
+  void _afterLayout(_) {
+    _lessonRequestProvider?.initLessonRecurrence();
+  }  
+
   Widget _showLessonRecurrence() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 10.0),

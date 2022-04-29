@@ -160,4 +160,9 @@ class Utils {
     }
     return article;
   }
+
+  static bool isLessonRecurrent(DateTime lessonDateTime, DateTime? endRecurrenceDateTime) {
+    DateFormat dateTimeFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
+    return endRecurrenceDateTime != null && dateTimeFormat.format(lessonDateTime) != dateTimeFormat.format(endRecurrenceDateTime);
+  }
 }

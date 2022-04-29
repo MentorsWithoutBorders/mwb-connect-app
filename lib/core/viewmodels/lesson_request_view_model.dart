@@ -78,7 +78,6 @@ class LessonRequestViewModel extends ChangeNotifier {
     DateTime lessonDateTime = lessonRequest?.lessonDateTime as DateTime;
     DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: (lessonsNumber - 1) * 7));    
     Lesson lesson = Lesson(
-      isRecurrent: lessonsNumber > 1 ? true : false,
       endRecurrenceDateTime: endRecurrenceDateTime,
       meetingUrl: meetingUrl
     );     
@@ -108,14 +107,16 @@ class LessonRequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void initLessonRecurrence() {
+    lessonsNumber = 1;
+  }  
+
   Future<void> updateLessonRecurrence(DateTime endRecurrenceDateTime) async {
     Lesson lesson = Lesson(
       id: nextLesson?.id,
-      isRecurrent: true,
       endRecurrenceDateTime: endRecurrenceDateTime,
     );   
     await _lessonRequestService.updateLessonRecurrence(lesson);
-    nextLesson?.isRecurrent = lesson.isRecurrent;
     nextLesson?.endRecurrenceDateTime = endRecurrenceDateTime;
     notifyListeners();
   }    
@@ -148,8 +149,6 @@ class LessonRequestViewModel extends ChangeNotifier {
       await _lessonRequestService.addStudentsLessonNotes(previousLesson?.id, lessonNote);
     }
   }    
-
-  bool get isLessonRecurrent => nextLesson?.isRecurrent == true && nextLesson?.endRecurrenceDateTime?.difference(nextLesson?.dateTime as DateTime).inDays as int >= 7;
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
 

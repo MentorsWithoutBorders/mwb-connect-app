@@ -50,7 +50,8 @@ class _NextLessonState extends State<NextLesson> {
       return SizedBox.shrink();
     }    
     Lesson? nextLesson = _connectWithMentorProvider?.nextLesson;
-    if (nextLesson?.isRecurrent == false) {
+    bool isNextLessonRecurrent = Utils.isLessonRecurrent(nextLesson?.dateTime as DateTime, nextLesson?.endRecurrenceDateTime);
+    if (isNextLessonRecurrent == false) {    
       return _showSingleLessonText(nextLesson);
     } else {
       return _showRecurringLessonText(nextLesson);
@@ -270,7 +271,9 @@ class _NextLessonState extends State<NextLesson> {
 
   void _showCancelLessonDialog() {
     Widget cancelLessonWidget;
-    if (_connectWithMentorProvider?.nextLesson?.isRecurrent == true) {
+    Lesson? nextLesson = _connectWithMentorProvider?.nextLesson;
+    bool isNextLessonRecurrent = Utils.isLessonRecurrent(nextLesson?.dateTime as DateTime, nextLesson?.endRecurrenceDateTime);
+    if (isNextLessonRecurrent == true) {
       cancelLessonWidget = CancelNextLessonOptionsDialog(context: context);
     } else {
       cancelLessonWidget = CancelNextLessonDialog();

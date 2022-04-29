@@ -10,12 +10,11 @@ class Lesson {
   Subfield? subfield;
   DateTime? dateTime;
   String? meetingUrl;
-  bool? isRecurrent;
   DateTime? endRecurrenceDateTime;  
   bool? isCanceled;
   bool shouldStop = false;
 
-  Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.isRecurrent, this.endRecurrenceDateTime, this.isCanceled, this.shouldStop = false});
+  Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.endRecurrenceDateTime, this.isCanceled, this.shouldStop = false});
 
   Lesson.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
@@ -25,7 +24,6 @@ class Lesson {
     subfield = _subfieldFromJson(json['subfield']);
     dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']).toLocal() : null;
     meetingUrl = json['meetingUrl'] ?? '';    
-    isRecurrent = json['isRecurrent'];
     endRecurrenceDateTime = json['endRecurrenceDateTime'] != null ? dateFormat.parseUTC(json['endRecurrenceDateTime']).toLocal() : null;
     isCanceled = json['isCanceled'];
     shouldStop = json['shouldStop'] ?? false;
@@ -62,8 +60,7 @@ class Lesson {
       'subfield': subfield?.toJson(),
       'dateTime': dateTime != null ? dateFormat.format(dateTime!.toUtc()) : null,
       'meetingUrl': meetingUrl,
-      'isRecurrent': isRecurrent,
-      'endRecurrenceDateTime': isRecurrent != null && isRecurrent == true && endRecurrenceDateTime != null ? dateFormat.format(endRecurrenceDateTime!.toUtc()) : null,
+      'endRecurrenceDateTime': endRecurrenceDateTime != null ? dateFormat.format(endRecurrenceDateTime!.toUtc()) : null,
       'isCanceled': isCanceled
     };
   }

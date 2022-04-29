@@ -469,7 +469,9 @@ class _NextLessonState extends State<NextLesson> {
 
   void _showCancelLessonDialog() {
     Widget cancelLessonWidget;
-    if (_lessonRequestProvider?.nextLesson?.isRecurrent == true) {
+    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
+    bool isNextLessonRecurrent = Utils.isLessonRecurrent(nextLesson?.dateTime as DateTime, nextLesson?.endRecurrenceDateTime);
+    if (isNextLessonRecurrent == true) {
       cancelLessonWidget = CancelNextLessonOptionsDialog(context: context);
     } else {
       cancelLessonWidget = CancelNextLessonDialog();
