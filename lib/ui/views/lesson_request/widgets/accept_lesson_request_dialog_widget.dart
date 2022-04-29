@@ -169,9 +169,6 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   } 
 
   void _closeDialog() {
-    if (_lessonRequestProvider?.nextLesson?.isRecurrent == true) {
-      _lessonRequestProvider?.setIsLessonRecurrent();
-    }
     Navigator.pop(context);
   }
 

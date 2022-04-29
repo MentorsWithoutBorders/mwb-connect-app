@@ -27,16 +27,6 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
     super.didChangeDependencies();
   }
   
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
-  }
-  
-  void _afterLayout(_) {
-    _lessonRequestProvider?.initLessonRecurrence();
-  }
-
   Widget _showAddLessonsDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,

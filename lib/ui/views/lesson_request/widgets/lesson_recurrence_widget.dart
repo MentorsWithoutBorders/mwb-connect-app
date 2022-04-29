@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
-import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
@@ -19,30 +18,20 @@ class LessonRecurrence extends StatefulWidget {
 class _LessonRecurrenceState extends State<LessonRecurrence> {
   LessonRequestViewModel? _lessonRequestProvider;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
-  }
-  
-  void _afterLayout(_) {
-    _lessonRequestProvider?.initLessonRecurrence();
-  }
-
   Widget _showLessonRecurrence() {
-    LessonRecurrenceModel? lessonRecurrence = _lessonRequestProvider?.lessonRecurrence;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 10.0),
       child: Wrap(
         children: [
-          _showLessonsNumber(lessonRecurrence),
-          _showLessonsText(lessonRecurrence)
+          _showLessonsNumber(),
+          _showLessonsText()
         ]
       )
     );
   }
   
-  Widget _showLessonsNumber(LessonRecurrenceModel? lessonRecurrence) {
+  Widget _showLessonsNumber() {
+    int lessonsNumber = _lessonRequestProvider?.lessonsNumber as int;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Wrap(
@@ -65,8 +54,9 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Dropdown(
                   dropdownMenuItemList: _buildNumbers(),
+                  onTapped: _unfocus,
                   onChanged: _changeLessonsNumber,
-                  value: lessonRecurrence?.lessonsNumber
+                  value: lessonsNumber
                 ),
               )
             ]
@@ -76,7 +66,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     );
   }
 
-  Widget _showLessonsText(LessonRecurrenceModel? lessonRecurrence) {
+  Widget _showLessonsText() {
     LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
     DateTime lessonDateTime = DateTime.now();
     if (lessonRequest?.lessonDateTime != null) {
@@ -89,8 +79,8 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
     String time = timeFormat.format(lessonDateTime);
     String timeZone = now.timeZoneName;
     String text = '';
-    int lessonsNumber = _lessonRequestProvider?.lessonRecurrence.lessonsNumber as int;
-    if (_lessonRequestProvider?.lessonRecurrence.lessonsNumber == 1) {
+    int lessonsNumber = _lessonRequestProvider?.lessonsNumber as int;
+    if (lessonsNumber == 1) {
       text = 'lesson_request.lesson_request_single_lesson_text'.tr(args: [date, time, timeZone]);
       return _showSingleLessonText(text, date, time, timeZone);
     } else {
@@ -215,20 +205,15 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
   }  
 
   void _changeLessonsNumber(int? number) {
-    _setSelectedLessonsNumber(number!);
-    _lessonRequestProvider?.setEndRecurrenceDate();
+    _lessonRequestProvider?.lessonsNumber = number as int;
   }
-
-  void _setSelectedLessonsNumber(int number) {
-    _lessonRequestProvider?.setSelectedLessonsNumber(number);
-  }     
 
   List<DropdownMenuItem<int>> _buildNumbers() {
     final List<DropdownMenuItem<int>> items = [];
-    for (int i = AppConstants.minLessonsNumberRecurrence; i <= AppConstants.maxLessonsNumberRecurrence; i++) {
+    for (int i = 1; i <= AppConstants.maxLessonsNumberRecurrence; i++) {
       items.add(DropdownMenuItem(
         value: i,
-        child: Text(i.toString()),
+        child: Text(i.toString())
       ));
     }
     return items;

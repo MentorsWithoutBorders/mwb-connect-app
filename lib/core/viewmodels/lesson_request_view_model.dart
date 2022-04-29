@@ -4,10 +4,8 @@ import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
-import 'package:mwb_connect_app/core/models/lesson_recurrence_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
@@ -24,10 +22,10 @@ class LessonRequestViewModel extends ChangeNotifier {
   final LoggerService _loggerService = locator<LoggerService>();
   Goal? goal;
   LessonRequestModel? lessonRequest;
+  int _lessonsNumber = 1;
   String? quizzes;
   Lesson? nextLesson;
   Lesson? previousLesson;
-  LessonRecurrenceModel lessonRecurrence = LessonRecurrenceModel();
   List<LessonNote>? lessonsNotes;
   List<GuideTutorial>? guideTutorials;
   List<GuideRecommendation>? guideRecommendations;
@@ -77,10 +75,11 @@ class LessonRequestViewModel extends ChangeNotifier {
   }
 
   Future<void> acceptLessonRequest(String meetingUrl, BuildContext context) async {
+    DateTime lessonDateTime = lessonRequest?.lessonDateTime as DateTime;
+    DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: (lessonsNumber - 1) * 7));    
     Lesson lesson = Lesson(
-      isRecurrent: lessonRecurrence.isRecurrent,
-      endRecurrenceDateTime: lessonRecurrence.endRecurrenceDateTime,
-      isRecurrenceDateSelected: lessonRecurrence.isRecurrenceDateSelected,
+      isRecurrent: lessonsNumber > 1 ? true : false,
+      endRecurrenceDateTime: endRecurrenceDateTime,
       meetingUrl: meetingUrl
     );     
     Lesson acceptedLessonRequest = await _lessonRequestService.acceptLessonRequest(lessonRequest?.id, lesson);
@@ -101,7 +100,6 @@ class LessonRequestViewModel extends ChangeNotifier {
   
   Future<void> getNextLesson() async {
     nextLesson = await _lessonRequestService.getNextLesson();
-    initLessonRecurrence();
   }
 
   Future<void> cancelNextLesson({bool? isSingleLesson}) async {
@@ -161,101 +159,11 @@ class LessonRequestViewModel extends ChangeNotifier {
     return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
   }
 
-  void initLessonRecurrence() {
-    if (isNextLesson == true) {
-      lessonRecurrence.dateTime = nextLesson?.dateTime;
-      if (isLessonRecurrent) {
-        lessonRecurrence.isRecurrent = true;
-        lessonRecurrence.endRecurrenceDateTime = nextLesson?.endRecurrenceDateTime;
-        setSelectedLessonsNumber(calculateLessonsNumber(lessonRecurrence.endRecurrenceDateTime));
-      } else {
-        setDisabledLessonRecurrence();
-      }
-    } else {
-      setDisabledLessonRecurrence();
-    }
-  }
-
-  void setDisabledLessonRecurrence() {
-    lessonRecurrence.isRecurrent = false;
-    lessonRecurrence.endRecurrenceDateTime = lessonRecurrence.dateTime?.add(Duration(days: 7));
-    setSelectedLessonsNumber(AppConstants.minLessonsNumberRecurrence);
-    setEndRecurrenceDate();    
-  }
-
-  void setSelectedLessonsNumber(int number) {
-    lessonRecurrence.lessonsNumber = number;
-    notifyListeners();
-  }
-
-  void setEndRecurrenceDate({DateTime? picked}) {
-    if (picked != null) {
-      lessonRecurrence.endRecurrenceDateTime = picked;
-      if (isLessonRequest) {
-        lessonRecurrence.endRecurrenceDateTime = lessonRecurrence.endRecurrenceDateTime?.copyWith(hour: lessonRequest?.lessonDateTime?.hour as int);
-      } else if (isNextLesson) {
-        lessonRecurrence.endRecurrenceDateTime = lessonRecurrence.endRecurrenceDateTime?.copyWith(hour: nextLesson?.dateTime?.hour as int);
-      }
-      setSelectedLessonsNumber(calculateLessonsNumber(lessonRecurrence.endRecurrenceDateTime));
-    } else {
-      if (isLessonRequest == true) {
-        int duration = (lessonRecurrence.lessonsNumber - 1) * 7;
-        lessonRecurrence.endRecurrenceDateTime = lessonRequest?.lessonDateTime?.add(Duration(days: duration));
-      } else if (isNextLesson) {
-        int duration = (lessonRecurrence.lessonsNumber - 1) * 7;
-        lessonRecurrence.endRecurrenceDateTime = nextLesson?.dateTime?.add(Duration(days: duration));
-      }
-    }
-    notifyListeners();
-  } 
-
-  DateTime? getMinRecurrenceDate() {
-    DateTime? minRecurrenceDate;
-    if (isLessonRequest) {
-      minRecurrenceDate = lessonRequest?.lessonDateTime?.add(Duration(days: 7));
-    } else if (isNextLesson) {
-      minRecurrenceDate = nextLesson?.dateTime?.add(Duration(days: 7));
-    }
-    return minRecurrenceDate;
-  }
-
-  DateTime? getMaxRecurrenceDate() {
-    DateTime? maxRecurrenceDate;
-    int maxDays = AppConstants.maxLessonsNumberRecurrence * 7 - 7;
-    if (isLessonRequest) {
-      maxRecurrenceDate = lessonRequest?.lessonDateTime?.add(Duration(days: maxDays));
-    } else if (isNextLesson) {
-      maxRecurrenceDate = nextLesson?.dateTime?.add(Duration(days: maxDays));
-    }
-    return maxRecurrenceDate;
-  }  
-
-  int calculateLessonsNumber(DateTime? endRecurrenceDate) {
-    int lessonsNumber = AppConstants.minLessonsNumberRecurrence;
-    if (endRecurrenceDate != null) {
-      if (isLessonRequest) {
-        lessonsNumber = endRecurrenceDate.difference(lessonRequest?.lessonDateTime as DateTime).inDays ~/ 7 + 1;
-      } else if (isNextLesson) {
-        lessonsNumber = endRecurrenceDate.difference(nextLesson?.dateTime as DateTime).inDays ~/ 7 + 1;        
-      }
-    }
-    return lessonsNumber;
-  }
-
   bool shouldShowTrainingCompleted() {
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
     return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) <= 7 * AppConstants.mentorWeeksTraining;
   }
-  
-  void setIsLessonRecurrent() {
-    if (lessonRecurrence.isRecurrent == true) {
-      lessonRecurrence.isRecurrent = false;
-    } else {
-      lessonRecurrence.isRecurrent = true;
-    }
-    notifyListeners();
-  } 
   
   DateTime getCorrectEndRecurrenceDate() {
     int days = 0;
@@ -266,7 +174,13 @@ class LessonRequestViewModel extends ChangeNotifier {
       }
     }
     return Jiffy(nextLesson?.dateTime).add(days: days).dateTime;
-  }  
+  }
+
+  int get lessonsNumber => _lessonsNumber;
+  set lessonsNumber(int number) {
+    _lessonsNumber = number;
+    notifyListeners();
+  }
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
