@@ -462,7 +462,7 @@ class _NextLessonState extends State<NextLesson> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: AddLessonsDialog()
+        widgetInside: AddLessonsDialog(lesson: _lessonRequestProvider?.nextLesson)
       ),
     );    
   }  

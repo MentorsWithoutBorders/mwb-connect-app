@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -9,8 +10,10 @@ import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AddLessonsDialog extends StatefulWidget {
-  const AddLessonsDialog({Key? key})
+  const AddLessonsDialog({Key? key, @required this.lesson})
     : super(key: key);  
+
+  final Lesson? lesson;
 
   @override
   State<StatefulWidget> createState() => _AddLessonsDialogState();
@@ -20,12 +23,6 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
   LessonRequestViewModel? _lessonRequestProvider;
   int _lessonsNumber = 1;
   bool _isAddingLessons = false;
-
-  @override
-  void didChangeDependencies() {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
-    super.didChangeDependencies();
-  }
   
   Widget _showAddLessonsDialog() {
     return Container(
@@ -92,13 +89,7 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
   }
 
   Widget _showLessonsText() {
-    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
-    DateTime lessonDateTime = DateTime.now();
-    if (nextLesson?.endRecurrenceDateTime != null) {
-      lessonDateTime = nextLesson?.endRecurrenceDateTime as DateTime;
-    } else {
-      lessonDateTime = nextLesson?.dateTime as DateTime;
-    }
+    DateTime lessonDateTime = _lessonRequestProvider?.getLessonDateTimeForRecurrence(widget.lesson) as DateTime;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
@@ -220,17 +211,15 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
   }
 
   Future<void> _addLessons() async {
-    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
-    DateTime lessonDateTime = DateTime.now();
-    if (nextLesson?.endRecurrenceDateTime != null) {
-      lessonDateTime = nextLesson?.endRecurrenceDateTime as DateTime;
-    } else {
-      lessonDateTime = nextLesson?.dateTime as DateTime;
-    }
+    DateTime lessonDateTime = _lessonRequestProvider?.getLessonDateTimeForRecurrence(widget.lesson) as DateTime;
     DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: _lessonsNumber * 7));
     _setIsAddingLessons(true);
-    await _lessonRequestProvider?.updateLessonRecurrence(endRecurrenceDateTime);
+    await _lessonRequestProvider?.updateLessonRecurrence(widget.lesson, endRecurrenceDateTime);
     _showToast();
+    bool? isPreviousLesson = _lessonRequestProvider?.isPreviousLesson;
+    if (isPreviousLesson == true) {
+      Phoenix.rebirth(context);
+    }
     Navigator.pop(context);
   }
   
@@ -254,6 +243,8 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
   
   @override
   Widget build(BuildContext context) {
+    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+
     return _showAddLessonsDialog();
   }
 }

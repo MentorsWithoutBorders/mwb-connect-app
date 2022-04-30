@@ -109,14 +109,28 @@ class LessonRequestViewModel extends ChangeNotifier {
 
   void initLessonRecurrence() {
     lessonsNumber = 1;
-  }  
+  }
+  
+  DateTime getLessonDateTimeForRecurrence(Lesson? lesson) {
+    DateTime lessonDateTime = DateTime.now();
+    DateTime now = DateTime.now();
+    if (lesson?.endRecurrenceDateTime != null) {
+      lessonDateTime = lesson?.endRecurrenceDateTime as DateTime;
+    } else {
+      lessonDateTime = lesson?.dateTime as DateTime;
+    }
+    while (now.difference(lessonDateTime).inDays > 6) {
+      lessonDateTime = lessonDateTime.add(Duration(days: 7));
+    }
+    return lessonDateTime;
+  }
 
-  Future<void> updateLessonRecurrence(DateTime endRecurrenceDateTime) async {
-    Lesson lesson = Lesson(
-      id: nextLesson?.id,
+  Future<void> updateLessonRecurrence(Lesson? lesson, DateTime endRecurrenceDateTime) async {
+    Lesson lessonData = Lesson(
+      id: lesson?.id,
       endRecurrenceDateTime: endRecurrenceDateTime,
     );   
-    await _lessonRequestService.updateLessonRecurrence(lesson);
+    await _lessonRequestService.updateLessonRecurrence(lessonData);
     nextLesson?.endRecurrenceDateTime = endRecurrenceDateTime;
     notifyListeners();
   }    
@@ -151,6 +165,8 @@ class LessonRequestViewModel extends ChangeNotifier {
   }    
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
+  
+  bool get isPreviousLesson => previousLesson != null && previousLesson?.id != null && previousLesson?.isCanceled != true;
 
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest?.id != null && lessonRequest?.isRejected != true;
   
