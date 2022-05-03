@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_recurrence_result_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AddLessonsDialog extends StatefulWidget {
-  const AddLessonsDialog({Key? key, @required this.lesson})
+  const AddLessonsDialog({Key? key, @required this.lesson, this.reload})
     : super(key: key);  
 
   final Lesson? lesson;
+  final Function? reload;
 
   @override
   State<StatefulWidget> createState() => _AddLessonsDialogState();
@@ -214,13 +218,35 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
     DateTime lessonDateTime = _lessonRequestProvider?.getLessonDateTimeForRecurrence(widget.lesson) as DateTime;
     DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: _lessonsNumber * 7));
     _setIsAddingLessons(true);
-    await _lessonRequestProvider?.updateLessonRecurrence(widget.lesson, endRecurrenceDateTime);
-    _showToast();
     bool? isPreviousLesson = _lessonRequestProvider?.isPreviousLesson;
+    int previousLessonStudentsNumber = 0;
     if (isPreviousLesson == true) {
-      Phoenix.rebirth(context);
+      List<User> previousLessonStudents = _lessonRequestProvider?.previousLesson?.students as List<User>;
+      previousLessonStudentsNumber = previousLessonStudents.length;
     }
+    LessonRecurrenceResult lessonRecurrenceResult = await _lessonRequestProvider?.updateLessonRecurrence(widget.lesson, endRecurrenceDateTime) as LessonRecurrenceResult;
+    if (isPreviousLesson == true && widget.reload != null) {
+      widget.reload!();
+    }    
     Navigator.pop(context);
+    String lessonRecurrenceText = _lessonRequestProvider?.getLessonRecurrenceText(previousLessonStudentsNumber, lessonRecurrenceResult.studentsRemaining as int) as String;
+    if (previousLessonStudentsNumber != 0 && previousLessonStudentsNumber != lessonRecurrenceResult.studentsRemaining || 
+        lessonRecurrenceResult.studentsRemaining == 0) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AnimatedDialog(
+            widgetInside: NotificationDialog(
+              text: lessonRecurrenceText,
+              buttonText: 'common.ok'.tr(),
+              shouldReload: false
+            )
+          );
+        }
+      );  
+    } else {
+      _showToast();
+    }
   }
   
   void _setIsAddingLessons(bool isAddingLessons) {

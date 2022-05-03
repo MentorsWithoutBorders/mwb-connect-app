@@ -48,12 +48,16 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      _isInit = false;
       _setTimeZone();
-      setState(() {});
-      _init();
+      _reload();
       _checkUpdate();
     }
+  }
+
+  void _reload() {
+    setState(() {
+      _isInit = false;
+    });    
   }
 
   void _setTimeZone() {
@@ -86,7 +90,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         children: [
           if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _lessonRequestProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          if (_lessonRequestProvider?.isNextLesson == false && _lessonRequestProvider?.isLessonRequest == false) StandingBy(),
+          if (_lessonRequestProvider?.isNextLesson == false && _lessonRequestProvider?.isLessonRequest == false) StandingBy(reload: _reload),
           if (_lessonRequestProvider?.isLessonRequest == true) LessonRequest(),
           if (_lessonRequestProvider?.isNextLesson == true) NextLesson()
         ]

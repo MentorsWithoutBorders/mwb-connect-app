@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -7,6 +8,7 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_recurrence_result_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
@@ -119,20 +121,21 @@ class LessonRequestViewModel extends ChangeNotifier {
     } else {
       lessonDateTime = lesson?.dateTime as DateTime;
     }
-    while (now.difference(lessonDateTime).inDays > 6) {
+    while (now.difference(lessonDateTime).inDays >= 6) {
       lessonDateTime = lessonDateTime.add(Duration(days: 7));
     }
     return lessonDateTime;
   }
 
-  Future<void> updateLessonRecurrence(Lesson? lesson, DateTime endRecurrenceDateTime) async {
+  Future<LessonRecurrenceResult> updateLessonRecurrence(Lesson? lesson, DateTime endRecurrenceDateTime) async {
     Lesson lessonData = Lesson(
       id: lesson?.id,
       endRecurrenceDateTime: endRecurrenceDateTime,
     );   
-    await _lessonRequestService.updateLessonRecurrence(lessonData);
+    LessonRecurrenceResult lessonRecurrenceResult = await _lessonRequestService.updateLessonRecurrence(lessonData);
     nextLesson?.endRecurrenceDateTime = endRecurrenceDateTime;
     notifyListeners();
+    return lessonRecurrenceResult;
   }    
 
   Future<void> changeLessonUrl(String meetingUrl) async {
@@ -189,6 +192,24 @@ class LessonRequestViewModel extends ChangeNotifier {
       }
     }
     return Jiffy(nextLesson?.dateTime).add(days: days).dateTime;
+  }
+
+  String getLessonRecurrenceText(int previousLessonStudentsNumber, int studentsRemaining) {
+    if (previousLessonStudentsNumber == 1) {
+      return 'lesson_request.student_different_mentor'.tr();
+    } else if (previousLessonStudentsNumber > 1) {
+      if (studentsRemaining > 0) {
+        if (previousLessonStudentsNumber - studentsRemaining == 1) {
+          return 'lesson_request.one_student_different_mentor'.tr();
+        } else {
+          return 'lesson_request.some_students_other_mentors'.tr(args: [(previousLessonStudentsNumber - studentsRemaining).toString()]);
+        }
+      } else {
+        return 'lesson_request.students_other_mentors'.tr();
+      }
+    } else {
+      return 'lesson_request.students_other_mentors'.tr();
+    }
   }
 
   int get lessonsNumber => _lessonsNumber;

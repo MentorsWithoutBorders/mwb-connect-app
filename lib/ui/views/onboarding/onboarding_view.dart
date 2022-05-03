@@ -259,7 +259,6 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   void _goToLogin() {
-    //Phoenix.rebirth(context);
     _analyticsService.sendEvent(
       eventName: 'Go to Login'
     );

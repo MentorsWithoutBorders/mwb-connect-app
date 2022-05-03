@@ -50,10 +50,10 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _isInit = false;
       _setTimeZone();
-      setState(() {});
-      _init();
+      setState(() {
+        _isInit = false;
+      });
       _checkUpdate();
     }
   }

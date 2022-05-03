@@ -3,14 +3,17 @@ import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/add_lessons_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class StandingBy extends StatefulWidget {
-  const StandingBy({Key? key})
+  const StandingBy({Key? key, this.reload})
     : super(key: key); 
+
+  final Function? reload;
 
   @override
   State<StatefulWidget> createState() => _StandingByState();
@@ -21,6 +24,7 @@ class _StandingByState extends State<StandingBy> {
 
   Widget _showStandingByCard() {
     bool? isPreviousLesson = _lessonRequestProvider?.isPreviousLesson;
+    List<User> previousLessonStudents = _lessonRequestProvider?.previousLesson?.students as List<User>;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -39,7 +43,7 @@ class _StandingByState extends State<StandingBy> {
                 child: Wrap(
                   children: [
                     _showText(),
-                    if (isPreviousLesson == true) _showAddMoreLessons()
+                    if (isPreviousLesson == true && previousLessonStudents.length > 0) _showAddMoreLessons()
                   ]
                 )
               )
@@ -157,7 +161,7 @@ class _StandingByState extends State<StandingBy> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: AddLessonsDialog(lesson: _lessonRequestProvider?.previousLesson)
+        widgetInside: AddLessonsDialog(lesson: _lessonRequestProvider?.previousLesson, reload: widget.reload)
       ),
     );    
   }   

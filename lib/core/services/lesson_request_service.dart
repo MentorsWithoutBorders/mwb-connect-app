@@ -4,6 +4,7 @@ import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_recurrence_result_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
@@ -55,10 +56,11 @@ class LessonRequestService {
     return ;
   }
 
-  Future<void> updateLessonRecurrence(Lesson lesson) async {
+  Future<LessonRecurrenceResult> updateLessonRecurrence(Lesson lesson) async {
     String? id = lesson.id;
-    await _api.putHTTP(url: '/lessons/$id/recurrence', data: lesson.toJson());  
-    return ;
+    Map<String, dynamic> response = await _api.putHTTP(url: '/lessons/$id/recurrence', data: lesson.toJson()); 
+    LessonRecurrenceResult lessonRecurrenceResult = LessonRecurrenceResult.fromJson(response);
+    return lessonRecurrenceResult;       
   }    
   
   Future<void> changeLessonUrl(String? id, String meetingUrl) async {
