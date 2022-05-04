@@ -104,7 +104,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
           ),
           onPressed: () async {
             if (shouldShowOptionsDialog) {
-              _showOptionsDialog();
+              _showFindMentorOptionsDialog();
             } else {
               await _goToAvailableMentorsFields();
             }
@@ -121,7 +121,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
     }
   }
   
-  void _showOptionsDialog() {
+  void _showFindMentorOptionsDialog() {
     Lesson? previousLesson = _connectWithMentorProvider?.previousLesson;
     showDialog(
       context: context,

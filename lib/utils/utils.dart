@@ -23,7 +23,7 @@ class Utils {
     if (!time12h.contains(':')) {
       time = time12h.replaceAll(RegExp(r'[^0-9]'), '');
     }
-    final String modifier = time12h.replaceAll(time, '');
+    final String modifier = time12h.replaceAll(time, '').toLowerCase();
     int hours = int.parse(time.split(':')[0]);
     int minutes = time12h.contains(':') ? int.parse(time.split(':')[1]) : 0;
     if (hours == 12) {
