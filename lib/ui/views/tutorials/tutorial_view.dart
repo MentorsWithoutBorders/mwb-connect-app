@@ -132,7 +132,7 @@ class _TutorialViewState extends State<TutorialView> {
     }
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 14.0, 20.0),
       child: DraggableScrollbar(
         controller: _scrollController,
         child: ListView.builder(
