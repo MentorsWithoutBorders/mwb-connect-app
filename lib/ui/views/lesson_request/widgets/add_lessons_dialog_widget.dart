@@ -219,6 +219,7 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
     DateTime endRecurrenceDateTime = lessonDateTime.add(Duration(days: _lessonsNumber * 7));
     _setIsAddingLessons(true);
     bool? isPreviousLesson = _lessonRequestProvider?.isPreviousLesson;
+    bool? isNextLesson = _lessonRequestProvider?.isNextLesson;
     int previousLessonStudentsNumber = 0;
     if (isPreviousLesson == true) {
       List<User> previousLessonStudents = _lessonRequestProvider?.previousLesson?.students as List<User>;
@@ -230,7 +231,7 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
     }    
     Navigator.pop(context);
     String lessonRecurrenceText = _lessonRequestProvider?.getLessonRecurrenceText(previousLessonStudentsNumber, lessonRecurrenceResult.studentsRemaining as int) as String;
-    if (previousLessonStudentsNumber != 0 && previousLessonStudentsNumber != lessonRecurrenceResult.studentsRemaining || 
+    if (isPreviousLesson == true && isNextLesson != true && previousLessonStudentsNumber != 0 && previousLessonStudentsNumber != lessonRecurrenceResult.studentsRemaining || 
         lessonRecurrenceResult.studentsRemaining == 0) {
       showDialog(
         context: context,
