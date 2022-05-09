@@ -80,7 +80,7 @@ class _NextLessonState extends State<NextLesson> {
     return Wrap(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 12.0),
           child: RichText(
             textAlign: TextAlign.justify,
             text: TextSpan(
@@ -179,7 +179,7 @@ class _NextLessonState extends State<NextLesson> {
     return Wrap(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 12.0),
           child: RichText(
             textAlign: TextAlign.justify,
             text: TextSpan(

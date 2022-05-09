@@ -69,15 +69,16 @@ class _RootViewState extends State<RootView> {
   }
 
   void _setCurrentUser() {
-    setState(() {
-      _userId = _rootProvider?.getUserId();
-      _authStatus = _userId == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
-    });
+    _userId = _rootProvider?.getUserId();
+    _authStatus = _userId == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
   }    
   
   Future<void> _init() async {
+    await _rootProvider?.getUserDetails();
     _setCurrentUser();
-    await _rootProvider?.getIsMentor();
+    if (_authStatus == AuthStatus.NOT_DETERMINED) {
+      _authStatus = AuthStatus.NOT_LOGGED_IN;
+    }
   }
 
   @override
