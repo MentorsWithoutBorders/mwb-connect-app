@@ -17,10 +17,12 @@ import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/find_availa
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/finding_available_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_stopped_widget.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/lessons_disabled_widget.dart';
+import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/joyful_productivity_reminder_dialog.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class ConnectWithMentorView extends StatefulWidget {
   ConnectWithMentorView({Key? key, this.logoutCallback})
@@ -40,12 +42,13 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   QuizzesViewModel? _quizzesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
+  bool _isProductivityReminderOpen = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-  } 
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -56,6 +59,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       });
       _checkUpdate();
     }
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      _connectWithMentorProvider!.wasProductivityReminderClosed = false;
+    }    
   }
 
   void _setTimeZone() {
@@ -70,7 +76,27 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
     }    
-  }   
+  }
+
+  Future<void> _showJoyfulProductivityReminder(_) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    bool wasProductivityReminderClosed = _connectWithMentorProvider!.wasProductivityReminderClosed;
+    bool shouldShowProductivityReminder = _connectWithMentorProvider!.getShouldShowProductivityReminder();
+    if (mounted && shouldShowProductivityReminder && !_isProductivityReminderOpen && !wasProductivityReminderClosed) {
+      _isProductivityReminderOpen = true;
+      showDialog(
+        context: context,
+        builder: (_) => AnimatedDialog(
+          widgetInside: JoyfulProductivityReminderDialog()
+        ),
+      ).then((_) => _setProductivityReminderClosed());
+    }
+  }
+  
+  void _setProductivityReminderClosed() {
+    _isProductivityReminderOpen = false;
+    _connectWithMentorProvider!.wasProductivityReminderClosed = true;
+  }
   
   @override
   void dispose() {
@@ -155,6 +181,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     _stepsProvider = Provider.of<StepsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
+    WidgetsBinding.instance?.addPostFrameCallback(_showJoyfulProductivityReminder);    
 
     return FutureBuilder<void>(
       future: _init(),

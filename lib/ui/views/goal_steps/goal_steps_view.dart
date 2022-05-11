@@ -61,7 +61,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
         ).then((_) => _isQuizDialogOpen = false);
       }
     }    
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {

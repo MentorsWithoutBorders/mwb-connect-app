@@ -10,7 +10,7 @@ class AppConstants {
   static const Map<String, List<String>> tutorials = {
     'mental_process_goal_steps': ['main', 'ideas', 'energy', 'confidence', 'extra_benefits'],
     'relaxation_method': ['main', 'how_to_relax'],
-    'super_focus_method': ['main', 'joyful_productivity', 'extra_energy']
+    'super_focus_method': ['main', 'joyful_productivity']
   };
   static const bool notificationsEnabled = true;
   static const String notificationsTime = '21:00';

@@ -104,7 +104,8 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
             'connect_with_mentor.waiting_mentor'.tr(),
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 18.0,
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
               color: AppColors.DOVE_GRAY,
               height: 1.4
             )

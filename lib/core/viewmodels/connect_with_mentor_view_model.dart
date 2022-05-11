@@ -27,6 +27,7 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   Lesson? nextLesson;
   Lesson? previousLesson;
   StudentCertificate? studentCertificate;
+  bool _wasProductivityReminderClosed = false;
 
   Future<void> getGoal() async {
     List<Goal> goals = await _goalsService.getGoals();
@@ -108,6 +109,17 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
     }
     return Jiffy(nextLesson?.dateTime).add(days: days).dateTime;
   }
+
+  bool getShouldShowProductivityReminder() {
+    DateTime now = Utils.resetTime(DateTime.now());
+    DateTime registeredOn = DateTime.parse(_storageService.registeredOn as String);
+    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) > 14;
+  }
+
+  bool get wasProductivityReminderClosed => _wasProductivityReminderClosed;
+  set wasProductivityReminderClosed(bool wasClosed) {
+    _wasProductivityReminderClosed = wasClosed;
+  }  
 
   void addLogEntry(String text) {
     _loggerService.addLogEntry(text);
