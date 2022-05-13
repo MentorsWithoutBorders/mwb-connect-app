@@ -35,8 +35,9 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
     return Center(
       child: Text(
         title,
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

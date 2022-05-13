@@ -183,7 +183,10 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('notifications.title'.tr()),
+        child: Text(
+          'notifications.title'.tr(),
+          textAlign: TextAlign.center
+        )
       )
     );
   }

@@ -167,6 +167,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
       margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
       child: Text(
         'common.availability'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold

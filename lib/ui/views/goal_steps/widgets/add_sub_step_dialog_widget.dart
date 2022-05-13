@@ -59,8 +59,9 @@ class _AddSubStepDialogState extends State<AddSubStepDialog> with TickerProvider
     return Center(
       child: Text(
         'step_dialog.add_sub_step'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

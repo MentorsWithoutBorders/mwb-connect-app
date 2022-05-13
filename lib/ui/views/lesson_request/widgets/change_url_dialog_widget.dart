@@ -51,8 +51,9 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
       child: Center(
         child: Text(
           'lesson_request.send_url'.tr(args: [urlType]),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )

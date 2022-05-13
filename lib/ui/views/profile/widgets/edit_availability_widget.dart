@@ -58,8 +58,9 @@ class _EditAvailabilityState extends State<EditAvailability> {
     return Center(
       child: Text(
         'common.edit_availability'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

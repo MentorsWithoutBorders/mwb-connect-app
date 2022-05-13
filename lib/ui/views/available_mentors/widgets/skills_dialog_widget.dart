@@ -45,6 +45,7 @@ class _SkillsDialogState extends State<SkillsDialog> {
       child: Center(
         child: Text(
           'available_mentors.title_skills'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold

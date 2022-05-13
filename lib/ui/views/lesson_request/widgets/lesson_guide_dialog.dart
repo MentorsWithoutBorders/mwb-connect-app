@@ -43,8 +43,9 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
       child: Center(
         child: Text(
           'lesson_request.lesson_guide'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )

@@ -59,8 +59,9 @@ class _AddStepDialogState extends State<AddStepDialog> {
     return Center(
       child: Text(
         'steps.add_new_step'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

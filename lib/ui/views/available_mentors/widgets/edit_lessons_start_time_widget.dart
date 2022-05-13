@@ -44,6 +44,7 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Text(
           'available_mentors.lessons_start_time'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold

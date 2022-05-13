@@ -32,6 +32,7 @@ class _SubfieldsListState extends State<SubfieldsList> with TickerProviderStateM
       padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
       child: Text(
         title,
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold

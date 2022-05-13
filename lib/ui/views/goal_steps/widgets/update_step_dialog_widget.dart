@@ -55,8 +55,9 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
     return Center(
       child: Text(
         'step_dialog.update_step'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

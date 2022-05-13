@@ -39,12 +39,13 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
       child: Center(
         child: Text(
           'connect_with_mentor.cancel_lesson'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )
-      ),
+      )
     );
   }
 

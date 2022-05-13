@@ -55,6 +55,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
       child: Center(
         child: Text(
           'training_completed.title'.tr(args: [week]),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,

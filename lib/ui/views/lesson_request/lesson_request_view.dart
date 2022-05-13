@@ -108,7 +108,10 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text(title),
+        child: Text(
+          title,
+          textAlign: TextAlign.center
+        )
       )
     );
   }

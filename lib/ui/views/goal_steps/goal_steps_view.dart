@@ -41,7 +41,10 @@ class _GoalStepsViewState extends State<GoalStepsView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('goal_steps.title'.tr()),
+        child: Text(
+          'goal_steps.title'.tr(),
+          textAlign: TextAlign.center
+        )
       )
     );
   }

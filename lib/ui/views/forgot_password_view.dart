@@ -305,7 +305,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('forgot_password.title'.tr()),
+        child: Text(
+          'forgot_password.title'.tr(),
+          textAlign: TextAlign.center
+        ),
       )
     );
   }   

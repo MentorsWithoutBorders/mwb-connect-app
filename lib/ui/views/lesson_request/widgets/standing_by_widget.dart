@@ -60,6 +60,7 @@ class _StandingByState extends State<StandingBy> {
       child: Center(
         child: Text(
           'lesson_request.standing_by'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,

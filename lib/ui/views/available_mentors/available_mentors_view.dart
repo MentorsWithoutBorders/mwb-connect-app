@@ -116,7 +116,10 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
 
   Widget _showTitle() {
     return Center(
-      child: Text('available_mentors.title'.tr()),
+      child: Text(
+        'available_mentors.title'.tr(),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 

@@ -38,12 +38,13 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
 
   Widget _showTitle() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(bottom: 20.0, right: 5.0),
       child: Center(
         child: Text(
           'joyful_productivity_reminder.title'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )

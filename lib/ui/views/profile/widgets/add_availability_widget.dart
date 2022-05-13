@@ -55,8 +55,9 @@ class _AddAvailabilityState extends State<AddAvailability> {
     return Center(
       child: Text(
         'common.add_availability'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

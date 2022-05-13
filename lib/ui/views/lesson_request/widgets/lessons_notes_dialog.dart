@@ -44,8 +44,9 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
       child: Center(
         child: Text(
           widget.student?.name as String,
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )

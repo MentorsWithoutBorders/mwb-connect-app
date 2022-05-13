@@ -36,6 +36,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
         'common.available_days_times'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold

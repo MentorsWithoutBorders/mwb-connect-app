@@ -40,6 +40,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
       child: Center(
         child: Text(
           'lesson_request.taught_today'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold

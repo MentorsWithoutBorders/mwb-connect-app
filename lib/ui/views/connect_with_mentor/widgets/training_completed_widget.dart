@@ -64,6 +64,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
       child: Center(
         child: Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,

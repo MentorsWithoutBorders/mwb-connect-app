@@ -68,6 +68,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
       child: Center(
         child: Text(
           'lesson_request.training_title'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,

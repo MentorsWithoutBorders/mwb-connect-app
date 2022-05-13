@@ -49,8 +49,9 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
       child: Center(
         child: Text(
           'lesson_request.add_lessons'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )

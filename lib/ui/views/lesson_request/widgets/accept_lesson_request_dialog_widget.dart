@@ -62,8 +62,9 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
       child: Center(
         child: Text(
           'lesson_request.send_url'.tr(args: [urlType]),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )

@@ -54,11 +54,12 @@ class _LessonsState extends State<Lessons> {
       margin: const EdgeInsets.only(left: 5.0, bottom: 18.0),
       child: Text(
         'profile.lessons'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
         )
-      ),
+      )
     );
   }  
 

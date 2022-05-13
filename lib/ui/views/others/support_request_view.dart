@@ -233,7 +233,10 @@ class _SupportViewState extends State<SupportView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('support.title'.tr(),),
+        child: Text(
+          'support.title'.tr(),
+          textAlign: TextAlign.center
+        )
       )
     );
   }   

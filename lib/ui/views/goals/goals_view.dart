@@ -123,9 +123,15 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
       title = const Text('');
     } else {
       if (_goalsProvider?.goals?.isNotEmpty == true) {
-        title = Text('goals.my_goals'.tr());
+        title = Text(
+          'goals.my_goals'.tr(),
+          textAlign: TextAlign.center
+        );
       } else {
-        title = Text('goals.first_goal'.tr());
+        title = Text(
+          'goals.first_goal'.tr(),
+          textAlign: TextAlign.center
+        );
       } 
     }
 

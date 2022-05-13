@@ -219,7 +219,10 @@ class _TutorialViewState extends State<TutorialView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('tutorials.${widget.type}.title'.tr(),),
+        child: Text(
+          'tutorials.${widget.type}.title'.tr(),
+          textAlign: TextAlign.center
+        )
       )
     );
   }

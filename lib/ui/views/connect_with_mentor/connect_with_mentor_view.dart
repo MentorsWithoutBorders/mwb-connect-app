@@ -137,7 +137,10 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('connect_with_mentor.title'.tr()),
+        child: Text(
+          'connect_with_mentor.title'.tr(),
+          textAlign: TextAlign.center
+        ),
       )
     );
   }

@@ -41,8 +41,9 @@ class _StepDialogState extends State<StepDialog> {
     return Center(
       child: Text(
         'step_dialog.title'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

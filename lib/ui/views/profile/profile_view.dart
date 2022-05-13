@@ -138,7 +138,10 @@ class _ProfileViewState extends State<ProfileView> {
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('profile.title'.tr()),
+        child: Text(
+          'profile.title'.tr(),
+          textAlign: TextAlign.center
+        )
       )
     );
   }

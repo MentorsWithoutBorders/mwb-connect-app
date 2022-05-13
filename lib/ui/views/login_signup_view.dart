@@ -104,6 +104,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
       child: Center(
         child: Text(
           _isLoginForm == true ? 'login.title'.tr() : 'sign_up.title'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 22.0,
             color: Colors.white,

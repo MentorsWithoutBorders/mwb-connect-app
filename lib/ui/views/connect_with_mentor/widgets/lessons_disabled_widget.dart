@@ -44,6 +44,7 @@ class _LessonsDisabledState extends State<LessonsDisabled> {
       child: Center(
         child: Text(
           'lessons_disabled.title'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,

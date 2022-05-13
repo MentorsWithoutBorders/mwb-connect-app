@@ -110,7 +110,10 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('available_mentors.title_filters'.tr()),
+        child: Text(
+          'available_mentors.title_filters'.tr(),
+          textAlign: TextAlign.center
+        ),
       )
     );
   }

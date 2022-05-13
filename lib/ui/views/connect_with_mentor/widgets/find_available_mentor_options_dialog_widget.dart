@@ -52,11 +52,12 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
         padding: const EdgeInsets.only(bottom: 25.0),
         child: Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
-        ),
+        )
       )
     );
   }

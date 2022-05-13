@@ -119,7 +119,10 @@ class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStat
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
-        child: Text('privacy.title'.tr()),
+        child: Text(
+          'privacy.title'.tr(),
+          textAlign: TextAlign.center
+        )
       )
     );
   } 

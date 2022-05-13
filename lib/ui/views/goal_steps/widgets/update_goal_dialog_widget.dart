@@ -55,8 +55,9 @@ class _UpdateGoalDialogState extends State<UpdateGoalDialog> with TickerProvider
     return Center(
       child: Text(
         'goal_dialog.update_goal'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

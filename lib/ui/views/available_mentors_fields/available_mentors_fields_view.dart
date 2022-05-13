@@ -122,7 +122,10 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
     return Container(
       padding: const EdgeInsets.only(right: 55.0),
       child: Center(
-        child: Text('available_mentors.title'.tr()),
+        child: Text(
+          'available_mentors.title'.tr(),
+          textAlign: TextAlign.center
+        ),
       ),
     );
   }

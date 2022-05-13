@@ -57,6 +57,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
       child: Center(
         child: Text(
           'connect_with_mentor.find_available_mentor'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.TANGO,
             fontSize: 16.0,

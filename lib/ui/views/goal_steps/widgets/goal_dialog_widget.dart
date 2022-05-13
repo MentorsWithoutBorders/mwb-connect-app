@@ -38,8 +38,9 @@ class _GoalDialogState extends State<GoalDialog> {
     return Center(
       child: Text(
         'goal_dialog.title'.tr(),
+        textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 18,
+          fontSize: 18.0,
           fontWeight: FontWeight.bold
         )
       )

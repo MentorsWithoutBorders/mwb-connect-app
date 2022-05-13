@@ -37,8 +37,9 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
       child: Center(
         child: Text(
           'connect_with_mentor.cancel_lesson_request'.tr(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )

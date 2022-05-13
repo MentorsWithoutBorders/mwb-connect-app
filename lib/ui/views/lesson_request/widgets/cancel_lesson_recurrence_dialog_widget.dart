@@ -39,8 +39,9 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
       child: Center(
         child: Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold
           )
         )
