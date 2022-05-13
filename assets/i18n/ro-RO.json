@@ -73,6 +73,7 @@
 		"send": "Send",
 		"from": "from",
 		"to": "to",
+		"until": "until",
 		"and": "and",
 		"or": "or",
 		"at": "at",
@@ -201,8 +202,9 @@
 		"find_new_mentor": "Find new mentor",
 		"selected_mentor_unavailable": "Unfortunately the selected mentor has already been contacted by another student. Please select a different mentor.",
 		"previous_mentor_unavailable": "Unfortunately your previous mentor has already been contacted by another student. Please find a new mentor.",
-		"finding_available_mentor": "Finding an available mentor for the next lesson...",
+		"requested_lesson": "You have requested a",
 		"waiting_mentor": "Waiting for the mentor to approve your lesson request...",
+		"waiting_time": "(could take up to 1-2 days)",
 		"cancel_request": "Cancel request",
 		"cancel_lesson_request": "Cancel lesson request",
 		"cancel_lesson_request_text": "Are you sure you want to cancel the lesson request?",
@@ -246,12 +248,18 @@
     "overdue": "overdue",
     "show_request": "Show request",
 		"standing_by": "Standing by for a lesson request",
-		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills and availability that you’ve specified in ",
+    "add_more_lessons_text": "You can add more lessons with your previous student/s.",
+    "student_different_mentor": "We're sorry but your previous student has been connected with a different mentor.",
+    "students_other_mentors": "We're sorry but your previous students have been connected with other mentors.",
+    "one_student_different_mentor": "One of your previous students has been connected with a different mentor.",
+    "some_students_other_mentors": "{} of your previous students have been connected with other mentors.",
+		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills, and availability that you have specified in ",
 		"lesson_request_text": "{} from {} would like to do a {} lesson on {} at {} {}",
     "lesson_request_expired": "We're sorry but the lesson request has expired (each lesson request is available for 1h).",
     "lesson_request_canceled": "We're sorry but the lesson request has been canceled.",
-    "lesson_request_recurrence_text": "Schedule recurring lesson every {} at {} {} (can also be done after the single lesson is scheduled)",
-    "next_lesson_recurrence_text": "Schedule recurring lesson every {} at {} {} (can also be done during the lesson or up to 3 hours after the lesson)",
+    "lessons_number": "Number of lessons:",
+    "lesson_request_single_lesson_text": "The lesson will take place on {} at {} {}.",
+    "lesson_request_recurrence_text": "The lessons will take place every {} at {} {} from {} until {}.",
     "lesson_recurrence_until": "Until: ",
 		"send_url": "Send Google Meet/Zoom link",
 		"paste_url": "Please paste the link here:",
@@ -262,10 +270,13 @@
     "cancel_lesson_recurrence_text": "Are you sure you want to cancel the entire lesson recurrence?\n(the {} will be assigned to another mentor)",
 		"reject_lesson_request_text": "Are you sure you want to reject the {} lesson with {} from {} on {} at {} {}?\n(the student will be assigned to another mentor)",
 		"lesson_scheduled": "You have scheduled {} {} lesson {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",
-		"lesson_scheduled_recurring": "You have scheduled a recurring {} lesson every {} until {}. The next lesson will be {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",    
+		"lesson_scheduled_recurring": "You have scheduled a recurring {} lesson every {} until {}.\n\nThe next lesson will be {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",    
 		"lesson_link": "The link for the lesson is: ",
     "change_url": "Change link",
-    "update_lesson_recurrence": "Update lesson recurrence",
+    "add_lessons": "Add lessons",
+    "add_more_lessons": "Add more lessons",
+    "lessons_to_add": "Number of lessons to add:",
+    "add_lessons_text": "The lessons will take place every {} at {} {} until {}.",
     "lesson_recurrence_updated": "The lesson recurrence has been updated",
     "notes_previous_mentors": "see notes from previous mentors",
     "no_notes_previous_mentors": "There are no lesson notes from previous mentors.",
@@ -341,7 +352,7 @@
   "lessons_disabled": {
     "title": "Lessons disabled",
     "text": "Unfortunately your lesson requests have been disabled. If you would like to enable them, please"
-  },  
+  },
 	"tutorials": { 
 		"mental_process_goal_steps": {
 			"title": "Adding steps",
@@ -397,11 +408,7 @@
 			},
       "joyful_productivity": {
 				"title": "Joyful productivity",
-				"text": "<div align=\"justify\">In order to really enjoy the journey towards your goals and feel incredibly productive each and every day, it's best to divide your working days into multiple <b>30 mins - 1h chunks of applying the super-focus method combined with the quick or deep relaxation when needed</b>, while doing the following:<ul><li>think of the next step that you need to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li>repeat the previous points for each and every step that you want to take.</li></ul>Always keep in mind that <b>if you're not feeling joy while taking steps towards your goals for 5 mins, 10 mins, 15 mins, and so on, it means that you're not applying the super-focus method or the relaxation methods when needed</b>.</div>"
-			},	
-			"extra_energy": {
-				"title": "Extra energy",
-				"text": "<div align=\"justify\">You can also get an energy boost by doing the following from time to time:<ul><li>remind yourself of the final goal</li><li>review in your mind the main steps that you can take in order to reach it</li><li><b>do the activity that corresponds to the next step for 1-2 minutes in your head, applying the super-focus method to it</b>: whenever you get interrupted by other thoughts, you just continue from where you got interrupted.</li></ul>By doing this, you'll notice that when you take the next step in reality, you'll feel much more focused and energized.<br><br>Another way of generating extra energy is <b>by thinking about what you have just accomplished with your previous step and how you executed it</b>, applying again the super-focus method to this remembering process.</div>"
+				"text": "<div align=\"justify\">In order to really enjoy the journey towards your goal and feel incredibly productive each and every day, it's best to <b>start by thinking about your final goal and the main steps to achieve it</b>, and then divide your working day into multiple <b>1 hour intervals of applying the super-focus method combined with the quick or deep relaxation (when needed)</b>, while doing the following:<ul><li>think about the next step that you want to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li><b>from time to time, think about the step that you have taken previously in order to get a significant energy boost</b></li><li>repeat the previous points for each and every step that you want to take.</li></ul>Also, if you have taken a break and you're finding it difficult to get back to work, you just need to relax and then ask yourself <b>\"what is the next step?\"</b></div>"
 			}			
 		}					
 	},
@@ -424,11 +431,11 @@
     },
     "quiz_tutorial5": {
       "title": "Quick and deep relaxation",
-      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Because relaxing efficiently is so important whenever you encounter various negative states, we'll review the quick and deep relaxation methods once more.<br><br><u><b>Quick relaxation:</b></u><br>Most of the time, the negative emotions that you'll feel won't be very intense so all you need to do in those moments is to <b>just let the entire body relax for a few seconds (or minutes if necessary)</b> and then continue taking the necessary steps for achieving your goals.<br><br><u><b>Deep relaxation:</b><br></u>When the negative states get more intense, you can use the <b>progressive muscle relaxation technique (deep relaxation)</b> in the following way:<ul><li>tense your shoulders for 2-3 seconds and then let them relax</li><li>tense your arms for 2-3 seconds and then let them relax</li><li>tense your chest for 2-3 seconds and then let it relax</li><li>tense your torso for 2-3 seconds and then let it relax</li><li>tense your upper legs for 2-3 seconds and then let them relax</li><li>tense your lower legs and feet for 2-3 seconds and then let them relax</li><li>tense your entire body for 4-5 seconds and then <b>focus on how you're letting it relax until you reach a very relaxed, pleasant state</b></li></ul>After you use this relaxation technique, you'll notice how you'll be able to continue the journey towards your goals with a lot more patience, joy, and efficiency.</span></div>"
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Because relaxing efficiently is so important whenever you encounter various negative states, we'll review the quick and deep relaxation methods once more.<br><br><u><b>Quick relaxation:</b></u><br>Most of the time, the negative emotions that you'll feel won't be very intense so all you need to do in those moments is to <b>just let the entire body relax for a few seconds (or minutes if necessary)</b> and then continue taking the necessary steps for achieving your goals.<br><br><u><b>Deep relaxation:</b><br></u>When the negative states get more intense, you can use the <b>progressive muscle relaxation technique (deep relaxation)</b> in the following way:<ul><li>tense your shoulders for 2-3 seconds and then let them relax</li><li>tense your arms for 2-3 seconds and then let them relax</li><li>tense your chest for 2-3 seconds and then let it relax</li><li>tense your torso for 2-3 seconds and then let it relax</li><li>tense your upper legs for 2-3 seconds and then let them relax</li><li>tense your lower legs and feet for 2-3 seconds and then let them relax</li><li>tense your entire body for 4-5 seconds and then <b>focus on how you're letting it relax until you reach a very relaxed, pleasant state</b></li></ul>After you use this relaxation technique, you'll notice how you'll be able to continue the journey towards your goal with a lot more patience, joy, and efficiency.</span></div>"
     },
     "quiz_tutorial6": {
       "title": "Joyful productivity",
-      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">In order to really enjoy the journey towards your goals and feel incredibly productive each and every day, it's best to divide your working days into multiple <b>30 mins - 1h chunks of applying the super-focus method combined with the quick or deep relaxation when needed</b>, while doing the following:<ul><li>think of the next step that you need to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li>repeat the previous points for each and every step that you want to take.</li></ul>Always keep in mind that <b>if you're not feeling joy while taking steps towards your goals for 5 mins, 10 mins, 15 mins, and so on, it means that you're not applying the super-focus method or the relaxation methods when needed</b>.</span></div>"
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">In order to really enjoy the journey towards your goal and feel incredibly productive each and every day, it's best to <b>start by thinking about your final goal and the main steps to achieve it</b>, and then divide your working day into multiple <b>1 hour intervals of applying the super-focus method combined with the quick or deep relaxation (when needed)</b>, while doing the following:<ul><li>think about the next step that you want to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li><b>from time to time, think about the step that you have taken previously in order to get a significant energy boost</b></li><li>repeat the previous points for each and every step that you want to take.</li></ul>Also, if you have taken a break and you're finding it difficult to get back to work, you just need to relax and then ask yourself <b>\"what is the next step?\"</b></span></div>"
     },
     "quiz_tutorial7": {
       "title": "Energy",
@@ -439,9 +446,9 @@
       "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Apart from ideas and energy, you will also get more and more confidence that you can reach your goal whenever you keep asking yourself <b>\"what else can I do in order to achieve my goal?\"</b><br><br>This will happen because <b>the subconscious mind simply cannot tell the difference between imagination and reality</b>, which means that for any process that we run in our minds, we feel that we’ve already gone through that process in reality multiple times and this gives us more and more confidence that we’ll actually reach our goals.</span></div>"
     },     
     "quiz_tutorial9": {
-      "title": "Extra energy",
-      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">You can also get an energy boost by doing the following from time to time:<ul><li>remind yourself of the final goal</li><li>review in your mind the main steps that you can take in order to reach it</li><li><b>do the activity that corresponds to the next step for 1-2 minutes in your head, applying the super-focus method to it (combined with the quick or deep relaxation when needed)</b></li></ul>By doing this, you'll notice that when you take the next step in reality, you'll feel much more focused and energized.<br><br>Another way of generating extra energy is by <b>thinking about what you have just accomplished with your previous step and how you executed it</b>, applying again the super-focus method to this remembering process.</span></div>"
-    },     
+      "title": "Joyful productivity",
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">This part is also extremely important so let's go through it one more time.<br><br>In order to really enjoy the journey towards your goal and feel incredibly productive each and every day, it's best to <b>start by thinking about your final goal and the main steps to achieve it</b>, and then divide your working day into multiple <b>1 hour intervals of applying the super-focus method combined with the quick or deep relaxation (when needed)</b>, while doing the following:<ul><li>think about the next step that you want to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li><b>from time to time, think about the step that you have taken previously in order to get a significant energy boost</b></li><li>repeat the previous points for each and every step that you want to take.</li></ul>Also, if you have taken a break and you're finding it difficult to get back to work, you just need to relax and then ask yourself <b>\"what is the next step?\"</b></span></div>"
+    },   
     "quiz_tutorial10": {
       "title": "Ideas, energy, and confidence",
       "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">To recap, you have to keep asking yourself on a regular basis <b>\"what else can I do in order to achieve my goal?\"</b> so that you can build a clearer and clearer plan in your mind for achieving your goal.<br><br>At the same time, this very simple yet extremely powerful question will allow you to generate more and more <b>energy and confidence</b> to put your ideas into practice because your subconscious mind will keep the process running on auto-pilot in the background, and it will also reinforce the feeling that you've already taken all the steps and achieved your goal multiple times in the past.</span></div>"
@@ -452,7 +459,7 @@
     },
     "quiz_tutorial12": {
       "title": "Focused and joyful productivity",
-      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">The super-focus method allows you to immerse yourself more and more fully in each and every step that you are taking and it's just about <b>realizing when you get distracted by other thoughts and switching your focus back to the activity at hand</b>.<br><br>Also, in order to really enjoy the journey towards your goals and feel incredibly productive each and every day, it's best to divide your working days into multiple <b>30 mins - 1h chunks of applying the super-focus method combined with the quick or deep relaxation when needed</b>, while doing the following:<ul><li>think of the next step that you need to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li>repeat the previous points for each and every step that you want to take.</li></ul>Always keep in mind that <b>if you're not feeling joy while taking steps towards your goals for 5 mins, 10 mins, 15 mins, and so on, it means that you're not applying the super-focus method or the relaxation methods when needed</b>.</span></div>"
+      "text": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">The super-focus method allows you to immerse yourself more and more fully in each and every step that you are taking and it's just about <b>realizing when you get distracted by other thoughts and switching your focus back to the activity at hand</b>.<br><br>Also, in order to really enjoy the journey towards your goal and feel incredibly productive each and every day, it's best to <b>start by thinking about your final goal and the main steps to achieve it</b>, and then divide your working day into multiple <b>1 hour intervals of applying the super-focus method combined with the quick or deep relaxation (when needed)</b>, while doing the following:<ul><li>think about the next step that you want to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li><b>from time to time, think about the step that you have taken previously in order to get a significant energy boost</b></li><li>repeat the previous points for each and every step that you want to take.</li></ul>Also, if you have taken a break and you're finding it difficult to get back to work, you just need to relax and then ask yourself <b>\"what is the next step?\"</b></span></div>"
     }             
   },
 	"quizzes": {
@@ -500,7 +507,7 @@
       "question": "How can we be extremely productive while enjoying ourselves at the same time?",
       "option1": "By rewarding ourselves every time we have completed a task, no matter how small that task might be.",
       "option2": "By doing work only when we feel excited about it and taking time off whenever we don't feel motivated enough.",
-      "option3": "By applying the super-focus method while taking steps towards our goals and by relaxing whenever needed.",
+      "option3": "By combining the super-focus method with the quick or deep relaxation while taking steps towards our goals and while thinking of the previous steps.",
       "answer": "3"		
     },      
     "quiz7": {
@@ -518,12 +525,12 @@
       "answer": "3"
     }, 
     "quiz9": {
-      "question": "How can we generate even more energy for taking the necessary steps to achieve our goals?",
-      "option1": "By thinking about our final goal and some of the steps to achieve it, applying the super-focus method and relaxation methods to this process.",
-      "option2": "By dropping our attachment to comfort because this can sabotage our energy and we'll find ourselves procrastinating over and over again.",
-      "option3": "By simply getting started because most of the time we feel tired just by thinking about the magnitude of the tasks that are in front of us.",
-      "answer": "1"		
-    }, 
+      "question": "How can we be extremely productive while enjoying ourselves at the same time?",
+      "option1": "By doing work only when we feel excited about it and taking time off whenever we don't feel motivated enough.",
+      "option2": "By combining the super-focus method with the quick or deep relaxation while taking steps towards our goals and while thinking of the previous steps.",
+      "option3": "By rewarding ourselves every time we have completed a task, no matter how small that task might be.",
+      "answer": "2"		
+    },
     "quiz10": {
       "question": "How do we make the plan for achieving a certain goal clearer and clearer in our minds?",
       "option1": "By visualizing the necessary steps to achieve our goal and by adding deadlines to these steps.",
@@ -540,12 +547,28 @@
     },	
     "quiz12": {
       "question": "How can we be extremely productive while enjoying ourselves at the same time?",
-      "option1": "By combining the super-focus method with the quick or deep relaxation while taking steps towards our goals.",
+      "option1": "By combining the super-focus method with the quick or deep relaxation while taking steps towards our goals and while thinking of the previous steps.",
       "option2": "By doing work only when we feel excited about it and taking time off whenever we don't feel motivated enough.",
       "option3": "By rewarding ourselves every time we have completed a task, no matter how small that task might be.",
       "answer": "1"		
     }
 	},
+  "joyful_productivity_reminder": {
+    "title": "Joyful productivity reminder",
+    "text": {
+      "first_part": "Please keep in mind that in order to really enjoy the journey towards your goal and feel incredibly productive each and every day, it's best to",
+      "second_part": "start by thinking about your final goal and the main steps to achieve it,",
+      "third_part": "and then divide your working day into multiple",
+      "fourth_part": "1 hour intervals of applying",
+      "super_focus_method": "the super-focus method",
+      "fifth_part": "combined with",
+      "quick_deep_relaxation": "the quick or deep relaxation",
+      "sixth_part": "(when needed),",
+      "seventh_part": "while doing the following:",
+      "list": "<div align=\"justify\"><span style=\"font-size: 12px; color: #646464; line-height: 1.3\"><ul><li>think about the next step that you want to take in order to achieve your goal</li><li>think about how to execute that next step</li><li>execute the step</li><li><b>from time to time, think about the step that you have taken previously in order to get a significant energy boost</b></li><li>repeat the previous points for each and every step that you want to take.</li></ul>Also, if you have taken a break and you're finding it difficult to get back to work, you just need to relax and then ask yourself <b>\"what is the next step?\"</b></span></div>"      
+    },
+    "got_it": "Got it"
+  },
   "fields_descriptions": {
     "programming": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">These days, there are very few jobs that don’t involve some level of technology use. But while most people are quite happy to simply be at the user end of that technology, you may be someone who wants to get stuck in and get involved in creating the systems and interfaces that other people use.<br><br><b>Reasons to pursue a programming career:</b><ol><li style=\"margin-bottom: 8px\"><b>You have opportunities without a degree.</b><br>Many organisations don’t require programming candidates to have a formal degree. They will be more interested in looking at your ability to learn on the job, your ability to work as part of a team and your willingness to tackle challenges. There is a huge amount of training courses available for major languages such as JavaScript, Python, Java, PHP, HTML, CSS and more – some of which you can learn to master in a matter of months.</li><li style=\"margin-bottom: 8px\"><b>You will be in demand.</b><br>The job market for programmers is excellent overall, but depending on what you choose to specialise in, you can become highly sought after. Industries such as banking, utilities and manufacturing are investing heavily in software development at the moment, but each sector will have their own specialist requirements. Whatever your main focus is, it’s a good idea to aim to have more than one area of expertise. This means that you’d be able to rapidly move into an alternative role in case your primary programming language becomes obsolete or less popular.</li><li style=\"margin-bottom: 8px\"><b>You will be a valued team member.</b><br>Teamwork is absolutely critical in all types of software development. The end solution will always depend on every member of the team making a valuable contribution, which makes you an important piece of the puzzle. In a modern business environment, programmers need to use a range of ‘people skills’ to engage and communicate with their colleagues and customers. You will be expected to share your knowledge and relay information that helps the entire team to make progress. More and more organisations adopt methodologies like Agile software development, which focuses heavily on creating a collaborative atmosphere where everyone adds value and learns from each other. This in turn results in faster delivery and higher quality of the end solution.</li><li style=\"margin-bottom: 8px\"><b>You will be constantly learning.</b><br>Programmers are on a constant learning journey. This can of course be said for most roles in business, but programmers do need to stay particularly well informed about new technological solutions and innovations. The ability to harness new ideas or platforms can make all the difference when it comes to a business’ ability to stay competitive in the marketplace. Many employers will work with you to build a development plan that allows you to do sponsored training and get various qualifications that will benefit you as well as the business.</li><li style=\"margin-bottom: 8px\"><b>You will have fun.</b><br>If you are a natural problem-solver, you will enjoy the process of creating software features and fixing bugs. You will get a great sense of achievement and satisfaction from delivering a solution that improves – perhaps even revolutionises – the way a business operates. And if you have been careful to choose an employer who knows how to reward its teams’ performance, you will get plenty of recognition for your contributions!</li></ol></span></div>",
     "product_management": "<div align=\"justify\"><span style=\"color: #646464; line-height: 1.3\">Product management is building something from scratch or adding new features to an existing product. For example, building a complete e-commerce product itself or adding a search feature in an e-commerce product. However, it is not limited to that. It also comprises seeing the results of your hard work when the users are finding value in what you have built and continuously working towards building the best products for them.<br><br>Gathering information from different sources, prioritizing the tasks in hand, delegating the tasks, and delivering the final product that caters to the consumer’s needs are some of the things that a product manager actively does. Irrespective of what a PM does, they need to ensure that the product is aligned with the business goals.<br><br>You will find product managers working in start-ups as well as established companies handling consumer products, B2B products, B2C products, internal products, and so on. But at the core of everything they deliver a product that customers want and are willing to pay for. To do this, a product manager needs to be someone who has a vision and the ability to drive decisions and lead through influence.<br><br><b>Why should you consider a career in product management?</b><ol><li style=\"margin-bottom: 8px\">The role has a HUGE learning scope as it requires you to work with multiple cross-functional teams. Working with engineering, design, research, marketing, business, analytics, sales, support, and content teams is going to enrich your domain knowledge and experience. The skills that you will acquire through daily collaborations, communications, challenges, and frequent decision-making are going to turn you into a great leader for your career ahead.</li><li style=\"margin-bottom: 8px\">It is going to be addictive to solve users’ problems, seeing how the product you have built is being used by your end-users, and how it is impacting someone’s life.</li><li style=\"margin-bottom: 8px\">You will also get to communicate with the top leadership of the organization which will help you understand the vision of the organization better. Seeing the bigger picture will help you in making the right decisions for your product and organization.</li><li style=\"margin-bottom: 8px\">You will find the role flexible as you will be the one who will be driving the decisions and prioritizations of the tasks (of course in alignment with the business as already mentioned above.)</li></ol></span></div>",

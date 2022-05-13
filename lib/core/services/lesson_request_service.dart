@@ -50,6 +50,7 @@ class LessonRequestService {
     if (isSingleLesson == true && isLessonRecurrent) {
       lessonData.dateTime = lesson?.dateTime;
     }
+    lessonData.endRecurrenceDateTime = lesson?.endRecurrenceDateTime;
     data = lessonData.toJson();
     String? id = lesson?.id;
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: data);  

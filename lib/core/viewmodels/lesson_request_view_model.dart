@@ -164,6 +164,8 @@ class LessonRequestViewModel extends ChangeNotifier {
     LessonNote lessonNote = LessonNote(text: text);
     if (previousLesson != null && previousLesson?.id != null) {
       await _lessonRequestService.addStudentsLessonNotes(previousLesson?.id, lessonNote);
+    } else if (nextLesson != null && nextLesson?.id != null) {
+      await _lessonRequestService.addStudentsLessonNotes(nextLesson?.id, lessonNote);
     }
   }    
 

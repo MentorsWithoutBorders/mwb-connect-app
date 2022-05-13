@@ -248,7 +248,7 @@
     "overdue": "overdue",
     "show_request": "Show request",
 		"standing_by": "Standing by for a lesson request",
-    "add_more_lessons_text": "Would you like to add more lessons with your previous student/s?",
+    "add_more_lessons_text": "You can add more lessons with your previous student/s.",
     "student_different_mentor": "We're sorry but your previous student has been connected with a different mentor.",
     "students_other_mentors": "We're sorry but your previous students have been connected with other mentors.",
     "one_student_different_mentor": "One of your previous students has been connected with a different mentor.",
