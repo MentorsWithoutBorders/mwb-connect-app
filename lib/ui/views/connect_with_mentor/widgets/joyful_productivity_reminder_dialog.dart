@@ -106,7 +106,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                           )
                         ),
                         TextSpan(
-                          text: superFocusMethod + ' ',
+                          text: superFocusMethod,
                           style: const TextStyle(
                             decoration: TextDecoration.underline,
                             fontWeight: FontWeight.bold,
@@ -117,13 +117,13 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                           }
                         ),
                         TextSpan(
-                          text: fifthPart + ' ',
+                          text:  ' ' + fifthPart + ' ',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold
                           )
                         ),
                         TextSpan(
-                          text: quickDeepRelaxation + ' ',
+                          text: quickDeepRelaxation,
                           style: const TextStyle(
                             decoration: TextDecoration.underline,
                             fontWeight: FontWeight.bold,
@@ -134,7 +134,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                           }
                         ),
                         TextSpan(
-                          text: sixthPart + ' ',
+                          text: ' ' + sixthPart + ' ',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold
                           )
