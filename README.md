@@ -1,3 +1,3 @@
-# mwb_connect_app
+# MWB Connect
 
-MWB Connect mobile app
+MWB Connect mobile app - Flutter project
