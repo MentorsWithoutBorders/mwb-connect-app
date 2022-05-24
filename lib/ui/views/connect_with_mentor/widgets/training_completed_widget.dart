@@ -41,7 +41,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
             children: [
               if (!shouldShowReceiveCertificate() || isCertificateSent()) _showTitle(),
               if (!shouldShowReceiveCertificate() || isCertificateSent()) Container(
-                padding: const EdgeInsets.only(left: 3.0),
+                padding: const EdgeInsets.only(left: 3.0, right: 3.0),
                 child: _showText()
               ),
               if (shouldShowReceiveCertificate() && !isCertificateSent()) _showReceiveCertificate(),              
@@ -81,7 +81,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: RichText(
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
             fontSize: 12,
