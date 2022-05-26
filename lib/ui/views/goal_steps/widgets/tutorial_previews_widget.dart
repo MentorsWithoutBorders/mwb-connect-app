@@ -35,7 +35,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     _setAnimationController();
   }
 

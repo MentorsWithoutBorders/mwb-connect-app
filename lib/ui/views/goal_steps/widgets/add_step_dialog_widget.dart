@@ -29,7 +29,7 @@ class _AddStepDialogState extends State<AddStepDialog> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
   void _afterLayout(_) {
@@ -102,7 +102,7 @@ class _AddStepDialogState extends State<AddStepDialog> {
           onChanged: (String value) {
             Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
-                WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);             
+                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);             
                 _formKey.currentState?.validate();
               }
             });

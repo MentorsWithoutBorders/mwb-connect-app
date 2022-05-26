@@ -207,7 +207,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return WillPopScope(
       onWillPop: _onWillPop,

@@ -148,7 +148,7 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
 
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return GestureDetector(
       onTap: () {

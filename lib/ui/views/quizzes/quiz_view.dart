@@ -31,7 +31,7 @@ class _QuizState extends State<QuizView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_initQuizNumber);
+    WidgetsBinding.instance.addPostFrameCallback(_initQuizNumber);
   }  
 
   void _initQuizNumber(_) {

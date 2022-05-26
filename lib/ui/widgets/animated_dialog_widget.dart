@@ -27,7 +27,7 @@ class AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvide
     super.initState();
     _setController();
     _initMarginBottom();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
   void _afterLayout(_) {

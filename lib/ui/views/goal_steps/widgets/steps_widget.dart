@@ -118,7 +118,7 @@ class _StepsState extends State<Steps> {
   
   Widget _showContent() {
     if (_stepsRetrieved) {  
-      WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+      WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
       return _showSteps();
     } else {
       return const Padding(

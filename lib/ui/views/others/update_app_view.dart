@@ -25,7 +25,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _setAppDirectory();
   }
 
@@ -38,7 +38,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }   
 

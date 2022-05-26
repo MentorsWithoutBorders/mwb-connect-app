@@ -43,12 +43,14 @@ class Lesson {
     if (json != null) {
       return User.fromJson(json);
     }
+    return User();
   }    
 
   Subfield? _subfieldFromJson(Map<String, dynamic>? json) {
     if (json != null) {
       return Subfield.fromJson(json);
     }
+    return Subfield();
   }    
 
   Map<String, Object?> toJson() {

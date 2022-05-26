@@ -47,7 +47,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -100,7 +100,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }    
 
@@ -184,7 +184,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     _stepsProvider = Provider.of<StepsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
-    WidgetsBinding.instance?.addPostFrameCallback(_showJoyfulProductivityReminder);    
+    WidgetsBinding.instance.addPostFrameCallback(_showJoyfulProductivityReminder);    
 
     return FutureBuilder<void>(
       future: _init(),
