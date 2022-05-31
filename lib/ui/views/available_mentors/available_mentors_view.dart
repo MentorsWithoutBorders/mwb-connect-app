@@ -31,7 +31,7 @@ class _AvailableMentorsViewState extends State<AvailableMentorsView> {
       _fetchPage(pageKey);
     });
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }  
 
   @override

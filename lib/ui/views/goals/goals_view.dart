@@ -32,14 +32,14 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
   
@@ -164,7 +164,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     //         });
     //       }
     //     });
-    //     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    //     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
     //     return _showGoals();
     //   } else {
     //     return FirstGoal();

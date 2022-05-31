@@ -107,7 +107,7 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
       if (shouldGoToAvailableMentors == true) {
         _goToAvailableMentors();
       }
-    });    
+    });
   }
 
   Future<void> _goToAvailableMentors() async {

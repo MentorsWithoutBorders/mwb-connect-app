@@ -24,7 +24,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
   }
   
   void _afterLayout(_) {

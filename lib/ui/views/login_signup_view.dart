@@ -46,7 +46,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   void initState() {
     super.initState();
     KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {    
+    WidgetsBinding.instance?.addPostFrameCallback((_) {    
       keyboardVisibilityController.onChange.listen((bool visible) {
         if (visible && _scrollController.hasClients) {
           Future<void>.delayed(const Duration(milliseconds: 100), () {

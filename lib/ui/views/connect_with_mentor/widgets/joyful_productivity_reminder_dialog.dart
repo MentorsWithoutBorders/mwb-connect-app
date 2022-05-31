@@ -68,8 +68,8 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
       height: MediaQuery.of(context).size.height * 0.5,
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Scrollbar(
-        controller: _scrollController, 
-        isAlwaysShown: true, 
+        controller: _scrollController,
+        isAlwaysShown: true,
         child: SingleChildScrollView(
           controller: _scrollController,     
           child: Padding(
@@ -171,7 +171,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.BERMUDA_GRAY,
+            primary: AppColors.ALLPORTS,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

@@ -25,7 +25,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     _setAppDirectory();
   }
 
@@ -38,7 +38,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }   
 
@@ -163,8 +163,8 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
     } else if (platform == TargetPlatform.android) {
       url = 'https://play.google.com/store/apps/details?id=com.mwbconnect.app';
     }
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }      

@@ -42,7 +42,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   } 
 
   @override
@@ -76,7 +76,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 

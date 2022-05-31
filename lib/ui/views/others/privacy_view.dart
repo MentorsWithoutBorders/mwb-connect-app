@@ -23,7 +23,7 @@ class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout); 
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout); 
   }
 
   @override

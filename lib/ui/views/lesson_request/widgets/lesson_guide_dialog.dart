@@ -219,7 +219,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
   }
   
   Future<void> _launchUrl(String url) async {
-    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+    await canLaunchUrl(Uri.parse(url)) ? await launchUrl(Uri.parse(url)) : throw 'Could not launch $url';
   }
   
   Widget _showCloseButton() {

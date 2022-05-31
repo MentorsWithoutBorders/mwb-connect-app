@@ -69,7 +69,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
   @override
   Widget build(BuildContext context) {
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);    
-    WidgetsBinding.instance.addPostFrameCallback(_showQuiz);
+    WidgetsBinding.instance?.addPostFrameCallback(_showQuiz);
 
     return Scaffold(
       appBar: AppBar(

@@ -31,7 +31,7 @@ class _QuizState extends State<QuizView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_initQuizNumber);
+    WidgetsBinding.instance?.addPostFrameCallback(_initQuizNumber);
   }  
 
   void _initQuizNumber(_) {
@@ -105,8 +105,8 @@ class _QuizState extends State<QuizView> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
               child: Scrollbar(
-                controller: _scrollController, 
-                isAlwaysShown: true, 
+                controller: _scrollController,
+                isAlwaysShown: true,
                 child: SingleChildScrollView(
                   controller: _scrollController,                
                   child: Padding(

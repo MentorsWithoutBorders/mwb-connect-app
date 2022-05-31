@@ -184,7 +184,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
 
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
     return FutureBuilder<void>(
       future: _getProfile(),

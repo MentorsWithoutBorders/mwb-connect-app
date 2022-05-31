@@ -107,7 +107,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
             controller: _scrollController,                
             child: Padding(
               padding: const EdgeInsets.only(right: 7.0),
-              child: Column(
+              child: Wrap(
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
@@ -117,9 +117,9 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
                 ]
               )
             )
-          )
+          ),
         )
-      )
+      ),
     );
   }
 
@@ -147,8 +147,8 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
                   decoration: TextDecoration.underline
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () async {
-                  if (await canLaunch(whyChooseUrl))
-                    await launch(whyChooseUrl);
+                  if (await canLaunchUrl(Uri.parse(whyChooseUrl)))
+                    await launchUrl(Uri.parse(whyChooseUrl));
                   else 
                     throw "Could not launch $whyChooseUrl";
                 }

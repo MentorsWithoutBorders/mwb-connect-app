@@ -136,7 +136,7 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
     return CompositedTransformTarget(
       link: _layerLink,
