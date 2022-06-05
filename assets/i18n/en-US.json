@@ -255,6 +255,7 @@
     "some_students_other_mentors": "{} of your previous students have been connected with other mentors.",
 		"standing_by_text": "You will be notified as soon as one of the students from our partner NGOs will request a lesson according to the specialization, skills, and availability that you have specified in ",
 		"lesson_request_text": "{} from {} would like to do a {} lesson on {} at {} {}",
+		"lesson_request_bottom_text": "(kindly accept or reject the lesson request until the end of the day on {} so that the student can connect with another mentor if needed)",
     "lesson_request_expired": "We're sorry but the lesson request has expired (each lesson request is available for 1h).",
     "lesson_request_canceled": "We're sorry but the lesson request has been canceled.",
     "lessons_number": "Number of lessons:",

@@ -31,11 +31,15 @@ class _LessonRequestState extends State<LessonRequest> {
         ), 
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          child: Wrap(
-            children: [
-              _showText(),
-              _showButtons()
-            ]
+          child: Padding(
+            padding: const EdgeInsets.only(left: 3.0, right: 3.0),
+            child: Wrap(
+              children: [
+                _showText(),
+                _showButtons(),
+                _showBottomText()
+              ]
+            ),
           )
         ),
       ),
@@ -65,7 +69,7 @@ class _LessonRequestState extends State<LessonRequest> {
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: RichText(
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
                 fontSize: 12,
@@ -129,7 +133,7 @@ class _LessonRequestState extends State<LessonRequest> {
       children: [
         Container(
           height: 30.0,
-          margin: const EdgeInsets.only(bottom: 5.0, right: 15.0),
+          margin: const EdgeInsets.only(bottom: 10.0, right: 15.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 1.0,
@@ -152,7 +156,7 @@ class _LessonRequestState extends State<LessonRequest> {
         ),
         Container(
           height: 30.0,
-          margin: const EdgeInsets.only(bottom: 5.0),
+          margin: const EdgeInsets.only(bottom: 10.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 1.0,
@@ -175,7 +179,46 @@ class _LessonRequestState extends State<LessonRequest> {
         ),
       ]
     );
-  }  
+  }
+
+  Widget _showBottomText() {
+    LessonRequestModel? lessonRequest = _lessonRequestProvider?.lessonRequest;
+    DateTime lessonRequestSentDateTime = lessonRequest?.sentDateTime as DateTime;
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    String date = dateFormat.format(lessonRequestSentDateTime.add(Duration(days: 1)));
+    String text = 'lesson_request.lesson_request_bottom_text'.tr(args: [date]);
+    String firstPart = text.substring(0, text.indexOf(date));
+    String secondPart = text.substring(text.indexOf(date) + date.length);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.DOVE_GRAY,
+            fontStyle: FontStyle.italic,
+            height: 1.4
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: firstPart
+            ),
+            TextSpan(
+              text: date,
+              style: const TextStyle(
+                color: AppColors.TANGO
+              ) 
+            ),
+           TextSpan(
+              text: secondPart
+            ),
+          ],
+        )
+      ),
+    );
+  }    
 
   @override
   Widget build(BuildContext context) {
