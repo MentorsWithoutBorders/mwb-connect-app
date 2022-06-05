@@ -102,13 +102,10 @@ class LessonRequestViewModel extends ChangeNotifier {
   
   Future<void> getNextLesson() async {
     nextLesson = await _lessonRequestService.getNextLesson();
+    studentsLessonsNotes.clear();
     for (User student in nextLesson?.students as List<User>) {
       List<LessonNote> lessonsNotes = await this.getLessonsNotes(student.id as String);
-      studentsLessonsNotes.update(
-        student.id as String, 
-        (existingValue) => lessonsNotes, 
-        ifAbsent: () => lessonsNotes,
-      );      
+      studentsLessonsNotes.putIfAbsent(student.id as String, () => lessonsNotes);   
     }
   }
 
