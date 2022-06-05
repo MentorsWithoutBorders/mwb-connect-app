@@ -10,10 +10,11 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class LessonsNotesDialog extends StatefulWidget {
-  const LessonsNotesDialog({Key? key, this.student})
+  const LessonsNotesDialog({Key? key, this.student, this.lessonsNotes})
     : super(key: key);  
 
   final User? student;
+  final List<LessonNote>? lessonsNotes;
 
   @override
   State<StatefulWidget> createState() => _LessonsNotesDialogState();
@@ -55,11 +56,10 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
   }
 
   Widget _showLessonsNotes(bool isHorizontal) {
-    List<LessonNote>? lessonsNotes = _lessonRequestProvider?.lessonsNotes != null ? _lessonRequestProvider?.lessonsNotes : [];
     List<Widget> lessonNoteWidgets = [];
     DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
-    if (lessonsNotes != null) {
-      for (LessonNote lessonNote in lessonsNotes) {
+    if (widget.lessonsNotes != null) {
+      for (LessonNote lessonNote in widget.lessonsNotes as List<LessonNote>) {
         String lessonNoteDate = dateFormat.format(lessonNote.dateTime as DateTime);
         Widget lessonNoteWidget = Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
@@ -98,7 +98,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
       }      
       return Stack(
         children: [
-          if (lessonsNotes?.length == 0) Text(
+          if (widget.lessonsNotes?.length == 0) Text(
             'lesson_request.no_notes_previous_mentors'.tr(),
             style: TextStyle(
               fontSize: 12.0,

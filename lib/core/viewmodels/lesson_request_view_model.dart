@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/goal_model.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_recurrence_result_model.dart';
@@ -28,7 +29,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   String? quizzes;
   Lesson? nextLesson;
   Lesson? previousLesson;
-  List<LessonNote>? lessonsNotes;
+  Map<String, List<LessonNote>> studentsLessonsNotes = Map();
   List<GuideTutorial>? guideTutorials;
   List<GuideRecommendation>? guideRecommendations;
   bool _shouldUnfocus = false;
@@ -101,6 +102,14 @@ class LessonRequestViewModel extends ChangeNotifier {
   
   Future<void> getNextLesson() async {
     nextLesson = await _lessonRequestService.getNextLesson();
+    for (User student in nextLesson?.students as List<User>) {
+      List<LessonNote> lessonsNotes = await this.getLessonsNotes(student.id as String);
+      studentsLessonsNotes.update(
+        student.id as String, 
+        (existingValue) => lessonsNotes, 
+        ifAbsent: () => lessonsNotes,
+      );      
+    }
   }
 
   Future<void> cancelNextLesson({bool? isSingleLesson}) async {
@@ -148,8 +157,8 @@ class LessonRequestViewModel extends ChangeNotifier {
     previousLesson = await _lessonRequestService.getPreviousLesson();
   }
 
-  Future<void> getLessonsNotes(String studentId) async {
-    lessonsNotes = await _lessonRequestService.getLessonsNotes(studentId);
+  Future<List<LessonNote>> getLessonsNotes(String studentId) async {
+    return await _lessonRequestService.getLessonsNotes(studentId);
   }
   
   Future<void> getGuideTutorials() async {

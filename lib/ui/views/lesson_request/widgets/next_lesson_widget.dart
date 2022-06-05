@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lessons_notes_dialog.dart';
@@ -264,6 +265,7 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showStudents() {
     List<User>? students = _lessonRequestProvider?.nextLesson?.students;
+    Map<String, List<LessonNote>> studentsLessonsNotes = _lessonRequestProvider?.studentsLessonsNotes as Map<String, List<LessonNote>>;
     return Container(
       margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 5.0),
@@ -276,6 +278,8 @@ class _NextLessonState extends State<NextLesson> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: students?.length,
         itemBuilder: (context, index) {
+          String studentId = students?[index].id as String;
+          List<LessonNote> lessonsNotes = studentsLessonsNotes[studentId] != null ? studentsLessonsNotes[studentId] as List<LessonNote> : [];
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Row(
@@ -300,9 +304,12 @@ class _NextLessonState extends State<NextLesson> {
                           )
                         ),
                         TextSpan(
-                          text: ' - ${students?[index].organization?.name} ('
+                          text: ' - ${students?[index].organization?.name}'
                         ),
-                        TextSpan(
+                        if (lessonsNotes.length > 0) TextSpan(
+                          text: ' ('
+                        ),
+                        if (lessonsNotes.length > 0) TextSpan(
                           text: 'lesson_request.notes_previous_mentors'.tr(),
                           style: const TextStyle(
                             color: Colors.blue,
@@ -313,12 +320,12 @@ class _NextLessonState extends State<NextLesson> {
                             showDialog(
                               context: context,
                               builder: (_) => AnimatedDialog(
-                                widgetInside: LessonsNotesDialog(student: students?[index])
+                                widgetInside: LessonsNotesDialog(student: students?[index], lessonsNotes: lessonsNotes)
                               ),
                             );
                           } 
                         ),
-                        TextSpan(
+                        if (lessonsNotes.length > 0) TextSpan(
                           text: ')'
                         )
                       ]
