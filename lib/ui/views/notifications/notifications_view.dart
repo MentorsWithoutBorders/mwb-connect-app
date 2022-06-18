@@ -6,8 +6,10 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/notifications_settings_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
+import 'package:mwb_connect_app/ui/views/notifications/widgets/notifications_information_dialog.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 
 class NotificationsView extends StatefulWidget {
@@ -55,44 +57,54 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Expanded(
-              child: InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 12.0, 20.0, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'notifications.label'.tr(),
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.ALLPORTS
-                        ),
-                      ),
-                      Expanded(
-                        child: AnimatedOpacity(
-                          opacity: _isEnabled == true ? 1.0 : 0.0,
-                          duration: Duration(milliseconds: _animationDuration),
-                          child: Text(
-                            _time as String,
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              height: 1.4
-                            ),
-                          )
-                        ),
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15.0, 12.0, 0.0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'notifications.label'.tr(),
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.ALLPORTS
                       )
-                    ],
-                  )
+                    ),
+                    Expanded(
+                      child: AnimatedOpacity(
+                        opacity: _isEnabled == true ? 1.0 : 0.0,
+                        duration: Duration(milliseconds: _animationDuration),
+                        child: Text(
+                          _time as String,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            height: 1.4
+                          )
+                        )
+                      )
+                    )
+                  ]
+                )
+              ),
+              onTap: () async {
+                if (Platform.isAndroid) {
+                  _showTimePickerAndroid();
+                } else if (Platform.isIOS) {
+                  _showTimePickerIOS();
+                }
+              }                
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 9.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,                
+                  children: [
+                    _showInformationIcon(),
+                  ],
                 ),
-                onTap: () async {
-                  if (Platform.isAndroid) {
-                    _showTimePickerAndroid();
-                  } else if (Platform.isIOS) {
-                    _showTimePickerIOS();
-                  }
-                }                
               )
             ),
             // Android
@@ -122,6 +134,32 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
       ),
     );
   }
+
+  Widget _showInformationIcon() {
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+        child: Container(
+          height: 15.0,
+          child: Image.asset(
+            'assets/images/information_icon.png'
+          )
+        ),
+      ),
+      onTap: () {
+        _showInformationDialog();
+      }
+    );
+  }
+
+  void _showInformationDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: NotificationsInformationDialog()
+      )
+    );     
+  }  
 
   List<String> _initialTime() {
     return _time!.split(':');   

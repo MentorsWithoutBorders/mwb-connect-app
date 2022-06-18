@@ -73,7 +73,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
         child: SingleChildScrollView(
           controller: _scrollController,     
           child: Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 15.0),
             child: Wrap(
               children: [
                 Padding(

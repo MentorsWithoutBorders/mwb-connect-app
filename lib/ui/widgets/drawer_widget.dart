@@ -10,7 +10,7 @@ import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.d
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
-import 'package:mwb_connect_app/ui/views/others/notifications_view.dart';
+import 'package:mwb_connect_app/ui/views/notifications/notifications_view.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
 import 'package:mwb_connect_app/ui/views/goal_steps/goal_steps_view.dart';
 import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
