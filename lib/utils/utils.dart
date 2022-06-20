@@ -165,4 +165,11 @@ class Utils {
     DateFormat dateTimeFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
     return endRecurrenceDateTime != null && dateTimeFormat.format(lessonDateTime) != dateTimeFormat.format(endRecurrenceDateTime);
   }
+
+  static String setUrl(String url) {
+    if (url.isNotEmpty && url.indexOf('http') == -1) {
+      return 'https://' + url;
+    }
+    return url.replaceFirst('http://', 'https://');
+  }
 }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_recurrence_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
@@ -174,6 +175,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
   }
 
   Future<void> _acceptLessonRequest() async {
+    _changeUrl(Utils.setUrl(_url));
     if (_lessonRequestProvider?.checkValidUrl(_url) == false) {
       _setShouldShowError(true);
       return ;
