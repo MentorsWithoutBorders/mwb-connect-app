@@ -55,13 +55,10 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
   Widget _showText() {
     String firstPart = 'joyful_productivity_reminder.text.first_part'.tr();
     String secondPart = 'joyful_productivity_reminder.text.second_part'.tr();
-    String thirdPart = 'joyful_productivity_reminder.text.third_part'.tr();
-    String fourthPart = 'joyful_productivity_reminder.text.fourth_part'.tr();
     String superFocusMethod = 'joyful_productivity_reminder.text.super_focus_method'.tr();
-    String fifthPart = 'joyful_productivity_reminder.text.fifth_part'.tr();
+    String thirdPart = 'joyful_productivity_reminder.text.third_part'.tr();
     String quickDeepRelaxation = 'joyful_productivity_reminder.text.quick_deep_relaxation'.tr();
-    String sixthPart = 'joyful_productivity_reminder.text.sixth_part'.tr();
-    String seventhPart = 'joyful_productivity_reminder.text.seventh_part'.tr();
+    String fourthPart = 'joyful_productivity_reminder.text.fourth_part'.tr();
     String list = 'joyful_productivity_reminder.text.list'.tr();
 
     return Container(
@@ -91,16 +88,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                           text: firstPart
                         ),
                         TextSpan(
-                          text: ' ' + secondPart + ' ',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold
-                          )
-                        ),
-                        TextSpan(
-                          text: thirdPart + ' ',
-                        ),
-                        TextSpan(
-                          text: fourthPart + ' ',
+                          text:  ' ' + secondPart + ' ',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold
                           )
@@ -117,7 +105,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                           }
                         ),
                         TextSpan(
-                          text:  ' ' + fifthPart + ' ',
+                          text:  ' ' + thirdPart + ' ',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold
                           )
@@ -134,17 +122,14 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                           }
                         ),
                         TextSpan(
-                          text: ' ' + sixthPart + ' ',
+                          text: ' ' + fourthPart + ' ',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold
                           )
-                        ),
-                        TextSpan(
-                          text: seventhPart + ' '
                         )
                       ]
                     )
-                  ),
+                  )
                 ),
                 HtmlWidget(list)
               ]
