@@ -167,6 +167,8 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showRecurringLessonText(Lesson? nextLesson) {
     DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
+    int daysSinceStart = nextLesson?.daysSinceStart ?? 0;
+    bool isAvailableForOtherStudents = daysSinceStart <= 21;
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
@@ -240,13 +242,16 @@ class _NextLessonState extends State<NextLesson> {
             TextSpan(
               text: thirdPart
             ),
-            TextSpan(
+            if (!isAvailableForOtherStudents) TextSpan(
+              text: ':'
+            ),
+            if (isAvailableForOtherStudents) TextSpan(
               text: fourthPart + ' ',
               style: const TextStyle(
                 fontStyle: FontStyle.italic
               )
             ),
-            TextSpan(
+            if (isAvailableForOtherStudents) TextSpan(
               text: 'common.your_profile'.tr(),
               style: const TextStyle(
                 decoration: TextDecoration.underline,
@@ -256,7 +261,7 @@ class _NextLessonState extends State<NextLesson> {
                 Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
               } 
             ),
-            TextSpan(
+            if (isAvailableForOtherStudents) TextSpan(
               text: '):',
               style: const TextStyle(
                 fontStyle: FontStyle.italic
