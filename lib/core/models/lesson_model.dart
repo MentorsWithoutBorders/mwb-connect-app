@@ -9,12 +9,13 @@ class Lesson {
   User? mentor;
   Subfield? subfield;
   DateTime? dateTime;
+  int daysSinceStart = 0;
   String? meetingUrl;
   DateTime? endRecurrenceDateTime;  
   bool? isCanceled;
   bool shouldStop = false;
 
-  Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.meetingUrl, this.endRecurrenceDateTime, this.isCanceled, this.shouldStop = false});
+  Lesson({this.id, this.students, this.mentor, this.subfield, this.dateTime, this.daysSinceStart = 0, this.meetingUrl, this.endRecurrenceDateTime, this.isCanceled, this.shouldStop = false});
 
   Lesson.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
@@ -23,6 +24,7 @@ class Lesson {
     mentor = _mentorFromJson(json['mentor']);
     subfield = _subfieldFromJson(json['subfield']);
     dateTime = json['dateTime'] != null ? dateFormat.parseUTC(json['dateTime']).toLocal() : null;
+    daysSinceStart = json['daysSinceStart'] ?? 0;    
     meetingUrl = json['meetingUrl'] ?? '';    
     endRecurrenceDateTime = json['endRecurrenceDateTime'] != null ? dateFormat.parseUTC(json['endRecurrenceDateTime']).toLocal() : null;
     isCanceled = json['isCanceled'];
@@ -61,6 +63,7 @@ class Lesson {
       'mentor': mentor?.toJson(),
       'subfield': subfield?.toJson(),
       'dateTime': dateTime != null ? dateFormat.format(dateTime!.toUtc()) : null,
+      'daysSinceStart': daysSinceStart,
       'meetingUrl': meetingUrl,
       'endRecurrenceDateTime': endRecurrenceDateTime != null ? dateFormat.format(endRecurrenceDateTime!.toUtc()) : null,
       'isCanceled': isCanceled

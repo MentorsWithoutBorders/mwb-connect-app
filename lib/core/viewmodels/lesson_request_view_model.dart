@@ -200,7 +200,7 @@ class LessonRequestViewModel extends ChangeNotifier {
       }
     }
     return Jiffy(nextLesson?.dateTime).add(days: days).dateTime;
-  }
+  } 
 
   String getLessonRecurrenceText(int previousLessonStudentsNumber, int studentsRemaining) {
     if (previousLessonStudentsNumber == 1) {
