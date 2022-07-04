@@ -127,7 +127,7 @@ class LessonRequestViewModel extends ChangeNotifier {
     } else {
       lessonDateTime = lesson?.dateTime as DateTime;
     }
-    while (now.difference(lessonDateTime).inDays >= 6) {
+    while (now.difference(lessonDateTime).inDays >= 7) {
       lessonDateTime = lessonDateTime.add(Duration(days: 7));
     }
     return lessonDateTime;

@@ -46,8 +46,7 @@ class LessonRequestService {
   Future<void> cancelNextLesson(Lesson? lesson, bool? isSingleLesson) async {
     Map<String, Object?> data = {};
     Lesson lessonData = Lesson();
-    bool isLessonRecurrent = Utils.isLessonRecurrent(lesson?.dateTime as DateTime, lesson?.endRecurrenceDateTime);
-    if (isSingleLesson == true && isLessonRecurrent) {
+    if (isSingleLesson == true) {
       lessonData.dateTime = lesson?.dateTime;
     }
     lessonData.endRecurrenceDateTime = lesson?.endRecurrenceDateTime;
