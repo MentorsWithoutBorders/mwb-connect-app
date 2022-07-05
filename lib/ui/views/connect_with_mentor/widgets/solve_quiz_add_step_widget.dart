@@ -83,15 +83,33 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
     final DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
     String certificateDate = dateFormat.format(_connectWithMentorProvider?.getCertificateDate() as DateTime);
     String text = 'connect_with_mentor.conditions_certificate'.tr(args: [certificateDate]);
+    String and = 'common.and'.tr();
+    String firstPart = text.substring(0, text.indexOf(and));
+    String secondPart = text.substring(text.indexOf(and) + and.length, text.length);
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: Text(
-        text,
+      child: RichText(
         textAlign: TextAlign.justify,
-        style: const TextStyle(
-          fontSize: 12,
-          color: AppColors.DOVE_GRAY,
-          height: 1.3
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.DOVE_GRAY,
+            height: 1.3
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: firstPart,             
+            ),
+            TextSpan(
+              text: and,
+              style: const TextStyle(
+                fontStyle: FontStyle.italic
+              )
+            ),
+            TextSpan(
+              text: secondPart
+            )
+          ]
         )
       )
     );

@@ -187,7 +187,7 @@
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",
 		"training_title": "MWB training",
-		"conditions_certificate": "In order to receive the MWB certificate on {}, you’ll have to do the following:",
+		"conditions_certificate": "In order to receive the MWB certificate on {}, and connect with a mentor for the next lesson, you’ll have to do the following:",
 		"solve": "solve until the next deadline",
 		"add_step": "add at least {} until the next deadline for achieving your goal",
     "one_new_step": "1 new step",    
