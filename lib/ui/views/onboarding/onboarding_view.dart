@@ -197,6 +197,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: RichText(
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
                     text: TextSpan(
                       style: const TextStyle(
                         fontFamily: 'RopaSans',

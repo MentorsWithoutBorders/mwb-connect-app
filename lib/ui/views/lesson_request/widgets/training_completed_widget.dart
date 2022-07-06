@@ -71,6 +71,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(

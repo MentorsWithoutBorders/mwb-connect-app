@@ -76,6 +76,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: RichText(
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
                     textAlign: TextAlign.justify,
                     text: TextSpan(
                       style: const TextStyle(

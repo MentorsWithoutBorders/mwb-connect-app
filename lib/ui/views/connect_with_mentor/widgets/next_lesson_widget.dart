@@ -82,6 +82,7 @@ class _NextLessonState extends State<NextLesson> {
         Padding(
           padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 12.0),
           child: RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
@@ -181,6 +182,7 @@ class _NextLessonState extends State<NextLesson> {
         Padding(
           padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 12.0),
           child: RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(

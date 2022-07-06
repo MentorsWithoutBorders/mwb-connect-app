@@ -61,13 +61,13 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(20.0))
         ),
-        child: Wrap(
+        child: Column(
           children: [
             Center(
               child: Container(
                 width: width * 0.9,
-                height: height * 0.87,
-                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
+                height: height * 0.85,
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                 child: isLocal ? Image.asset(iconFilePath) : 
                   CachedNetworkImage(
                     imageUrl: iconFilePath,
@@ -78,18 +78,22 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
                   )
               )
             ),
-            Container(
-              height: 32.0,
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Center(
-                child: Text(
-                  field.name as String,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.DOVE_GRAY
-                  )
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      field.name as String,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: AppColors.DOVE_GRAY
+                      )
+                    ),
+                  ],
                 )
-              )
+              ),
             )
           ]
         )

@@ -59,6 +59,7 @@ class _LessonsStoppedState extends State<LessonsStopped> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.center,
         text: TextSpan(
           style: const TextStyle(

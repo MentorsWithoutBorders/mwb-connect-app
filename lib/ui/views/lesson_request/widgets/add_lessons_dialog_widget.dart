@@ -115,6 +115,7 @@ class _AddLessonsDialogState extends State<AddLessonsDialog> {
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 15.0),
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         text: TextSpan(
           style: const TextStyle(
             fontSize: 13.0,

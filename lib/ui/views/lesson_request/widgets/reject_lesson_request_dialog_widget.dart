@@ -72,6 +72,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.center,
         text: TextSpan(
           style: const TextStyle(

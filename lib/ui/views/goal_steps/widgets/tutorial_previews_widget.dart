@@ -278,6 +278,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(

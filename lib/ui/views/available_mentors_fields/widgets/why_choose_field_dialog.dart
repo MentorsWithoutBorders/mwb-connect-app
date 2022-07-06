@@ -130,6 +130,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
       child: Align(
         alignment: Alignment.centerLeft,
         child: RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
           text: TextSpan(
             style: const TextStyle(
               color: AppColors.DOVE_GRAY,

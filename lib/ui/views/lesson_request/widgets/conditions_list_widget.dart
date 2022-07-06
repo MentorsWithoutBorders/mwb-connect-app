@@ -35,6 +35,7 @@ class ConditionsList extends StatelessWidget {
                 ),
                 Expanded(
                   child: RichText(
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
                     textAlign: TextAlign.justify,
                     text: TextSpan(
                       style: const TextStyle(
@@ -87,6 +88,7 @@ class ConditionsList extends StatelessWidget {
                 ),
                 Expanded(
                   child: RichText(
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
                     textAlign: TextAlign.justify,
                     text: TextSpan(
                       style: const TextStyle(

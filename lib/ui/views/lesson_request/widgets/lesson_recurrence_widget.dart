@@ -111,6 +111,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
       padding: const EdgeInsets.only(left: 2.0, bottom: 6.0),
       child: InkWell(
         child: RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
           text: TextSpan(
             style: const TextStyle(
               fontSize: 12,
@@ -158,6 +159,7 @@ class _LessonRecurrenceState extends State<LessonRecurrence> {
       padding: const EdgeInsets.only(left: 2.0, bottom: 6.0),
       child: InkWell(
         child: RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
           text: TextSpan(
             style: const TextStyle(
               fontSize: 12,

@@ -101,10 +101,11 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 12.0,
             color: AppColors.DOVE_GRAY,
             height: 1.3
           ),

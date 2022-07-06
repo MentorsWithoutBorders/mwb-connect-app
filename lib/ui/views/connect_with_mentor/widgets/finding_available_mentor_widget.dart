@@ -59,6 +59,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
         Padding(
           padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 12.0),
           child: RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
@@ -68,7 +69,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: 'connect_with_mentor.requested_lesson'.tr(),
+                  text: 'connect_with_mentor.requested_lesson'.tr()
                 ),
                 TextSpan(
                   text: ' ' + subfield + ' ' + lesson

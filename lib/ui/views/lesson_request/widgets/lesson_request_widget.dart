@@ -69,6 +69,7 @@ class _LessonRequestState extends State<LessonRequest> {
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
@@ -193,6 +194,7 @@ class _LessonRequestState extends State<LessonRequest> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.center,
         text: TextSpan(
           style: const TextStyle(

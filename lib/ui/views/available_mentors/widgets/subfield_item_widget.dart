@@ -68,9 +68,11 @@ class _SubfieldItemState extends State<SubfieldItem> {
 
     return Expanded(
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         text: TextSpan(
           style: const TextStyle(
-            color: AppColors.DOVE_GRAY
+            color: AppColors.DOVE_GRAY,
+            fontSize: 14.0
           ),
           children: <TextSpan>[
             TextSpan(
