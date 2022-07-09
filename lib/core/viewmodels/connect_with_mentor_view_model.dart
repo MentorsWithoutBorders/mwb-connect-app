@@ -7,41 +7,21 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
-import 'package:mwb_connect_app/core/models/goal_model.dart';
-import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
-import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class ConnectWithMentorViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final ConnectWithMentorService _connectWithMentorService = locator<ConnectWithMentorService>();
-  final GoalsService _goalsService = locator<GoalsService>();
   final LoggerService _loggerService = locator<LoggerService>();
   User? selectedMentor;
-  Goal? goal;
-  StepModel? lastStepAdded;
   LessonRequestModel? lessonRequest;
   Lesson? nextLesson;
   Lesson? previousLesson;
   StudentCertificate? studentCertificate;
   bool _wasProductivityReminderClosed = false;
-
-  Future<void> getGoal() async {
-    List<Goal> goals = await _goalsService.getGoals();
-    if (goals.isNotEmpty) {
-      setGoal(goals[0]);
-    } else {
-      addLogEntry('setting goal to null in getGoal()');
-      setGoal(null);
-    }
-  }
-
-  void setGoal(Goal? goal) {
-    this.goal = goal;
-  }
 
   Future<void> getLessonRequest() async {
     lessonRequest = await _connectWithMentorService.getLessonRequest();
@@ -119,7 +99,19 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   bool get wasProductivityReminderClosed => _wasProductivityReminderClosed;
   set wasProductivityReminderClosed(bool wasClosed) {
     _wasProductivityReminderClosed = wasClosed;
-  }  
+  }
+
+  void sendAPIDataLogs(int i, String error, List<String> logs) {
+    String attemptText = 'connect_with_mentor_view attempt ' + i.toString();
+    if (error != '') {
+      attemptText += ', error: ' + error;
+    }
+    attemptText += '\n';
+    for (String log in logs) {
+      attemptText += log + '\n';
+    }
+    addLogEntry(attemptText);
+  }
 
   void addLogEntry(String text) {
     _loggerService.addLogEntry(text);

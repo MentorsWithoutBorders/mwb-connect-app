@@ -51,7 +51,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   }
 
   void _scrollToLastGoal() {
-    _scrollController.scrollToIndex(_goalsProvider?.goals?.length as int);
+    _scrollController.scrollToIndex(_goalsProvider?.goals.length as int);
   }
   
   Widget _showGoals() {
@@ -70,17 +70,17 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
                 scrollDirection: _scrollDirection,
                 controller: _scrollController,                
                 shrinkWrap: true,
-                itemCount: _goalsProvider?.goals?.length,
+                itemCount: _goalsProvider?.goals.length,
                 itemBuilder: (BuildContext buildContext, int index) =>
                   AutoScrollTag(
                     key: ValueKey<int>(index),
                     controller: _scrollController,
                     index: index,
-                    child: GoalCard(goal: _goalsProvider?.goals?[index])
+                    child: GoalCard(goal: _goalsProvider?.goals[index])
                   )
               ),
             ),
-            if (_goalsProvider?.goals != null && _goalsProvider?.goals?.isNotEmpty == true) _showAddGoalButton()
+            if (_goalsProvider?.goals != null && _goalsProvider?.goals.isNotEmpty == true) _showAddGoalButton()
           ]
         ),
       )
@@ -122,7 +122,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     if (_goalsProvider?.goals == null) {
       title = const Text('');
     } else {
-      if (_goalsProvider?.goals?.isNotEmpty == true) {
+      if (_goalsProvider?.goals.isNotEmpty == true) {
         title = Text(
           'goals.my_goals'.tr(),
           textAlign: TextAlign.center
@@ -155,7 +155,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   
   Widget _showContent() {
     // if (_goalsRetrieved) {
-    //   if (_goalsProvider?.goals?.isNotEmpty == true) {
+    //   if (_goalsProvider?.goals.isNotEmpty == true) {
     //     // For opacity animation
     //     Future<void>.delayed(const Duration(milliseconds: 300), () {
     //       if (mounted && !_shouldShowGoals) {

@@ -48,8 +48,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   void _goToGoalMentor() {
-    if (_lessonRequestProvider?.goal != null) {
-      _goalsProvider?.setSelectedGoal(_lessonRequestProvider?.goal);
+    if (_goalsProvider?.selectedGoal != null) {
       _goToGoalStepsMentor();
     } else {
       _lessonRequestProvider?.addLogEntry('goal is null in drawer_widget');
@@ -61,28 +60,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     if (_goalsProvider?.selectedGoal != null) {
       _stepsProvider?.setShouldShowTutorialChevrons(false);
       _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
-      _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
       Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
     }
   }
 
   void _goToGoalStudent() {
-    if (_connectWithMentorProvider?.goal != null) {
-      _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
-      _goToGoalStepsStudent();
-    } else {
+    if (_goalsProvider?.selectedGoal == null) {
       _connectWithMentorProvider?.addLogEntry('goal is null in drawer_widget');
-      Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalStepsStudent());
     }
+    _goToGoalStepsStudent();
   }
 
   void _goToGoalStepsStudent() {
-    if (_goalsProvider?.selectedGoal != null) {
-      _stepsProvider?.setShouldShowTutorialChevrons(false);
-      _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
-      _connectWithMentorProvider?.setGoal(_goalsProvider?.selectedGoal);
-      Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
-    }
+    _stepsProvider?.setShouldShowTutorialChevrons(false);
+    _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
+    Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
   }
 
   @override

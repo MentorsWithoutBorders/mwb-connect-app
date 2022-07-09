@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
+import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
@@ -151,30 +152,87 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     } else {
       return const Loader();
     }
-  }  
+  }
+  
+  List<String> getLogsList() {
+    String goalText = 'goal: ';
+    if (_goalsProvider?.selectedGoal?.id != null) {
+      goalText += _goalsProvider?.selectedGoal?.id as String;
+    } else {
+      goalText += 'null';
+    }
+    String lastStepAddedText = 'last step added: ';
+    if (_stepsProvider?.lastStepAdded.id != null) {
+      lastStepAddedText += _stepsProvider?.lastStepAdded.id as String;
+    } else {
+      lastStepAddedText += 'null';
+    }
+    String quizzesText = 'quizzes: ';
+    if (_quizzesProvider?.quizzes != null && _quizzesProvider?.quizzes.length as int > 0) {
+      for (Quiz quiz in _quizzesProvider?.quizzes as List<Quiz>) {
+        if (quiz.isCorrect == true) {
+          quizzesText += quiz.number.toString() + ', ';
+        }
+      }
+      if (quizzesText.contains(',')) {
+        quizzesText = quizzesText.substring(0, quizzesText.length - 2);
+      }
+    } else {
+      quizzesText += '[]';
+    }
+    String lessonRequestText = 'lesson request: ';
+    if (_connectWithMentorProvider?.lessonRequest?.id != null) {
+      lessonRequestText += _connectWithMentorProvider?.lessonRequest?.id as String;
+    } else {
+      lessonRequestText += 'null';
+    }
+    String previousLessonText = 'previous lesson: ';
+    if (_connectWithMentorProvider?.previousLesson?.id != null) {
+      previousLessonText += _connectWithMentorProvider?.previousLesson?.id as String;
+    } else {
+      previousLessonText += 'null';
+    }
+    String nextLessonText = 'next lesson: ';
+    if (_connectWithMentorProvider?.nextLesson?.id != null) {
+      nextLessonText += _connectWithMentorProvider?.nextLesson?.id as String;
+    } else {
+      nextLessonText += 'null';
+    }
+    return [
+      goalText,
+      lastStepAddedText,
+      quizzesText,
+      lessonRequestText,
+      previousLessonText,
+      nextLessonText
+    ];
+  }
   
   Future<void> _init() async {
     if (!_isInit && _connectWithMentorProvider != null) {
-      await Future.wait([
-        _rootProvider!.getUserDetails(),
-        _connectWithMentorProvider!.getGoal(),
-        _connectWithMentorProvider!.getLessonRequest(),
-        _connectWithMentorProvider!.getPreviousLesson(),
-        _connectWithMentorProvider!.getNextLesson(),
-        _connectWithMentorProvider!.getCertificateSent(),
-        _stepsProvider!.getLastStepAdded(),
-        _quizzesProvider!.getQuizzes(),
-        _commonProvider!.getAppFlags()
-      ]);
-      _setSelectedGoal();
+      for (int i = 0; i < 10; i++) {
+        if (_goalsProvider?.selectedGoal == null) {
+          await Future.wait([
+            _rootProvider!.getUserDetails(),
+            _connectWithMentorProvider!.getLessonRequest(),
+            _connectWithMentorProvider!.getPreviousLesson(),
+            _connectWithMentorProvider!.getNextLesson(),
+            _connectWithMentorProvider!.getCertificateSent(),
+            _goalsProvider!.getGoals(),
+            _stepsProvider!.getLastStepAdded(),
+            _quizzesProvider!.getQuizzes(),
+            _commonProvider!.getAppFlags()
+          ]).timeout(const Duration(seconds: 3600))
+          .catchError((error) {
+            _connectWithMentorProvider?.sendAPIDataLogs(i, error, getLogsList());
+          });
+          _connectWithMentorProvider?.sendAPIDataLogs(i, '', getLogsList());
+        }
+      }
       await _commonProvider!.initPushNotifications();
       _isInit = true;
     }
   }
-
-  void _setSelectedGoal() {
-    _goalsProvider?.setSelectedGoal(_connectWithMentorProvider?.goal);
-  }  
 
   @override
   Widget build(BuildContext context) {

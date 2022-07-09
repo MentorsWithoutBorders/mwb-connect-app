@@ -151,7 +151,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
 
   void _goToGoal() {
     _quizzesProvider!.wasClosed = false;
-    if (_lessonRequestProvider?.goal != null) {
+    if (_goalsProvider?.selectedGoal != null) {
       _goToGoalSteps();
     } else {
       _lessonRequestProvider?.addLogEntry('goal is null in solve_quiz_add_step_widget');
@@ -163,7 +163,6 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
     if (_goalsProvider?.selectedGoal != null) {
       _stepsProvider?.setShouldShowTutorialChevrons(false);
       _stepsProvider?.setIsTutorialPreviewsAnimationCompleted(false); 
-      _lessonRequestProvider?.setGoal(_goalsProvider?.selectedGoal);
       Navigator.push(context, MaterialPageRoute<GoalStepsView>(builder: (_) => GoalStepsView()));
     }
   }

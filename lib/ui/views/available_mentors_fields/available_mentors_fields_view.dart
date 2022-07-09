@@ -161,9 +161,9 @@ class _AvailableMentorsFieldsViewState extends State<AvailableMentorsFieldsView>
   Widget build(BuildContext context) {
     _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
 
-   return WillPopScope(
-     onWillPop: () => _onWillPop(context),
-     child: FutureBuilder<void>(
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: FutureBuilder<void>(
         future: _getFields(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           return Stack(

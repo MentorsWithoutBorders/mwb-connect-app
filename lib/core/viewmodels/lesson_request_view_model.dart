@@ -5,7 +5,6 @@ import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
@@ -14,19 +13,15 @@ import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/goals_service.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
 import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class LessonRequestViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
   final LessonRequestService _lessonRequestService = locator<LessonRequestService>();
-  final GoalsService _goalsService = locator<GoalsService>();
-  final LoggerService _loggerService = locator<LoggerService>();
-  Goal? goal;
+  final LoggerService _loggerService = locator<LoggerService>();  
   LessonRequestModel? lessonRequest;
   int _lessonsNumber = 1;
-  String? quizzes;
   Lesson? nextLesson;
   Lesson? previousLesson;
   Map<String, List<LessonNote>> studentsLessonsNotes = Map();
@@ -35,20 +30,6 @@ class LessonRequestViewModel extends ChangeNotifier {
   bool _shouldUnfocus = false;
   bool shouldShowExpired = false;
   bool shouldShowCanceled = false;
-
-  Future<void> getGoal() async {
-    List<Goal> goals = await _goalsService.getGoals();
-    if (goals.isNotEmpty) {
-      setGoal(goals[0]);
-    } else {
-      addLogEntry('setting goal to null in getGoal()');
-      setGoal(null);
-    }
-  }
-
-  void setGoal(Goal? goal) {
-    this.goal = goal;
-  }
 
   Future<void> getLessonRequest() async {
     lessonRequest = await _lessonRequestService.getLessonRequest();
