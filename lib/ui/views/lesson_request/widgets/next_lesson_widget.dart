@@ -388,10 +388,13 @@ class _NextLessonState extends State<NextLesson> {
 
   Future<void> _launchMeetingUrl() async {
     if (await canLaunchUrl(Uri.parse(_url))) {
-      await launchUrl(Uri.parse(_url));
+      await launchUrl(
+        Uri.parse(_url),
+        mode: LaunchMode.externalApplication,
+      );  
     } else {
       throw 'Could not launch $_url';
-    }    
+    }  
   }
 
   Widget _showGuide() {

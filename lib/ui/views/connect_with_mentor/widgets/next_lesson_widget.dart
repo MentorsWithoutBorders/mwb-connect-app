@@ -21,7 +21,7 @@ class NextLesson extends StatefulWidget {
 
 class _NextLessonState extends State<NextLesson> {
   ConnectWithMentorViewModel? _connectWithMentorProvider;
-  String? _url = '';
+  String _url = '';
 
   Widget _showNextLessonCard() {
     return Padding(
@@ -75,7 +75,7 @@ class _NextLessonState extends State<NextLesson> {
     String firstPart = text.substring(name.length, text.indexOf(fieldName));
     String secondPart = text.substring(text.indexOf(fieldName) + fieldName.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    _url = nextLesson?.meetingUrl;
+    _url = nextLesson?.meetingUrl as String;
 
     return Wrap(
       children: [
@@ -133,7 +133,7 @@ class _NextLessonState extends State<NextLesson> {
           child: Center(
             child: InkWell(
               child: Text(
-                _url as String,
+                _url,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -149,14 +149,14 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   Future<void> _launchMeetingUrl() async {
-    if (await canLaunchUrl(Uri.parse(_url as String))) {
+    if (await canLaunchUrl(Uri.parse(_url))) {
       await launchUrl(
-        Uri.parse(_url as String),
+        Uri.parse(_url),
         mode: LaunchMode.externalApplication,
       );  
     } else {
       throw 'Could not launch $_url';
-    }    
+    }
   }   
 
   Widget _showRecurringLessonText(Lesson? nextLesson) {
@@ -178,7 +178,7 @@ class _NextLessonState extends State<NextLesson> {
     String firstPart = text.substring(name.length, text.indexOf(fieldName));
     String secondPart = text.substring(text.indexOf(fieldName) + fieldName.length, text.indexOf(lessonDate));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    _url = nextLesson?.meetingUrl;
+    _url = nextLesson?.meetingUrl as String;
 
     return Wrap(
       children: [
@@ -236,7 +236,7 @@ class _NextLessonState extends State<NextLesson> {
           child: Center(
             child: InkWell(
               child: Text(
-                _url as String,
+                _url,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
