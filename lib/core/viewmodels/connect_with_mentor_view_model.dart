@@ -21,7 +21,6 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   Lesson? nextLesson;
   Lesson? previousLesson;
   StudentCertificate? studentCertificate;
-  bool _wasProductivityReminderClosed = false;
 
   Future<void> getLessonRequest() async {
     lessonRequest = await _connectWithMentorService.getLessonRequest();
@@ -91,14 +90,16 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   }
 
   bool getShouldShowProductivityReminder() {
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');    
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = DateTime.parse(_storageService.registeredOn as String);
-    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) > 14;
+    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) > 14 && _storageService.lastProductivityReminderShownDate != dateFormat.format(now);
   }
 
-  bool get wasProductivityReminderClosed => _wasProductivityReminderClosed;
-  set wasProductivityReminderClosed(bool wasClosed) {
-    _wasProductivityReminderClosed = wasClosed;
+  void setLastShownProductivityReminderDate() {
+    DateFormat dateFormat = DateFormat(AppConstants.dateFormat, 'en');
+    String today = dateFormat.format(DateTime.now());
+    _storageService.lastProductivityReminderShownDate = today;
   }
 
   void sendAPIDataLogs(int i, String error, List<String> logs) {

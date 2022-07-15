@@ -61,7 +61,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       _checkUpdate();
     }
     if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-      _connectWithMentorProvider!.wasProductivityReminderClosed = false;
+      _goalsProvider?.setSelectedGoal(null);
     }    
   }
 
@@ -81,10 +81,10 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
 
   Future<void> _showJoyfulProductivityReminder(_) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    bool wasProductivityReminderClosed = _connectWithMentorProvider!.wasProductivityReminderClosed;
     bool shouldShowProductivityReminder = _connectWithMentorProvider!.getShouldShowProductivityReminder();
-    if (mounted && shouldShowProductivityReminder && !_isProductivityReminderOpen && !wasProductivityReminderClosed) {
+    if (mounted && shouldShowProductivityReminder && !_isProductivityReminderOpen) {
       _isProductivityReminderOpen = true;
+      _connectWithMentorProvider?.setLastShownProductivityReminderDate();
       showDialog(
         context: context,
         builder: (_) => AnimatedDialog(
@@ -96,7 +96,6 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   
   void _setProductivityReminderClosed() {
     _isProductivityReminderOpen = false;
-    _connectWithMentorProvider!.wasProductivityReminderClosed = true;
   }
   
   @override

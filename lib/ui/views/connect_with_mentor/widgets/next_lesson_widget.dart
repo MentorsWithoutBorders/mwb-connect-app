@@ -150,7 +150,10 @@ class _NextLessonState extends State<NextLesson> {
 
   Future<void> _launchMeetingUrl() async {
     if (await canLaunchUrl(Uri.parse(_url as String))) {
-      await launchUrl(Uri.parse(_url as String));
+      await launchUrl(
+        Uri.parse(_url as String),
+        mode: LaunchMode.externalApplication,
+      );  
     } else {
       throw 'Could not launch $_url';
     }    

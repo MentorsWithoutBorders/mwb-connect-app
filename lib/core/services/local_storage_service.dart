@@ -51,6 +51,9 @@ class LocalStorageService {
   String? get lastPNShownDateTime => _getFromDisk('lastPNShownDateTime');
   set lastPNShownDateTime(String? value) => _saveToDisk('lastPNShownDateTime', value);
 
+  String? get lastProductivityReminderShownDate => _getFromDisk('lastProductivityReminderShownDate');
+  set lastProductivityReminderShownDate(String? value) => _saveToDisk('lastProductivityReminderShownDate', value);  
+
   dynamic _getFromDisk(String key) {
     Object? value = _preferences?.get(key);
     if (value is String && value.indexOf('{') == 0) {
