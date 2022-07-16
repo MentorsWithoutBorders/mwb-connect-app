@@ -34,9 +34,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
 
-  Future<void> _logout() async {
+  void _logout() {
     widget.logoutCallback!();
-    await _authService.logout();
+    _authService.logout();
   }
 
   void _goToTraining() {
@@ -125,7 +125,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text('drawer.profile'.tr()),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
+              Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView(logoutCallback: widget.logoutCallback)));
             },
           ),
           ListTile(

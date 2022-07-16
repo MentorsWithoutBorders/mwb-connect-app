@@ -88,6 +88,7 @@
     "an": "an",
 		"yes_cancel": "Yes, cancel",
 		"yes_reject": "Yes, reject",
+		"yes_delete": "Yes, delete",
 		"abort": "Abort",
 		"no_abort": "No, abort",
     "him_her": "him/her",
@@ -182,7 +183,9 @@
 		"name": "Name",
 		"name_placeholder": "Enter name",
 		"add_skills": "Add skills {}",
-		"currently_available": "I'm currently available"
+		"currently_available": "I'm currently available",
+    "delete_account": "Delete account",
+    "delete_account_text": "Are you sure you want to delete your account?"
 	},
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",

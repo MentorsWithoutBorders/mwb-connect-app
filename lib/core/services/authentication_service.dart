@@ -52,7 +52,7 @@ class AuthService {
     _storageService.refreshToken = tokens.refreshToken;    
   }
 
-  Future<void> logout() async {
+  void logout() {
     _api.postHTTP(url: '/logout', data: {});
     _api.resetStorage();
     pushNotificationsService.deleteFCMToken();

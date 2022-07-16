@@ -43,5 +43,9 @@ class UserService {
 
   Future<void> setUserTimeZone(TimeZoneModel timeZone) async {
     _api.putHTTP(url: '/timezones', data: timeZone.toJson());
-  }   
+  }
+  
+  Future<void> deleteUser(User? user) async {
+    _api.deleteHTTP(url: '/user');
+  }  
 }

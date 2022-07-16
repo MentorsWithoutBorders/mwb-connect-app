@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -10,12 +11,16 @@ import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_start_date_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availabilities_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/lessons_widget.dart';
+import 'package:mwb_connect_app/ui/views/profile/widgets/delete_account_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({Key? key})
+  const ProfileView({Key? key, this.logoutCallback})
     : super(key: key);   
+
+  final VoidCallback? logoutCallback;
 
   @override
   State<StatefulWidget> createState() => _ProfileViewState();
@@ -43,7 +48,8 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           _showPrimaryCard(),
           _showAvailabilityCard(),
-          if (_profileProvider?.user?.isMentor == true) _showLessonsCard()
+          if (_profileProvider?.user?.isMentor == true) _showLessonsCard(),
+          if (Platform.isIOS) _showDeleteAccountButton()
         ]
       )
     );
@@ -114,11 +120,15 @@ class _ProfileViewState extends State<ProfileView> {
   }    
 
   Widget _showLessonsCard() {
+    double marginBottom = 20.0;
+    if (Platform.isIOS) {
+      marginBottom = 15.0;
+    }
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
         elevation: 3.0,
-        margin: const EdgeInsets.only(bottom: 20.0),
+        margin: EdgeInsets.only(bottom: marginBottom),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ), 
@@ -152,6 +162,48 @@ class _ProfileViewState extends State<ProfileView> {
     } else {
       return const Loader();
     }
+  }
+
+  Widget _showDeleteAccountButton() {
+    return Container(
+      alignment: Alignment.topLeft,
+      margin: const EdgeInsets.only(left: 5.0, bottom: 20.0),
+      child: SizedBox(
+        width: 150.0,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            padding: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0)
+          ), 
+          onPressed: () {
+            _deleteAccount();
+          },
+          child: Text(
+            'profile.delete_account'.tr(),
+            style: const TextStyle(
+              color: AppColors.MONZA
+            )
+          )
+        ),
+      ),
+    );
+  }
+
+  void _deleteAccount() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: DeleteAccountDialog(logoutCallback: widget.logoutCallback)
+      ),
+    ).then((shouldGoBack) {
+      if (shouldGoBack == true) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    }); 
   }
 
   void _unfocus() {

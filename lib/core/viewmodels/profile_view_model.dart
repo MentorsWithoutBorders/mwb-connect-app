@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
@@ -19,6 +20,7 @@ import 'package:mwb_connect_app/core/services/profile_service.dart';
 class ProfileViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();
   final ProfileService _profileService = locator<ProfileService>();
+  final AuthService _authService = locator<AuthService>();
   User? user;
   List<Field>? fields;
   bool _shouldUnfocus = false;
@@ -60,6 +62,11 @@ class ProfileViewModel extends ChangeNotifier {
   void setUserDetails(User? user) {
     _userService.setUserDetails(user);
   }
+
+  void deleteUser() {
+    _userService.deleteUser(user);
+    _authService.logout();
+  }  
 
   void setName(String name) {
     user?.name = name;

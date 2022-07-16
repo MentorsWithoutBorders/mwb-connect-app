@@ -170,7 +170,7 @@ class ApiService {
     }    
   }
   
-  Future<void> _logout() async {
+  void _logout() {
     resetStorage();
     NavigationService.instance.navigateTo('root');
   }
