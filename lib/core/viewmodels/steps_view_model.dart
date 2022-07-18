@@ -6,10 +6,12 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/services/steps_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class StepsViewModel extends ChangeNotifier {
   final StepsService _stepsService = locator<StepsService>();  
-  final LocalStorageService _storageService = locator<LocalStorageService>();  
+  final LocalStorageService _storageService = locator<LocalStorageService>();
+  final LoggerService _loggerService = locator<LoggerService>();  
   List<StepModel>? steps;
   StepModel? selectedStep;
   StepModel lastStepAdded = StepModel();
@@ -52,7 +54,8 @@ class StepsViewModel extends ChangeNotifier {
       parentId = selectedStep?.id;
     }
     final int index = getCurrentIndex(steps: steps, parentId: parentId) + 1; 
-    final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: parentId);       
+    final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: parentId);
+    addLogEntry('add step:\n$stepText');
     StepModel stepAdded = await _stepsService.addStep(goalId, step);
     lastStepAdded.id = stepAdded.id;
     lastStepAdded.dateTime = DateTime.now();    
@@ -210,6 +213,7 @@ class StepsViewModel extends ChangeNotifier {
         final StepModel modifiedStep = steps?[i] as StepModel;
         int modifiedStepIndex = modifiedStep.index as int;
         modifiedStep.index = modifiedStepIndex - 1;
+        addLogEntry('update indexes after delete step:\n${modifiedStep.id} - ${modifiedStep.text}');
         updateStep(modifiedStep, modifiedStep.id);
       }
     }    
@@ -225,7 +229,9 @@ class StepsViewModel extends ChangeNotifier {
         previousStep.index = previousStepIndex + 1;
         int stepIndex = step.index as int;
         step.index = stepIndex - 1;
+        addLogEntry('move step up - previous step:\n${previousStep.id} - ${previousStep.text}');
         updateStep(previousStep, previousStep.id);
+        addLogEntry('move step up - step:\n${step.id} - ${step.text}');
         updateStep(step, step.id);
         break;
       }
@@ -244,7 +250,9 @@ class StepsViewModel extends ChangeNotifier {
         nextStep.index = nextStepIndex - 1;
         int stepIndex = step.index as int;
         step.index = stepIndex + 1;
+        addLogEntry('move step down - next step:\n${nextStep.id} - ${nextStep.text}');
         updateStep(nextStep, nextStep.id);
+        addLogEntry('move step down - step:\n${step.id} - ${step.text}');        
         updateStep(step, step.id);
         break;
       }
@@ -261,5 +269,9 @@ class StepsViewModel extends ChangeNotifier {
   void setShouldShowTutorialChevrons(bool showChevrons) {
     shouldShowTutorialChevrons = showChevrons;
     notifyListeners();
+  }
+  
+  void addLogEntry(String text) {
+    _loggerService.addLogEntry(text);
   }  
 }
