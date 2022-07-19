@@ -14,6 +14,7 @@ import 'package:mwb_connect_app/ui/views/profile/profile_view.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lessons_notes_dialog.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/lesson_guide_dialog.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/add_lessons_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/lesson_request/widgets/change_url_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_options_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/cancel_next_lesson_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
@@ -355,6 +356,7 @@ class _NextLessonState extends State<NextLesson> {
 
   Widget _showLink() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0),
@@ -367,22 +369,47 @@ class _NextLessonState extends State<NextLesson> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
-          child: Center(
-            child: InkWell(
-              child: Text(
-                _url,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  child: Text(
+                    _url,                   
+                    style: const TextStyle(
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline
+                    )
+                  ),
+                  onTap: () async => await _launchMeetingUrl()
                 )
               ),
-              onTap: () async => await _launchMeetingUrl()
-            ),
+              _showEditLink()
+            ]
           ),
+        )
+      ]
+    );
+  }
+
+  Widget _showEditLink() {
+    return InkWell(
+      child: Container(
+        height: 22.0,
+        padding: const EdgeInsets.only(left: 5.0, right: 3.0),
+        child: Image.asset(
+          'assets/images/edit_full_icon.png'
         ),
-      ],
+      ),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (_) => AnimatedDialog(
+            widgetInside: ChangeUrlDialog(url: _url)
+          )
+        );
+      }                 
     );
   }
 
