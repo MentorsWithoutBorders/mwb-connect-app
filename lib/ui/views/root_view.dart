@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/connect_with_mentor_view.dart';
@@ -28,6 +29,7 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView> {
   RootViewModel? _rootProvider;
+  CommonViewModel? _commonProvider;
   GoalsViewModel? _goalsProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
   String? _userId = '';
@@ -74,7 +76,7 @@ class _RootViewState extends State<RootView> {
   }    
   
   Future<void> _init() async {
-    await _rootProvider?.getUserDetails();
+    await _commonProvider?.getUserDetails();
     _setCurrentUser();
     if (_authStatus == AuthStatus.NOT_DETERMINED) {
       _authStatus = AuthStatus.NOT_LOGGED_IN;
@@ -84,6 +86,7 @@ class _RootViewState extends State<RootView> {
   @override
   Widget build(BuildContext context) {
     _rootProvider = Provider.of<RootViewModel>(context);
+    _commonProvider = Provider.of<CommonViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
 
     return FutureBuilder<void>(
@@ -97,7 +100,7 @@ class _RootViewState extends State<RootView> {
               loginCallback: _loginCallback
             );
           case AuthStatus.LOGGED_IN:
-            bool? isMentor = _rootProvider?.isMentor;
+            bool? isMentor = _commonProvider?.user?.isMentor;
             if (isMentor != null) {
               if (isMentor) {
                 return _showLessonRequestView();

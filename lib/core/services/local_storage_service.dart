@@ -37,7 +37,7 @@ class LocalStorageService {
   set fieldName(String? value) => _saveToDisk('fieldName', value);  
 
   String? get subfieldId => _getFromDisk('subfieldId');
-  set subfieldId(String? value) => _saveToDisk('subfieldId', value); 
+  set subfieldId(String? value) => _saveToDisk('subfieldId', value);
 
   Map<String, dynamic> get tutorials => _getFromDisk('tutorials');
   set tutorials(Map<String, dynamic> value) => _saveToDisk('tutorials', value);

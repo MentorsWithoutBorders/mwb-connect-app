@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
+import 'package:mwb_connect_app/core/services/authentication_service.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -16,10 +16,12 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
+import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();
   final ProfileService _profileService = locator<ProfileService>();
+  final LocalStorageService _storageService = locator<LocalStorageService>();
   final AuthService _authService = locator<AuthService>();
   User? user;
   List<Field>? fields;

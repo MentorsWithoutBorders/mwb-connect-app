@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
@@ -28,6 +29,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel? _profileProvider;
+  CommonViewModel? _commonProvider;
   final ScrollController _scrollController = ScrollController();
   bool _isProfileRetrieved = false;
 
@@ -230,38 +232,47 @@ class _ProfileViewState extends State<ProfileView> {
       ]);      
       _isProfileRetrieved = true;
     }
-  } 
+  }
+  
+  Future<bool> _onWillPop(BuildContext context) async {
+    _commonProvider?.setUser(_profileProvider?.user);
+    return true;
+  }  
 
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
+    _commonProvider = Provider.of<CommonViewModel>(context);
 
     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
-    return FutureBuilder<void>(
-      future: _getProfile(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return GestureDetector(
-          onTap: () {
-            _unfocus();
-          },
-          child: Stack(
-            children: <Widget>[
-              const BackgroundGradient(),
-              Scaffold(
-                backgroundColor: Colors.transparent,
-                appBar: AppBar(
-                  title: _showTitle(),
-                  backgroundColor: Colors.transparent,          
-                  elevation: 0.0
-                ),
-                extendBodyBehindAppBar: true,
-                body: _showContent()
-              )
-            ],
-          )
-        );
-      }
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: FutureBuilder<void>(
+        future: _getProfile(),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          return GestureDetector(
+            onTap: () {
+              _unfocus();
+            },
+            child: Stack(
+              children: <Widget>[
+                const BackgroundGradient(),
+                Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: AppBar(
+                    title: _showTitle(),
+                    backgroundColor: Colors.transparent,          
+                    elevation: 0.0
+                  ),
+                  extendBodyBehindAppBar: true,
+                  body: _showContent()
+                )
+              ],
+            )
+          );
+        }
+      ),
     );
   }
 }
