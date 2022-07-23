@@ -1,11 +1,11 @@
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_recurrence_result_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
+import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
@@ -27,8 +27,11 @@ class LessonRequestService {
     return nextLesson;
   }  
 
-  Future<void> rejectLessonRequest(String? id) async {
-    await _api.putHTTP(url: '/lesson_requests/$id/reject_lesson_request', data: {});  
+  Future<void> rejectLessonRequest(String? id, String? reason) async {
+    InAppMessage inAppMessage = InAppMessage(
+      text: reason
+    );
+    await _api.putHTTP(url: '/lesson_requests/$id/reject_lesson_request', data: inAppMessage.toJson());  
     return ;
   }
   
@@ -45,11 +48,13 @@ class LessonRequestService {
 
   Future<void> cancelNextLesson(Lesson? lesson, bool? isSingleLesson) async {
     Map<String, Object?> data = {};
-    Lesson lessonData = Lesson();
+    Lesson lessonData = Lesson(
+      endRecurrenceDateTime: lesson?.endRecurrenceDateTime,
+      reasonCanceled: lesson?.reasonCanceled
+    );
     if (isSingleLesson == true) {
       lessonData.dateTime = lesson?.dateTime;
     }
-    lessonData.endRecurrenceDateTime = lesson?.endRecurrenceDateTime;
     data = lessonData.toJson();
     String? id = lesson?.id;
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: data);  

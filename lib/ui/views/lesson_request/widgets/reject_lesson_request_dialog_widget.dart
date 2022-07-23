@@ -17,7 +17,8 @@ class RejectLessonRequestDialog extends StatefulWidget {
 
 class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
   LessonRequestViewModel? _lessonRequestProvider;
-  bool _isRejectingLessonRequest = false;  
+  bool _isRejectingLessonRequest = false;
+  String? _reasonText;  
 
   Widget _showRejectLessonRequestDialog() {
     return Container(
@@ -27,6 +28,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
         children: <Widget>[
           _showTitle(),
           _showText(),
+          _showReasonInput(),
           _showButtons()
         ]
       )
@@ -70,7 +72,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 25.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: RichText(
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.center,
@@ -131,6 +133,35 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
       ),
     );
   }
+
+  Widget _showReasonInput() {
+    return Container(
+      height: 80.0,
+      margin: const EdgeInsets.only(bottom: 20.0),        
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.SILVER)
+      ),
+      child: TextFormField(
+        maxLines: null,
+        textInputAction: TextInputAction.go,
+        style: const TextStyle(
+          fontSize: 12.0
+        ),
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),          
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          hintStyle: const TextStyle(color: AppColors.SILVER),
+          hintText: 'lesson_request.reject_request_reason_placeholder'.tr(),
+        ),
+        onChanged: (String? value) => _reasonText = value?.trim(),
+      ),
+    );
+  }  
   
   Widget _showButtons() {
     return Row(
@@ -171,7 +202,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
 
   Future<void> _rejectLessonRequest() async {  
     _setIsRejectingLessonRequest(true);
-    await _lessonRequestProvider?.rejectLessonRequest();
+    await _lessonRequestProvider?.rejectLessonRequest(_reasonText);
   }
   
   void _setIsRejectingLessonRequest(bool isRejecting) {

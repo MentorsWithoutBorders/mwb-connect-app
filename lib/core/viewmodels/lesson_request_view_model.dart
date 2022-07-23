@@ -75,8 +75,8 @@ class LessonRequestViewModel extends ChangeNotifier {
     }
   }  
 
-  Future<void> rejectLessonRequest() async {
-    await _lessonRequestService.rejectLessonRequest(lessonRequest?.id);
+  Future<void> rejectLessonRequest(String? reason) async {
+    await _lessonRequestService.rejectLessonRequest(lessonRequest?.id, reason);
     lessonRequest?.isRejected = true;
     notifyListeners();
   }
