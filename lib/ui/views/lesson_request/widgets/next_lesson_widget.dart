@@ -496,7 +496,7 @@ class _NextLessonState extends State<NextLesson> {
                   ),
                   padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
                 ), 
-                child: Text('lesson_request.cancel_next_lesson'.tr(), style: const TextStyle(color: Colors.white)),
+                child: Text('lesson_request.cancel_lesson'.tr(), style: const TextStyle(color: Colors.white)),
                 onPressed: () {
                   _showCancelLessonDialog();
                 }

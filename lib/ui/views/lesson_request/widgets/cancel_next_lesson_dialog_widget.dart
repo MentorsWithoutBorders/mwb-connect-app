@@ -17,7 +17,8 @@ class CancelNextLessonDialog extends StatefulWidget {
 
 class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   LessonRequestViewModel? _lessonRequestProvider;
-  bool _isCancellingLesson = false;  
+  String? _reasonText;
+  bool _isCancellingLesson = false;
 
   Widget _showCancelNextLessonDialog() {
     return Container(
@@ -27,6 +28,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
         children: <Widget>[
           _showTitle(),
           _showText(),
+          _showReasonInput(),
           _showButtons()
         ]
       )
@@ -34,7 +36,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showTitle() {
-    String title = 'lesson_request.cancel_next_lesson'.tr();
+    String title = 'lesson_request.cancel_lesson'.tr();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
@@ -65,13 +67,13 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
     String studentPlural = plural('student', nextLesson?.students?.length as int);
-    String text = 'lesson_request.cancel_next_lesson_text'.tr(args: [subfield, date, time, timeZone, studentPlural]);
+    String text = 'lesson_request.cancel_lesson_text'.tr(args: [subfield, date, time, timeZone, studentPlural]);
     String firstPart = text.substring(0, text.indexOf(subfield));
     String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
     String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 25.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: RichText(
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.center,
@@ -111,6 +113,35 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
             ),
           ],
         )
+      ),
+    );
+  }
+
+  Widget _showReasonInput() {
+    return Container(
+      height: 80.0,
+      margin: const EdgeInsets.only(bottom: 15.0),        
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.SILVER)
+      ),
+      child: TextFormField(
+        maxLines: null,
+        textInputAction: TextInputAction.go,
+        style: const TextStyle(
+          fontSize: 12.0
+        ),
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),          
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          hintStyle: const TextStyle(color: AppColors.SILVER),
+          hintText: 'lesson_request.cancel_lesson_reason_placeholder'.tr(),
+        ),
+        onChanged: (String? value) => _reasonText = value?.trim(),
       ),
     );
   }
@@ -154,6 +185,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
 
   Future<void> _cancelNextLesson() async {  
     _setIsCancellingLesson(true);
+    _lessonRequestProvider?.nextLesson?.reasonCanceled = _reasonText;
     await _lessonRequestProvider?.cancelNextLesson(isSingleLesson: true);
   }
   

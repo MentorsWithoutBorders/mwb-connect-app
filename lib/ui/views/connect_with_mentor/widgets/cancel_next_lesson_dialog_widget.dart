@@ -17,6 +17,7 @@ class CancelNextLessonDialog extends StatefulWidget {
 
 class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   ConnectWithMentorViewModel? _connectWithMentorProvider;
+  String? _reasonText;
   bool _isCancelingNextLesson = false;
 
   Widget _showCancelNextLessonDialog() {
@@ -27,6 +28,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
         children: <Widget>[
           _showTitle(),
           _showText(),
+          _showReasonInput(),
           _showButtons()
         ]
       )
@@ -69,7 +71,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     String secondPart = text.substring(text.indexOf(fieldName) + fieldName.length, text.indexOf(name));
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 25.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: RichText(
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
         textAlign: TextAlign.justify,
@@ -121,6 +123,35 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
       ),
     );
   }
+
+  Widget _showReasonInput() {
+    return Container(
+      height: 80.0,
+      margin: const EdgeInsets.only(bottom: 15.0),        
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.SILVER)
+      ),
+      child: TextFormField(
+        maxLines: null,
+        textInputAction: TextInputAction.go,
+        style: const TextStyle(
+          fontSize: 12.0
+        ),
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),          
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          hintStyle: const TextStyle(color: AppColors.SILVER),
+          hintText: 'lesson_request.cancel_lesson_reason_placeholder'.tr(),
+        ),
+        onChanged: (String? value) => _reasonText = value?.trim(),
+      ),
+    );
+  }
   
   Widget _showButtons() {
     return Row(
@@ -161,6 +192,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   
   Future<void> _cancelNextLesson() async {  
     _setIsCancelingNextLesson(true);
+    _connectWithMentorProvider?.nextLesson?.reasonCanceled = _reasonText;
     await _connectWithMentorProvider?.cancelNextLesson(isSingleLesson: true);
   }
   

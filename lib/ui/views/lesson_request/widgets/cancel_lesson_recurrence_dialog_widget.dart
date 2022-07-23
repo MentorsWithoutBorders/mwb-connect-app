@@ -16,7 +16,8 @@ class CancelLessonRecurrenceDialog extends StatefulWidget {
 
 class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDialog> {
   LessonRequestViewModel? _lessonRequestProvider;
-  bool _isCancellingLesson = false;  
+  String? _reasonText;
+  bool _isCancellingLesson = false;
 
   Widget _showCancelLessonRecurrenceDialog() {
     return Container(
@@ -26,6 +27,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
         children: <Widget>[
           _showTitle(),
           _showText(),
+          _showReasonInput(),
           _showButtons()
         ]
       )
@@ -55,7 +57,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
     String text = 'lesson_request.cancel_lesson_recurrence_text'.tr(args: [studentPlural]);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 25.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
         text,
         style: const TextStyle(
@@ -66,6 +68,35 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
       )
     );
   }
+
+  Widget _showReasonInput() {
+    return Container(
+      height: 80.0,
+      margin: const EdgeInsets.only(bottom: 15.0),        
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.SILVER)
+      ),
+      child: TextFormField(
+        maxLines: null,
+        textInputAction: TextInputAction.go,
+        style: const TextStyle(
+          fontSize: 12.0
+        ),
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),          
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          hintStyle: const TextStyle(color: AppColors.SILVER),
+          hintText: 'lesson_request.cancel_lesson_reason_placeholder'.tr(),
+        ),
+        onChanged: (String? value) => _reasonText = value?.trim(),
+      ),
+    );
+  }  
   
   Widget _showButtons() {
     return Row(
@@ -106,6 +137,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
 
   Future<void> _cancelLessonRecurrence() async {  
     _setIsCancellingLesson(true);
+    _lessonRequestProvider?.nextLesson?.reasonCanceled = _reasonText;
     await _lessonRequestProvider?.cancelNextLesson(isSingleLesson: false);
   }
   

@@ -17,8 +17,8 @@ class RejectLessonRequestDialog extends StatefulWidget {
 
 class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
   LessonRequestViewModel? _lessonRequestProvider;
+  String? _reasonText;
   bool _isRejectingLessonRequest = false;
-  String? _reasonText;  
 
   Widget _showRejectLessonRequestDialog() {
     return Container(
@@ -137,7 +137,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
   Widget _showReasonInput() {
     return Container(
       height: 80.0,
-      margin: const EdgeInsets.only(bottom: 20.0),        
+      margin: const EdgeInsets.only(bottom: 15.0),        
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.SILVER)
       ),
@@ -161,7 +161,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
         onChanged: (String? value) => _reasonText = value?.trim(),
       ),
     );
-  }  
+  }
   
   Widget _showButtons() {
     return Row(

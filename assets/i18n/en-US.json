@@ -215,7 +215,8 @@
 		"scheduled_recurring_lesson": "{} has scheduled a recurring {} lesson with you every {} until {}. The next lesson will be on {} at {} {} and you’ll use the following {} link:",
 		"cancel_lesson": "Cancel lesson",
 		"cancel_lesson_text": "Are you sure you don't want attend the {} lesson with {} on {}, {} at {} {}?",
-    "cancel_lesson_recurrence_text": "Are you sure you don't want to attend any of the lessons in this recurrence?"
+    "cancel_lesson_recurrence_text": "Are you sure you don't want to attend any of the lessons in this recurrence?",
+    "cancel_lesson_reason_placeholder": "Reason for cancellation (optional)"
 	},
   "available_mentors": {
     "title": "Find mentor",
@@ -272,10 +273,11 @@
 		"send_url": "Send Google Meet/Zoom link",
 		"paste_url": "Please paste the link here:",
     "send_url_error": "Please enter a valid {} URL",
-		"cancel_next_lesson": "Cancel lesson",
+		"cancel_lesson": "Cancel lesson",
 		"reject_lesson_request": "Reject lesson request",
-		"cancel_next_lesson_text": "Are you sure you want to cancel the {} lesson from {} at {} {}?",
+		"cancel_lesson_text": "Are you sure you want to cancel the {} lesson from {} at {} {}?",
     "cancel_lesson_recurrence_text": "Are you sure you want to cancel the entire lesson recurrence?\n(the {} will be assigned to another mentor)",
+    "cancel_lesson_reason_placeholder": "Reason for cancellation (optional)",
 		"reject_lesson_request_text": "Are you sure you want to reject the {} lesson with {} from {} on {} at {} {}?\n(the student will be assigned to another mentor)",
     "reject_request_reason_placeholder": "Reason for rejection (optional)",
 		"lesson_scheduled": "You have scheduled {} {} lesson {} {} {} with the following {} (more students might join the lesson according to the relevant setting from",

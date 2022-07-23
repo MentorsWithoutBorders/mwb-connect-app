@@ -49,7 +49,7 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
 
   Widget _showText() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 25.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
         'connect_with_mentor.cancel_lesson_request_text'.tr(),
         style: const TextStyle(
