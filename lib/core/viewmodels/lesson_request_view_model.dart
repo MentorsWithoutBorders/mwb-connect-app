@@ -163,7 +163,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   bool get isLessonRequest => !isNextLesson && lessonRequest != null && lessonRequest?.id != null && lessonRequest?.isRejected != true;
   
   bool checkValidUrl(String url) {
-    return Uri.parse(url).isAbsolute && (url.contains('meet') || url.contains('zoom'));
+    return Uri.parse(url).host.isNotEmpty && (url.contains('meet') || url.contains('zoom'));
   }
 
   bool shouldShowTrainingCompleted() {
