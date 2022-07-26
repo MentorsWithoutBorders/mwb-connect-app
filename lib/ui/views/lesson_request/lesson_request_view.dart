@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/lesson_request/widgets/solve_quiz_add_step_widget.dart';
@@ -36,14 +37,22 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
   QuizzesViewModel? _quizzesProvider;
+  InAppMessagesViewModel? _inAppMessagesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
+  bool _isInAppMessageOpen = false;
 
   @override
   initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-  } 
+  }
+  
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }  
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -72,13 +81,30 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
     } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
     }    
-  }  
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
   }
+  
+  Future<void> _showInAppMessage(_) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    bool? shouldShowNotification = _inAppMessagesProvider?.inAppMessage?.text?.isNotEmpty;
+    if (mounted && shouldShowNotification == true && !_isInAppMessageOpen) {
+      _isInAppMessageOpen = true;
+      showDialog(
+        context: context,
+        builder: (_) => AnimatedDialog(
+          widgetInside: NotificationDialog(
+            text: _inAppMessagesProvider?.inAppMessage?.text,
+            buttonText: 'common.ok'.tr(),
+            shouldReload: false,
+          )
+        )
+      ).then((_) => _setInAppMessageClosed());
+    }
+  }
+  
+  void _setInAppMessageClosed() {
+    _isInAppMessageOpen = false;
+    _inAppMessagesProvider?.deleteInAppMessage();
+  }  
 
   Widget _showLessonRequest() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -133,6 +159,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         _goalsProvider!.getGoals(),
         _stepsProvider!.getLastStepAdded(),
         _quizzesProvider!.getQuizzes(),
+        _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
       ]).timeout(const Duration(seconds: 3600));
       _showExpiredLessonRequest();
@@ -184,7 +211,9 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
+    _inAppMessagesProvider = Provider.of<InAppMessagesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
+    WidgetsBinding.instance?.addPostFrameCallback(_showInAppMessage);    
 
     return FutureBuilder<void>(
       future: _init(),

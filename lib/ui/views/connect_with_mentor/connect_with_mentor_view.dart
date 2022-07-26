@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -8,6 +9,7 @@ import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.d
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
@@ -39,15 +41,22 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
   QuizzesViewModel? _quizzesProvider;
+  InAppMessagesViewModel? _inAppMessagesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
-  bool _isProductivityReminderOpen = false;
+  bool _isInAppMessageOpen = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }   
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -77,30 +86,40 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     }    
   }
 
-  Future<void> _showJoyfulProductivityReminder(_) async {
+  Future<void> _showInAppMessage(_) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    bool shouldShowProductivityReminder = _connectWithMentorProvider!.getShouldShowProductivityReminder();
-    if (mounted && shouldShowProductivityReminder && !_isProductivityReminderOpen) {
-      _isProductivityReminderOpen = true;
-      _connectWithMentorProvider?.setLastShownProductivityReminderDate();
+    bool? shouldShowNotification = _inAppMessagesProvider?.inAppMessage?.text?.isNotEmpty;
+    if (mounted && shouldShowNotification == true && !_isInAppMessageOpen) {
+      _isInAppMessageOpen = true;
       showDialog(
         context: context,
         builder: (_) => AnimatedDialog(
-          widgetInside: JoyfulProductivityReminderDialog()
-        ),
-      ).then((_) => _setProductivityReminderClosed());
+          widgetInside: NotificationDialog(
+            text: _inAppMessagesProvider?.inAppMessage?.text,
+            buttonText: 'common.ok'.tr(),
+            shouldReload: false,
+          )
+        )
+      ).then((_) => _setInAppMessageClosed());
+    } else {
+      bool shouldShowProductivityReminder = _connectWithMentorProvider!.getShouldShowProductivityReminder();
+      if (mounted && shouldShowProductivityReminder && !_isInAppMessageOpen) {
+        _isInAppMessageOpen = true;
+        _connectWithMentorProvider?.setLastShownProductivityReminderDate();
+        showDialog(
+          context: context,
+          builder: (_) => AnimatedDialog(
+            widgetInside: JoyfulProductivityReminderDialog()
+          ),
+        ).then((_) => _setInAppMessageClosed());
+      }
     }
   }
   
-  void _setProductivityReminderClosed() {
-    _isProductivityReminderOpen = false;
-  }
-  
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
-  }    
+  void _setInAppMessageClosed() {
+    _isInAppMessageOpen = false;
+    _inAppMessagesProvider?.deleteInAppMessage();
+  }   
 
   Widget _showConnectWithMentor() {
    final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -207,6 +226,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   
   Future<void> _init() async {
     if (!_isInit && _connectWithMentorProvider != null) {
+      _goalsProvider?.selectedGoal = null;
       for (int i = 0; i < 10; i++) {
         if (_goalsProvider?.selectedGoal == null) {
           await Future.wait([
@@ -217,6 +237,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
             _goalsProvider!.getGoals(),
             _stepsProvider!.getLastStepAdded(),
             _quizzesProvider!.getQuizzes(),
+            _inAppMessagesProvider!.getInAppMessage(),
             _commonProvider!.getAppFlags()
           ]).timeout(const Duration(seconds: 3600))
           .catchError((error) {
@@ -236,8 +257,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
+    _inAppMessagesProvider = Provider.of<InAppMessagesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
-    WidgetsBinding.instance?.addPostFrameCallback(_showJoyfulProductivityReminder);    
+    WidgetsBinding.instance?.addPostFrameCallback(_showInAppMessage);
 
     return FutureBuilder<void>(
       future: _init(),

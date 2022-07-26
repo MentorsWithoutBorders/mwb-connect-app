@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -129,7 +130,8 @@ class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserv
               ChangeNotifierProvider<GoalsViewModel>.value(value: locator<GoalsViewModel>()),
               ChangeNotifierProvider<StepsViewModel>.value(value: locator<StepsViewModel>()),
               ChangeNotifierProvider<QuizzesViewModel>.value(value: locator<QuizzesViewModel>()),
-              ChangeNotifierProvider<NotificationsViewModel>.value(value: locator<NotificationsViewModel>())
+              ChangeNotifierProvider<NotificationsViewModel>.value(value: locator<NotificationsViewModel>()),
+              ChangeNotifierProvider<InAppMessagesViewModel>.value(value: locator<InAppMessagesViewModel>())
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
