@@ -55,11 +55,14 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
   Widget _showText() {
     String firstPart = 'joyful_productivity_reminder.text.first_part'.tr();
     String secondPart = 'joyful_productivity_reminder.text.second_part'.tr();
-    String superFocusMethod = 'joyful_productivity_reminder.text.super_focus_method'.tr();
-    String thirdPart = 'joyful_productivity_reminder.text.third_part'.tr();
     String quickDeepRelaxation = 'joyful_productivity_reminder.text.quick_deep_relaxation'.tr();
+    String thirdPart = 'joyful_productivity_reminder.text.third_part'.tr();
     String fourthPart = 'joyful_productivity_reminder.text.fourth_part'.tr();
     String list = 'joyful_productivity_reminder.text.list'.tr();
+    String fifthPart = 'joyful_productivity_reminder.text.fifth_part'.tr();
+    String sixthPart = 'joyful_productivity_reminder.text.sixth_part'.tr();
+    String superFocusMethod = 'joyful_productivity_reminder.text.super_focus_method'.tr();
+    String seventhPart = 'joyful_productivity_reminder.text.seventh_part'.tr();
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.5,
@@ -86,29 +89,13 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: firstPart
+                          text: firstPart + ', '
                         ),
                         TextSpan(
-                          text:  ' ' + secondPart + ' ',
+                          text:  secondPart + ' ',
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold
-                          )
-                        ),
-                        TextSpan(
-                          text: superFocusMethod,
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.TANGO
-                          ),
-                          recognizer: TapGestureRecognizer()..onTap = () {
-                            _goToTutorialSuperFocusMethod();
-                          }
-                        ),
-                        TextSpan(
-                          text:  ' ' + thirdPart + ' ',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold
+                            color: Colors.red
                           )
                         ),
                         TextSpan(
@@ -116,23 +103,65 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
                           style: const TextStyle(
                             decoration: TextDecoration.underline,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.TANGO
+                            color: Colors.red
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () {
                             _goToTutorialQuickDeepRelaxationMethod();
                           }
                         ),
                         TextSpan(
-                          text: ' ' + fourthPart + ' ',
+                          text:  ' ' + thirdPart + ' ',
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red
                           )
+                        ),
+                        TextSpan(
+                          text:  fourthPart
                         )
                       ]
                     )
                   )
                 ),
-                HtmlWidget(list)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: HtmlWidget(list),
+                ),
+                RichText(
+                  textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                  textAlign: TextAlign.justify,
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      color: AppColors.DOVE_GRAY,
+                      height: 1.5
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: fifthPart,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red
+                        )
+                      ),
+                      TextSpan(
+                        text:  '\n\n' + sixthPart + ' '
+                      ),
+                      TextSpan(
+                        text: superFocusMethod,
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = () {
+                          _goToTutorialSuperFocusMethod();
+                        }
+                      ),
+                      TextSpan(
+                        text:  ' ' + seventhPart + ' '
+                      )
+                    ]
+                  )
+                )
               ]
             ),
           )
