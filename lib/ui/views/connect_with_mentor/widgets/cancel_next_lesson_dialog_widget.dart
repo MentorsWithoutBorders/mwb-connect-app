@@ -133,6 +133,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
       ),
       child: TextFormField(
         maxLines: null,
+        textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.go,
         style: const TextStyle(
           fontSize: 12.0

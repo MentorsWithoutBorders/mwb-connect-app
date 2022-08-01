@@ -143,6 +143,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
       ),
       child: TextFormField(
         maxLines: null,
+        textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.go,
         style: const TextStyle(
           fontSize: 12.0
