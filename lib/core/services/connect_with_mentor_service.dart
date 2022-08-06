@@ -37,11 +37,14 @@ class ConnectWithMentorService {
 
   Future<void> cancelNextLesson(Lesson? lesson, bool? isSingleLesson) async {
     Map<String, Object?> data = {};
-    Lesson lessonData = Lesson(mentor: User(id: lesson?.mentor?.id));
+    Lesson lessonData = Lesson(
+      mentor: User(id: lesson?.mentor?.id),
+      endRecurrenceDateTime: lesson?.endRecurrenceDateTime,
+      reasonCanceled: lesson?.reasonCanceled
+    );
     if (isSingleLesson == true) {
       lessonData.dateTime = lesson?.dateTime;
     }
-    lessonData.endRecurrenceDateTime = lesson?.endRecurrenceDateTime;
     data = lessonData.toJson();
     String? id = lesson?.id;    
     await _api.putHTTP(url: '/lessons/$id/cancel_lesson', data: data);  
