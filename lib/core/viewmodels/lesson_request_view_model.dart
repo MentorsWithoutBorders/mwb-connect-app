@@ -93,6 +93,7 @@ class LessonRequestViewModel extends ChangeNotifier {
   Future<void> cancelNextLesson({bool? isSingleLesson}) async {
     await _lessonRequestService.cancelNextLesson(nextLesson, isSingleLesson);
     await getNextLesson();
+    await getPreviousLesson();
     notifyListeners();
   }
 
