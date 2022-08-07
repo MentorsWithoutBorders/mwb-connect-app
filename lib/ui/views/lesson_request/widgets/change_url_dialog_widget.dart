@@ -50,7 +50,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'lesson_request.send_url'.tr(args: [urlType]),
+          'lesson_request.update_url'.tr(args: [urlType]),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,
@@ -144,7 +144,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
           child: !_isUpdatingLessonUrl ? Text(
-            'common.send'.tr(),
+            'common.update'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
             width: 40.0,

@@ -271,6 +271,7 @@
     "lesson_request_recurrence_text": "The lessons will take place every {} at {} {} from {} until {}.",
     "lesson_recurrence_until": "Until: ",
 		"send_url": "Send Google Meet/Zoom link",
+		"update_url": "Update Google Meet/Zoom link",
 		"paste_url": "Please paste the link here:",
     "send_url_error": "Please enter a valid {} URL",
 		"cancel_lesson": "Cancel lesson",

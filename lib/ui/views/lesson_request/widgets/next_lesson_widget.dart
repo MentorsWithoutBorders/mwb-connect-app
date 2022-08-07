@@ -399,7 +399,7 @@ class _NextLessonState extends State<NextLesson> {
         height: 22.0,
         padding: const EdgeInsets.only(left: 5.0, right: 3.0),
         child: Image.asset(
-          'assets/images/edit_full_icon.png'
+          'assets/images/edit_icon.png'
         ),
       ),
       onTap: () {
