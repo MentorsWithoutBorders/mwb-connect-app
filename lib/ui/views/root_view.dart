@@ -43,6 +43,7 @@ class _RootViewState extends State<RootView> {
 
   void _logoutCallback() {
     _commonProvider?.user = null;
+    _commonProvider?.getGoalAttempts = 0;
     _goalsProvider?.setSelectedGoal(null);
     setState(() {
       _authStatus = AuthStatus.NOT_LOGGED_IN;

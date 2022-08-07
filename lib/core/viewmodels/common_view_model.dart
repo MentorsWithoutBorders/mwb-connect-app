@@ -23,6 +23,7 @@ class CommonViewModel extends ChangeNotifier {
   User? user;
   double dialogInputHeight = 0.0;
   dynamic location;
+  int getGoalAttempts = 0;
   AppFlags appFlags = AppFlags(isTrainingEnabled: true, isMentoringEnabled: true);
 
   Future<void> getUserDetails() async {

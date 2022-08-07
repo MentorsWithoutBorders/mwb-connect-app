@@ -66,10 +66,10 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
         _isInit = false;
       });
       _checkUpdate();
-    }
+    }   
     if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-      _goalsProvider?.setSelectedGoal(null);
-    }    
+      _commonProvider?.getGoalAttempts = 0;
+    }
   }
 
   void _setTimeZone() {
@@ -226,28 +226,28 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   
   Future<void> _init() async {
     if (!_isInit && _connectWithMentorProvider != null) {
-      _goalsProvider?.selectedGoal = null;
-      for (int i = 0; i < 10; i++) {
-        if (_goalsProvider?.selectedGoal == null) {
-          await Future.wait([
-            _connectWithMentorProvider!.getLessonRequest(),
-            _connectWithMentorProvider!.getPreviousLesson(),
-            _connectWithMentorProvider!.getNextLesson(),
-            _connectWithMentorProvider!.getCertificateSent(),
-            _goalsProvider!.getGoals(),
-            _stepsProvider!.getLastStepAdded(),
-            _quizzesProvider!.getQuizzes(),
-            _inAppMessagesProvider!.getInAppMessage(),
-            _commonProvider!.getAppFlags()
-          ]).timeout(const Duration(seconds: 3600))
-          .catchError((error) {
-            _connectWithMentorProvider?.sendAPIDataLogs(i, error, getLogsList());
-          });
-          _connectWithMentorProvider?.sendAPIDataLogs(i, '', getLogsList());
-        }
-      }
+      await Future.wait([
+        _connectWithMentorProvider!.getLessonRequest(),
+        _connectWithMentorProvider!.getPreviousLesson(),
+        _connectWithMentorProvider!.getNextLesson(),
+        _connectWithMentorProvider!.getCertificateSent(),
+        _goalsProvider!.getGoals(),
+        _stepsProvider!.getLastStepAdded(),
+        _quizzesProvider!.getQuizzes(),
+        _inAppMessagesProvider!.getInAppMessage(),
+        _commonProvider!.getAppFlags()
+      ]).timeout(const Duration(seconds: 3600))
+      .catchError((error) {
+        _connectWithMentorProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, error, getLogsList());
+      });
+      _connectWithMentorProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, '', getLogsList());
       await _commonProvider!.initPushNotifications();
-      _isInit = true;
+      if (_goalsProvider?.selectedGoal != null || _commonProvider!.getGoalAttempts >= 10) {
+        _isInit = true;
+      } else {
+        _commonProvider!.getGoalAttempts++;
+        setState(() {});
+      }
     }
   }
 
