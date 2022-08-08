@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
-import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/cancel_lesson_request_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
@@ -48,6 +49,8 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     DateTime now = DateTime.now();
     String subfield = lessonRequest?.subfield?.name?.toLowerCase() as String;
+    String article = Utils.getIndefiniteArticle(subfield);
+    String mentorName = lessonRequest?.mentor?.name as String;
     String date = dateFormat.format(lessonRequestDateTime);
     String time = timeFormat.format(lessonRequestDateTime);
     String timeZone = now.timeZoneName;
@@ -72,7 +75,16 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
                   text: 'connect_with_mentor.requested_lesson'.tr()
                 ),
                 TextSpan(
-                  text: ' ' + subfield + ' ' + lesson
+                  text: ' ' + article + ' ' + subfield + ' ' + lesson
+                ),
+                TextSpan(
+                  text: ' ' + 'common.with'.tr() + ' '
+                ),
+                TextSpan(
+                  text: mentorName,
+                  style: const TextStyle(
+                    color: AppColors.TANGO
+                  ) 
                 ),
                 TextSpan(
                   text: ' ' + 'common.on'.tr() + ' '

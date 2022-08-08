@@ -42,15 +42,18 @@ class User {
     hasScheduledLesson = json['hasScheduledLesson'] ?? false;
   }
 
-  Organization _organizationFromJson(Map<String, dynamic> json) {
-    Organization organization = Organization.fromJson(json);
-    return organization;
+  Organization? _organizationFromJson(Map<String, dynamic>? json) {
+    if (json != null) {
+      return Organization.fromJson(json);
+    }
+    return null;
   }   
 
   Field? _fieldFromJson(Map<String, dynamic>? json) {
     if (json != null) {
       return Field.fromJson(json);
     }
+    return null;
   }  
   
   TimeZoneModel _timeZoneFromJson(Map<String, dynamic>? json) {
