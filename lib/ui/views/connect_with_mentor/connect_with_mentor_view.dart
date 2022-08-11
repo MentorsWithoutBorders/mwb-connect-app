@@ -110,7 +110,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
           context: context,
           builder: (_) => AnimatedDialog(
             widgetInside: JoyfulProductivityReminderDialog()
-          ),
+          )
         ).then((_) => _setInAppMessageClosed());
       }
     }
