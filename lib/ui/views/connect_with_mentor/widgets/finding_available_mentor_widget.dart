@@ -146,7 +146,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
     return Center(
       child: Container(
         height: 30.0,
-        margin: const EdgeInsets.only(bottom: 10.0),
+        margin: const EdgeInsets.only(bottom: 5.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,

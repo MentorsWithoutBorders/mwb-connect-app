@@ -81,7 +81,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
       ),
       child: TextFormField(
         maxLines: null,
-        textInputAction: TextInputAction.go,
+        textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(
           fontSize: 12.0
         ),
@@ -148,12 +148,22 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
     setState(() {
       _isCancellingLesson = isCanceling;
     });  
-  }    
+  }
+  
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }  
   
   @override
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
 
-    return _showCancelLessonRecurrenceDialog();
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        _unfocus();
+      },
+      child: _showCancelLessonRecurrenceDialog()
+    );
   }
 }

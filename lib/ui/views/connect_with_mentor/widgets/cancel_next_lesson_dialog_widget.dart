@@ -134,7 +134,6 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
       child: TextFormField(
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.go,
         style: const TextStyle(
           fontSize: 12.0
         ),
@@ -201,12 +200,22 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     setState(() {
       _isCancelingNextLesson = isCanceling;
     });  
-  }    
+  }
+  
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }
   
   @override
   Widget build(BuildContext context) {
     _connectWithMentorProvider = Provider.of<ConnectWithMentorViewModel>(context);
 
-    return _showCancelNextLessonDialog();
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        _unfocus();
+      },
+      child: _showCancelNextLessonDialog()
+    );
   }
 }
