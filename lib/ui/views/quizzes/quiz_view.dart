@@ -108,7 +108,7 @@ class _QuizState extends State<QuizView> {
                 controller: _scrollController,
                 isAlwaysShown: true,
                 child: SingleChildScrollView(
-                  controller: _scrollController,                
+                  controller: _scrollController,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 7.0),
                     child: Column(

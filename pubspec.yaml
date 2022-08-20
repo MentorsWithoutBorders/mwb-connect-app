@@ -1,6 +1,6 @@
 name: mwb_connect_app
 description: MWBConnect
-version: 1.4.0+41
+version: 1.6.0+43
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -13,24 +13,24 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  firebase_auth: ^3.3.19
+  firebase_auth: ^3.4.2
   firebase_core: ^1.8.0
-  firebase_storage: ^10.2.17
-  firebase_messaging: ^11.4.1
+  firebase_storage: ^10.3.6
+  firebase_messaging: ^12.0.3
   flutuate_mixpanel: ^2.0.0-nullsafety
   provider: ^6.0.3
-  http: ^0.13.4
+  http: ^0.13.5
   path_provider: ^2.0.6
   get_it: ^7.2.0
   shared_preferences: ^2.0.8
   flutter_phoenix: ^1.0.0
   intl: ^0.17.0
-  cupertino_icons: ^1.0.4
+  cupertino_icons: ^1.0.5
   google_fonts: ^3.0.1
-  url_launcher: ^6.1.2
+  url_launcher: ^6.1.5
   package_info: ^2.0.2
   easy_localization: ^3.0.0
-  flutter_local_notifications: ^9.5.3+1
+  flutter_local_notifications: ^9.8.0+1
   flutter_native_timezone: ^2.0.0
   flutter_widget_from_html_core: ^0.8.5+3
   flutter_inappwebview: ^5.4.3+7
@@ -40,14 +40,14 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   scroll_to_index: ^2.1.1
   flutter_spinkit: ^5.1.0
-  flutter_keyboard_visibility: ^5.2.0
+  flutter_keyboard_visibility: ^5.3.0
   draggable_scrollbar: ^0.1.0
-  rxdart: ^0.26.0
+  rxdart: ^0.27.5
   uuid: ^3.0.6
   enum_to_string: ^2.0.1
 
   infinite_scroll_pagination:
-    git: https://github.com/MentorsWithoutBorders/infinite_scroll_pagination.git
+    git: https://github.com/MentorsWithoutBorders/infinite_scroll_pagination.git  
 
 dev_dependencies:
   flutter_test:
@@ -59,7 +59,6 @@ flutter_icons:
   android: false
   ios: true
   image_path: "assets/icon/icon.png"
-
 
 flutter:
 
