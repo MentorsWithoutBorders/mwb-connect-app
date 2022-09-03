@@ -67,7 +67,7 @@ class StepsService {
     return steps;
   }
 
-  Future<List<StepModel>> getAllSteps() async {
+  Future<List<StepModel>> getAllSteps({bool isLogin = false}) async {
     Database? db = await this.db;
     String where = 'userId = ?';
     List<String?> whereArgs = [_storageService.userId];
@@ -79,16 +79,18 @@ class StepsService {
         steps.add(StepModel.fromJson(stepsList[i]));
       }
     } else {
-      // dynamic response = await _api.getHTTP(url: '/steps/all');
-      // if (response != null) {
-      //   steps = List<StepModel>.from(response.map((model) => StepModel.fromJson(model)));
-      //   int count = steps.length;
-      //   if (count > 0) {
-      //     for (int i = 0; i < count; i++) {
-      //       addStep(steps[i].goalId, steps[i]);
-      //     }
-      //   }        
-      // }
+      if (isLogin == true) {
+        dynamic response = await _api.getHTTP(url: '/steps/all');
+        if (response != null) {
+          steps = List<StepModel>.from(response.map((model) => StepModel.fromJson(model)));
+          int count = steps.length;
+          if (count > 0) {
+            for (int i = 0; i < count; i++) {
+              addStep(steps[i].goalId, steps[i]);
+            }
+          }        
+        }
+      }
     }
     return steps;
   }
