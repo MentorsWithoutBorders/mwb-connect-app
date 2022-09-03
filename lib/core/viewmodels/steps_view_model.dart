@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/core/models/step_model.dart';
 import 'package:mwb_connect_app/core/services/steps_service.dart';
@@ -15,7 +17,7 @@ class StepsViewModel extends ChangeNotifier {
   List<StepModel>? steps;
   StepModel? selectedStep;
   StepModel lastStepAdded = StepModel();
-  int previousStepIndex = -1;
+  int previousStepPosition = -1;
   bool isTutorialPreviewsAnimationCompleted = false;
   bool shouldShowTutorialChevrons = false;  
   
@@ -32,6 +34,39 @@ class StepsViewModel extends ChangeNotifier {
   Future<void> getLastStepAdded() async {
     lastStepAdded = await _stepsService.getLastStepAdded();
   }
+
+  Future<void> sendSteps() async {
+    Map<String, List<StepModel>> stepsMap = await getStepsMap();
+    stepsMap.forEach((goalId, steps) async {
+      _stepsService.sendSteps(goalId, steps);
+    });
+  }
+
+  Future<Map<String, List<StepModel>>> getStepsMap() async {
+    List<StepModel> allSteps = await _stepsService.getAllSteps();
+    Map<String, List<StepModel>> stepsMap = Map();
+    for (StepModel step in allSteps) {
+      if (step.goalId != null) {
+        String goalId = step.goalId as String;
+        if (stepsMap.containsKey(goalId)) {
+          stepsMap.update(goalId, (steps) {
+            steps.add(step);
+            return steps;
+          });
+        } else {
+          stepsMap[goalId] = [step];
+        }
+      }
+    }
+    return stepsMap;
+  }
+  
+  Future<void> deleteSteps() async {
+    Map<String, List<StepModel>> stepsMap = await getStepsMap();
+    stepsMap.forEach((goalId, steps) async {
+      await _stepsService.deleteSteps(goalId, steps);
+    });
+  }   
   
   bool getShouldShowAddStep() {
     DateTime nextDeadline = Utils.getNextDeadline() as DateTime;
@@ -53,14 +88,15 @@ class StepsViewModel extends ChangeNotifier {
       level = selectedStepLevel + 1;
       parentId = selectedStep?.id;
     }
-    final int index = getCurrentIndex(steps: steps, parentId: parentId) + 1; 
-    final StepModel step = StepModel(text: stepText, level: level, index: index, parentId: parentId);
+    final int position = getCurrentPosition(steps: steps, parentId: parentId) + 1; 
+    final StepModel step = StepModel(text: stepText, level: level, position: position, parentId: parentId);
     addLogEntry('add step:\n$stepText');
     StepModel stepAdded = await _stepsService.addStep(goalId, step);
     lastStepAdded.id = stepAdded.id;
-    lastStepAdded.dateTime = DateTime.now();    
+    lastStepAdded.dateTime = DateTime.now();
     _addStepToList(stepAdded);
-    _setAddedStepIndex(stepAdded);
+    _setAddedStepPosition(stepAdded);
+    sendSteps();
   }
   
   void _addStepToList(StepModel step) {
@@ -69,12 +105,12 @@ class StepsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _setAddedStepIndex(StepModel step) {
+  void _setAddedStepPosition(StepModel step) {
     if (steps != null) {
       int stepsLength = steps?.length as int;
       for (int i = 0; i < stepsLength; i++) {
         if (step.id == steps?[i].id) {
-          previousStepIndex = i;
+          previousStepPosition = i;
           break;
         }
       }
@@ -82,13 +118,17 @@ class StepsViewModel extends ChangeNotifier {
     notifyListeners();
   }  
     
-  Future<void> updateStep(StepModel step, String? id) async {
+  Future<void> updateStep(StepModel step, String? id, bool shouldSendSteps) async {
     await _stepsService.updateStep(step, id);
     notifyListeners();
+    if (shouldSendSteps) {
+      sendSteps();
+    }
     return ;
   }
 
   Future<void> deleteStep(String id) async {
+    await deleteSteps();
     final List<String> subSteps = getSubSteps(id);
     deleteStepFromList(id);
     if (subSteps.isNotEmpty) {
@@ -98,8 +138,9 @@ class StepsViewModel extends ChangeNotifier {
       });
     }
     await _stepsService.deleteStep(id);
-    _updateIndexesAfterDeleteStep(selectedStep);
+    _updatePositionsAfterDeleteStep(selectedStep);
     notifyListeners();
+    sendSteps();
     return ;
   }
 
@@ -152,7 +193,7 @@ class StepsViewModel extends ChangeNotifier {
     
     final List<StepModel> sortedSteps = [];
     // Sort steps level 0
-    final List<StepModel> sortedStepsLevel0 = _sortStepsByIndex(stepsLevel0);
+    final List<StepModel> sortedStepsLevel0 = _sortStepsByPosition(stepsLevel0);
     sortedStepsLevel0.forEach((StepModel sortedStepLevel0) {
       // Add each step level 0 to sorted list
       sortedSteps.add(sortedStepLevel0);
@@ -164,7 +205,7 @@ class StepsViewModel extends ChangeNotifier {
         }
       });
       // Sort steps level 1
-      sortedStepsLevel1 = _sortStepsByIndex(sortedStepsLevel1);
+      sortedStepsLevel1 = _sortStepsByPosition(sortedStepsLevel1);
 
       sortedStepsLevel1.forEach((StepModel sortedStepLevel1) {
         // Add each step level 1 to sorted list
@@ -177,87 +218,89 @@ class StepsViewModel extends ChangeNotifier {
           }
         });
         // Sort steps level 2 and add to sorted list
-        sortedStepsLevel2 = _sortStepsByIndex(sortedStepsLevel2);
+        sortedStepsLevel2 = _sortStepsByPosition(sortedStepsLevel2);
         sortedSteps.addAll(sortedStepsLevel2);    
       });      
     });
     steps = sortedSteps;
   } 
 
-  List<StepModel> _sortStepsByIndex(List<StepModel> steps) {
-    steps.sort((a, b) => a.index!.compareTo(b.index as int));
+  List<StepModel> _sortStepsByPosition(List<StepModel> steps) {
+    steps.sort((a, b) => a.position!.compareTo(b.position as int));
     return steps;
   }
   
-  int getCurrentIndex({List<StepModel>? steps, String? parentId}) {
-    int index = -1;
+  int getCurrentPosition({List<StepModel>? steps, String? parentId}) {
+    int position = -1;
     steps?.forEach((StepModel step) {
       if (parentId == null) {
         if (step.level == 0) {
-          index = max(index, step.index as int);
+          position = max(position, step.position as int);
         }
       } else {
         if (step.parentId == parentId) {
-          index = max(index, step.index as int);
+          position = max(position, step.position as int);
         }
       }
     });
-    return index;
+    return position;
   }
   
-  void _updateIndexesAfterDeleteStep(StepModel? step) {
+  void _updatePositionsAfterDeleteStep(StepModel? step) {
     for (int i = 0; i < steps!.length; i++) {
-      int stepIndex = step?.index as int;
+      int stepPosition = step?.position as int;
       if (steps?[i].parentId == step?.parentId && 
-          steps?[i].index as int > stepIndex) {
+          steps?[i].position as int > stepPosition) {
         final StepModel modifiedStep = steps?[i] as StepModel;
-        int modifiedStepIndex = modifiedStep.index as int;
-        modifiedStep.index = modifiedStepIndex - 1;
-        addLogEntry('update indexes after delete step:\n${modifiedStep.id} - ${modifiedStep.text}');
-        updateStep(modifiedStep, modifiedStep.id);
+        int modifiedStepPosition = modifiedStep.position as int;
+        modifiedStep.position = modifiedStepPosition - 1;
+        addLogEntry('update positions after delete step:\n${modifiedStep.id} - ${modifiedStep.text}');
+        updateStep(modifiedStep, modifiedStep.id, false);
       }
     }    
   }
 
   void moveStepUp(String goalId, StepModel step) {
     for (int i = 0; i < steps!.length; i++) {
-      int stepIndex = step.index as int;
+      int stepPosition = step.position as int;
       if (steps?[i].parentId == step.parentId &&
-          steps?[i].index == stepIndex - 1) {
+          steps?[i].position == stepPosition - 1) {
         final StepModel previousStep = steps?[i] as StepModel;
-        int previousStepIndex = previousStep.index as int;
-        previousStep.index = previousStepIndex + 1;
-        int stepIndex = step.index as int;
-        step.index = stepIndex - 1;
+        int previousStepPosition = previousStep.position as int;
+        previousStep.position = previousStepPosition + 1;
+        int stepPosition = step.position as int;
+        step.position = stepPosition - 1;
         addLogEntry('move step up - previous step:\n${previousStep.id} - ${previousStep.text}');
-        updateStep(previousStep, previousStep.id);
+        updateStep(previousStep, previousStep.id, false);
         addLogEntry('move step up - step:\n${step.id} - ${step.text}');
-        updateStep(step, step.id);
+        updateStep(step, step.id, false);
         break;
       }
     }
     _sortSteps();
+    sendSteps();
     notifyListeners();
   } 
 
   void moveStepDown(String goalId, StepModel step) {
     for (int i = 0; i < steps!.length; i++) {
-      int stepIndex = step.index as int;
+      int stepPosition = step.position as int;
       if (steps?[i].parentId == step.parentId &&
-          steps?[i].index == stepIndex + 1) {
+          steps?[i].position == stepPosition + 1) {
         final StepModel nextStep = steps?[i] as StepModel;
-        int nextStepIndex = nextStep.index as int;
-        nextStep.index = nextStepIndex - 1;
-        int stepIndex = step.index as int;
-        step.index = stepIndex + 1;
+        int nextStepPosition = nextStep.position as int;
+        nextStep.position = nextStepPosition - 1;
+        int stepPosition = step.position as int;
+        step.position = stepPosition + 1;
         addLogEntry('move step down - next step:\n${nextStep.id} - ${nextStep.text}');
-        updateStep(nextStep, nextStep.id);
+        updateStep(nextStep, nextStep.id, false);
         addLogEntry('move step down - step:\n${step.id} - ${step.text}');        
-        updateStep(step, step.id);
+        updateStep(step, step.id, false);
         break;
       }
     }
     _sortSteps();
+    sendSteps();
     notifyListeners();
   }
 

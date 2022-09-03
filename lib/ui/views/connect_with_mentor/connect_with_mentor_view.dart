@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -10,6 +9,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/widgets/solve_quiz_add_step_widget.dart';
@@ -25,6 +25,7 @@ import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 
 class ConnectWithMentorView extends StatefulWidget {
   ConnectWithMentorView({Key? key, this.logoutCallback})
@@ -42,6 +43,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   StepsViewModel? _stepsProvider;
   QuizzesViewModel? _quizzesProvider;
   InAppMessagesViewModel? _inAppMessagesProvider;
+  RootViewModel? _rootProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
   bool _isInAppMessageOpen = false;
@@ -163,6 +165,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   }
 
   Widget _showContent() {
+    print(_isInit);
     if (_isInit) {
       return _showConnectWithMentor();
     } else {
@@ -225,7 +228,8 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   }
   
   Future<void> _init() async {
-    if (!_isInit && _connectWithMentorProvider != null) {
+    if (!_isInit && _connectWithMentorProvider != null && _rootProvider!.shouldLoadContent()) {
+      _rootProvider!.setLastLoadedContentDateTime();
       await Future.wait([
         _connectWithMentorProvider!.getLessonRequest(),
         _connectWithMentorProvider!.getPreviousLesson(),
@@ -233,6 +237,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
         _connectWithMentorProvider!.getCertificateSent(),
         _goalsProvider!.getGoals(),
         _stepsProvider!.getLastStepAdded(),
+        _stepsProvider!.sendSteps(),
         _quizzesProvider!.getQuizzes(),
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
@@ -243,7 +248,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       _connectWithMentorProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, '', getLogsList());
       await _commonProvider!.initPushNotifications();
       if (_goalsProvider?.selectedGoal != null || _commonProvider!.getGoalAttempts >= 10) {
-        _isInit = true;
+        setState(() {
+          _isInit = true;
+        });
       } else {
         _commonProvider!.getGoalAttempts++;
         setState(() {});
@@ -258,6 +265,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
     _stepsProvider = Provider.of<StepsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _inAppMessagesProvider = Provider.of<InAppMessagesViewModel>(context);
+    _rootProvider = Provider.of<RootViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
     WidgetsBinding.instance?.addPostFrameCallback(_showInAppMessage);
 

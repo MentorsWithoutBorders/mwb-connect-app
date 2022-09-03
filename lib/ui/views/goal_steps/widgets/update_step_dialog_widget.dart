@@ -160,7 +160,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
     });    
     final StepModel step = _stepsProvider?.selectedStep as StepModel;
     step.text = _stepText;
-    await _stepsProvider?.updateStep(step, _stepsProvider?.selectedStep?.id);
+    await _stepsProvider?.updateStep(step, _stepsProvider?.selectedStep?.id, true);
   }
 
   @override

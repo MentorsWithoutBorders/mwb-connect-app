@@ -158,6 +158,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
         _lessonRequestProvider!.getPreviousLesson(),
         _goalsProvider!.getGoals(),
         _stepsProvider!.getLastStepAdded(),
+        _stepsProvider!.sendSteps(),
         _quizzesProvider!.getQuizzes(),
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()

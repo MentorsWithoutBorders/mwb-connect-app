@@ -52,8 +52,8 @@ class _StepDialogState extends State<StepDialog> {
 
   Widget _showOptions() {
     int selectedStepLevel = _stepsProvider?.selectedStep?.level as int;
-    int selectedStepIndex = _stepsProvider?.selectedStep?.index as int;
-    int currentIndex = _stepsProvider?.getCurrentIndex(steps: _stepsProvider?.steps, parentId: _stepsProvider?.selectedStep?.parentId) as int;
+    int selectedStepPosition = _stepsProvider?.selectedStep?.position as int;
+    int currentPosition = _stepsProvider?.getCurrentPosition(steps: _stepsProvider?.steps, parentId: _stepsProvider?.selectedStep?.parentId) as int;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Wrap(
@@ -100,7 +100,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.add_sub_step'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (selectedStepIndex > 0) SizedBox(
+          if (selectedStepPosition > 0) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -116,7 +116,7 @@ class _StepDialogState extends State<StepDialog> {
               child: Text('step_dialog.move_step_up'.tr(), style: const TextStyle(color: Colors.white))
             )
           ),
-          if (selectedStepIndex < currentIndex) SizedBox(
+          if (selectedStepPosition < currentPosition) SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(

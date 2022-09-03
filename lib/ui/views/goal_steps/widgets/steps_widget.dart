@@ -51,10 +51,10 @@ class _StepsState extends State<Steps> {
   }
   
   void _scrollToStep() {
-    int previousIndex = _stepsProvider?.previousStepIndex as int;
-    if (![-1,0].contains(previousIndex)) {
-      _scrollController.scrollToIndex(previousIndex - 1, preferPosition: AutoScrollPosition.begin);
-      _stepsProvider?.previousStepIndex = -1;
+    int previousPosition = _stepsProvider?.previousStepPosition as int;
+    if (![-1,0].contains(previousPosition)) {
+      _scrollController.scrollToIndex(previousPosition - 1, preferPosition: AutoScrollPosition.begin);
+      _stepsProvider?.previousStepPosition = -1;
     }
   }
   
