@@ -23,6 +23,12 @@ class GoalsViewModel extends ChangeNotifier {
     }    
   }
 
+  Future<void> getRemoteGoals(bool shouldGetRemote) async {
+    if (shouldGetRemote) {
+      await _goalsService.getRemoteGoals();  
+    }
+  }  
+
   Future<void> deleteGoal(String id) async {
     _deleteGoalFromList(id);
     await _goalsService.deleteGoal(id);

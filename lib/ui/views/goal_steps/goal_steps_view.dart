@@ -128,7 +128,7 @@ class _GoalStepsViewState extends State<GoalStepsView> {
   Widget build(BuildContext context) {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);    
-    WidgetsBinding.instance?.addPostFrameCallback(_showQuiz);
+    // WidgetsBinding.instance?.addPostFrameCallback(_showQuiz);
 
     return FutureBuilder<void>(
       future: _init(),

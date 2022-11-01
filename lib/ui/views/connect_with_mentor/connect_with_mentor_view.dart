@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
+import 'package:mwb_connect_app/core/models/goal_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
@@ -230,14 +231,19 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
   Future<void> _init() async {
     if (!_isInit && _connectWithMentorProvider != null && _rootProvider!.shouldLoadContent()) {
       _rootProvider!.setLastLoadedContentDateTime();
+      bool shouldGetRemote = false;
+      await _goalsProvider!.getGoals();
+      List<Goal>? goals = _goalsProvider?.goals;
+      if (goals!.isEmpty) {
+        shouldGetRemote = true;
+        // await _goalsProvider!.getRemoteGoals(shouldGetRemote);
+        // await _stepsProvider!.getRemoteSteps(shouldGetRemote);
+      }
       await Future.wait([
         _connectWithMentorProvider!.getLessonRequest(),
         _connectWithMentorProvider!.getPreviousLesson(),
         _connectWithMentorProvider!.getNextLesson(),
         _connectWithMentorProvider!.getCertificateSent(),
-        _goalsProvider!.getGoals(),
-        _stepsProvider!.getLastStepAdded(),
-        _stepsProvider!.sendSteps(),
         _quizzesProvider!.getQuizzes(),
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
@@ -245,6 +251,9 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
       .catchError((error) {
         _connectWithMentorProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, error, getLogsList());
       });
+      await _goalsProvider!.getGoals();
+      await _stepsProvider!.getLastStepAdded();
+      _stepsProvider!.sendSteps();
       _connectWithMentorProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, '', getLogsList());
       await _commonProvider!.initPushNotifications();
       if (_goalsProvider?.selectedGoal != null || _commonProvider!.getGoalAttempts >= 10) {

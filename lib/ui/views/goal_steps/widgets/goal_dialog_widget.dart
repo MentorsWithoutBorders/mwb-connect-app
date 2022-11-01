@@ -122,7 +122,7 @@ class _GoalDialogState extends State<GoalDialog> {
         children: <Widget>[
           Center(
             child: Text(
-              _stepsProvider?.steps?.isNotEmpty == true ? 
+              _stepsProvider?.steps.isNotEmpty == true ? 
                 'goal_dialog.delete_goal_steps_message'.tr() :
                 'goal_dialog.delete_goal_message'.tr(),
               textAlign: TextAlign.center,

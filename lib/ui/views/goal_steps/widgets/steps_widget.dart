@@ -69,13 +69,13 @@ class _StepsState extends State<Steps> {
               scrollDirection: _scrollDirection,
               controller: _scrollController,
               shrinkWrap: true,
-              itemCount: _stepsProvider?.steps?.length,
+              itemCount: _stepsProvider?.steps.length,
               itemBuilder: (BuildContext buildContext, int index) =>
                 AutoScrollTag(
                   key: ValueKey<int>(index),
                   controller: _scrollController,
                   index: index,
-                  child: StepCard(step: _stepsProvider?.steps?[index])
+                  child: StepCard(step: _stepsProvider?.steps[index])
                 )
             )
           ),

@@ -14,7 +14,7 @@ class StepModel {
   StepModel({this.id, this.userId, this.goalId, this.parentId, this.text, this.level, this.position, this.dateTime});
 
   StepModel.fromJson(Map<String, dynamic> json) {
-    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
     id = json['id'];
     userId = json['userId'];
     goalId = json['goalId'];
@@ -35,7 +35,7 @@ class StepModel {
       'text': text,
       'level': level,
       'position': position,
-      'dateTime': dateTime != null ? dateFormat.format(dateTime!.toUtc()) : null,
+      'dateTime': dateTime != null ? dateFormat.format(dateTime!.toUtc()) : null
     };
   }
 }
