@@ -61,7 +61,7 @@ class Lesson {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
     return {
       'id': id,
-      'student': _studentsToJson(students),
+      'students': _studentsToJson(students),
       'mentor': mentor?.toJson(),
       'subfield': subfield?.toJson(),
       'dateTime': dateTime != null ? dateFormat.format(dateTime!.toUtc()) : null,
