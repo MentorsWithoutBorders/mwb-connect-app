@@ -21,6 +21,8 @@ class AppConstants {
   static const String dateFormatLesson = 'EEEE, MMM d';
   static const String timeFormatLesson = 'h:mm a';
   static const String meetingUrlType = 'Google Meet/Zoom';
+  static const int minStudentsCourse = 5;
+  static const int maxStudentsCourse = 10;
   static const int maxLessonsNumberRecurrence = 10;
   static const int mentorWeeksTraining = 4;
   static const int studentWeeksTraining = 13;

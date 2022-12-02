@@ -44,7 +44,15 @@
 		"few": "students",			
 		"many": "students",
 		"other": "students"
-	}, 
+	},
+	"course": {
+		"zero": "courses",
+		"one": "course",
+		"two": "courses",
+		"few": "courses",			
+		"many": "courses",
+		"other": "courses"
+	},  
 	"lesson": {
 		"zero": "lessons",
 		"one": "lesson",
@@ -79,6 +87,7 @@
 		"at": "at",
 		"on": "on",
 		"with": "with",
+		"without": "without",
     "the": "the",
 		"more": "more",
 		"go": "Go",    
@@ -188,6 +197,17 @@
     "delete_account": "Delete account",
     "delete_account_text": "Are you sure you want to delete your account?"
 	},
+  "mentor_course": {
+    "course_type_title": "Please choose your preferred course:",
+    "course_description": "{}-month course {} a partner",
+    "find_partner": "Find partner",
+    "wait_students": "Wait for students",
+    "waiting_first_student": "A minimum of {} students is required in order to start the {}-month course (the first student will choose one of the subfields and availabilities that you have added to your profile and the other students will follow). The maximum number of students who can join the course is {}.",
+    "waiting_more_students": "Your {}-month course will start when at least {} students join in, on the first {} at {} {}. The maximum number of students who can join the course is {}.",
+    "waiting_students_partner": "Your {}-month course (with {} as your partner) will start when at least {} students join in, on the first {} at {} {}. The maximum number of students who can join the course is {}.",    
+    "current_students": "Current number of students",
+    "waiting_students": "Waiting for students"
+  },
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",
 		"training_title": "MWB training",

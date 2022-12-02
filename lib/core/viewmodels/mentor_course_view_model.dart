@@ -24,6 +24,8 @@ class MentorCourseViewModel extends ChangeNotifier {
   MentorPartnershipRequest? mentorPartnershipRequest;
   Course? course;
   CourseMentor? partnerMentor;
+  CourseType? selectedCourseType;
+  String errorMessage = '';  
   bool _shouldUnfocus = false;
   bool shouldShowExpired = false;
   bool shouldShowCanceled = false;
@@ -91,10 +93,11 @@ class MentorCourseViewModel extends ChangeNotifier {
     mentorPartnershipRequest.mentor = (await _userService.getUserDetails()) as CourseMentor;
     mentorPartnershipRequest.courseType = courseType;
     await _mentorCourseService.sendMentorPartnershipRequest(mentorPartnershipRequest);
-  }
+  } 
 
   Future<void> acceptMentorPartnershipRequest(String meetingUrl) async {
     await _mentorCourseService.acceptMentorPartnershipRequest(mentorPartnershipRequest?.id, meetingUrl);
+    notifyListeners();
   }
 
   Future<void> rejectMentorPartnershipRequest(String? reason) async {
@@ -112,6 +115,30 @@ class MentorCourseViewModel extends ChangeNotifier {
   bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
   
   bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true;
+
+  CourseMentor getPartnerMentor() {
+    String userId = _storageService.userId as String;
+    CourseMentor partnerMentor = CourseMentor();
+    List<CourseMentor>? mentors = course?.mentors;
+    if (mentors != null && mentors.length > 0) {
+      for (CourseMentor mentor in mentors) {
+        if (mentor.id != userId) {
+          partnerMentor = mentor;
+          break;
+        }
+      }
+    }
+    return partnerMentor;
+  }   
+
+  void setSelectedCourseType(CourseType? courseType) {
+    selectedCourseType = courseType;
+    notifyListeners();
+  }
+  
+  void setErrorMessage(String message) {
+    errorMessage = message;
+  }  
   
   bool checkValidUrl(String url) {
     return Uri.parse(url).host.isNotEmpty && (url.contains('meet') || url.contains('zoom'));
