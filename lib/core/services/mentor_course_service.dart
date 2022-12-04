@@ -63,14 +63,14 @@ class MentorCourseService {
     return ;
   }
 
-  Future<MentorPartnershipRequest> getCurrentMentorPartnershipRequest() async {
+  Future<MentorPartnershipRequestModel> getCurrentMentorPartnershipRequest() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/mentors_partnership_requests/current');
-    MentorPartnershipRequest mentorPartnershipRequest = MentorPartnershipRequest.fromJson(response);
-    return mentorPartnershipRequest;
+    MentorPartnershipRequestModel mentorPartnershipRequestModel = MentorPartnershipRequestModel.fromJson(response);
+    return mentorPartnershipRequestModel;
   }
   
-  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequest mentorPartnershipRequest) async {
-    await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequest.toJson());  
+  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequestModel) async {
+    await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequestModel.toJson());  
     return ;
   }
   
@@ -95,8 +95,8 @@ class MentorCourseService {
     return ;
   }
 
-  Future<void> updateMentorPartnershipRequest(String? id, MentorPartnershipRequest mentorPartnershipRequest) async {
-    await _api.postHTTP(url: '/mentors_partnership_requests/$id/update', data: mentorPartnershipRequest.toJson());  
+  Future<void> updateMentorPartnershipRequest(String? id, MentorPartnershipRequestModel mentorPartnershipRequestModel) async {
+    await _api.postHTTP(url: '/mentors_partnership_requests/$id/update', data: mentorPartnershipRequestModel.toJson());  
     return ;
   }  
 }

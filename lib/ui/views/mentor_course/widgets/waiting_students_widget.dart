@@ -342,7 +342,7 @@ class _WaitingStudentsState extends State<WaitingStudents> {
             ),
             padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
           ), 
-          child: Text('connect_with_mentor.cancel_request'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('common.cancel_request'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
             showDialog(
               context: context,
