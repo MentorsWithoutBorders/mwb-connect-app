@@ -62,7 +62,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'lesson_request.send_url'.tr(args: [urlType]),
+          'common.send_url'.tr(args: [urlType]),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,
@@ -77,7 +77,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 8.0),
       child: Text(
-        'lesson_request.paste_url'.tr(),
+        'common.paste_url'.tr(),
         style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.DOVE_GRAY
@@ -112,7 +112,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
     return Padding(
       padding: const EdgeInsets.only(left: 5.0),
       child: Text(
-        'lesson_request.send_url_error'.tr(args: [urlType]),
+        'common.send_url_error'.tr(args: [urlType]),
         style: const TextStyle(
           fontSize: 12.0,
           color: Colors.red

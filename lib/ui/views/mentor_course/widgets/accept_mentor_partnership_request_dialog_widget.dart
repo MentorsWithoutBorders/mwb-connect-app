@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class ChangeUrlDialog extends StatefulWidget {
-  const ChangeUrlDialog({Key? key, this.url})
+class AcceptMentorPartnershipRequestDialog extends StatefulWidget {
+  const AcceptMentorPartnershipRequestDialog({Key? key})
     : super(key: key);  
 
-  final String? url;
-
   @override
-  State<StatefulWidget> createState() => _ChangeUrlDialogState();
+  State<StatefulWidget> createState() => _AcceptMentorPartnershipRequestDialogState();
 }
 
-class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
-  LessonRequestViewModel? _lessonRequestProvider;
-  String urlType = AppConstants.meetingUrlType;  
-  String? _url;
+class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartnershipRequestDialog> {
+  MentorCourseViewModel? _mentorCourseProvider;
+  String urlType = AppConstants.meetingUrlType;
+  String _url = '';
   bool _shouldShowError = false;
-  bool _isUpdatingLessonUrl = false;
+  bool _isAcceptingMentorPartnershipRequest = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _url = widget.url != null ? widget.url : '';
-  }  
-
-  Widget _showChangeUrlDialog() {
+  Widget _showAcceptMentorPartnershipRequestDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -50,7 +43,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'common.update_url'.tr(args: [urlType]),
+          'common.set_url'.tr(args: [urlType]),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,
@@ -75,8 +68,8 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
   }
 
   Widget _showInput() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 15.0),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -85,8 +78,8 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
             child: InputBox(
               autofocus: true, 
               hint: '',
-              text: _url as String,
-              textCapitalization: TextCapitalization.none, 
+              text: _url,
+              textCapitalization: TextCapitalization.none,
               inputChangedCallback: _changeUrl
             ),
           ),
@@ -100,20 +93,20 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
     return Padding(
       padding: const EdgeInsets.only(left: 5.0),
       child: Text(
-        'common.send_url_error'.tr(args: [urlType]),
+        'common.set_url_error'.tr(args: [urlType]),
         style: const TextStyle(
           fontSize: 12.0,
           color: Colors.red
         )
       ),
     );
-  }  
+  }
 
   void _changeUrl(String url) {
     setState(() {
       _url = url;
     });
-    _setShouldShowError(false);    
+    _setShouldShowError(false);
   }
 
   void _setShouldShowError(bool showError) {
@@ -132,7 +125,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
             child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
           ),
           onTap: () {
-            Navigator.pop(context);
+            _closeDialog();
           },
         ),
         ElevatedButton(
@@ -143,41 +136,72 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isUpdatingLessonUrl ? Text(
-            'common.update'.tr(),
+          child: !_isAcceptingMentorPartnershipRequest ? Text(
+            'common.set'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
             width: 40.0,
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _changeLessonUrl();
+            await _acceptMentorPartnershipRequest();
           }
         )
       ]
     );
   } 
 
-  Future<void> _changeLessonUrl() async {
-    if (_lessonRequestProvider?.checkValidUrl(_url as String) == false) {
+  void _closeDialog() {
+    Navigator.pop(context);
+  }
+
+  Future<void> _acceptMentorPartnershipRequest() async {
+    _changeUrl(Utils.setUrl(_url));
+    if (_mentorCourseProvider?.checkValidUrl(_url) == false) {
       _setShouldShowError(true);
       return ;
-    }    
-    _setIsUpdatingLessonUrl(true);
-    await _lessonRequestProvider?.changeLessonUrl(_url as String);
+    }
+    _setIsAcceptingMentorPartnershipRequest(true);
+    await _mentorCourseProvider?.acceptMentorPartnershipRequest(_url);
     Navigator.pop(context);
   }
   
-  void _setIsUpdatingLessonUrl(bool isUpdating) {
+  void _setIsAcceptingMentorPartnershipRequest(bool isAccepting) {
     setState(() {
-      _isUpdatingLessonUrl = isUpdating;
+      _isAcceptingMentorPartnershipRequest = isAccepting;
     });  
+  }
+
+  void _afterLayout(_) {
+    if (_mentorCourseProvider?.shouldUnfocus == true) {
+      _unfocus();
+      _mentorCourseProvider?.shouldUnfocus = false;
+    }  
+  }
+  
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }
+
+  Future<bool> _onWillPop() async {
+    _closeDialog();
+    return true;
   }    
   
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
+    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
-    return _showChangeUrlDialog();
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          _unfocus();
+        },
+        child: _showAcceptMentorPartnershipRequestDialog()
+      ),
+    );
   }
 }

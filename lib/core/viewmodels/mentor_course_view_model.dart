@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course_service.dart';
@@ -21,7 +22,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   CourseType? courseType;
   MentorWaitingRequest? mentorWaitingRequest;
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
-  MentorPartnershipRequest? mentorPartnershipRequest;
+  MentorPartnershipRequestModel? mentorPartnershipRequest;
   Course? course;
   CourseMentor? partnerMentor;
   CourseType? selectedCourseType;
@@ -76,20 +77,20 @@ class MentorCourseViewModel extends ChangeNotifier {
       if (mentorPartnershipRequest?.isExpired != null && mentorPartnershipRequest?.isExpired == true) {
         if (mentorPartnershipRequest?.wasExpiredShown == null || mentorPartnershipRequest?.wasExpiredShown != null && mentorPartnershipRequest?.wasExpiredShown == false) {
           shouldShowExpired = true;
-          await _mentorCourseService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequest(wasExpiredShown: true));
+          await _mentorCourseService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasExpiredShown: true));
         }
         mentorPartnershipRequest = null;
       } else if (mentorPartnershipRequest?.isCanceled != null && mentorPartnershipRequest?.isCanceled == true) {
         if (mentorPartnershipRequest?.wasCanceledShown == null || mentorPartnershipRequest?.wasCanceledShown != null && mentorPartnershipRequest?.wasCanceledShown == false) {
           shouldShowCanceled = true;
-          await _mentorCourseService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequest(wasCanceledShown: true));
+          await _mentorCourseService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasCanceledShown: true));
         }
         mentorPartnershipRequest = null;
       }
     }
   }
 
-  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequest mentorPartnershipRequest) async {
+  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequest) async {
     mentorPartnershipRequest.mentor = (await _userService.getUserDetails()) as CourseMentor;
     mentorPartnershipRequest.courseType = courseType;
     await _mentorCourseService.sendMentorPartnershipRequest(mentorPartnershipRequest);
@@ -129,7 +130,16 @@ class MentorCourseViewModel extends ChangeNotifier {
       }
     }
     return partnerMentor;
-  }   
+  }
+  
+  Subfield getMentorSubfield(CourseMentor mentor) {
+    Subfield subfield = Subfield();
+    List<Subfield>? subfields = mentor.field?.subfields;
+    if (subfields != null && subfields.length > 0) {
+      subfield = subfields[0];
+    }
+    return subfield;
+  }
 
   void setSelectedCourseType(CourseType? courseType) {
     selectedCourseType = courseType;
