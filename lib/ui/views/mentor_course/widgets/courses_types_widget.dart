@@ -86,7 +86,7 @@ class _CoursesTypesState extends State<CoursesTypes> {
         )
       )
     );
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
