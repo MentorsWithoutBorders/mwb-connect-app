@@ -156,7 +156,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
           hintStyle: const TextStyle(color: AppColors.SILVER),
-          hintText: 'common.reject_request_reason_placeholder'.tr(),
+          hintText: 'common.reject_reason_placeholder'.tr(),
         ),
         onChanged: (String? value) => _reasonText = value?.trim(),
       ),

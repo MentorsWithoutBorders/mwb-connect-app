@@ -52,9 +52,9 @@ class _WaitingMentorPartnershipApprovalState extends State<WaitingMentorPartners
     String partnerMentorName = partnerMentor.name as String;
     Subfield mentorSubfield = _mentorCourseProvider?.getMentorSubfield(mentor) as Subfield;
     Subfield partnerMentorSubfield = _mentorCourseProvider?.getMentorSubfield(partnerMentor) as Subfield;
-    String subfieldName = mentorSubfield.name! + ' ' + 'common.and'.tr() + ' ' + partnerMentorSubfield.name!;
-    if (mentorSubfield.id == partnerMentorSubfield.id) {
-      subfieldName = mentorSubfield.name!;
+    String subfieldName = mentorSubfield.name!;
+    if (partnerMentorSubfield.id != null && mentorSubfield.id != partnerMentorSubfield.id) {
+      subfieldName = mentorSubfield.name! + ' ' + 'common.and'.tr() + ' ' + partnerMentorSubfield.name!;
     }
     DateTime now = DateTime.now();
     String timeZone = now.timeZoneName;

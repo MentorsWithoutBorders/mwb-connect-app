@@ -19,13 +19,13 @@ class MentorCourseService {
     return coursesTypes;
   }  
 
-  Future<Course> getCurrentCourse() async {
+  Future<CourseModel> getCurrentCourse() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/courses/current');
-    Course course = Course.fromJson(response);
+    CourseModel course = CourseModel.fromJson(response);
     return course;
   }
 
-  Future<void> addCourse(Course course) async {
+  Future<void> addCourse(CourseModel course) async {
     await _api.postHTTP(url: '/courses', data: course.toJson());  
     return ;
   }  

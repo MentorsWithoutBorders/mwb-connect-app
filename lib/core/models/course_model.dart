@@ -4,7 +4,7 @@ import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
 
-class Course {
+class CourseModel {
   String? id;
   CourseType? type;
   List<CourseMentor>? mentors;
@@ -12,9 +12,9 @@ class Course {
   DateTime? startDateTime;
   bool? isCanceled;
 
-  Course({this.id, this.type, this.mentors, this.students, this.startDateTime, this.isCanceled});
+  CourseModel({this.id, this.type, this.mentors, this.students, this.startDateTime, this.isCanceled});
 
-  Course.fromJson(Map<String, dynamic> json) {
+  CourseModel.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
     id = json['id'];
     type = _courseTypeFromJson(json['type']);

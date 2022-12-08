@@ -146,7 +146,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
           hintStyle: const TextStyle(color: AppColors.SILVER),
-          hintText: 'lesson_request.cancel_lesson_reason_placeholder'.tr(),
+          hintText: 'common.cancel_reason_placeholder'.tr(),
         ),
         onChanged: (String? value) => _reasonText = value?.trim(),
       ),

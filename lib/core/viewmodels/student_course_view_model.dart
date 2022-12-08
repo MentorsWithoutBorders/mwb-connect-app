@@ -17,8 +17,8 @@ class StudentCourseViewModel extends ChangeNotifier {
   final LoggerService _loggerService = locator<LoggerService>();  
   List<CourseType> coursesTypes = [];
   CourseType? courseType;
-  Course? course;
-  List<Course> availableCourses = [];
+  CourseModel? course;
+  List<CourseModel> availableCourses = [];
   CourseStudent? partnerStudent;
   bool _shouldUnfocus = false;
   bool shouldShowCanceled = false;

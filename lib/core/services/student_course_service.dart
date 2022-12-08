@@ -6,18 +6,18 @@ import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
 class StudentCourseService {
   final ApiService _api = locator<ApiService>();
 
-  Future<List<Course>> getAvailableCourses() async {
+  Future<List<CourseModel>> getAvailableCourses() async {
     dynamic response = await _api.getHTTP(url: '/courses');
-    List<Course> availableCourses = [];
+    List<CourseModel> availableCourses = [];
     if (response != null) {
-      availableCourses = List<Course>.from(response.map((model) => Course.fromJson(model)));
+      availableCourses = List<CourseModel>.from(response.map((model) => CourseModel.fromJson(model)));
     }
     return availableCourses;
   }
 
-  Future<Course> getCurrentCourse() async {
+  Future<CourseModel> getCurrentCourse() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/courses/current');
-    Course course = Course.fromJson(response);
+    CourseModel course = CourseModel.fromJson(response);
     return course;
   }
 

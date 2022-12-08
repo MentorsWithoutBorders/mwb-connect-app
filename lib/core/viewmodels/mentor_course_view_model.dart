@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
@@ -23,7 +24,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   MentorWaitingRequest? mentorWaitingRequest;
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
   MentorPartnershipRequestModel? mentorPartnershipRequest;
-  Course? course;
+  CourseModel? course;
   CourseMentor? partnerMentor;
   CourseType? selectedCourseType;
   String errorMessage = '';  
@@ -42,12 +43,12 @@ class MentorCourseViewModel extends ChangeNotifier {
   }
   
   Future<void> addCourse(String meetingUrl) async {
-    Course course = Course();
+    CourseModel course = CourseModel();
     course.mentors = [CourseMentor(meetingUrl: meetingUrl)];
     await _mentorCourseService.addCourse(course);
   }
   
-  Future<void> cancelCourse(String reason) async {
+  Future<void> cancelCourse(String? reason) async {
     await _mentorCourseService.cancelCourse(course?.id, reason);
   }  
 
@@ -117,6 +118,11 @@ class MentorCourseViewModel extends ChangeNotifier {
   
   bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true;
 
+  Future<CourseMentor> getMentor() async {
+    CourseMentor mentor = (await _userService.getUserDetails()) as CourseMentor;
+    return mentor;
+  }
+
   CourseMentor getPartnerMentor() {
     String userId = _storageService.userId as String;
     CourseMentor partnerMentor = CourseMentor();
@@ -140,6 +146,19 @@ class MentorCourseViewModel extends ChangeNotifier {
     }
     return subfield;
   }
+
+  DateTime getCourseEndDate() {
+    return Jiffy(course?.startDateTime).add(months: 3).dateTime;
+  }
+  
+  DateTime getNextLessonDate() {
+    DateTime now = DateTime.now();
+    Jiffy nextLessonDate = Jiffy(course?.startDateTime);
+    while (nextLessonDate.isBefore(now)) {
+      nextLessonDate.add(weeks: 1);
+    }
+    return nextLessonDate.dateTime;
+  }  
 
   void setSelectedCourseType(CourseType? courseType) {
     selectedCourseType = courseType;

@@ -104,6 +104,7 @@
 		"no_abort": "No, abort",
     "him_her": "him/her",
     "them": "them",
+    "you": "you",
     "today": "today",
     "remote": "remote",
 		"days_of_week": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
@@ -119,7 +120,8 @@
     "cancel_recurring_lesson": "Cancel recurring lesson",
     "cancel_only_next_lesson": "Cancel only next lesson",
     "cancel_entire_lesson_recurrence": "Cancel entire lesson recurrence",
-    "reject_request_reason_placeholder": "Reason for rejection (optional)",
+    "cancel_reason_placeholder": "Reason for cancellation (optional)",
+    "reject_reason_placeholder": "Reason for rejection (optional)",
     "waiting_time": "(could take up to 1-2 days)",
     "cancel_request": "Cancel request",
     "availability": "Availability",
@@ -225,7 +227,12 @@
     "mentor_partnership_request_text": "{} would like to partner with you for a {}-month {} course on {} at {} {}.",
 		"mentor_partnership_request_bottom_text": "(kindly accept or reject the partnership request until the end of the day on {} so that {} can connect with another mentor if needed)",
     "reject_mentor_partnership_request": "Reject partnership request",
-		"reject_mentor_partnership_request_text": "Are you sure you want to reject the partnership with {} for a {}-month {} course on {} at {} {}?"
+		"reject_mentor_partnership_request_text": "Are you sure you want to reject the partnership with {} for a {}-month {} course on {} at {} {}?",
+    "course_text": "{} have scheduled a {}-month {} course every {} until {}.\n\nThe next lesson will be on {} at {} {} with the following {}:",
+    "course_link": "The link for the lessons is: ",
+    "cancel_course": "Cancel course",
+    "cancel_course_text": "Are you sure you want to cancel the course?",
+    "cancel_course_partner_text": "(your partner, {}, will continue the lessons with the students)"
   },
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",

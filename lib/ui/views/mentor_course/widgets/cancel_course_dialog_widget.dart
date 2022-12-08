@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/core/models/lesson_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
+import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class CancelNextLessonDialog extends StatefulWidget {
-  const CancelNextLessonDialog({Key? key})
+class CancelCourseDialog extends StatefulWidget {
+  const CancelCourseDialog({Key? key})
     : super(key: key);
     
   @override
-  State<StatefulWidget> createState() => _CancelNextLessonDialogState();
+  State<StatefulWidget> createState() => _CancelCourseDialogState();
 }
 
-class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
-  LessonRequestViewModel? _lessonRequestProvider;
+class _CancelCourseDialogState extends State<CancelCourseDialog> {
+  MentorCourseViewModel? _mentorCourseProvider;
   String? _reasonText;
-  bool _isCancellingLesson = false;
+  bool _isCancellingCourse = false;
 
-  Widget _showCancelNextLessonDialog() {
+  Widget _showCancelCourseDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -36,7 +35,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showTitle() {
-    String title = 'lesson_request.cancel_lesson'.tr();
+    String title = 'mentor_course.cancel_course'.tr();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
@@ -53,66 +52,25 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   }
 
   Widget _showText() {
-    if (_lessonRequestProvider?.isNextLesson == false) {
+    if (_mentorCourseProvider?.isCourse == false) {
       return SizedBox.shrink();
     }
-    Lesson? nextLesson = _lessonRequestProvider?.nextLesson;
-    DateTime nextLessonDateTime = nextLesson?.dateTime as DateTime;
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
-    DateTime now = DateTime.now();
-    String subfield = nextLesson?.subfield?.name?.toLowerCase() as String;
-    String date = dateFormat.format(nextLessonDateTime);
-    String time = timeFormat.format(nextLessonDateTime);
-    String timeZone = now.timeZoneName;
-    String at = 'common.at'.tr();
-    String studentPlural = plural('student', nextLesson?.students?.length as int);
-    String text = 'lesson_request.cancel_lesson_text'.tr(args: [subfield, date, time, timeZone, studentPlural]);
-    String firstPart = text.substring(0, text.indexOf(subfield));
-    String secondPart = text.substring(text.indexOf(subfield) + subfield.length, text.indexOf(date));
-    String thirdPart = text.substring(text.indexOf(timeZone) + timeZone.length, text.length);
+    String text = 'mentor_course.cancel_course_text'.tr();
+    CourseMentor partnerMentor = _mentorCourseProvider?.getPartnerMentor() as CourseMentor;
+    if (partnerMentor.id != null) {
+      text += ' ' + 'mentor_course.cancel_course_partner_text'.tr(args: [partnerMentor.name as String]);
+    }
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
-      child: RichText(
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          style: const TextStyle(
-            fontSize: 12,
-            color: AppColors.DOVE_GRAY,
-            height: 1.5
-          ),
-          children: <TextSpan>[
-            TextSpan(
-              text: firstPart
-            ),
-            TextSpan(
-              text: subfield
-            ),
-            TextSpan(
-              text: secondPart
-            ),
-            TextSpan(
-              text: date,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: ' ' + at + ' '
-            ),
-            TextSpan(
-              text: time + ' ' + timeZone,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: thirdPart
-            ),
-          ],
-        )
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 15.0,
+          color: AppColors.DOVE_GRAY,
+          height: 1.5
+        ),
+        textAlign: TextAlign.justify
       ),
     );
   }
@@ -167,7 +125,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isCancellingLesson ? Text(
+          child: !_isCancellingCourse ? Text(
             'common.yes_cancel'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -175,7 +133,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _cancelNextLesson();
+            await _cancelCourse();
             Navigator.pop(context);
           },
         )
@@ -183,15 +141,14 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
     );
   } 
 
-  Future<void> _cancelNextLesson() async {  
-    _setIsCancellingLesson(true);
-    _lessonRequestProvider?.nextLesson?.reasonCanceled = _reasonText;
-    await _lessonRequestProvider?.cancelNextLesson(isSingleLesson: true);
+  Future<void> _cancelCourse() async {  
+    _setIsCancellingCourse(true);
+    await _mentorCourseProvider?.cancelCourse(_reasonText);
   }
   
-  void _setIsCancellingLesson(bool isCanceling) {
+  void _setIsCancellingCourse(bool isCanceling) {
     setState(() {
-      _isCancellingLesson = isCanceling;
+      _isCancellingCourse = isCanceling;
     });  
   }
   
@@ -201,14 +158,14 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   
   @override
   Widget build(BuildContext context) {
-    _lessonRequestProvider = Provider.of<LessonRequestViewModel>(context);
+    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         _unfocus();
       },
-      child: _showCancelNextLessonDialog()
+      child: _showCancelCourseDialog()
     );
   }
 }

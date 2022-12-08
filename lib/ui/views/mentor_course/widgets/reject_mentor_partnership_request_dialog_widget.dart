@@ -63,9 +63,9 @@ class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartn
     String partnerMentorName = partnerMentor.name as String;
     Subfield mentorSubfield = _mentorCourseProvider?.getMentorSubfield(mentor) as Subfield;
     Subfield partnerMentorSubfield = _mentorCourseProvider?.getMentorSubfield(partnerMentor) as Subfield;
-    String subfieldName = mentorSubfield.name! + ' ' + 'common.and'.tr() + ' ' + partnerMentorSubfield.name!;
-    if (mentorSubfield.id == partnerMentorSubfield.id) {
-      subfieldName = mentorSubfield.name!;
+    String subfieldName = mentorSubfield.name!;
+    if (partnerMentorSubfield.id != null && mentorSubfield.id != partnerMentorSubfield.id) {
+      subfieldName = mentorSubfield.name! + ' ' + 'common.and'.tr() + ' ' + partnerMentorSubfield.name!;
     }
     DateTime now = DateTime.now();
     String timeZone = now.timeZoneName;
@@ -168,7 +168,7 @@ class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartn
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
           hintStyle: const TextStyle(color: AppColors.SILVER),
-          hintText: 'common.reject_request_reason_placeholder'.tr(),
+          hintText: 'common.reject_reason_placeholder'.tr(),
         ),
         onChanged: (String? value) => _reasonText = value?.trim(),
       ),
