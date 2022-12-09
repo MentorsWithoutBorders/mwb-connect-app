@@ -295,7 +295,7 @@ class _WaitingStudentsState extends State<WaitingStudents> {
   }
 
   Widget _showCurrentStudentsText(int studentsCount) {
-    String text = 'mentor_course.current_students'.tr();
+    String text = 'common.current_number_students'.tr();
 
     return Wrap(
       children: [

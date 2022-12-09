@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelCourseDialog extends StatefulWidget {
@@ -15,7 +14,7 @@ class CancelCourseDialog extends StatefulWidget {
 }
 
 class _CancelCourseDialogState extends State<CancelCourseDialog> {
-  MentorCourseViewModel? _mentorCourseProvider;
+  StudentCourseViewModel? _studentCourseProvider;
   String? _reasonText;
   bool _isCancellingCourse = false;
 
@@ -52,14 +51,10 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
   }
 
   Widget _showText() {
-    if (_mentorCourseProvider?.isCourse == false) {
+    if (_studentCourseProvider?.isCourse == false) {
       return SizedBox.shrink();
     }
     String text = 'common.cancel_course_text'.tr();
-    CourseMentor partnerMentor = _mentorCourseProvider?.getPartnerMentor() as CourseMentor;
-    if (partnerMentor.id != null) {
-      text += ' ' + 'common.cancel_course_partner_text'.tr(args: [partnerMentor.name as String]);
-    }
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
@@ -103,7 +98,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
       ),
     );
   }
-  
+
   Widget _showButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -143,7 +138,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
 
   Future<void> _cancelCourse() async {  
     _setIsCancellingCourse(true);
-    await _mentorCourseProvider?.cancelCourse(_reasonText);
+    await _studentCourseProvider?.cancelCourse(_reasonText);
   }
   
   void _setIsCancellingCourse(bool isCanceling) {
@@ -158,7 +153,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
   
   @override
   Widget build(BuildContext context) {
-    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
+    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,

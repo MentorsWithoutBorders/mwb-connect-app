@@ -64,7 +64,7 @@ class _CourseState extends State<Course> {
     CourseMentor mentor = _mentorCourseProvider?.getMentor() as CourseMentor;
     CourseMentor partnerMentor = _mentorCourseProvider?.getPartnerMentor() as CourseMentor;
     String mentorIdentifier = 'common.you'.tr().capitalize();
-    if (partnerMentor.id == null) {
+    if (partnerMentor.id != null) {
       mentorIdentifier += ' ' + 'common.and'.tr() + ' ';
       mentorIdentifier += partnerMentor.name as String;
       mentorIdentifier += ' ';
@@ -315,7 +315,7 @@ class _CourseState extends State<Course> {
                   ),
                   padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
                 ), 
-                child: Text('mentor_course.cancel_course'.tr(), style: const TextStyle(color: Colors.white)),
+                child: Text('common.cancel_course'.tr(), style: const TextStyle(color: Colors.white)),
                 onPressed: () {
                   _showCancelCourseDialog();
                 }

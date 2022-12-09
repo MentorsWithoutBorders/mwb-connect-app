@@ -37,9 +37,24 @@ class StudentCourseViewModel extends ChangeNotifier {
     await _studentCourseService.joinCourse(course?.id);
   }  
   
-  Future<void> cancelCourse(String reason) async {
+  Future<void> cancelCourse(String? reason) async {
     await _studentCourseService.cancelCourse(course?.id, reason);
   }
+
+  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;  
+
+  DateTime getCourseEndDate() {
+    return Jiffy(course?.startDateTime).add(months: 3).dateTime;
+  }
+  
+  DateTime getNextLessonDate() {
+    DateTime now = DateTime.now();
+    Jiffy nextLessonDate = Jiffy(course?.startDateTime);
+    while (nextLessonDate.isBefore(now)) {
+      nextLessonDate.add(weeks: 1);
+    }
+    return nextLessonDate.dateTime;
+  }    
 
   DateTime? getCertificateDate() {
     DateTime date = DateTime.now();
