@@ -61,11 +61,12 @@ class _WaitingStartCourseState extends State<WaitingStartCourse> {
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
     String text = 'student_course.waiting_course_text'.tr(args: [courseDuration, mentorsSubfields, mentorsNames, courseDayOfWeek, courseTime, timeZone]);
+    String courseStartText = 'course_student.course_start_text'.tr();
+    courseStartText = courseStartText[0].toUpperCase() + courseStartText.substring(1);
     String firstPart = text.substring(0, text.indexOf(courseDuration));
     String secondPart = text.substring(text.indexOf(courseDuration) + courseDuration.length, text.indexOf(mentorsSubfields));
     String thirdPart = text.substring(text.indexOf(mentorsSubfields) + mentorsSubfields.length, text.indexOf(mentorsNames));
     String fourthPart = text.substring(text.indexOf(mentorsNames) + mentorsNames.length, text.indexOf(courseDayOfWeek));
-    String fifthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
 
     return Wrap(
       children: [
@@ -139,7 +140,7 @@ class _WaitingStartCourseState extends State<WaitingStartCourse> {
                   ) 
                 ),
                 TextSpan(
-                  text: fifthPart
+                  text: courseStartText + '.'
                 )
               ]
             )
@@ -178,36 +179,32 @@ class _WaitingStartCourseState extends State<WaitingStartCourse> {
     }      
     String text = 'common.current_number_students'.tr();
 
-    return Wrap(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 12.0),
-          child: RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            textAlign: TextAlign.justify,
-            text: TextSpan(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 12.0),
+      child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.DOVE_GRAY,
+            height: 1.4
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: text + ': '
+            ),
+            TextSpan(
+              text: studentsCount.toString(),
               style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.DOVE_GRAY,
-                height: 1.4
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: text + ': '
-                ),
-                TextSpan(
-                  text: studentsCount.toString(),
-                  style: const TextStyle(
-                    color: AppColors.TANGO
-                  )
-                )
-              ]
+                color: AppColors.TANGO
+              )
             )
-          )
+          ]
         )
-      ]
+      )
     );
-  }    
+  }
 
   Widget _showCancelButton() {
     return Center(

@@ -1,12 +1,13 @@
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
 
 class StudentCourseService {
   final ApiService _api = locator<ApiService>();
 
-  Future<List<CourseModel>> getAvailableCourses() async {
+  Future<List<CourseModel>> getAvailableCourses(String? fieldId) async {
     dynamic response = await _api.getHTTP(url: '/courses');
     List<CourseModel> availableCourses = [];
     if (response != null) {
@@ -33,4 +34,13 @@ class StudentCourseService {
     await _api.putHTTP(url: '/courses/$id/cancel', data: inAppMessage.toJson());  
     return ;
   }
+
+  Future<List<Field>> getFields() async {
+    dynamic response = await _api.getHTTP(url: '/available_courses/fields');
+    List<Field> fields = [];
+    if (response != null) {
+      fields = List<Field>.from(response.map((model) => Field.fromJson(model)));
+    }
+    return fields;
+  }  
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +24,7 @@ import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/notifications_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
 import 'package:mwb_connect_app/ui/views/root_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';

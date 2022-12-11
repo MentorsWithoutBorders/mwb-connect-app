@@ -7,6 +7,62 @@
 		"many": "days",
 		"other": "days"
 	},
+	"Monday": {
+		"zero": "Mondays",
+		"one": "Monday",
+		"two": "Mondays",
+		"few": "Mondays",			
+		"many": "Mondays",
+		"other": "Mondays"
+	},
+  "Tuesday": {
+    "zero": "Tuesdays",
+    "one": "Tuesday",
+    "two": "Tuesdays",
+    "few": "Tuesdays",			
+    "many": "Tuesdays",
+    "other": "Tuesdays"
+  },
+  "Wednesday": {
+    "zero": "Wednesdays",
+    "one": "Wednesday",
+    "two": "Wednesdays",
+    "few": "Wednesdays",			
+    "many": "Wednesdays",
+    "other": "Wednesdays"
+  },
+  "Thursday": {
+    "zero": "Thursdays",
+    "one": "Thursday",
+    "two": "Thursdays",
+    "few": "Thursdays",			
+    "many": "Thursdays",
+    "other": "Thursdays"
+  },
+  "Friday": {
+    "zero": "Fridays",
+    "one": "Friday",
+    "two": "Fridays",
+    "few": "Fridays",			
+    "many": "Fridays",
+    "other": "Fridays"
+  },
+  "Saturday": {
+    "zero": "Saturdays",
+    "one": "Saturday",
+    "two": "Saturdays",
+    "few": "Saturdays",			
+    "many": "Saturdays",
+    "other": "Saturdays"
+  },
+  "Sunday": {
+    "zero": "Sundays",
+    "one": "Sunday",
+    "two": "Sundays",
+    "few": "Sundays",			
+    "many": "Sundays",
+    "other": "Sundays"
+  }, 
 	"week": {
 		"zero": "weeks",
 		"one": "week",
@@ -52,6 +108,14 @@
 		"few": "courses",			
 		"many": "courses",
 		"other": "courses"
+	},
+	"subfield": {
+		"zero": "subfields",
+		"one": "subfield",
+		"two": "subfields",
+		"few": "subfields",			
+		"many": "subfields",
+		"other": "subfields"
 	},  
 	"lesson": {
 		"zero": "lessons",
@@ -117,7 +181,10 @@
 		"relaxation_method": "Relaxation method",
 		"super_focus_method": "Super-focus method",
     "current_number_students": "Current number of students",    
-    "cancel_course": "Cancel course",    
+    "cancel_course": "Cancel course",
+    "see_skills": "see skills",
+    "title_skills": "Skills",
+    "skills_text": "{} can teach the following skills (and more) for {}:",    
     "cancel_lesson_recurrence": "Cancel lesson recurrence",
     "cancel_recurring_lesson": "Cancel recurring lesson",
     "cancel_only_next_lesson": "Cancel only next lesson",
@@ -238,10 +305,17 @@
     "find_available_course": "Find available course",
     "select_course_text": "Please select one of our available courses:",
     "find_course": "Find course",
-    "waiting_course_text": "You will participate in the {}-month {} course conducted by {} every {} at {} {}. The course will start as soon as 5 students join in.",
+    "waiting_course_text": "You will participate in the {}-month {} course conducted by {} every {} at {} {}.",
     "waiting_start_course": "Waiting for the course to start...",
     "cancel_course_text": "Are you sure you don't want to participate in this course?",
-    "course_text": "You are participating in the {}-month {} course conducted by {} every {} until {}.\n\nThe next lesson will be on {} at {} {} and you’ll use one of the following links:"
+    "course_text": "You are participating in the {}-month {} course conducted by {} every {} until {}.\n\nThe next lesson will be on {} at {} {} and you’ll use one of the following links:",
+    "no_courses_found": "No courses found",
+    "schedule": "Course schedule",
+    "curse_start_text": "the course will start as soon as 5 students join in",
+    "why_choose_field": "Why choose {}?",
+    "extracted_from": "Extracted from: ",
+    "join_course": "Join course",
+    "join_course_confirmation_text": "Are you sure you want to participate in the {}-month {} course conducted by {} every {} at {} {}?"
   },
 	"connect_with_mentor": {
 		"title": "Connect with a mentor",
@@ -278,9 +352,6 @@
     "why_choose_field": "Why choose {}?",
     "extracted_from": "Extracted from: ",
     "choose_availability": "Choose availability:",
-    "title_skills": "Skills",
-    "see_skills": "see skills",
-    "skills_text": "{} can teach the following skills (and more) for {}:",
     "send_request": "Send request",
     "please_select_error": "Please select",
     "all_fields": "All fields",

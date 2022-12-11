@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/available_mentors/widgets/skills_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/available_courses/widgets/skills_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class SubfieldItem extends StatefulWidget {
-  const SubfieldItem({Key? key, @required this.id, @required this.subfield, @required this.mentorName})
+  const SubfieldItem({Key? key, @required this.subfield, @required this.mentorName})
     : super(key: key); 
 
-  final String? id;
   final Subfield? subfield;
   final String? mentorName;
 
@@ -21,45 +18,25 @@ class SubfieldItem extends StatefulWidget {
 }
 
 class _SubfieldItemState extends State<SubfieldItem> {
-  AvailableMentorsViewModel? _availableMentorsProvider;
-
   Widget _showSubfieldItem() {
     return Row(
       children: [
-        Expanded(
-          child: InkWell(
-            child: Row(
-              children: [
-                _showRadioButton(),
-                _showSubfield()
-              ],
-            ),
-            onTap: () {
-              _setSubfieldOption(widget.id);
-            }
-          )
-        )
-      ]
+        _showBullet(),
+        _showSubfield()
+      ],
     );
   }
 
-  Widget _showRadioButton() {
-    return SizedBox(
-      width: 40.0,
-      height: 30.0,
-      child: Radio<String>(
-        value: widget.id as String,
-        groupValue: _availableMentorsProvider?.subfieldOptionId,
-        onChanged: (String? value) {
-          _setSubfieldOption(value);
-        }
+  Widget _showBullet() {
+    return Container(
+      width: 8.0,
+      height: 8.0,
+      margin: const EdgeInsets.only(right: 10.0),
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: AppColors.MONZA
       )
     );
-  }
-
-  void _setSubfieldOption(String? value) {
-    _availableMentorsProvider?.setSubfieldOptionId(value);
-    _availableMentorsProvider?.setErrorMessage('');
   }
 
   Widget _showSubfield() {
@@ -116,8 +93,6 @@ class _SubfieldItemState extends State<SubfieldItem> {
 
   @override
   Widget build(BuildContext context) {
-    _availableMentorsProvider = Provider.of<AvailableMentorsViewModel>(context);
-
     return _showSubfieldItem();
   }
 }
