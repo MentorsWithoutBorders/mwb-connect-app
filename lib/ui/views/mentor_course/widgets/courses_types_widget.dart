@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/edit_course_details_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course_item_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class CoursesTypes extends StatefulWidget {
-  const CoursesTypes({Key? key, @required this.coursesTypes})
+  const CoursesTypes({Key? key, @required this.coursesTypes, @required this.selectedCourseType, @required this.subfields, @required this.setSelectedCourseTypeCallback, @required this.setCourseDetailsCallback})
     : super(key: key); 
 
   final List<CourseType>? coursesTypes;
+  final CourseType? selectedCourseType;
+  final List<Subfield>? subfields;
+  final Function(String)? setSelectedCourseTypeCallback;
+  final Function(String, Availability?, String)? setCourseDetailsCallback;    
 
   @override
   State<StatefulWidget> createState() => _CoursesTypesState();
 }
 
 class _CoursesTypesState extends State<CoursesTypes> {
-  MentorCourseViewModel? _mentorCourseProvider;
 
   Widget _showCourseType() {
+    CourseType? selectedCourseType = widget.selectedCourseType;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _showTitle(),
         _showCoursesTypes(),
-        if (_mentorCourseProvider!.selectedCourseType?.isWithPartner != null) _showActionButton()
+        if (selectedCourseType?.isWithPartner != null) _showActionButton()
       ]
     );
   }
@@ -46,11 +52,18 @@ class _CoursesTypesState extends State<CoursesTypes> {
   }
 
   Widget _showCoursesTypes() {
-    final List<CourseType>? coursesTypes = widget.coursesTypes;    
+    final List<CourseType>? coursesTypes = widget.coursesTypes; 
+    final CourseType? selectedCourseType = widget.selectedCourseType;   
     final List<Widget> courseTypeWidgets = [];
     if (coursesTypes != null) {
       for (int i = 0; i < coursesTypes.length; i++) {
-        courseTypeWidgets.add(CourseTypeItem(courseType: coursesTypes[i]));
+        courseTypeWidgets.add(
+          CourseTypeItem(
+            courseType: coursesTypes[i],
+            selectedCourseTypeId: selectedCourseType?.id,
+            setSelectedCourseTypeCallback: widget.setSelectedCourseTypeCallback,
+          )
+        );
       }
     }
     return Padding(
@@ -62,7 +75,7 @@ class _CoursesTypesState extends State<CoursesTypes> {
   }
 
   Widget _showActionButton() {
-    String buttonText = _mentorCourseProvider!.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.wait_students'.tr();
+    String buttonText = widget.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.wait_students'.tr();
     return Center(
       child: Container(
         height: 30.0,
@@ -81,7 +94,16 @@ class _CoursesTypesState extends State<CoursesTypes> {
             style: const TextStyle(color: Colors.white)
           ),
           onPressed: () async {
- 
+            showDialog(
+              context: context,
+              builder: (_) => AnimatedDialog(
+                widgetInside: EditCourseDetailsDialog(
+                  selectedCourseType: widget.selectedCourseType,
+                  subfields: widget.subfields,
+                  setCourseDetailsCallback: widget.setCourseDetailsCallback
+                )
+              ),
+            );
           }
         )
       )
@@ -90,8 +112,6 @@ class _CoursesTypesState extends State<CoursesTypes> {
 
   @override
   Widget build(BuildContext context) {
-    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
-
     return _showCourseType();
   }
 }

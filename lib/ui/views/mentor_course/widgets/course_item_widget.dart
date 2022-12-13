@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
 
 class CourseTypeItem extends StatefulWidget {
-  const CourseTypeItem({Key? key, @required this.courseType})
+  const CourseTypeItem({Key? key, @required this.courseType, @required this.selectedCourseTypeId, @required this.setSelectedCourseTypeCallback})
     : super(key: key); 
 
   final CourseType? courseType;
+  final String? selectedCourseTypeId;
+  final Function(String)? setSelectedCourseTypeCallback;
 
   @override
   State<StatefulWidget> createState() => _CourseTypeItemState();
 }
 
 class _CourseTypeItemState extends State<CourseTypeItem> {
-  MentorCourseViewModel? _mentorCourseProvider;
 
   Widget _showCourseTypeItem() {
     return Row(
@@ -44,7 +43,7 @@ class _CourseTypeItemState extends State<CourseTypeItem> {
       height: 30.0,
       child: Radio<String>(
         value: widget.courseType?.id as String,
-        groupValue: _mentorCourseProvider?.selectedCourseType?.id,
+        groupValue: widget.selectedCourseTypeId,
         onChanged: (String? value) {
           _setOption(value);
         }
@@ -53,8 +52,7 @@ class _CourseTypeItemState extends State<CourseTypeItem> {
   }
 
   void _setOption(String? value) {
-    _mentorCourseProvider?.setSelectedCourseType(widget.courseType);
-    _mentorCourseProvider?.setErrorMessage('');
+    widget.setSelectedCourseTypeCallback!(widget.courseType?.id as String);
   }
 
   Widget _showDescription() {
@@ -75,8 +73,6 @@ class _CourseTypeItemState extends State<CourseTypeItem> {
 
   @override
   Widget build(BuildContext context) {
-    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
-
     return _showCourseTypeItem();
   }
 }

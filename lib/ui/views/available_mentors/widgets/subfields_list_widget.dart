@@ -27,7 +27,7 @@ class _SubfieldsListState extends State<SubfieldsList> with TickerProviderStateM
   }
 
   Widget _showTitle() {
-    String title = 'available_mentors.choose_subfield'.tr();
+    String title = 'common.choose_subfield'.tr();
     return Padding(
       padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
       child: Text(

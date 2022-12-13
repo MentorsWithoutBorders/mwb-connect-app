@@ -20,7 +20,6 @@ class MentorCourseViewModel extends ChangeNotifier {
   final MentorCourseService _mentorCourseService = locator<MentorCourseService>();
   final LoggerService _loggerService = locator<LoggerService>();  
   List<CourseType> coursesTypes = [];
-  CourseType? courseType;
   MentorWaitingRequest? mentorWaitingRequest;
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
   MentorPartnershipRequestModel? mentorPartnershipRequest;
@@ -44,6 +43,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   
   Future<void> addCourse(String meetingUrl) async {
     CourseModel course = CourseModel();
+    course.type = selectedCourseType;
     course.mentors = [CourseMentor(meetingUrl: meetingUrl)];
     await _mentorCourseService.addCourse(course);
   }
@@ -63,7 +63,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   }
 
   Future<void> addMentorWaitingRequest(MentorWaitingRequest mentorWaitingRequest) async {
-    mentorWaitingRequest.courseType = courseType;
+    mentorWaitingRequest.courseType = selectedCourseType;
     await _mentorCourseService.addMentorWaitingRequest(mentorWaitingRequest);
   }
   
@@ -93,7 +93,7 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequest) async {
     mentorPartnershipRequest.mentor = (await _userService.getUserDetails()) as CourseMentor;
-    mentorPartnershipRequest.courseType = courseType;
+    mentorPartnershipRequest.courseType = selectedCourseType;
     await _mentorCourseService.sendMentorPartnershipRequest(mentorPartnershipRequest);
   } 
 
