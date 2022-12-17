@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/string_extension.dart';
-import 'package:mwb_connect_app/core/models/course_model.dart';
-import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/cancel_course_dialog_widget.dart';
+import 'package:mwb_connect_app/core/models/course_student_model.dart';
+import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/cancel_course_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key})
+  const Course({Key? key, @required this.text, @required this.students, @required this.cancelText, @required this.onCancel})
     : super(key: key); 
+
+  final List<ColoredText>? text;
+  final List<CourseStudent>? students;
+  final String? cancelText;
+  final Function(String?)? onCancel;
 
   @override
   State<StatefulWidget> createState() => _CourseState();
 }
 
 class _CourseState extends State<Course> {
-  MentorCourseViewModel? _mentorCourseProvider;
   String _url = '';
 
   Widget _showCourseCard() {
-    if (_mentorCourseProvider?.isCourse == false) {
-      return SizedBox.shrink();
-    }
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -54,128 +51,16 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showText() {
-    if (_mentorCourseProvider?.isCourse == false) {
-      return SizedBox.shrink();
-    }
-    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
-    DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');    
-    CourseModel? course = _mentorCourseProvider?.course;
-    CourseMentor mentor = _mentorCourseProvider?.getMentor() as CourseMentor;
-    CourseMentor partnerMentor = _mentorCourseProvider?.getPartnerMentor() as CourseMentor;
-    String mentorIdentifier = 'common.you'.tr().capitalize();
-    if (partnerMentor.id != null) {
-      mentorIdentifier += ' ' + 'common.and'.tr() + ' ';
-      mentorIdentifier += partnerMentor.name as String;
-      mentorIdentifier += ' ';
-    }
-    String courseDuration = course?.type?.duration.toString() as String;
-    Subfield mentorSubfield = _mentorCourseProvider?.getMentorSubfield(mentor) as Subfield;
-    Subfield partnerMentorSubfield = _mentorCourseProvider?.getMentorSubfield(partnerMentor) as Subfield;
-    String subfieldName = mentorSubfield.name!;
-    if (partnerMentorSubfield.id != null && mentorSubfield.id != partnerMentorSubfield.id) {
-      subfieldName = mentorSubfield.name! + ' ' + 'common.and'.tr() + ' ' + partnerMentorSubfield.name!;
-    }
-    String courseDayOfWeek = dayOfWeekFormat.format(course?.startDateTime as DateTime);
-    String courseEndDate = dateFormat.format(_mentorCourseProvider?.getCourseEndDate() as DateTime);
-    String nextLessonDate = dateFormat.format(_mentorCourseProvider?.getNextLessonDate() as DateTime);
-    String nextLessonTime = timeFormat.format(course?.startDateTime as DateTime);
-    DateTime now = DateTime.now();
-    String timeZone = now.timeZoneName;
-    String studentPlural = plural('student', course?.students?.length as int);        
-    String at = 'common.at'.tr();
-    String until = 'common.until'.tr();
-    String text = 'mentor_course.course_text'.tr(args: [mentorIdentifier, courseDuration, subfieldName, courseDayOfWeek, courseEndDate, nextLessonDate, nextLessonTime, timeZone, studentPlural]);
-    String firstPart = text.substring(mentorIdentifier.length, text.indexOf(courseDuration));
-    String secondPart = text.substring(text.indexOf(courseDuration) + courseDuration.length, text.indexOf(subfieldName));
-    String thirdPart = text.substring(text.indexOf(subfieldName) + subfieldName.length, text.indexOf(courseDayOfWeek));
-    String fourthPart = text.substring(text.indexOf(courseEndDate) + courseEndDate.length, text.indexOf(nextLessonDate));
-    String fifthPart = text.substring(text.indexOf(timeZone) + timeZone.length);
-    _url = mentor.meetingUrl as String;
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 15.0),
-      child: RichText(
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        textAlign: TextAlign.justify,
-        text: TextSpan(
-          style: const TextStyle(
-            fontSize: 12,
-            color: AppColors.DOVE_GRAY,
-            height: 1.4
-          ),
-          children: <TextSpan>[
-            TextSpan(
-              text: mentorIdentifier,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: firstPart
-            ),
-            TextSpan(
-              text: courseDuration,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: secondPart
-            ),
-            TextSpan(
-              text: subfieldName,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: thirdPart
-            ),
-            TextSpan(
-              text: courseDayOfWeek,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ), 
-            TextSpan(
-              text: ' ' + until + ' '
-            ),
-            TextSpan(
-              text: courseEndDate,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              )
-            ),
-            TextSpan(
-              text: fourthPart
-            ),
-            TextSpan(
-              text: nextLessonDate,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: ' ' + at + ' '
-            ),
-            TextSpan(
-              text: nextLessonTime + ' ' + timeZone,
-              style: const TextStyle(
-                color: AppColors.TANGO
-              ) 
-            ),
-            TextSpan(
-              text: fifthPart
-            )
-          ]
-        )
+      child: MulticolorText(
+        coloredTexts: widget.text as List<ColoredText>
       ),
     );
-  }  
+  }
 
   Widget _showStudents() {
-    List<User>? students = _mentorCourseProvider?.course?.students;
+    List<User>? students = widget.students;
     return Container(
       margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 5.0),
@@ -228,6 +113,7 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showLink() {
+    _url = 'https://meet.google.com/test-HARD-CODED';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -331,15 +217,16 @@ class _CourseState extends State<Course> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: CancelCourseDialog()
+        widgetInside: CancelCourseDialog(
+          cancelText: widget.cancelText,
+          onCancel: widget.onCancel
+        )
       ),
     );    
   }
 
   @override
   Widget build(BuildContext context) {
-    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
-
     return _showCourseCard();
   }
 }

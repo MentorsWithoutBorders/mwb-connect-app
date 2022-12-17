@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
@@ -54,6 +56,10 @@ class Utils {
 
   static bool checkValidEmail(String email) {
     return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+  }
+
+  static bool checkValidUrl(String url) {
+    return Uri.parse(url).host.isNotEmpty && (url.contains('meet') || url.contains('zoom'));
   }
   
   static String getUrlType(String url) {
@@ -165,6 +171,15 @@ class Utils {
     DateFormat dateTimeFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
     return endRecurrenceDateTime != null && dateTimeFormat.format(lessonDateTime) != dateTimeFormat.format(endRecurrenceDateTime);
   }
+
+  static Subfield getMentorSubfield(CourseMentor mentor) {
+    Subfield subfield = Subfield();
+    List<Subfield>? subfields = mentor.field?.subfields;
+    if (subfields != null && subfields.length > 0) {
+      subfield = subfields[0];
+    }
+    return subfield;
+  }  
 
   static String setUrl(String url) {
     if (url.isNotEmpty && url.indexOf('http') == -1) {

@@ -3,19 +3,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 
-class CourseTypeItem extends StatefulWidget {
-  const CourseTypeItem({Key? key, @required this.courseType, @required this.selectedCourseTypeId, @required this.setSelectedCourseTypeCallback})
+class CourseTypeItem extends StatelessWidget {
+  const CourseTypeItem({Key? key, @required this.courseType, @required this.selectedCourseTypeId, @required this.onSelect})
     : super(key: key); 
 
   final CourseType? courseType;
   final String? selectedCourseTypeId;
-  final Function(String)? setSelectedCourseTypeCallback;
-
-  @override
-  State<StatefulWidget> createState() => _CourseTypeItemState();
-}
-
-class _CourseTypeItemState extends State<CourseTypeItem> {
+  final Function(String)? onSelect;
 
   Widget _showCourseTypeItem() {
     return Row(
@@ -29,7 +23,7 @@ class _CourseTypeItemState extends State<CourseTypeItem> {
               ]
             ),
             onTap: () {
-              _setOption(widget.courseType?.id);
+              _setOption(courseType?.id);
             }
           )
         )
@@ -42,8 +36,8 @@ class _CourseTypeItemState extends State<CourseTypeItem> {
       width: 40.0,
       height: 30.0,
       child: Radio<String>(
-        value: widget.courseType?.id as String,
-        groupValue: widget.selectedCourseTypeId,
+        value: courseType?.id as String,
+        groupValue: selectedCourseTypeId,
         onChanged: (String? value) {
           _setOption(value);
         }
@@ -52,12 +46,12 @@ class _CourseTypeItemState extends State<CourseTypeItem> {
   }
 
   void _setOption(String? value) {
-    widget.setSelectedCourseTypeCallback!(widget.courseType?.id as String);
+    onSelect!(courseType?.id as String);
   }
 
   Widget _showDescription() {
-    final int duration = widget.courseType?.duration as int;
-    final bool isWithPartner = widget.courseType?.isWithPartner as bool;
+    final int duration = courseType?.duration as int;
+    final bool isWithPartner = courseType?.isWithPartner as bool;
     final String withOrWithout = isWithPartner ? 'common.with'.tr() : 'common.without'.tr();
     final String? description = 'mentor_course.course_description'.tr(args: [duration.toString(), withOrWithout]); 
     return Container(

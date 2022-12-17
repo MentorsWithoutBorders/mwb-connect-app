@@ -32,8 +32,8 @@ class StudentCourseViewModel extends ChangeNotifier {
   CourseType? courseType;
   Map<String, String> fieldIconFilePaths = {};
 
-  Future<void> getCurrentCourse() async {
-    course = await _studentCourseService.getCurrentCourse();
+  Future<void> getCourse() async {
+    course = await _studentCourseService.getCourse();
     notifyListeners();
   }
 

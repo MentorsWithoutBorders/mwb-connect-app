@@ -16,7 +16,7 @@ class StudentCourseService {
     return availableCourses;
   }
 
-  Future<CourseModel> getCurrentCourse() async {
+  Future<CourseModel> getCourse() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/courses/current');
     CourseModel course = CourseModel.fromJson(response);
     return course;

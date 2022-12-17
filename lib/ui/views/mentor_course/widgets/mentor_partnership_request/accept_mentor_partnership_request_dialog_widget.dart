@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AcceptMentorPartnershipRequestDialog extends StatefulWidget {
-  const AcceptMentorPartnershipRequestDialog({Key? key})
-    : super(key: key);  
+  const AcceptMentorPartnershipRequestDialog({Key? key, @required this.onAccept, @required this.shouldUnfocus, @required this.setShouldUnfocus})
+    : super(key: key);
+    
+  final Function(String?)? onAccept;
+  final bool? shouldUnfocus;
+  final Function(bool)? setShouldUnfocus;
 
   @override
   State<StatefulWidget> createState() => _AcceptMentorPartnershipRequestDialogState();
 }
 
 class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartnershipRequestDialog> {
-  MentorCourseViewModel? _mentorCourseProvider;
   String urlType = AppConstants.meetingUrlType;
   String _url = '';
   bool _shouldShowError = false;
@@ -157,12 +158,12 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
 
   Future<void> _acceptMentorPartnershipRequest() async {
     _changeUrl(Utils.setUrl(_url));
-    if (_mentorCourseProvider?.checkValidUrl(_url) == false) {
+    if (Utils.checkValidUrl(_url) == false) {
       _setShouldShowError(true);
       return ;
     }
     _setIsAcceptingMentorPartnershipRequest(true);
-    await _mentorCourseProvider?.acceptMentorPartnershipRequest(_url);
+    await widget.onAccept!(_url);
     Navigator.pop(context);
   }
   
@@ -173,9 +174,9 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   }
 
   void _afterLayout(_) {
-    if (_mentorCourseProvider?.shouldUnfocus == true) {
+    if (widget.shouldUnfocus == true) {
       _unfocus();
-      _mentorCourseProvider?.shouldUnfocus = false;
+      widget.setShouldUnfocus!(false);
     }  
   }
   
@@ -190,7 +191,6 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   
   @override
   Widget build(BuildContext context) {
-    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
     return WillPopScope(

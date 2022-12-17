@@ -5,15 +5,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_partner_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_mentors_filters/available_partner_mentors_filters_view.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/available_partner_mentors_filters_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/available_partner_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class AvailablePartnerMentorsView extends StatefulWidget {
-  const AvailablePartnerMentorsView({Key? key})
-    : super(key: key);   
+  const AvailablePartnerMentorsView({Key? key, required this.mentorPartnershipRequest})
+    : super(key: key);
+    
+  final MentorPartnershipRequestModel mentorPartnershipRequest;
 
   @override
   State<StatefulWidget> createState() => _AvailablePartnerMentorsViewState();
@@ -126,7 +129,7 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
   Future<void> _goToFilters() async {
     final shouldRefresh = await Navigator.push(
       context,
-      MaterialPageRoute<bool>(builder: (_) => AvailableMentorsFiltersView())
+      MaterialPageRoute<bool>(builder: (_) => AvailablePartnerMentorsFiltersView())
     );    
     if (shouldRefresh == true) {
       _pageNumber = 1;

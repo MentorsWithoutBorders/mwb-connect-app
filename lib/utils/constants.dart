@@ -16,6 +16,7 @@ class AppConstants {
   static const String notificationsTime = '21:00';
   static const String dateTimeFormat = 'yyyy-MM-dd HH:mm:ss';
   static const String dateFormat = 'MMM d, yyyy';
+  static const String monthDayFormat = 'MMM d';
   static const String timeFormat = 'h:mma';
   static const String dayOfWeekFormat = 'EEEE';
   static const String dateFormatLesson = 'EEEE, MMM d';

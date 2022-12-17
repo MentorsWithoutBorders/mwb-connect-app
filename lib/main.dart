@@ -17,6 +17,9 @@ import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/forgot_password_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/available_partner_mentors_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
@@ -83,7 +86,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserv
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Future<void>.delayed(const Duration(milliseconds: 500), () async {
-        await _initPushNotifications();
+        // await _initPushNotifications();
       });
     }); 
   }
@@ -124,6 +127,9 @@ class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserv
               ChangeNotifierProvider<LoginSignupViewModel>.value(value: locator<LoginSignupViewModel>()),
               ChangeNotifierProvider<ForgotPasswordViewModel>.value(value: locator<ForgotPasswordViewModel>()),
               ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
+              ChangeNotifierProvider<MentorCourseViewModel>.value(value: locator<MentorCourseViewModel>()),
+              ChangeNotifierProvider<StudentCourseViewModel>.value(value: locator<StudentCourseViewModel>()),
+              ChangeNotifierProvider<AvailablePartnerMentorsViewModel>.value(value: locator<AvailablePartnerMentorsViewModel>()),
               ChangeNotifierProvider<ConnectWithMentorViewModel>.value(value: locator<ConnectWithMentorViewModel>()),
               ChangeNotifierProvider<AvailableMentorsViewModel>.value(value: locator<AvailableMentorsViewModel>()),
               ChangeNotifierProvider<LessonRequestViewModel>.value(value: locator<LessonRequestViewModel>()),

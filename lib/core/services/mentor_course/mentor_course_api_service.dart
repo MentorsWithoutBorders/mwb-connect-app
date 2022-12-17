@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
@@ -5,10 +6,14 @@ import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
+import 'package:mwb_connect_app/core/services/user_service.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 
-class MentorCourseService {
+class MentorCourseApiService {
   final ApiService _api = locator<ApiService>();
+  final UserService _userService = locator<UserService>();  
 
   Future<List<CourseType>> getCoursesTypes() async {
     dynamic response = await _api.getHTTP(url: '/courses_types');
@@ -19,13 +24,20 @@ class MentorCourseService {
     return coursesTypes;
   }  
 
-  Future<CourseModel> getCurrentCourse() async {
+  Future<CourseModel> getCourse() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/courses/current');
     CourseModel course = CourseModel.fromJson(response);
     return course;
   }
 
-  Future<void> addCourse(CourseModel course) async {
+  Future<void> addCourse(CourseModel? course, CourseType? selectedCourseType, Availability? availability, String meetingUrl) async {
+    String dayOfWeek = availability?.dayOfWeek as String;
+    String timeFrom = availability?.time?.from as String;
+    DateTime dateTime = DateFormat(AppConstants.dayOfWeekFormat + ' ' + AppConstants.timeFormat).parse(dayOfWeek + ' ' + timeFrom);
+    CourseModel course = CourseModel();
+    course.type = selectedCourseType;
+    course.startDateTime = dateTime;
+    course.mentors = [CourseMentor(meetingUrl: meetingUrl)];    
     await _api.postHTTP(url: '/courses', data: course.toJson());  
     return ;
   }  
@@ -47,13 +59,14 @@ class MentorCourseService {
     return mentorsWaitingRequests;
   }
   
-  Future<MentorWaitingRequest> getCurrentMentorWaitingRequest() async {
+  Future<MentorWaitingRequest> getMentorWaitingRequest() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/mentors_waiting_requests/current');
     MentorWaitingRequest mentorWaitingRequest = MentorWaitingRequest.fromJson(response);
     return mentorWaitingRequest;
   }  
 
-  Future<void> addMentorWaitingRequest(MentorWaitingRequest mentorWaitingRequest) async {
+  Future<void> addMentorWaitingRequest(MentorWaitingRequest mentorWaitingRequest, CourseType? selectedCourseType) async {
+    mentorWaitingRequest.courseType = selectedCourseType;    
     await _api.postHTTP(url: '/mentors_waiting_requests', data: mentorWaitingRequest.toJson());  
     return ;
   }
@@ -63,14 +76,16 @@ class MentorCourseService {
     return ;
   }
 
-  Future<MentorPartnershipRequestModel> getCurrentMentorPartnershipRequest() async {
+  Future<MentorPartnershipRequestModel> getMentorPartnershipRequest() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/mentors_partnership_requests/current');
     MentorPartnershipRequestModel mentorPartnershipRequestModel = MentorPartnershipRequestModel.fromJson(response);
     return mentorPartnershipRequestModel;
   }
   
-  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequestModel) async {
-    await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequestModel.toJson());  
+  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequest, CourseType? selectedCourseType) async {
+    mentorPartnershipRequest.mentor = (await _userService.getUserDetails()) as CourseMentor;
+    mentorPartnershipRequest.courseType = selectedCourseType;    
+    await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequest.toJson());  
     return ;
   }
   

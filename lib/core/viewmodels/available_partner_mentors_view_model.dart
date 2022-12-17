@@ -15,12 +15,12 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/services/available_partner_mentors_service.dart';
-import 'package:mwb_connect_app/core/services/mentor_course_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 
 class AvailablePartnerMentorsViewModel extends ChangeNotifier {
   final AvailablePartnerMentorsService _availablePartnerMentorService = locator<AvailablePartnerMentorsService>();
-  final MentorCourseService _mentorCourseService = locator<MentorCourseService>();
+  final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
   final UserService _userService = locator<UserService>();
   List<User> availablePartnerMentors = [];
   List<User> newAvailablePartnerMentors = [];
@@ -58,7 +58,7 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
       courseDayOfWeek: selectedPartnerMentor?.availabilities![0].dayOfWeek as String,
       courseStartTime: selectedCourseStartTime
     );
-    await _mentorCourseService.sendMentorPartnershipRequest(mentorPartnershipRequest);
+    await _mentorCourseApiService.sendMentorPartnershipRequest(mentorPartnershipRequest, null);
   }
 
   List<Availability> _adjustFilterAvailabilities(List<Availability> filterAvailabilities) {

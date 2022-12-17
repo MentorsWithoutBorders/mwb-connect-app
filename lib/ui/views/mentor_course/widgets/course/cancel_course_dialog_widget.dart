@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
+import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class CancelMentorPartnershipRequestDialog extends StatefulWidget {
-  const CancelMentorPartnershipRequestDialog({Key? key})
-    : super(key: key);  
+class CancelCourseDialog extends StatefulWidget {
+  const CancelCourseDialog({Key? key, @required this.cancelText, @required this.onCancel})
+    : super(key: key);
 
+  final String? cancelText;
+  final Function(String?)? onCancel;
+    
   @override
-  State<StatefulWidget> createState() => _CancelMentorPartnershipRequestDialogState();
+  State<StatefulWidget> createState() => _CancelCourseDialogState();
 }
 
-class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartnershipRequestDialog> with TickerProviderStateMixin {
-  MentorCourseViewModel? _mentorCourseProvider;
-  bool _isCancelingMentorPartnershipRequest = false;
+class _CancelCourseDialogState extends State<CancelCourseDialog> {
+  String? _reasonText;
+  bool _isCancellingCourse = false;
 
-  Widget _showCancelMentorPartnershipRequestDialog() {
+  Widget _showCancelCourseDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -25,6 +27,7 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
         children: <Widget>[
           _showTitle(),
           _showText(),
+          _showReasonInput(),
           _showButtons()
         ]
       )
@@ -32,11 +35,12 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
   }
 
   Widget _showTitle() {
+    String title = 'common.cancel_course'.tr();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
         child: Text(
-          'mentor_course.cancel_mentor_partnership_request'.tr(),
+          title,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,
@@ -51,13 +55,42 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
-        'mentor_course.cancel_mentor_partnership_request_text'.tr(),
+        widget.cancelText as String,
         style: const TextStyle(
           fontSize: 15.0,
           color: AppColors.DOVE_GRAY,
           height: 1.5
         ),
         textAlign: TextAlign.justify
+      ),
+    );
+  }
+
+  Widget _showReasonInput() {
+    return Container(
+      height: 80.0,
+      margin: const EdgeInsets.only(bottom: 15.0),        
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.SILVER)
+      ),
+      child: TextFormField(
+        maxLines: null,
+        textCapitalization: TextCapitalization.sentences,
+        style: const TextStyle(
+          fontSize: 12.0
+        ),
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),          
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          hintStyle: const TextStyle(color: AppColors.SILVER),
+          hintText: 'common.cancel_reason_placeholder'.tr(),
+        ),
+        onChanged: (String? value) => _reasonText = value?.trim(),
       ),
     );
   }
@@ -83,7 +116,7 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isCancelingMentorPartnershipRequest ? Text(
+          child: !_isCancellingCourse ? Text(
             'common.yes_cancel'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -91,7 +124,7 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _cancelMentorPartnershipRequest();
+            await _cancelCourse();
             Navigator.pop(context);
           },
         )
@@ -99,21 +132,29 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
     );
   } 
 
-  Future<void> _cancelMentorPartnershipRequest() async {  
-    _setIsCancelingMentorPartnershipRequest(true);
-    await _mentorCourseProvider?.cancelMentorPartnershipRequest();
+  Future<void> _cancelCourse() async {  
+    _setIsCancellingCourse(true);
+    await widget.onCancel!(_reasonText);
   }
   
-  void _setIsCancelingMentorPartnershipRequest(bool isCanceling) {
+  void _setIsCancellingCourse(bool isCanceling) {
     setState(() {
-      _isCancelingMentorPartnershipRequest = isCanceling;
+      _isCancellingCourse = isCanceling;
     });  
+  }
+  
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
   }  
   
   @override
   Widget build(BuildContext context) {
-    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
-
-    return _showCancelMentorPartnershipRequestDialog();
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        _unfocus();
+      },
+      child: _showCancelCourseDialog()
+    );
   }
 }

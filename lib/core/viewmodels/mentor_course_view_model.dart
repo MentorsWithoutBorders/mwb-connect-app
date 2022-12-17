@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
-import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/user_service.dart';
-import 'package:mwb_connect_app/core/services/mentor_course_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_texts_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_service.dart';
 import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class MentorCourseViewModel extends ChangeNotifier {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final UserService _userService = locator<UserService>();
-  final MentorCourseService _mentorCourseService = locator<MentorCourseService>();
-  final LoggerService _loggerService = locator<LoggerService>();  
+  final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
+  final MentorCourseTextsService _mentorCourseTextsService = locator<MentorCourseTextsService>();
+  final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
+  final LoggerService _loggerService = locator<LoggerService>();   
   List<CourseType> coursesTypes = [];
   MentorWaitingRequest? mentorWaitingRequest;
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
@@ -32,59 +32,56 @@ class MentorCourseViewModel extends ChangeNotifier {
   bool shouldShowCanceled = false;
 
   Future<void> getCoursesTypes() async {
-    coursesTypes = await _mentorCourseService.getCoursesTypes();
+    coursesTypes = await _mentorCourseApiService.getCoursesTypes();
     notifyListeners();
   }
   
-  Future<void> getCurrentCourse() async {
-    course = await _mentorCourseService.getCurrentCourse();
+  Future<void> getCourse() async {
+    course = await _mentorCourseApiService.getCourse();
     notifyListeners();
   }
   
-  Future<void> addCourse(String meetingUrl) async {
-    CourseModel course = CourseModel();
-    course.type = selectedCourseType;
-    course.mentors = [CourseMentor(meetingUrl: meetingUrl)];
-    await _mentorCourseService.addCourse(course);
+  Future<void> addCourse(Availability? availability, String meetingUrl) async {
+    await _mentorCourseApiService.addCourse(course, selectedCourseType, availability, meetingUrl);
+    notifyListeners();    
   }
   
   Future<void> cancelCourse(String? reason) async {
-    await _mentorCourseService.cancelCourse(course?.id, reason);
+    await _mentorCourseApiService.cancelCourse(course?.id, reason);
   }  
 
   Future<void> getMentorsWaitingRequests() async {
-    mentorsWaitingRequests = await _mentorCourseService.getMentorsWaitingRequests();
+    mentorsWaitingRequests = await _mentorCourseApiService.getMentorsWaitingRequests();
     notifyListeners();
   }
   
-  Future<void> getCurrentMentorWaitingRequest() async {
-    mentorWaitingRequest = await _mentorCourseService.getCurrentMentorWaitingRequest();
+  Future<void> getMentorWaitingRequest() async {
+    mentorWaitingRequest = await _mentorCourseApiService.getMentorWaitingRequest();
     notifyListeners();
   }
 
   Future<void> addMentorWaitingRequest(MentorWaitingRequest mentorWaitingRequest) async {
-    mentorWaitingRequest.courseType = selectedCourseType;
-    await _mentorCourseService.addMentorWaitingRequest(mentorWaitingRequest);
+    await _mentorCourseApiService.addMentorWaitingRequest(mentorWaitingRequest, selectedCourseType);
   }
   
-  Future<void> cancelMentorWaitingpRequest() async {
-    await _mentorCourseService.cancelMentorWaitingRequest(mentorWaitingRequest?.id);
+  Future<void> cancelMentorWaitingRequest() async {
+    await _mentorCourseApiService.cancelMentorWaitingRequest(mentorWaitingRequest?.id);
     notifyListeners();
   }
 
-  Future<void> getCurrentMentorPartnershipRequest() async {
-    mentorPartnershipRequest = await _mentorCourseService.getCurrentMentorPartnershipRequest();
+  Future<void> getMentorPartnershipRequest() async {
+    mentorPartnershipRequest = await _mentorCourseApiService.getMentorPartnershipRequest();
     if (mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null) {
       if (mentorPartnershipRequest?.isExpired != null && mentorPartnershipRequest?.isExpired == true) {
         if (mentorPartnershipRequest?.wasExpiredShown == null || mentorPartnershipRequest?.wasExpiredShown != null && mentorPartnershipRequest?.wasExpiredShown == false) {
           shouldShowExpired = true;
-          await _mentorCourseService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasExpiredShown: true));
+          await _mentorCourseApiService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasExpiredShown: true));
         }
         mentorPartnershipRequest = null;
       } else if (mentorPartnershipRequest?.isCanceled != null && mentorPartnershipRequest?.isCanceled == true) {
         if (mentorPartnershipRequest?.wasCanceledShown == null || mentorPartnershipRequest?.wasCanceledShown != null && mentorPartnershipRequest?.wasCanceledShown == false) {
           shouldShowCanceled = true;
-          await _mentorCourseService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasCanceledShown: true));
+          await _mentorCourseApiService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasCanceledShown: true));
         }
         mentorPartnershipRequest = null;
       }
@@ -92,24 +89,22 @@ class MentorCourseViewModel extends ChangeNotifier {
   }
 
   Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequest) async {
-    mentorPartnershipRequest.mentor = (await _userService.getUserDetails()) as CourseMentor;
-    mentorPartnershipRequest.courseType = selectedCourseType;
-    await _mentorCourseService.sendMentorPartnershipRequest(mentorPartnershipRequest);
+    await _mentorCourseApiService.sendMentorPartnershipRequest(mentorPartnershipRequest, selectedCourseType);
   } 
 
-  Future<void> acceptMentorPartnershipRequest(String meetingUrl) async {
-    await _mentorCourseService.acceptMentorPartnershipRequest(mentorPartnershipRequest?.id, meetingUrl);
+  Future<void> acceptMentorPartnershipRequest(String? meetingUrl) async {
+    await _mentorCourseApiService.acceptMentorPartnershipRequest(mentorPartnershipRequest?.id, meetingUrl as String);
     notifyListeners();
   }
 
   Future<void> rejectMentorPartnershipRequest(String? reason) async {
-    await _mentorCourseService.rejectMentorPartnershipRequest(mentorPartnershipRequest?.id, reason);
+    await _mentorCourseApiService.rejectMentorPartnershipRequest(mentorPartnershipRequest?.id, reason);
     mentorPartnershipRequest?.isRejected = true;
     notifyListeners();
   }
 
   Future<void> cancelMentorPartnershipRequest() async {
-    await _mentorCourseService.cancelMentorPartnershipRequest(mentorPartnershipRequest?.id);
+    await _mentorCourseApiService.cancelMentorPartnershipRequest(mentorPartnershipRequest?.id);
     mentorPartnershipRequest?.isCanceled = true;
     notifyListeners();
   }
@@ -118,66 +113,69 @@ class MentorCourseViewModel extends ChangeNotifier {
   
   bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true;
 
-  Future<CourseMentor> getMentor() async {
-    CourseMentor mentor = (await _userService.getUserDetails()) as CourseMentor;
-    return mentor;
-  }
+  bool get isMentorWaitingRequest => !isCourse && mentorWaitingRequest != null && mentorWaitingRequest?.id != null;
 
   CourseMentor getPartnerMentor() {
     String userId = _storageService.userId as String;
-    CourseMentor partnerMentor = CourseMentor();
     List<CourseMentor>? mentors = course?.mentors;
-    if (mentors != null && mentors.length > 0) {
+    if (mentors != null) {
       for (CourseMentor mentor in mentors) {
         if (mentor.id != userId) {
-          partnerMentor = mentor;
-          break;
+          return mentor;
         }
       }
     }
-    return partnerMentor;
-  }
-  
-  Subfield getMentorSubfield(CourseMentor mentor) {
-    Subfield subfield = Subfield();
-    List<Subfield>? subfields = mentor.field?.subfields;
-    if (subfields != null && subfields.length > 0) {
-      subfield = subfields[0];
-    }
-    return subfield;
-  }
-
-  DateTime getCourseEndDate() {
-    return Jiffy(course?.startDateTime).add(months: 3).dateTime;
-  }
-  
-  DateTime getNextLessonDate() {
-    DateTime now = DateTime.now();
-    Jiffy nextLessonDate = Jiffy(course?.startDateTime);
-    while (nextLessonDate.isBefore(now)) {
-      nextLessonDate.add(weeks: 1);
-    }
-    return nextLessonDate.dateTime;
+    return CourseMentor();
   }  
 
-  void setSelectedCourseType(CourseType? courseType) {
-    selectedCourseType = courseType;
+  void setSelectedCourseType(String courseTypeId) {
+    selectedCourseType = coursesTypes.firstWhere((courseType) => courseType.id == courseTypeId);
     notifyListeners();
   }
   
   void setErrorMessage(String message) {
     errorMessage = message;
-  }  
-  
-  bool checkValidUrl(String url) {
-    return Uri.parse(url).host.isNotEmpty && (url.contains('meet') || url.contains('zoom'));
-  }
+  } 
 
   bool shouldShowTrainingCompleted() {
-    DateTime now = Utils.resetTime(DateTime.now());
-    DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
-    return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) <= 7 * AppConstants.mentorWeeksTraining;
+    return _mentorCourseUtilsService.shouldShowTrainingCompleted();
   }
+
+  List<ColoredText> getCourseText() {
+    return _mentorCourseTextsService.getCourseText(course);
+  }
+
+  String getCancelCourseText() {
+    return _mentorCourseTextsService.getCancelCourseText(course);
+  }
+
+  List<ColoredText> getWaitingFirstStudentText() {
+    return _mentorCourseTextsService.getWaitingFirstStudentText(course);
+  }
+  
+  List<ColoredText> getWaitingMoreStudentsText() {
+    return _mentorCourseTextsService.getWaitingMoreStudentsText(course);
+  }
+
+  List<ColoredText> getWaitingStudentsPartnerText() {
+    return _mentorCourseTextsService.getWaitingStudentsPartnerText(course);
+  }
+  
+  List<ColoredText> getCurrentStudentsText() {
+    return _mentorCourseTextsService.getCurrentStudentsText(course);
+  }
+
+  List<ColoredText> getMentorPartnershipText() {
+    return _mentorCourseTextsService.getMentorPartnershipText(mentorPartnershipRequest);
+  }
+  
+  List<ColoredText> getMentorPartnershipBottomText() {
+    return _mentorCourseTextsService.getMentorPartnershipBottomText(mentorPartnershipRequest);
+  }
+
+  List<ColoredText> getRejectMentorPartnershipText() {
+    return _mentorCourseTextsService.getRejectMentorPartnershipText(mentorPartnershipRequest);
+  }  
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {

@@ -12,12 +12,12 @@ import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 
 class EditCourseDetailsDialog extends StatefulWidget {
-  const EditCourseDetailsDialog({Key? key, @required this.selectedCourseType, @required this.subfields, @required this.setCourseDetailsCallback})
+  const EditCourseDetailsDialog({Key? key, @required this.selectedCourseType, @required this.subfields, @required this.onSetCourseDetails})
     : super(key: key); 
 
   final CourseType? selectedCourseType;
   final List<Subfield>? subfields;
-  final Function(String, Availability?, String)? setCourseDetailsCallback;  
+  final Function(String, Availability?, String)? onSetCourseDetails;  
 
   @override
   State<StatefulWidget> createState() => _EditCourseDetailsDialogState();
@@ -378,13 +378,13 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   void _scheduleCourseWithoutPartner() {
-    widget.setCourseDetailsCallback!(_subfieldId as String, _availability, _meetingUrl as String);
+    widget.onSetCourseDetails!(_subfieldId as String, _availability, _meetingUrl as String);
     Navigator.pop(context);
   }
 
   void _scheduleCourseWithPartner() {
     Navigator.pop(context);
-    widget.setCourseDetailsCallback!(_subfieldId as String, null, _meetingUrl as String);
+    widget.onSetCourseDetails!(_subfieldId as String, null, _meetingUrl as String);
   }  
 
   @override

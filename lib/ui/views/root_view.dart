@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
 import 'package:mwb_connect_app/ui/views/connect_with_mentor/connect_with_mentor_view.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/lesson_request_view.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentor_course_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -53,12 +54,12 @@ class _RootViewState extends State<RootView> {
   
   Widget _showConnectWithMentorView() {
     return ConnectWithMentorView(
-      logoutCallback: _logoutCallback,
+      logoutCallback: _logoutCallback
     );
   }
   
-  Widget _showLessonRequestView() {
-    return LessonRequestView(
+  Widget _showMentorCourseView() { 
+    return MentorCourseView(
       logoutCallback: _logoutCallback,
     );
   }    
@@ -105,7 +106,7 @@ class _RootViewState extends State<RootView> {
             bool? isMentor = _commonProvider?.user?.isMentor;
             if (isMentor != null) {
               if (isMentor) {
-                return _showLessonRequestView();
+                return _showMentorCourseView();
               } else {
                 return _showConnectWithMentorView();
               }

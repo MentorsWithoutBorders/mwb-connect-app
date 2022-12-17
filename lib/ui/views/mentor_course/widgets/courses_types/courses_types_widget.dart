@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/edit_course_details_dialog_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course_item_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/courses_types/course_item_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/courses_types/edit_course_details_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class CoursesTypes extends StatefulWidget {
-  const CoursesTypes({Key? key, @required this.coursesTypes, @required this.selectedCourseType, @required this.subfields, @required this.setSelectedCourseTypeCallback, @required this.setCourseDetailsCallback})
+  const CoursesTypes({Key? key, @required this.coursesTypes, @required this.selectedCourseType, @required this.subfields, @required this.onSelect, @required this.onSetCourseDetails})
     : super(key: key); 
 
   final List<CourseType>? coursesTypes;
   final CourseType? selectedCourseType;
   final List<Subfield>? subfields;
-  final Function(String)? setSelectedCourseTypeCallback;
-  final Function(String, Availability?, String)? setCourseDetailsCallback;    
+  final Function(String)? onSelect;
+  final Function(String, Availability?, String)? onSetCourseDetails;    
 
   @override
   State<StatefulWidget> createState() => _CoursesTypesState();
@@ -24,15 +24,27 @@ class CoursesTypes extends StatefulWidget {
 
 class _CoursesTypesState extends State<CoursesTypes> {
 
-  Widget _showCourseType() {
+  Widget _showCoursesTypesCard() {
     CourseType? selectedCourseType = widget.selectedCourseType;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _showTitle(),
-        _showCoursesTypes(),
-        if (selectedCourseType?.isWithPartner != null) _showActionButton()
-      ]
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+      child: Card(
+        elevation: 3.0,
+        margin: const EdgeInsets.only(bottom: 15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ), 
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Wrap(
+            children: [
+              _showTitle(),
+              _showCoursesTypes(),
+              if (selectedCourseType?.isWithPartner != null) _showActionButton()
+            ]
+          )
+        ),
+      ),
     );
   }
 
@@ -61,7 +73,7 @@ class _CoursesTypesState extends State<CoursesTypes> {
           CourseTypeItem(
             courseType: coursesTypes[i],
             selectedCourseTypeId: selectedCourseType?.id,
-            setSelectedCourseTypeCallback: widget.setSelectedCourseTypeCallback,
+            onSelect: widget.onSelect,
           )
         );
       }
@@ -100,7 +112,7 @@ class _CoursesTypesState extends State<CoursesTypes> {
                 widgetInside: EditCourseDetailsDialog(
                   selectedCourseType: widget.selectedCourseType,
                   subfields: widget.subfields,
-                  setCourseDetailsCallback: widget.setCourseDetailsCallback
+                  onSetCourseDetails: widget.onSetCourseDetails
                 )
               ),
             );
@@ -112,6 +124,6 @@ class _CoursesTypesState extends State<CoursesTypes> {
 
   @override
   Widget build(BuildContext context) {
-    return _showCourseType();
+    return _showCoursesTypesCard();
   }
 }
