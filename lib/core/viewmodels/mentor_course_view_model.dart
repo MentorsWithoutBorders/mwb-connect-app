@@ -32,6 +32,7 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   Future<void> getCoursesTypes() async {
     coursesTypes = await _mentorCourseApiService.getCoursesTypes();
+    selectedCourseType = coursesTypes[0];
     notifyListeners();
   }
   
