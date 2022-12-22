@@ -14,7 +14,6 @@ import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_
 import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class MentorCourseViewModel extends ChangeNotifier {
-  final LocalStorageService _storageService = locator<LocalStorageService>();
   final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
   final MentorCourseTextsService _mentorCourseTextsService = locator<MentorCourseTextsService>();
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
@@ -54,6 +53,8 @@ class MentorCourseViewModel extends ChangeNotifier {
   
   Future<void> cancelCourse(String? reason) async {
     await _mentorCourseApiService.cancelCourse(course?.id, reason);
+    course = null;
+    notifyListeners();
   }  
 
   Future<void> getMentorsWaitingRequests() async {

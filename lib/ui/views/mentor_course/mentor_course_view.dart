@@ -154,7 +154,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
     // Course
-    final List<CourseStudent> students = _mentorCourseProvider?.course?.students as List<CourseStudent>;
+    final List<CourseStudent> students = _mentorCourseProvider?.course?.students ?? [];
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
     final int studentsCount = _mentorCourseProvider?.getStudentsCount() as int;
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
