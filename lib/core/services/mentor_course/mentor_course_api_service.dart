@@ -40,6 +40,14 @@ class MentorCourseApiService {
     Map<String, dynamic> response = await _api.postHTTP(url: '/courses', data: course.toJson());
     course = CourseModel.fromJson(response);
     return course;
+  }
+
+  Future<void> updateMeetingUrl(String? id, String meetingUrl) async {
+    CourseMentor mentor = CourseMentor(
+      meetingUrl: meetingUrl
+    );
+    await _api.putHTTP(url: '/courses/$id/meeting_url', data: mentor.toJson());  
+    return ;
   }  
 
   Future<void> cancelCourse(String? id, String? reason) async {

@@ -154,7 +154,6 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
     // Course
-    final CourseModel course = _mentorCourseProvider?.course as CourseModel;
     final List<CourseStudent> students = _mentorCourseProvider?.course?.students as List<CourseStudent>;
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
     final int studentsCount = _mentorCourseProvider?.getStudentsCount() as int;
@@ -197,6 +196,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             students: students,
             meetingUrl: meetingUrl,
             cancelText: cancelCourseText,
+            onUpdateMeetingUrl: _updateMeetingUrl,
             onCancel: _cancelCourse
           ),
           if (_mentorCourseProvider?.isMentorPartnershipRequest == true) MentorPartnershipRequest(
@@ -233,20 +233,24 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     await _mentorCourseProvider?.addCourse(availability, meetingUrl);
   }
 
-  void _cancelCourse(String? reason) {
-    _mentorCourseProvider?.cancelCourse(reason);
+  Future<void> _updateMeetingUrl(String meetingUrl) async {
+    await _mentorCourseProvider?.updateMeetingUrl(meetingUrl);
   }
 
-  void _acceptMentorPartnershipRequest(String? url) {
-    _mentorCourseProvider?.acceptMentorPartnershipRequest(url);
+  Future<void> _cancelCourse(String? reason) async {
+    await _mentorCourseProvider?.cancelCourse(reason);
+  }
+
+  Future<void> _acceptMentorPartnershipRequest(String? url) async {
+    await _mentorCourseProvider?.acceptMentorPartnershipRequest(url);
   }   
 
-  void _rejectMentorPartnershipRequest(String? reason) {
-    _mentorCourseProvider?.rejectMentorPartnershipRequest(reason);
+  Future<void> _rejectMentorPartnershipRequest(String? reason) async {
+    await _mentorCourseProvider?.rejectMentorPartnershipRequest(reason);
   }
 
-  void _cancelMentorPartnershipRequest(String? reason) {
-    _mentorCourseProvider?.cancelMentorPartnershipRequest();
+  Future<void> _cancelMentorPartnershipRequest(String? reason) async {
+    await _mentorCourseProvider?.cancelMentorPartnershipRequest();
   }  
   
   void _setShouldUnfocus(bool shouldUnfocus) {

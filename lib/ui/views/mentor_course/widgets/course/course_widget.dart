@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/update_meeting_url_dialog_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
@@ -11,13 +12,14 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.text, @required this.students, @required this.meetingUrl, @required this.cancelText, @required this.onCancel})
+  const Course({Key? key, @required this.text, @required this.students, @required this.meetingUrl, @required this.cancelText, @required this.onUpdateMeetingUrl, @required this.onCancel})
     : super(key: key); 
 
   final List<ColoredText>? text;
   final List<CourseStudent>? students;
   final String? meetingUrl;
   final String? cancelText;
+  final Function(String)? onUpdateMeetingUrl;
   final Function(String?)? onCancel;
 
   @override
@@ -162,12 +164,15 @@ class _CourseState extends State<Course> {
         ),
       ),
       onTap: () {
-        // showDialog(
-        //   context: context,
-        //   builder: (_) => AnimatedDialog(
-        //     widgetInside: ChangeUrlDialog(url: _url)
-        //   )
-        // );
+        showDialog(
+          context: context,
+          builder: (_) => AnimatedDialog(
+            widgetInside: UpdateMeetingUrlDialog(
+              meetingUrl: widget.meetingUrl,
+              onUpdate: widget.onUpdateMeetingUrl
+            )
+          )
+        );
       }                 
     );
   }

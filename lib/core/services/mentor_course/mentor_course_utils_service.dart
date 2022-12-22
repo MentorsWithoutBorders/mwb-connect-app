@@ -73,6 +73,23 @@ class MentorCourseUtilsService {
     return mentor.meetingUrl ?? '';
   }
 
+  CourseModel? getUpdatedMeetingUrl(CourseModel? course, String meetingUrl) {
+    CourseMentor mentor = getMentor(course);
+    mentor.meetingUrl = meetingUrl;
+    List<CourseMentor>? mentors = course?.mentors;
+    if (mentors != null) {
+      for (int i = 0; i < mentors.length; i++) {
+        if (mentors[i].id == mentor.id) {
+          mentors[i] = mentor;
+          break;
+        }
+      }
+    }
+    course?.mentors = mentors;
+    return course;
+  }
+  
+
   int getMentorsCount(CourseModel? course) {
     return course?.mentors?.length ?? 0;
   }
