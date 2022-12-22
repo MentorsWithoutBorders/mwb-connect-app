@@ -11,11 +11,12 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.text, @required this.students, @required this.cancelText, @required this.onCancel})
+  const Course({Key? key, @required this.text, @required this.students, @required this.meetingUrl, @required this.cancelText, @required this.onCancel})
     : super(key: key); 
 
   final List<ColoredText>? text;
   final List<CourseStudent>? students;
+  final String? meetingUrl;
   final String? cancelText;
   final Function(String?)? onCancel;
 
@@ -24,7 +25,6 @@ class Course extends StatefulWidget {
 }
 
 class _CourseState extends State<Course> {
-  String _url = '';
 
   Widget _showCourseCard() {
     return Padding(
@@ -113,7 +113,7 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showLink() {
-    _url = 'https://meet.google.com/test-HARD-CODED';
+    String meetingUrl = widget.meetingUrl ?? '';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -134,7 +134,7 @@ class _CourseState extends State<Course> {
               Expanded(
                 child: InkWell(
                   child: Text(
-                    _url,                   
+                    meetingUrl,
                     style: const TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.bold,
@@ -173,13 +173,14 @@ class _CourseState extends State<Course> {
   }
 
   Future<void> _launchMeetingUrl() async {
-    if (await canLaunchUrl(Uri.parse(_url))) {
+    String meetingUrl = widget.meetingUrl as String;
+    if (await canLaunchUrl(Uri.parse(meetingUrl))) {
       await launchUrl(
-        Uri.parse(_url),
+        Uri.parse(meetingUrl),
         mode: LaunchMode.externalApplication,
       );  
     } else {
-      throw 'Could not launch $_url';
+      throw 'Could not launch $meetingUrl';
     }  
   }
 

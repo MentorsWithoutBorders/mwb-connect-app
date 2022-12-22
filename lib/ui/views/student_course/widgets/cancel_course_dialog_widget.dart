@@ -54,7 +54,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
     if (_studentCourseProvider?.isCourse == false) {
       return SizedBox.shrink();
     }
-    String text = 'common.cancel_course_text'.tr();
+    String text = 'student_course.cancel_course_text'.tr();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),

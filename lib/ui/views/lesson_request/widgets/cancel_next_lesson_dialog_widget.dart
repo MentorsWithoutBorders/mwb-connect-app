@@ -197,7 +197,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
   
   void _unfocus() {
     FocusScope.of(context).unfocus();
-  }  
+  }
   
   @override
   Widget build(BuildContext context) {

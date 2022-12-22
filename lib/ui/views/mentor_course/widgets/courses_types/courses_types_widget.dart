@@ -39,6 +39,7 @@ class _CoursesTypesState extends State<CoursesTypes> {
           child: Wrap(
             children: [
               _showTitle(),
+              _showSelectTitle(),
               _showCoursesTypes(),
               if (selectedCourseType?.isWithPartner != null) _showActionButton()
             ]
@@ -49,15 +50,31 @@ class _CoursesTypesState extends State<CoursesTypes> {
   }
 
   Widget _showTitle() {
-    String title = 'mentor_course.course_type_title'.tr();
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15.0),
+      child: Center(
+        child: Text(
+          'mentor_course.start_course'.tr(),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: AppColors.TANGO,
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold
+          )
+        ),
+      ),
+    );
+  }  
+
+  Widget _showSelectTitle() {
+    String title = 'mentor_course.course_type_select_title'.tr();
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 8.0),
       child: Text(
         title,
-        textAlign: TextAlign.center,
         style: const TextStyle(
-          color: AppColors.TANGO,
-          fontWeight: FontWeight.bold
+          fontSize: 12.0,
+          color: AppColors.DOVE_GRAY
         )
       ),
     );
@@ -87,7 +104,7 @@ class _CoursesTypesState extends State<CoursesTypes> {
   }
 
   Widget _showActionButton() {
-    String buttonText = widget.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.wait_students'.tr();
+    String buttonText = widget.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.start_course'.tr();
     return Center(
       child: Container(
         height: 30.0,

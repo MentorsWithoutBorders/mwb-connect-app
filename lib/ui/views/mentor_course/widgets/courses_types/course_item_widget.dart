@@ -34,7 +34,7 @@ class CourseTypeItem extends StatelessWidget {
   Widget _showRadioButton() {
     return SizedBox(
       width: 40.0,
-      height: 30.0,
+      height: 25.0,
       child: Radio<String>(
         value: courseType?.id as String,
         groupValue: selectedCourseTypeId,
@@ -57,8 +57,9 @@ class CourseTypeItem extends StatelessWidget {
     return Container(
       width: 200.0,
       child: Text(
-        '$description:',
+        '$description',
         style: const TextStyle(
+          fontSize: 12.0,
           color: AppColors.DOVE_GRAY
         )
       ),

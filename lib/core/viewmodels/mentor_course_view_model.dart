@@ -26,7 +26,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   CourseModel? course;
   CourseMentor? partnerMentor;
   CourseType? selectedCourseType;
-  String errorMessage = '';  
+  String errorMessage = '';
   bool _shouldUnfocus = false;
   bool shouldShowExpired = false;
   bool shouldShowCanceled = false;
@@ -42,8 +42,8 @@ class MentorCourseViewModel extends ChangeNotifier {
   }
   
   Future<void> addCourse(Availability? availability, String meetingUrl) async {
-    await _mentorCourseApiService.addCourse(course, selectedCourseType, availability, meetingUrl);
-    notifyListeners();    
+    course = await _mentorCourseApiService.addCourse(course, selectedCourseType, availability, meetingUrl);
+    notifyListeners();
   }
   
   Future<void> cancelCourse(String? reason) async {
@@ -116,16 +116,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   bool get isMentorWaitingRequest => !isCourse && mentorWaitingRequest != null && mentorWaitingRequest?.id != null;
 
   CourseMentor getPartnerMentor() {
-    String userId = _storageService.userId as String;
-    List<CourseMentor>? mentors = course?.mentors;
-    if (mentors != null) {
-      for (CourseMentor mentor in mentors) {
-        if (mentor.id != userId) {
-          return mentor;
-        }
-      }
-    }
-    return CourseMentor();
+    return _mentorCourseUtilsService.getPartnerMentor(course);
   }  
 
   void setSelectedCourseType(String courseTypeId) {
@@ -141,6 +132,18 @@ class MentorCourseViewModel extends ChangeNotifier {
     return _mentorCourseUtilsService.shouldShowTrainingCompleted();
   }
 
+  String getMeetingUrl() {
+    return _mentorCourseUtilsService.getMeetingUrl(course);
+  }
+  
+  int getMentorsCount() {
+    return _mentorCourseUtilsService.getMentorsCount(course);
+  }
+  
+  int getStudentsCount() {
+    return _mentorCourseUtilsService.getStudentsCount(course);
+  }  
+
   List<ColoredText> getCourseText() {
     return _mentorCourseTextsService.getCourseText(course);
   }
@@ -149,12 +152,8 @@ class MentorCourseViewModel extends ChangeNotifier {
     return _mentorCourseTextsService.getCancelCourseText(course);
   }
 
-  List<ColoredText> getWaitingFirstStudentText() {
-    return _mentorCourseTextsService.getWaitingFirstStudentText(course);
-  }
-  
-  List<ColoredText> getWaitingMoreStudentsText() {
-    return _mentorCourseTextsService.getWaitingMoreStudentsText(course);
+  List<ColoredText> getWaitingStudentsNoPartnerText() {
+    return _mentorCourseTextsService.getWaitingStudentsNoPartnerText(course);
   }
 
   List<ColoredText> getWaitingStudentsPartnerText() {

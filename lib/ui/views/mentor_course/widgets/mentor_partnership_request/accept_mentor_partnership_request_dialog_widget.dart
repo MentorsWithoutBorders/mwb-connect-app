@@ -44,7 +44,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'common.set_url'.tr(args: [urlType]),
+          'common.set_url'.tr(),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,

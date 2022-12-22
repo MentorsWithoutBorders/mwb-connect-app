@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/courses_types/subfield_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 
@@ -24,14 +25,15 @@ class EditCourseDetailsDialog extends StatefulWidget {
 }
 
 class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
-  Availability? _availability;
-  String? _subfieldId;
-  String? _meetingUrl;
-  bool _shouldShowError = false;  
-  bool _isInit = false;
   final String _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
   final String _defaultTimeFrom = '10am';
   final String urlType = AppConstants.meetingUrlType;    
+  Availability? _availability;
+  String? _subfieldId;
+  String _meetingUrl = '';
+  bool _shouldShowError = false;  
+  bool _isInit = false;
+  bool _isSchedulingCourse = false;
 
   @override
   void didChangeDependencies() {
@@ -43,6 +45,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   void _initAvalability() {
+    _subfieldId = widget.subfields![0].id;
     _availability = Availability(dayOfWeek: _defaultDayOfWeek, time: Time(from: _defaultTimeFrom));
   }
   
@@ -53,12 +56,13 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       child: Wrap(
         children: <Widget>[
           _showTitle(),
-          _showSubfieldsLabel(),
-          _showSubfieldsList(),
+          if (widget.subfields!.length > 1) _showSubfieldsLabel(),
+          if (widget.subfields!.length > 1) _showSubfieldsDropdown(),
           if (widget.selectedCourseType?.isWithPartner == false) _showDayTimeLabel(),
           if (widget.selectedCourseType?.isWithPartner == false) _showDayTimeDropdowns(),
           _showMeetingUrlLabel(),
           _showMeetingUrlInput(),
+          _showStartCourseText(),
           _showButtons()
         ]
       )
@@ -66,22 +70,25 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Widget _showTitle() {
-    return Center(
-      child: Text(
-        'mentor_course.set_course_details'.tr(),
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18.0,
-          fontWeight: FontWeight.bold
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Center(
+        child: Text(
+          'mentor_course.set_course_details'.tr(),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold
+          )
         )
-      )
+      ),
     );
   }
 
   Widget _showSubfieldsLabel() {
     String title = 'common.choose_subfield'.tr();
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+      padding: const EdgeInsets.only(top: 3.0, bottom: 5.0),
       child: Text(
         title,
         textAlign: TextAlign.center,
@@ -93,52 +100,13 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
     );
   }
 
-  Widget _showSubfieldsList() {
-    final List<Widget> subfieldWidgets = [];
-    if (widget.subfields != null) {
-      for (int i = 0; i < widget.subfields!.length; i++) {
-        subfieldWidgets.add(_showSubfieldItem(widget.subfields![i]));
+  Widget _showSubfieldsDropdown() {
+    return SubfieldDropdown(
+      subfields: widget.subfields,
+      selectedSubfieldId: _subfieldId,
+      onSelect: (String? subfieldId) {
+        _setSubfieldId(subfieldId);
       }
-    }
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
-      child: Wrap(
-        children: subfieldWidgets
-      )
-    );
-  }
-
-  Widget _showSubfieldItem(Subfield subfield) {
-    return Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            child: Row(
-              children: [
-                _showRadioButton(subfield.id as String),
-                _showSubfield(subfield)
-              ],
-            ),
-            onTap: () {
-              _setSubfieldId(subfield.id);
-            }
-          )
-        )
-      ]
-    );
-  }
-
-  Widget _showRadioButton(String subfieldId) {
-    return SizedBox(
-      width: 40.0,
-      height: 30.0,
-      child: Radio<String>(
-        value: subfieldId,
-        groupValue: _subfieldId,
-        onChanged: (String? value) {
-          _setSubfieldId(value);
-        }
-      )
     );
   }
 
@@ -147,37 +115,13 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       _subfieldId = value;
     });
   }
-
-  Widget _showSubfield(Subfield subfield) {
-    final String subfieldName = subfield.name as String;
-    return Expanded(
-      child: RichText(
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        text: TextSpan(
-          style: const TextStyle(
-            color: AppColors.DOVE_GRAY,
-            fontSize: 14.0
-          ),
-          children: <TextSpan>[
-            TextSpan(
-              text: subfieldName,
-              style: const TextStyle(
-                color: AppColors.DOVE_GRAY
-              )
-            )
-          ]
-        )
-      )
-    );
-  }  
   
   Widget _showDayTimeLabel() {
-    String title = 'common.choose_day_time_course'.tr();
+    String title = 'mentor_course.choose_day_time_course'.tr();
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+      padding: const EdgeInsets.only(bottom: 5.0),
       child: Text(
         title,
-        textAlign: TextAlign.center,
         style: const TextStyle(
           color: AppColors.TANGO,
           fontWeight: FontWeight.bold
@@ -187,28 +131,28 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }  
 
   Widget _showDayTimeDropdowns() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        _showDayOfWeekDropdown(),
-        Padding(
-          padding: const EdgeInsets.only(top: 4.0, right: 3.0),
-          child: Text('common.availability_from'.tr().toLowerCase())
-        ),
-        _showTimeDropdown()
-      ]
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          _showDayOfWeekDropdown(),
+          Padding(
+            padding: const EdgeInsets.only(left: 6.0, right: 5.0),
+            child: Text('common.at'.tr().toLowerCase())
+          ),
+          _showTimeDropdown()
+        ]
+      ),
     );
   }
 
   Widget _showDayOfWeekDropdown() {
-    return Center(
+    return Expanded(
       child: Container(
-        width: 150.0,
         height: 30.0,
-        margin: const EdgeInsets.only(top: 20.0),
         child: Dropdown(
-          key: const Key(AppKeys.dayOfWeekDropdown),
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
           value: _availability?.dayOfWeek
@@ -238,9 +182,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
     return Container(
       width: 80.0,
       height: 30.0,
-      margin: const EdgeInsets.only(top: 20.0, bottom: 15.0),
       child: Dropdown(
-        key: const Key(AppKeys.timeFromDropdown),
         dropdownMenuItemList: _buildTimeDropdown(),
         onChanged: _setTimeFrom,
         value: _availability?.time?.from
@@ -267,9 +209,9 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Widget _showMeetingUrlLabel() {
-    String title = 'common.set_meetingUrl'.tr();
+    String title = 'common.set_url'.tr();
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+      padding: const EdgeInsets.only(bottom: 5.0),
       child: Text(
         title,
         textAlign: TextAlign.center,
@@ -279,42 +221,49 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
         )
       ),
     );
-  }    
+  }
   
   Widget _showMeetingUrlInput() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: InputBox(
-              autofocus: true, 
-              hint: '',
-              text: _meetingUrl as String,
-              textCapitalization: TextCapitalization.none, 
-              inputChangedCallback: _changeUrl
-            ),
-          ),
-          if (_shouldShowError) _showError()
-        ],
-      )
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InputBox(
+          autofocus: false,
+          hint: '',
+          text: _meetingUrl,
+          textCapitalization: TextCapitalization.none, 
+          inputChangedCallback: _changeUrl
+        ),
+        if (_shouldShowError) _showError()
+      ],
     ); 
   }
 
   Widget _showError() {
     return Padding(
-      padding: const EdgeInsets.only(left: 5.0),
+      padding: const EdgeInsets.only(left: 3.0, top: 5.0),
       child: Text(
-        'common.send_meetingUrl_error'.tr(args: [urlType]),
+        'common.set_url_error'.tr(args: [urlType]),
         style: const TextStyle(
           fontSize: 12.0,
           color: Colors.red
         )
       ),
     );
-  }  
+  }
+
+  Widget _showStartCourseText() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 2.0, top: 10.0),
+      child: Text(
+        'mentor_course.start_course_text'.tr(),
+        style: const TextStyle(
+          fontSize: 12.0,
+          color: AppColors.DOVE_GRAY
+        )
+      ),
+    );
+  }     
 
   void _changeUrl(String url) {
     setState(() {
@@ -330,7 +279,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }    
 
   Widget _showButtons() {
-    String actionButtonText = widget.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.wait_students'.tr();    
+    String actionButtonText = widget.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.start_course'.tr();
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Row(
@@ -338,7 +287,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
         children: <Widget>[
           InkWell(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(30.0, 12.0, 25.0, 12.0),
+              padding: const EdgeInsets.fromLTRB(20.0, 12.0, 25.0, 12.0),
               child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
             ),
             onTap: () {
@@ -351,44 +300,66 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               ),
-              padding: const EdgeInsets.fromLTRB(35.0, 12.0, 35.0, 12.0)
-            ), 
-            onPressed: () {
-              _scheduleCourse();
-            },
-            child: Text(
+              padding: const EdgeInsets.fromLTRB(25.0, 12.0, 25.0, 12.0)
+            ),
+            child: !_isSchedulingCourse ? Text(
               actionButtonText,
-              style: const TextStyle(
-                color: Colors.white
-              )
-            )
+              style: const TextStyle(color: Colors.white)
+            ) : SizedBox(
+              width: 77.0,
+              child: ButtonLoader()
+            ),
+            onPressed: () async {
+              await _scheduleCourse();
+            }
           )
         ]
       )
     ); 
   }
 
-  void _scheduleCourse() {
-    Navigator.pop(context, true);
+  Future<void> _scheduleCourse() async {
+    _changeUrl(Utils.setUrl(_meetingUrl));
+    if (Utils.checkValidUrl(_meetingUrl) == false) {
+      _setShouldShowError(true);
+      return ;
+    }    
     if (widget.selectedCourseType?.isWithPartner == false) {
-      _scheduleCourseWithoutPartner();
+      await _scheduleCourseWithoutPartner();
     } else {
       _scheduleCourseWithPartner();
     }
   }
 
-  void _scheduleCourseWithoutPartner() {
-    widget.onSetCourseDetails!(_subfieldId as String, _availability, _meetingUrl as String);
-    Navigator.pop(context);
+  Future<void> _scheduleCourseWithoutPartner() async {
+    _setIsSchedulingCourse(true);
+    await widget.onSetCourseDetails!(_subfieldId as String, _availability, _meetingUrl);
+    Navigator.pop(context, true);
   }
+
+  void _setIsSchedulingCourse(bool isScheduling) {
+    setState(() {
+      _isSchedulingCourse = isScheduling;
+    });  
+  }  
 
   void _scheduleCourseWithPartner() {
     Navigator.pop(context);
-    widget.onSetCourseDetails!(_subfieldId as String, null, _meetingUrl as String);
-  }  
+    widget.onSetCourseDetails!(_subfieldId as String, null, _meetingUrl);
+  }
+
+  void _unfocus() {
+    FocusScope.of(context).unfocus();
+  }    
 
   @override
   Widget build(BuildContext context) {
-    return _showEditCourseDetailsDialogDialog();
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        _unfocus();
+      },
+      child: _showEditCourseDetailsDialogDialog()
+    );
   }
 }

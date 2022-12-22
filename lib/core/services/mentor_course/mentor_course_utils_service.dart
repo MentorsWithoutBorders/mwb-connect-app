@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
@@ -54,5 +55,29 @@ class MentorCourseUtilsService {
       nextLessonDate.add(weeks: 1);
     }
     return nextLessonDate.dateTime;
-  }      
+  }
+  
+  DateTime getCourseDateTime(String dayOfWeek, String timeFrom) {
+    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    DateTime dateTime = DateTime.now();
+    while (dayOfWeek != dayOfWeekFormat.format(dateTime)) {
+      dateTime = dateTime.add(Duration(days: 1));
+    }
+    List<int> timeFromArray = Utils.convertTime12to24(timeFrom);
+    dateTime = DateTime(dateTime.year, dateTime.month, dateTime.day, timeFromArray[0], timeFromArray[1]);
+    return dateTime;
+  }
+
+  String getMeetingUrl(CourseModel? course) {
+    CourseMentor mentor = getMentor(course);
+    return mentor.meetingUrl ?? '';
+  }
+
+  int getMentorsCount(CourseModel? course) {
+    return course?.mentors?.length ?? 0;
+  }
+  
+  int getStudentsCount(CourseModel? course) {
+    return course?.students?.length ?? 0;
+  }
 }

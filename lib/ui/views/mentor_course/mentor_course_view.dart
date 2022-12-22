@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/core/models/colored_text_model.dart';
-import 'package:mwb_connect_app/core/models/course_student_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
+import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/course_student_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
+import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
@@ -20,6 +22,7 @@ import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/courses_types/courses_types_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/waiting_students_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/mentor_partnership_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/waiting_mentor_partnership_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/training/solve_quiz_add_step_widget.dart';
@@ -118,7 +121,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   
 
   Widget _showTitle() {
-    String title = 'lesson_request.title'.tr();
+    String title = 'mentor_course.course_title'.tr();
     return Container(
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
@@ -141,6 +144,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   Widget _showMentorCourse() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
+    // final int minStudentsCourse = AppConstants.minStudentsCourse;
+    final int minStudentsCourse = 2;
     User user = _commonProvider?.user as User;
     Map<String, dynamic> userMap = user.toJson();
     final CourseMentor mentor = CourseMentor.fromJson(userMap);
@@ -149,7 +154,14 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
     // Course
+    final CourseModel course = _mentorCourseProvider?.course as CourseModel;
     final List<CourseStudent> students = _mentorCourseProvider?.course?.students as List<CourseStudent>;
+    final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
+    final int studentsCount = _mentorCourseProvider?.getStudentsCount() as int;
+    final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
+    final List<ColoredText> waitingStudentsNoPartnerText = _mentorCourseProvider?.getWaitingStudentsNoPartnerText() as List<ColoredText>;
+    final List<ColoredText> waitingStudentsPartnerText = _mentorCourseProvider?.getWaitingStudentsPartnerText() as List<ColoredText>;
+    final List<ColoredText> currentStudentsText = _mentorCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     final List<ColoredText>? courseText = _mentorCourseProvider?.getCourseText();
     final String cancelCourseText = _mentorCourseProvider?.getCancelCourseText() as String;
     // Mentor partnership request
@@ -171,9 +183,19 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onSelect: _setSelectedCourseType, 
             onSetCourseDetails: _setCourseDetails,
           ),
-          if (_mentorCourseProvider?.isCourse == true) Course(
+          if (_mentorCourseProvider?.isCourse == true && students.length < minStudentsCourse) WaitingStudents(
+            mentorsCount: mentorsCount,
+            studentsCount: studentsCount,
+            waitingStudentsNoPartnerText: waitingStudentsNoPartnerText,
+            waitingStudentsPartnerText: waitingStudentsPartnerText,
+            currentStudentsText: currentStudentsText,
+            cancelText: cancelCourseText,
+            onCancel: _cancelCourse
+          ),
+          if (_mentorCourseProvider?.isCourse == true && students.length >= minStudentsCourse) Course(
             text: courseText,
             students: students,
+            meetingUrl: meetingUrl,
             cancelText: cancelCourseText,
             onCancel: _cancelCourse
           ),
@@ -198,17 +220,17 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     _mentorCourseProvider?.setSelectedCourseType(courseTypeId);
   }
 
-  void _setCourseDetails(String subfieldId, Availability? availability, String meetingUrl) {
+  Future<void> _setCourseDetails(String subfieldId, Availability? availability, String meetingUrl) async {
     CourseType selectedCourseType = _mentorCourseProvider?.selectedCourseType ?? CourseType();
-    if (selectedCourseType.isWithPartner == true) {
-      _addCourse(availability, meetingUrl);
+    if (selectedCourseType.isWithPartner == false) {
+      await _addCourse(availability, meetingUrl);
     } else {
       _goToAvailablePartnerMentors(selectedCourseType);
     }
   }
   
-  void _addCourse(Availability? availability, String meetingUrl) {
-    _mentorCourseProvider?.addCourse(availability, meetingUrl);
+  Future<void> _addCourse(Availability? availability, String meetingUrl) async {
+    await _mentorCourseProvider?.addCourse(availability, meetingUrl);
   }
 
   void _cancelCourse(String? reason) {
