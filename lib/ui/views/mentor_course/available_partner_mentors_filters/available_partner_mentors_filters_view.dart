@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/viewmodels/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/availabilities_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/subfields_widget.dart';
@@ -99,7 +99,7 @@ class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMen
   }
   
   void _getAvailableMentors() {
-    _availablePartnerMentorsProvider?.availablePartnerMentors = [];
+    _availablePartnerMentorsProvider?.mentorsWaitingRequests = [];
     _availablePartnerMentorsProvider?.setErrorMessage('');
     _availablePartnerMentorsProvider?.setAvailabilityOptionId(null);
     _availablePartnerMentorsProvider?.setSubfieldOptionId(null);

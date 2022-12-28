@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/availabilities_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/subfields_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/edit_course_start_time_widget.dart';

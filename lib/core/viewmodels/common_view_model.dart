@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/timezone.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/timezone_model.dart';
@@ -12,7 +13,6 @@ import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/download_service.dart';
 import 'package:mwb_connect_app/core/services/app_flags_service.dart';
 import 'package:mwb_connect_app/core/models/app_flags_model.dart';
-import '../../service_locator.dart';
 
 class CommonViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();

@@ -53,7 +53,7 @@ class AuthService {
   }
 
   void logout() {
-    _api.postHTTP(url: '/logout', data: {});
+    _api.postHTTP(url: '/logout');
     _api.resetStorage();
     pushNotificationsService.deleteFCMToken();
     NavigationService.instance.navigateTo('root');

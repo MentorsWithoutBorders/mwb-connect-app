@@ -42,14 +42,6 @@ class MentorCourseApiService {
     return course;
   }
 
-  Future<void> updateMeetingUrl(String? id, String meetingUrl) async {
-    CourseMentor mentor = CourseMentor(
-      meetingUrl: meetingUrl
-    );
-    await _api.putHTTP(url: '/courses/$id/meeting_url', data: mentor.toJson());  
-    return ;
-  }  
-
   Future<void> cancelCourse(String? id, String? reason) async {
     InAppMessage inAppMessage = InAppMessage(
       text: reason
@@ -80,7 +72,7 @@ class MentorCourseApiService {
   }
 
   Future<void> cancelMentorWaitingRequest(String? id) async {
-    await _api.putHTTP(url: '/mentors_waiting_requests/$id/cancel', data: {});  
+    await _api.putHTTP(url: '/mentors_waiting_requests/$id/cancel');  
     return ;
   }
 
@@ -114,7 +106,7 @@ class MentorCourseApiService {
   }
 
   Future<void> cancelMentorPartnershipRequest(String? id) async {
-    await _api.postHTTP(url: '/mentors_partnership_requests/$id/cancel', data: {});  
+    await _api.postHTTP(url: '/mentors_partnership_requests/$id/cancel');  
     return ;
   }
 
@@ -122,4 +114,12 @@ class MentorCourseApiService {
     await _api.postHTTP(url: '/mentors_partnership_requests/$id/update', data: mentorPartnershipRequestModel.toJson());  
     return ;
   }  
+
+  Future<void> updateMeetingUrl(String? id, String meetingUrl) async {
+    CourseMentor mentor = CourseMentor(
+      meetingUrl: meetingUrl
+    );    
+    await _api.postHTTP(url: '/courses/$id/update_meeting_url', data: mentor.toJson());  
+    return ;
+  }
 }

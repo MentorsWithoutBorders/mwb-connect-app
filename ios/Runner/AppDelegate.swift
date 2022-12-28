@@ -20,13 +20,17 @@ import Firebase
                 let session = URLSession.shared
                 let args = call.arguments as! NSDictionary
                 let url = args["url"] as! String
+                let data = args["data"] as? Dictionary<String, Any>
                 let accessToken = args["accessToken"] as? String
+            
+                let jsonData = try? JSONSerialization.data(withJSONObject: data)
 
                 var request = URLRequest(url: URL(string: url)!)
                 request.httpMethod = "GET"
                 request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
                 request.setValue("application/json", forHTTPHeaderField: "Accept")
                 request.setValue(accessToken, forHTTPHeaderField: "Authorization")
+                request.httpBody = jsonData
                 
                 let task = session.dataTask(with: request) { data, response, error in
                     var statusCode = 200

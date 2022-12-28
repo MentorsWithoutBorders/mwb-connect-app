@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/available_partner_mentors_filters_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/available_partner_mentor_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -24,7 +24,7 @@ class AvailablePartnerMentorsView extends StatefulWidget {
 
 class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsView> {
   AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
-  final PagingController<int, User> _pagingController =
+  final PagingController<int, MentorWaitingRequest> _pagingController =
         PagingController(firstPageKey: 0);  
   int _pageNumber = 1;
 
@@ -45,8 +45,8 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      await _availablePartnerMentorsProvider?.getAvailablePartnerMentors(pageNumber: _pageNumber);
-      final newItems = _availablePartnerMentorsProvider?.newAvailablePartnerMentors;
+      await _availablePartnerMentorsProvider?.getMentorsWaitingRequests(pageNumber: _pageNumber);
+      final newItems = _availablePartnerMentorsProvider?.newMentorsWaitingRequests;
       _pageNumber++;
       final isLastPage = newItems!.length < AppConstants.availableMentorsResultsPerPage;
       if (isLastPage) {
@@ -70,12 +70,12 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
-      child: PagedListView<int, User>(
+      child: PagedListView<int, MentorWaitingRequest>(
         padding: const EdgeInsets.all(0),
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<User>(
+        builderDelegate: PagedChildBuilderDelegate<MentorWaitingRequest>(
           itemBuilder: (context, item, index) => AvailablePartnerMentor(
-            partnerMentor: item,
+            partnerMentor: item.mentor,
           ),
           firstPageProgressIndicatorBuilder: (_) => Padding(
             padding: const EdgeInsets.only(bottom: 100.0),

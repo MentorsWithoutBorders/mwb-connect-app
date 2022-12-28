@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
@@ -14,16 +15,16 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
-import 'package:mwb_connect_app/core/services/available_partner_mentors_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/available_partner_mentors_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 
 class AvailablePartnerMentorsViewModel extends ChangeNotifier {
-  final AvailablePartnerMentorsService _availablePartnerMentorService = locator<AvailablePartnerMentorsService>();
+  final AvailablePartnerMentorsService _availablePartnerMentorsService = locator<AvailablePartnerMentorsService>();
   final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
   final UserService _userService = locator<UserService>();
-  List<User> availablePartnerMentors = [];
-  List<User> newAvailablePartnerMentors = [];
+  List<MentorWaitingRequest> mentorsWaitingRequests = [];
+  List<MentorWaitingRequest> newMentorsWaitingRequests = [];
   List<Field> fields = [];
   List<Availability> filterAvailabilities = [];
   Field filterField = Field();
@@ -37,17 +38,17 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
   double scrollOffset = 0;
   bool _shouldUnfocus = false;
 
-  Future<void> getAvailablePartnerMentors({int pageNumber = 1}) async {
+  Future<void> getMentorsWaitingRequests({int pageNumber = 1}) async {
     _removeOptionAllFilterField();
     User filter = User(
       field: _removeOptionAllFilterField(),
       availabilities: _adjustFilterAvailabilities(filterAvailabilities)
     );
-    newAvailablePartnerMentors = await _availablePartnerMentorService.getAvailablePartnerMentors(filter, pageNumber);
-    newAvailablePartnerMentors = _adjustMentorsAvailabilities(newAvailablePartnerMentors);
-    newAvailablePartnerMentors = _splitMentorsAvailabilities(newAvailablePartnerMentors);
-    newAvailablePartnerMentors = _sortMentorsAvailabilities(newAvailablePartnerMentors);
-    availablePartnerMentors += newAvailablePartnerMentors;
+    newMentorsWaitingRequests = await _availablePartnerMentorsService.getMentorsWaitingRequests(filter, pageNumber);
+    newMentorsWaitingRequests = _adjustMentorsAvailabilities(newMentorsWaitingRequests);
+    newMentorsWaitingRequests = _splitMentorsAvailabilities(newMentorsWaitingRequests);
+    newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);
+    mentorsWaitingRequests += newMentorsWaitingRequests;
     setSelectedPartnerMentor(partnerMentor: null);
     setSelectedCourseStartTime(null);    
   }
@@ -141,8 +142,9 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
 
   bool get isAllFieldsSelected => filterField.id == 'all';
 
-  List<User> _adjustMentorsAvailabilities(List<User> mentors) {
-    for (User mentor in mentors) {
+  List<MentorWaitingRequest> _adjustMentorsAvailabilities(List<MentorWaitingRequest> mentorsWaitingRequests) {
+    for (MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
+      CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
       List<Availability> availabilities = [];
       for (Availability availability in mentor.availabilities as List<Availability>) {
         DateFormat timeFormat = DateFormat('ha', 'en');    
@@ -166,11 +168,12 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
       }
       mentor.availabilities = availabilities;
     }
-    return mentors;
+    return mentorsWaitingRequests;
   }
 
-  List<User> _splitMentorsAvailabilities(List<User> mentors) {
-    for (User mentor in mentors) {
+  List<MentorWaitingRequest> _splitMentorsAvailabilities(List<MentorWaitingRequest> mentorsWaitingRequests) {
+    for (MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
+      CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
       List<Availability> availabilities = [];
       for (Availability availability in mentor.availabilities as List<Availability>) {
         if (Utils.convertTime12to24(availability.time?.from as String)[0] > Utils.convertTime12to24(availability.time?.to as String)[0]) {
@@ -189,15 +192,16 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
       }
       mentor.availabilities = availabilities;
     }
-    return mentors;
+    return mentorsWaitingRequests;
   }
 
-  List<User> _sortMentorsAvailabilities(List<User> mentors) {
-    for (User mentor in mentors) {
+  List<MentorWaitingRequest> _sortMentorsAvailabilities(List<MentorWaitingRequest> mentorsWaitingRequests) {
+    for (MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
+      CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
       mentor.availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
       mentor.availabilities?.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
     }
-    return mentors;
+    return mentorsWaitingRequests;
   }
 
   void setSelectedPartnerMentor({User? partnerMentor, Subfield? subfield, Availability? availability}) {
@@ -310,7 +314,8 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
 
   Subfield getSelectedSubfield() {
     if (subfieldOptionId != null) {
-      for (final User mentor in availablePartnerMentors) {
+      for (final MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
+        CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
         if (mentor.id == selectedPartnerMentor?.id) {
           int index = int.parse(subfieldOptionId!.substring(subfieldOptionId!.indexOf('-s-') + 3));
           return mentor.field?.subfields![index] as Subfield;
@@ -322,7 +327,8 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
 
   Availability getSelectedAvailability() {
     if (availabilityOptionId != null) {
-      for (final User mentor in availablePartnerMentors) {
+      for (final MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
+        CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
         if (mentor.id == selectedPartnerMentor?.id) {
           int index = int.parse(availabilityOptionId!.substring(availabilityOptionId!.indexOf('-a-') + 3));
           return mentor.availabilities![index];
@@ -506,7 +512,7 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
   }
 
   void resetValues() {
-    availablePartnerMentors = [];
+    mentorsWaitingRequests = [];
     filterAvailabilities = [];
     filterField = Field();
     selectedPartnerMentor = null;

@@ -38,11 +38,12 @@ class MainActivity: FlutterActivity() {
 
   fun getHTTP(call: MethodCall, result: MethodChannel.Result) {
     val url = call.argument<String>("url") as String
+    val data = call.argument<String>("data") as HashMap<String, Any>
     val accessToken = call.argument<String>("accessToken") as String
     var responseMap: HashMap<String, String>
     GlobalScope.launch (Dispatchers.Main) {
       val apiService = ApiService()
-      responseMap = apiService.getHTTP(url, accessToken)
+      responseMap = apiService.getHTTP(url, data, accessToken)
       result.success(responseMap)
     }
   }

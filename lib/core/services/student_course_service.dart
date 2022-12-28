@@ -23,7 +23,7 @@ class StudentCourseService {
   }
 
   Future<void> joinCourse(String? id) async {
-    await _api.putHTTP(url: '/courses/$id/join', data: {});  
+    await _api.putHTTP(url: '/courses/$id/join');  
     return ;
   }
 

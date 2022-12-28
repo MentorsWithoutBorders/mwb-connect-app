@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
@@ -145,8 +145,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     // final int minStudentsCourse = AppConstants.minStudentsCourse;
     final int minStudentsCourse = 2;
     User user = _commonProvider?.user as User;
-    Map<String, dynamic> userMap = user.toJson();
-    final CourseMentor mentor = CourseMentor.fromJson(userMap);
+    final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     // Courses types
     final List<CourseType>? coursesTypes = _mentorCourseProvider?.coursesTypes;
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
@@ -256,7 +255,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   }
 
   void _goToAvailablePartnerMentors(CourseType selectedCourseType) {
-    final CourseMentor mentor = _commonProvider?.user as CourseMentor;
+    User user = _commonProvider?.user as User;
+    final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
       mentor: mentor,
       courseType: selectedCourseType
