@@ -67,7 +67,7 @@ class MentorCourseApiService {
 
   Future<void> addMentorWaitingRequest(MentorWaitingRequest mentorWaitingRequest, CourseType? selectedCourseType) async {
     mentorWaitingRequest.courseType = selectedCourseType;    
-    await _api.postHTTP(url: '/mentors_waiting_requests', data: mentorWaitingRequest.toJson());  
+    await _api.postHTTP(url: '/mentors_waiting_requests/add', data: mentorWaitingRequest.toJson());  
     return ;
   }
 

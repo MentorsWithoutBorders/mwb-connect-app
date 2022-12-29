@@ -10,8 +10,7 @@ import Firebase
     
     let CHANNEL = "com.mwbconnect.app/api"
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-    let apiChannel = FlutterMethodChannel(name: CHANNEL,
-                                              binaryMessenger: controller.binaryMessenger)
+    let apiChannel = FlutterMethodChannel(name: CHANNEL, binaryMessenger: controller.binaryMessenger)
     apiChannel.setMethodCallHandler({
       (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
       // Note: this method is invoked on the UI thread.
@@ -20,17 +19,13 @@ import Firebase
                 let session = URLSession.shared
                 let args = call.arguments as! NSDictionary
                 let url = args["url"] as! String
-                let data = args["data"] as? Dictionary<String, Any>
                 let accessToken = args["accessToken"] as? String
-            
-                let jsonData = try? JSONSerialization.data(withJSONObject: data)
 
                 var request = URLRequest(url: URL(string: url)!)
                 request.httpMethod = "GET"
                 request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
                 request.setValue("application/json", forHTTPHeaderField: "Accept")
                 request.setValue(accessToken, forHTTPHeaderField: "Authorization")
-                request.httpBody = jsonData
                 
                 let task = session.dataTask(with: request) { data, response, error in
                     var statusCode = 200

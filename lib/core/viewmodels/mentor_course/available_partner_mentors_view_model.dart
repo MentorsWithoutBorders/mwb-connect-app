@@ -9,6 +9,7 @@ import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -38,13 +39,17 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
   double scrollOffset = 0;
   bool _shouldUnfocus = false;
 
-  Future<void> getMentorsWaitingRequests({int pageNumber = 1}) async {
+  Future<void> getMentorsWaitingRequests({CourseType? courseType, int pageNumber = 1}) async {
     _removeOptionAllFilterField();
-    User filter = User(
+    CourseMentor filterMentor = CourseMentor(
       field: _removeOptionAllFilterField(),
       availabilities: _adjustFilterAvailabilities(filterAvailabilities)
     );
-    newMentorsWaitingRequests = await _availablePartnerMentorsService.getMentorsWaitingRequests(filter, pageNumber);
+    MentorWaitingRequest filter = MentorWaitingRequest(
+      mentor: filterMentor,
+      courseType: courseType
+    );
+    newMentorsWaitingRequests = await _availablePartnerMentorsService.getMentorsWaitingRequests(courseType, filter, pageNumber);
     newMentorsWaitingRequests = _adjustMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _splitMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);

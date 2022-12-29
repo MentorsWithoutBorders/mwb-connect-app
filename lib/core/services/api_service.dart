@@ -23,12 +23,12 @@ class ApiService {
     return headers;    
   }
 
-  Future<dynamic> getHTTP({required String url, Map<String, Object?>? data}) async {    
+  Future<dynamic> getHTTP({required String url}) async {    
     String finalUrl = baseUrl + url;
     dynamic responseBody;
     int statusCode = 200;
     String accessToken = _storageService.accessToken ?? '';
-    final response = await platform.invokeMethod('getHTTP', {'url': finalUrl, 'data': data ?? {}, 'accessToken': accessToken});
+    final response = await platform.invokeMethod('getHTTP', {'url': finalUrl, 'accessToken': accessToken});
     final responseMap = response as Map<Object?, Object?>;
     if (responseMap['statusCode'] != null && responseMap['data'] != null) {
       statusCode = int.parse(responseMap['statusCode'] as String);
