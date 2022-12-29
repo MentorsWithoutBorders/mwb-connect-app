@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/skills_dialog_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/skills_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class SubfieldItem extends StatefulWidget {
@@ -21,7 +21,7 @@ class SubfieldItem extends StatefulWidget {
 }
 
 class _SubfieldItemState extends State<SubfieldItem> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
 
   Widget _showSubfieldItem() {
     return Row(
@@ -49,7 +49,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
       height: 30.0,
       child: Radio<String>(
         value: widget.id as String,
-        groupValue: _availablePartnerMentorsProvider?.subfieldOptionId,
+        groupValue: _mentorsWaitingRequestsProvider?.subfieldOptionId,
         onChanged: (String? value) {
           _setSubfieldOption(value);
         }
@@ -58,8 +58,8 @@ class _SubfieldItemState extends State<SubfieldItem> {
   }
 
   void _setSubfieldOption(String? value) {
-    _availablePartnerMentorsProvider?.setSubfieldOptionId(value);
-    _availablePartnerMentorsProvider?.setErrorMessage('');
+    _mentorsWaitingRequestsProvider?.setSubfieldOptionId(value);
+    _mentorsWaitingRequestsProvider?.setErrorMessage('');
   }
 
   Widget _showSubfield() {
@@ -116,7 +116,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return _showSubfieldItem();
   }

@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/availabilities_list_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/field_dropdown_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/subfields_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/availabilities_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/field_dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 
-class AvailablePartnerMentorsFiltersView extends StatefulWidget {
-  const AvailablePartnerMentorsFiltersView({Key? key})
+class MentorsWaitingRequestsFiltersView extends StatefulWidget {
+  const MentorsWaitingRequestsFiltersView({Key? key})
     : super(key: key);   
 
   @override
-  State<StatefulWidget> createState() => _AvailablePartnerMentorsFiltersViewState();
+  State<StatefulWidget> createState() => _MentorsWaitingRequestsFiltersViewState();
 }
 
-class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMentorsFiltersView> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingRequestsFiltersView> {
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   final ScrollController _scrollController = ScrollController();
   
   @override
@@ -27,7 +27,7 @@ class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMen
     super.dispose();
   }  
 
-  Widget _showAvailablePartnerMentorsFilters() {
+  Widget _showMentorsWaitingRequestsFilters() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
@@ -58,7 +58,7 @@ class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMen
   }
 
   Widget _showFieldsCard() {
-    bool isAllFieldsSelected = _availablePartnerMentorsProvider?.isAllFieldsSelected as bool;
+    bool isAllFieldsSelected = _mentorsWaitingRequestsProvider?.isAllFieldsSelected as bool;
     return Card(
       elevation: 3.0,
       shape: RoundedRectangleBorder(
@@ -99,10 +99,10 @@ class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMen
   }
   
   void _getAvailableMentors() {
-    _availablePartnerMentorsProvider?.mentorsWaitingRequests = [];
-    _availablePartnerMentorsProvider?.setErrorMessage('');
-    _availablePartnerMentorsProvider?.setAvailabilityOptionId(null);
-    _availablePartnerMentorsProvider?.setSubfieldOptionId(null);
+    _mentorsWaitingRequestsProvider?.mentorsWaitingRequests = [];
+    _mentorsWaitingRequestsProvider?.setErrorMessage('');
+    _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
+    _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
     Navigator.pop(context, true);    
   }
 
@@ -119,14 +119,14 @@ class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMen
   }
 
   void _afterLayout(_) {
-    if (_availablePartnerMentorsProvider?.shouldUnfocus == true) {
+    if (_mentorsWaitingRequestsProvider?.shouldUnfocus == true) {
       _unfocus();
-      _availablePartnerMentorsProvider?.shouldUnfocus = false;
+      _mentorsWaitingRequestsProvider?.shouldUnfocus = false;
     }
 
-    if (_availablePartnerMentorsProvider?.scrollOffset != 0) {
-      _scrollToPosition(_availablePartnerMentorsProvider?.scrollOffset as double);
-      _availablePartnerMentorsProvider?.scrollOffset = 0;
+    if (_mentorsWaitingRequestsProvider?.scrollOffset != 0) {
+      _scrollToPosition(_mentorsWaitingRequestsProvider?.scrollOffset as double);
+      _mentorsWaitingRequestsProvider?.scrollOffset = 0;
     }    
   }
 
@@ -146,7 +146,7 @@ class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMen
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
 
@@ -169,7 +169,7 @@ class _AvailablePartnerMentorsFiltersViewState extends State<AvailablePartnerMen
               )
             ),
             extendBodyBehindAppBar: true,
-            body: _showAvailablePartnerMentorsFilters()
+            body: _showMentorsWaitingRequestsFilters()
           )
         ],
       ),

@@ -16,12 +16,12 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
-import 'package:mwb_connect_app/core/services/mentor_course/available_partner_mentors_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 
-class AvailablePartnerMentorsViewModel extends ChangeNotifier {
-  final AvailablePartnerMentorsService _availablePartnerMentorsService = locator<AvailablePartnerMentorsService>();
+class MentorsWaitingRequestsViewModel extends ChangeNotifier {
+  final MentorsWaitingRequestsApiService _mentorsWaitingRequestsApiService = locator<MentorsWaitingRequestsApiService>();
   final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
   final UserService _userService = locator<UserService>();
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
@@ -49,7 +49,7 @@ class AvailablePartnerMentorsViewModel extends ChangeNotifier {
       mentor: filterMentor,
       courseType: courseType
     );
-    newMentorsWaitingRequests = await _availablePartnerMentorsService.getMentorsWaitingRequests(courseType, filter, pageNumber);
+    newMentorsWaitingRequests = await _mentorsWaitingRequestsApiService.getMentorsWaitingRequests(courseType, filter, pageNumber);
     newMentorsWaitingRequests = _adjustMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _splitMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);

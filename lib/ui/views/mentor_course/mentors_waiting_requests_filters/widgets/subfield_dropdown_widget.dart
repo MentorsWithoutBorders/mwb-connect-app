@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/skills_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/skills_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
@@ -18,7 +18,7 @@ class SubfieldDropdown extends StatefulWidget {
 }
 
 class _SubfieldDropdownState extends State<SubfieldDropdown> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;  
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;  
   Subfield? _selectedSubfield;
 
   @override
@@ -28,8 +28,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }
   
   void _afterLayout(_) {
-    List<Field> fields = _availablePartnerMentorsProvider?.fields as List<Field>;
-    Field filterField = _availablePartnerMentorsProvider?.filterField as Field;
+    List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
+    Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
     Subfield? selectedSubfield = UtilsFields.getSelectedSubfield(widget.index!, filterField, fields);
     if (selectedSubfield != null) {
       _setSelectedSubfield(selectedSubfield);
@@ -37,8 +37,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }     
 
   Widget _showSubfieldDropdown() {
-    List<Field> fields = _availablePartnerMentorsProvider?.fields as List<Field>;
-    Field filterField = _availablePartnerMentorsProvider?.filterField as Field;
+    List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
+    Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
     final List<String>? skills = UtilsFields.getSkillSuggestions('', widget.index!, filterField, fields);
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -86,13 +86,13 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   void _deleteSubfield() {
     _unfocus();
-    _availablePartnerMentorsProvider?.deleteSubfield(widget.index!);
+    _mentorsWaitingRequestsProvider?.deleteSubfield(widget.index!);
   }
 
   List<DropdownMenuItem<String>> _buildSubfieldDropdown() {
     final List<DropdownMenuItem<String>> items = [];
-    List<Field> fields = _availablePartnerMentorsProvider?.fields as List<Field>;
-    Field filterField = _availablePartnerMentorsProvider?.filterField as Field;
+    List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
+    Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
     List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, filterField, fields);
     for (final Subfield subfield in subfields) {
       items.add(DropdownMenuItem<String>(
@@ -104,8 +104,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }  
 
   void _changeSubfield(String? selectedSubfieldId) {
-    final Field? filterField = _availablePartnerMentorsProvider?.filterField;
-    final List<Field>? fields = _availablePartnerMentorsProvider?.fields;      
+    final Field? filterField = _mentorsWaitingRequestsProvider?.filterField;
+    final List<Field>? fields = _mentorsWaitingRequestsProvider?.fields;      
     List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, filterField, fields);
     Subfield? selectedSubfield;
     for (final Subfield subfield in subfields) {
@@ -115,7 +115,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
       }
     }     
     _setSelectedSubfield(selectedSubfield as Subfield);
-    _availablePartnerMentorsProvider?.setSubfield(selectedSubfield, widget.index!);
+    _mentorsWaitingRequestsProvider?.setSubfield(selectedSubfield, widget.index!);
   }
   
   void _setSelectedSubfield(Subfield subfield) {
@@ -125,12 +125,12 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }
 
   void _unfocus() {
-    _availablePartnerMentorsProvider?.shouldUnfocus = true;
+    _mentorsWaitingRequestsProvider?.shouldUnfocus = true;
   }  
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return _showSubfieldDropdown();
   }

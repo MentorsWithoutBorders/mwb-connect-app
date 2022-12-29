@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_texts_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_service.dart';

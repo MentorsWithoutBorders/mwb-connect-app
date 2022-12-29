@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 
 class AvailabilityItem extends StatefulWidget {
   const AvailabilityItem({Key? key, @required this.id, @required this.availability})
@@ -16,7 +16,7 @@ class AvailabilityItem extends StatefulWidget {
 }
 
 class _AvailabilityItemState extends State<AvailabilityItem> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
 
   Widget _showAvailabilityItem() {
     return Row(
@@ -45,7 +45,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
       height: 30.0,
       child: Radio<String>(
         value: widget.id as String,
-        groupValue: _availablePartnerMentorsProvider?.availabilityOptionId,
+        groupValue: _mentorsWaitingRequestsProvider?.availabilityOptionId,
         onChanged: (String? value) {
           _setAvailabilityOption(value);
         }
@@ -54,8 +54,8 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
   }
 
   void _setAvailabilityOption(String? value) {
-    _availablePartnerMentorsProvider?.setAvailabilityOptionId(value);
-    _availablePartnerMentorsProvider?.setErrorMessage('');
+    _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(value);
+    _mentorsWaitingRequestsProvider?.setErrorMessage('');
   }
 
   Widget _showDayOfWeek() {
@@ -86,7 +86,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return _showAvailabilityItem();
   }

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/typeahead_field_widget.dart';
 
@@ -19,16 +19,16 @@ class Skills extends StatefulWidget {
 }
 
 class _SkillsState extends State<Skills> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   final TextEditingController _typeAheadController = TextEditingController();
   final GlobalKey _keyTypeAhead = GlobalKey();
   String _query = '';
 
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
-    final List<Skill>? skills = _availablePartnerMentorsProvider?.filterField.subfields?[widget.index!].skills;
-    final Field filterField = _availablePartnerMentorsProvider?.filterField as Field;
-    final List<Field> fields = _availablePartnerMentorsProvider?.fields as List<Field>;
+    final List<Skill>? skills = _mentorsWaitingRequestsProvider?.filterField.subfields?[widget.index!].skills;
+    final Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
+    final List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
     if (skills != null && skills.isNotEmpty) {
       for (int i = 0; i < skills.length; i++) {
         final Widget skillWidget = Padding(
@@ -108,11 +108,11 @@ class _SkillsState extends State<Skills> {
     final Offset positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    _availablePartnerMentorsProvider?.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
+    _mentorsWaitingRequestsProvider?.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
   }  
 
   void _addSkill(String skill) {
-    if (_availablePartnerMentorsProvider?.addSkill(skill, widget.index!) == true) {
+    if (_mentorsWaitingRequestsProvider?.addSkill(skill, widget.index!) == true) {
       _resetInputText();
     }
   }
@@ -130,12 +130,12 @@ class _SkillsState extends State<Skills> {
   }
   
   void _deleteSkill(String skillId) {
-    _availablePartnerMentorsProvider?.deleteSkill(skillId, widget.index!);
+    _mentorsWaitingRequestsProvider?.deleteSkill(skillId, widget.index!);
   }
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return _showSkills();
   }

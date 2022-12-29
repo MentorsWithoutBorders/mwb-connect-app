@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/subfield_item_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/subfield_item_widget.dart';
 
 class SubfieldsList extends StatefulWidget {
   const SubfieldsList({Key? key, @required this.mentor})

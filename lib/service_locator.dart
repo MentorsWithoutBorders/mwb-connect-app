@@ -15,7 +15,7 @@ import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_se
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_texts_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_service.dart';
 import 'package:mwb_connect_app/core/services/student_course_service.dart';
-import 'package:mwb_connect_app/core/services/mentor_course/available_partner_mentors_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_api_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/available_mentors_service.dart';
 import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
@@ -34,7 +34,7 @@ import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/forgot_password_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
@@ -66,7 +66,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => MentorCourseTextsService());
   locator.registerLazySingleton(() => MentorCourseUtilsService());
   locator.registerLazySingleton(() => StudentCourseService());
-  locator.registerLazySingleton(() => AvailablePartnerMentorsService());
+  locator.registerLazySingleton(() => MentorsWaitingRequestsApiService());
   locator.registerLazySingleton(() => ConnectWithMentorService());
   locator.registerLazySingleton(() => AvailableMentorsService());
   locator.registerLazySingleton(() => FieldsGoalsService());
@@ -86,7 +86,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => ProfileViewModel());
   locator.registerLazySingleton(() => MentorCourseViewModel());
   locator.registerLazySingleton(() => StudentCourseViewModel());
-  locator.registerLazySingleton(() => AvailablePartnerMentorsViewModel());
+  locator.registerLazySingleton(() => MentorsWaitingRequestsViewModel());
   locator.registerLazySingleton(() => ConnectWithMentorViewModel());
   locator.registerLazySingleton(() => AvailableMentorsViewModel());
   locator.registerLazySingleton(() => LessonRequestViewModel());

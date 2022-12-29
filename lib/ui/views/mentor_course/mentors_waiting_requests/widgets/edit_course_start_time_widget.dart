@@ -5,7 +5,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
@@ -18,7 +18,7 @@ class EditCourseStartTime extends StatefulWidget {
 }
 
 class _EditCourseStartTimeState extends State<EditCourseStartTime> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   bool _isSendingMentorPartnershipRequest = false;  
   
   Widget _showEditCourseStartTimeDialog() {
@@ -52,8 +52,8 @@ class _EditCourseStartTimeState extends State<EditCourseStartTime> {
   }
 
   Widget _showTimeFromDropdown() {
-    Availability? availability = _availablePartnerMentorsProvider?.selectedPartnerMentor?.availabilities![0];
-    String selectedCourseStartTime = _availablePartnerMentorsProvider?.selectedCourseStartTime as String;
+    Availability? availability = _mentorsWaitingRequestsProvider?.selectedPartnerMentor?.availabilities![0];
+    String selectedCourseStartTime = _mentorsWaitingRequestsProvider?.selectedCourseStartTime as String;
     String dayOfWeek = availability?.dayOfWeek as String;
     String preferredStartTime = 'available_mentors.preferred_start_time'.tr(args: [dayOfWeek]);
     return Wrap(
@@ -97,11 +97,11 @@ class _EditCourseStartTimeState extends State<EditCourseStartTime> {
   }
 
   void _setTimeFrom(String? timeFrom) {
-    _availablePartnerMentorsProvider?.setSelectedCourseStartTime(timeFrom as String);
+    _mentorsWaitingRequestsProvider?.setSelectedCourseStartTime(timeFrom as String);
   }    
 
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
-    final List<String> times = _availablePartnerMentorsProvider!.buildHoursList();
+    final List<String> times = _mentorsWaitingRequestsProvider!.buildHoursList();
     final List<DropdownMenuItem<String>> items = [];
     for (final String time in times) {
       items.add(DropdownMenuItem(
@@ -153,21 +153,21 @@ class _EditCourseStartTimeState extends State<EditCourseStartTime> {
     setState(() {
       _isSendingMentorPartnershipRequest = true;
     });
-    User? partnerMentor = _availablePartnerMentorsProvider?.selectedPartnerMentor;
-    _availablePartnerMentorsProvider?.setSelectedPartnerMentor(partnerMentor: partnerMentor);    
-    await _availablePartnerMentorsProvider?.sendMentorPartnershipRequest();
+    User? partnerMentor = _mentorsWaitingRequestsProvider?.selectedPartnerMentor;
+    _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(partnerMentor: partnerMentor);    
+    await _mentorsWaitingRequestsProvider?.sendMentorPartnershipRequest();
     await _resetValues(context);
-    _availablePartnerMentorsProvider?.mergeAvailabilities();
+    _mentorsWaitingRequestsProvider?.mergeAvailabilities();
     Navigator.pop(context, true);
   }
 
   Future<void> _resetValues(BuildContext context) async {
-    _availablePartnerMentorsProvider?.resetValues();
+    _mentorsWaitingRequestsProvider?.resetValues();
   }     
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return _showEditCourseStartTimeDialog();
   }

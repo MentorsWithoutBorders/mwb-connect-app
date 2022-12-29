@@ -7,24 +7,24 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/available_partner_mentors_filters_view.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/available_partner_mentor_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/mentors_waiting_requests_filters_view.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/mentor_waiting_request_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
-class AvailablePartnerMentorsView extends StatefulWidget {
-  const AvailablePartnerMentorsView({Key? key, required this.mentorPartnershipRequest})
+class MentorsWaitingRequestsView extends StatefulWidget {
+  const MentorsWaitingRequestsView({Key? key, required this.mentorPartnershipRequest})
     : super(key: key);
     
   final MentorPartnershipRequestModel mentorPartnershipRequest;
 
   @override
-  State<StatefulWidget> createState() => _AvailablePartnerMentorsViewState();
+  State<StatefulWidget> createState() => _MentorsWaitingRequestsViewState();
 }
 
-class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsView> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView> {
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   final PagingController<int, MentorWaitingRequest> _pagingController =
         PagingController(firstPageKey: 0);  
   int _pageNumber = 1;
@@ -47,8 +47,8 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
   Future<void> _fetchPage(int pageKey) async {
     CourseType? courseType = widget.mentorPartnershipRequest.courseType;
     try {
-      await _availablePartnerMentorsProvider?.getMentorsWaitingRequests(courseType: courseType, pageNumber: _pageNumber);
-      final newItems = _availablePartnerMentorsProvider?.newMentorsWaitingRequests;
+      await _mentorsWaitingRequestsProvider?.getMentorsWaitingRequests(courseType: courseType, pageNumber: _pageNumber);
+      final newItems = _mentorsWaitingRequestsProvider?.newMentorsWaitingRequests;
       _pageNumber++;
       final isLastPage = newItems!.length < AppConstants.availableMentorsResultsPerPage;
       if (isLastPage) {
@@ -63,12 +63,12 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
   }
   
   void _afterLayout(_) {
-    _availablePartnerMentorsProvider?.setAvailabilityOptionId(null);
-    _availablePartnerMentorsProvider?.setSubfieldOptionId(null);
-    _availablePartnerMentorsProvider?.setErrorMessage('');    
+    _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
+    _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
+    _mentorsWaitingRequestsProvider?.setErrorMessage('');    
   }  
 
-  Widget _showAvailablePartnerMentors() {
+  Widget _showMentorsWaitingRequests() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
@@ -76,7 +76,7 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
         padding: const EdgeInsets.all(0),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<MentorWaitingRequest>(
-          itemBuilder: (context, item, index) => AvailablePartnerMentor(
+          itemBuilder: (context, item, index) => MentorWaitingRequestItem(
             partnerMentor: item.mentor,
           ),
           firstPageProgressIndicatorBuilder: (_) => Padding(
@@ -131,7 +131,7 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
   Future<void> _goToFilters() async {
     final shouldRefresh = await Navigator.push(
       context,
-      MaterialPageRoute<bool>(builder: (_) => AvailablePartnerMentorsFiltersView())
+      MaterialPageRoute<bool>(builder: (_) => MentorsWaitingRequestsFiltersView())
     );    
     if (shouldRefresh == true) {
       _pageNumber = 1;
@@ -140,13 +140,13 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
   }
   
   Future<bool> _onWillPop(BuildContext context) async {
-    _availablePartnerMentorsProvider?.resetValues();
+    _mentorsWaitingRequestsProvider?.resetValues();
     return true;
   }  
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
@@ -186,7 +186,7 @@ class _AvailablePartnerMentorsViewState extends State<AvailablePartnerMentorsVie
               ]
             ),
             extendBodyBehindAppBar: true,
-            body: _showAvailablePartnerMentors()
+            body: _showMentorsWaitingRequests()
           )
         ],
       ),

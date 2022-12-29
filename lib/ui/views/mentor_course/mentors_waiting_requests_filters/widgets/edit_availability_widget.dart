@@ -6,7 +6,7 @@ import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
@@ -21,7 +21,7 @@ class EditAvailability extends StatefulWidget {
 }
 
 class _EditAvailabilityState extends State<EditAvailability> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   CommonViewModel? _commonProvider;  
   Availability? _availability;
   bool _shouldShowError = false;
@@ -30,7 +30,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   @override
   void didChangeDependencies() {
     if (!_isInit) {  
-      _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+      _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
       _initAvalability();
       _isInit = true;
     }
@@ -38,7 +38,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   }
 
   void _initAvalability() {
-    _availability = _availablePartnerMentorsProvider?.filterAvailabilities[widget.index!];
+    _availability = _mentorsWaitingRequestsProvider?.filterAvailabilities[widget.index!];
   }
   
   Widget _showEditAvailabilityDialog() {
@@ -241,7 +241,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   void _updateAvailability() {
     if (UtilsAvailabilities.isAvailabilityValid(_availability!) == true) {
-      _availablePartnerMentorsProvider?.updateAvailability(widget.index!, _availability!);
+      _mentorsWaitingRequestsProvider?.updateAvailability(widget.index!, _availability!);
       Navigator.pop(context, true);
     } else {
       setState(() {

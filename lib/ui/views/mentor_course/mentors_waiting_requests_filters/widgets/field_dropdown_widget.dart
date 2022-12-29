@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
@@ -16,7 +16,7 @@ class FieldDropdown extends StatefulWidget {
 }
 
 class _FieldDropdownState extends State<FieldDropdown> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   Field? _selectedField;
 
   @override
@@ -26,7 +26,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
   }
   
   void _afterLayout(_) {
-    _setSelectedField(_availablePartnerMentorsProvider?.getSelectedField() as Field);
+    _setSelectedField(_mentorsWaitingRequestsProvider?.getSelectedField() as Field);
   }    
 
   Widget _showFieldDropdown() {
@@ -48,7 +48,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
 
   List<DropdownMenuItem<String>> _buildFieldDropdown() {
     final List<DropdownMenuItem<String>> items = [];
-    List<Field>? fields = _availablePartnerMentorsProvider?.fields;
+    List<Field>? fields = _mentorsWaitingRequestsProvider?.fields;
     if (fields != null) {
       for (final Field field in fields) {
         items.add(DropdownMenuItem(
@@ -61,7 +61,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
   }  
 
   void _changeField(String? selectedFieldId) async {
-    List<Field>? fields = _availablePartnerMentorsProvider?.fields;
+    List<Field>? fields = _mentorsWaitingRequestsProvider?.fields;
     Field? selectedField;
     if (fields != null) {
       for (final Field field in fields) {
@@ -72,11 +72,11 @@ class _FieldDropdownState extends State<FieldDropdown> {
       }
     }
     _setSelectedField(selectedField as Field);
-    _availablePartnerMentorsProvider?.setField(selectedField);
+    _mentorsWaitingRequestsProvider?.setField(selectedField);
     await Future<void>.delayed(const Duration(milliseconds: 50));
-    List<Subfield>? filterSubfields = _availablePartnerMentorsProvider?.filterField.subfields;
+    List<Subfield>? filterSubfields = _mentorsWaitingRequestsProvider?.filterField.subfields;
     if (filterSubfields != null && filterSubfields.length == 0) {
-      _availablePartnerMentorsProvider?.addSubfield();
+      _mentorsWaitingRequestsProvider?.addSubfield();
     }
   }
   
@@ -87,12 +87,12 @@ class _FieldDropdownState extends State<FieldDropdown> {
   }
 
   void _unfocus() {
-    _availablePartnerMentorsProvider?.shouldUnfocus = true;
+    _mentorsWaitingRequestsProvider?.shouldUnfocus = true;
   }
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return Wrap(
       children: [

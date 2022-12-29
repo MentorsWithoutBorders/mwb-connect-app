@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/subfield_dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfield_dropdown_widget.dart';
 
 class Subfields extends StatefulWidget {
   const Subfields({Key? key})
@@ -16,11 +16,11 @@ class Subfields extends StatefulWidget {
 }
 
 class _SubfieldsState extends State<Subfields> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;    
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;    
 
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<Subfield>? filterSubfields = _availablePartnerMentorsProvider?.filterField.subfields;
+    final List<Subfield>? filterSubfields = _mentorsWaitingRequestsProvider?.filterField.subfields;
     subfieldWidgets.add(Label(text: 'common.subfields'.tr()));
     if (filterSubfields != null) {
       for (int i = 0; i < filterSubfields.length; i++) {
@@ -57,16 +57,16 @@ class _SubfieldsState extends State<Subfields> {
 
   void _addSubfield() {
     _unfocus();
-    _availablePartnerMentorsProvider?.addSubfield();
+    _mentorsWaitingRequestsProvider?.addSubfield();
   }
 
   void _unfocus() {
-    _availablePartnerMentorsProvider?.shouldUnfocus = true;
+    _mentorsWaitingRequestsProvider?.shouldUnfocus = true;
   }
   
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return _showSubfields();
   }

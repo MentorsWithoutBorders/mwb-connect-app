@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/availability_item_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors_filters/widgets/add_availability_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/availability_item_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/add_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilitiesList extends StatefulWidget {
@@ -18,7 +18,7 @@ class AvailabilitiesList extends StatefulWidget {
 }
 
 class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProviderStateMixin {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
 
   Widget _showAvailability() {
     return Column(
@@ -47,7 +47,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
 
   Widget _showAvailabilitiesList() {
     final List<Widget> availabilityWidgets = [];
-    final List<Availability>? availabilitiesList = _availablePartnerMentorsProvider?.filterAvailabilities;
+    final List<Availability>? availabilitiesList = _mentorsWaitingRequestsProvider?.filterAvailabilities;
     if (availabilitiesList != null) {
       for (int i = 0; i < availabilitiesList.length; i++) {
         availabilityWidgets.add(AvailabilityItem(index: i));
@@ -91,9 +91,9 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
         widgetInside: AddAvailability()
       ),
     ).then((shouldShowToast) {
-      if (shouldShowToast && _availablePartnerMentorsProvider?.availabilityMergedMessage.isNotEmpty == true) {
+      if (shouldShowToast && _mentorsWaitingRequestsProvider?.availabilityMergedMessage.isNotEmpty == true) {
         _showToast(context);
-        _availablePartnerMentorsProvider?.resetAvailabilityMergedMessage();
+        _mentorsWaitingRequestsProvider?.resetAvailabilityMergedMessage();
       }
     });     
   }
@@ -103,7 +103,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
     scaffold.showSnackBar(
       SnackBar(
         key: const Key(AppKeys.toast),
-        content: Text(_availablePartnerMentorsProvider?.availabilityMergedMessage as String),
+        content: Text(_mentorsWaitingRequestsProvider?.availabilityMergedMessage as String),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
@@ -113,7 +113,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
       
     return _showAvailability();
   }

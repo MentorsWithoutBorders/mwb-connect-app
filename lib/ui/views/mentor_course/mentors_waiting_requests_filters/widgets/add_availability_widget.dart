@@ -7,7 +7,7 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class AddAvailability extends StatefulWidget {
@@ -19,7 +19,7 @@ class AddAvailability extends StatefulWidget {
 }
 
 class _AddAvailabilityState extends State<AddAvailability> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   Availability? _availability;
   bool _shouldShowError = false;
   final String _defaultDayOfWeek = Utils.translateDayOfWeekToEng(Utils.daysOfWeek[5]);
@@ -236,7 +236,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   void _addAvailability() {
     if (UtilsAvailabilities.isAvailabilityValid(_availability!) == true) {
-      _availablePartnerMentorsProvider?.addAvailability(_availability!);
+      _mentorsWaitingRequestsProvider?.addAvailability(_availability!);
       Navigator.pop(context, true);
     } else {
       setState(() {
@@ -247,7 +247,7 @@ class _AddAvailabilityState extends State<AddAvailability> {
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
     return _showAddAvailabilityDialog();
   }

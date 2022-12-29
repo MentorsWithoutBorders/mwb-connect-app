@@ -25,7 +25,7 @@ import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnershi
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/waiting_mentor_partnership_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/training/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/training/training_completed_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/available_partner_mentors_view.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/mentors_waiting_requests_view.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
@@ -222,7 +222,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (selectedCourseType.isWithPartner == false) {
       await _addCourse(availability, meetingUrl);
     } else {
-      _goToAvailablePartnerMentors(selectedCourseType);
+      _goToMentorsWaitingRequests(selectedCourseType);
     }
   }
   
@@ -254,14 +254,14 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     _mentorCourseProvider?.shouldUnfocus = shouldUnfocus;
   }
 
-  void _goToAvailablePartnerMentors(CourseType selectedCourseType) {
+  void _goToMentorsWaitingRequests(CourseType selectedCourseType) {
     User user = _commonProvider?.user as User;
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
       mentor: mentor,
       courseType: selectedCourseType
     );    
-    Navigator.push(context, MaterialPageRoute<AvailablePartnerMentorsView>(builder: (_) => AvailablePartnerMentorsView(mentorPartnershipRequest: mentorPartnershipRequest)));
+    Navigator.push(context, MaterialPageRoute<MentorsWaitingRequestsView>(builder: (_) => MentorsWaitingRequestsView(mentorPartnershipRequest: mentorPartnershipRequest)));
   }
 
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  

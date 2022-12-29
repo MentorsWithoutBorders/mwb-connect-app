@@ -3,30 +3,30 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/available_partner_mentors_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/availabilities_list_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/subfields_list_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/available_partner_mentors/widgets/edit_course_start_time_widget.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/availabilities_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/subfields_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/edit_course_start_time_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 
-class AvailablePartnerMentor extends StatefulWidget {
-  const AvailablePartnerMentor({Key? key, @required this.partnerMentor})
+class MentorWaitingRequestItem extends StatefulWidget {
+  const MentorWaitingRequestItem({Key? key, @required this.partnerMentor})
     : super(key: key); 
 
   final User? partnerMentor;
 
   @override
-  State<StatefulWidget> createState() => _AvailablePartnerMentorState();
+  State<StatefulWidget> createState() => _MentorsWaitingRequeststate();
 }
 
-class _AvailablePartnerMentorState extends State<AvailablePartnerMentor> {
-  AvailablePartnerMentorsViewModel? _availablePartnerMentorsProvider;  
+class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
+  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;  
 
-  Widget _showAvailablePartnerMentor() {
-    String errorMessage = _availablePartnerMentorsProvider!.errorMessage;
-    String? selectedPartnerMentorId = _availablePartnerMentorsProvider?.selectedPartnerMentor?.id;
+  Widget _showMentorWaitingRequestItem() {
+    String errorMessage = _mentorsWaitingRequestsProvider!.errorMessage;
+    String? selectedPartnerMentorId = _mentorsWaitingRequestsProvider?.selectedPartnerMentor?.id;
     bool shouldShowError = selectedPartnerMentorId != null && selectedPartnerMentorId == widget.partnerMentor?.id && errorMessage !='';
     return AppCard(
       child: Wrap(
@@ -95,13 +95,13 @@ class _AvailablePartnerMentorState extends State<AvailablePartnerMentor> {
   }
 
   void _editAvailability() {
-    _availablePartnerMentorsProvider?.setErrorMessage('');
-    _availablePartnerMentorsProvider?.setSelectedPartnerMentor(partnerMentor: null);
-    _availablePartnerMentorsProvider?.setMentorPartnershipRequestButtonId(widget.partnerMentor?.id);
-    _availablePartnerMentorsProvider?.setDefaultSubfield(widget.partnerMentor as User);
-    _availablePartnerMentorsProvider?.setDefaultAvailability(widget.partnerMentor as User);
-    _availablePartnerMentorsProvider?.setSelectedPartnerMentor(partnerMentor: widget.partnerMentor);
-    if (_availablePartnerMentorsProvider!.isMentorPartnershipRequestValid(widget.partnerMentor as User)) {
+    _mentorsWaitingRequestsProvider?.setErrorMessage('');
+    _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(partnerMentor: null);
+    _mentorsWaitingRequestsProvider?.setMentorPartnershipRequestButtonId(widget.partnerMentor?.id);
+    _mentorsWaitingRequestsProvider?.setDefaultSubfield(widget.partnerMentor as User);
+    _mentorsWaitingRequestsProvider?.setDefaultAvailability(widget.partnerMentor as User);
+    _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(partnerMentor: widget.partnerMentor);
+    if (_mentorsWaitingRequestsProvider!.isMentorPartnershipRequestValid(widget.partnerMentor as User)) {
       _showEditAvailabilityDialog();
     }
   }
@@ -120,7 +120,7 @@ class _AvailablePartnerMentorState extends State<AvailablePartnerMentor> {
   } 
 
   Widget _showError() {
-    String _errorMessage = _availablePartnerMentorsProvider!.errorMessage;
+    String _errorMessage = _mentorsWaitingRequestsProvider!.errorMessage;
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
       width: double.infinity,
@@ -138,8 +138,8 @@ class _AvailablePartnerMentorState extends State<AvailablePartnerMentor> {
 
   @override
   Widget build(BuildContext context) {
-    _availablePartnerMentorsProvider = Provider.of<AvailablePartnerMentorsViewModel>(context);    
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);    
     
-    return _showAvailablePartnerMentor();
+    return _showMentorWaitingRequestItem();
   }
 }
