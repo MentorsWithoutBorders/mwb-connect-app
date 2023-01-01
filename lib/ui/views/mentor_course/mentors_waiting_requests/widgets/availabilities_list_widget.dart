@@ -6,10 +6,13 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/availability_item_widget.dart';
 
 class AvailabilitiesList extends StatefulWidget {
-  const AvailabilitiesList({Key? key, @required this.mentor})
+  const AvailabilitiesList({Key? key, @required this.mentor, @required this.optionId, @required this.getId, @required this.onSelect})
     : super(key: key); 
 
   final User? mentor;
+  final String? optionId;
+  final Function(String, int)? getId;
+  final Function(String?)? onSelect;
 
   @override
   State<StatefulWidget> createState() => _AvailabilitiesListState();
@@ -42,13 +45,17 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   }
 
   Widget _showAvailabilitiesList() {
-    final List<Availability>? availabilities = widget.mentor?.availabilities;    
+    final List<Availability>? availabilities = widget.mentor?.availabilities;
     final List<Widget> availabilityWidgets = [];
     if (availabilities != null) {
       for (int i = 0; i < availabilities.length; i++) {
-        String mentorId = widget.mentor?.id as String;
-        String id = mentorId + '-a-' + i.toString();
-        availabilityWidgets.add(AvailabilityItem(id: id, availability: availabilities[i]));
+        String id = widget.getId!(widget.mentor?.id as String, i).toString();
+        availabilityWidgets.add(AvailabilityItem(
+          id: id,
+          optionId: widget.optionId,
+          availability: availabilities[i],
+          onSelect: widget.onSelect
+        ));
       }
     }
     return Padding(

@@ -8,7 +8,7 @@ import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class MentorCourseUtilsService {
-  final LocalStorageService _storageService = locator<LocalStorageService>();  
+  final LocalStorageService _storageService = locator<LocalStorageService>();
 
   bool shouldShowTrainingCompleted() {
     DateTime now = Utils.resetTime(DateTime.now());

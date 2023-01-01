@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/skills_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class SubfieldItem extends StatefulWidget {
-  const SubfieldItem({Key? key, @required this.id, @required this.subfield, @required this.mentorName})
+  const SubfieldItem({Key? key, @required this.id, @required this.optionId, @required this.subfield, @required this.mentorName, @required this.onSelect})
     : super(key: key); 
 
   final String? id;
+  final String? optionId;
   final Subfield? subfield;
   final String? mentorName;
+  final Function(String?)? onSelect;
 
   @override
   State<StatefulWidget> createState() => _SubfieldItemState();
 }
 
 class _SubfieldItemState extends State<SubfieldItem> {
-  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
-
   Widget _showSubfieldItem() {
     return Row(
       children: [
@@ -49,7 +47,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
       height: 30.0,
       child: Radio<String>(
         value: widget.id as String,
-        groupValue: _mentorsWaitingRequestsProvider?.subfieldOptionId,
+        groupValue: widget.optionId,
         onChanged: (String? value) {
           _setSubfieldOption(value);
         }
@@ -58,8 +56,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
   }
 
   void _setSubfieldOption(String? value) {
-    _mentorsWaitingRequestsProvider?.setSubfieldOptionId(value);
-    _mentorsWaitingRequestsProvider?.setErrorMessage('');
+    widget.onSelect!(value);
   }
 
   Widget _showSubfield() {
@@ -116,8 +113,6 @@ class _SubfieldItemState extends State<SubfieldItem> {
 
   @override
   Widget build(BuildContext context) {
-    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
-
     return _showSubfieldItem();
   }
 }

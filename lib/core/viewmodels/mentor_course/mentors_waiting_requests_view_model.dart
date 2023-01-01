@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
-import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
@@ -15,21 +12,20 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_api_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_utils_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
-import 'package:mwb_connect_app/core/services/user_service.dart';
 
 class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   final MentorsWaitingRequestsApiService _mentorsWaitingRequestsApiService = locator<MentorsWaitingRequestsApiService>();
+  final MentorsWaitingRequestsUtilsService _mentorsWaitingRequestsUtilsService = locator<MentorsWaitingRequestsUtilsService>();
   final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
-  final UserService _userService = locator<UserService>();
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
   List<MentorWaitingRequest> newMentorsWaitingRequests = [];
   List<Field> fields = [];
   List<Availability> filterAvailabilities = [];
   Field filterField = Field();
-  User? selectedPartnerMentor;
+  CourseMentor? selectedPartnerMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
   String? mentorPartnershipRequestButtonId;
@@ -40,9 +36,8 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   bool _shouldUnfocus = false;
 
   Future<void> getMentorsWaitingRequests({CourseType? courseType, int pageNumber = 1}) async {
-    _removeOptionAllFilterField();
     CourseMentor filterMentor = CourseMentor(
-      field: _removeOptionAllFilterField(),
+      field: filterField,
       availabilities: _adjustFilterAvailabilities(filterAvailabilities)
     );
     MentorWaitingRequest filter = MentorWaitingRequest(
@@ -54,167 +49,48 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     newMentorsWaitingRequests = _splitMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);
     mentorsWaitingRequests += newMentorsWaitingRequests;
-    setSelectedPartnerMentor(partnerMentor: null);
+    setSelectedPartnerMentor(mentor: null);
     setSelectedCourseStartTime(null);    
   }
 
-  Future<void> sendMentorPartnershipRequest() async {
+  Future<void> sendMentorPartnershipRequest(CourseMentor mentor) async {
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
-      partnerMentor: selectedPartnerMentor as CourseMentor,
+      mentor: selectedPartnerMentor as CourseMentor,
       courseDayOfWeek: selectedPartnerMentor?.availabilities![0].dayOfWeek as String,
       courseStartTime: selectedCourseStartTime
     );
     await _mentorCourseApiService.sendMentorPartnershipRequest(mentorPartnershipRequest, null);
+    resetValues();
   }
 
   List<Availability> _adjustFilterAvailabilities(List<Availability> filterAvailabilities) {
-    List<Availability> adjustedFilterAvailabilities = [];
-    for (Availability availability in filterAvailabilities) {
-      DateFormat timeFormat = DateFormat('ha', 'en');    
-      DateTime date = Utils.resetTime(DateTime.now());
-      List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
-      DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0]);
-      if (availabilityTimeFrom[0] > 0) {
-        timeFrom = timeFrom.subtract(Duration(hours: 1));
-      }
-      adjustedFilterAvailabilities.add(Availability(
-        dayOfWeek: availability.dayOfWeek,
-        time: Time(
-          from: timeFormat.format(timeFrom).toLowerCase(),
-          to: availability.time?.to
-        )
-      ));
-    }
-    return adjustedFilterAvailabilities;
+    return _mentorsWaitingRequestsUtilsService.adjustFilterAvailabilities(filterAvailabilities);
   } 
-
-  void mergeAvailabilities() async {
-    User student = await _userService.getUserDetails();
-    student.availabilities = UtilsAvailabilities.getSortedAvailabilities(student.availabilities);
-    student.availabilities = UtilsAvailabilities.getMergedAvailabilities(student.availabilities, '')[0];
-    _userService.setUserDetails(student);
-  } 
-
-  void setOptionAllFilterField() {
-    Field fieldAll = Field(id: 'all', name: 'available_mentors.all_fields'.tr());
-    fields.insert(0, fieldAll);
-    for (Field field in fields) {
-      if (field.subfields != null) {
-        Subfield subfieldAll = Subfield(
-          id: 'all', 
-          name: 'available_mentors.all_subfields'.tr(),
-          skills: setAllSkills(field)
-        );
-        field.subfields?.insert(0, subfieldAll);
-      }
-    }
-    setField(fieldAll);
-  }
-
-  Field _removeOptionAllFilterField() {
-    Field field = Field.fromJson(filterField.toJson());
-    if (field.id == 'all') {
-      return Field();
-    } else {
-      if (field.subfields != null && field.subfields!.length > 0) {
-        for (int i = 0; i < field.subfields!.length; i++) {
-          if (field.subfields![i].id == 'all' && (field.subfields![i].skills == null || field.subfields![i].skills!.length == 0)) {
-            field.subfields!.removeAt(i);
-          }
-        }
-      }
-    }
-    return field;
-  }
 
   List<Skill> setAllSkills(Field field) {
-    List<Skill> allSkills = [];
-    List<Subfield> subfields = [];
-    if (field.subfields != null) {
-      subfields = field.subfields as List<Subfield>;
-    }
-    for (Subfield subfield in subfields) {
-      List<Skill> skills = [];
-      if (subfield.skills != null) {
-        skills = subfield.skills as List<Skill>;
-      }
-      for (Skill skill in skills) {
-        allSkills.add(skill);
-      }
-    }
-    return allSkills;
+    return _mentorsWaitingRequestsUtilsService.setAllSkills(field);
   }  
 
   bool get isAllFieldsSelected => filterField.id == 'all';
 
   List<MentorWaitingRequest> _adjustMentorsAvailabilities(List<MentorWaitingRequest> mentorsWaitingRequests) {
-    for (MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
-      CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
-      List<Availability> availabilities = [];
-      for (Availability availability in mentor.availabilities as List<Availability>) {
-        DateFormat timeFormat = DateFormat('ha', 'en');    
-        DateTime date = Utils.resetTime(DateTime.now());
-        List<int> availabilityTimeFrom = Utils.convertTime12to24(availability.time?.from as String);
-        List<int> availabilityTimeTo = Utils.convertTime12to24(availability.time?.to as String);
-        DateTime timeFrom = date.copyWith(hour: availabilityTimeFrom[0]);
-        DateTime timeTo = date.copyWith(hour: availabilityTimeTo[0]);
-        bool hasScheduledLesson = mentor.hasScheduledLesson ?? false;
-        if (!hasScheduledLesson && availabilityTimeFrom[1] > 0) {
-          timeFrom = timeFrom.add(Duration(hours: 1));
-          timeTo = timeTo.add(Duration(hours: 1));
-        }
-        availabilities.add(Availability(
-          dayOfWeek: availability.dayOfWeek,
-          time: Time(
-            from: timeFormat.format(timeFrom).toLowerCase(),
-            to: timeFormat.format(timeTo).toLowerCase()
-          )
-        ));
-      }
-      mentor.availabilities = availabilities;
-    }
-    return mentorsWaitingRequests;
+    return _mentorsWaitingRequestsUtilsService.adjustMentorsAvailabilities(mentorsWaitingRequests);
   }
 
   List<MentorWaitingRequest> _splitMentorsAvailabilities(List<MentorWaitingRequest> mentorsWaitingRequests) {
-    for (MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
-      CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
-      List<Availability> availabilities = [];
-      for (Availability availability in mentor.availabilities as List<Availability>) {
-        if (Utils.convertTime12to24(availability.time?.from as String)[0] > Utils.convertTime12to24(availability.time?.to as String)[0]) {
-          availabilities.add(Availability(
-            dayOfWeek: Utils.getNextDayOfWeek(availability.dayOfWeek as String),
-            time: Time(
-              from: '12am',
-              to: availability.time?.to
-            )
-          ));
-          availability.time?.to = '12am';
-          availabilities.add(availability);
-        } else {
-          availabilities.add(availability);
-        }
-      }
-      mentor.availabilities = availabilities;
-    }
-    return mentorsWaitingRequests;
+    return _mentorsWaitingRequestsUtilsService.splitMentorsAvailabilities(mentorsWaitingRequests);
   }
 
   List<MentorWaitingRequest> _sortMentorsAvailabilities(List<MentorWaitingRequest> mentorsWaitingRequests) {
-    for (MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
-      CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
-      mentor.availabilities?.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
-      mentor.availabilities?.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
-    }
-    return mentorsWaitingRequests;
+    return _mentorsWaitingRequestsUtilsService.sortMentorsAvailabilities(mentorsWaitingRequests);
   }
 
-  void setSelectedPartnerMentor({User? partnerMentor, Subfield? subfield, Availability? availability}) {
-    if (partnerMentor != null) {
+  void setSelectedPartnerMentor({User? mentor, Subfield? subfield, Availability? availability}) {
+    if (mentor != null) {
       if (selectedPartnerMentor == null) {
-        selectedPartnerMentor = User(id: partnerMentor.id);
+        selectedPartnerMentor = CourseMentor(id: mentor.id);
         selectedPartnerMentor?.field = Field(
-          id: partnerMentor.field?.id,
+          id: mentor.field?.id,
           subfields: subfield != null ? [subfield] : [getSelectedSubfield()]
         );
         selectedPartnerMentor?.availabilities = availability != null ? [availability] : [getSelectedAvailability()];
@@ -261,7 +137,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   void setMentorPartnershipRequestButtonId(String? id) {
     mentorPartnershipRequestButtonId = id;   
     notifyListeners();
-  }  
+  }
 
   void setDefaultSubfield(User mentor) {
     if (subfieldOptionId != null && mentorPartnershipRequestButtonId != null && !subfieldOptionId!.contains(mentorPartnershipRequestButtonId as String)) {
@@ -289,108 +165,38 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  bool isMentorPartnershipRequestValid(User mentor) {
-    bool isSubfieldValid = true;
-    bool isAvailabilityValid = true;
-    if (subfieldOptionId == null) {
-      isSubfieldValid = false;
-    }
-    if (availabilityOptionId == null) {
-      isAvailabilityValid = false;
-    }
-    if (!isSubfieldValid) {
-      errorMessage = 'available_mentors.please_select_error'.tr() + ' ' + 'available_mentors.subfield_error'.tr();
-      if (!isAvailabilityValid) {
-        errorMessage += ' ' + 'common.and'.tr() + ' '  + 'available_mentors.availability_error'.tr();
-      }
+  bool shouldShowError() {
+    errorMessage = _mentorsWaitingRequestsUtilsService.getErrorMessage(subfieldOptionId, availabilityOptionId);
+    if (mentorPartnershipRequestButtonId != null && errorMessage != '') {
       notifyListeners();
-      return false;
-    } else if (!isAvailabilityValid) {
-      errorMessage = 'available_mentors.please_select_error'.tr() + ' ' + 'available_mentors.availability_error'.tr();
-      notifyListeners();
+      return true;
+    } else {
       return false;
     }
-    return true;
   }
 
   void setErrorMessage(String message) {
     errorMessage = message;
   }
 
+  String getSubfieldItemId(String mentorId, int index) {
+    return _mentorsWaitingRequestsUtilsService.getSubfieldItemId(mentorId, index);
+  }
+  
+  String getAvailabilityItemId(String mentorId, int index) {
+    return _mentorsWaitingRequestsUtilsService.getAvailabilityItemId(mentorId, index);
+  }
+
   Subfield getSelectedSubfield() {
-    if (subfieldOptionId != null) {
-      for (final MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
-        CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
-        if (mentor.id == selectedPartnerMentor?.id) {
-          int index = int.parse(subfieldOptionId!.substring(subfieldOptionId!.indexOf('-s-') + 3));
-          return mentor.field?.subfields![index] as Subfield;
-        }
-      }
-    }
-    return Subfield();
-  }  
+    return _mentorsWaitingRequestsUtilsService.getSelectedSubfield(subfieldOptionId, mentorsWaitingRequests, selectedPartnerMentor);
+  }
 
   Availability getSelectedAvailability() {
-    if (availabilityOptionId != null) {
-      for (final MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
-        CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
-        if (mentor.id == selectedPartnerMentor?.id) {
-          int index = int.parse(availabilityOptionId!.substring(availabilityOptionId!.indexOf('-a-') + 3));
-          return mentor.availabilities![index];
-        }
-      }
-    }
-    return Availability();
+    return _mentorsWaitingRequestsUtilsService.getSelectedAvailability(availabilityOptionId, mentorsWaitingRequests, selectedPartnerMentor);
   }
 
   List<String> buildHoursList() {
-    final Availability availability = getSelectedAvailability();
-    String timeFrom = availability.time?.from as String;
-    String timeTo = availability.time?.to as String;
-    int timeFromHours = Utils.convertTime12to24(timeFrom)[0];
-    int timeToHours = Utils.convertTime12to24(timeTo)[0];
-
-    List<String> hoursList = [];
-    if (timeFromHours < timeToHours) {
-      hoursList = _setHours(hoursList, timeFromHours, timeToHours);
-    } else {
-      hoursList = _setHours(hoursList, timeFromHours, 24);
-      hoursList = _setHours(hoursList, 0, timeToHours);
-    }
-    return hoursList;
-  }
-  
-  List<String> _setHours(List<String> hoursList, int from, int to) {
-    if (from < 12) {
-      if (to < 12) {
-        hoursList = _addHours(hoursList, from, to - 1, 'am');
-      } else {
-        hoursList = _addHours(hoursList, from, 11, 'am');
-        if (to > 12) {
-          hoursList.add('12pm');
-          hoursList = _addHours(hoursList, 1, to - 13, 'pm');
-        }
-      }
-    } else {
-      if (from == 12) {
-        hoursList.add('12pm');
-        hoursList = _addHours(hoursList, from - 11, to - 13, 'pm');
-      } else {
-        hoursList = _addHours(hoursList, from - 12, to - 13, 'pm');
-      }
-    }
-    return hoursList;
-  }
-
-  List<String> _addHours(List<String> hoursList, int from, int to, String modifier) {
-    for (int i = from; i <= to; i++) {
-      if (i == 0) {
-        hoursList.add('12am');
-      } else {
-        hoursList.add(i.toString() + modifier);
-      }
-    }
-    return hoursList;
+    return _mentorsWaitingRequestsUtilsService.buildHoursList(availabilityOptionId, mentorsWaitingRequests, selectedPartnerMentor);
   }
 
   void addAvailability(Availability availability) {
@@ -403,8 +209,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   }
   
   void _sortFilterAvailabilities() {
-    filterAvailabilities.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
-    filterAvailabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
+    filterAvailabilities = _mentorsWaitingRequestsUtilsService.sortFilterAvailabilities(filterAvailabilities);
     notifyListeners();
   }
   
@@ -434,47 +239,24 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   }
 
   Field getSelectedField() {
-    return fields.firstWhere((field) => field.id == filterField.id);
+    return _mentorsWaitingRequestsUtilsService.getSelectedField(filterField, fields);
   }
 
   void setSubfield(Subfield subfield, int index) {
-    subfield.skills = [];
-    List<Subfield>? filterSubfields = filterField.subfields;
-    if (filterSubfields != null && index < filterSubfields.length) {
-      filterField.subfields?[index] = subfield;
-    } else {
-      filterField.subfields?.add(subfield);
-    }
+    filterField = _mentorsWaitingRequestsUtilsService.setSubfield(subfield, index, filterField);
     notifyListeners();
   }
 
   void addSubfield() {
-    final List<Subfield>? subfields = fields[UtilsFields.getSelectedFieldIndex(filterField, fields)].subfields;
-    final List<Subfield>? filterSubfields = filterField.subfields;
-    if (subfields != null && filterSubfields != null) {
-      for (final Subfield subfield in subfields) {
-        if (!UtilsFields.containsSubfield(filterSubfields, subfield)) {
-          setSubfield(Subfield(id: subfield.id, name: subfield.name), filterSubfields.length + 1);
-          break;
-        }
-      }
-    }
+    filterField = _mentorsWaitingRequestsUtilsService.addSubfield(filterField, fields);
     notifyListeners();
   }
   
   void deleteSubfield(int index) async {
-    List<Subfield> updatedSubfields = [];
-    if (filterField.subfields != null) {
-      for (int i = 0; i < filterField.subfields!.length; i++) {
-        if (i != index) {
-          updatedSubfields.add(filterField.subfields![i]);
-        }
-      }
-    }
     filterField.subfields = [];
     notifyListeners();
     await Future<void>.delayed(const Duration(milliseconds: 100));
-    filterField.subfields = updatedSubfields;
+    filterField = _mentorsWaitingRequestsUtilsService.deleteSubfield(index, filterField);
     notifyListeners();
   }
 
@@ -490,8 +272,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   }
 
   void deleteSkill(String skillId, int index) {
-    Skill? skill = filterField.subfields?[index].skills?.firstWhere((skill) => skill.id == skillId);
-    filterField.subfields?[index].skills?.remove(skill);
+    filterField = _mentorsWaitingRequestsUtilsService.deleteSkill(skillId, index, filterField);
     notifyListeners();
   }  
 
@@ -500,13 +281,8 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   }  
   
   void setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {
-    final double height = screenHeight - statusBarHeight - 340;
-    if (positionDy > height) {
-      scrollOffset = 100;
-    } else if (positionDy < height - 50) {
-      scrollOffset = positionDy - height;
-    }
-  }    
+    scrollOffset = _mentorsWaitingRequestsUtilsService.setScrollOffset(positionDy, screenHeight, statusBarHeight);
+  }
   
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
