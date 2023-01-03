@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dar
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
-import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
@@ -31,7 +30,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   String? mentorPartnershipRequestButtonId;
   String? selectedCourseStartTime;
   String availabilityMergedMessage = '';
-  String errorMessage = '';
   double scrollOffset = 0;
   bool _shouldUnfocus = false;
 
@@ -85,8 +83,15 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     return _mentorsWaitingRequestsUtilsService.sortMentorsAvailabilities(mentorsWaitingRequests);
   }
 
-  void setSelectedPartnerMentor({User? mentor, Subfield? subfield, Availability? availability}) {
+  void setSelectedPartnerMentor({CourseMentor? mentor, Subfield? subfield, Availability? availability}) {
     if (mentor != null) {
+      setMentorPartnershipRequestButtonId(mentor.id);
+      if (subfieldOptionId == null) {
+        setDefaultSubfield(mentor);
+      }
+      if (availabilityOptionId == null) {
+        setDefaultAvailability(mentor);
+      }
       if (selectedPartnerMentor == null) {
         selectedPartnerMentor = CourseMentor(id: mentor.id);
         selectedPartnerMentor?.field = Field(
@@ -120,6 +125,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
         subfieldOptionId = null;
       }
     }
+    setMentorPartnershipRequestButtonId(null);
     notifyListeners();
   }
 
@@ -130,7 +136,8 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
       if (availabilityOptionId != null && !availabilityOptionId!.contains(mentorId)) {
         availabilityOptionId = null;
       }
-    }    
+    }
+    setMentorPartnershipRequestButtonId(null);
     notifyListeners();
   }
 
@@ -139,44 +146,18 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setDefaultSubfield(User mentor) {
-    if (subfieldOptionId != null && mentorPartnershipRequestButtonId != null && !subfieldOptionId!.contains(mentorPartnershipRequestButtonId as String)) {
-      setSubfieldOptionId(null);
-    }
-    if (subfieldOptionId == null) {
-      if (mentor.field!.subfields!.length == 1) {
-        String mentorId = mentor.id as String;
-        setSubfieldOptionId('$mentorId-s-0');
-      }
-    }
+  void setDefaultSubfield(CourseMentor mentor) {
+    setSubfieldOptionId(_mentorsWaitingRequestsUtilsService.setDefaultSubfield(mentor, subfieldOptionId, mentorPartnershipRequestButtonId));
     notifyListeners();
   }
 
-  void setDefaultAvailability(User mentor) {
-    if (availabilityOptionId != null && mentorPartnershipRequestButtonId != null && !availabilityOptionId!.contains(mentorPartnershipRequestButtonId as String)) {
-      setAvailabilityOptionId(null);
-    }
-    if (availabilityOptionId == null) {
-      if (mentor.availabilities?.length == 1) {
-        String mentorId = mentor.id as String;
-        setAvailabilityOptionId('$mentorId-a-0');
-      }
-    }
+  void setDefaultAvailability(CourseMentor mentor) {
+    setAvailabilityOptionId(_mentorsWaitingRequestsUtilsService.setDefaultAvailability(mentor, availabilityOptionId, mentorPartnershipRequestButtonId));
     notifyListeners();
   }
   
-  bool shouldShowError() {
-    errorMessage = _mentorsWaitingRequestsUtilsService.getErrorMessage(subfieldOptionId, availabilityOptionId);
-    if (mentorPartnershipRequestButtonId != null && errorMessage != '') {
-      notifyListeners();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void setErrorMessage(String message) {
-    errorMessage = message;
+  String getErrorMessage(CourseMentor mentor) {
+    return _mentorsWaitingRequestsUtilsService.getErrorMessage(mentor.id, mentorPartnershipRequestButtonId, subfieldOptionId, availabilityOptionId);
   }
 
   String getSubfieldItemId(String mentorId, int index) {
@@ -298,5 +279,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     filterField = Field();
     selectedPartnerMentor = null;
     selectedCourseStartTime = null;
+    mentorPartnershipRequestButtonId = null;
   }  
 }

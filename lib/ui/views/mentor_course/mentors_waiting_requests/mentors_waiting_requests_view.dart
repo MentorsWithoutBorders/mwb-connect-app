@@ -66,7 +66,6 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   void _afterLayout(_) {
     _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
     _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
-    _mentorsWaitingRequestsProvider?.setErrorMessage('');    
   }  
 
   Widget _showMentorsWaitingRequests() {
@@ -75,7 +74,6 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
     final String? availabilityOptionId = _mentorsWaitingRequestsProvider?.availabilityOptionId;
     final String? courseStartTime = _mentorsWaitingRequestsProvider?.selectedCourseStartTime;
     final List<String>? courseHoursList = _mentorsWaitingRequestsProvider?.buildHoursList();
-    final String? errorMessage = _mentorsWaitingRequestsProvider?.errorMessage;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
       child: PagedListView<int, MentorWaitingRequest>(
@@ -83,22 +81,20 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<MentorWaitingRequest>(
           itemBuilder: (context, item, index) {
-            bool shouldShowError = _mentorsWaitingRequestsProvider?.shouldShowError() as bool;
             return MentorWaitingRequestItem(
               mentor: item.mentor,
               subfieldOptionId: subfieldOptionId,
               availabilityOptionId: availabilityOptionId,
               courseStartTime: courseStartTime,
               courseHoursList: courseHoursList,
-              errorMessage: errorMessage,
-              shouldShowError: shouldShowError,
               getSubfieldItemId: _mentorsWaitingRequestsProvider?.getSubfieldItemId,
               getAvailabilityItemId: _mentorsWaitingRequestsProvider?.getAvailabilityItemId,
               onSelectSubfield: _setSubfieldOptionId,
               onSelectAvailability: _setAvailabilityOptionId,
               onSelectCourseStartTime: _setSelectedCourseStartTime,
               onSelectMentor: _setSelectedPartnerMentor,
-              onSendRequest: _sendMentorPartnershipRequest
+              onSendRequest: _sendMentorPartnershipRequest,
+              getErrorMessage: _getErrorMessage
             );
           },
           firstPageProgressIndicatorBuilder: (_) => Padding(
@@ -133,6 +129,10 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
 
   void _sendMentorPartnershipRequest(CourseMentor mentor) {
     _mentorsWaitingRequestsProvider?.sendMentorPartnershipRequest(mentor);
+  }
+
+  String _getErrorMessage(CourseMentor mentor) {
+    return _mentorsWaitingRequestsProvider?.getErrorMessage(mentor) as String;
   }
 
   Widget _showNoItemsFoundIndicator() {

@@ -100,7 +100,6 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
   
   void _getAvailableMentors() {
     _mentorsWaitingRequestsProvider?.mentorsWaitingRequests = [];
-    _mentorsWaitingRequestsProvider?.setErrorMessage('');
     _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
     _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
     Navigator.pop(context, true);    

@@ -113,7 +113,10 @@ class MentorsWaitingRequestsUtilsService {
     return mentorsWaitingRequests;
   }
 
-  String getErrorMessage(String? subfieldOptionId, String? availabilityOptionId) {
+  String getErrorMessage(String? mentorId, String? mentorPartnershipRequestButtonId, String? subfieldOptionId, String? availabilityOptionId) {
+    if (mentorPartnershipRequestButtonId != mentorId) {
+      return '';
+    }
     String errorMessage = '';
     bool isSubfieldValid = true;
     bool isAvailabilityValid = true;
@@ -144,44 +147,75 @@ class MentorsWaitingRequestsUtilsService {
   
   Subfield getSelectedSubfield(String? subfieldOptionId, List<MentorWaitingRequest> mentorsWaitingRequests, CourseMentor? selectedPartnerMentor) {
     if (subfieldOptionId != null) {
-      for (final MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
-        CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
-        if (mentor.id == selectedPartnerMentor?.id) {
-          int index = int.parse(subfieldOptionId.substring(subfieldOptionId.indexOf('-s-') + 3));
-          return mentor.field?.subfields![index] as Subfield;
-        }
-      }
+      CourseMentor mentor = _getMentorById(selectedPartnerMentor?.id, mentorsWaitingRequests);
+      int index = int.parse(subfieldOptionId.substring(subfieldOptionId.indexOf('-s-') + 3));
+      return mentor.field?.subfields![index] as Subfield;      
     }
     return Subfield();
   }
 
+  CourseMentor _getMentorById(String? mentorId, List<MentorWaitingRequest> mentorsWaitingRequests) {
+    CourseMentor mentor = CourseMentor();
+    for (MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
+      if (mentorWaitingRequest.mentor?.id == mentorId) {
+        mentor = mentorWaitingRequest.mentor as CourseMentor;
+        break;
+      }
+    }
+    return mentor;
+  }  
+
   Availability getSelectedAvailability(String? availabilityOptionId, List<MentorWaitingRequest> mentorsWaitingRequests, CourseMentor? selectedPartnerMentor) {
     if (availabilityOptionId != null) {
-      for (final MentorWaitingRequest mentorWaitingRequest in mentorsWaitingRequests) {
-        CourseMentor mentor = mentorWaitingRequest.mentor as CourseMentor;
-        if (mentor.id == selectedPartnerMentor?.id) {
-          int index = int.parse(availabilityOptionId.substring(availabilityOptionId.indexOf('-a-') + 3));
-          return mentor.availabilities![index];
-        }
-      }
+      CourseMentor mentor = _getMentorById(selectedPartnerMentor?.id, mentorsWaitingRequests);
+      int index = int.parse(availabilityOptionId.substring(availabilityOptionId.indexOf('-a-') + 3));
+      return mentor.availabilities![index];      
     }
     return Availability();
   }
 
+  String? setDefaultSubfield(CourseMentor mentor, String? subfieldOptionId, String? mentorPartnershipRequestButtonId) {
+    if (subfieldOptionId != null && mentorPartnershipRequestButtonId != null && !subfieldOptionId.contains(mentorPartnershipRequestButtonId)) {
+      return null;
+    }
+    if (subfieldOptionId == null) {
+      if (mentor.field!.subfields!.length == 1) {
+        String mentorId = mentor.id as String;
+        return '$mentorId-s-0';
+      }
+    }
+    return null;
+  }
+
+  String? setDefaultAvailability(CourseMentor mentor, String? availabilityOptionId, String? mentorPartnershipRequestButtonId) {
+    if (availabilityOptionId != null && mentorPartnershipRequestButtonId != null && !availabilityOptionId.contains(mentorPartnershipRequestButtonId)) {
+      return null;
+    }
+    if (availabilityOptionId == null) {
+      if (mentor.availabilities?.length == 1) {
+        String mentorId = mentor.id as String;
+        return '$mentorId-a-0';
+      }
+    }
+    return null;
+  }
+  
   List<String> buildHoursList(String? availabilityOptionId, List<MentorWaitingRequest> mentorsWaitingRequests, CourseMentor? selectedPartnerMentor) {
     List<String> hoursList = [];
-    final Availability availability = getSelectedAvailability(availabilityOptionId, mentorsWaitingRequests, selectedPartnerMentor);
-    if (availability.time != null) {
-      String timeFrom = availability.time?.from as String;
-      String timeTo = availability.time?.to as String;
-      int timeFromHours = Utils.convertTime12to24(timeFrom)[0];
-      int timeToHours = Utils.convertTime12to24(timeTo)[0];
+    if (selectedPartnerMentor != null) {
+      final Availability availability = getSelectedAvailability(availabilityOptionId, mentorsWaitingRequests, selectedPartnerMentor);
+      if (availability.time != null) {
+        String timeFrom = availability.time?.from as String;
+        String timeTo = availability.time?.to as String;
+        int timeFromHours = Utils.convertTime12to24(timeFrom)[0];
+        int timeToHours = Utils.convertTime12to24(timeTo)[0];
 
-      if (timeFromHours < timeToHours) {
-        hoursList = _setHours(hoursList, timeFromHours, timeToHours);
-      } else {
-        hoursList = _setHours(hoursList, timeFromHours, 24);
-        hoursList = _setHours(hoursList, 0, timeToHours);
+        if (timeFromHours < timeToHours) {
+          hoursList = _setHours(hoursList, timeFromHours, timeToHours);
+        } else {
+          hoursList = _setHours(hoursList, timeFromHours, 24);
+          hoursList = _setHours(hoursList, 0, timeToHours);
+        }
       }
     }
     return hoursList;
@@ -224,7 +258,7 @@ class MentorsWaitingRequestsUtilsService {
     filterAvailabilities.sort((a, b) => Utils.convertTime12to24(a.time?.from as String)[0].compareTo(Utils.convertTime12to24(b.time?.from as String)[0]));
     filterAvailabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
     return filterAvailabilities;
-  }
+  } 
   
   Field getSelectedField(Field filterField, List<Field> fields) {
     return fields.firstWhere((field) => field.id == filterField.id);

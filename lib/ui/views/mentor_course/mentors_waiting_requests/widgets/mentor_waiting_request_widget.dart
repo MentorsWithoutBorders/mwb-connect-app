@@ -10,7 +10,7 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 
 class MentorWaitingRequestItem extends StatefulWidget {
-  const MentorWaitingRequestItem({Key? key, @required this.mentor, @required this.subfieldOptionId, @required this.availabilityOptionId, @required this.courseStartTime, @required this.courseHoursList, @required this.errorMessage, @required this.shouldShowError, @required this.getSubfieldItemId, @required this.getAvailabilityItemId, @required this.onSelectSubfield, @required this.onSelectAvailability, @required this.onSelectCourseStartTime, @required this.onSelectMentor, @required this.onSendRequest})
+  const MentorWaitingRequestItem({Key? key, this.mentor, this.subfieldOptionId, this.availabilityOptionId, this.courseStartTime, this.courseHoursList, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.getErrorMessage})
     : super(key: key); 
 
   final CourseMentor? mentor;
@@ -18,8 +18,6 @@ class MentorWaitingRequestItem extends StatefulWidget {
   final String? availabilityOptionId;
   final String? courseStartTime;
   final List<String>? courseHoursList;
-  final String? errorMessage;
-  final bool? shouldShowError;
   final Function(String, int)? getSubfieldItemId;
   final Function(String, int)? getAvailabilityItemId;
   final Function(String?)? onSelectSubfield;
@@ -27,6 +25,7 @@ class MentorWaitingRequestItem extends StatefulWidget {
   final Function(String?)? onSelectCourseStartTime;
   final Function(CourseMentor)? onSelectMentor;
   final Function(CourseMentor)? onSendRequest;
+  final Function(CourseMentor)? getErrorMessage;
 
   @override
   State<StatefulWidget> createState() => _MentorsWaitingRequeststate();
@@ -34,7 +33,7 @@ class MentorWaitingRequestItem extends StatefulWidget {
 
 class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   Widget _showMentorWaitingRequestItem() {
-    bool shouldShowError = widget.shouldShowError as bool;
+    String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
     return AppCard(
       child: Wrap(
         children: [
@@ -51,7 +50,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
             getId: widget.getAvailabilityItemId,
             onSelect: widget.onSelectAvailability
           ),
-          if (shouldShowError) _showError(),
+          if (errorMessage.isNotEmpty) _showError(),
           _showSendRequestButton()
         ],
       )
@@ -73,6 +72,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   Widget _showSendRequestButton() {
+    String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
     return Center(
       child: Container(
         height: 30.0,
@@ -87,8 +87,10 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
             padding: const EdgeInsets.fromLTRB(25.0, 3.0, 25.0, 3.0),
           ), 
           child: Text('available_mentors.send_request'.tr(), style: const TextStyle(color: Colors.white)),
-          onPressed: () {
-            if (widget.shouldShowError != true) {
+          onPressed: () async {
+            _setSelectedMentor();
+            await Future<void>.delayed(const Duration(milliseconds: 300));
+            if (errorMessage.isEmpty) {
               _showEditAvailabilityDialog();
             }
           }
@@ -98,7 +100,6 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   void _showEditAvailabilityDialog() {
-    _selectMentor();
     String? courseDayOfWeek = widget.mentor?.availabilities![0].dayOfWeek;
     showDialog(
       context: context,
@@ -118,7 +119,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
     });
   }
 
-  void _selectMentor() {
+  void _setSelectedMentor()  {
     widget.onSelectMentor!(widget.mentor as CourseMentor);
   }
 
@@ -127,7 +128,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   Widget _showError() {
-    String errorMessage = widget.errorMessage as String;
+    String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
       width: double.infinity,
