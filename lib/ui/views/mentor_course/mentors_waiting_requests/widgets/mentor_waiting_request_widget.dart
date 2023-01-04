@@ -10,13 +10,13 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 
 class MentorWaitingRequestItem extends StatefulWidget {
-  const MentorWaitingRequestItem({Key? key, this.mentor, this.selectedPartnerMentor, this.subfieldOptionId, this.availabilityOptionId, this.courseHoursList, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.getErrorMessage})
+  const MentorWaitingRequestItem({Key? key, this.mentor, this.subfieldOptionId, this.availabilityOptionId, this.courseDayOfWeek, this.courseHoursList, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.getErrorMessage})
     : super(key: key); 
 
   final CourseMentor? mentor;
-  final CourseMentor? selectedPartnerMentor;
   final String? subfieldOptionId;
   final String? availabilityOptionId;
+  final String? courseDayOfWeek;
   final List<String>? courseHoursList;
   final Function(String, int)? getSubfieldItemId;
   final Function(String, int)? getAvailabilityItemId;
@@ -100,7 +100,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   void _showEditAvailabilityDialog() {
-    String? courseDayOfWeek = widget.selectedPartnerMentor?.availabilities![0].dayOfWeek;
+    String? courseDayOfWeek = widget.courseDayOfWeek;
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(

@@ -70,9 +70,9 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
 
   Widget _showMentorsWaitingRequests() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final CourseMentor? selectedPartnerMentor = _mentorsWaitingRequestsProvider?.selectedPartnerMentor;
     final String? subfieldOptionId = _mentorsWaitingRequestsProvider?.subfieldOptionId;
     final String? availabilityOptionId = _mentorsWaitingRequestsProvider?.availabilityOptionId;
+    final String? courseDayOfWeek = _mentorsWaitingRequestsProvider?.selectedPartnerMentor?.availabilities![0].dayOfWeek;
     final List<String>? courseHoursList = _mentorsWaitingRequestsProvider?.buildHoursList();
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
@@ -83,9 +83,9 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
           itemBuilder: (context, item, index) {
             return MentorWaitingRequestItem(
               mentor: item.mentor,
-              selectedPartnerMentor: selectedPartnerMentor,
               subfieldOptionId: subfieldOptionId,
               availabilityOptionId: availabilityOptionId,
+              courseDayOfWeek: courseDayOfWeek,
               courseHoursList: courseHoursList,
               getSubfieldItemId: _mentorsWaitingRequestsProvider?.getSubfieldItemId,
               getAvailabilityItemId: _mentorsWaitingRequestsProvider?.getAvailabilityItemId,
