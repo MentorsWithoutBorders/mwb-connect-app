@@ -72,7 +72,6 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   Widget _showSendRequestButton() {
-    String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
     return Center(
       child: Container(
         height: 30.0,
@@ -89,7 +88,8 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
           child: Text('available_mentors.send_request'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () async {
             _setSelectedMentor();
-            await Future<void>.delayed(const Duration(milliseconds: 300));
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+            String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
             if (errorMessage.isEmpty) {
               _showEditAvailabilityDialog();
             }

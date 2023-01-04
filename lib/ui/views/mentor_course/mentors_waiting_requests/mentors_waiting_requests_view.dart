@@ -64,8 +64,8 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   }
   
   void _afterLayout(_) {
-    _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
     _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
+    _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
   }  
 
   Widget _showMentorsWaitingRequests() {
@@ -124,6 +124,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   }
 
   void _setSelectedPartnerMentor(CourseMentor? mentor) {
+    _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(mentor: null);
     _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(mentor: mentor);
   }
 

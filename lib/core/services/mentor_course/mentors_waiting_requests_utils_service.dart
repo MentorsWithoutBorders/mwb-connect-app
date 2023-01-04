@@ -174,7 +174,7 @@ class MentorsWaitingRequestsUtilsService {
     return Availability();
   }
 
-  String? setDefaultSubfield(CourseMentor mentor, String? subfieldOptionId, String? mentorPartnershipRequestButtonId) {
+  String? getDefaultSubfield(CourseMentor mentor, String? subfieldOptionId, String? mentorPartnershipRequestButtonId) {
     if (subfieldOptionId != null && mentorPartnershipRequestButtonId != null && !subfieldOptionId.contains(mentorPartnershipRequestButtonId)) {
       return null;
     }
@@ -187,7 +187,7 @@ class MentorsWaitingRequestsUtilsService {
     return null;
   }
 
-  String? setDefaultAvailability(CourseMentor mentor, String? availabilityOptionId, String? mentorPartnershipRequestButtonId) {
+  String? getDefaultAvailability(CourseMentor mentor, String? availabilityOptionId, String? mentorPartnershipRequestButtonId) {
     if (availabilityOptionId != null && mentorPartnershipRequestButtonId != null && !availabilityOptionId.contains(mentorPartnershipRequestButtonId)) {
       return null;
     }
