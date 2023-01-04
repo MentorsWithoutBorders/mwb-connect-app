@@ -48,7 +48,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);
     mentorsWaitingRequests += newMentorsWaitingRequests;
     setSelectedPartnerMentor(mentor: null);
-    setSelectedCourseStartTime(null);    
+    setSelectedCourseStartTime(null);
   }
 
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor) async {

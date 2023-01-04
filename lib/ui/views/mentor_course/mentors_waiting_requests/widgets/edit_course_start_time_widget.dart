@@ -6,11 +6,10 @@ import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class EditCourseStartTime extends StatefulWidget {
-  const EditCourseStartTime({Key? key, @required this.dayOfWeek, @required this.startTime, @required this.hoursList, @required this.onSelect, @required this.onSendRequest})
+  const EditCourseStartTime({Key? key, this.dayOfWeek, this.hoursList, this.onSelect, this.onSendRequest})
     : super(key: key);
 
   final String? dayOfWeek;
-  final String? startTime;
   final List<String>? hoursList;
   final Function(String?)? onSelect;
   final Function? onSendRequest;
@@ -53,7 +52,8 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
   }
 
   Widget _showTimeFromDropdown() {
-    String startTime = widget.startTime as String;
+    final List<String> times = widget.hoursList as List<String>;
+    String startTime = times[0];
     String dayOfWeek = widget.dayOfWeek as String;
     String preferredStartTime = 'available_mentors.preferred_start_time'.tr(args: [dayOfWeek]);
     return Wrap(
