@@ -149,7 +149,7 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
     setState(() {
       _isSendingMentorPartnershipRequest = true;
     });
-    widget.onSendRequest!();
+    await widget.onSendRequest!();
     Navigator.pop(context, true);
   }    
 

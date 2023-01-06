@@ -24,6 +24,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   List<Field> fields = [];
   List<Availability> filterAvailabilities = [];
   Field filterField = Field();
+  CourseType? selectedCourseType;
   CourseMentor? selectedPartnerMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
@@ -47,17 +48,20 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     newMentorsWaitingRequests = _splitMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);
     mentorsWaitingRequests += newMentorsWaitingRequests;
+    setSelectedCourseType(courseType);
     setSelectedPartnerMentor(mentor: null);
     setSelectedCourseStartTime(null);
   }
 
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor) async {
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
-      mentor: selectedPartnerMentor as CourseMentor,
+      mentor: mentor,
+      partnerMentor: selectedPartnerMentor as CourseMentor,
+      courseType: selectedCourseType,
       courseDayOfWeek: selectedPartnerMentor?.availabilities![0].dayOfWeek as String,
       courseStartTime: selectedCourseStartTime
     );
-    await _mentorCourseApiService.sendMentorPartnershipRequest(mentorPartnershipRequest, null);
+    await _mentorCourseApiService.sendMentorPartnershipRequest(mentorPartnershipRequest);
     resetValues();
   }
 
@@ -117,6 +121,11 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void setSelectedCourseType(CourseType? courseType) {
+    selectedCourseType = courseType;
+    notifyListeners();
+  }   
 
   void setSelectedCourseStartTime(String? startTime) {
     selectedCourseStartTime = startTime;

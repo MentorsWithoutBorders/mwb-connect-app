@@ -111,9 +111,10 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
           onSendRequest: _sendMentorPartnershipRequest
         )
       )
-    ).then((shouldGoBack) {
+    ).then((shouldGoBack) async {
       if (shouldGoBack == true) {
-        Navigator.pop(context, true);
+        await Future<void>.delayed(const Duration(milliseconds: 0));
+        Navigator.pop(context);
       }
     });
   }

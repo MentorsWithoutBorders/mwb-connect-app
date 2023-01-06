@@ -82,9 +82,7 @@ class MentorCourseApiService {
     return mentorPartnershipRequestModel;
   }
   
-  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequest, CourseType? selectedCourseType) async {
-    mentorPartnershipRequest.mentor = (await _userService.getUserDetails()) as CourseMentor;
-    mentorPartnershipRequest.courseType = selectedCourseType;    
+  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequest) async {
     await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequest.toJson());  
     return ;
   }
