@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/subfield_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class EditCourseStartTime extends StatefulWidget {
-  const EditCourseStartTime({Key? key, this.dayOfWeek, this.hoursList, this.onSelect, this.onSendRequest})
+class EditCourseDetailsDialog extends StatefulWidget {
+  const EditCourseDetailsDialog({Key? key, this.partnerMentorName, this.partnerMentorSubfield, this.dayOfWeek, this.hoursList, this.mentorSubfields, this.onSendRequest})
     : super(key: key);
 
+  final String? partnerMentorName;
+  final Subfield? partnerMentorSubfield;
   final String? dayOfWeek;
   final List<String>? hoursList;
-  final Function(String?)? onSelect;
-  final Function? onSendRequest;
+  final List<Subfield>? mentorSubfields;
+  final Function(String, String)? onSendRequest;
 
   @override
-  State<StatefulWidget> createState() => _EditStartTimeState();
+  State<StatefulWidget> createState() => _EditCourseDetailsDialogState();
 }
 
-class _EditStartTimeState extends State<EditCourseStartTime> {
-  bool _isSendingMentorPartnershipRequest = false;  
+class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
+  bool _isSendingMentorPartnershipRequest = false;
+  String? _subfieldId;  
+  String? _startTime;
+  
+  @override
+  void initState() {
+    super.initState();
+    if (widget.mentorSubfields!.length > 1) {
+      _subfieldId = widget.mentorSubfields!.firstWhere((Subfield subfield) => subfield.id == widget.partnerMentorSubfield?.id, orElse: () => widget.mentorSubfields![0]).id;
+    }
+    _startTime = widget.hoursList![0];
+  }
   
   Widget _showEditstartTimeDialog() {
     return Container(
@@ -28,6 +42,10 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
       child: Wrap(
         children: <Widget>[
           _showTitle(),
+          if (widget.mentorSubfields!.length > 1) _showPartnerMentorSubfieldLabel(),
+          if (widget.mentorSubfields!.length > 1) _showPartnerMentorSubfield(),
+          if (widget.mentorSubfields!.length > 1) _showMentorSubfieldsLabel(),
+          if (widget.mentorSubfields!.length > 1) _showMentorSubfieldsDropdown(),
           _showTimeFromDropdown(),
           _showButtons()
         ]
@@ -40,7 +58,7 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Text(
-          'available_mentors.lesson_start_time'.tr(),
+          'mentor_course.set_course_details'.tr(),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18,
@@ -51,16 +69,72 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
     );
   }
 
+  Widget _showPartnerMentorSubfieldLabel() {
+    String label = 'mentor_course.mentor_partnership_request_partner_subfield'.tr(args: [widget.partnerMentorName as String]);
+    return Padding(
+      padding: const EdgeInsets.only(top: 3.0, bottom: 5.0),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: AppColors.TANGO,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
+  }
+
+  Widget _showPartnerMentorSubfield() {
+    String subfieldName = widget.partnerMentorSubfield?.name as String;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Text(subfieldName),
+    );
+  }  
+
+  Widget _showMentorSubfieldsLabel() {
+    String label = 'mentor_course.mentor_partnership_request_own_subfield'.tr();
+    return Padding(
+      padding: const EdgeInsets.only(top: 3.0, bottom: 5.0),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: AppColors.TANGO,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
+  }
+
+  Widget _showMentorSubfieldsDropdown() {
+    return SubfieldDropdown(
+      subfields: widget.mentorSubfields,
+      selectedSubfieldId: _subfieldId,
+      onSelect: (String? subfieldId) {
+        _setSubfieldId(subfieldId);
+      }
+    );
+  }
+
+  void _setSubfieldId(String? value) {
+    setState(() {
+      _subfieldId = value;
+    });
+  }  
+
   Widget _showTimeFromDropdown() {
-    final List<String> times = widget.hoursList as List<String>;
-    String startTime = times[0];
     String dayOfWeek = widget.dayOfWeek as String;
-    String preferredStartTime = 'available_mentors.preferred_start_time'.tr(args: [dayOfWeek]);
+    String preferredStartTime = 'mentor_course.mentor_partnership_request_start_time'.tr(args: [dayOfWeek]);
     return Wrap(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(bottom: 15.0, right: 3.0),
-          child: HtmlWidget(preferredStartTime)
+          padding: const EdgeInsets.only(top: 3.0, bottom: 7.0),
+          child: Text(
+            preferredStartTime,
+            style: const TextStyle(
+              color: AppColors.TANGO,
+              fontWeight: FontWeight.bold
+            )
+          )
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 15.0),
@@ -72,8 +146,8 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
                 height: 30.0,
                 child: Dropdown(
                   dropdownMenuItemList: _buildTimeDropdown(),
-                  onChanged: widget.onSelect,
-                  value: startTime
+                  onChanged: _setStartTime,
+                  value: _startTime
                 )
               ),
               Expanded(
@@ -94,6 +168,12 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
         )
       ]
     );
+  }
+
+  void _setStartTime(String? value) {
+    setState(() {
+      _startTime = value;
+    });
   }
 
   List<DropdownMenuItem<String>> _buildTimeDropdown() {
@@ -149,9 +229,9 @@ class _EditStartTimeState extends State<EditCourseStartTime> {
     setState(() {
       _isSendingMentorPartnershipRequest = true;
     });
-    await widget.onSendRequest!();
+    await widget.onSendRequest!(_subfieldId as String, _startTime as String);
     Navigator.pop(context, true);
-  }    
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -58,7 +58,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
   }
-  
+
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
@@ -178,6 +178,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             subfields: subfields,
             onSelect: _setSelectedCourseType, 
             onSetCourseDetails: _setCourseDetails,
+            onFindPartner: _findPartner,
           ),
           if (_mentorCourseProvider?.isCourse == true && students.length < minStudentsCourse) WaitingStudents(
             mentorsCount: mentorsCount,
@@ -203,10 +204,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onAccept: _acceptMentorPartnershipRequest,
             onReject: _rejectMentorPartnershipRequest,
             shouldUnfocus: shouldUnfocus,
-            setShouldUnfocus: _setShouldUnfocus,
+            setShouldUnfocus: _setShouldUnfocus
           ),
           if (_mentorCourseProvider?.isMentorWaitingRequest == true) WaitingMentorPartnershipRequest(
-            onCancel: _cancelMentorPartnershipRequest,
+            onCancel: _cancelMentorPartnershipRequest
           )
         ]
       )
@@ -218,16 +219,16 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   }
 
   Future<void> _setCourseDetails(String subfieldId, Availability? availability, String meetingUrl) async {
-    CourseType selectedCourseType = _mentorCourseProvider?.selectedCourseType ?? CourseType();
-    if (selectedCourseType.isWithPartner == false) {
-      await _addCourse(availability, meetingUrl);
-    } else {
-      _goToMentorsWaitingRequests(selectedCourseType);
-    }
+    await _addCourse(availability, meetingUrl);
   }
-  
+
   Future<void> _addCourse(Availability? availability, String meetingUrl) async {
     await _mentorCourseProvider?.addCourse(availability, meetingUrl);
+  }
+
+  void _findPartner() {
+    CourseType selectedCourseType = _mentorCourseProvider?.selectedCourseType ?? CourseType();
+    _goToMentorsWaitingRequests(selectedCourseType);
   }
 
   Future<void> _updateMeetingUrl(String meetingUrl) async {
@@ -261,7 +262,9 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       mentor: mentor,
       courseType: selectedCourseType
     );    
-    Navigator.push(context, MaterialPageRoute<MentorsWaitingRequestsView>(builder: (_) => MentorsWaitingRequestsView(mentorPartnershipRequest: mentorPartnershipRequest)));
+    Navigator.push(context, MaterialPageRoute<MentorsWaitingRequestsView>(builder: (_) => MentorsWaitingRequestsView(
+      mentorPartnershipRequest: mentorPartnershipRequest)
+    ));
   }
 
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  

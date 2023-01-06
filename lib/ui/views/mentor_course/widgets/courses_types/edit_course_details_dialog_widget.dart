@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/courses_types/subfield_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/subfield_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class EditCourseDetailsDialog extends StatefulWidget {
-  const EditCourseDetailsDialog({Key? key, @required this.selectedCourseType, @required this.subfields, @required this.onSetCourseDetails})
+  const EditCourseDetailsDialog({Key? key, @required this.subfields, @required this.onSetCourseDetails})
     : super(key: key); 
 
-  final CourseType? selectedCourseType;
   final List<Subfield>? subfields;
   final Function(String, Availability?, String)? onSetCourseDetails;  
 
@@ -58,8 +56,8 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
           _showTitle(),
           if (widget.subfields!.length > 1) _showSubfieldsLabel(),
           if (widget.subfields!.length > 1) _showSubfieldsDropdown(),
-          if (widget.selectedCourseType?.isWithPartner == false) _showDayTimeLabel(),
-          if (widget.selectedCourseType?.isWithPartner == false) _showDayTimeDropdowns(),
+          _showDayTimeLabel(),
+          _showDayTimeDropdowns(),
           _showMeetingUrlLabel(),
           _showMeetingUrlInput(),
           _showStartCourseText(),
@@ -279,7 +277,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }    
 
   Widget _showButtons() {
-    String actionButtonText = widget.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.start_course'.tr();
+    String actionButtonText = 'mentor_course.start_course'.tr();
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Row(
@@ -324,11 +322,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       _setShouldShowError(true);
       return ;
     }    
-    if (widget.selectedCourseType?.isWithPartner == false) {
-      await _scheduleCourseWithoutPartner();
-    } else {
-      _scheduleCourseWithPartner();
-    }
+    await _scheduleCourseWithoutPartner();
   }
 
   Future<void> _scheduleCourseWithoutPartner() async {
@@ -342,11 +336,6 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       _isSchedulingCourse = isScheduling;
     });  
   }  
-
-  void _scheduleCourseWithPartner() {
-    Navigator.pop(context);
-    widget.onSetCourseDetails!(_subfieldId as String, null, _meetingUrl);
-  }
 
   void _unfocus() {
     FocusScope.of(context).unfocus();

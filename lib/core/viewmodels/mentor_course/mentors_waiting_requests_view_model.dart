@@ -29,7 +29,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   String? availabilityOptionId;
   String? subfieldOptionId;
   String? mentorPartnershipRequestButtonId;
-  String? selectedCourseStartTime;
   String availabilityMergedMessage = '';
   double scrollOffset = 0;
   bool _shouldUnfocus = false;
@@ -50,16 +49,15 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     mentorsWaitingRequests += newMentorsWaitingRequests;
     setSelectedCourseType(courseType);
     setSelectedPartnerMentor(mentor: null);
-    setSelectedCourseStartTime(null);
   }
 
-  Future<void> sendMentorPartnershipRequest(CourseMentor mentor) async {
+  Future<void> sendMentorPartnershipRequest(CourseMentor mentor, String mentorSubfieldId, String courseStartTime) async {
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
       mentor: mentor,
       partnerMentor: selectedPartnerMentor as CourseMentor,
       courseType: selectedCourseType,
       courseDayOfWeek: selectedPartnerMentor?.availabilities![0].dayOfWeek as String,
-      courseStartTime: selectedCourseStartTime
+      courseStartTime: courseStartTime
     );
     await _mentorCourseApiService.sendMentorPartnershipRequest(mentorPartnershipRequest);
     resetValues();
@@ -109,12 +107,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
           subfields: subfield != null ? [subfield] : [getSelectedSubfield()]
         );
         selectedPartnerMentor?.availabilities = availability != null ? [availability] : [getSelectedAvailability()];
-        final String? timeFrom = selectedPartnerMentor?.availabilities![0].time?.from;
-        if (timeFrom != null) {
-          setSelectedCourseStartTime(timeFrom);
-        }
-      } else {
-        selectedPartnerMentor?.availabilities![0].time?.from = selectedCourseStartTime;
       }
     } else {
       selectedPartnerMentor = null;
@@ -126,11 +118,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     selectedCourseType = courseType;
     notifyListeners();
   }   
-
-  void setSelectedCourseStartTime(String? startTime) {
-    selectedCourseStartTime = startTime;
-    notifyListeners();
-  }  
 
   void setAvailabilityOptionId(String? id) {
     availabilityOptionId = id;
@@ -295,7 +282,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     filterAvailabilities = [];
     filterField = Field();
     selectedPartnerMentor = null;
-    selectedCourseStartTime = null;
     subfieldOptionId = null;
     availabilityOptionId = null;
     mentorPartnershipRequestButtonId = null;

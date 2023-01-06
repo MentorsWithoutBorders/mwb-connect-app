@@ -5,9 +5,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/course_type_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
-import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/mentors_waiting_requests_filters_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/mentor_waiting_request_widget.dart';
@@ -70,9 +71,11 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
 
   Widget _showMentorsWaitingRequests() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final CourseMentor? selectedPartnerMentor = _mentorsWaitingRequestsProvider?.selectedPartnerMentor;
     final String? subfieldOptionId = _mentorsWaitingRequestsProvider?.subfieldOptionId;
     final String? availabilityOptionId = _mentorsWaitingRequestsProvider?.availabilityOptionId;
     final String? courseDayOfWeek = _mentorsWaitingRequestsProvider?.selectedPartnerMentor?.availabilities![0].dayOfWeek;
+    final List<Subfield> mentorSubfields = widget.mentorPartnershipRequest.mentor?.field?.subfields as List<Subfield>;
     final List<String>? courseHoursList = _mentorsWaitingRequestsProvider?.buildHoursList();
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
@@ -82,16 +85,17 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
         builderDelegate: PagedChildBuilderDelegate<MentorWaitingRequest>(
           itemBuilder: (context, item, index) {
             return MentorWaitingRequestItem(
-              mentor: item.mentor,
+              partnerMentor: item.mentor,
+              selectedPartnerMentor: selectedPartnerMentor,
               subfieldOptionId: subfieldOptionId,
               availabilityOptionId: availabilityOptionId,
               courseDayOfWeek: courseDayOfWeek,
+              mentorSubfields: mentorSubfields,
               courseHoursList: courseHoursList,
               getSubfieldItemId: _mentorsWaitingRequestsProvider?.getSubfieldItemId,
               getAvailabilityItemId: _mentorsWaitingRequestsProvider?.getAvailabilityItemId,
               onSelectSubfield: _setSubfieldOptionId,
               onSelectAvailability: _setAvailabilityOptionId,
-              onSelectCourseStartTime: _setSelectedCourseStartTime,
               onSelectMentor: _setSelectedPartnerMentor,
               onSendRequest: _sendMentorPartnershipRequest,
               getErrorMessage: _getErrorMessage
@@ -119,17 +123,14 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
     _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(availabilityOptionId);
   }
 
-  void _setSelectedCourseStartTime(String? courseStartTime) {
-    _mentorsWaitingRequestsProvider?.setSelectedCourseStartTime(courseStartTime);
-  }
-
   void _setSelectedPartnerMentor(CourseMentor? mentor) {
     _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(mentor: null);
     _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(mentor: mentor);
   }
 
-  void _sendMentorPartnershipRequest(CourseMentor mentor) {
-    _mentorsWaitingRequestsProvider?.sendMentorPartnershipRequest(mentor);
+  void _sendMentorPartnershipRequest(String mentorSubfieldId, String courseStartTime) {
+    CourseMentor mentor = widget.mentorPartnershipRequest.mentor as CourseMentor;
+    _mentorsWaitingRequestsProvider?.sendMentorPartnershipRequest(mentor, mentorSubfieldId, courseStartTime);
   }
 
   String _getErrorMessage(CourseMentor mentor) {

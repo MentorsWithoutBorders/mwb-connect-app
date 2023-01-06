@@ -9,14 +9,15 @@ import 'package:mwb_connect_app/ui/views/mentor_course/widgets/courses_types/edi
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class CoursesTypes extends StatefulWidget {
-  const CoursesTypes({Key? key, @required this.coursesTypes, @required this.selectedCourseType, @required this.subfields, @required this.onSelect, @required this.onSetCourseDetails})
+  const CoursesTypes({Key? key, @required this.coursesTypes, @required this.selectedCourseType, @required this.subfields, @required this.onSelect, @required this.onSetCourseDetails, @required this.onFindPartner})
     : super(key: key); 
 
   final List<CourseType>? coursesTypes;
   final CourseType? selectedCourseType;
   final List<Subfield>? subfields;
   final Function(String)? onSelect;
-  final Function(String, Availability?, String)? onSetCourseDetails;    
+  final Function(String, Availability?, String)? onSetCourseDetails;
+  final Function? onFindPartner;
 
   @override
   State<StatefulWidget> createState() => _CoursesTypesState();
@@ -104,7 +105,8 @@ class _CoursesTypesState extends State<CoursesTypes> {
   }
 
   Widget _showActionButton() {
-    String buttonText = widget.selectedCourseType?.isWithPartner as bool ? 'mentor_course.find_partner'.tr() : 'mentor_course.start_course'.tr();
+    bool isWithPartner = widget.selectedCourseType?.isWithPartner as bool;
+    String buttonText = isWithPartner ? 'mentor_course.find_partner'.tr() : 'mentor_course.start_course'.tr();
     return Center(
       child: Container(
         height: 30.0,
@@ -123,20 +125,31 @@ class _CoursesTypesState extends State<CoursesTypes> {
             style: const TextStyle(color: Colors.white)
           ),
           onPressed: () async {
-            showDialog(
-              context: context,
-              builder: (_) => AnimatedDialog(
-                widgetInside: EditCourseDetailsDialog(
-                  selectedCourseType: widget.selectedCourseType,
-                  subfields: widget.subfields,
-                  onSetCourseDetails: widget.onSetCourseDetails
-                )
-              ),
-            );
+            if (!isWithPartner) {
+              _editCourseDetails();
+            } else {
+              _findPartner();
+            }
           }
         )
       )
     );
+  }
+
+  void _editCourseDetails() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: EditCourseDetailsDialog(
+          subfields: widget.subfields,
+          onSetCourseDetails: widget.onSetCourseDetails
+        )
+      ),
+    );
+  }
+
+  void _findPartner() {
+    widget.onFindPartner!();
   }
 
   @override

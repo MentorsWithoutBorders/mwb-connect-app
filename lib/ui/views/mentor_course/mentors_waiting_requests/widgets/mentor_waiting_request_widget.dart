@@ -2,29 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/availabilities_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/subfields_list_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/edit_course_start_time_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/widgets/edit_course_details_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 
 class MentorWaitingRequestItem extends StatefulWidget {
-  const MentorWaitingRequestItem({Key? key, this.mentor, this.subfieldOptionId, this.availabilityOptionId, this.courseDayOfWeek, this.courseHoursList, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.getErrorMessage})
+  const MentorWaitingRequestItem({Key? key, this.partnerMentor, this.selectedPartnerMentor, this.subfieldOptionId, this.availabilityOptionId, this.courseDayOfWeek, this.courseHoursList, this.mentorSubfields, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.getErrorMessage})
     : super(key: key); 
 
-  final CourseMentor? mentor;
+  final CourseMentor? partnerMentor;
+  final CourseMentor? selectedPartnerMentor;
   final String? subfieldOptionId;
   final String? availabilityOptionId;
   final String? courseDayOfWeek;
   final List<String>? courseHoursList;
+  final List<Subfield>? mentorSubfields;
   final Function(String, int)? getSubfieldItemId;
   final Function(String, int)? getAvailabilityItemId;
   final Function(String?)? onSelectSubfield;
   final Function(String?)? onSelectAvailability;
   final Function(String?)? onSelectCourseStartTime;
   final Function(CourseMentor)? onSelectMentor;
-  final Function(CourseMentor)? onSendRequest;
+  final Function(String, String)? onSendRequest;
   final Function(CourseMentor)? getErrorMessage;
 
   @override
@@ -33,19 +36,19 @@ class MentorWaitingRequestItem extends StatefulWidget {
 
 class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   Widget _showMentorWaitingRequestItem() {
-    String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
+    String errorMessage = widget.getErrorMessage!(widget.partnerMentor as CourseMentor);
     return AppCard(
       child: Wrap(
         children: [
           _showPartnerMentorName(),
           SubfieldsList(
-            mentor: widget.mentor,
+            mentor: widget.partnerMentor,
             optionId: widget.subfieldOptionId,
             getId: widget.getSubfieldItemId,
             onSelect: widget.onSelectSubfield
           ),
           AvailabilitiesList(
-            mentor: widget.mentor,
+            mentor: widget.partnerMentor,
             optionId: widget.availabilityOptionId,
             getId: widget.getAvailabilityItemId,
             onSelect: widget.onSelectAvailability
@@ -58,11 +61,12 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   Widget _showPartnerMentorName() {
+    String partnerMentorName = widget.partnerMentor?.name as String;
     return Container(
       padding: const EdgeInsets.only(bottom: 8.0),
       width: double.infinity,
       child: Text(
-        widget.mentor?.name as String,
+        partnerMentorName,
         style: const TextStyle(
           color: AppColors.DOVE_GRAY,
           fontWeight: FontWeight.bold
@@ -89,9 +93,9 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
           onPressed: () async {
             _setSelectedMentor();
             await Future<void>.delayed(const Duration(milliseconds: 100));
-            String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
+            String errorMessage = widget.getErrorMessage!(widget.partnerMentor as CourseMentor);
             if (errorMessage.isEmpty) {
-              _showEditAvailabilityDialog();
+              _showEditCourseDetailsDialog();
             }
           }
         )
@@ -99,15 +103,19 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
     );
   }
 
-  void _showEditAvailabilityDialog() {
-    String? courseDayOfWeek = widget.courseDayOfWeek;
+  void _showEditCourseDetailsDialog() {
+    String partnerMentorName = widget.partnerMentor?.name as String;
+    Subfield partnerMentorSubfield = widget.selectedPartnerMentor?.field?.subfields![0] ?? Subfield();
+    String courseDayOfWeek = widget.courseDayOfWeek as String;
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: EditCourseStartTime(
+        widgetInside: EditCourseDetailsDialog(
+          partnerMentorName: partnerMentorName,
+          partnerMentorSubfield: partnerMentorSubfield,
           dayOfWeek: courseDayOfWeek,
           hoursList: widget.courseHoursList,
-          onSelect: widget.onSelectCourseStartTime,
+          mentorSubfields: widget.mentorSubfields,
           onSendRequest: _sendMentorPartnershipRequest
         )
       )
@@ -120,15 +128,15 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   void _setSelectedMentor()  {
-    widget.onSelectMentor!(widget.mentor as CourseMentor);
+    widget.onSelectMentor!(widget.partnerMentor as CourseMentor);
   }
 
-  void _sendMentorPartnershipRequest() {
-    widget.onSendRequest!(widget.mentor as CourseMentor);
+  void _sendMentorPartnershipRequest(String mentorSubfieldId, String courseStartTime) {
+    widget.onSendRequest!(mentorSubfieldId, courseStartTime);
   }
 
   Widget _showError() {
-    String errorMessage = widget.getErrorMessage!(widget.mentor as CourseMentor);
+    String errorMessage = widget.getErrorMessage!(widget.partnerMentor as CourseMentor);
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
       width: double.infinity,
