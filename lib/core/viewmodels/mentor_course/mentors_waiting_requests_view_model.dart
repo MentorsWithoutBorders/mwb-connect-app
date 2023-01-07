@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
-import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
@@ -52,14 +51,8 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   }
 
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor, String mentorSubfieldId, String courseStartTime) async {
-    MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
-      mentor: mentor,
-      partnerMentor: selectedPartnerMentor as CourseMentor,
-      courseType: selectedCourseType,
-      courseDayOfWeek: selectedPartnerMentor?.availabilities![0].dayOfWeek as String,
-      courseStartTime: courseStartTime
-    );
-    await _mentorCourseApiService.sendMentorPartnershipRequest(mentorPartnershipRequest);
+    String courseDayOfWeek = selectedPartnerMentor?.availabilities![0].dayOfWeek as String;
+    await _mentorCourseApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, selectedCourseType, courseDayOfWeek, courseStartTime);
     resetValues();
   }
 

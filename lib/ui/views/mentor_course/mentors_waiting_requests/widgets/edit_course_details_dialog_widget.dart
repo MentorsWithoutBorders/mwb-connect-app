@@ -29,9 +29,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   @override
   void initState() {
     super.initState();
-    if (widget.mentorSubfields!.length > 1) {
-      _subfieldId = widget.mentorSubfields!.firstWhere((Subfield subfield) => subfield.id == widget.partnerMentorSubfield?.id, orElse: () => widget.mentorSubfields![0]).id;
-    }
+    _subfieldId = widget.mentorSubfields!.firstWhere((Subfield subfield) => subfield.id == widget.partnerMentorSubfield?.id, orElse: () => widget.mentorSubfields![0]).id;
     _startTime = widget.hoursList![0];
   }
   

@@ -7,7 +7,18 @@ import 'package:mwb_connect_app/core/models/time_model.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class UtilsAvailabilities {
-  static bool _mergedAvailabilityLastShown = false;  
+  static bool _mergedAvailabilityLastShown = false; 
+
+  static DateTime convertDayAndTimeToUtc(String dayOfWeek, String time) {
+    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    DateTime date = Utils.resetTime(DateTime.now());
+    while (dayOfWeekFormat.format(date) != dayOfWeek) {
+      date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
+    }
+    List<int> timeSplit = Utils.convertTime12to24(time);
+    final DateTime dateTime = date.copyWith(hour: timeSplit[0], minute: timeSplit[1]).toUtc();
+    return dateTime;
+  }
 
   static Availability getAvailabilityToUtc(Availability availability) {
     DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');

@@ -1,5 +1,7 @@
+import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/core/services/api_service.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
@@ -7,12 +9,11 @@ import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
-import 'package:mwb_connect_app/core/services/user_service.dart';
+import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_service.dart';
 
 class MentorCourseApiService {
   final ApiService _api = locator<ApiService>();
-  final UserService _userService = locator<UserService>();
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
 
   Future<List<CourseType>> getCoursesTypes() async {
@@ -82,7 +83,17 @@ class MentorCourseApiService {
     return mentorPartnershipRequestModel;
   }
   
-  Future<void> sendMentorPartnershipRequest(MentorPartnershipRequestModel mentorPartnershipRequest) async {
+  Future<void> sendMentorPartnershipRequest(CourseMentor mentor, CourseMentor? partnerMentor, CourseType? selectedCourseType, String courseDayOfWeek, String courseStartTime) async {
+    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormat, 'en');
+    DateTime utcDateTime = UtilsAvailabilities.convertDayAndTimeToUtc(courseDayOfWeek, courseStartTime);
+    MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
+      mentor: mentor,
+      partnerMentor: partnerMentor as CourseMentor,
+      courseType: selectedCourseType,
+      courseDayOfWeek: dayOfWeekFormat.format(utcDateTime),
+      courseStartTime: timeFormat.format(utcDateTime)
+    );    
     await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequest.toJson());  
     return ;
   }
