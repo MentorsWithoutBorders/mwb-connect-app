@@ -264,11 +264,16 @@ class MentorCourseTextsService {
   List<ColoredText> getWaitingMentorPartnershipApprovalText(MentorPartnershipRequestModel? mentorPartnershipRequest) {
     if (mentorPartnershipRequest == null || mentorPartnershipRequest.id == null) {
       return [];
-    }    
+    }
+    final DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    final DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');    
     CourseMentor mentor = mentorPartnershipRequest.mentor as CourseMentor;
     CourseMentor partnerMentor = mentorPartnershipRequest.partnerMentor as CourseMentor;
     String courseDayOfWeek = mentorPartnershipRequest.courseDayOfWeek as String;
     String courseStartTime = mentorPartnershipRequest.courseStartTime as String;
+    DateTime courseStartDateTime = UtilsAvailabilities.convertDayAndTimeToLocal(courseDayOfWeek, courseStartTime);
+    courseDayOfWeek = dayOfWeekFormat.format(courseStartDateTime) + 's';
+    courseStartTime = timeFormat.format(courseStartDateTime);    
     String courseDuration = mentorPartnershipRequest.courseType?.duration.toString() as String;
     String partnerMentorName = partnerMentor.name as String;
     Subfield mentorSubfield = Utils.getMentorSubfield(mentor);
@@ -284,9 +289,7 @@ class MentorCourseTextsService {
     return [
       ColoredText(text: text.substring(0, text.indexOf(partnerMentorName)), color:AppColors.DOVE_GRAY),
       ColoredText(text: partnerMentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(courseDuration)), color:AppColors.DOVE_GRAY),
-      ColoredText(text: courseDuration, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(courseDuration) + courseDuration.length, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
       ColoredText(text: subfieldOrSubfields, color: AppColors.TANGO),
       ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color:AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),

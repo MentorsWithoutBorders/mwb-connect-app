@@ -23,6 +23,7 @@ import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_wid
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/waiting_students_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/mentor_partnership_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/waiting_mentor_partnership_request_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/waiting_mentor_partnership_approval_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/training/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/training/training_completed_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/mentors_waiting_requests_view.dart';
@@ -161,9 +162,12 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<ColoredText>? courseText = _mentorCourseProvider?.getCourseText();
     final String cancelCourseText = _mentorCourseProvider?.getCancelCourseText() as String;
     // Mentor partnership request
+    final bool isMentorPartnershipRequestWaitingApproval = _mentorCourseProvider?.getIsMentorPartnershipRequestWaitingApproval(mentor) as bool;
+    final String requestPartnerMentorName = _mentorCourseProvider?.getRequestPartnerMentorName() ?? '';
     final List<ColoredText>? mentorPartnershipText = _mentorCourseProvider?.getMentorPartnershipText();
     final List<ColoredText>? mentorPartnershipBottomText = _mentorCourseProvider?.getMentorPartnershipBottomText();
     final List<ColoredText>? rejectMentorPartnershipText = _mentorCourseProvider?.getRejectMentorPartnershipText();
+    final List<ColoredText>? waitingMentorPartnershipApprovalText = _mentorCourseProvider?.getWaitingMentorPartnershipApprovalText();
     final bool? shouldUnfocus = _mentorCourseProvider?.shouldUnfocus;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
@@ -197,7 +201,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onUpdateMeetingUrl: _updateMeetingUrl,
             onCancel: _cancelCourse
           ),
-          if (_mentorCourseProvider?.isMentorPartnershipRequest == true) MentorPartnershipRequest(
+          if (_mentorCourseProvider?.isMentorPartnershipRequest == true && isMentorPartnershipRequestWaitingApproval != true) MentorPartnershipRequest(
             text: mentorPartnershipText,
             bottomText: mentorPartnershipBottomText,
             rejectText: rejectMentorPartnershipText,
@@ -205,6 +209,11 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onReject: _rejectMentorPartnershipRequest,
             shouldUnfocus: shouldUnfocus,
             setShouldUnfocus: _setShouldUnfocus
+          ),
+          if (_mentorCourseProvider?.isMentorPartnershipRequest == true && isMentorPartnershipRequestWaitingApproval == true) WaitingMentorPartnershipApproval(
+            partnerMentorName: requestPartnerMentorName,
+            text: waitingMentorPartnershipApprovalText,
+            onCancel: _cancelMentorPartnershipRequest
           ),
           if (_mentorCourseProvider?.isMentorWaitingRequest == true) WaitingMentorPartnershipRequest(
             onCancel: _cancelMentorPartnershipRequest

@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class MentorCourseUtilsService {
@@ -89,7 +90,6 @@ class MentorCourseUtilsService {
     return course;
   }
   
-
   int getMentorsCount(CourseModel? course) {
     return course?.mentors?.length ?? 0;
   }
@@ -97,4 +97,13 @@ class MentorCourseUtilsService {
   int getStudentsCount(CourseModel? course) {
     return course?.students?.length ?? 0;
   }
+
+  String getRequestPartnerMentorName(MentorPartnershipRequestModel? mentorPartnershipRequest) {
+    String partnerMentorName = '';
+    if (mentorPartnershipRequest?.partnerMentor != null) {
+      partnerMentorName = mentorPartnershipRequest?.partnerMentor?.name ?? '';
+    }
+    return partnerMentorName;
+  }  
+
 }

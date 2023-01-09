@@ -292,7 +292,7 @@
     "waiting_students_partner_text": "Your {}-month {} course (with {} as your partner) will start when at least {} students join in, on the first {} at {} {}. The maximum number of students who can join the course is {}.",
     "waiting_students_text": "Waiting for students...",
     "waiting_mentor_partnership_text": "You have requested a partnership with {} for a {}-month {} course on {} at {} {}.",
-    "waiting_mentor_partnership_approval_text": "Waiting for the mentor to approve your request...",
+    "waiting_mentor_partnership_approval_text": "Waiting for {} to approve your request...",
     "waiting_mentor_partnership_request_text": "Waiting for a mentor partnership request...",
     "mentor_partnership_request_partner_subfield": "Your partner's ({}) subfield:",
     "mentor_partnership_request_own_subfield": "Choose your subfield:",

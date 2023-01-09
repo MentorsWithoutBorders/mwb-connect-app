@@ -7,9 +7,10 @@ import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class WaitingMentorPartnershipApproval extends StatefulWidget {
-  const WaitingMentorPartnershipApproval({Key? key, this.text, this.onCancel})
+  const WaitingMentorPartnershipApproval({Key? key, this.partnerMentorName, this.text, this.onCancel})
     : super(key: key); 
 
+  final String? partnerMentorName;
   final List<ColoredText>? text;
   final Function? onCancel;
 
@@ -44,7 +45,7 @@ class _WaitingMentorPartnershipApprovalState extends State<WaitingMentorPartners
     return Wrap(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
+          padding: const EdgeInsets.only(bottom: 15.0),
           child: MulticolorText(
             coloredTexts: widget.text as List<ColoredText>
           ),
@@ -52,7 +53,7 @@ class _WaitingMentorPartnershipApprovalState extends State<WaitingMentorPartners
         Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 7.0),
           child: Text(
-            'mentor_course.waiting_mentor_partnership_approval_text'.tr(),
+            'mentor_course.waiting_mentor_partnership_approval_text'.tr(args: [widget.partnerMentorName as String]),
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 16.0,

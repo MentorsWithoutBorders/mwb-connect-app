@@ -118,8 +118,16 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   bool get isMentorWaitingRequest => !isCourse && mentorWaitingRequest != null && mentorWaitingRequest?.id != null;
 
+  bool getIsMentorPartnershipRequestWaitingApproval(CourseMentor mentor) {
+    return isMentorPartnershipRequest && mentorPartnershipRequest?.mentor?.id == mentor.id;
+  }
+
   CourseMentor getPartnerMentor() {
     return _mentorCourseUtilsService.getPartnerMentor(course);
+  }
+
+  String getRequestPartnerMentorName() {
+    return _mentorCourseUtilsService.getRequestPartnerMentorName(mentorPartnershipRequest);
   }
 
   void setMentorPartnershipRequest(MentorPartnershipRequestModel? mentorPartnershipRequest) {
@@ -182,7 +190,11 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   List<ColoredText> getRejectMentorPartnershipText() {
     return _mentorCourseTextsService.getRejectMentorPartnershipText(mentorPartnershipRequest);
-  }  
+  }
+
+  List<ColoredText> getWaitingMentorPartnershipApprovalText() {
+    return _mentorCourseTextsService.getWaitingMentorPartnershipApprovalText(mentorPartnershipRequest);
+  }
 
   bool get shouldUnfocus => _shouldUnfocus;
   set shouldUnfocus(bool unfocus) {
