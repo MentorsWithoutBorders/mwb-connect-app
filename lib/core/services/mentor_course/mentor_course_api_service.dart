@@ -1,7 +1,4 @@
-import 'package:intl/intl.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
-import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
@@ -34,10 +31,11 @@ class MentorCourseApiService {
   Future<CourseModel> addCourse(CourseModel? course, CourseType? selectedCourseType, Availability? availability, String meetingUrl) async {
     String dayOfWeek = availability?.dayOfWeek as String;
     String timeFrom = availability?.time?.from as String;
-    CourseModel course = CourseModel();
-    course.type = selectedCourseType;
-    course.startDateTime = _mentorCourseUtilsService.getCourseDateTime(dayOfWeek, timeFrom);
-    course.mentors = [CourseMentor(meetingUrl: meetingUrl)];
+    CourseModel course = CourseModel(
+      type: selectedCourseType,
+      startDateTime: _mentorCourseUtilsService.getCourseDateTime(dayOfWeek, timeFrom),
+      mentors: [CourseMentor(meetingUrl: meetingUrl)]
+    );
     Map<String, dynamic> response = await _api.postHTTP(url: '/courses', data: course.toJson());
     course = CourseModel.fromJson(response);
     return course;
@@ -79,23 +77,8 @@ class MentorCourseApiService {
 
   Future<MentorPartnershipRequestModel> getMentorPartnershipRequest() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/mentors_partnership_requests/current');
-    MentorPartnershipRequestModel mentorPartnershipRequestModel = MentorPartnershipRequestModel.fromJson(response);
-    return mentorPartnershipRequestModel;
-  }
-  
-  Future<void> sendMentorPartnershipRequest(CourseMentor mentor, CourseMentor? partnerMentor, CourseType? selectedCourseType, String courseDayOfWeek, String courseStartTime) async {
-    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormat, 'en');
-    DateTime utcDateTime = UtilsAvailabilities.convertDayAndTimeToUtc(courseDayOfWeek, courseStartTime);
-    MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
-      mentor: mentor,
-      partnerMentor: partnerMentor as CourseMentor,
-      courseType: selectedCourseType,
-      courseDayOfWeek: dayOfWeekFormat.format(utcDateTime),
-      courseStartTime: timeFormat.format(utcDateTime)
-    );    
-    await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequest.toJson());  
-    return ;
+    MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel.fromJson(response);
+    return mentorPartnershipRequest;
   }
   
   Future<void> acceptMentorPartnershipRequest(String? id, String meetingUrl) async {

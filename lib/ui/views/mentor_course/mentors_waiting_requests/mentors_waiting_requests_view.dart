@@ -98,6 +98,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
               onSelectAvailability: _setAvailabilityOptionId,
               onSelectMentor: _setSelectedPartnerMentor,
               onSendRequest: _sendMentorPartnershipRequest,
+              onGoBack: _goBack,
               getErrorMessage: _getErrorMessage
             );
           },
@@ -128,9 +129,13 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
     _mentorsWaitingRequestsProvider?.setSelectedPartnerMentor(mentor: mentor);
   }
 
-  void _sendMentorPartnershipRequest(String mentorSubfieldId, String courseStartTime) {
+  Future<void> _sendMentorPartnershipRequest(String mentorSubfieldId, String courseStartTime) async {
     CourseMentor mentor = widget.mentorPartnershipRequest.mentor as CourseMentor;
-    _mentorsWaitingRequestsProvider?.sendMentorPartnershipRequest(mentor, mentorSubfieldId, courseStartTime);
+    await _mentorsWaitingRequestsProvider?.sendMentorPartnershipRequest(mentor, mentorSubfieldId, courseStartTime);
+  }
+
+  void _goBack() {
+    Navigator.pop(context, _mentorsWaitingRequestsProvider?.mentorPartnershipRequest);
   }
 
   String _getErrorMessage(CourseMentor mentor) {

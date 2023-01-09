@@ -120,7 +120,12 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   CourseMentor getPartnerMentor() {
     return _mentorCourseUtilsService.getPartnerMentor(course);
-  }  
+  }
+
+  void setMentorPartnershipRequest(MentorPartnershipRequestModel? mentorPartnershipRequest) {
+    this.mentorPartnershipRequest = mentorPartnershipRequest;
+    notifyListeners();
+  }    
 
   void setSelectedCourseType(String courseTypeId) {
     selectedCourseType = coursesTypes.firstWhere((courseType) => courseType.id == courseTypeId);

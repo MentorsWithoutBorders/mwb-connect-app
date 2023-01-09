@@ -11,6 +11,7 @@ import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_service.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 
 class MentorCourseTextsService {
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
@@ -172,11 +173,16 @@ class MentorCourseTextsService {
   List<ColoredText> getMentorPartnershipText(MentorPartnershipRequestModel? mentorPartnershipRequest) {
     if (mentorPartnershipRequest == null || mentorPartnershipRequest.id == null) {
       return [];
-    }    
+    }
+    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     CourseMentor mentor = mentorPartnershipRequest.mentor as CourseMentor;
     CourseMentor partnerMentor = mentorPartnershipRequest.partnerMentor as CourseMentor;
     String courseDayOfWeek = mentorPartnershipRequest.courseDayOfWeek as String;
     String courseStartTime = mentorPartnershipRequest.courseStartTime as String;
+    DateTime courseStartDateTime = UtilsAvailabilities.convertDayAndTimeToLocal(courseDayOfWeek, courseStartTime);
+    courseDayOfWeek = dayOfWeekFormat.format(courseStartDateTime) + 's';
+    courseStartTime = timeFormat.format(courseStartDateTime);
     String courseDuration = mentorPartnershipRequest.courseType?.duration.toString() as String;
     String partnerMentorName = partnerMentor.name as String;
     Subfield mentorSubfield = Utils.getMentorSubfield(mentor);
@@ -191,9 +197,7 @@ class MentorCourseTextsService {
     String text = 'mentor_course.mentor_partnership_request_text'.tr(args: [partnerMentorName, courseDuration, subfieldOrSubfields, courseDayOfWeek, courseStartTime, timeZone]);
     return [
       ColoredText(text: partnerMentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(courseDuration)), color:AppColors.DOVE_GRAY),
-      ColoredText(text: courseDuration, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(courseDuration) + courseDuration.length, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
       ColoredText(text: subfieldOrSubfields, color: AppColors.TANGO),
       ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color:AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
@@ -12,17 +13,16 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_utils_service.dart';
-import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 
 class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   final MentorsWaitingRequestsApiService _mentorsWaitingRequestsApiService = locator<MentorsWaitingRequestsApiService>();
   final MentorsWaitingRequestsUtilsService _mentorsWaitingRequestsUtilsService = locator<MentorsWaitingRequestsUtilsService>();
-  final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
   List<MentorWaitingRequest> newMentorsWaitingRequests = [];
   List<Field> fields = [];
   List<Availability> filterAvailabilities = [];
   Field filterField = Field();
+  MentorPartnershipRequestModel? mentorPartnershipRequest;
   CourseType? selectedCourseType;
   CourseMentor? selectedPartnerMentor;
   String? availabilityOptionId;
@@ -52,7 +52,8 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
 
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor, String mentorSubfieldId, String courseStartTime) async {
     String courseDayOfWeek = selectedPartnerMentor?.availabilities![0].dayOfWeek as String;
-    await _mentorCourseApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, selectedCourseType, courseDayOfWeek, courseStartTime);
+    mentorPartnershipRequest = await _mentorsWaitingRequestsApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, selectedCourseType, courseDayOfWeek, courseStartTime);
+    notifyListeners();
     resetValues();
   }
 

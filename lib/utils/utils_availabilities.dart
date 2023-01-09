@@ -20,6 +20,21 @@ class UtilsAvailabilities {
     return dateTime;
   }
 
+  static DateTime convertDayAndTimeToLocal(String dayOfWeek, String time) {
+    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
+    DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
+    DateTime date = Utils.resetTime(DateTime.now());
+    while (dayOfWeekFormat.format(date) != dayOfWeek) {
+      date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
+    }
+    List<String> timeSplit = time.split(':');
+    int hours = int.parse(timeSplit[0]);
+    int minutes = int.parse(timeSplit[1]);
+    DateTime dateTime = date.copyWith(hour: hours, minute: minutes);
+    dateTime = dateFormat.parseUTC(dateTime.toString()).toLocal();
+    return dateTime;
+  }
+
   static Availability getAvailabilityToUtc(Availability availability) {
     DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
     DateFormat timeFormat = DateFormat(AppConstants.timeFormat, 'en');

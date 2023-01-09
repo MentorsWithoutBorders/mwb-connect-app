@@ -261,10 +261,17 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
       mentor: mentor,
       courseType: selectedCourseType
-    );    
-    Navigator.push(context, MaterialPageRoute<MentorsWaitingRequestsView>(builder: (_) => MentorsWaitingRequestsView(
-      mentorPartnershipRequest: mentorPartnershipRequest)
-    ));
+    );
+    Navigator.push<MentorPartnershipRequestModel>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MentorsWaitingRequestsView(mentorPartnershipRequest: mentorPartnershipRequest)
+      )
+    ).then((MentorPartnershipRequestModel? result) {
+      if (result != null) {
+        _mentorCourseProvider?.setMentorPartnershipRequest(result);
+      }
+    });
   }
 
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  

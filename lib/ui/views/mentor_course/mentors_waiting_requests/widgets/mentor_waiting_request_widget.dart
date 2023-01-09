@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 
 class MentorWaitingRequestItem extends StatefulWidget {
-  const MentorWaitingRequestItem({Key? key, this.partnerMentor, this.selectedPartnerMentor, this.subfieldOptionId, this.availabilityOptionId, this.courseDayOfWeek, this.courseHoursList, this.mentorSubfields, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.getErrorMessage})
+  const MentorWaitingRequestItem({Key? key, this.partnerMentor, this.selectedPartnerMentor, this.subfieldOptionId, this.availabilityOptionId, this.courseDayOfWeek, this.courseHoursList, this.mentorSubfields, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.onGoBack, this.getErrorMessage})
     : super(key: key); 
 
   final CourseMentor? partnerMentor;
@@ -28,6 +28,7 @@ class MentorWaitingRequestItem extends StatefulWidget {
   final Function(String?)? onSelectCourseStartTime;
   final Function(CourseMentor)? onSelectMentor;
   final Function(String, String)? onSendRequest;
+  final Function? onGoBack;
   final Function(CourseMentor)? getErrorMessage;
 
   @override
@@ -121,8 +122,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
       )
     ).then((shouldGoBack) async {
       if (shouldGoBack == true) {
-        await Future<void>.delayed(const Duration(milliseconds: 0));
-        Navigator.pop(context);
+        widget.onGoBack!();
       }
     });
   }
@@ -131,8 +131,8 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
     widget.onSelectMentor!(widget.partnerMentor as CourseMentor);
   }
 
-  void _sendMentorPartnershipRequest(String mentorSubfieldId, String courseStartTime) {
-    widget.onSendRequest!(mentorSubfieldId, courseStartTime);
+  Future<void> _sendMentorPartnershipRequest(String mentorSubfieldId, String courseStartTime) async {
+    await widget.onSendRequest!(mentorSubfieldId, courseStartTime);
   }
 
   Widget _showError() {
