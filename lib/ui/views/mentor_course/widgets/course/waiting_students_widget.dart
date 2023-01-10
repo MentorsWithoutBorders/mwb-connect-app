@@ -7,13 +7,14 @@ import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class WaitingStudents extends StatefulWidget {
-  const WaitingStudents({Key? key, @required this.mentorsCount, @required this.studentsCount, @required this.waitingStudentsNoPartnerText, @required this.waitingStudentsPartnerText, @required this.currentStudentsText, @required this.cancelText, @required this.onCancel})
+  const WaitingStudents({Key? key, @required this.mentorsCount, @required this.studentsCount, @required this.waitingStudentsNoPartnerText, @required this.waitingStudentsPartnerText, @required this.maximumStudentsText, @required this.currentStudentsText, @required this.cancelText, @required this.onCancel})
     : super(key: key); 
 
   final int? mentorsCount;
   final int? studentsCount;
   final List<ColoredText>? waitingStudentsNoPartnerText;
   final List<ColoredText>? waitingStudentsPartnerText;
+  final List<ColoredText>? maximumStudentsText;
   final List<ColoredText>? currentStudentsText;
   final String? cancelText;
   final Function(String?)? onCancel;  
@@ -38,6 +39,7 @@ class _WaitingStudentsState extends State<WaitingStudents> {
             children: [
               if (widget.mentorsCount == 1) _showWaitingStudentsNoPartnerText(),
               if (widget.mentorsCount! > 1) _showWaitingStudentsPartnerText(),
+              _showMaximumStudentsText(),
               _showCurrentStudentsText(widget.studentsCount!),
               _showWaitingStudentsText(),
               _showCancelButton()
@@ -62,6 +64,15 @@ class _WaitingStudentsState extends State<WaitingStudents> {
       padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 12.0),
       child: MulticolorText(
         coloredTexts: widget.waitingStudentsPartnerText as List<ColoredText>
+      ),
+    );
+  }
+
+  Widget _showMaximumStudentsText() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 12.0),
+      child: MulticolorText(
+        coloredTexts: widget.maximumStudentsText as List<ColoredText>
       ),
     );
   }

@@ -81,12 +81,13 @@ class MentorCourseApiService {
     return mentorPartnershipRequest;
   }
   
-  Future<void> acceptMentorPartnershipRequest(String? id, String meetingUrl) async {
+  Future<CourseModel> acceptMentorPartnershipRequest(String? id, String meetingUrl) async {
     CourseMentor mentor = CourseMentor(
       meetingUrl: meetingUrl
     );    
-    await _api.postHTTP(url: '/mentors_partnership_requests/$id/accept', data: mentor.toJson());  
-    return ;
+    Map<String, dynamic> response = await _api.postHTTP(url: '/mentors_partnership_requests/$id/accept', data: mentor.toJson()); 
+    CourseModel course = CourseModel.fromJson(response); 
+    return course;
   }  
 
   Future<void> rejectMentorPartnershipRequest(String? id, String? reason) async {

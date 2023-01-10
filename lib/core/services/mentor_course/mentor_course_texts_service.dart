@@ -84,7 +84,6 @@ class MentorCourseTextsService {
     final DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
     final DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     String minStudentsCourse = AppConstants.minStudentsCourse.toString();
-    String maxStudentsCourse = AppConstants.maxStudentsCourse.toString();
     int courseDuration = course.type?.duration as int;
     CourseMentor mentor = _mentorCourseUtilsService.getMentor(course);
     Subfield mentorSubfield = Utils.getMentorSubfield(mentor);
@@ -94,20 +93,18 @@ class MentorCourseTextsService {
     String courseTime = timeFormat.format(courseStartDateTime);
     DateTime now = DateTime.now();    
     String timeZone = now.timeZoneName;
-    String text = 'mentor_course.waiting_students_no_partner_text'.tr(args: [courseDuration.toString(), mentorSubfieldName, minStudentsCourse, courseDayOfWeek, courseTime, timeZone, maxStudentsCourse]);
+    String text = 'mentor_course.waiting_students_no_partner_text'.tr(args: [courseDuration.toString(), mentorSubfieldName, minStudentsCourse, courseDayOfWeek, courseTime, timeZone]);
     String at = 'common.at'.tr();
     return [
-      ColoredText(text: text.substring(0, text.indexOf(mentorSubfieldName)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(0, text.indexOf(mentorSubfieldName)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentorSubfieldName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(mentorSubfieldName) + mentorSubfieldName.length, text.indexOf(minStudentsCourse)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(mentorSubfieldName) + mentorSubfieldName.length, text.indexOf(minStudentsCourse)), color: AppColors.DOVE_GRAY),
       ColoredText(text: minStudentsCourse, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(minStudentsCourse.toString()) + minStudentsCourse.toString().length, text.indexOf(courseDayOfWeek)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(minStudentsCourse.toString()) + minStudentsCourse.toString().length, text.indexOf(courseDayOfWeek)), color: AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),
       ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: courseTime + ' ' + timeZone, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length, text.indexOf(maxStudentsCourse + '.')), color: AppColors.DOVE_GRAY),
-      ColoredText(text: maxStudentsCourse, color: AppColors.TANGO),
-      ColoredText(text: '.', color: AppColors.DOVE_GRAY)
+      ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length), color: AppColors.DOVE_GRAY),
     ];
   }
   
@@ -119,7 +116,6 @@ class MentorCourseTextsService {
     final DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
     final DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');
     String minStudentsCourse = AppConstants.minStudentsCourse.toString();
-    String maxStudentsCourse = AppConstants.maxStudentsCourse.toString();
     CourseMentor mentor = _mentorCourseUtilsService.getMentor(course);
     String courseDuration = course.type?.duration.toString() as String;
     Subfield mentorSubfield = Utils.getMentorSubfield(mentor);
@@ -134,24 +130,35 @@ class MentorCourseTextsService {
     String courseTime = timeFormat.format(courseStartDateTime);
     DateTime now = DateTime.now();    
     String timeZone = now.timeZoneName;
-    String text = 'mentor_course.waiting_students_partner_text'.tr(args: [courseDuration.toString(), subfieldOrSubfields, partnerMentorName, minStudentsCourse, courseDayOfWeek, courseTime, timeZone, maxStudentsCourse]);
+    String text = 'mentor_course.waiting_students_partner_text'.tr(args: [courseDuration.toString(), subfieldOrSubfields, partnerMentorName, minStudentsCourse, courseDayOfWeek, courseTime, timeZone]);
     String at = 'common.at'.tr();
     return [
-      ColoredText(text: text.substring(0, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(0, text.indexOf(subfieldOrSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: subfieldOrSubfields, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(partnerMentorName)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(partnerMentorName)), color: AppColors.DOVE_GRAY),
       ColoredText(text: partnerMentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(minStudentsCourse)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(minStudentsCourse)), color: AppColors.DOVE_GRAY),
       ColoredText(text: minStudentsCourse, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(minStudentsCourse.toString()) + minStudentsCourse.toString().length, text.indexOf(courseDayOfWeek)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(minStudentsCourse.toString()) + minStudentsCourse.toString().length, text.indexOf(courseDayOfWeek)), color: AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),
-      ColoredText(text: ' ' + at + ' ', color:AppColors.DOVE_GRAY),
+      ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: courseTime + ' ' + timeZone, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length, text.indexOf(maxStudentsCourse + '.')), color:AppColors.DOVE_GRAY),
-      ColoredText(text: maxStudentsCourse, color: AppColors.TANGO),
-      ColoredText(text: '.', color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length), color: AppColors.DOVE_GRAY),
     ];
   }
+
+  List<ColoredText> getMaximumStudentsText(CourseModel? course) {
+    if (course == null || course.id == null) {
+      return [];
+    }    
+    String maxStudentsCourse = AppConstants.maxStudentsCourse.toString();
+    String text = 'mentor_course.maximum_number_students'.tr(args: [maxStudentsCourse]);
+    return [
+      ColoredText(text: text.substring(0, text.indexOf(maxStudentsCourse)), color: AppColors.DOVE_GRAY),
+      ColoredText(text: maxStudentsCourse, color: AppColors.TANGO),
+      ColoredText(text: '.', color: AppColors.DOVE_GRAY)
+    ];
+  }  
 
   List<ColoredText> getCurrentStudentsText(CourseModel? course) {
     if (course == null || course.id == null) {
@@ -164,7 +171,7 @@ class MentorCourseTextsService {
     }    
     String text = 'common.current_number_students'.tr();
     return [
-      ColoredText(text: text + ': ', color:AppColors.DOVE_GRAY),
+      ColoredText(text: text + ': ', color: AppColors.DOVE_GRAY),
       ColoredText(text: studentsCount.toString(), color: AppColors.TANGO),
 
     ];
@@ -197,13 +204,13 @@ class MentorCourseTextsService {
     String text = 'mentor_course.mentor_partnership_request_text'.tr(args: [mentorName, courseDuration, subfieldOrSubfields, courseDayOfWeek, courseStartTime, timeZone]);
     return [
       ColoredText(text: mentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length, text.indexOf(subfieldOrSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: subfieldOrSubfields, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color: AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),
-      ColoredText(text: ' ' + at + ' ', color:AppColors.DOVE_GRAY),
+      ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: courseStartTime + ' ' + timeZone, color: AppColors.TANGO),
-      ColoredText(text: '.', color:AppColors.DOVE_GRAY)
+      ColoredText(text: '.', color: AppColors.DOVE_GRAY)
     ]; 
   }
 
@@ -218,11 +225,11 @@ class MentorCourseTextsService {
     String date = dateFormat.format(sentDateTime.add(Duration(days: 1)));
     String text = 'mentor_course.mentor_partnership_request_bottom_text'.tr(args: [date, mentorName]);
     return [
-      ColoredText(text: text.substring(0, text.indexOf(date)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(0, text.indexOf(date)), color: AppColors.DOVE_GRAY),
       ColoredText(text: date, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(date) + date.length, text.indexOf(mentorName)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(date) + date.length, text.indexOf(mentorName)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length), color: AppColors.DOVE_GRAY),
     ]; 
   }
   
@@ -247,17 +254,17 @@ class MentorCourseTextsService {
     String at = 'common.at'.tr();
     String text = 'mentor_course.reject_mentor_partnership_request_text'.tr(args: [mentorName, courseDuration, subfieldOrSubfields, courseDayOfWeek, courseStartTime, timeZone]);
     return [
-      ColoredText(text: text.substring(0, text.indexOf(mentorName)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(0, text.indexOf(mentorName)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length, text.indexOf(courseDuration)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length, text.indexOf(courseDuration)), color: AppColors.DOVE_GRAY),
       ColoredText(text: courseDuration, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(courseDuration) + courseDuration.length, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(courseDuration) + courseDuration.length, text.indexOf(subfieldOrSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: subfieldOrSubfields, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color: AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),
-      ColoredText(text: ' ' + at + ' ', color:AppColors.DOVE_GRAY),
+      ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: courseStartTime + ' ' + timeZone, color: AppColors.TANGO),
-      ColoredText(text: '.', color:AppColors.DOVE_GRAY)
+      ColoredText(text: '.', color: AppColors.DOVE_GRAY)
     ];
   }
   
@@ -287,15 +294,15 @@ class MentorCourseTextsService {
     String at = 'common.at'.tr();
     String text = 'mentor_course.waiting_mentor_partnership_text'.tr(args: [partnerMentorName, courseDuration, subfieldOrSubfields, courseDayOfWeek, courseStartTime, timeZone]);
     return [
-      ColoredText(text: text.substring(0, text.indexOf(partnerMentorName)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(0, text.indexOf(partnerMentorName)), color: AppColors.DOVE_GRAY),
       ColoredText(text: partnerMentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(subfieldOrSubfields)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(partnerMentorName) + partnerMentorName.length, text.indexOf(subfieldOrSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: subfieldOrSubfields, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color:AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color: AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),
-      ColoredText(text: ' ' + at + ' ', color:AppColors.DOVE_GRAY),
+      ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: courseStartTime + ' ' + timeZone, color: AppColors.TANGO),
-      ColoredText(text: '.', color:AppColors.DOVE_GRAY)
+      ColoredText(text: '.', color: AppColors.DOVE_GRAY)
     ];
   }
 }

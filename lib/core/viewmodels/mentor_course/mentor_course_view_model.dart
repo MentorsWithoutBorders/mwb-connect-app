@@ -96,7 +96,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   }
 
   Future<void> acceptMentorPartnershipRequest(String? meetingUrl) async {
-    await _mentorCourseApiService.acceptMentorPartnershipRequest(mentorPartnershipRequest?.id, meetingUrl as String);
+    course = await _mentorCourseApiService.acceptMentorPartnershipRequest(mentorPartnershipRequest?.id, meetingUrl as String);
     notifyListeners();
   }
 
@@ -174,6 +174,10 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   List<ColoredText> getWaitingStudentsPartnerText() {
     return _mentorCourseTextsService.getWaitingStudentsPartnerText(course);
+  }
+
+  List<ColoredText> getMaximumStudentsText() {
+    return _mentorCourseTextsService.getMaximumStudentsText(course);
   }
   
   List<ColoredText> getCurrentStudentsText() {

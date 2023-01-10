@@ -162,6 +162,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
     final List<ColoredText> waitingStudentsNoPartnerText = _mentorCourseProvider?.getWaitingStudentsNoPartnerText() as List<ColoredText>;
     final List<ColoredText> waitingStudentsPartnerText = _mentorCourseProvider?.getWaitingStudentsPartnerText() as List<ColoredText>;
+    final List<ColoredText> maximumStudentsText = _mentorCourseProvider?.getMaximumStudentsText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _mentorCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     final List<ColoredText>? courseText = _mentorCourseProvider?.getCourseText();
     final String cancelCourseText = _mentorCourseProvider?.getCancelCourseText() as String;
@@ -191,6 +192,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             studentsCount: studentsCount,
             waitingStudentsNoPartnerText: waitingStudentsNoPartnerText,
             waitingStudentsPartnerText: waitingStudentsPartnerText,
+            maximumStudentsText: maximumStudentsText,
             currentStudentsText: currentStudentsText,
             cancelText: cancelCourseText,
             onCancel: _cancelCourse
