@@ -27,9 +27,9 @@ class UtilsAvailabilities {
     while (dayOfWeekFormat.format(date) != dayOfWeek) {
       date = Utils.getDSTAdjustedDateTime(date.add(Duration(days: 1)));
     }
-    List<String> timeSplit = time.split(':');
-    int hours = int.parse(timeSplit[0]);
-    int minutes = int.parse(timeSplit[1]);
+    List<int> timeSplit = Utils.convertTime12to24(time);
+    int hours = timeSplit[0];
+    int minutes = timeSplit[1];
     DateTime dateTime = date.copyWith(hour: hours, minute: minutes);
     dateTime = dateFormat.parseUTC(dateTime.toString()).toLocal();
     return dateTime;

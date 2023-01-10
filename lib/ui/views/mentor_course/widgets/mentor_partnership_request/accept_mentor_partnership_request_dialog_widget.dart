@@ -44,7 +44,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'common.set_url'.tr(),
+          'mentor_course.accept_mentor_partnership_request'.tr(),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,
@@ -58,13 +58,29 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   Widget _showText() {
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 8.0),
-      child: Text(
-        'common.paste_url'.tr(),
-        style: const TextStyle(
-          fontSize: 13.0,
-          color: AppColors.DOVE_GRAY
-        )
-      ),
+      child: Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: Text(
+              'mentor_course.accept_mentor_partnership_request_text'.tr(),
+              textAlign: TextAlign.justify,
+              style: const TextStyle(
+                fontSize: 13.0,
+                color: AppColors.DOVE_GRAY
+              )
+            ),
+          ),
+          Text(
+            'mentor_course.paste_partnership_url'.tr(),
+            textAlign: TextAlign.justify,
+            style: const TextStyle(
+              fontSize: 13.0,
+              color: AppColors.DOVE_GRAY
+            )
+          )
+        ]
+      )
     );
   }
 
@@ -138,7 +154,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
           child: !_isAcceptingMentorPartnershipRequest ? Text(
-            'common.set'.tr(),
+            'common.accept'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
             width: 40.0,

@@ -53,8 +53,8 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor, String mentorSubfieldId, String courseStartTime) async {
     String courseDayOfWeek = selectedPartnerMentor?.availabilities![0].dayOfWeek as String;
     mentorPartnershipRequest = await _mentorsWaitingRequestsApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, selectedCourseType, courseDayOfWeek, courseStartTime);
-    notifyListeners();
     resetValues();
+    notifyListeners();
   }
 
   List<Availability> _adjustFilterAvailabilities(List<Availability> filterAvailabilities) {

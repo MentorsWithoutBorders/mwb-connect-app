@@ -7,10 +7,9 @@ import 'package:mwb_connect_app/ui/widgets/subfield_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class EditCourseDetailsDialog extends StatefulWidget {
-  const EditCourseDetailsDialog({Key? key, this.partnerMentorName, this.partnerMentorSubfield, this.dayOfWeek, this.hoursList, this.mentorSubfields, this.onSendRequest})
+  const EditCourseDetailsDialog({Key? key, this.partnerMentorSubfield, this.dayOfWeek, this.hoursList, this.mentorSubfields, this.onSendRequest})
     : super(key: key);
 
-  final String? partnerMentorName;
   final Subfield? partnerMentorSubfield;
   final String? dayOfWeek;
   final List<String>? hoursList;
@@ -68,7 +67,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Widget _showPartnerMentorSubfieldLabel() {
-    String label = 'mentor_course.mentor_partnership_request_partner_subfield'.tr(args: [widget.partnerMentorName as String]);
+    String label = 'mentor_course.mentor_partnership_request_partner_subfield'.tr();
     return Padding(
       padding: const EdgeInsets.only(top: 3.0, bottom: 5.0),
       child: Text(

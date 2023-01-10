@@ -105,14 +105,12 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
   }
 
   void _showEditCourseDetailsDialog() {
-    String partnerMentorName = widget.partnerMentor?.name as String;
     Subfield partnerMentorSubfield = widget.selectedPartnerMentor?.field?.subfields![0] ?? Subfield();
     String courseDayOfWeek = widget.courseDayOfWeek as String;
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
         widgetInside: EditCourseDetailsDialog(
-          partnerMentorName: partnerMentorName,
           partnerMentorSubfield: partnerMentorSubfield,
           dayOfWeek: courseDayOfWeek,
           hoursList: widget.courseHoursList,
