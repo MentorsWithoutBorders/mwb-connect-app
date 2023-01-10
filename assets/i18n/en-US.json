@@ -302,7 +302,7 @@
     "cancel_mentor_partnership_request": "Cancel partnership request",
     "cancel_mentor_partnership_request_text": "Are you sure you want to cancel the mentor partnership request?",    
     "reject_mentor_partnership_request": "Reject partnership request",
-		"reject_mentor_partnership_request_text": "Are you sure you want to reject the partnership with {} for a {}-month {} course on {} at {} {}?",
+		"reject_mentor_partnership_request_text": "Are you sure you want to reject the partnership request?",
     "course_text": "{} have scheduled a {}-month {} course every {} until {}.\n\nThe next lesson will be on {} at {} {} with the following {}:",
     "course_link": "The link for the lessons is: ",
     "cancel_course_text": "Are you sure you want to cancel the course?",

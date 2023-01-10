@@ -6,10 +6,9 @@ import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class RejectMentorPartnershipRequestDialog extends StatefulWidget {
-  const RejectMentorPartnershipRequestDialog({Key? key, this.text, this.onReject})
+  const RejectMentorPartnershipRequestDialog({Key? key, this.onReject})
     : super(key: key);
 
-  final List<ColoredText>? text;
   final Function(String?)? onReject;
     
   @override
@@ -53,11 +52,17 @@ class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartn
   }
 
   Widget _showText() {
-   return Padding(
+    return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: MulticolorText(
-        coloredTexts: widget.text as List<ColoredText>
-      ),
+      child: Text(
+        'mentor_course.reject_mentor_partnership_request_text'.tr(),
+        style: const TextStyle(
+          fontSize: 15.0,
+          color: AppColors.DOVE_GRAY,
+          height: 1.5
+        ),
+        textAlign: TextAlign.justify
+      )
     );
   }
 

@@ -57,7 +57,7 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
           height: 1.5
         ),
         textAlign: TextAlign.justify
-      ),
+      )
     );
   }
   

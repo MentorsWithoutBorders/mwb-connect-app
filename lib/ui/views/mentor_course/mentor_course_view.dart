@@ -147,6 +147,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final int minStudentsCourse = 2;
     User user = _commonProvider?.user as User;
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
+    final bool isCourse = _mentorCourseProvider?.isCourse ?? false;
+    final bool isMentorPartnershipRequest = _mentorCourseProvider?.isMentorPartnershipRequest ?? false;
+    final bool isMentorPartnershipRequestWaitingApproval = _mentorCourseProvider?.getIsMentorPartnershipRequestWaitingApproval(mentor) ?? false;
+    final bool isMentorWaitingRequest = _mentorCourseProvider?.isMentorWaitingRequest ?? false;
     // Courses types
     final List<CourseType>? coursesTypes = _mentorCourseProvider?.coursesTypes;
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
@@ -162,11 +166,9 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<ColoredText>? courseText = _mentorCourseProvider?.getCourseText();
     final String cancelCourseText = _mentorCourseProvider?.getCancelCourseText() as String;
     // Mentor partnership request
-    final bool isMentorPartnershipRequestWaitingApproval = _mentorCourseProvider?.getIsMentorPartnershipRequestWaitingApproval(mentor) as bool;
     final String requestPartnerMentorName = _mentorCourseProvider?.getRequestPartnerMentorName() ?? '';
     final List<ColoredText>? mentorPartnershipText = _mentorCourseProvider?.getMentorPartnershipText();
     final List<ColoredText>? mentorPartnershipBottomText = _mentorCourseProvider?.getMentorPartnershipBottomText();
-    final List<ColoredText>? rejectMentorPartnershipText = _mentorCourseProvider?.getRejectMentorPartnershipText();
     final List<ColoredText>? waitingMentorPartnershipApprovalText = _mentorCourseProvider?.getWaitingMentorPartnershipApprovalText();
     final bool? shouldUnfocus = _mentorCourseProvider?.shouldUnfocus;
     return Padding(
@@ -176,7 +178,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         children: [
           if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _mentorCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          if (_mentorCourseProvider?.isCourse == false && _mentorCourseProvider?.isMentorPartnershipRequest == false) CoursesTypes(
+          if (!isCourse && !isMentorPartnershipRequest && !isMentorWaitingRequest) CoursesTypes(
             coursesTypes: coursesTypes,
             selectedCourseType: selectedCourseType,
             subfields: subfields,
@@ -184,7 +186,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onSetCourseDetails: _setCourseDetails,
             onFindPartner: _findPartner,
           ),
-          if (_mentorCourseProvider?.isCourse == true && students.length < minStudentsCourse) WaitingStudents(
+          if (isCourse && students.length < minStudentsCourse) WaitingStudents(
             mentorsCount: mentorsCount,
             studentsCount: studentsCount,
             waitingStudentsNoPartnerText: waitingStudentsNoPartnerText,
@@ -193,7 +195,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             cancelText: cancelCourseText,
             onCancel: _cancelCourse
           ),
-          if (_mentorCourseProvider?.isCourse == true && students.length >= minStudentsCourse) Course(
+          if (isCourse && students.length >= minStudentsCourse) Course(
             text: courseText,
             students: students,
             meetingUrl: meetingUrl,
@@ -201,21 +203,20 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onUpdateMeetingUrl: _updateMeetingUrl,
             onCancel: _cancelCourse
           ),
-          if (_mentorCourseProvider?.isMentorPartnershipRequest == true && isMentorPartnershipRequestWaitingApproval != true) MentorPartnershipRequest(
+          if (isMentorPartnershipRequest && !isMentorPartnershipRequestWaitingApproval) MentorPartnershipRequest(
             text: mentorPartnershipText,
             bottomText: mentorPartnershipBottomText,
-            rejectText: rejectMentorPartnershipText,
             onAccept: _acceptMentorPartnershipRequest,
             onReject: _rejectMentorPartnershipRequest,
             shouldUnfocus: shouldUnfocus,
             setShouldUnfocus: _setShouldUnfocus
           ),
-          if (_mentorCourseProvider?.isMentorPartnershipRequest == true && isMentorPartnershipRequestWaitingApproval == true) WaitingMentorPartnershipApproval(
+          if (isMentorPartnershipRequest && isMentorPartnershipRequestWaitingApproval) WaitingMentorPartnershipApproval(
             partnerMentorName: requestPartnerMentorName,
             text: waitingMentorPartnershipApprovalText,
             onCancel: _cancelMentorPartnershipRequest
           ),
-          if (_mentorCourseProvider?.isMentorWaitingRequest == true) WaitingMentorPartnershipRequest(
+          if (isMentorWaitingRequest) WaitingMentorPartnershipRequest(
             onCancel: _cancelMentorPartnershipRequest
           )
         ]

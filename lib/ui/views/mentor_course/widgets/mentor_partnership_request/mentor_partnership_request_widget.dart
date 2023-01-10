@@ -8,12 +8,11 @@ import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class MentorPartnershipRequest extends StatefulWidget {
-  const MentorPartnershipRequest({Key? key, this.text, this.bottomText, this.rejectText, this.onAccept, this.onReject, this.shouldUnfocus, this.setShouldUnfocus})
+  const MentorPartnershipRequest({Key? key, this.text, this.bottomText, this.onAccept, this.onReject, this.shouldUnfocus, this.setShouldUnfocus})
     : super(key: key); 
 
   final List<ColoredText>? text;
   final List<ColoredText>? bottomText;
-  final List<ColoredText>? rejectText;
   final Function(String?)? onAccept;
   final Function(String?)? onReject;
   final bool? shouldUnfocus;
@@ -82,7 +81,6 @@ class _MentorPartnershipRequestState extends State<MentorPartnershipRequest> {
                 context: context,
                 builder: (_) => AnimatedDialog(
                   widgetInside: RejectMentorPartnershipRequestDialog(
-                    text: widget.rejectText,
                     onReject: widget.onReject
                   )
                 ),
