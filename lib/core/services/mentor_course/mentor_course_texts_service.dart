@@ -71,7 +71,7 @@ class MentorCourseTextsService {
     }    
     String text = 'mentor_course.cancel_course_text'.tr();
     CourseMentor partnerMentor = _mentorCourseUtilsService.getPartnerMentor(course);
-    if (partnerMentor.id != null) {
+    if (partnerMentor.id != null && course.students != null && course.students!.length > 0) {
       text += ' ' + 'mentor_course.cancel_course_partner_text'.tr(args: [partnerMentor.name as String]);
     }
     return text;
