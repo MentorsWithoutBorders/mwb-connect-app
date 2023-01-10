@@ -114,7 +114,7 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
   
-  bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true;
+  bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true && mentorPartnershipRequest?.isCanceled != true;
 
   bool get isMentorWaitingRequest => !isCourse && mentorWaitingRequest != null && mentorWaitingRequest?.id != null;
 

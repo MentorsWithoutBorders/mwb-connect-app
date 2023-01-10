@@ -30,11 +30,14 @@ class _WaitingMentorPartnershipApprovalState extends State<WaitingMentorPartners
         ), 
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          child: Wrap(
-            children: [
-              _showText(),
-              _showCancelButton()
-            ]
+          child: Padding(
+            padding: const EdgeInsets.only(left: 3.0, right: 3.0),
+            child: Wrap(
+              children: [
+                _showText(),
+                _showCancelButton()
+              ]
+            ),
           )
         ),
       ),

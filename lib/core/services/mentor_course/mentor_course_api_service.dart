@@ -98,12 +98,12 @@ class MentorCourseApiService {
   }
 
   Future<void> cancelMentorPartnershipRequest(String? id) async {
-    await _api.postHTTP(url: '/mentors_partnership_requests/$id/cancel');  
+    await _api.putHTTP(url: '/mentors_partnership_requests/$id/cancel');  
     return ;
   }
 
   Future<void> updateMentorPartnershipRequest(String? id, MentorPartnershipRequestModel mentorPartnershipRequestModel) async {
-    await _api.postHTTP(url: '/mentors_partnership_requests/$id/update', data: mentorPartnershipRequestModel.toJson());  
+    await _api.putHTTP(url: '/mentors_partnership_requests/$id/update', data: mentorPartnershipRequestModel.toJson());  
     return ;
   }  
 
