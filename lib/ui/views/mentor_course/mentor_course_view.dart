@@ -185,7 +185,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             subfields: subfields,
             onSelect: _setSelectedCourseType, 
             onSetCourseDetails: _setCourseDetails,
-            onFindPartner: _findPartner,
+            onFindPartner: _findPartner
           ),
           if (isCourse && students.length < minStudentsCourse) WaitingStudents(
             mentorsCount: mentorsCount,
@@ -219,7 +219,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onCancel: _cancelMentorPartnershipRequest
           ),
           if (isMentorWaitingRequest) WaitingMentorPartnershipRequest(
-            onCancel: _cancelMentorPartnershipRequest
+            onCancel: _cancelMentorWaitingRequest,
+            onFindPartner: _findPartner
           )
         ]
       )
@@ -261,7 +262,11 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   Future<void> _cancelMentorPartnershipRequest() async {
     await _mentorCourseProvider?.cancelMentorPartnershipRequest();
-  }  
+  }
+  
+  Future<void> _cancelMentorWaitingRequest() async {
+    await _mentorCourseProvider?.cancelMentorWaitingRequest();
+  }
   
   void _setShouldUnfocus(bool shouldUnfocus) {
     _mentorCourseProvider?.shouldUnfocus = shouldUnfocus;
@@ -316,7 +321,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         builder: (BuildContext context) {
           return AnimatedDialog(
             widgetInside: NotificationDialog(
-              text: 'lesson_request.lesson_request_expired'.tr(),
+              text: 'mentor_course.mentor_partnership_request_expired'.tr(),
               buttonText: 'common.ok'.tr(),
               shouldReload: false
             )
@@ -334,7 +339,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         builder: (BuildContext context) {
           return AnimatedDialog(
             widgetInside: NotificationDialog(
-              text: 'lesson_request.lesson_request_canceled'.tr(),
+              text: 'mentor_course.mentor_partnership_request_canceled'.tr(),
               buttonText: 'common.ok'.tr(),
               shouldReload: false
             )

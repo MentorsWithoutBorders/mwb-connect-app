@@ -5,10 +5,11 @@ import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnershi
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class WaitingMentorPartnershipRequest extends StatefulWidget {
-  const WaitingMentorPartnershipRequest({Key? key, @required this.onCancel})
+  const WaitingMentorPartnershipRequest({Key? key, @required this.onCancel, @required this.onFindPartner})
     : super(key: key);
     
   final Function? onCancel;
+  final Function? onFindPartner;
 
   @override
   State<StatefulWidget> createState() => _WaitingMentorPartnershipRequestState();
@@ -29,8 +30,8 @@ class _WaitingMentorPartnershipRequestState extends State<WaitingMentorPartnersh
           child: Wrap(
             children: [
               _showText(),
-              _showFindPartnerButton(),
-              _showCancelButton()
+              _showCancelButton(),
+              _showFindPartnerButton()
             ]
           )
         ),
@@ -42,7 +43,7 @@ class _WaitingMentorPartnershipRequestState extends State<WaitingMentorPartnersh
     return Wrap(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 7.0),
+          padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
           child: Text(
             'mentor_course.waiting_mentor_partnership_request_text'.tr(),
             textAlign: TextAlign.center,
@@ -57,6 +58,36 @@ class _WaitingMentorPartnershipRequestState extends State<WaitingMentorPartnersh
       ]
     ); 
   }
+
+  Widget _showCancelButton() {
+    return Center(
+      child: Container(
+        height: 30.0,
+        margin: const EdgeInsets.only(bottom: 15.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 1.0,
+            primary: AppColors.MONZA,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+          ), 
+          child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.white)),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) => AnimatedDialog(
+                widgetInside: CancelMentorPartnershipRequestDialog(
+                  onCancel: widget.onCancel
+                )
+              )
+            ); 
+          }
+        ),
+      ),
+    );
+  }  
 
   Widget _showFindPartnerButton() {
     String buttonText = 'mentor_course.find_partner'.tr();
@@ -77,43 +108,13 @@ class _WaitingMentorPartnershipRequestState extends State<WaitingMentorPartnersh
             buttonText,
             style: const TextStyle(color: Colors.white)
           ),
-          onPressed: () async {
- 
+          onPressed: () {
+            widget.onFindPartner!();
           }
         )
       )
     );
   }    
-
-  Widget _showCancelButton() {
-    return Center(
-      child: Container(
-        height: 30.0,
-        margin: const EdgeInsets.only(bottom: 5.0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 1.0,
-            primary: AppColors.MONZA,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
-            ),
-            padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-          ), 
-          child: Text('common.cancel_request'.tr(), style: const TextStyle(color: Colors.white)),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (_) => AnimatedDialog(
-                widgetInside: CancelMentorPartnershipRequestDialog(
-                  onCancel: widget.onCancel
-                )
-              )
-            ); 
-          }
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

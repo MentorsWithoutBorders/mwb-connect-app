@@ -72,27 +72,24 @@ class MentorCourseViewModel extends ChangeNotifier {
   }
   
   Future<void> cancelMentorWaitingRequest() async {
-    await _mentorCourseApiService.cancelMentorWaitingRequest(mentorWaitingRequest?.id);
+    await _mentorCourseApiService.cancelMentorWaitingRequest();
+    mentorWaitingRequest = null;
     notifyListeners();
   }
 
   Future<void> getMentorPartnershipRequest() async {
     mentorPartnershipRequest = await _mentorCourseApiService.getMentorPartnershipRequest();
-    if (mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null) {
-      if (mentorPartnershipRequest?.isExpired != null && mentorPartnershipRequest?.isExpired == true) {
-        if (mentorPartnershipRequest?.wasExpiredShown == null || mentorPartnershipRequest?.wasExpiredShown != null && mentorPartnershipRequest?.wasExpiredShown == false) {
-          shouldShowExpired = true;
-          await _mentorCourseApiService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasExpiredShown: true));
-        }
-        mentorPartnershipRequest = null;
-      } else if (mentorPartnershipRequest?.isCanceled != null && mentorPartnershipRequest?.isCanceled == true) {
-        if (mentorPartnershipRequest?.wasCanceledShown == null || mentorPartnershipRequest?.wasCanceledShown != null && mentorPartnershipRequest?.wasCanceledShown == false) {
-          shouldShowCanceled = true;
-          await _mentorCourseApiService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasCanceledShown: true));
-        }
-        mentorPartnershipRequest = null;
-      }
+    shouldShowExpired = _mentorCourseUtilsService.getShouldShowMentorPartnershipRequestExpired(mentorPartnershipRequest);
+    shouldShowCanceled = _mentorCourseUtilsService.getShouldShowMentorPartnershipRequestCanceled(mentorPartnershipRequest);
+    if (shouldShowExpired) {
+      await _mentorCourseApiService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasExpiredShown: true));
+      mentorPartnershipRequest = null;
     }
+    if (shouldShowCanceled) {
+      await _mentorCourseApiService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasCanceledShown: true));
+      mentorPartnershipRequest = null;
+    }
+    notifyListeners();
   }
 
   Future<void> acceptMentorPartnershipRequest(String? meetingUrl) async {
@@ -102,19 +99,19 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   Future<void> rejectMentorPartnershipRequest(String? reason) async {
     await _mentorCourseApiService.rejectMentorPartnershipRequest(mentorPartnershipRequest?.id, reason);
-    mentorPartnershipRequest?.isRejected = true;
+    mentorPartnershipRequest = null;
     notifyListeners();
   }
 
   Future<void> cancelMentorPartnershipRequest() async {
     await _mentorCourseApiService.cancelMentorPartnershipRequest(mentorPartnershipRequest?.id);
-    mentorPartnershipRequest?.isCanceled = true;
+    mentorPartnershipRequest = null;
     notifyListeners();
   }
 
   bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
   
-  bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true && mentorPartnershipRequest?.isCanceled != true;
+  bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true && mentorPartnershipRequest?.isCanceled != true && mentorPartnershipRequest?.isExpired != true;
 
   bool get isMentorWaitingRequest => !isCourse && !isMentorPartnershipRequest && mentorWaitingRequest != null && mentorWaitingRequest?.id != null;
 

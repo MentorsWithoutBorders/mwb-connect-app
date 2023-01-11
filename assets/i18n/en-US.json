@@ -307,6 +307,8 @@
     "paste_partnership_url": "Please paste your Google Meet/Zoom link for the course here:",
     "reject_mentor_partnership_request": "Reject partnership request",
 		"reject_mentor_partnership_request_text": "Are you sure you want to reject the partnership request?",
+    "mentor_partnership_request_expired": "We're sorry but the partnership request has expired.",
+    "mentor_partnership_request_canceled": "We're sorry but the partnership request has been canceled.",
     "course_text": "{} have scheduled a {}-month {} course every {} until {}.\n\nThe next lesson will be on {} at {} {} with the following {}:",
     "course_link": "The link for the lessons is: ",
     "cancel_course_text": "Are you sure you want to cancel the course?",

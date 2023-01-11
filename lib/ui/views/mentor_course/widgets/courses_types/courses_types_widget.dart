@@ -106,7 +106,7 @@ class _CoursesTypesState extends State<CoursesTypes> {
 
   Widget _showActionButton() {
     bool isWithPartner = widget.selectedCourseType?.isWithPartner as bool;
-    String buttonText = isWithPartner ? 'mentor_course.find_partner'.tr() : 'mentor_course.start_course'.tr();
+    String buttonText = isWithPartner ? 'mentor_course.find_partner'.tr() : 'mentor_course.set_course_details'.tr();
     return Center(
       child: Container(
         height: 30.0,

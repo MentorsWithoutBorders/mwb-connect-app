@@ -104,6 +104,29 @@ class MentorCourseUtilsService {
       partnerMentorName = mentorPartnershipRequest?.partnerMentor?.name ?? '';
     }
     return partnerMentorName;
-  }  
+  }
+  
+  bool getShouldShowMentorPartnershipRequestExpired(MentorPartnershipRequestModel? mentorPartnershipRequest) {
+    String userId = _storageService.userId as String;
+    if (mentorPartnershipRequest != null && mentorPartnershipRequest.id != null) {
+      if (mentorPartnershipRequest.isExpired != null && mentorPartnershipRequest.isExpired == true && mentorPartnershipRequest.partnerMentor?.id == userId) {
+        if (mentorPartnershipRequest.wasExpiredShown == null || mentorPartnershipRequest.wasExpiredShown != null && mentorPartnershipRequest.wasExpiredShown == false) {
+          return true;
+        }
+      }
+    } 
+    return false;   
+  }
 
+  bool getShouldShowMentorPartnershipRequestCanceled(MentorPartnershipRequestModel? mentorPartnershipRequest) {
+    String userId = _storageService.userId as String;
+    if (mentorPartnershipRequest != null && mentorPartnershipRequest.id != null) {
+      if (mentorPartnershipRequest.isCanceled != null && mentorPartnershipRequest.isCanceled == true && mentorPartnershipRequest.partnerMentor?.id == userId) {
+        if (mentorPartnershipRequest.wasCanceledShown == null || mentorPartnershipRequest.wasCanceledShown != null && mentorPartnershipRequest.wasCanceledShown == false) {
+          return true;
+        }
+      }
+    } 
+    return false;   
+  }  
 }

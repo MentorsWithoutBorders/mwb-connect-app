@@ -70,8 +70,8 @@ class MentorCourseApiService {
     return ;
   }
 
-  Future<void> cancelMentorWaitingRequest(String? id) async {
-    await _api.putHTTP(url: '/mentors_waiting_requests/$id/cancel');  
+  Future<void> cancelMentorWaitingRequest() async {
+    await _api.putHTTP(url: '/mentors_waiting_requests/cancel');  
     return ;
   }
 
