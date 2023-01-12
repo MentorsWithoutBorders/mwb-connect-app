@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/colored_text_model.dart';
-import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class RejectMentorPartnershipRequestDialog extends StatefulWidget {
@@ -17,7 +15,7 @@ class RejectMentorPartnershipRequestDialog extends StatefulWidget {
 
 class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartnershipRequestDialog> {
   String? _reasonText;
-  bool _isRejectingMentorPartnershipRequest = false;
+  bool _isRejecting = false;
 
   Widget _showRejectMentorPartnershipRequestDialog() {
     return Container(
@@ -116,7 +114,7 @@ class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartn
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isRejectingMentorPartnershipRequest ? Text(
+          child: !_isRejecting ? Text(
             'common.yes_reject'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -133,13 +131,13 @@ class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartn
   } 
 
   Future<void> _rejectMentorPartnershipRequest() async {  
-    _setIsRejectingMentorPartnershipRequest(true);
+    _setIsRejecting(true);
     await widget.onReject!(_reasonText);
   }
   
-  void _setIsRejectingMentorPartnershipRequest(bool isRejecting) {
+  void _setIsRejecting(bool isRejecting) {
     setState(() {
-      _isRejectingMentorPartnershipRequest = isRejecting;
+      _isRejecting = isRejecting;
     });  
   }
   

@@ -14,7 +14,7 @@ class CancelMentorPartnershipRequestDialog extends StatefulWidget {
 }
 
 class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartnershipRequestDialog> with TickerProviderStateMixin {
-  bool _isCancelingMentorPartnershipRequest = false;
+  bool _isCanceling = false;
 
   Widget _showCancelMentorPartnershipRequestDialog() {
     return Container(
@@ -82,7 +82,7 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isCancelingMentorPartnershipRequest ? Text(
+          child: !_isCanceling ? Text(
             'common.yes_cancel'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -99,13 +99,13 @@ class _CancelMentorPartnershipRequestDialogState extends State<CancelMentorPartn
   } 
 
   Future<void> _cancelMentorPartnershipRequest() async {  
-    _setIsCancelingMentorPartnershipRequest(true);
+    _setIsCanceling(true);
     await widget.onCancel!();
   }
   
-  void _setIsCancelingMentorPartnershipRequest(bool isCanceling) {
+  void _setIsCanceling(bool isCanceling) {
     setState(() {
-      _isCancelingMentorPartnershipRequest = isCanceling;
+      _isCanceling = isCanceling;
     });  
   }  
   

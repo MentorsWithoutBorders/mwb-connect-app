@@ -21,7 +21,7 @@ class _UpdateMeetingUrlDialogState extends State<UpdateMeetingUrlDialog> {
   String urlType = AppConstants.meetingUrlType;
   String? _url;
   bool _shouldShowError = false;
-  bool _isUpdatingMeetingUrl = false;
+  bool _isUpdating = false;
 
   Widget _showUpdateMeetingUrlDialog() {
     return Container(
@@ -136,7 +136,7 @@ class _UpdateMeetingUrlDialogState extends State<UpdateMeetingUrlDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isUpdatingMeetingUrl ? Text(
+          child: !_isUpdating ? Text(
             'common.update'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -157,14 +157,14 @@ class _UpdateMeetingUrlDialogState extends State<UpdateMeetingUrlDialog> {
       _setShouldShowError(true);
       return ;
     }    
-    _setIsUpdatingMeetingUrl(true);
+    _setIsUpdating(true);
     await widget.onUpdate!(meetingUrl);
     Navigator.pop(context);
   }
   
-  void _setIsUpdatingMeetingUrl(bool isUpdating) {
+  void _setIsUpdating(bool isUpdating) {
     setState(() {
-      _isUpdatingMeetingUrl = isUpdating;
+      _isUpdating = isUpdating;
     });  
   }    
   

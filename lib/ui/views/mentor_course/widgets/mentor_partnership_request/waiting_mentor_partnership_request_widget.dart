@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/cancel_mentor_partnership_request_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/cancel_waiting_mentor_partnership_request_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class WaitingMentorPartnershipRequest extends StatefulWidget {
@@ -78,7 +78,7 @@ class _WaitingMentorPartnershipRequestState extends State<WaitingMentorPartnersh
             showDialog(
               context: context,
               builder: (_) => AnimatedDialog(
-                widgetInside: CancelMentorPartnershipRequestDialog(
+                widgetInside: CancelWaitingMentorPartnershipRequestDialog(
                   onCancel: widget.onCancel
                 )
               )
@@ -94,7 +94,7 @@ class _WaitingMentorPartnershipRequestState extends State<WaitingMentorPartnersh
     return Center(
       child: Container(
         height: 30.0,
-        margin: const EdgeInsets.only(bottom: 10.0),
+        margin: const EdgeInsets.only(bottom: 5.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,

@@ -22,7 +22,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   String urlType = AppConstants.meetingUrlType;
   String _url = '';
   bool _shouldShowError = false;
-  bool _isAcceptingMentorPartnershipRequest = false;
+  bool _isAccepting = false;
 
   Widget _showAcceptMentorPartnershipRequestDialog() {
     return Container(
@@ -153,7 +153,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isAcceptingMentorPartnershipRequest ? Text(
+          child: !_isAccepting ? Text(
             'common.accept'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -178,14 +178,14 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
       _setShouldShowError(true);
       return ;
     }
-    _setIsAcceptingMentorPartnershipRequest(true);
+    _setIsAccepting(true);
     await widget.onAccept!(_url);
     Navigator.pop(context);
   }
   
-  void _setIsAcceptingMentorPartnershipRequest(bool isAccepting) {
+  void _setIsAccepting(bool isAccepting) {
     setState(() {
-      _isAcceptingMentorPartnershipRequest = isAccepting;
+      _isAccepting = isAccepting;
     });  
   }
 
