@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/availability_item_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/add_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilitiesList extends StatefulWidget {
-  const AvailabilitiesList({Key? key})
-    : super(key: key); 
+  const AvailabilitiesList({Key? key, this.filterAvailabilities, this.mergedMessage, this.onAdd, this.onUpdate, this.onDelete, this.onResetMergedMessage})
+    : super(key: key);
+    
+  final List<Availability>? filterAvailabilities;
+  final String? mergedMessage;
+  final Function(Availability)? onAdd;
+  final Function(int, Availability)? onUpdate;  
+  final Function(int)? onDelete;  
+  final Function? onResetMergedMessage;
 
   @override
   State<StatefulWidget> createState() => _AvailabilitiesListState();
 }
 
 class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProviderStateMixin {
-  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
-
   Widget _showAvailability() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,10 +50,17 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
 
   Widget _showAvailabilitiesList() {
     final List<Widget> availabilityWidgets = [];
-    final List<Availability>? availabilitiesList = _mentorsWaitingRequestsProvider?.filterAvailabilities;
+    final List<Availability>? availabilitiesList = widget.filterAvailabilities;
     if (availabilitiesList != null) {
       for (int i = 0; i < availabilitiesList.length; i++) {
-        availabilityWidgets.add(AvailabilityItem(index: i));
+        availabilityWidgets.add(AvailabilityItem(
+          index: i,
+          filterAvailabilities: availabilitiesList,
+          mergedMessage: widget.mergedMessage,
+          onUpdate: widget.onUpdate,
+          onDelete: widget.onDelete,
+          onResetMergedMessage: widget.onResetMergedMessage
+        ));
       }
     }
     return Padding(
@@ -87,15 +97,23 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   void _showAddAvailabilityDialog() {
     showDialog(
       context: context,
-      builder: (_) => const AnimatedDialog(
-        widgetInside: AddAvailability()
+      builder: (_) => AnimatedDialog(
+        widgetInside: AddAvailability(
+          onAdd: widget.onAdd
+        )
       ),
     ).then((shouldShowToast) {
-      if (shouldShowToast && _mentorsWaitingRequestsProvider?.availabilityMergedMessage.isNotEmpty == true) {
+      if (shouldShowToast && widget.mergedMessage?.isNotEmpty == true) {
         _showToast(context);
-        _mentorsWaitingRequestsProvider?.resetAvailabilityMergedMessage();
+        _resetMergeMessage();
       }
     });     
+  }
+
+  void _resetMergeMessage() {
+    if (widget.onResetMergedMessage != null) {
+      widget.onResetMergedMessage!();
+    }
   }
 
   void _showToast(BuildContext context) {
@@ -103,7 +121,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
     scaffold.showSnackBar(
       SnackBar(
         key: const Key(AppKeys.toast),
-        content: Text(_mentorsWaitingRequestsProvider?.availabilityMergedMessage as String),
+        content: Text(widget.mergedMessage as String),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
@@ -113,8 +131,6 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
-      
     return _showAvailability();
   }
 }

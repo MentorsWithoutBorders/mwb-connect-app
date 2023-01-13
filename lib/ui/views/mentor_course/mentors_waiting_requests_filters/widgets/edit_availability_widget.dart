@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class EditAvailability extends StatefulWidget {
-  const EditAvailability({Key? key, @required this.index})
+  const EditAvailability({Key? key, @required this.index, this.filterAvailabilities, this.onUpdate})
     : super(key: key); 
 
   final int? index;
+  final List<Availability>? filterAvailabilities;
+  final Function(int, Availability)? onUpdate;  
 
   @override
   State<StatefulWidget> createState() => _EditAvailabilityState();
 }
 
 class _EditAvailabilityState extends State<EditAvailability> {
-  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
-  CommonViewModel? _commonProvider;  
   Availability? _availability;
   bool _shouldShowError = false;
   bool _isInit = false;
@@ -30,7 +27,6 @@ class _EditAvailabilityState extends State<EditAvailability> {
   @override
   void didChangeDependencies() {
     if (!_isInit) {  
-      _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
       _initAvalability();
       _isInit = true;
     }
@@ -38,7 +34,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
   }
 
   void _initAvalability() {
-    _availability = _mentorsWaitingRequestsProvider?.filterAvailabilities[widget.index!];
+    _availability = widget.filterAvailabilities?[widget.index!];
   }
   
   Widget _showEditAvailabilityDialog() {
@@ -241,7 +237,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   void _updateAvailability() {
     if (UtilsAvailabilities.isAvailabilityValid(_availability!) == true) {
-      _mentorsWaitingRequestsProvider?.updateAvailability(widget.index!, _availability!);
+      widget.onUpdate!(widget.index!, _availability!);
       Navigator.pop(context, true);
     } else {
       setState(() {
@@ -252,8 +248,6 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   @override
   Widget build(BuildContext context) {
-    _commonProvider = Provider.of<CommonViewModel>(context);
-
     return _showEditAvailabilityDialog();
   }
 }

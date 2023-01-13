@@ -35,5 +35,5 @@ class MentorsWaitingRequestsApiService {
     Map<String, dynamic> response = await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequest.toJson());  
     mentorPartnershipRequest = MentorPartnershipRequestModel.fromJson(response);
     return mentorPartnershipRequest;
-  }  
+  }
 }

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/availabilities_list_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
@@ -41,7 +43,7 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
               shrinkWrap: true,
               children: [
                 _showDaysTimesCard(),
-                _showFieldsCard(),
+                _showSubfieldsCard(),
               ]
             ),
           ),
@@ -52,13 +54,22 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
   }
 
   Widget _showDaysTimesCard() {
+    List<Availability> filterAvailabilities = _mentorsWaitingRequestsProvider?.filterAvailabilities ?? [];
+    String mergedMessage = _mentorsWaitingRequestsProvider?.availabilityMergedMessage ?? '';
     return AppCard(
-      child: AvailabilitiesList()
+      child: AvailabilitiesList(
+        filterAvailabilities: filterAvailabilities,
+        mergedMessage: mergedMessage,
+        onAdd: _onAddAvailability,
+        onUpdate: _onUpdateAvailability,
+        onDelete: _onDeleteAvailability,
+        onResetMergedMessage: _onResetAvailabilityMergedMessage
+      )
     );
   }
 
-  Widget _showFieldsCard() {
-    bool isAllFieldsSelected = _mentorsWaitingRequestsProvider?.isAllFieldsSelected as bool;
+  Widget _showSubfieldsCard() {
+    Field? field = _mentorsWaitingRequestsProvider?.filterField;
     return Card(
       elevation: 3.0,
       shape: RoundedRectangleBorder(
@@ -68,13 +79,65 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
           children: [
-            FieldDropdown(),
-            if (!isAllFieldsSelected) Subfields()
+            Subfields(
+              field: field,
+              onAdd: _addSubfield,
+              onDelete: _deleteSubfield,
+              onSet: _setSubfield,
+              onAddSkill: _addSkill,
+              onDeleteSkill: _deleteSkill,
+              onSetScrollOffset: _setScrollOffset,
+              onSetShouldUnfocus: _setShouldUnfocus
+            )
           ]
         )
       )
     );
   }
+
+  void _onAddAvailability(Availability availability) {
+    _mentorsWaitingRequestsProvider?.addAvailability(availability);
+  }
+
+  void _onUpdateAvailability(int index, Availability availability) {
+    _mentorsWaitingRequestsProvider?.updateAvailability(index, availability);
+  }
+
+  void _onDeleteAvailability(int index) {
+    _mentorsWaitingRequestsProvider?.deleteAvailability(index);
+  }
+
+  void _onResetAvailabilityMergedMessage() {
+    _mentorsWaitingRequestsProvider?.resetAvailabilityMergedMessage();
+  }
+
+  void _addSubfield() {
+    _mentorsWaitingRequestsProvider?.addSubfield();
+  }
+
+  void _deleteSubfield(int index) {
+    _mentorsWaitingRequestsProvider?.deleteSubfield(index);
+  }
+
+  void _setSubfield(Subfield subfield, int index) {
+    _mentorsWaitingRequestsProvider?.setSubfield(subfield, index);
+  }
+
+  bool _addSkill(String skill, int index) {
+    return _mentorsWaitingRequestsProvider?.addSkill(skill, index) as bool;
+  }
+
+  void _deleteSkill(String skillId, int index) {
+    _mentorsWaitingRequestsProvider?.deleteSkill(skillId, index);
+  }
+
+  void _setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {
+    _mentorsWaitingRequestsProvider?.setScrollOffset(positionDy, screenHeight, statusBarHeight);
+  }
+
+  void _setShouldUnfocus(bool shouldUnfocus) {
+    _mentorsWaitingRequestsProvider?.shouldUnfocus = shouldUnfocus;
+  }  
   
   Widget _showApplyFiltersButton() {
     return Center(

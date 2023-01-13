@@ -1,30 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfield_dropdown_widget.dart';
 
 class Subfields extends StatefulWidget {
-  const Subfields({Key? key})
-    : super(key: key); 
+  const Subfields({Key? key, this.field, this.onAdd, this.onDelete, this.onSet, this.onAddSkill, this.onDeleteSkill, this.onSetScrollOffset, this.onSetShouldUnfocus})
+    : super(key: key);
+    
+  final Field? field;
+  final Function? onAdd;
+  final Function(int)? onDelete;
+  final Function (Subfield, int)? onSet;
+  final Function(String, int)? onAddSkill;
+  final Function(String, int)? onDeleteSkill;
+  final Function(double, double, double)? onSetScrollOffset;    
+  final Function (bool)? onSetShouldUnfocus;    
 
   @override
   State<StatefulWidget> createState() => _SubfieldsState();
 }
 
 class _SubfieldsState extends State<Subfields> {
-  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;    
-
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<Subfield>? filterSubfields = _mentorsWaitingRequestsProvider?.filterField.subfields;
+    final List<Subfield>? filterSubfields = widget.field?.subfields;
     subfieldWidgets.add(Label(text: 'common.subfields'.tr()));
     if (filterSubfields != null) {
       for (int i = 0; i < filterSubfields.length; i++) {
-        final Widget subfield = SubfieldDropdown(index: i);
+        final Widget subfield = SubfieldDropdown(
+          index: i,
+          field: widget.field,
+          onDelete: widget.onDelete,
+          onSet: widget.onSet,
+          onAddSkill: widget.onAddSkill,
+          onDeleteSkill: widget.onDeleteSkill,
+          onSetScrollOffset: widget.onSetScrollOffset,
+          onSetShouldUnfocus: widget.onSetShouldUnfocus
+        );
         subfieldWidgets.add(subfield);
       }
     }
@@ -57,17 +72,15 @@ class _SubfieldsState extends State<Subfields> {
 
   void _addSubfield() {
     _unfocus();
-    _mentorsWaitingRequestsProvider?.addSubfield();
+    widget.onAdd!();
   }
 
   void _unfocus() {
-    _mentorsWaitingRequestsProvider?.shouldUnfocus = true;
+    widget.onSetShouldUnfocus!(true);
   }
   
   @override
   Widget build(BuildContext context) {
-    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
-
     return _showSubfields();
   }
 }

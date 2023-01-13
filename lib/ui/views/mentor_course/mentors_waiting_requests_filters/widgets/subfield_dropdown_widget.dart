@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/skills_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
-  const SubfieldDropdown({Key? key, @required this.index})
+  const SubfieldDropdown({Key? key, this.index, this.field, this.onDelete, this.onSet, this.onAddSkill, this.onDeleteSkill, this.onSetScrollOffset, this.onSetShouldUnfocus})
     : super(key: key); 
 
   final int? index;
+  final Field? field;
+  final Function(int)? onDelete;
+  final Function (Subfield, int)? onSet;
+  final Function(String, int)? onAddSkill;
+  final Function(String, int)? onDeleteSkill;
+  final Function(double, double, double)? onSetScrollOffset;  
+  final Function (bool)? onSetShouldUnfocus;
 
   @override
   State<StatefulWidget> createState() => _SubfieldDropdownState();
 }
 
 class _SubfieldDropdownState extends State<SubfieldDropdown> {
-  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;  
   Subfield? _selectedSubfield;
 
   @override
@@ -28,18 +32,16 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }
   
   void _afterLayout(_) {
-    List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
-    Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
-    Subfield? selectedSubfield = UtilsFields.getSelectedSubfield(widget.index!, filterField, fields);
+    Field field = widget.field as Field;
+    Subfield? selectedSubfield = UtilsFields.getSelectedSubfield(widget.index!, field, [field]);
     if (selectedSubfield != null) {
       _setSelectedSubfield(selectedSubfield);
     }
   }     
 
   Widget _showSubfieldDropdown() {
-    List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
-    Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
-    final List<String>? skills = UtilsFields.getSkillSuggestions('', widget.index!, filterField, fields);
+    Field field = widget.field as Field;
+    final List<String>? skills = UtilsFields.getSkillSuggestions('', widget.index!, field, [field]);
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
@@ -59,7 +61,13 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
                   ),
                 ),
                 if (_selectedSubfield?.id == null) SizedBox.shrink(),
-                if (_selectedSubfield?.id != null && skills != null && skills.length > 0) Skills(index: widget.index)
+                if (_selectedSubfield?.id != null && skills != null && skills.length > 0) Skills(
+                  index: widget.index,
+                  field: widget.field,
+                  onAdd: widget.onAddSkill,
+                  onDelete: widget.onDeleteSkill,
+                  onSetScrollOffset: widget.onSetScrollOffset
+                )
               ]
             )
           ),
@@ -86,14 +94,13 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   void _deleteSubfield() {
     _unfocus();
-    _mentorsWaitingRequestsProvider?.deleteSubfield(widget.index!);
+    widget.onDelete!(widget.index!);
   }
 
   List<DropdownMenuItem<String>> _buildSubfieldDropdown() {
     final List<DropdownMenuItem<String>> items = [];
-    List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
-    Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
-    List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, filterField, fields);
+    Field field = widget.field as Field;
+    List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, field, [field]);
     for (final Subfield subfield in subfields) {
       items.add(DropdownMenuItem<String>(
         value: subfield.id,
@@ -104,9 +111,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }  
 
   void _changeSubfield(String? selectedSubfieldId) {
-    final Field? filterField = _mentorsWaitingRequestsProvider?.filterField;
-    final List<Field>? fields = _mentorsWaitingRequestsProvider?.fields;      
-    List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, filterField, fields);
+    final Field field = widget.field as Field;
+    List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, field, [field]);
     Subfield? selectedSubfield;
     for (final Subfield subfield in subfields) {
       if (subfield.id == selectedSubfieldId) {
@@ -115,9 +121,9 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
       }
     }     
     _setSelectedSubfield(selectedSubfield as Subfield);
-    _mentorsWaitingRequestsProvider?.setSubfield(selectedSubfield, widget.index!);
+    widget.onSet!(selectedSubfield, widget.index!);
   }
-  
+
   void _setSelectedSubfield(Subfield subfield) {
     setState(() {
       _selectedSubfield = subfield;
@@ -125,13 +131,11 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   }
 
   void _unfocus() {
-    _mentorsWaitingRequestsProvider?.shouldUnfocus = true;
+    widget.onSetShouldUnfocus!(true);
   }  
 
   @override
   Widget build(BuildContext context) {
-    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
-
     return _showSubfieldDropdown();
   }
 }

@@ -65,8 +65,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     return _mentorsWaitingRequestsUtilsService.setAllSkills(field);
   }  
 
-  bool get isAllFieldsSelected => filterField.id == 'all';
-
   List<MentorWaitingRequest> _adjustMentorsAvailabilities(List<MentorWaitingRequest> mentorsWaitingRequests) {
     return _mentorsWaitingRequestsUtilsService.adjustMentorsAvailabilities(mentorsWaitingRequests);
   }

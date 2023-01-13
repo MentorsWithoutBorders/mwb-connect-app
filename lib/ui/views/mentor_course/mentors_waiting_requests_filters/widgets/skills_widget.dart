@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
-import 'package:provider/provider.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/typeahead_field_widget.dart';
 
 class Skills extends StatefulWidget {
-  const Skills({Key? key, @required this.index})
+  const Skills({Key? key, @required this.index, this.field, this.onAdd, this.onDelete, this.onSetScrollOffset})
     : super(key: key);
     
-  final int? index;    
+  final int? index;
+  final Field? field;
+  final Function(String, int)? onAdd;
+  final Function(String, int)? onDelete;
+  final Function(double, double, double)? onSetScrollOffset;
 
   @override
   State<StatefulWidget> createState() => _SkillsState();
 }
 
 class _SkillsState extends State<Skills> {
-  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   final TextEditingController _typeAheadController = TextEditingController();
   final GlobalKey _keyTypeAhead = GlobalKey();
   String _query = '';
 
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
-    final List<Skill>? skills = _mentorsWaitingRequestsProvider?.filterField.subfields?[widget.index!].skills;
-    final Field filterField = _mentorsWaitingRequestsProvider?.filterField as Field;
-    final List<Field> fields = _mentorsWaitingRequestsProvider?.fields as List<Field>;
+    final List<Skill>? skills = widget.field?.subfields?[widget.index!].skills;
+    final Field field = widget.field as Field;
     if (skills != null && skills.isNotEmpty) {
       for (int i = 0; i < skills.length; i++) {
         final Widget skillWidget = Padding(
@@ -63,7 +63,7 @@ class _SkillsState extends State<Skills> {
           height: inputHeight,
           child: TypeAheadField(
             key: _keyTypeAhead,
-            options: UtilsFields.getSkillSuggestions(_query, widget.index!, filterField, fields),
+            options: UtilsFields.getSkillSuggestions(_query, widget.index!, field, [field]),
             inputDecoration: InputDecoration(
               filled: true,
               fillColor: AppColors.LINEN,
@@ -72,7 +72,7 @@ class _SkillsState extends State<Skills> {
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 5.0),
-              hintText: UtilsFields.getSkillHintText(widget.index!, filterField, fields),
+              hintText: UtilsFields.getSkillHintText(widget.index!, field, [field]),
               hintStyle: const TextStyle(
                 fontSize: 14.0,
                 color: AppColors.SILVER
@@ -108,11 +108,12 @@ class _SkillsState extends State<Skills> {
     final Offset positionTypeahead = renderBoxTypeahead.localToGlobal(Offset.zero);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    _mentorsWaitingRequestsProvider?.setScrollOffset(positionTypeahead.dy, screenHeight, statusBarHeight); 
-  }  
+    widget.onSetScrollOffset!(positionTypeahead.dy, screenHeight, statusBarHeight); 
+  }
+  
 
-  void _addSkill(String skill) {
-    if (_mentorsWaitingRequestsProvider?.addSkill(skill, widget.index!) == true) {
+  void _addSkill(String skillName) {
+    if (widget.onAdd!(skillName, widget.index!) == true) {
       _resetInputText();
     }
   }
@@ -130,13 +131,11 @@ class _SkillsState extends State<Skills> {
   }
   
   void _deleteSkill(String skillId) {
-    _mentorsWaitingRequestsProvider?.deleteSkill(skillId, widget.index!);
+    widget.onDelete!(skillId, widget.index!);
   }
 
   @override
   Widget build(BuildContext context) {
-    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
-
     return _showSkills();
   }
 }

@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/edit_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityItem extends StatefulWidget {
-  const AvailabilityItem({Key? key, @required this.index})
+  const AvailabilityItem({Key? key, @required this.index, this.filterAvailabilities, this.mergedMessage, this.onUpdate, this.onDelete, this.onResetMergedMessage})
     : super(key: key); 
 
   final int? index;
+  final List<Availability>? filterAvailabilities;
+  final String? mergedMessage;
+  final Function(int, Availability)? onUpdate;
+  final Function(int)? onDelete;
+  final Function? onResetMergedMessage;  
 
   @override
   State<StatefulWidget> createState() => _AvailabilityItemState();
 }
 
 class _AvailabilityItemState extends State<AvailabilityItem> {
-  MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;  
-
   Widget _showAvailabilityItem() {
-    final Availability? availability = _mentorsWaitingRequestsProvider?.filterAvailabilities[widget.index!];
+    final Availability? availability = widget.filterAvailabilities?[widget.index!];
     final String? dayOfWeek = availability?.dayOfWeek;
     final String? timeFrom = availability?.time?.from;
     final String? timeTo = availability?.time?.to;
@@ -99,21 +100,29 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
   }
   
   void _deleteAvailability() {
-    _mentorsWaitingRequestsProvider?.deleteAvailability(widget.index!);    
+    widget.onDelete!(widget.index!);
   }
 
   void _showEditAvailabilityDialog(Availability availability) {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: EditAvailability(index: widget.index)
+        widgetInside: EditAvailability(
+          index: widget.index,
+          filterAvailabilities: widget.filterAvailabilities,
+          onUpdate: widget.onUpdate
+        )
       )
     ).then((shouldShowToast) {
-      if (shouldShowToast != null && shouldShowToast && _mentorsWaitingRequestsProvider?.availabilityMergedMessage.isNotEmpty == true) {
+      if (shouldShowToast != null && shouldShowToast && widget.mergedMessage?.isNotEmpty == true) {
         _showToast(context);
-        _mentorsWaitingRequestsProvider?.resetAvailabilityMergedMessage();
+        _resetMergedMessage();
       }
     });     
+  }
+
+  void _resetMergedMessage() {
+    widget.onResetMergedMessage!();
   }
 
   void _showToast(BuildContext context) {
@@ -121,7 +130,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
     scaffold.showSnackBar(
       SnackBar(
         key: const Key(AppKeys.toast),
-        content: Text(_mentorsWaitingRequestsProvider?.availabilityMergedMessage as String),
+        content: Text(widget.mergedMessage as String),
         action: SnackBarAction(
           label: 'common.close'.tr(), onPressed: scaffold.hideCurrentSnackBar
         ),
@@ -131,8 +140,6 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
 
   @override
   Widget build(BuildContext context) {
-    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
-
     return _showAvailabilityItem();
   }
 }
