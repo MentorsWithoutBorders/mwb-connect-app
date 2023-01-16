@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
@@ -22,6 +23,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
   MentorPartnershipRequestModel? mentorPartnershipRequest;
   CourseModel? course;
+  Field? field;
   CourseMentor? partnerMentor;
   CourseType? selectedCourseType;
   String errorMessage = '';
@@ -55,7 +57,12 @@ class MentorCourseViewModel extends ChangeNotifier {
     await _mentorCourseApiService.cancelCourse(course?.id, reason);
     course = null;
     notifyListeners();
-  }  
+  }
+  
+  Future<void> getField(String fieldId) async {
+    field = await _mentorCourseApiService.getField(fieldId);
+    notifyListeners();
+  }
 
   Future<void> getMentorsWaitingRequests() async {
     mentorsWaitingRequests = await _mentorCourseApiService.getMentorsWaitingRequests();

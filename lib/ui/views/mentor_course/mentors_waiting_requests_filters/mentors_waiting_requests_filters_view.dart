@@ -69,7 +69,8 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
   }
 
   Widget _showSubfieldsCard() {
-    Field? field = _mentorsWaitingRequestsProvider?.filterField;
+    Field? filterField = _mentorsWaitingRequestsProvider?.filterField;
+    Field? field = _mentorsWaitingRequestsProvider?.fields[0];
     return Card(
       elevation: 3.0,
       shape: RoundedRectangleBorder(
@@ -80,6 +81,7 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
         child: Wrap(
           children: [
             Subfields(
+              filterField: filterField,
               field: field,
               onAdd: _addSubfield,
               onDelete: _deleteSubfield,

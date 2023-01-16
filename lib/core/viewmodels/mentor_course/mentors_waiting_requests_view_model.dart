@@ -204,15 +204,15 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     notifyListeners();
   }
  
-  void setField(Field field) async {
-    if (filterField.id != field.id) {
+  void setFilterField(Field? field) {
+    if (filterField.id != field?.id) {
       filterField = Field(
-        id: field.id, 
-        name: field.name, 
+        id: field?.id, 
+        name: field?.name, 
         subfields: []
       );
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Field getSelectedField() {
@@ -230,11 +230,12 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   }
   
   void deleteSubfield(int index) async {
+    List<Subfield> updatedSubfields = _mentorsWaitingRequestsUtilsService.getSubfieldsAfterDelete(index, filterField);
     filterField.subfields = [];
     notifyListeners();
     await Future<void>.delayed(const Duration(milliseconds: 100));
-    filterField = _mentorsWaitingRequestsUtilsService.deleteSubfield(index, filterField);
-    notifyListeners();
+    filterField.subfields = updatedSubfields;
+    notifyListeners();    
   }
 
   bool addSkill(String skill, int index) {

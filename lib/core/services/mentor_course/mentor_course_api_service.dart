@@ -2,6 +2,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
@@ -47,6 +48,12 @@ class MentorCourseApiService {
     );
     await _api.putHTTP(url: '/courses/$id/cancel', data: inAppMessage.toJson());  
     return ;
+  }
+
+  Future<Field> getField(String fieldId) async {
+    Map<String, dynamic> response = await _api.getHTTP(url: '/fields/$fieldId');
+    Field field = Field.fromJson(response);
+    return field;
   }
 
   Future<List<MentorWaitingRequest>> getMentorsWaitingRequests() async {

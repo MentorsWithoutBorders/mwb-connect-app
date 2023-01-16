@@ -7,10 +7,11 @@ import 'package:mwb_connect_app/ui/widgets/tag_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/typeahead_field_widget.dart';
 
 class Skills extends StatefulWidget {
-  const Skills({Key? key, @required this.index, this.field, this.onAdd, this.onDelete, this.onSetScrollOffset})
+  const Skills({Key? key, @required this.index, @required this.filterField, @required this.field, @required this.onAdd, @required this.onDelete, @required this.onSetScrollOffset})
     : super(key: key);
     
   final int? index;
+  final Field? filterField;
   final Field? field;
   final Function(String, int)? onAdd;
   final Function(String, int)? onDelete;
@@ -27,7 +28,8 @@ class _SkillsState extends State<Skills> {
 
   Widget _showSkills() {
     final List<Widget> skillWidgets = [];
-    final List<Skill>? skills = widget.field?.subfields?[widget.index!].skills;
+    final List<Skill>? skills = widget.filterField?.subfields?[widget.index!].skills;
+    final Field filterField = widget.filterField as Field;
     final Field field = widget.field as Field;
     if (skills != null && skills.isNotEmpty) {
       for (int i = 0; i < skills.length; i++) {
@@ -63,7 +65,7 @@ class _SkillsState extends State<Skills> {
           height: inputHeight,
           child: TypeAheadField(
             key: _keyTypeAhead,
-            options: UtilsFields.getSkillSuggestions(_query, widget.index!, field, [field]),
+            options: UtilsFields.getSkillSuggestions(_query, widget.index!, filterField, [field]),
             inputDecoration: InputDecoration(
               filled: true,
               fillColor: AppColors.LINEN,
@@ -72,7 +74,7 @@ class _SkillsState extends State<Skills> {
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 5.0),
-              hintText: UtilsFields.getSkillHintText(widget.index!, field, [field]),
+              hintText: UtilsFields.getSkillHintText(widget.index!, filterField, [field]),
               hintStyle: const TextStyle(
                 fontSize: 14.0,
                 color: AppColors.SILVER

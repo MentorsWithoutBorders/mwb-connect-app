@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
@@ -275,6 +276,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   void _goToMentorsWaitingRequests(CourseType selectedCourseType) {
     User user = _commonProvider?.user as User;
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
+    final Field? field = _mentorCourseProvider?.field;
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
       mentor: mentor,
       courseType: selectedCourseType
@@ -282,7 +284,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     Navigator.push<MentorPartnershipRequestModel>(
       context,
       MaterialPageRoute(
-        builder: (context) => MentorsWaitingRequestsView(mentorPartnershipRequest: mentorPartnershipRequest)
+        builder: (context) => MentorsWaitingRequestsView(
+          field: field,
+          mentorPartnershipRequest: mentorPartnershipRequest
+        )
       )
     ).then((MentorPartnershipRequestModel? result) {
       if (result != null) {
@@ -294,10 +299,13 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
   
   Future<void> _init() async {
+    User user = _commonProvider?.user as User;
+    String fieldId = user.field?.id as String;
     if (!_isInit && _mentorCourseProvider != null) {
       await Future.wait([
         _mentorCourseProvider!.getCoursesTypes(),
         _mentorCourseProvider!.getCourse(),
+        _mentorCourseProvider!.getField(fieldId),
         _mentorCourseProvider!.getMentorPartnershipRequest(),
         _mentorCourseProvider!.getMentorWaitingRequest(),
         _goalsProvider!.getGoals(),

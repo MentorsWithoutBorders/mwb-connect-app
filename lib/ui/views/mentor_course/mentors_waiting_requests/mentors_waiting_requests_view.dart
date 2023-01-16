@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -16,10 +17,11 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class MentorsWaitingRequestsView extends StatefulWidget {
-  const MentorsWaitingRequestsView({Key? key, required this.mentorPartnershipRequest})
+  const MentorsWaitingRequestsView({Key? key, @required this.field, @required this.mentorPartnershipRequest})
     : super(key: key);
     
-  final MentorPartnershipRequestModel mentorPartnershipRequest;
+  final Field? field;
+  final MentorPartnershipRequestModel? mentorPartnershipRequest;
 
   @override
   State<StatefulWidget> createState() => _MentorsWaitingRequestsViewState();
@@ -47,7 +49,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   }  
 
   Future<void> _fetchPage(int pageKey) async {
-    CourseType? courseType = widget.mentorPartnershipRequest.courseType;
+    CourseType? courseType = widget.mentorPartnershipRequest?.courseType;
     try {
       await _mentorsWaitingRequestsProvider?.getMentorsWaitingRequests(courseType: courseType, pageNumber: _pageNumber);
       final newItems = _mentorsWaitingRequestsProvider?.newMentorsWaitingRequests;
@@ -65,6 +67,8 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   }
   
   void _afterLayout(_) {
+    _mentorsWaitingRequestsProvider?.fields = [widget.field as Field];
+    _mentorsWaitingRequestsProvider?.setFilterField(widget.field as Field);
     _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
     _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
   }  
@@ -75,7 +79,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
     final String? subfieldOptionId = _mentorsWaitingRequestsProvider?.subfieldOptionId;
     final String? availabilityOptionId = _mentorsWaitingRequestsProvider?.availabilityOptionId;
     final String? courseDayOfWeek = _mentorsWaitingRequestsProvider?.selectedPartnerMentor?.availabilities![0].dayOfWeek;
-    final List<Subfield> mentorSubfields = widget.mentorPartnershipRequest.mentor?.field?.subfields as List<Subfield>;
+    final List<Subfield> mentorSubfields = widget.mentorPartnershipRequest?.mentor?.field?.subfields as List<Subfield>;
     final List<String>? courseHoursList = _mentorsWaitingRequestsProvider?.buildHoursList();
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
@@ -130,7 +134,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   }
 
   Future<void> _sendMentorPartnershipRequest(String mentorSubfieldId, String courseStartTime) async {
-    CourseMentor mentor = widget.mentorPartnershipRequest.mentor as CourseMentor;
+    CourseMentor mentor = widget.mentorPartnershipRequest?.mentor as CourseMentor;
     await _mentorsWaitingRequestsProvider?.sendMentorPartnershipRequest(mentor, mentorSubfieldId, courseStartTime);
   }
 

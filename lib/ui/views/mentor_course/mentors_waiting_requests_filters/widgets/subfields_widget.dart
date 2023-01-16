@@ -7,9 +7,10 @@ import 'package:mwb_connect_app/ui/widgets/label_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfield_dropdown_widget.dart';
 
 class Subfields extends StatefulWidget {
-  const Subfields({Key? key, this.field, this.onAdd, this.onDelete, this.onSet, this.onAddSkill, this.onDeleteSkill, this.onSetScrollOffset, this.onSetShouldUnfocus})
+  const Subfields({Key? key, this.field, this.filterField, this.onAdd, this.onDelete, this.onSet, this.onAddSkill, this.onDeleteSkill, this.onSetScrollOffset, this.onSetShouldUnfocus})
     : super(key: key);
     
+  final Field? filterField;
   final Field? field;
   final Function? onAdd;
   final Function(int)? onDelete;
@@ -26,12 +27,13 @@ class Subfields extends StatefulWidget {
 class _SubfieldsState extends State<Subfields> {
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
-    final List<Subfield>? filterSubfields = widget.field?.subfields;
+    final List<Subfield>? filterSubfields = widget.filterField?.subfields;
     subfieldWidgets.add(Label(text: 'common.subfields'.tr()));
     if (filterSubfields != null) {
       for (int i = 0; i < filterSubfields.length; i++) {
         final Widget subfield = SubfieldDropdown(
           index: i,
+          filterField: widget.filterField,
           field: widget.field,
           onDelete: widget.onDelete,
           onSet: widget.onSet,

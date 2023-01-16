@@ -289,7 +289,7 @@ class MentorsWaitingRequestsUtilsService {
     return filterField;
   }
   
-  Field deleteSubfield(int index, Field filterField) {
+  List<Subfield> getSubfieldsAfterDelete(int index, Field filterField) {
     List<Subfield> updatedSubfields = [];
     if (filterField.subfields != null) {
       for (int i = 0; i < filterField.subfields!.length; i++) {
@@ -299,7 +299,7 @@ class MentorsWaitingRequestsUtilsService {
       }
     }
     filterField.subfields = updatedSubfields;
-    return filterField;
+    return updatedSubfields;
   }
 
   Field deleteSkill(String skillId, int index, Field filterField) {

@@ -40,9 +40,9 @@ class UtilsFields {
     Subfield? selectedSubfield;
     final List<Subfield>? subfields = fields?[getSelectedFieldIndex(selectedField, fields)].subfields;
     final List<Subfield>? filterSubfields = selectedField?.subfields;
-    if (subfields != null) {
+    if (subfields != null && filterSubfields != null && filterSubfields.length > 0) {
       for (final Subfield subfield in subfields) {
-        if (subfield.name == filterSubfields?[index].name) {
+        if (subfield.name == filterSubfields[index].name) {
           selectedSubfield = subfield;
           break;
         }
@@ -78,8 +78,9 @@ class UtilsFields {
     List<String> matches = [];
     Subfield? subfield = getSelectedSubfield(index, selectedField, fields);
     List<Skill>? subfieldSkills = subfield?.skills;
-    List<Skill>? filterSkills = selectedField?.subfields?[index].skills;
-    if (filterSkills != null && subfieldSkills != null) {
+    final List<Subfield> filterSubfields = selectedField?.subfields ?? [];
+    List<Skill>? filterSkills = filterSubfields.length > 0 ? filterSubfields[index].skills : [];
+    if (subfieldSkills != null && filterSkills != null) {
       for (final Skill skill in subfieldSkills) {
         bool shouldAdd = true;
         for (final Skill userSkill in filterSkills) {
