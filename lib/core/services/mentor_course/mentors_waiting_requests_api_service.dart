@@ -20,6 +20,16 @@ class MentorsWaitingRequestsApiService {
     return mentorsWaitingRequests;
   }
 
+  Future<MentorWaitingRequest> addMentorWaitingRequest(CourseType? courseType) async {
+    MentorWaitingRequest mentorWaitingRequest = MentorWaitingRequest(
+      courseType: courseType,
+    );    
+    Map<String, dynamic> response = await _api.postHTTP(url: '/mentors_waiting_requests/add', data: mentorWaitingRequest.toJson());  
+    mentorWaitingRequest = MentorWaitingRequest.fromJson(response);
+    return mentorWaitingRequest;
+  }
+
+
   Future<MentorPartnershipRequestModel> sendMentorPartnershipRequest(CourseMentor mentor, CourseMentor? partnerMentor, CourseType? selectedCourseType, String courseDayOfWeek, String courseStartTime) async {
     DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
     DateFormat timeFormat = DateFormat(AppConstants.timeFormat, 'en');
@@ -31,7 +41,6 @@ class MentorsWaitingRequestsApiService {
       courseDayOfWeek: dayOfWeekFormat.format(utcDateTime),
       courseStartTime: timeFormat.format(utcDateTime)
     );    
-    
     Map<String, dynamic> response = await _api.postHTTP(url: '/mentors_partnership_requests', data: mentorPartnershipRequest.toJson());  
     mentorPartnershipRequest = MentorPartnershipRequestModel.fromJson(response);
     return mentorPartnershipRequest;

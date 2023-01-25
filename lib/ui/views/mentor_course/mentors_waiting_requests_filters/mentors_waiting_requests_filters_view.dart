@@ -42,7 +42,7 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
               padding: const EdgeInsets.only(top: 0.0),
               shrinkWrap: true,
               children: [
-                _showDaysTimesCard(),
+                _showAvailabilitiesCard(),
                 _showSubfieldsCard(),
               ]
             ),
@@ -53,7 +53,7 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
     );
   }
 
-  Widget _showDaysTimesCard() {
+  Widget _showAvailabilitiesCard() {
     List<Availability> filterAvailabilities = _mentorsWaitingRequestsProvider?.filterAvailabilities ?? [];
     String mergedMessage = _mentorsWaitingRequestsProvider?.availabilityMergedMessage ?? '';
     return AppCard(

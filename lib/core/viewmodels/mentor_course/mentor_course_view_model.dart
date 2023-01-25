@@ -137,7 +137,12 @@ class MentorCourseViewModel extends ChangeNotifier {
   void setMentorPartnershipRequest(MentorPartnershipRequestModel? mentorPartnershipRequest) {
     this.mentorPartnershipRequest = mentorPartnershipRequest;
     notifyListeners();
-  }    
+  }
+  
+  void setMentorWaitingRequest(MentorWaitingRequest? mentorWaitingRequest) {
+    this.mentorWaitingRequest = mentorWaitingRequest;
+    notifyListeners();
+  }
 
   void setSelectedCourseType(String courseTypeId) {
     selectedCourseType = coursesTypes.firstWhere((courseType) => courseType.id == courseTypeId);

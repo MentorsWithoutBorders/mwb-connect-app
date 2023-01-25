@@ -11,6 +11,7 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_parternship_result_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
@@ -281,7 +282,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       mentor: mentor,
       courseType: selectedCourseType
     );
-    Navigator.push<MentorPartnershipRequestModel>(
+    Navigator.push<MentorPartnershipResult>(
       context,
       MaterialPageRoute(
         builder: (context) => MentorsWaitingRequestsView(
@@ -289,9 +290,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
           mentorPartnershipRequest: mentorPartnershipRequest
         )
       )
-    ).then((MentorPartnershipRequestModel? result) {
+    ).then((MentorPartnershipResult? result) {
       if (result != null) {
-        _mentorCourseProvider?.setMentorPartnershipRequest(result);
+        _mentorCourseProvider?.setMentorPartnershipRequest(result.mentorPartnershipRequest);
+        _mentorCourseProvider?.setMentorWaitingRequest(result.mentorWaitingRequest);
       }
     });
   }

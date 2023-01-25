@@ -103,7 +103,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
         )
       ),
     ).then((shouldShowToast) {
-      if (shouldShowToast && widget.mergedMessage?.isNotEmpty == true) {
+      if (shouldShowToast == true && widget.mergedMessage?.isNotEmpty == true) {
         _showToast(context);
         _resetMergeMessage();
       }

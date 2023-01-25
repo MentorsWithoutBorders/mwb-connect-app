@@ -118,7 +118,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
           onSendRequest: _sendMentorPartnershipRequest
         )
       )
-    ).then((shouldGoBack) async {
+    ).then((shouldGoBack) {
       if (shouldGoBack == true) {
         widget.onGoBack!();
       }

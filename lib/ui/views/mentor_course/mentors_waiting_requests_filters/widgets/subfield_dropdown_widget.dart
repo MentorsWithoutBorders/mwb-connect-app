@@ -64,7 +64,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
                   ),
                 ),
                 if (_selectedSubfield?.id == null) SizedBox.shrink(),
-                if (_selectedSubfield?.id != null && skills != null && skills.length > 0) Skills(
+                if (_selectedSubfield?.id != null && skills != null) Skills(
                   index: widget.index,
                   filterField: widget.filterField,
                   field: widget.field,

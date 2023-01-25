@@ -28,7 +28,7 @@ class _SubfieldsState extends State<Subfields> {
   Widget _showSubfields() {
     final List<Widget> subfieldWidgets = [];
     final List<Subfield>? filterSubfields = widget.filterField?.subfields;
-    subfieldWidgets.add(Label(text: 'common.subfields'.tr()));
+    subfieldWidgets.add(_showTitle());
     if (filterSubfields != null) {
       for (int i = 0; i < filterSubfields.length; i++) {
         final Widget subfield = SubfieldDropdown(
@@ -47,6 +47,20 @@ class _SubfieldsState extends State<Subfields> {
     }
     subfieldWidgets.add(_showAddSubfieldButton());
     return Wrap(children: subfieldWidgets);
+  }
+
+  Widget _showTitle() {
+    return Container(
+      margin: const EdgeInsets.only(left: 5.0, bottom: 11.0),
+      child: Text(
+        'common.subfields'.tr() + ':',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: AppColors.TANGO,
+          fontWeight: FontWeight.bold
+        )
+      ),
+    );
   }
 
   Widget _showAddSubfieldButton() {

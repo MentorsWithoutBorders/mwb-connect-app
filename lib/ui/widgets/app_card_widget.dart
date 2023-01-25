@@ -6,7 +6,7 @@ class AppCard extends StatelessWidget {
   AppCard({
     Key? key,
     this.child = const SizedBox.shrink()
-  }) : super(key: key);  
+  }) : super(key: key);
 
   Widget _showCard() {
     return Padding(

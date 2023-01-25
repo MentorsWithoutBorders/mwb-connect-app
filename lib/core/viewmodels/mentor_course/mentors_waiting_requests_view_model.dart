@@ -23,6 +23,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   List<Availability> filterAvailabilities = [];
   Field filterField = Field();
   MentorPartnershipRequestModel? mentorPartnershipRequest;
+  MentorWaitingRequest? mentorWaitingRequest;
   CourseType? selectedCourseType;
   CourseMentor? selectedPartnerMentor;
   String? availabilityOptionId;
@@ -50,10 +51,14 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     setSelectedPartnerMentor(mentor: null);
   }
 
+  Future<MentorWaitingRequest> addMentorWaitingRequest(CourseType courseType) async {
+    mentorWaitingRequest = await _mentorsWaitingRequestsApiService.addMentorWaitingRequest(courseType);
+    return mentorWaitingRequest!;
+  }
+
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor, String mentorSubfieldId, String courseStartTime) async {
     String courseDayOfWeek = selectedPartnerMentor?.availabilities![0].dayOfWeek as String;
     mentorPartnershipRequest = await _mentorsWaitingRequestsApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, selectedCourseType, courseDayOfWeek, courseStartTime);
-    resetValues();
     notifyListeners();
   }
 
@@ -274,6 +279,8 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     mentorsWaitingRequests = [];
     filterAvailabilities = [];
     filterField = Field();
+    mentorPartnershipRequest = null;
+    mentorWaitingRequest = null;
     selectedPartnerMentor = null;
     subfieldOptionId = null;
     availabilityOptionId = null;

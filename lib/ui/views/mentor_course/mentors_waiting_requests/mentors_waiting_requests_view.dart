@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/mentor_parternship_result_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -32,6 +34,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   final PagingController<int, MentorWaitingRequest> _pagingController =
         PagingController(firstPageKey: 0);  
   int _pageNumber = 1;
+  bool _isAddingMentorWaitingRequest = false;
 
   @override
   void initState() {
@@ -71,7 +74,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
     _mentorsWaitingRequestsProvider?.setFilterField(widget.field as Field);
     _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
     _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
-  }  
+  }
 
   Widget _showMentorsWaitingRequests() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -81,43 +84,100 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
     final String? courseDayOfWeek = _mentorsWaitingRequestsProvider?.selectedPartnerMentor?.availabilities![0].dayOfWeek;
     final List<Subfield> mentorSubfields = widget.mentorPartnershipRequest?.mentor?.field?.subfields as List<Subfield>;
     final List<String>? courseHoursList = _mentorsWaitingRequestsProvider?.buildHoursList();
-    return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
-      child: PagedListView<int, MentorWaitingRequest>(
-        padding: const EdgeInsets.all(0),
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<MentorWaitingRequest>(
-          itemBuilder: (context, item, index) {
-            return MentorWaitingRequestItem(
-              partnerMentor: item.mentor,
-              selectedPartnerMentor: selectedPartnerMentor,
-              subfieldOptionId: subfieldOptionId,
-              availabilityOptionId: availabilityOptionId,
-              courseDayOfWeek: courseDayOfWeek,
-              mentorSubfields: mentorSubfields,
-              courseHoursList: courseHoursList,
-              getSubfieldItemId: _mentorsWaitingRequestsProvider?.getSubfieldItemId,
-              getAvailabilityItemId: _mentorsWaitingRequestsProvider?.getAvailabilityItemId,
-              onSelectSubfield: _setSubfieldOptionId,
-              onSelectAvailability: _setAvailabilityOptionId,
-              onSelectMentor: _setSelectedPartnerMentor,
-              onSendRequest: _sendMentorPartnershipRequest,
-              onGoBack: _goBack,
-              getErrorMessage: _getErrorMessage
-            );
-          },
-          firstPageProgressIndicatorBuilder: (_) => Padding(
-            padding: const EdgeInsets.only(bottom: 100.0),
-            child: Loader()
-          ),
-          newPageProgressIndicatorBuilder: (_) => Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Loader(),
-          ),
-          noItemsFoundIndicatorBuilder: (_) => _showNoItemsFoundIndicator()
-        )
-      )
+    return Stack(
+      children: [
+        if (_isAddingMentorWaitingRequest) Loader(),
+        if (!_isAddingMentorWaitingRequest) Padding(
+          padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
+          child: Column(
+            children: [
+              _showWaitPartnershipText(),
+              Expanded(
+                child: PagedListView<int, MentorWaitingRequest>(
+                  padding: const EdgeInsets.all(0),
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<MentorWaitingRequest>(
+                    itemBuilder: (context, item, index) {
+                      return MentorWaitingRequestItem(
+                        partnerMentor: item.mentor,
+                        selectedPartnerMentor: selectedPartnerMentor,
+                        subfieldOptionId: subfieldOptionId,
+                        availabilityOptionId: availabilityOptionId,
+                        courseDayOfWeek: courseDayOfWeek,
+                        mentorSubfields: mentorSubfields,
+                        courseHoursList: courseHoursList,
+                        getSubfieldItemId: _mentorsWaitingRequestsProvider?.getSubfieldItemId,
+                        getAvailabilityItemId: _mentorsWaitingRequestsProvider?.getAvailabilityItemId,
+                        onSelectSubfield: _setSubfieldOptionId,
+                        onSelectAvailability: _setAvailabilityOptionId,
+                        onSelectMentor: _setSelectedPartnerMentor,
+                        onSendRequest: _sendMentorPartnershipRequest,
+                        onGoBack: _goBack,
+                        getErrorMessage: _getErrorMessage
+                      );
+                    },
+                    firstPageProgressIndicatorBuilder: (_) => Padding(
+                      padding: const EdgeInsets.only(bottom: 100.0),
+                      child: Loader()
+                    ),
+                    newPageProgressIndicatorBuilder: (_) => Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Loader(),
+                    ),
+                    noItemsFoundIndicatorBuilder: (_) => _showNoItemsFoundIndicator()
+                  )
+                ),
+              ),
+            ],
+          )
+        ),
+      ],
     );
+  }
+
+  Widget _showWaitPartnershipText() {
+    String text = 'mentor_course.wait_mentor_partnership_request_text'.tr() + ' ';
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 15.0),
+      child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 12.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            height: 1.4
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: text
+            ),
+            TextSpan(
+              text: 'common.clicking_here'.tr(),
+              style: const TextStyle(
+                color: Colors.yellow,
+                decoration: TextDecoration.underline
+              ),
+              recognizer: TapGestureRecognizer()..onTap = () async {
+                await _addMentorWaitingRequest();
+              } 
+            ),
+            TextSpan(
+              text: '.'
+            )
+          ]
+        )
+      ),
+    );
+  }
+  
+  Future<void> _addMentorWaitingRequest() async {
+    setState(() {
+      _isAddingMentorWaitingRequest = true;
+    });    
+    await _mentorsWaitingRequestsProvider?.addMentorWaitingRequest(widget.mentorPartnershipRequest?.courseType as CourseType);
+    _goBack();
   }
 
   void _setSubfieldOptionId(String? subfieldOptionId) {
@@ -139,7 +199,13 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   }
 
   void _goBack() {
-    Navigator.pop(context, _mentorsWaitingRequestsProvider?.mentorPartnershipRequest);
+    MentorPartnershipRequestModel? mentorPartnershipRequest = _mentorsWaitingRequestsProvider?.mentorPartnershipRequest;
+    MentorWaitingRequest? mentorWaitingRequest = _mentorsWaitingRequestsProvider?.mentorWaitingRequest;
+    MentorPartnershipResult? mentorPartnershipResult = MentorPartnershipResult(
+      mentorPartnershipRequest: mentorPartnershipRequest,
+      mentorWaitingRequest: mentorWaitingRequest
+    );
+    Navigator.pop(context, mentorPartnershipResult);
   }
 
   String _getErrorMessage(CourseMentor mentor) {
