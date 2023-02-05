@@ -1,38 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses/widgets/subfields_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses/widgets/course_schedule_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses/widgets/join_course_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
-
 class AvailableCourse extends StatefulWidget {
-  const AvailableCourse({Key? key, @required this.course})
-    : super(key: key); 
+  const AvailableCourse({Key? key, @required this.id, @required this.startDateTime, @required this.fieldName, @required this.mentorsNames, @required this.scheduleText, @required this.mentorsSubfields, @required this.students, @required this.joinText, @required this.onJoin})
+    : super(key: key);
 
-  final CourseModel? course;
+  final String? id;
+  final DateTime? startDateTime;
+  final String? fieldName;
+  final String? mentorsNames;
+  final String? scheduleText;
+  final List<Subfield>? mentorsSubfields;
+  final List<CourseStudent>? students;
+  final List<ColoredText>? joinText;
+  final Function(String)? onJoin;  
 
   @override
   State<StatefulWidget> createState() => _AvailableCourseState();
 }
 
 class _AvailableCourseState extends State<AvailableCourse> {
-  StudentCourseViewModel? _studentCourseProvider;
-
   Widget _showAvailableCourse() {
     return AppCard(
       child: Wrap(
         children: [
           _showMentorsNames(),
           _showFieldName(),
-          SubfieldsList(course: widget.course),
-          CourseSchedule(course: widget.course),
+          SubfieldsList(
+            mentorsNames: widget.mentorsNames,
+            mentorsSubfields: widget.mentorsSubfields
+          ),
+          CourseSchedule(
+            scheduleText: widget.scheduleText
+          ),
           _showCurrentStudents(),
           _showJoinCourseButton()
         ],
@@ -41,13 +50,12 @@ class _AvailableCourseState extends State<AvailableCourse> {
   }
 
   Widget _showMentorsNames() {
-    List<String> mentorsNames = _studentCourseProvider?.getMentorsNames() as List<String>;
-    String mentorsNamesString = mentorsNames.join(' ' + 'common.and'.tr() + ' ');
+    String mentorsNames = widget.mentorsNames as String;
     return Container(
       padding: const EdgeInsets.only(bottom: 5.0),
       width: double.infinity,
       child: Text(
-        mentorsNamesString,
+        mentorsNames,
         style: const TextStyle(
           color: AppColors.DOVE_GRAY,
           fontWeight: FontWeight.bold
@@ -57,9 +65,9 @@ class _AvailableCourseState extends State<AvailableCourse> {
   }
 
   Widget _showFieldName() {
-    String fieldName = _studentCourseProvider?.getFieldName() ?? '';
+    String fieldName = widget.fieldName as String;
     return Container(
-      padding: const EdgeInsets.only(bottom: 10.0),
+      padding: const EdgeInsets.only(bottom: 7.0),
       width: double.infinity,
       child: Text(
         fieldName,
@@ -73,33 +81,33 @@ class _AvailableCourseState extends State<AvailableCourse> {
 
   Widget _showCurrentStudents() {
     int studentsCount = 0;
-    final List<CourseStudent>? students = _studentCourseProvider?.course?.students;
+    final List<CourseStudent>? students = widget.students as List<CourseStudent>;
     if (students != null) {
       studentsCount = students.length;
     }      
     String currentStudentsText = 'common.current_number_students'.tr();
-    String courseStartText = 'course_student.course_start_text'.tr();
+    String courseStartText = 'student_course.start_course_text'.tr();
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 12.0),
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 15.0),
       child: RichText(
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 14.0,
             color: AppColors.DOVE_GRAY,
             height: 1.4
           ),
           children: <TextSpan>[
             TextSpan(
-              text: currentStudentsText + ': '
+              text: currentStudentsText + ': ',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.TANGO
+              )
             ),
             TextSpan(
               text: studentsCount.toString(),
-              style: const TextStyle(
-                color: AppColors.TANGO
-              )
             ),
             TextSpan(
               text: ' (' + courseStartText + ')'
@@ -137,15 +145,17 @@ class _AvailableCourseState extends State<AvailableCourse> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: JoinCourseDialog(course: widget.course)
+        widgetInside: JoinCourseDialog(
+          id: widget.id,
+          text: widget.joinText,
+          onJoin: widget.onJoin
+        )
       ),
     ); 
   }
 
   @override
   Widget build(BuildContext context) {
-    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
-    
     return _showAvailableCourse();
   }
 }

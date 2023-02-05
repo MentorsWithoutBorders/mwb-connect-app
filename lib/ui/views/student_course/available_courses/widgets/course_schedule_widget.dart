@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/course_model.dart';
 
 class CourseSchedule extends StatefulWidget {
-  const CourseSchedule({Key? key, @required this.course})
+  const CourseSchedule({Key? key, @required this.scheduleText})
     : super(key: key); 
 
-  final CourseModel? course;
+  final String? scheduleText;
 
   @override
   State<StatefulWidget> createState() => _CourseScheduleState();
@@ -26,9 +24,9 @@ class _CourseScheduleState extends State<CourseSchedule> with TickerProviderStat
   }
 
   Widget _showTitle() {
-    String title = 'student_course.schedule'.tr();
+    String title = 'student_course.schedule'.tr() + ':';
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+      padding: const EdgeInsets.only(top: 3.0, bottom: 7.0),
       child: Text(
         title,
         textAlign: TextAlign.center,
@@ -53,31 +51,28 @@ class _CourseScheduleState extends State<CourseSchedule> with TickerProviderStat
   }
 
   Widget _showScheduleDetails() {
-    DateFormat dayOfWeekFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
-    DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');  
-    String courseDayOfWeek = dayOfWeekFormat.format(widget.course?.startDateTime as DateTime);
-    String courseTime = timeFormat.format(widget.course?.startDateTime as DateTime);
-    DateTime now = DateTime.now();
-    String timeZone = now.timeZoneName;
-    String courseSchedule = plural(courseDayOfWeek, 2) + ' ' + 'common.at'.tr() + courseTime + ' ' + timeZone;
+    String scheduleText = widget.scheduleText ?? '';
     return Text(
-      courseSchedule,
+      scheduleText,
       style: const TextStyle(
-        fontSize: 13.0,
+        fontSize: 14.0,
         color: AppColors.DOVE_GRAY
       )
     );
   }  
 
   Widget _showBullet() {
-    return Container(
-      width: 8.0,
-      height: 8.0,
-      margin: const EdgeInsets.only(right: 10.0),
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.MONZA
-      )
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Container(
+        width: 8.0,
+        height: 8.0,
+        margin: const EdgeInsets.only(right: 10.0),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.SILVER
+        )
+      ),
     );
   }  
 

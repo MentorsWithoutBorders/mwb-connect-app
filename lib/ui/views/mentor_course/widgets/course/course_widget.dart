@@ -57,7 +57,7 @@ class _CourseState extends State<Course> {
       padding: const EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 15.0),
       child: MulticolorText(
         coloredTexts: widget.text as List<ColoredText>
-      ),
+      )
     );
   }
 

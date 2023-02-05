@@ -7,11 +7,11 @@ import 'package:mwb_connect_app/ui/views/student_course/available_courses/widget
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class SubfieldItem extends StatefulWidget {
-  const SubfieldItem({Key? key, @required this.subfield, @required this.mentorName})
+  const SubfieldItem({Key? key, @required this.subfield, @required this.mentorsNames})
     : super(key: key); 
 
   final Subfield? subfield;
-  final String? mentorName;
+  final String? mentorsNames;
 
   @override
   State<StatefulWidget> createState() => _SubfieldItemState();
@@ -19,23 +19,29 @@ class SubfieldItem extends StatefulWidget {
 
 class _SubfieldItemState extends State<SubfieldItem> {
   Widget _showSubfieldItem() {
-    return Row(
-      children: [
-        _showBullet(),
-        _showSubfield()
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Row(
+        children: [
+          _showBullet(),
+          _showSubfield()
+        ],
+      ),
     );
   }
 
   Widget _showBullet() {
-    return Container(
-      width: 8.0,
-      height: 8.0,
-      margin: const EdgeInsets.only(right: 10.0),
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.MONZA
-      )
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Container(
+        width: 8.0,
+        height: 8.0,
+        margin: const EdgeInsets.only(right: 10.0),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.SILVER
+        )
+      ),
     );
   }
 
@@ -74,7 +80,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
                   context: context,
                   builder: (_) => AnimatedDialog(
                     widgetInside: SkillsDialog(
-                      mentorName: widget.mentorName,
+                      mentorName: widget.mentorsNames,
                       subfieldName: subfieldName,
                       skills: widget.subfield?.skills
                     )

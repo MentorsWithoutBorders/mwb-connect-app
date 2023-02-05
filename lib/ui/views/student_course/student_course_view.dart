@@ -1,0 +1,221 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/update_status.dart';
+import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course/student_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/course/course_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/course/find_available_course_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/course/waiting_start_course_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/training/solve_quiz_add_step_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/training/training_completed_widget.dart';
+import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
+
+class StudentCourseView extends StatefulWidget {
+  StudentCourseView({Key? key, this.logoutCallback})
+    : super(key: key);  
+
+  final VoidCallback? logoutCallback;
+
+  @override
+  State<StatefulWidget> createState() => _StudentCourseViewState();
+}
+
+class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindingObserver {
+  StudentCourseViewModel? _studentCourseProvider;
+  GoalsViewModel? _goalsProvider;
+  StepsViewModel? _stepsProvider;
+  QuizzesViewModel? _quizzesProvider;
+  InAppMessagesViewModel? _inAppMessagesProvider;
+  CommonViewModel? _commonProvider;
+  bool _isInit = false;
+  bool _isInAppMessageOpen = false;
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }  
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      _setTimeZone();
+      _reload();
+      _checkUpdate();
+    }
+  }
+
+  void _reload() {
+    setState(() {
+      _isInit = false;
+    });    
+  }
+
+  void _setTimeZone() {
+    _commonProvider?.setTimeZone();
+  }   
+
+  Future<void> _checkUpdate() async {
+    final UpdateAppViewModel updatesProvider = locator<UpdateAppViewModel>();
+    final UpdateStatus updateStatus = await updatesProvider.getUpdateStatus();
+    if (updateStatus == UpdateStatus.RECOMMEND_UPDATE) {
+      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));
+    } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
+      Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
+    }    
+  }
+  
+  Future<void> _showInAppMessage(_) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    bool? shouldShowNotification = _inAppMessagesProvider?.inAppMessage?.text?.isNotEmpty;
+    if (mounted && shouldShowNotification == true && !_isInAppMessageOpen) {
+      _isInAppMessageOpen = true;
+      showDialog(
+        context: context,
+        builder: (_) => AnimatedDialog(
+          widgetInside: NotificationDialog(
+            text: _inAppMessagesProvider?.inAppMessage?.text,
+            buttonText: 'common.ok'.tr(),
+            shouldReload: false,
+          )
+        )
+      ).then((_) => _setInAppMessageClosed());
+    }
+  }
+  
+  void _setInAppMessageClosed() {
+    _isInAppMessageOpen = false;
+    _inAppMessagesProvider?.deleteInAppMessage();
+  }
+  
+
+  Widget _showTitle() {
+    String title = 'student_course.course_title'.tr();
+    return Container(
+      padding: const EdgeInsets.only(right: 50.0),
+      child: Center(
+        child: Text(
+          title,
+          textAlign: TextAlign.center
+        )
+      )
+    );
+  }
+
+ Widget _showContent() {
+    if (_isInit) {
+      return _showStudentCourse();
+    } else {
+      return const Loader();
+    }
+  }  
+
+  Widget _showStudentCourse() {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
+    final CourseMentor mentor = _studentCourseProvider?.getMentor() as CourseMentor;
+    final CourseMentor partnerMentor = _studentCourseProvider?.getPartnerMentor() as CourseMentor;
+    final List<ColoredText> courseText = _studentCourseProvider?.getCourseText() as List<ColoredText>;
+    final List<ColoredText> waitingStartCourseText = _studentCourseProvider?.getWaitingStartCourseText() as List<ColoredText>;
+    final List<ColoredText> currentStudentsText = _studentCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
+      child: ListView(
+        padding: const EdgeInsets.only(top: 0.0),
+        children: [
+          if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
+          if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
+          FindAvailableCourse(),
+          Course(
+            mentor: mentor,
+            partnerMentor: partnerMentor,
+            text: courseText,
+            onCancel: _cancelCourse
+          ),
+          WaitingStartCourse(
+            text: waitingStartCourseText,
+            currentStudentsText: currentStudentsText,
+            onCancel: _cancelCourse
+          )
+        ]
+      )
+    );
+  }
+
+  Future<void> _cancelCourse(String? reason) async {
+    await _studentCourseProvider?.cancelCourse(reason);
+  }
+
+  bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
+  
+  Future<void> _init() async {
+    if (!_isInit && _studentCourseProvider != null) {
+      await Future.wait([
+        _studentCourseProvider!.getCourse(),
+        _goalsProvider!.getGoals(),
+        _stepsProvider!.getLastStepAdded(),
+        _quizzesProvider!.getQuizzes(),
+        _inAppMessagesProvider!.getInAppMessage(),
+        _commonProvider!.getAppFlags()
+      ]).timeout(const Duration(seconds: 3600));
+      // await _commonProvider!.initPushNotifications();
+      _isInit = true;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
+    _goalsProvider = Provider.of<GoalsViewModel>(context);
+    _stepsProvider = Provider.of<StepsViewModel>(context);
+    _quizzesProvider = Provider.of<QuizzesViewModel>(context);
+    _inAppMessagesProvider = Provider.of<InAppMessagesViewModel>(context);
+    _commonProvider = Provider.of<CommonViewModel>(context);
+    WidgetsBinding.instance?.addPostFrameCallback(_showInAppMessage);    
+
+    return FutureBuilder<void>(
+      future: _init(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return Stack(
+          children: <Widget>[
+            const BackgroundGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                title: _showTitle(),
+                backgroundColor: Colors.transparent,          
+                elevation: 0.0
+              ),
+              extendBodyBehindAppBar: true,
+              resizeToAvoidBottomInset: false,
+              body: _showContent(),
+              drawer: DrawerWidget(
+                logoutCallback: widget.logoutCallback as VoidCallback
+              )
+            )
+          ],
+        );
+      }
+    );
+  }
+}

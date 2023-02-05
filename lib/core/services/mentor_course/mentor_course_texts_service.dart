@@ -256,9 +256,7 @@ class MentorCourseTextsService {
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorName)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length, text.indexOf(courseDuration)), color: AppColors.DOVE_GRAY),
-      ColoredText(text: courseDuration, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(courseDuration) + courseDuration.length, text.indexOf(subfieldOrSubfields)), color: AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length, text.indexOf(subfieldOrSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: subfieldOrSubfields, color: AppColors.TANGO),
       ColoredText(text: text.substring(text.indexOf(subfieldOrSubfields) + subfieldOrSubfields.length, text.indexOf(courseDayOfWeek)), color: AppColors.DOVE_GRAY),
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),

@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class CancelCourseDialog extends StatefulWidget {
-  const CancelCourseDialog({Key? key})
+  const CancelCourseDialog({Key? key, @required this.onCancel})
     : super(key: key);
+
+  final Function(String)? onCancel;
     
   @override
   State<StatefulWidget> createState() => _CancelCourseDialogState();
 }
 
 class _CancelCourseDialogState extends State<CancelCourseDialog> {
-  StudentCourseViewModel? _studentCourseProvider;
   String? _reasonText;
   bool _isCancellingCourse = false;
 
@@ -51,11 +50,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
   }
 
   Widget _showText() {
-    if (_studentCourseProvider?.isCourse == false) {
-      return SizedBox.shrink();
-    }
     String text = 'student_course.cancel_course_text'.tr();
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Text(
@@ -138,7 +133,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
 
   Future<void> _cancelCourse() async {  
     _setIsCancellingCourse(true);
-    await _studentCourseProvider?.cancelCourse(_reasonText);
+    await widget.onCancel!(_reasonText!);
   }
   
   void _setIsCancellingCourse(bool isCanceling) {
@@ -153,8 +148,6 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
   
   @override
   Widget build(BuildContext context) {
-    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
-
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {

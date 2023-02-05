@@ -19,7 +19,8 @@ import 'package:mwb_connect_app/core/viewmodels/forgot_password_view_model.dart'
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course/student_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/connect_with_mentor_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/lesson_request_view_model.dart';
@@ -129,6 +130,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserv
               ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
               ChangeNotifierProvider<MentorCourseViewModel>.value(value: locator<MentorCourseViewModel>()),
               ChangeNotifierProvider<StudentCourseViewModel>.value(value: locator<StudentCourseViewModel>()),
+              ChangeNotifierProvider<AvailableCoursesViewModel>.value(value: locator<AvailableCoursesViewModel>()),
               ChangeNotifierProvider<MentorsWaitingRequestsViewModel>.value(value: locator<MentorsWaitingRequestsViewModel>()),
               ChangeNotifierProvider<ConnectWithMentorViewModel>.value(value: locator<ConnectWithMentorViewModel>()),
               ChangeNotifierProvider<AvailableMentorsViewModel>.value(value: locator<AvailableMentorsViewModel>()),

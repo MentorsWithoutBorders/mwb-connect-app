@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses_fields/widgets/why_choose_field_dialog.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses/available_courses_view.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
@@ -23,18 +23,18 @@ class AvailableCoursesFieldsView extends StatefulWidget {
 }
 
 class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView> {
-  StudentCourseViewModel? _studentCourseProvider;
+  AvailableCoursesViewModel? _availableCoursesProvider;
   bool _areFieldsRetrieved = false;
 
   Widget _showAvailableCoursesFields() {
-    final List<Field> fields = _studentCourseProvider?.fields as List<Field>;
+    final List<Field> fields = _availableCoursesProvider?.fields as List<Field>;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 0.0), 
       child: GridView.builder(
         padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
-        itemCount: fields.length > 0 ? fields.length - 1 : 0,
-        itemBuilder: (context, index) => _showFieldItem(fields[index + 1]),
+        itemCount: fields.length > 0 ? fields.length : 0,
+        itemBuilder: (context, index) => _showFieldItem(fields[index]),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 25.0,
@@ -47,7 +47,7 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
   Widget _showFieldItem(Field field) {
     final double width = MediaQuery.of(context).size.width * 0.35;
     final double height = MediaQuery.of(context).size.width * 0.35;
-    Map<String, String> fieldIconFilePaths = _studentCourseProvider?.fieldIconFilePaths as Map<String, String>;
+    Map<String, String> fieldIconFilePaths = _availableCoursesProvider?.fieldIconFilePaths as Map<String, String>;
     String iconFilePath = fieldIconFilePaths[field.name] as String;
     bool isLocal = !iconFilePath.contains('firebase');
     return GestureDetector(
@@ -102,10 +102,14 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
   }
 
   void _goToWhyChooseField(Field field) {
+    String url = _availableCoursesProvider?.getWhyChooseUrl(field.id as String) as String;
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: WhyChooseFieldDialog(field: field)
+        widgetInside: WhyChooseFieldDialog(
+          field: field,
+          url: url
+        )
       )
     ).then((fieldId) {
       if (fieldId != null) {
@@ -115,7 +119,7 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
   }
 
   Future<void> _goToAvailableCourses(String fieldId) async {
-    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableCoursesView(fieldId: fieldId)));  
+    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableCoursesView()));  
     if (shouldReload == true) {
       widget.shouldReloadCallback!();
       Navigator.pop(context);
@@ -143,10 +147,10 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
   }  
 
   Future<void> _getFields() async {
-    if (!_areFieldsRetrieved && _studentCourseProvider != null) {
+    if (!_areFieldsRetrieved && _availableCoursesProvider != null) {
       await Future.wait([
-        _studentCourseProvider!.getFields(),
-        _studentCourseProvider!.getFieldsGoals()
+        _availableCoursesProvider!.getFields(),
+        _availableCoursesProvider!.getFieldsGoals()
       ]);      
       _areFieldsRetrieved = true;
     }
@@ -154,7 +158,7 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
 
   @override
   Widget build(BuildContext context) {
-    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
+    _availableCoursesProvider = Provider.of<AvailableCoursesViewModel>(context);
 
     return FutureBuilder<void>(
       future: _getFields(),

@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 
 class MentorWaitingRequestItem extends StatefulWidget {
-  const MentorWaitingRequestItem({Key? key, this.partnerMentor, this.selectedPartnerMentor, this.subfieldOptionId, this.availabilityOptionId, this.courseDayOfWeek, this.courseHoursList, this.mentorSubfields, this.getSubfieldItemId, this.getAvailabilityItemId, this.onSelectSubfield, this.onSelectAvailability, this.onSelectCourseStartTime, this.onSelectMentor, this.onSendRequest, this.onGoBack, this.getErrorMessage})
+  const MentorWaitingRequestItem({Key? key, @required this.partnerMentor, @required this.selectedPartnerMentor, @required this.subfieldOptionId, @required this.availabilityOptionId, @required this.courseDayOfWeek, @required this.courseHoursList, @required this.mentorSubfields, @required this.getSubfieldItemId, @required this.getAvailabilityItemId, @required this.onSelectSubfield, @required this.onSelectAvailability, @required this.onSelectMentor, @required this.onSendRequest, @required this.onGoBack, @required this.getErrorMessage})
     : super(key: key); 
 
   final CourseMentor? partnerMentor;
@@ -25,7 +25,6 @@ class MentorWaitingRequestItem extends StatefulWidget {
   final Function(String, int)? getAvailabilityItemId;
   final Function(String?)? onSelectSubfield;
   final Function(String?)? onSelectAvailability;
-  final Function(String?)? onSelectCourseStartTime;
   final Function(CourseMentor)? onSelectMentor;
   final Function(String, String)? onSendRequest;
   final Function? onGoBack;

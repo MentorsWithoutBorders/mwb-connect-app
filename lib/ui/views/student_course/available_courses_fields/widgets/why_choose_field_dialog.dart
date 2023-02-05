@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class WhyChooseFieldDialog extends StatefulWidget {
-  const WhyChooseFieldDialog({Key? key, this.field})
+  const WhyChooseFieldDialog({Key? key, @required this.field, @required this.url})
     : super(key: key); 
 
   final Field? field;
+  final String? url;
 
   @override
   State<StatefulWidget> createState() => _WhyChooseFieldDialogState();
 }
 
 class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
-  StudentCourseViewModel? _studentCourseProvider;
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = true;
 
@@ -124,7 +122,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
   }
 
   Widget _showExtractedFrom() {
-    String whyChooseUrl = _studentCourseProvider?.getWhyChooseUrl(widget.field?.id as String) as String;
+    String whyChooseUrl = widget.url as String;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Align(
@@ -162,7 +160,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
   }
 
   Widget _showWhyChooseFieldWebView() {
-    String? whyChooseUrl = _studentCourseProvider?.getWhyChooseUrl(widget.field?.id as String);
+    String? whyChooseUrl = widget.url;
     if (whyChooseUrl != null) {
       return Expanded(
         child: Stack(
@@ -214,8 +212,6 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
-
     return _showWhyChooseFieldDialog();
   }
 }

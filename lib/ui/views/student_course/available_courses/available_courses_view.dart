@@ -5,23 +5,25 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/student_course_view_model.dart';
+import 'package:mwb_connect_app/core/models/course_student_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
+import 'package:mwb_connect_app/ui/views/student_course/available_courses_filters/available_courses_filters_view.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses/widgets/available_course_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class AvailableCoursesView extends StatefulWidget {
-  const AvailableCoursesView({Key? key, this.fieldId})
+  const AvailableCoursesView({Key? key})
     : super(key: key);
     
-  final String? fieldId;
-
   @override
   State<StatefulWidget> createState() => _AvailableCoursesViewState();
 }
 
 class _AvailableCoursesViewState extends State<AvailableCoursesView> {
-  StudentCourseViewModel? _studentCourseProvider;
+  AvailableCoursesViewModel? _availableCoursesProvider;
   final PagingController<int, CourseModel> _pagingController =
         PagingController(firstPageKey: 0);  
   int _pageNumber = 1;
@@ -42,10 +44,10 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      await _studentCourseProvider?.getAvailableCourses(pageNumber: _pageNumber);
-      final newItems = _studentCourseProvider?.newAvailableCourses;
+      await _availableCoursesProvider?.getAvailableCourses(pageNumber: _pageNumber);
+      final newItems = _availableCoursesProvider?.availableCourses;
       _pageNumber++;
-      final isLastPage = newItems!.length < AppConstants.availableCoursesResultsPerPage;
+      final isLastPage = newItems!.length < AppConstants.availableMentorsResultsPerPage;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -56,30 +58,58 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
       _pagingController.error = error;
     }
   }
-
+  
   Widget _showAvailableCourses() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
-      child: PagedListView<int, CourseModel>(
-        padding: const EdgeInsets.all(0),
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CourseModel>(
-          itemBuilder: (context, item, index) => AvailableCourse(
-            course: _studentCourseProvider?.course,
+      child: Column(
+        children: [
+          Expanded(
+            child: PagedListView<int, CourseModel>(
+              padding: const EdgeInsets.all(0),
+              pagingController: _pagingController,
+              builderDelegate: PagedChildBuilderDelegate<CourseModel>(
+                itemBuilder: (context, item, index) {
+                  final String id = item.id as String;
+                  final DateTime startDateTime = item.startDateTime as DateTime;
+                  final String fieldName = _availableCoursesProvider?.getFieldName(item) as String;
+                  final String mentorsNames = _availableCoursesProvider?.getMentorsNames(item) as String;
+                  final List<Subfield> mentorsSubfields = _availableCoursesProvider?.getMentorsSubfields(item) as List<Subfield>;
+                  final List<CourseStudent> students = item.students as List<CourseStudent>;
+                  final String courseScheduleText = _availableCoursesProvider?.getCourseScheduleText(item) as String;
+                  final List<ColoredText> joinCourseText = _availableCoursesProvider?.getJoinCourseText(item) as List<ColoredText>;
+                  return AvailableCourse(
+                    id: id,
+                    startDateTime: startDateTime,
+                    fieldName: fieldName,
+                    mentorsNames: mentorsNames,
+                    mentorsSubfields: mentorsSubfields,
+                    students: students,
+                    scheduleText: courseScheduleText,
+                    joinText: joinCourseText,
+                    onJoin: _joinCourse,
+                  );
+                },
+                firstPageProgressIndicatorBuilder: (_) => Padding(
+                  padding: const EdgeInsets.only(bottom: 100.0),
+                  child: Loader()
+                ),
+                newPageProgressIndicatorBuilder: (_) => Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Loader(),
+                ),
+                noItemsFoundIndicatorBuilder: (_) => _showNoItemsFoundIndicator()
+              )
+            ),
           ),
-          firstPageProgressIndicatorBuilder: (_) => Padding(
-            padding: const EdgeInsets.only(bottom: 100.0),
-            child: Loader()
-          ),
-          newPageProgressIndicatorBuilder: (_) => Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Loader(),
-          ),
-          noItemsFoundIndicatorBuilder: (_) => _showNoItemsFoundIndicator()
-        )
+        ],
       )
     );
+  }
+
+  Future<void> _joinCourse(String courseId) async {
+    await _availableCoursesProvider?.joinCourse(courseId);
   }
 
   Widget _showNoItemsFoundIndicator() {
@@ -91,7 +121,7 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'student_course.no_courses_found'.tr(),
+              'available_mentors.no_mentors_found'.tr(),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
@@ -111,40 +141,74 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
   Widget _showTitle() {
     return Center(
       child: Text(
-        'student_course.find_course'.tr(),
+        'available_mentors.title'.tr(),
         textAlign: TextAlign.center,
       ),
     );
   }
+
+  Future<void> _goToFilters() async {
+    final shouldRefresh = await Navigator.push(
+      context,
+      MaterialPageRoute<bool>(builder: (_) => AvailableCoursesFiltersView())
+    );    
+    if (shouldRefresh == true) {
+      _pageNumber = 1;
+      _pagingController.refresh();    
+    };
+  }
   
+  Future<bool> _onWillPop(BuildContext context) async {
+    _availableCoursesProvider?.resetValues();
+    return true;
+  }  
+
   @override
   Widget build(BuildContext context) {
-    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
+    _availableCoursesProvider = Provider.of<AvailableCoursesViewModel>(context);
 
-    return Stack(
-      children: <Widget>[
-        const BackgroundGradient(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: _showTitle(),
-            backgroundColor: Colors.transparent,          
-            elevation: 0.0,
-            leading: GestureDetector(
-              onTap: () async { 
-                Navigator.pop(context);
-              },
-              child: Platform.isIOS ? Icon(
-                Icons.arrow_back_ios_new
-              ) : Icon(
-                Icons.arrow_back
-              )
-            )
-          ),
-          extendBodyBehindAppBar: true,
-          body: _showAvailableCourses()
-        )
-      ],
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Stack(
+        children: <Widget>[
+          const BackgroundGradient(),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: _showTitle(),
+              backgroundColor: Colors.transparent,          
+              elevation: 0.0,
+              leading: GestureDetector(
+                onTap: () async { 
+                  _onWillPop(context);
+                  Navigator.pop(context);
+                },
+                child: Platform.isIOS ? Icon(
+                  Icons.arrow_back_ios_new
+                ) : Icon(
+                  Icons.arrow_back
+                )
+              ),
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _goToFilters();
+                    },
+                    child: Icon(
+                      Icons.tune,
+                      size: 26.0
+                    )
+                  )
+                )
+              ]
+            ),
+            extendBodyBehindAppBar: true,
+            body: _showAvailableCourses()
+          )
+        ],
+      ),
     );
   }
 }

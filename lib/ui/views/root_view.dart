@@ -6,8 +6,8 @@ import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/ui/views/onboarding/onboarding_view.dart';
-import 'package:mwb_connect_app/ui/views/connect_with_mentor/connect_with_mentor_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentor_course_view.dart';
+import 'package:mwb_connect_app/ui/views/student_course/student_course_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
@@ -51,8 +51,8 @@ class _RootViewState extends State<RootView> {
     });
   }
   
-  Widget _showConnectWithMentorView() {
-    return ConnectWithMentorView(
+  Widget _showStudentCourseView() {
+    return StudentCourseView(
       logoutCallback: _logoutCallback
     );
   }
@@ -107,7 +107,7 @@ class _RootViewState extends State<RootView> {
               if (isMentor) {
                 return _showMentorCourseView();
               } else {
-                return _showConnectWithMentorView();
+                return _showStudentCourseView();
               }
             } else
               return _buildWaitingScreen();

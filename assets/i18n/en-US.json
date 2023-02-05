@@ -319,6 +319,7 @@
     "cancel_course_partner_text": "(your partner, {}, will continue the lessons with the students)"
   },
   "student_course": {
+    "course_title": "Course",
     "find_available_course": "Find available course",
     "select_course_text": "Please select one of our available courses:",
     "find_course": "Find course",
@@ -328,7 +329,7 @@
     "course_text": "You are participating in the {}-month {} course conducted by {} every {} until {}.\n\nThe next lesson will be on {} at {} {} and you’ll use one of the following links:",
     "no_courses_found": "No courses found",
     "schedule": "Course schedule",
-    "curse_start_text": "the course will start as soon as 5 students join in",
+    "start_course_text": "the course will start as soon as 5 students join in",
     "why_choose_field": "Why choose {}?",
     "extracted_from": "Extracted from: ",
     "join_course": "Join course",

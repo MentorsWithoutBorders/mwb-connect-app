@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/ui/views/available_mentors_fields/available_mentors_fields_view.dart';
+import 'package:mwb_connect_app/ui/views/student_course/available_courses_fields/available_courses_fields_view.dart';
 
 class FindAvailableCourse extends StatefulWidget {
   const FindAvailableCourse({Key? key, this.shouldReloadCallback})
@@ -95,15 +95,15 @@ class _FindAvailableCourseState extends State<FindAvailableCourse> with TickerPr
             style: const TextStyle(color: Colors.white)
           ),
           onPressed: () async {
-            await _goToAvailableMentorsFields();
+            await _goToAvailableCoursesFields();
           }
         )
       )
     );
   }
 
-  Future<void> _goToAvailableMentorsFields() async {
-    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableMentorsFieldsView(shouldReloadCallback: widget.shouldReloadCallback)));
+  Future<void> _goToAvailableCoursesFields() async {
+    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableCoursesFieldsView(shouldReloadCallback: widget.shouldReloadCallback)));
     if (shouldReload == true) {
       widget.shouldReloadCallback!();
     }
