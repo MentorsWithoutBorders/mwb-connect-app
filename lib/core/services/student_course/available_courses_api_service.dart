@@ -24,8 +24,10 @@ class AvailableCoursesApiService {
     return availableCourses;
   }
 
-  Future<void> joinCourse(String? id) async {
+  Future<CourseModel> joinCourse(String? id) async {
     await _api.putHTTP(url: '/courses/$id/join');  
-    return ;
+    Map<String, dynamic> response = await _api.putHTTP(url: '/courses/$id/join');
+    CourseModel course = CourseModel.fromJson(response); 
+    return course;
   } 
 }

@@ -88,7 +88,7 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
                     students: students,
                     scheduleText: courseScheduleText,
                     joinText: joinCourseText,
-                    onJoin: _joinCourse,
+                    onJoin: _joinCourse
                   );
                 },
                 firstPageProgressIndicatorBuilder: (_) => Padding(
@@ -108,8 +108,9 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
     );
   }
 
-  Future<void> _joinCourse(String courseId) async {
-    await _availableCoursesProvider?.joinCourse(courseId);
+  Future<CourseModel> _joinCourse(String courseId) async {
+    CourseModel? course = await _availableCoursesProvider?.joinCourse(courseId);
+    return course!;
   }
 
   Widget _showNoItemsFoundIndicator() {

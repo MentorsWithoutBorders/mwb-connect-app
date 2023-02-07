@@ -31,12 +31,11 @@ class AvailableCoursesViewModel extends ChangeNotifier {
   List<Availability> filterAvailabilities = [];
   Map<String, String> fieldIconFilePaths = {};
   Field filterField = Field();
-  CourseModel? course;
   String availabilityMergedMessage = '';
   double scrollOffset = 0;
   bool _shouldUnfocus = false;
 
-   Future<void> getFields() async {
+  Future<void> getFields() async {
     fields = await _availableCoursesApiService.getFields();
     await _getFieldIconFilePaths();
   }
@@ -74,9 +73,9 @@ class AvailableCoursesViewModel extends ChangeNotifier {
     availableCourses += newAvailableCourses;
   }
 
-  Future<void> joinCourse(String? id) async {
-    await _availableCoursesApiService.joinCourse(id);
-    return ;
+  Future<CourseModel> joinCourse(String? id) async {
+    CourseModel? course = await _availableCoursesApiService.joinCourse(id);
+    return course;
   }
 
   String getFieldName(CourseModel course) {
@@ -205,6 +204,5 @@ class AvailableCoursesViewModel extends ChangeNotifier {
     availableCourses = [];
     filterAvailabilities = [];
     filterField = Field();
-    course = null;
   }  
 }

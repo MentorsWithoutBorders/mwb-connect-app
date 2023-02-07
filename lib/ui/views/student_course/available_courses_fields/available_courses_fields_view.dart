@@ -4,6 +4,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses_fields/widgets/why_choose_field_dialog.dart';
@@ -13,10 +14,8 @@ import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class AvailableCoursesFieldsView extends StatefulWidget {
-  const AvailableCoursesFieldsView({Key? key, this.shouldReloadCallback})
+  const AvailableCoursesFieldsView({Key? key})
     : super(key: key);  
-
-  final VoidCallback? shouldReloadCallback;
 
   @override
   State<StatefulWidget> createState() => _AvailableCoursesFieldsViewState();
@@ -119,12 +118,22 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
   }
 
   Future<void> _goToAvailableCourses(String fieldId) async {
-    final shouldReload = await Navigator.push(context, MaterialPageRoute(builder: (_) => AvailableCoursesView()));  
-    if (shouldReload == true) {
-      widget.shouldReloadCallback!();
-      Navigator.pop(context);
-    }
-  }  
+    Navigator.push<CourseModel>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AvailableCoursesView()
+      )
+    ).then((CourseModel? course) {
+      if (course != null) {
+        _resetValues();
+        Navigator.pop(context, course);
+      }
+    });     
+  }
+  
+  void _resetValues() {
+    _availableCoursesProvider?.resetValues();
+  }   
 
   Widget _showTitle() {
     return Container(

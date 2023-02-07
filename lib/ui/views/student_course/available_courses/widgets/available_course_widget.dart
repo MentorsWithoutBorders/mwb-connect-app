@@ -22,7 +22,7 @@ class AvailableCourse extends StatefulWidget {
   final List<Subfield>? mentorsSubfields;
   final List<CourseStudent>? students;
   final List<ColoredText>? joinText;
-  final Function(String)? onJoin;  
+  final Function(String)? onJoin;
 
   @override
   State<StatefulWidget> createState() => _AvailableCourseState();
@@ -151,7 +151,11 @@ class _AvailableCourseState extends State<AvailableCourse> {
           onJoin: widget.onJoin
         )
       ),
-    ); 
+    ).then((course) {
+      if (course != null) {
+        Navigator.pop(context, course);
+      }
+    });
   }
 
   @override

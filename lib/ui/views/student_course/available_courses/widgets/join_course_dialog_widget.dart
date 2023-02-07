@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
@@ -69,7 +70,7 @@ class _JoinCourseDialogState extends State<JoinCourseDialog> {
             child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
           ),
           onTap: () {
-            Navigator.pop(context, false);
+            Navigator.pop(context);
           },
         ),
         ElevatedButton(
@@ -100,7 +101,8 @@ class _JoinCourseDialogState extends State<JoinCourseDialog> {
     setState(() {
       _isJoiningCourse = true;
     });
-    await widget.onJoin!(widget.id as String);
+    CourseModel course = await widget.onJoin!(widget.id as String);
+    Navigator.pop(context, course);
   }
 
   @override

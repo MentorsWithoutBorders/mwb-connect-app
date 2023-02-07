@@ -9,7 +9,7 @@ import 'package:mwb_connect_app/core/models/error_model.dart';
 
 class ApiService {
   final LocalStorageService _storageService = locator<LocalStorageService>();
-  final String baseUrl = 'https://mwbtraining.co/prod/api/v1';
+  final String baseUrl = 'https://mwbtraining.co/staging/api/v1';
   static const platform = MethodChannel('com.mwbconnect.app/api');
   bool refreshingToken = false;
   

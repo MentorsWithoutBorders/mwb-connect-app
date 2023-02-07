@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
+import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/student_course_view_model.dart';
@@ -23,6 +24,8 @@ import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
+
+import 'available_courses_fields/available_courses_fields_view.dart';
 
 class StudentCourseView extends StatefulWidget {
   StudentCourseView({Key? key, this.logoutCallback})
@@ -145,7 +148,9 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
         children: [
           if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          FindAvailableCourse(),
+          FindAvailableCourse(
+            onFind: _goToAvailableCoursesFields
+          ),
           Course(
             mentor: mentor,
             partnerMentor: partnerMentor,
@@ -165,6 +170,19 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   Future<void> _cancelCourse(String? reason) async {
     await _studentCourseProvider?.cancelCourse(reason);
   }
+
+  Future<void> _goToAvailableCoursesFields() async {
+    Navigator.push<CourseModel>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AvailableCoursesFieldsView()
+      )
+    ).then((CourseModel? course) {
+      if (course != null) {
+        _studentCourseProvider?.setCourse(course);
+      }
+    });    
+  }  
 
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
   

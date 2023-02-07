@@ -27,6 +27,11 @@ class StudentCourseViewModel extends ChangeNotifier {
     course = await _studentCourseApiService.getCourse();
     notifyListeners();
   }
+
+  void setCourse(CourseModel course) {
+    this.course = course;
+    notifyListeners();
+  }
   
   Future<void> cancelCourse(String? reason) async {
     await _studentCourseApiService.cancelCourse(course?.id, reason);

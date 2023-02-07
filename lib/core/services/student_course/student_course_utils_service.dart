@@ -15,7 +15,7 @@ class StudentCourseUtilsService {
 
   CourseMentor getPartnerMentor(CourseModel? course) {
     List<CourseMentor>? mentors = course?.mentors;
-    if (mentors != null && mentors.isNotEmpty) {
+    if (mentors != null && mentors.isNotEmpty && mentors.length > 1) {
       return mentors[1];
     }
     return CourseMentor();
