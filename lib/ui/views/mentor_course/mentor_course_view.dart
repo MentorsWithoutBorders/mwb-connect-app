@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
@@ -145,8 +146,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   Widget _showMentorCourse() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
-    // final int minStudentsCourse = AppConstants.minStudentsCourse;
-    final int minStudentsCourse = 2;
+    final int minStudentsCourse = AppConstants.minStudentsCourse;
     User user = _commonProvider?.user as User;
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     final bool isCourse = _mentorCourseProvider?.isCourse ?? false;

@@ -17,6 +17,7 @@ class StudentCourseTextsService {
     }    
     DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
+    DateFormat monthDayFormat = DateFormat(AppConstants.monthDayFormat, 'en');
     DateFormat timeFormat = DateFormat(AppConstants.timeFormatLesson, 'en');    
     String courseDuration = course.type?.duration.toString() as String;
     CourseMentor mentor = course.mentors?[0] as CourseMentor;
@@ -24,7 +25,7 @@ class StudentCourseTextsService {
     String mentorsSubfields = _studentCourseUtilsService.getMentorsSubfieldsNames(course);
     String mentorsNames = _studentCourseUtilsService.getMentorsNames(course);
     String courseDayOfWeek = dayOfWeekFormat.format(course.startDateTime as DateTime);
-    String courseEndDate = dateFormat.format(_studentCourseUtilsService.getCourseEndDate(course));
+    String courseEndDate = monthDayFormat.format(_studentCourseUtilsService.getCourseEndDate(course));
     String nextLessonDate = dateFormat.format(_studentCourseUtilsService.getNextLessonDate(course));
     String nextLessonTime = timeFormat.format(course.startDateTime as DateTime);
     DateTime now = DateTime.now();
@@ -32,6 +33,7 @@ class StudentCourseTextsService {
     String until = 'common.until'.tr();
     String at = 'common.at'.tr();
     String text = 'student_course.course_text'.tr(args: [courseDuration, mentorsSubfields, mentorsNames, courseDayOfWeek, courseEndDate, nextLessonDate, nextLessonTime, timeZone]);
+    String courseLinksText = partnerMentor == null ? 'student_course.course_link_text'.tr() : 'student_course.course_links_text'.tr();
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorsSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentor.field!.subfields![0].name, color: AppColors.TANGO),
@@ -49,7 +51,8 @@ class StudentCourseTextsService {
       ColoredText(text: nextLessonDate, color: AppColors.TANGO),
       ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: nextLessonTime + ' ' + timeZone, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length), color: AppColors.DOVE_GRAY)
+      ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length), color: AppColors.DOVE_GRAY),
+      ColoredText(text: ' ' + courseLinksText, color: AppColors.DOVE_GRAY),
     ];
   }
 
@@ -70,8 +73,8 @@ class StudentCourseTextsService {
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
     String text = 'student_course.waiting_course_text'.tr(args: [courseDuration, mentorsSubfields, mentorsNames, courseDayOfWeek, courseTime, timeZone]);
-    String courseStartText = 'course_student.course_start_text'.tr();
-    courseStartText = courseStartText[0].toUpperCase() + courseStartText.substring(1);
+    String courseStartText = 'student_course.start_course_text'.tr();
+    courseStartText = courseStartText[0].toUpperCase() + courseStartText.substring(1) + '.';
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorsSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentor.field!.subfields![0].name, color: AppColors.TANGO),
@@ -86,7 +89,7 @@ class StudentCourseTextsService {
       ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: courseTime + ' ' + timeZone, color: AppColors.TANGO),
       ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length), color: AppColors.DOVE_GRAY),
-      ColoredText(text: courseStartText, color: AppColors.DOVE_GRAY),
+      ColoredText(text: ' ' + courseStartText, color: AppColors.DOVE_GRAY),
     ];
   }
   

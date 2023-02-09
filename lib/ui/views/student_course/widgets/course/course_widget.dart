@@ -60,23 +60,26 @@ class _CourseState extends State<Course> {
 
   Widget _showMeetingUrls() {
     String or = 'common.or'.tr();
-    return Wrap(
-      children: [
-        _showMeetingUrl(widget.mentor as CourseMentor),
-        if (widget.partnerMentor != null) Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 15.0),
-          child: Center(
-            child: Text(
-              or,
-              style: const TextStyle(
-                fontSize: 13.0,
-                fontStyle: FontStyle.italic
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Wrap(
+        children: [
+          _showMeetingUrl(widget.mentor as CourseMentor),
+          if (widget.partnerMentor != null && widget.partnerMentor?.id != null) Padding(
+            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+            child: Center(
+              child: Text(
+                or,
+                style: const TextStyle(
+                  fontSize: 13.0,
+                  fontStyle: FontStyle.italic
+                )
               )
             )
-          )
-        ),
-        if (widget.partnerMentor != null) _showMeetingUrl(widget.partnerMentor as CourseMentor)
-      ]
+          ),
+          if (widget.partnerMentor != null && widget.partnerMentor?.id != null) _showMeetingUrl(widget.partnerMentor as CourseMentor)
+        ]
+      )
     );
   }
 
@@ -84,7 +87,7 @@ class _CourseState extends State<Course> {
     String meetingUrl = mentor.meetingUrl ?? '';
     String mentorName = mentor.name ?? '';
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 15.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
       child: Center(
         child: Wrap(
           children: [
@@ -139,7 +142,7 @@ class _CourseState extends State<Course> {
             ),
             padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
           ), 
-          child: Text('student_course.cancel_course'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('common.cancel_lessons'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
             showDialog(
               context: context,

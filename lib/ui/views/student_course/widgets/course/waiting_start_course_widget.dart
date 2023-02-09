@@ -58,7 +58,7 @@ class _WaitingStartCourseState extends State<WaitingStartCourse> {
 
   Widget _showCurrentStudentsText() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 12.0),
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 15.0),
         child: MulticolorText(
           coloredTexts: widget.currentStudentsText as List<ColoredText>
         )

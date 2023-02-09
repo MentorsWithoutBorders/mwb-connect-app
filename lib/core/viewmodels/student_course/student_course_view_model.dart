@@ -37,7 +37,9 @@ class StudentCourseViewModel extends ChangeNotifier {
     await _studentCourseApiService.cancelCourse(course?.id, reason);
   }
 
-  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;   
+  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
+  
+  bool get isCourseStarted => isCourse && course!.students != null && course!.students!.length >= AppConstants.minStudentsCourse;
 
   DateTime? getCertificateDate() {
     DateTime date = DateTime.now();

@@ -52,7 +52,12 @@ class StudentCourseUtilsService {
   }
 
   DateTime getCourseEndDate(CourseModel course) {
-    return Jiffy(course.startDateTime).add(months: 3).dateTime;
+    Jiffy courseEndDate = Jiffy(course.startDateTime);
+    courseEndDate.add(months: 3);
+    while (courseEndDate.format('EEEE') != Jiffy(course.startDateTime).format('EEEE')) {
+      courseEndDate.add(days: 1);
+    }
+    return courseEndDate.dateTime;
   }
   
   DateTime getNextLessonDate(CourseModel course) {

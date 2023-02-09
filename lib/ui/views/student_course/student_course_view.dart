@@ -110,7 +110,6 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     _isInAppMessageOpen = false;
     _inAppMessagesProvider?.deleteInAppMessage();
   }
-  
 
   Widget _showTitle() {
     String title = 'student_course.course_title'.tr();
@@ -136,6 +135,8 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   Widget _showStudentCourse() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
+    final bool isCourse = _studentCourseProvider?.isCourse as bool;
+    final bool isCourseStarted = _studentCourseProvider?.isCourseStarted as bool;
     final CourseMentor mentor = _studentCourseProvider?.getMentor() as CourseMentor;
     final CourseMentor partnerMentor = _studentCourseProvider?.getPartnerMentor() as CourseMentor;
     final List<ColoredText> courseText = _studentCourseProvider?.getCourseText() as List<ColoredText>;
@@ -148,16 +149,16 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
         children: [
           if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          FindAvailableCourse(
+          if (!isCourse) FindAvailableCourse(
             onFind: _goToAvailableCoursesFields
           ),
-          Course(
+          if (isCourseStarted) Course(
             mentor: mentor,
             partnerMentor: partnerMentor,
             text: courseText,
             onCancel: _cancelCourse
           ),
-          WaitingStartCourse(
+          if (isCourse && !isCourseStarted) WaitingStartCourse(
             text: waitingStartCourseText,
             currentStudentsText: currentStudentsText,
             onCancel: _cancelCourse

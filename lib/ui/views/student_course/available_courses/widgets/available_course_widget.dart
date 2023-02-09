@@ -110,7 +110,11 @@ class _AvailableCourseState extends State<AvailableCourse> {
               text: studentsCount.toString(),
             ),
             TextSpan(
-              text: ' (' + courseStartText + ')'
+              text: ' (' + courseStartText + ')',
+              style: const TextStyle(
+                fontSize: 13.0,
+                fontStyle: FontStyle.italic
+              )
             )
           ]
         )

@@ -55,7 +55,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
         text: TextSpan(
           style: const TextStyle(
             color: AppColors.DOVE_GRAY,
-            fontSize: 14.0
+            fontSize: 13.0
           ),
           children: <TextSpan>[
             TextSpan(
