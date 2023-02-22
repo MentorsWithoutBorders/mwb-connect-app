@@ -10,6 +10,16 @@ import 'package:mwb_connect_app/core/services/student_course/student_course_util
 class AvailableCoursesTextsService {
   final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();
 
+  String getCourseTypeText(CourseModel course) {
+    String courseType = '';
+    if (course.type != null) {
+      courseType = course.type?.duration.toString() as String;
+      courseType += '-' + plural('month', 1) + ' ' + plural('course', 1);
+      courseType = '(' + courseType + ')';
+    }
+    return courseType;
+  }  
+  
   String getCourseScheduleText(CourseModel? course) {
     if (course?.startDateTime == null) {
       return '';

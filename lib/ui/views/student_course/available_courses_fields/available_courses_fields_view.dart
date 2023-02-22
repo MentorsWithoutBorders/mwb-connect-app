@@ -118,6 +118,7 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
   }
 
   Future<void> _goToAvailableCourses(String fieldId) async {
+    _availableCoursesProvider?.setFilterField(fieldId);
     Navigator.push<CourseModel>(
       context,
       MaterialPageRoute(

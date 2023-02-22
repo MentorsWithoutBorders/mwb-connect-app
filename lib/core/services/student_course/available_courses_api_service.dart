@@ -1,5 +1,6 @@
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
+import 'package:mwb_connect_app/core/models/course_filter_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 
@@ -15,8 +16,8 @@ class AvailableCoursesApiService {
     return fields;
   }   
 
-  Future<List<CourseModel>> getAvailableCourses(String? fieldId) async {
-    dynamic response = await _api.getHTTP(url: '/courses');
+  Future<List<CourseModel>> getAvailableCourses(CourseFilter filter, int pageNumber) async {
+    dynamic response = await _api.postHTTP(url: '/courses?page=$pageNumber', data: filter.toJson());
     List<CourseModel> availableCourses = [];
     if (response != null) {
       availableCourses = List<CourseModel>.from(response.map((model) => CourseModel.fromJson(model)));

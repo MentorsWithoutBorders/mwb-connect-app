@@ -12,6 +12,7 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/core/models/course_filter_model.dart';
 import 'package:mwb_connect_app/core/services/student_course/available_courses_api_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/available_courses_utils_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_utils_service.dart';
@@ -69,7 +70,11 @@ class AvailableCoursesViewModel extends ChangeNotifier {
   }  
 
   Future<void> getAvailableCourses({int pageNumber = 1}) async {
-    newAvailableCourses = await _availableCoursesApiService.getAvailableCourses(filterField.id);
+    CourseFilter filter = CourseFilter(
+      field: filterField,
+      availabilities: _adjustFilterAvailabilities(filterAvailabilities)
+    );
+    newAvailableCourses = await _availableCoursesApiService.getAvailableCourses(filter, pageNumber);
     availableCourses += newAvailableCourses;
   }
 
@@ -80,6 +85,10 @@ class AvailableCoursesViewModel extends ChangeNotifier {
 
   String getFieldName(CourseModel course) {
     return _availableCoursesUtilsService.getFieldName(course);
+  }
+
+  String getCourseTypeText(CourseModel course) {
+    return _availableCoursesTextsService.getCourseTypeText(course);
   }
 
   String getMentorsNames(CourseModel course) { 
@@ -134,15 +143,20 @@ class AvailableCoursesViewModel extends ChangeNotifier {
     notifyListeners();
   }
  
-  void setFilterField(Field? field) {
-    if (filterField.id != field?.id) {
+  void setFilterField(String? fieldId) {
+    if (filterField.id != fieldId) {
       filterField = Field(
-        id: field?.id, 
-        name: field?.name, 
+        id: fieldId, 
+        name: getFieldById(fieldId).name,
         subfields: []
       );
     }
     notifyListeners();
+  }
+
+  Field getFieldById(String? fieldId) {
+    Field? field = fields.firstWhere((Field field) => field.id == fieldId, orElse: () => Field());
+    return field;
   }
 
   Field getSelectedField() {

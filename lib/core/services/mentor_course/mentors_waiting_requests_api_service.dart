@@ -11,7 +11,7 @@ import 'package:mwb_connect_app/core/services/api_service.dart';
 class MentorsWaitingRequestsApiService {
   final ApiService _api = locator<ApiService>();
 
-  Future<List<MentorWaitingRequest>> getMentorsWaitingRequests(CourseType? courseType, MentorWaitingRequest filter, int pageNumber) async {
+  Future<List<MentorWaitingRequest>> getMentorsWaitingRequests(MentorWaitingRequest filter, int pageNumber) async {
     dynamic response = await _api.postHTTP(url: '/mentors_waiting_requests?page=$pageNumber', data: filter.toJson());
     List<MentorWaitingRequest> mentorsWaitingRequests = [];
     if (response != null) {

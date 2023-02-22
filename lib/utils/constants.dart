@@ -28,6 +28,6 @@ class AppConstants {
   static const int mentorWeeksTraining = 4;
   static const int studentWeeksTraining = 13;
   static const int studentQuizzes = 12;
+  static const int availableCoursesResultsPerPage = 5;
   static const int availableMentorsResultsPerPage = 20;
-  static const int availableCoursesResultsPerPage = 20;
 }

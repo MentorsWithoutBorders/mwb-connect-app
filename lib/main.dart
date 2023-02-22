@@ -163,4 +163,3 @@ class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserv
     );
   }
 }
-

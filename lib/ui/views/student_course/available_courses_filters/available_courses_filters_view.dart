@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/availabilities_list_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
@@ -43,7 +44,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
               shrinkWrap: true,
               children: [
                 _showAvailabilitiesCard(),
-                _showSubfieldsCard(),
+                _showFieldsCard()
               ]
             ),
           ),
@@ -68,9 +69,9 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
     );
   }
 
-  Widget _showSubfieldsCard() {
+  Widget _showFieldsCard() {
+    List<Field>? fields = _availableCoursesProvider?.fields;
     Field? filterField = _availableCoursesProvider?.filterField;
-    Field? field = _availableCoursesProvider?.fields[0];
     return Card(
       elevation: 3.0,
       shape: RoundedRectangleBorder(
@@ -80,9 +81,15 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
           children: [
+            FieldDropdown(
+              fields: fields,
+              selectedField: filterField,
+              onChange: _setFilterField,
+              unfocus: _setShouldUnfocus
+            ),
             Subfields(
               filterField: filterField,
-              field: field,
+              fields: fields,
               onAdd: _addSubfield,
               onDelete: _deleteSubfield,
               onSet: _setSubfield,
@@ -95,7 +102,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
         )
       )
     );
-  }
+  }  
 
   void _onAddAvailability(Availability availability) {
     _availableCoursesProvider?.addAvailability(availability);
@@ -111,6 +118,10 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
 
   void _onResetAvailabilityMergedMessage() {
     _availableCoursesProvider?.resetAvailabilityMergedMessage();
+  }
+
+  void _setFilterField(String fieldId) {
+    _availableCoursesProvider?.setFilterField(fieldId);
   }
 
   void _addSubfield() {

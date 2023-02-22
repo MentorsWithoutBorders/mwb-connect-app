@@ -42,7 +42,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
       mentor: filterMentor,
       courseType: courseType
     );
-    newMentorsWaitingRequests = await _mentorsWaitingRequestsApiService.getMentorsWaitingRequests(courseType, filter, pageNumber);
+    newMentorsWaitingRequests = await _mentorsWaitingRequestsApiService.getMentorsWaitingRequests(filter, pageNumber);
     newMentorsWaitingRequests = _adjustMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _splitMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);

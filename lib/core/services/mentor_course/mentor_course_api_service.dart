@@ -37,7 +37,7 @@ class MentorCourseApiService {
       startDateTime: _mentorCourseUtilsService.getCourseDateTime(dayOfWeek, timeFrom),
       mentors: [CourseMentor(meetingUrl: meetingUrl)]
     );
-    Map<String, dynamic> response = await _api.postHTTP(url: '/courses', data: course.toJson());
+    Map<String, dynamic> response = await _api.postHTTP(url: '/courses/add', data: course.toJson());
     course = CourseModel.fromJson(response);
     return course;
   }

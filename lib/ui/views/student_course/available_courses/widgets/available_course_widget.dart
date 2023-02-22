@@ -11,12 +11,13 @@ import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailableCourse extends StatefulWidget {
-  const AvailableCourse({Key? key, @required this.id, @required this.startDateTime, @required this.fieldName, @required this.mentorsNames, @required this.scheduleText, @required this.mentorsSubfields, @required this.students, @required this.joinText, @required this.onJoin})
+  const AvailableCourse({Key? key, @required this.id, @required this.startDateTime, @required this.fieldName, @required this.courseTypeText, @required this.mentorsNames, @required this.scheduleText, @required this.mentorsSubfields, @required this.students, @required this.joinText, @required this.onJoin})
     : super(key: key);
 
   final String? id;
   final DateTime? startDateTime;
   final String? fieldName;
+  final String? courseTypeText;
   final String? mentorsNames;
   final String? scheduleText;
   final List<Subfield>? mentorsSubfields;
@@ -34,7 +35,7 @@ class _AvailableCourseState extends State<AvailableCourse> {
       child: Wrap(
         children: [
           _showMentorsNames(),
-          _showFieldName(),
+          _showFieldNameAndCourseType(),
           SubfieldsList(
             mentorsNames: widget.mentorsNames,
             mentorsSubfields: widget.mentorsSubfields
@@ -64,16 +65,31 @@ class _AvailableCourseState extends State<AvailableCourse> {
     );
   }
 
-  Widget _showFieldName() {
+  Widget _showFieldNameAndCourseType() {
     String fieldName = widget.fieldName as String;
+    String courseTypeText = widget.courseTypeText as String;
     return Container(
       padding: const EdgeInsets.only(bottom: 7.0),
       width: double.infinity,
-      child: Text(
-        fieldName,
-        style: const TextStyle(
-          color: AppColors.DOVE_GRAY,
-          height: 1.4
+      child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 14.0,
+            color: AppColors.DOVE_GRAY
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: fieldName
+            ),
+            TextSpan(
+              text: ' ' + courseTypeText,
+              style: const TextStyle(
+                fontSize: 13.0,
+                fontStyle: FontStyle.italic
+              ) 
+            )
+          ]
         )
       )
     );

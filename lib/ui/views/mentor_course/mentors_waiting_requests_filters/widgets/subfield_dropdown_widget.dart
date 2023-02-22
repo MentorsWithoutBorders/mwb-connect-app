@@ -6,12 +6,12 @@ import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class SubfieldDropdown extends StatefulWidget {
-  const SubfieldDropdown({Key? key, this.index, this.filterField, this.field, this.onDelete, this.onSet, this.onAddSkill, this.onDeleteSkill, this.onSetScrollOffset, this.onSetShouldUnfocus})
+  const SubfieldDropdown({Key? key, this.index, this.filterField, this.fields, this.onDelete, this.onSet, this.onAddSkill, this.onDeleteSkill, this.onSetScrollOffset, this.onSetShouldUnfocus})
     : super(key: key); 
 
   final int? index;
   final Field? filterField;
-  final Field? field;
+  final List<Field>? fields;
   final Function(int)? onDelete;
   final Function (Subfield, int)? onSet;
   final Function(String, int)? onAddSkill;
@@ -34,8 +34,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   
   void _afterLayout(_) {
     Field filterField = widget.filterField as Field;
-    Field field = widget.field as Field;
-    Subfield? selectedSubfield = UtilsFields.getSelectedSubfield(widget.index!, filterField, [field]);
+    List<Field> fields = widget.fields as List<Field>;
+    Subfield? selectedSubfield = UtilsFields.getSelectedSubfield(widget.index!, filterField, fields);
     if (selectedSubfield != null) {
       _setSelectedSubfield(selectedSubfield);
     }
@@ -43,8 +43,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   Widget _showSubfieldDropdown() {
     Field filterField = widget.filterField as Field;
-    Field field = widget.field as Field;
-    final List<String>? skills = UtilsFields.getSkillSuggestions('', widget.index!, filterField, [field]);
+    List<Field> fields = widget.fields as List<Field>;
+    final List<String>? skills = UtilsFields.getSkillSuggestions('', widget.index!, filterField, fields);
     return Container(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
@@ -67,7 +67,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
                 if (_selectedSubfield?.id != null && skills != null) Skills(
                   index: widget.index,
                   filterField: widget.filterField,
-                  field: widget.field,
+                  fields: widget.fields,
                   onAdd: widget.onAddSkill,
                   onDelete: widget.onDeleteSkill,
                   onSetScrollOffset: widget.onSetScrollOffset
@@ -104,8 +104,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   List<DropdownMenuItem<String>> _buildSubfieldDropdown() {
     final List<DropdownMenuItem<String>> items = [];
     Field filterField = widget.filterField as Field;
-    Field field = widget.field as Field;
-    List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, filterField, [field]);
+    List<Field> fields = widget.fields as List<Field>;
+    List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, filterField, fields);
     for (final Subfield subfield in subfields) {
       items.add(DropdownMenuItem<String>(
         value: subfield.id,
@@ -117,8 +117,8 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
 
   void _changeSubfield(String? selectedSubfieldId) {
     Field filterField = widget.filterField as Field;
-    final Field field = widget.field as Field;
-    List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, filterField, [field]);
+    List<Field> fields = widget.fields as List<Field>;
+    List<Subfield>? subfields = UtilsFields.getSubfields(widget.index!, filterField, fields);
     Subfield? selectedSubfield;
     for (final Subfield subfield in subfields) {
       if (subfield.id == selectedSubfieldId) {

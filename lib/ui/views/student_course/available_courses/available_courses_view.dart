@@ -17,7 +17,7 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 class AvailableCoursesView extends StatefulWidget {
   const AvailableCoursesView({Key? key})
     : super(key: key);
-    
+
   @override
   State<StatefulWidget> createState() => _AvailableCoursesViewState();
 }
@@ -34,7 +34,7 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
       _fetchPage(pageKey);
     });
     super.initState();
-  }  
+  }   
 
   @override
   void dispose() {
@@ -74,6 +74,7 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
                   final String id = item.id as String;
                   final DateTime startDateTime = item.startDateTime as DateTime;
                   final String fieldName = _availableCoursesProvider?.getFieldName(item) as String;
+                  final String courseTypeText = _availableCoursesProvider?.getCourseTypeText(item) as String;
                   final String mentorsNames = _availableCoursesProvider?.getMentorsNames(item) as String;
                   final List<Subfield> mentorsSubfields = _availableCoursesProvider?.getMentorsSubfields(item) as List<Subfield>;
                   final List<CourseStudent> students = item.students as List<CourseStudent>;
@@ -83,6 +84,7 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
                     id: id,
                     startDateTime: startDateTime,
                     fieldName: fieldName,
+                    courseTypeText: courseTypeText,
                     mentorsNames: mentorsNames,
                     mentorsSubfields: mentorsSubfields,
                     students: students,
