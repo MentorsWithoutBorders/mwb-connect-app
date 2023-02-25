@@ -61,7 +61,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
     List<CourseType>? courseTypes = _availableCoursesProvider?.courseTypes;
     String? filterCourseTypeId = _availableCoursesProvider?.filterCourseType.id;
     return Container(
-      margin: const EdgeInsets.only(bottom: 15.0),
+      margin: const EdgeInsets.only(bottom: 8.0),
       child: Card(
         elevation: 3.0,
         shape: RoundedRectangleBorder(
@@ -69,15 +69,11 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
         ),
         child: Container(
           padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-          child: Wrap(
-            children: [
-              CourseTypeDropdown(
-                courseTypes: courseTypes,
-                selectedCourseTypeId: filterCourseTypeId,
-                onChange: _setFilterCourseType,
-                unfocus: _setShouldUnfocus
-              )
-            ]
+          child: CourseTypeDropdown(
+            courseTypes: courseTypes,
+            selectedCourseTypeId: filterCourseTypeId,
+            onChange: _setFilterCourseType,
+            unfocus: _setShouldUnfocus
           )
         )
       ),
@@ -87,14 +83,24 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
   Widget _showAvailabilitiesCard() {
     List<Availability> filterAvailabilities = _availableCoursesProvider?.filterAvailabilities ?? [];
     String mergedMessage = _availableCoursesProvider?.availabilityMergedMessage ?? '';
-    return AppCard(
-      child: AvailabilitiesList(
-        filterAvailabilities: filterAvailabilities,
-        mergedMessage: mergedMessage,
-        onAdd: _onAddAvailability,
-        onUpdate: _onUpdateAvailability,
-        onDelete: _onDeleteAvailability,
-        onResetMergedMessage: _onResetAvailabilityMergedMessage
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8.0),
+      child: Card(
+        elevation: 3.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: AvailabilitiesList(
+            filterAvailabilities: filterAvailabilities,
+            mergedMessage: mergedMessage,
+            onAdd: _onAddAvailability,
+            onUpdate: _onUpdateAvailability,
+            onDelete: _onDeleteAvailability,
+            onResetMergedMessage: _onResetAvailabilityMergedMessage
+          )
+        )
       )
     );
   }
