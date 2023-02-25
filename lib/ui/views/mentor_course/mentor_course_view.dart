@@ -21,7 +21,7 @@ import 'package:mwb_connect_app/core/viewmodels/quizzes_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/in_app_messages_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/update_app_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/courses_types/courses_types_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course_types/course_types_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/waiting_students_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/mentor_partnership_request_widget.dart';
@@ -154,7 +154,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final bool isMentorPartnershipRequestWaitingApproval = _mentorCourseProvider?.getIsMentorPartnershipRequestWaitingApproval(mentor) ?? false;
     final bool isMentorWaitingRequest = _mentorCourseProvider?.isMentorWaitingRequest ?? false;
     // Courses types
-    final List<CourseType>? coursesTypes = _mentorCourseProvider?.coursesTypes;
+    final List<CourseType>? courseTypes = _mentorCourseProvider?.courseTypes;
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
     // Course
@@ -181,8 +181,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         children: [
           if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _mentorCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          if (!isCourse && !isMentorPartnershipRequest && !isMentorWaitingRequest) CoursesTypes(
-            coursesTypes: coursesTypes,
+          if (!isCourse && !isMentorPartnershipRequest && !isMentorWaitingRequest) CourseTypes(
+            courseTypes: courseTypes,
             selectedCourseType: selectedCourseType,
             subfields: subfields,
             onSelect: _setSelectedCourseType, 
@@ -305,7 +305,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     String fieldId = user.field?.id as String;
     if (!_isInit && _mentorCourseProvider != null) {
       await Future.wait([
-        _mentorCourseProvider!.getCoursesTypes(),
+        _mentorCourseProvider!.getCourseTypes(),
         _mentorCourseProvider!.getCourse(),
         _mentorCourseProvider!.getField(fieldId),
         _mentorCourseProvider!.getMentorPartnershipRequest(),

@@ -85,7 +85,6 @@ class _AvailableCourseState extends State<AvailableCourse> {
             TextSpan(
               text: ' ' + courseTypeText,
               style: const TextStyle(
-                fontSize: 13.0,
                 fontStyle: FontStyle.italic
               ) 
             )

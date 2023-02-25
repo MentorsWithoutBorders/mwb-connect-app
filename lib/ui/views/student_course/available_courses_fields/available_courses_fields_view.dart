@@ -160,7 +160,8 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
     if (!_areFieldsRetrieved && _availableCoursesProvider != null) {
       await Future.wait([
         _availableCoursesProvider!.getFields(),
-        _availableCoursesProvider!.getFieldsGoals()
+        _availableCoursesProvider!.getFieldsGoals(),
+        _availableCoursesProvider!.getCourseTypes()
       ]);      
       _areFieldsRetrieved = true;
     }

@@ -32,7 +32,7 @@ class CourseFilter {
 
   Map<String, Object?> toJson() {
     return {
-      'courseType': courseType,
+      'courseType': courseType?.toJson(),
       'field': field?.toJson(),
       'availabilities': _availabilitiesToJson(availabilities),
     };

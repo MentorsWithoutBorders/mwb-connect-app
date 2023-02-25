@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/course_type_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/availabilities_list_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfields_widget.dart';
@@ -43,6 +45,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
               padding: const EdgeInsets.only(top: 0.0),
               shrinkWrap: true,
               children: [
+                _showCourseTypesCard(),
                 _showAvailabilitiesCard(),
                 _showFieldsCard()
               ]
@@ -53,6 +56,33 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
       ),
     );
   }
+
+  Widget _showCourseTypesCard() {
+    List<CourseType>? courseTypes = _availableCoursesProvider?.courseTypes;
+    String? filterCourseTypeId = _availableCoursesProvider?.filterCourseType.id;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15.0),
+      child: Card(
+        elevation: 3.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+          child: Wrap(
+            children: [
+              CourseTypeDropdown(
+                courseTypes: courseTypes,
+                selectedCourseTypeId: filterCourseTypeId,
+                onChange: _setFilterCourseType,
+                unfocus: _setShouldUnfocus
+              )
+            ]
+          )
+        )
+      ),
+    );
+  }    
 
   Widget _showAvailabilitiesCard() {
     List<Availability> filterAvailabilities = _availableCoursesProvider?.filterAvailabilities ?? [];
@@ -118,6 +148,10 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
 
   void _onResetAvailabilityMergedMessage() {
     _availableCoursesProvider?.resetAvailabilityMergedMessage();
+  }
+
+  void _setFilterCourseType(String courseTypeId) {
+    _availableCoursesProvider?.setFilterCourseType(courseTypeId);
   }
 
   void _setFilterField(String fieldId) {

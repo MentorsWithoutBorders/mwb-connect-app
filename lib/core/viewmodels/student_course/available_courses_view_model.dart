@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
+import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -13,6 +14,7 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/field_goal_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/course_filter_model.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/available_courses_api_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/available_courses_utils_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_utils_service.dart';
@@ -21,20 +23,32 @@ import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
 
 class AvailableCoursesViewModel extends ChangeNotifier {
   final AvailableCoursesApiService _availableCoursesApiService = locator<AvailableCoursesApiService>();
+  final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
   final AvailableCoursesUtilsService _availableCoursesUtilsService = locator<AvailableCoursesUtilsService>();
   final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();
   final AvailableCoursesTextsService _availableCoursesTextsService = locator<AvailableCoursesTextsService>();
   final FieldsGoalsService _fieldsGoalsService = locator<FieldsGoalsService>();  
+  List<CourseType> courseTypes = [];  
   List<Field> fields = [];
   List<FieldGoal> fieldsGoals = [];
   List<CourseModel> availableCourses = [];
   List<CourseModel> newAvailableCourses = [];
   List<Availability> filterAvailabilities = [];
   Map<String, String> fieldIconFilePaths = {};
+  CourseType filterCourseType = CourseType();
   Field filterField = Field();
   String availabilityMergedMessage = '';
   double scrollOffset = 0;
   bool _shouldUnfocus = false;
+
+  Future<void> getCourseTypes() async {
+    courseTypes = await _mentorCourseApiService.getCourseTypes();
+    courseTypes = _availableCoursesUtilsService.removeDuplicateDurations(courseTypes);
+    CourseType allCourseType = CourseType(id: 'all');
+    courseTypes.insert(0, allCourseType);
+    filterCourseType = courseTypes[0];
+    notifyListeners();
+  }  
 
   Future<void> getFields() async {
     fields = await _availableCoursesApiService.getFields();
@@ -71,6 +85,7 @@ class AvailableCoursesViewModel extends ChangeNotifier {
 
   Future<void> getAvailableCourses({int pageNumber = 1}) async {
     CourseFilter filter = CourseFilter(
+      courseType: filterCourseType,
       field: filterField,
       availabilities: _adjustFilterAvailabilities(filterAvailabilities)
     );
@@ -142,6 +157,13 @@ class AvailableCoursesViewModel extends ChangeNotifier {
     filterAvailabilities.removeAt(index);
     notifyListeners();
   }
+
+  void setFilterCourseType(String? courseTypeId) {
+    if (filterCourseType.id != courseTypeId) {
+      filterCourseType = getFilterCourseTypeById(courseTypeId);
+    }
+    notifyListeners();
+  }
  
   void setFilterField(String? fieldId) {
     if (filterField.id != fieldId) {
@@ -157,6 +179,11 @@ class AvailableCoursesViewModel extends ChangeNotifier {
   Field getFieldById(String? fieldId) {
     Field? field = fields.firstWhere((Field field) => field.id == fieldId, orElse: () => Field());
     return field;
+  }
+
+  CourseType getFilterCourseTypeById(String? courseTypeId) {
+    CourseType? courseType = courseTypes.firstWhere((CourseType courseType) => courseType.id == courseTypeId, orElse: () => CourseType());
+    return courseType;
   }
 
   Field getSelectedField() {
@@ -216,6 +243,7 @@ class AvailableCoursesViewModel extends ChangeNotifier {
 
   void resetValues() {
     availableCourses = [];
+    filterCourseType = CourseType(id: 'all');
     filterAvailabilities = [];
     filterField = Field();
   }  

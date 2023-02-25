@@ -14,13 +14,13 @@ class MentorCourseApiService {
   final ApiService _api = locator<ApiService>();
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
 
-  Future<List<CourseType>> getCoursesTypes() async {
-    dynamic response = await _api.getHTTP(url: '/courses_types');
-    List<CourseType> coursesTypes = [];
+  Future<List<CourseType>> getCourseTypes() async {
+    dynamic response = await _api.getHTTP(url: '/course_types');
+    List<CourseType> courseTypes = [];
     if (response != null) {
-      coursesTypes = List<CourseType>.from(response.map((model) => CourseType.fromJson(model)));
+      courseTypes = List<CourseType>.from(response.map((model) => CourseType.fromJson(model)));
     }
-    return coursesTypes;
+    return courseTypes;
   }  
 
   Future<CourseModel> getCourse() async {

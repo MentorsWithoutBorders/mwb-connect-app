@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 
@@ -125,6 +126,16 @@ class AvailableCoursesUtilsService {
     Skill? skill = filterField.subfields?[index].skills?.firstWhere((skill) => skill.id == skillId);
     filterField.subfields?[index].skills?.remove(skill);
     return filterField;
+  }
+
+  List<CourseType> removeDuplicateDurations(List<CourseType> courseTypes) {
+    List<CourseType> uniqueCourseTypes = [];
+    for (CourseType courseType in courseTypes) {
+      if (!Utils.containsCourseDuration(uniqueCourseTypes, courseType)) {
+        uniqueCourseTypes.add(courseType);
+      }
+    }
+    return uniqueCourseTypes;
   }
 
   double setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {

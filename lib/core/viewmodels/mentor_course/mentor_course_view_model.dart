@@ -18,7 +18,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   final MentorCourseTextsService _mentorCourseTextsService = locator<MentorCourseTextsService>();
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
   final LoggerService _loggerService = locator<LoggerService>();   
-  List<CourseType> coursesTypes = [];
+  List<CourseType> courseTypes = [];
   MentorWaitingRequest? mentorWaitingRequest;
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
   MentorPartnershipRequestModel? mentorPartnershipRequest;
@@ -31,9 +31,9 @@ class MentorCourseViewModel extends ChangeNotifier {
   bool shouldShowExpired = false;
   bool shouldShowCanceled = false;
 
-  Future<void> getCoursesTypes() async {
-    coursesTypes = await _mentorCourseApiService.getCoursesTypes();
-    selectedCourseType = coursesTypes[0];
+  Future<void> getCourseTypes() async {
+    courseTypes = await _mentorCourseApiService.getCourseTypes();
+    selectedCourseType = courseTypes[0];
     notifyListeners();
   }
   
@@ -145,7 +145,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   }
 
   void setSelectedCourseType(String courseTypeId) {
-    selectedCourseType = coursesTypes.firstWhere((courseType) => courseType.id == courseTypeId);
+    selectedCourseType = courseTypes.firstWhere((courseType) => courseType.id == courseTypeId);
     notifyListeners();
   }
   

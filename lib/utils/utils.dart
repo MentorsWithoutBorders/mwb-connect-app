@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
-import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/course_type_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -186,5 +187,14 @@ class Utils {
       return 'https://' + url;
     }
     return url.replaceFirst('http://', 'https://');
+  }
+
+  static bool containsCourseDuration(List<CourseType> courseTypes, CourseType courseType) {
+    for (CourseType type in courseTypes) {
+      if (type.duration == courseType.duration) {
+        return true;
+      }
+    }
+    return false;
   }
 }
