@@ -11,11 +11,12 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 
 class MentorWaitingRequestItem extends StatefulWidget {
-  const MentorWaitingRequestItem({Key? key, @required this.partnerMentor, @required this.selectedPartnerMentor, @required this.subfieldOptionId, @required this.availabilityOptionId, @required this.courseDayOfWeek, @required this.courseHoursList, @required this.mentorSubfields, @required this.getSubfieldItemId, @required this.getAvailabilityItemId, @required this.onSelectSubfield, @required this.onSelectAvailability, @required this.onSelectMentor, @required this.onSendRequest, @required this.onGoBack, @required this.getErrorMessage})
+  const MentorWaitingRequestItem({Key? key, @required this.partnerMentor, @required this.selectedPartnerMentor, @required this.courseTypeText, @required this.subfieldOptionId, @required this.availabilityOptionId, @required this.courseDayOfWeek, @required this.courseHoursList, @required this.mentorSubfields, @required this.getSubfieldItemId, @required this.getAvailabilityItemId, @required this.onSelectSubfield, @required this.onSelectAvailability, @required this.onSelectMentor, @required this.onSendRequest, @required this.onGoBack, @required this.getErrorMessage})
     : super(key: key); 
 
   final CourseMentor? partnerMentor;
   final CourseMentor? selectedPartnerMentor;
+  final String? courseTypeText;
   final String? subfieldOptionId;
   final String? availabilityOptionId;
   final String? courseDayOfWeek;
@@ -41,6 +42,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
       child: Wrap(
         children: [
           _showPartnerMentorName(),
+          _showCourseType(),
           SubfieldsList(
             mentor: widget.partnerMentor,
             optionId: widget.subfieldOptionId,
@@ -72,6 +74,21 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
           fontWeight: FontWeight.bold
         )
       ),
+    );
+  }
+
+  Widget _showCourseType() {
+    String courseTypeText = widget.courseTypeText as String;
+    return Container(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      width: double.infinity,
+      child: Text(
+        courseTypeText,
+        style: const TextStyle(
+          color: AppColors.DOVE_GRAY,
+          fontStyle: FontStyle.italic
+        )
+      )
     );
   }
 

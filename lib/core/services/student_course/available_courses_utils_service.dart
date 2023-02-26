@@ -39,7 +39,17 @@ class AvailableCoursesUtilsService {
       }        
     }
     return subfields;
-  }  
+  }
+  
+  List<CourseType> removeDuplicateDurations(List<CourseType> courseTypes) {
+    List<CourseType> uniqueCourseTypes = [];
+    for (CourseType courseType in courseTypes) {
+      if (!Utils.containsCourseDuration(uniqueCourseTypes, courseType)) {
+        uniqueCourseTypes.add(courseType);
+      }
+    }
+    return uniqueCourseTypes;
+  }    
 
   List<Availability> adjustFilterAvailabilities(List<Availability> filterAvailabilities) {
     List<Availability> adjustedFilterAvailabilities = [];
@@ -126,16 +136,6 @@ class AvailableCoursesUtilsService {
     Skill? skill = filterField.subfields?[index].skills?.firstWhere((skill) => skill.id == skillId);
     filterField.subfields?[index].skills?.remove(skill);
     return filterField;
-  }
-
-  List<CourseType> removeDuplicateDurations(List<CourseType> courseTypes) {
-    List<CourseType> uniqueCourseTypes = [];
-    for (CourseType courseType in courseTypes) {
-      if (!Utils.containsCourseDuration(uniqueCourseTypes, courseType)) {
-        uniqueCourseTypes.add(courseType);
-      }
-    }
-    return uniqueCourseTypes;
   }
 
   double setScrollOffset(double positionDy, double screenHeight, double statusBarHeight) {

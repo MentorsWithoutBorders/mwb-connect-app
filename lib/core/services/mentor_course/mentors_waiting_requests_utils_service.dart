@@ -3,6 +3,7 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/datetime_extension.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
+import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -11,6 +12,16 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 
 class MentorsWaitingRequestsUtilsService {
+
+  List<CourseType> removeCourseTypesWithoutPartner(List<CourseType> courseTypes) {
+    List<CourseType> courseTypesWithPartner = [];
+    for (CourseType courseType in courseTypes) {
+      if (courseType.isWithPartner == true) {
+        courseTypesWithPartner.add(courseType);
+      }
+    }
+    return courseTypesWithPartner;
+  }
 
   List<Availability> adjustFilterAvailabilities(List<Availability> filterAvailabilities) {
     List<Availability> adjustedFilterAvailabilities = [];

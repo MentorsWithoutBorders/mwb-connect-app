@@ -11,20 +11,25 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_utils_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_texts_service.dart';
 
 class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   final MentorsWaitingRequestsApiService _mentorsWaitingRequestsApiService = locator<MentorsWaitingRequestsApiService>();
+  final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();  
   final MentorsWaitingRequestsUtilsService _mentorsWaitingRequestsUtilsService = locator<MentorsWaitingRequestsUtilsService>();
+  final MentorsWaitingRequestsTextsService _mentorsWaitingRequestsTextsService = locator<MentorsWaitingRequestsTextsService>();
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
   List<MentorWaitingRequest> newMentorsWaitingRequests = [];
+  List<CourseType> courseTypes = [];    
   List<Field> fields = [];
+  CourseType filterCourseType = CourseType();
   List<Availability> filterAvailabilities = [];
   Field filterField = Field();
   MentorPartnershipRequestModel? mentorPartnershipRequest;
   MentorWaitingRequest? mentorWaitingRequest;
-  CourseType? selectedCourseType;
   CourseMentor? selectedPartnerMentor;
   String? availabilityOptionId;
   String? subfieldOptionId;
@@ -33,6 +38,21 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   double scrollOffset = 0;
   bool _shouldUnfocus = false;
 
+  Future<void> setCourseTypes(List<CourseType> courseTypes) async {
+    this.courseTypes = _mentorsWaitingRequestsUtilsService.removeCourseTypesWithoutPartner(courseTypes);
+    CourseType courseTypeAll = CourseType(id: 'all');
+    this.courseTypes.insert(0, courseTypeAll);
+    if (filterCourseType.duration == null) {
+      filterCourseType = this.courseTypes[0];
+    }
+    notifyListeners();
+}  
+  
+  CourseType getCourseTypeByDuration(int? duration) {
+    CourseType? courseType = courseTypes.firstWhere((CourseType courseType) => courseType.duration == duration, orElse: () => CourseType());
+    return courseType;
+  }  
+
   Future<void> getMentorsWaitingRequests({CourseType? courseType, int pageNumber = 1}) async {
     CourseMentor filterMentor = CourseMentor(
       field: filterField,
@@ -40,14 +60,13 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     );
     MentorWaitingRequest filter = MentorWaitingRequest(
       mentor: filterMentor,
-      courseType: courseType
+      courseType: filterCourseType.id != null ? filterCourseType : courseType
     );
     newMentorsWaitingRequests = await _mentorsWaitingRequestsApiService.getMentorsWaitingRequests(filter, pageNumber);
     newMentorsWaitingRequests = _adjustMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _splitMentorsAvailabilities(newMentorsWaitingRequests);
     newMentorsWaitingRequests = _sortMentorsAvailabilities(newMentorsWaitingRequests);
     mentorsWaitingRequests += newMentorsWaitingRequests;
-    setSelectedCourseType(courseType);
     setSelectedPartnerMentor(mentor: null);
   }
 
@@ -58,7 +77,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
 
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor, String mentorSubfieldId, String courseStartTime) async {
     String courseDayOfWeek = selectedPartnerMentor?.availabilities![0].dayOfWeek as String;
-    mentorPartnershipRequest = await _mentorsWaitingRequestsApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, selectedCourseType, courseDayOfWeek, courseStartTime);
+    mentorPartnershipRequest = await _mentorsWaitingRequestsApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, filterCourseType, courseDayOfWeek, courseStartTime);
     notifyListeners();
   }
 
@@ -111,10 +130,9 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedCourseType(CourseType? courseType) {
-    selectedCourseType = courseType;
-    notifyListeners();
-  }   
+  String getCourseTypeText(MentorWaitingRequest mentorWaitingRequest) {
+    return _mentorsWaitingRequestsTextsService.getCourseTypeText(mentorWaitingRequest);
+  }  
 
   void setAvailabilityOptionId(String? id) {
     availabilityOptionId = id;
@@ -208,6 +226,13 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     filterAvailabilities.removeAt(index);
     notifyListeners();
   }
+
+  void setFilterCourseType(String? courseTypeId) {
+    if (filterCourseType.id != courseTypeId) {
+      filterCourseType = getCourseTypeById(courseTypeId);
+    }
+    notifyListeners();
+  }  
  
   void setFilterField(Field? field) {
     if (filterField.id != field?.id) {
@@ -218,6 +243,11 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
       );
     }
     notifyListeners();
+  }
+
+  CourseType getCourseTypeById(String? courseTypeId) {
+    CourseType? courseType = courseTypes.firstWhere((CourseType courseType) => courseType.id == courseTypeId, orElse: () => CourseType());
+    return courseType;
   }
 
   Field getSelectedField() {
@@ -276,7 +306,9 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   }
 
   void resetValues() {
+    courseTypes = [];
     mentorsWaitingRequests = [];
+    filterCourseType = CourseType();
     filterAvailabilities = [];
     filterField = Field();
     mentorPartnershipRequest = null;

@@ -12,7 +12,6 @@ import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
-import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 
 class AvailableCoursesFiltersView extends StatefulWidget {
   const AvailableCoursesFiltersView({Key? key})
@@ -78,7 +77,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
         )
       ),
     );
-  }    
+  }
 
   Widget _showAvailabilitiesCard() {
     List<Availability> filterAvailabilities = _availableCoursesProvider?.filterAvailabilities ?? [];

@@ -16,6 +16,7 @@ import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_texts_
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_utils_service.dart';
+import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_texts_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_texts_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_utils_service.dart';
@@ -80,6 +81,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => AvailableCoursesUtilsService());
   locator.registerLazySingleton(() => MentorsWaitingRequestsApiService());
   locator.registerLazySingleton(() => MentorsWaitingRequestsUtilsService());
+  locator.registerLazySingleton(() => MentorsWaitingRequestsTextsService());
   locator.registerLazySingleton(() => ConnectWithMentorService());
   locator.registerLazySingleton(() => AvailableMentorsService());
   locator.registerLazySingleton(() => FieldsGoalsService());

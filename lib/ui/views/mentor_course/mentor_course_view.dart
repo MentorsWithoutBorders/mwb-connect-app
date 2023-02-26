@@ -278,6 +278,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     User user = _commonProvider?.user as User;
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     final Field? field = _mentorCourseProvider?.field;
+    final List<CourseType>? courseTypes = _mentorCourseProvider?.courseTypes;
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
       mentor: mentor,
       courseType: selectedCourseType
@@ -287,6 +288,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       MaterialPageRoute(
         builder: (context) => MentorsWaitingRequestsView(
           field: field,
+          courseTypes: courseTypes,
           mentorPartnershipRequest: mentorPartnershipRequest
         )
       )

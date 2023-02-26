@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
@@ -48,7 +49,7 @@ class AvailableCoursesViewModel extends ChangeNotifier {
     courseTypes.insert(0, allCourseType);
     filterCourseType = courseTypes[0];
     notifyListeners();
-  }  
+  }
 
   Future<void> getFields() async {
     fields = await _availableCoursesApiService.getFields();
@@ -160,7 +161,7 @@ class AvailableCoursesViewModel extends ChangeNotifier {
 
   void setFilterCourseType(String? courseTypeId) {
     if (filterCourseType.id != courseTypeId) {
-      filterCourseType = getFilterCourseTypeById(courseTypeId);
+      filterCourseType = getCourseTypeById(courseTypeId);
     }
     notifyListeners();
   }
@@ -181,7 +182,7 @@ class AvailableCoursesViewModel extends ChangeNotifier {
     return field;
   }
 
-  CourseType getFilterCourseTypeById(String? courseTypeId) {
+  CourseType getCourseTypeById(String? courseTypeId) {
     CourseType? courseType = courseTypes.firstWhere((CourseType courseType) => courseType.id == courseTypeId, orElse: () => CourseType());
     return courseType;
   }
