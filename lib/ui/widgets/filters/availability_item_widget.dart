@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/edit_availability_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/filters/edit_availability_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class AvailabilityItem extends StatefulWidget {

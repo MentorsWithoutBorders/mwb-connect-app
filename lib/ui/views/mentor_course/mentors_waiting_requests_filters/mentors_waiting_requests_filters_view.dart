@@ -7,9 +7,9 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentors_waiting_requests_view_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/course_type_dropdown_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/availabilities_list_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfields_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/filters/course_type_dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/filters/availabilities_list_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/filters/subfields_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 

@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests_filters/widgets/subfield_dropdown_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/filters/subfield_dropdown_widget.dart';
 
 class Subfields extends StatefulWidget {
   const Subfields({Key? key, this.fields, this.filterField, this.onAdd, this.onDelete, this.onSet, this.onAddSkill, this.onDeleteSkill, this.onSetScrollOffset, this.onSetShouldUnfocus})
