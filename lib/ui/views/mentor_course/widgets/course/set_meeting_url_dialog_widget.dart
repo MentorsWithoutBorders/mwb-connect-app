@@ -6,24 +6,24 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class UpdateMeetingUrlDialog extends StatefulWidget {
-  const UpdateMeetingUrlDialog({Key? key, this.meetingUrl, this.onUpdate})
+class SetMeetingUrlDialog extends StatefulWidget {
+  const SetMeetingUrlDialog({Key? key, this.meetingUrl, this.onSet})
     : super(key: key);  
 
   final String? meetingUrl;
-  final Function(String)? onUpdate;
+  final Function(String)? onSet;
 
   @override
-  State<StatefulWidget> createState() => _UpdateMeetingUrlDialogState();
+  State<StatefulWidget> createState() => _SetMeetingUrlDialogState();
 }
 
-class _UpdateMeetingUrlDialogState extends State<UpdateMeetingUrlDialog> {
+class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   String urlType = AppConstants.meetingUrlType;
   String? _url;
   bool _shouldShowError = false;
-  bool _isUpdating = false;
+  bool isSetting = false;
 
-  Widget _showUpdateMeetingUrlDialog() {
+  Widget _showSetMeetingUrlDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -69,7 +69,7 @@ class _UpdateMeetingUrlDialogState extends State<UpdateMeetingUrlDialog> {
 
   Widget _showInput() {
     return Container(
-      padding: EdgeInsets.only(bottom: 15.0),
+      padding: EdgeInsets.only(bottom: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -136,7 +136,7 @@ class _UpdateMeetingUrlDialogState extends State<UpdateMeetingUrlDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isUpdating ? Text(
+          child: !isSetting ? Text(
             'common.update'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -144,32 +144,32 @@ class _UpdateMeetingUrlDialogState extends State<UpdateMeetingUrlDialog> {
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _updateMeetingUrl();
+            await _setMeetingUrl();
           }
         )
       ]
     );
   } 
 
-  Future<void> _updateMeetingUrl() async {
+  Future<void> _setMeetingUrl() async {
     String meetingUrl = _url ?? '';
-    if (Utils.checkValidUrl(meetingUrl) == false) {
+    if (Utils.checkValidMeetingUrl(meetingUrl) == false) {
       _setShouldShowError(true);
       return ;
     }    
     _setIsUpdating(true);
-    await widget.onUpdate!(meetingUrl);
+    await widget.onSet!(meetingUrl);
     Navigator.pop(context);
   }
   
-  void _setIsUpdating(bool isUpdating) {
+  void _setIsUpdating(bool isSetting) {
     setState(() {
-      _isUpdating = isUpdating;
+      isSetting = isSetting;
     });  
   }    
   
   @override
   Widget build(BuildContext context) {
-    return _showUpdateMeetingUrlDialog();
+    return _showSetMeetingUrlDialog();
   }
 }

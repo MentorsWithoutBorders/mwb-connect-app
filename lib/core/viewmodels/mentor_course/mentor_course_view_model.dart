@@ -47,9 +47,21 @@ class MentorCourseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateMeetingUrl(String meetingUrl) async {
-    await _mentorCourseApiService.updateMeetingUrl(course?.id, meetingUrl);
+  Future<void> setMeetingUrl(String meetingUrl) async {
+    await _mentorCourseApiService.setMeetingUrl(course?.id, meetingUrl);
     course = _mentorCourseUtilsService.getUpdatedMeetingUrl(course, meetingUrl);
+    notifyListeners();
+  }
+
+  Future<void> setWhatsAppGroupUrl(String? whatsAppGroupUrl) async {
+    await _mentorCourseApiService.setWhatsAppGroupUrl(course?.id, whatsAppGroupUrl);
+    course?.whatsAppGroupUrl = whatsAppGroupUrl;
+    notifyListeners();
+  }
+
+  Future<void> updateCourseNotes(String? courseNotes) async {
+    await _mentorCourseApiService.updateCourseNotes(course?.id, courseNotes);
+    course?.notes = courseNotes;
     notifyListeners();
   }
   

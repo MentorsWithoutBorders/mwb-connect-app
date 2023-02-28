@@ -59,8 +59,12 @@ class Utils {
     return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
   }
 
-  static bool checkValidUrl(String url) {
+  static bool checkValidMeetingUrl(String url) {
     return Uri.parse(url).host.isNotEmpty && (url.contains('meet') || url.contains('zoom'));
+  }
+
+  static bool checkValidWhatsAppGroupUrl(String url) {
+    return Uri.parse(url).host.isNotEmpty && url.contains('chat.whatsapp.com');
   }
   
   static String getUrlType(String url) {

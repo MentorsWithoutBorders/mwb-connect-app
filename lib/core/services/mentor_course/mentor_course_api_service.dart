@@ -115,11 +115,27 @@ class MentorCourseApiService {
     return ;
   }  
 
-  Future<void> updateMeetingUrl(String? id, String meetingUrl) async {
+  Future<void> setMeetingUrl(String? id, String meetingUrl) async {
     CourseMentor mentor = CourseMentor(
       meetingUrl: meetingUrl
     );    
-    await _api.postHTTP(url: '/courses/$id/update_meeting_url', data: mentor.toJson());  
+    await _api.putHTTP(url: '/courses/$id/meeting_url', data: mentor.toJson());  
+    return ;
+  }
+
+  Future<void> setWhatsAppGroupUrl(String? id, String? whatsAppGroupUrl) async {
+    CourseModel course = CourseModel(
+      whatsAppGroupUrl: whatsAppGroupUrl
+    );    
+    await _api.putHTTP(url: '/courses/$id/whatsapp_group_url', data: course.toJson());  
+    return ;
+  }
+
+  Future<void> updateCourseNotes(String? id, String? notes) async {
+    CourseModel course = CourseModel(
+      notes: notes
+    );    
+    await _api.putHTTP(url: '/courses/$id/notes', data: course.toJson());  
     return ;
   }
 }

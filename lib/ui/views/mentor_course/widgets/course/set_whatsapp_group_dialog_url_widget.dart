@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
-class AcceptMentorPartnershipRequestDialog extends StatefulWidget {
-  const AcceptMentorPartnershipRequestDialog({Key? key, @required this.onAccept, @required this.shouldUnfocus, @required this.setShouldUnfocus})
-    : super(key: key);
-    
-  final Function(String?)? onAccept;
-  final bool? shouldUnfocus;
-  final Function(bool)? setShouldUnfocus;
+class SetWhatsAppGroupUrlDialog extends StatefulWidget {
+  const SetWhatsAppGroupUrlDialog({Key? key, @required this.whatsAppGroupUrl, @required this.isUpdate, @required this.onSet})
+    : super(key: key);  
+
+  final String? whatsAppGroupUrl;
+  final bool? isUpdate;
+  final Function(String)? onSet;
 
   @override
-  State<StatefulWidget> createState() => _AcceptMentorPartnershipRequestDialogState();
+  State<StatefulWidget> createState() => _SetWhatsAppGroupUrlDialogState();
 }
 
-class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartnershipRequestDialog> {
-  String urlType = AppConstants.meetingUrlType;
-  String _url = '';
+class _SetWhatsAppGroupUrlDialogState extends State<SetWhatsAppGroupUrlDialog> {
+  String? _url;
   bool _shouldShowError = false;
-  bool _isAccepting = false;
+  bool _isSetting = false;
 
-  Widget _showAcceptMentorPartnershipRequestDialog() {
+  Widget _showSetWhatsAppGroupUrlDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -40,11 +38,12 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   }
 
   Widget _showTitle() {
+    String title = widget.isUpdate != null && widget.isUpdate! ? 'mentor_course.update_whatsapp_group_url'.tr() : 'mentor_course.add_whatsapp_group_url'.tr();
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'mentor_course.accept_mentor_partnership_request'.tr(),
+          title,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,
@@ -58,35 +57,19 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   Widget _showText() {
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 8.0),
-      child: Wrap(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: Text(
-              'mentor_course.accept_mentor_partnership_request_text'.tr(),
-              textAlign: TextAlign.justify,
-              style: const TextStyle(
-                fontSize: 13.0,
-                color: AppColors.DOVE_GRAY
-              )
-            ),
-          ),
-          Text(
-            'mentor_course.paste_partnership_url'.tr(),
-            textAlign: TextAlign.justify,
-            style: const TextStyle(
-              fontSize: 13.0,
-              color: AppColors.DOVE_GRAY
-            )
-          )
-        ]
-      )
+      child: Text(
+        'common.paste_url'.tr(),
+        style: const TextStyle(
+          fontSize: 13.0,
+          color: AppColors.DOVE_GRAY
+        )
+      ),
     );
   }
 
   Widget _showInput() {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 5.0),
+    return Container(
+      padding: EdgeInsets.only(bottom: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -95,8 +78,8 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
             child: InputBox(
               autofocus: true, 
               hint: '',
-              text: _url,
-              textCapitalization: TextCapitalization.none,
+              text: widget.whatsAppGroupUrl,
+              textCapitalization: TextCapitalization.none, 
               inputChangedCallback: _changeUrl
             ),
           ),
@@ -110,20 +93,20 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
     return Padding(
       padding: const EdgeInsets.only(left: 5.0),
       child: Text(
-        'common.set_url_error'.tr(args: [urlType]),
+        'common.send_url_error'.tr(args: ['common.whatsapp_group'.tr()]),
         style: const TextStyle(
           fontSize: 12.0,
           color: Colors.red
         )
       ),
     );
-  }
+  }  
 
   void _changeUrl(String url) {
     setState(() {
       _url = url;
-    });
-    _setShouldShowError(false);
+    });    
+    _setShouldShowError(false);    
   }
 
   void _setShouldShowError(bool showError) {
@@ -133,6 +116,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   }  
   
   Widget _showButtons() {
+    String buttonText = widget.isUpdate != null && widget.isUpdate! ? 'common.update'.tr() : 'common.add'.tr();
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -142,7 +126,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
             child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.grey))
           ),
           onTap: () {
-            _closeDialog();
+            Navigator.pop(context);
           },
         ),
         ElevatedButton(
@@ -153,71 +137,40 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !_isAccepting ? Text(
-            'common.accept'.tr(),
+          child: !_isSetting ? Text(
+            buttonText,
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
-            width: 40.0,
+            width: 45.0,
             child: ButtonLoader(),
           ),
           onPressed: () async {
-            await _acceptMentorPartnershipRequest();
+            await _setWhatsAppGroupUrl();
           }
         )
       ]
     );
   } 
 
-  void _closeDialog() {
-    Navigator.pop(context);
-  }
-
-  Future<void> _acceptMentorPartnershipRequest() async {
-    _changeUrl(Utils.setUrl(_url));
-    if (Utils.checkValidMeetingUrl(_url) == false) {
+  Future<void> _setWhatsAppGroupUrl() async {
+    String whatsAppGroupUrl = _url ?? '';
+    if (Utils.checkValidWhatsAppGroupUrl(whatsAppGroupUrl) == false) {
       _setShouldShowError(true);
       return ;
-    }
-    _setIsAccepting(true);
-    await widget.onAccept!(_url);
+    }    
+    _setIsSetting(true);
+    await widget.onSet!(whatsAppGroupUrl);
     Navigator.pop(context);
   }
   
-  void _setIsAccepting(bool isAccepting) {
+  void _setIsSetting(bool isSetting) {
     setState(() {
-      _isAccepting = isAccepting;
+      _isSetting = isSetting;
     });  
-  }
-
-  void _afterLayout(_) {
-    if (widget.shouldUnfocus == true) {
-      _unfocus();
-      widget.setShouldUnfocus!(false);
-    }  
-  }
-  
-  void _unfocus() {
-    FocusScope.of(context).unfocus();
-  }
-
-  Future<bool> _onWillPop() async {
-    _closeDialog();
-    return true;
   }    
   
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
-
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          _unfocus();
-        },
-        child: _showAcceptMentorPartnershipRequestDialog()
-      ),
-    );
+    return _showSetWhatsAppGroupUrlDialog();
   }
 }

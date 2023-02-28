@@ -162,6 +162,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
     final int studentsCount = _mentorCourseProvider?.getStudentsCount() as int;
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
+    final String? whatsAppGroupUrl = _mentorCourseProvider?.course?.whatsAppGroupUrl;
+    final String? courseNotes = _mentorCourseProvider?.course?.notes;
     final List<ColoredText> waitingStudentsNoPartnerText = _mentorCourseProvider?.getWaitingStudentsNoPartnerText() as List<ColoredText>;
     final List<ColoredText> waitingStudentsPartnerText = _mentorCourseProvider?.getWaitingStudentsPartnerText() as List<ColoredText>;
     final List<ColoredText> maximumStudentsText = _mentorCourseProvider?.getMaximumStudentsText() as List<ColoredText>;
@@ -202,9 +204,13 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
           if (isCourse && students.length >= minStudentsCourse) Course(
             text: courseText,
             students: students,
+            courseNotes: courseNotes,
             meetingUrl: meetingUrl,
+            whatsAppGroupUrl: whatsAppGroupUrl,
             cancelText: cancelCourseText,
-            onUpdateMeetingUrl: _updateMeetingUrl,
+            onSetMeetingUrl: _setMeetingUrl,
+            onSetWhatsAppGroupUrl: _setWhatsAppGroupUrl,
+            onUpdateNotes: _updateCourseNotes,
             onCancel: _cancelCourse
           ),
           if (isMentorPartnershipRequest && !isMentorPartnershipRequestWaitingApproval) MentorPartnershipRequest(
@@ -246,8 +252,16 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     _goToMentorsWaitingRequests(selectedCourseType);
   }
 
-  Future<void> _updateMeetingUrl(String meetingUrl) async {
-    await _mentorCourseProvider?.updateMeetingUrl(meetingUrl);
+  Future<void> _setMeetingUrl(String meetingUrl) async {
+    await _mentorCourseProvider?.setMeetingUrl(meetingUrl);
+  }
+
+  Future<void> _setWhatsAppGroupUrl(String whatsAppGroupUrl) async {
+    await _mentorCourseProvider?.setWhatsAppGroupUrl(whatsAppGroupUrl);
+  }
+
+  Future<void> _updateCourseNotes(String? notes) async {
+    await _mentorCourseProvider?.updateCourseNotes(notes);
   }
 
   Future<void> _cancelCourse(String? reason) async {

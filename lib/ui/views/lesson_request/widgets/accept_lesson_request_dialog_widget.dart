@@ -176,7 +176,7 @@ class _AcceptLessonRequestDialogState extends State<AcceptLessonRequestDialog> {
 
   Future<void> _acceptLessonRequest() async {
     _changeUrl(Utils.setUrl(_url));
-    if (_lessonRequestProvider?.checkValidUrl(_url) == false) {
+    if (_lessonRequestProvider?.checkValidMeetingUrl(_url) == false) {
       _setShouldShowError(true);
       return ;
     }

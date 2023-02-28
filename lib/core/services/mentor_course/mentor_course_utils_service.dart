@@ -73,7 +73,7 @@ class MentorCourseUtilsService {
     CourseMentor mentor = getMentor(course);
     return mentor.meetingUrl ?? '';
   }
-
+  
   CourseModel? getUpdatedMeetingUrl(CourseModel? course, String meetingUrl) {
     CourseMentor mentor = getMentor(course);
     mentor.meetingUrl = meetingUrl;

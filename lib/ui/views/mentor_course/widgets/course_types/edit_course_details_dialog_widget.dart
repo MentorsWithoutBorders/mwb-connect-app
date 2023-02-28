@@ -318,7 +318,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
 
   Future<void> _scheduleCourse() async {
     _changeUrl(Utils.setUrl(_meetingUrl));
-    if (Utils.checkValidUrl(_meetingUrl) == false) {
+    if (Utils.checkValidMeetingUrl(_meetingUrl) == false) {
       _setShouldShowError(true);
       return ;
     }    

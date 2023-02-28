@@ -9,10 +9,12 @@ class CourseModel {
   CourseType? type;
   List<CourseMentor>? mentors;
   List<CourseStudent>? students;
+  String? whatsAppGroupUrl;
+  String? notes;
   DateTime? startDateTime;
   bool? isCanceled;
 
-  CourseModel({this.id, this.type, this.mentors, this.students, this.startDateTime, this.isCanceled});
+  CourseModel({this.id, this.type, this.mentors, this.students, this.whatsAppGroupUrl, this.notes, this.startDateTime, this.isCanceled});
 
   CourseModel.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
@@ -20,6 +22,8 @@ class CourseModel {
     type = _courseTypeFromJson(json['type']);
     mentors = _mentorsFromJson(json['mentors']?.cast<Map<String,dynamic>>());
     students = _studentsFromJson(json['students']?.cast<Map<String,dynamic>>());
+    whatsAppGroupUrl = json['whatsAppGroupUrl'];
+    notes = json['notes'];
     startDateTime = json['startDateTime'] != null ? dateFormat.parseUTC(json['startDateTime']).toLocal() : null;
     isCanceled = json['isCanceled'];
   }
@@ -58,6 +62,8 @@ class CourseModel {
       'type': type?.toJson(),
       'mentors': _mentorsToJson(mentors),
       'students': _studentsToJson(students),
+      'whatsAppGroupUrl': whatsAppGroupUrl,
+      'notes': notes,
       'startDateTime': startDateTime != null ? dateFormat.format(startDateTime!.toUtc()) : null,
       'isCanceled': isCanceled
     };

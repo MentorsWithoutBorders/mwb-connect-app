@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/update_meeting_url_dialog_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_notes_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_meeting_url_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_whatsapp_group_dialog_url_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/cancel_course_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.text, @required this.students, @required this.meetingUrl, @required this.cancelText, @required this.onUpdateMeetingUrl, @required this.onCancel})
+  const Course({Key? key, @required this.text, @required this.students, @required this.courseNotes, @required this.meetingUrl, @required this.whatsAppGroupUrl, @required this.cancelText, @required this.onUpdateNotes, @required this.onSetMeetingUrl, @required this.onSetWhatsAppGroupUrl, @required this.onCancel})
     : super(key: key); 
 
   final List<ColoredText>? text;
   final List<CourseStudent>? students;
+  final String? courseNotes;
   final String? meetingUrl;
+  final String? whatsAppGroupUrl;
   final String? cancelText;
-  final Function(String)? onUpdateMeetingUrl;
+  final Function(String?)? onUpdateNotes;
+  final Function(String)? onSetMeetingUrl;
+  final Function(String)? onSetWhatsAppGroupUrl;
   final Function(String?)? onCancel;
 
   @override
@@ -29,6 +35,7 @@ class Course extends StatefulWidget {
 class _CourseState extends State<Course> {
 
   Widget _showCourseCard() {
+    bool isWhatsAppGroupUrl = widget.whatsAppGroupUrl != null && widget.whatsAppGroupUrl!.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -43,7 +50,10 @@ class _CourseState extends State<Course> {
             children: [
               _showText(),
               _showStudents(),
-              _showLink(),
+              _showMeetingLink(),
+              if (isWhatsAppGroupUrl) _showWhatsAppGroupLink(),
+              if (!isWhatsAppGroupUrl) _showSetWhatsAppGroupLinkButton(),
+              _showUpdateCourseNotesButton(),
               _showCancelButton()
             ]
           )
@@ -114,7 +124,7 @@ class _CourseState extends State<Course> {
     );
   }
 
-  Widget _showLink() {
+  Widget _showMeetingLink() {
     String meetingUrl = widget.meetingUrl ?? '';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -122,7 +132,7 @@ class _CourseState extends State<Course> {
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
-            'mentor_course.course_link'.tr(),
+            'mentor_course.course_meeting_link'.tr(),
             style: const TextStyle(
               fontSize: 12,
               color: AppColors.DOVE_GRAY
@@ -130,7 +140,7 @@ class _CourseState extends State<Course> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 15.0),
           child: Row(
             children: [
               Expanded(
@@ -146,7 +156,7 @@ class _CourseState extends State<Course> {
                   onTap: () async => await _launchMeetingUrl()
                 )
               ),
-              _showEditLink()
+              _showEditMeetingLink()
             ]
           ),
         )
@@ -154,7 +164,7 @@ class _CourseState extends State<Course> {
     );
   }
 
-  Widget _showEditLink() {
+  Widget _showEditMeetingLink() {
     return InkWell(
       child: Container(
         height: 22.0,
@@ -167,9 +177,9 @@ class _CourseState extends State<Course> {
         showDialog(
           context: context,
           builder: (_) => AnimatedDialog(
-            widgetInside: UpdateMeetingUrlDialog(
+            widgetInside: SetMeetingUrlDialog(
               meetingUrl: widget.meetingUrl,
-              onUpdate: widget.onUpdateMeetingUrl
+              onSet: widget.onSetMeetingUrl
             )
           )
         );
@@ -187,6 +197,158 @@ class _CourseState extends State<Course> {
     } else {
       throw 'Could not launch $meetingUrl';
     }  
+  }
+
+  Widget _showWhatsAppGroupLink() {
+    String whatsAppGroupUrl = widget.whatsAppGroupUrl ?? '';
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5.0),
+          child: Text(
+            'mentor_course.course_whatsapp_group_link'.tr(),
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.DOVE_GRAY
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  child: Text(
+                    whatsAppGroupUrl,
+                    style: const TextStyle(
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline
+                    )
+                  ),
+                  onTap: () async => await _launchWhatsAppGroupUrl()
+                )
+              ),
+              _showEditWhatsAppGroupLink()
+            ]
+          ),
+        )
+      ]
+    );
+  }
+
+  Widget _showEditWhatsAppGroupLink() {
+    return InkWell(
+      child: Container(
+        height: 22.0,
+        padding: const EdgeInsets.only(left: 5.0, right: 3.0),
+        child: Image.asset(
+          'assets/images/edit_icon.png'
+        ),
+      ),
+      onTap: () {
+        _showSetWhatsAppGroupLinkDialog(isUpdate: true);
+      }                 
+    );
+  }
+
+  void _showSetWhatsAppGroupLinkDialog({bool isUpdate = false}) {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: SetWhatsAppGroupUrlDialog(
+          whatsAppGroupUrl: widget.whatsAppGroupUrl,
+          isUpdate: isUpdate,
+          onSet: widget.onSetWhatsAppGroupUrl
+        )
+      )
+    );    
+  }
+
+  Future<void> _launchWhatsAppGroupUrl() async {
+    String whatsAppGroupUrl = widget.whatsAppGroupUrl as String;
+    if (await canLaunchUrl(Uri.parse(whatsAppGroupUrl))) {
+      await launchUrl(
+        Uri.parse(whatsAppGroupUrl),
+        mode: LaunchMode.externalApplication,
+      );  
+    } else {
+      throw 'Could not launch $whatsAppGroupUrl';
+    }  
+  }
+
+  Widget _showSetWhatsAppGroupLinkButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+              height: 30.0,
+              margin: const EdgeInsets.only(bottom: 5.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 1.0,
+                  primary: AppColors.ALLPORTS,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+                ), 
+                child: Text('mentor_course.add_whatsapp_group'.tr(), style: const TextStyle(color: Colors.white)),
+                onPressed: () {
+                  _showSetWhatsAppGroupLinkDialog();
+                }
+              )
+            )
+          ]
+        ),
+      ),
+    );
+  }
+
+  Widget _showUpdateCourseNotesButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+              height: 30.0,
+              margin: const EdgeInsets.only(bottom: 5.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 1.0,
+                  primary: AppColors.ALLPORTS,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+                ), 
+                child: Text('mentor_course.update_course_notes'.tr(), style: const TextStyle(color: Colors.white)),
+                onPressed: () {
+                  _showUpdateCourseNotesDialog();
+                }
+              )
+            )
+          ]
+        ),
+      ),
+    );
+  }
+  
+  void _showUpdateCourseNotesDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: CourseNotesDialog(
+          courseNotes: widget.courseNotes,
+          onUpdate: widget.onUpdateNotes
+        )
+      )
+    );   
   }
 
   Widget _showCancelButton() {

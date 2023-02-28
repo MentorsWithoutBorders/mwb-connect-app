@@ -159,7 +159,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
   } 
 
   Future<void> _changeLessonUrl() async {
-    if (_lessonRequestProvider?.checkValidUrl(_url as String) == false) {
+    if (_lessonRequestProvider?.checkValidMeetingUrl(_url as String) == false) {
       _setShouldShowError(true);
       return ;
     }    
