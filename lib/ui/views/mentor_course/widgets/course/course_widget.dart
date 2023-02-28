@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_notes_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_notes_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_meeting_url_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_whatsapp_group_dialog_url_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/cancel_course_dialog_widget.dart';
@@ -329,7 +329,7 @@ class _CourseState extends State<Course> {
                 ), 
                 child: Text('mentor_course.update_course_notes'.tr(), style: const TextStyle(color: Colors.white)),
                 onPressed: () {
-                  _showUpdateCourseNotesDialog();
+                  _goToUpdateCourseNotes();
                 }
               )
             )
@@ -339,16 +339,16 @@ class _CourseState extends State<Course> {
     );
   }
   
-  void _showUpdateCourseNotesDialog() {
-    showDialog(
-      context: context,
-      builder: (_) => AnimatedDialog(
-        widgetInside: CourseNotesDialog(
+  void _goToUpdateCourseNotes() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseNotesView(
           courseNotes: widget.courseNotes,
           onUpdate: widget.onUpdateNotes
         )
       )
-    );   
+    ); 
   }
 
   Widget _showCancelButton() {
