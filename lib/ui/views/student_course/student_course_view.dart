@@ -134,7 +134,7 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
 
   Widget _showStudentCourse() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
+    final bool isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
     final bool isCourse = _studentCourseProvider?.isCourse as bool;
     final bool isCourseStarted = _studentCourseProvider?.isCourseStarted as bool;
     final CourseMentor mentor = _studentCourseProvider?.getMentor() as CourseMentor;
@@ -142,6 +142,8 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     final List<ColoredText> courseText = _studentCourseProvider?.getCourseText() as List<ColoredText>;
     final List<ColoredText> waitingStartCourseText = _studentCourseProvider?.getWaitingStartCourseText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _studentCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
+    final String? whatsAppGroupUrl = _studentCourseProvider?.course?.whatsAppGroupUrl;
+    final String? courseNotes = _studentCourseProvider?.course?.notes;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
       child: ListView(
@@ -156,6 +158,8 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
             mentor: mentor,
             partnerMentor: partnerMentor,
             text: courseText,
+            whatsAppGroupUrl: whatsAppGroupUrl,
+            courseNotes: courseNotes,
             onCancel: _cancelCourse
           ),
           if (isCourse && !isCourseStarted) WaitingStartCourse(

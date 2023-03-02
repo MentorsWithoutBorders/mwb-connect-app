@@ -97,7 +97,7 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
                 child: ListView(
                   controller: _scrollController,
                   padding: EdgeInsets.zero,
-                  children: optionWidgets,
+                  children: optionWidgets
                 ),
                 heightScrollThumb: heightScrollThumb,
                 backgroundColor: AppColors.SILVER,
@@ -115,13 +115,13 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
                       height: height,
                       width: 5.0,
                       color: backgroundColor,
-                    ),
+                    )
                   );
                 }
-              ),
-            ),
-          ),
-        ),
+              )
+            )
+          )
+        )
       )
     );
   }

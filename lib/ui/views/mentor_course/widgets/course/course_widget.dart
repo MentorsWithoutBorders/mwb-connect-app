@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
@@ -153,7 +153,7 @@ class _CourseState extends State<Course> {
                       decoration: TextDecoration.underline
                     )
                   ),
-                  onTap: () async => await _launchMeetingUrl()
+                  onTap: () async => await Utils.launchAppUrl(meetingUrl)
                 )
               ),
               _showEditMeetingLink()
@@ -187,18 +187,6 @@ class _CourseState extends State<Course> {
     );
   }
 
-  Future<void> _launchMeetingUrl() async {
-    String meetingUrl = widget.meetingUrl as String;
-    if (await canLaunchUrl(Uri.parse(meetingUrl))) {
-      await launchUrl(
-        Uri.parse(meetingUrl),
-        mode: LaunchMode.externalApplication,
-      );  
-    } else {
-      throw 'Could not launch $meetingUrl';
-    }  
-  }
-
   Widget _showWhatsAppGroupLink() {
     String whatsAppGroupUrl = widget.whatsAppGroupUrl ?? '';
     return Column(
@@ -207,7 +195,7 @@ class _CourseState extends State<Course> {
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
-            'mentor_course.course_whatsapp_group_link'.tr(),
+            'common.course_whatsapp_group_link'.tr(),
             style: const TextStyle(
               fontSize: 12,
               color: AppColors.DOVE_GRAY
@@ -228,7 +216,7 @@ class _CourseState extends State<Course> {
                       decoration: TextDecoration.underline
                     )
                   ),
-                  onTap: () async => await _launchWhatsAppGroupUrl()
+                  onTap: () async => await Utils.launchAppUrl(whatsAppGroupUrl)
                 )
               ),
               _showEditWhatsAppGroupLink()
@@ -265,18 +253,6 @@ class _CourseState extends State<Course> {
         )
       )
     );    
-  }
-
-  Future<void> _launchWhatsAppGroupUrl() async {
-    String whatsAppGroupUrl = widget.whatsAppGroupUrl as String;
-    if (await canLaunchUrl(Uri.parse(whatsAppGroupUrl))) {
-      await launchUrl(
-        Uri.parse(whatsAppGroupUrl),
-        mode: LaunchMode.externalApplication,
-      );  
-    } else {
-      throw 'Could not launch $whatsAppGroupUrl';
-    }  
   }
 
   Widget _showSetWhatsAppGroupLinkButton() {

@@ -148,7 +148,7 @@ class _CourseNotesViewState extends State<CourseNotesView> {
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
         child: Text(
-          'mentor_course.course_notes'.tr(),
+          'common.course_notes'.tr(),
           textAlign: TextAlign.center
         )
       )

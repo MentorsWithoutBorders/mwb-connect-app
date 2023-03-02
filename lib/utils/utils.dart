@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
@@ -192,6 +193,17 @@ class Utils {
     }
     return url.replaceFirst('http://', 'https://');
   }
+
+  static Future<void> launchAppUrl(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(
+        Uri.parse(url),
+        mode: LaunchMode.externalApplication,
+      );  
+    } else {
+      throw 'Could not launch $url';
+    }  
+  }  
 
   static bool containsCourseDuration(List<CourseType> courseTypes, CourseType courseType) {
     for (CourseType type in courseTypes) {
