@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
@@ -9,6 +10,7 @@ import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/services/connect_with_mentor_service.dart';
 import 'package:mwb_connect_app/core/services/logger_service.dart';
 
@@ -44,6 +46,9 @@ class ConnectWithMentorViewModel extends ChangeNotifier {
   Future<void> cancelNextLesson({bool? isSingleLesson}) async {
     await _connectWithMentorService.cancelNextLesson(nextLesson, isSingleLesson);
     await getNextLesson();
+    if (!isNextLesson) {
+      Phoenix.rebirth(NavigationService.instance.getCurrentContext() as BuildContext);
+    }    
     notifyListeners();
   }
 

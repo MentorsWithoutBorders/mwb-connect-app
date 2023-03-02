@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:mwb_connect_app/core/services/root_service.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/push_notifications_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
@@ -59,6 +60,7 @@ GetIt locator = GetIt.instance;
 
 void setupLocator() {
   locator.registerSingletonAsync<LocalStorageService>(() async => LocalStorageService().init()); 
+  locator.registerLazySingleton(() => RootService());
   locator.registerLazySingleton(() => PushNotificationsService());
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => DefaultsService());

@@ -13,6 +13,7 @@ import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
+import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/services/lesson_request_service.dart';
 import 'package:mwb_connect_app/core/services/logger_service.dart';
 
@@ -94,6 +95,9 @@ class LessonRequestViewModel extends ChangeNotifier {
     await _lessonRequestService.cancelNextLesson(nextLesson, isSingleLesson);
     await getNextLesson();
     await getPreviousLesson();
+    if (!isNextLesson) {
+      Phoenix.rebirth(NavigationService.instance.getCurrentContext() as BuildContext);
+    }
     notifyListeners();
   }
 

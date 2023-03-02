@@ -213,7 +213,7 @@ class _LessonRequestViewState extends State<LessonRequestView> with WidgetsBindi
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _inAppMessagesProvider = Provider.of<InAppMessagesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
-    WidgetsBinding.instance?.addPostFrameCallback(_showInAppMessage);    
+    WidgetsBinding.instance?.addPostFrameCallback(_showInAppMessage);
 
     return FutureBuilder<void>(
       future: _init(),

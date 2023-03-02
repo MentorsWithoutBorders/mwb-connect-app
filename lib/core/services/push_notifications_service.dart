@@ -11,7 +11,6 @@ import 'package:mwb_connect_app/core/services/logger_service.dart';
 import 'package:mwb_connect_app/core/services/navigation_service.dart';
 import 'package:mwb_connect_app/core/models/fcm_token_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
-import 'package:mwb_connect_app/ui/views/lesson_request/widgets/taught_today_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 
@@ -87,9 +86,6 @@ class PushNotificationsService {
           if (!isOpenApp) {
             _showLessonRequestPushNotification(event);
           }
-          break;        
-        case PushNotificationType.afterLesson:
-          _showAfterLessonPushNotification();
           break;
         default:
           if (!isOpenApp) {
@@ -144,23 +140,6 @@ class PushNotificationsService {
         }
       );
     }    
-  }  
-
-  void _showAfterLessonPushNotification() {
-    bool? isMentor = _storageService.isMentor;
-    if (isMentor != null && isMentor == true) {
-      _inAppMessagesService.deleteInAppMessage();
-      _loggerService.addLogEntry('showing PN after lesson for mentor');
-      showDialog(
-        context: NavigationService.instance.getCurrentContext() as BuildContext,
-        builder: (_) => Center(
-          child: AnimatedDialog(
-            widgetInside: TaughtTodayDialog(),
-            marginBottom: 200.0,
-          )
-        )
-      );
-    }
   }
   
   bool _shouldShowPushNotification() {
