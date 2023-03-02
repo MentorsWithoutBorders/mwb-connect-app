@@ -1,28 +1,29 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
-import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course/student_course_view_model.dart';
+import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 class CourseNotesView extends StatefulWidget {
-  const CourseNotesView({Key? key, @required this.courseNotes})
+  const CourseNotesView({Key? key})
     : super(key: key);
-
-  final String? courseNotes;
 
   @override
   State<StatefulWidget> createState() => _CourseNotesViewState();
 }
 
 class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingObserver {
-  final ScrollController _scrollController = ScrollController();  
-  String _courseNotes = '';
+  StudentCourseViewModel? _studentCourseProvider;
+  final ScrollController _scrollController = ScrollController();
+  bool _isInit = false;
 
   @override
   void initState() {
     super.initState();
-    _courseNotes = widget.courseNotes ?? '';
     WidgetsBinding.instance?.addObserver(this);
   }
 
@@ -64,6 +65,7 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
   }
   
   Widget _showCourseNotes() {
+    final String courseNotes = _studentCourseProvider?.courseNotes ?? '';
     final double screenWidth = MediaQuery.of(context).size.width;
     double heightScrollThumb = 150.0;
     if (MediaQuery.of(context).orientation == Orientation.landscape){
@@ -89,14 +91,7 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
                   alignment: Alignment.topLeft,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 10.0),
-                    child: SelectableText(
-                      _courseNotes,
-                      style: const TextStyle(
-                        fontSize: 13.0
-                      ),
-                      toolbarOptions: const ToolbarOptions(copy: true),
-                      enableInteractiveSelection: true
-                    )
+                    child: _showNotesText()
                   )
                 )
               ]
@@ -125,6 +120,28 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
       )
     );
   }
+
+  Widget _showNotesText() {
+    final String courseNotes = _studentCourseProvider?.courseNotes ?? '';
+    if (courseNotes.isNotEmpty) {
+      return SelectableText(
+        courseNotes,
+        style: const TextStyle(
+          fontSize: 13.0
+        ),
+        toolbarOptions: const ToolbarOptions(copy: true),
+        enableInteractiveSelection: true
+      );
+    }
+    return Text(
+      'student_course.no_course_notes'.tr(),
+      style: TextStyle(
+        fontSize: 13.0,
+        color: AppColors.SILVER,
+        fontStyle: FontStyle.italic
+      )
+    );
+  }
   
   Widget _showTitle() {
     return Container(
@@ -138,32 +155,54 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
     );
   }
 
+  Future<void> _init() async {
+    if (!_isInit && _studentCourseProvider != null) { 
+      await _studentCourseProvider?.getCourseNotes();
+      _isInit = true; 
+    } 
+  }
+
+  Widget _showContent() {
+    if (_isInit) {
+      return _showCourseNotesView();
+    } else {
+      return const Loader();
+    }
+  }    
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        BackgroundGradient(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: _showTitle(),
-            backgroundColor: Colors.transparent,          
-            elevation: 0.0,
-            leading: GestureDetector(
-              onTap: () async { 
-                Navigator.pop(context);
-              },
-              child: Platform.isIOS ? Icon(
-                Icons.arrow_back_ios_new
-              ) : Icon(
-                Icons.arrow_back
-              )
+    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
+
+    return FutureBuilder<void>(
+      future: _init(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {      
+        return Stack(
+          children: <Widget>[
+            BackgroundGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                title: _showTitle(),
+                backgroundColor: Colors.transparent,          
+                elevation: 0.0,
+                leading: GestureDetector(
+                  onTap: () async { 
+                    Navigator.pop(context);
+                  },
+                  child: Platform.isIOS ? Icon(
+                    Icons.arrow_back_ios_new
+                  ) : Icon(
+                    Icons.arrow_back
+                  )
+                )
+              ),
+              extendBodyBehindAppBar: true,
+              body: _showContent()
             )
-          ),
-          extendBodyBehindAppBar: true,
-          body: _showCourseNotesView()
-        )
-      ],
+          ],
+        );
+      }
     );
   }
 }

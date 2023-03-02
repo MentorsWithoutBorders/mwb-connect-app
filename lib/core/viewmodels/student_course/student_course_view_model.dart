@@ -22,9 +22,15 @@ class StudentCourseViewModel extends ChangeNotifier {
   final LoggerService _loggerService = locator<LoggerService>();  
   CourseModel? course;
   CourseType? courseType;
+  String? courseNotes;
 
   Future<void> getCourse() async {
     course = await _studentCourseApiService.getCourse();
+    notifyListeners();
+  }
+
+  Future<void> getCourseNotes() async {
+    courseNotes = await _studentCourseApiService.getCourseNotes(course?.id);
     notifyListeners();
   }
 

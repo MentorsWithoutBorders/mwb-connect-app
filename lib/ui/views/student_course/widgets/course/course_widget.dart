@@ -10,14 +10,13 @@ import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.mentor, @required this.partnerMentor, @required this.text, @required this.whatsAppGroupUrl, @required this.courseNotes, @required this.onCancel})
+  const Course({Key? key, @required this.mentor, @required this.partnerMentor, @required this.text, @required this.whatsAppGroupUrl, @required this.onCancel})
     : super(key: key);
     
   final CourseMentor? mentor;
   final CourseMentor? partnerMentor;
   final List<ColoredText>? text;
   final String? whatsAppGroupUrl;
-  final String? courseNotes;  
   final Function(String)? onCancel;
 
   @override
@@ -200,9 +199,7 @@ class _CourseState extends State<Course> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseNotesView(
-          courseNotes: widget.courseNotes
-        )
+        builder: (context) => CourseNotesView()
       )
     ); 
   }  

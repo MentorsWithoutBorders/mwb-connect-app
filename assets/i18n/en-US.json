@@ -344,6 +344,7 @@
     "course_links_text": "one of the following links:",
     "see_course_notes": "See course notes",
     "no_courses_found": "No courses found",
+    "no_course_notes": "No course notes have been added yet.",
     "schedule": "Course schedule",
     "start_course_text": "the course will start as soon as 5 students join in",
     "why_choose_field": "Why choose {}?",

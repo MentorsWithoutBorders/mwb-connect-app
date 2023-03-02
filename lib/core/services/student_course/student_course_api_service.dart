@@ -12,6 +12,12 @@ class StudentCourseApiService {
     return course;
   }
 
+  Future<String?> getCourseNotes(String? id) async {
+    Map<String, dynamic> response = await _api.getHTTP(url: '/courses/$id/notes');
+    CourseModel course = CourseModel.fromJson(response);
+    return course.notes;
+  }
+
   Future<void> cancelCourse(String? id, String? reason) async {
     InAppMessage inAppMessage = InAppMessage(
       text: reason

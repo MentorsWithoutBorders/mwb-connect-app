@@ -143,7 +143,6 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     final List<ColoredText> waitingStartCourseText = _studentCourseProvider?.getWaitingStartCourseText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _studentCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     final String? whatsAppGroupUrl = _studentCourseProvider?.course?.whatsAppGroupUrl;
-    final String? courseNotes = _studentCourseProvider?.course?.notes;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
       child: ListView(
@@ -159,7 +158,6 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
             partnerMentor: partnerMentor,
             text: courseText,
             whatsAppGroupUrl: whatsAppGroupUrl,
-            courseNotes: courseNotes,
             onCancel: _cancelCourse
           ),
           if (isCourse && !isCourseStarted) WaitingStartCourse(
