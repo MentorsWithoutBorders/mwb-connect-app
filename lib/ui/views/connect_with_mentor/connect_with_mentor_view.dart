@@ -241,7 +241,7 @@ class _ConnectWithMentorViewState extends State<ConnectWithMentorView> with Widg
         _connectWithMentorProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, error, getLogsList());
       });
       _connectWithMentorProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, '', getLogsList());
-      // await _commonProvider!.initPushNotifications();
+      await _commonProvider!.initPushNotifications();
       if (_goalsProvider?.selectedGoal != null || _commonProvider!.getGoalAttempts >= 10) {
         _isInit = true;
       } else {

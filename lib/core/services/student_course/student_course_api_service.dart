@@ -2,6 +2,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
+import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 
 class StudentCourseApiService {
   final ApiService _api = locator<ApiService>();
@@ -24,5 +25,10 @@ class StudentCourseApiService {
     );
     await _api.putHTTP(url: '/courses/$id/cancel', data: inAppMessage.toJson());  
     return ;
-  } 
+  }
+  
+  Future<StudentCertificate> getCertificateSent() async {
+    Map<String, dynamic> response = await _api.getHTTP(url: '/admin/students_certificates/certificate_sent');
+    return StudentCertificate.fromJson(response);
+  }   
 }

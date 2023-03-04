@@ -18,6 +18,7 @@ import 'package:mwb_connect_app/ui/views/student_course/widgets/course/find_avai
 import 'package:mwb_connect_app/ui/views/student_course/widgets/course/waiting_start_course_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/training_completed_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/training/joyful_productivity_reminder_dialog.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
@@ -103,6 +104,18 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
           )
         )
       ).then((_) => _setInAppMessageClosed());
+    } else {
+      bool shouldShowProductivityReminder = _studentCourseProvider!.getShouldShowProductivityReminder();
+      if (mounted && shouldShowProductivityReminder && !_isInAppMessageOpen) {
+        _isInAppMessageOpen = true;
+        _studentCourseProvider?.setLastShownProductivityReminderDate();
+        showDialog(
+          context: context,
+          builder: (_) => AnimatedDialog(
+            widgetInside: JoyfulProductivityReminderDialog()
+          )
+        ).then((_) => _setInAppMessageClosed());
+      }
     }
   }
   
@@ -190,17 +203,32 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
   
   Future<void> _init() async {
+    List<String> logsList = _studentCourseProvider!.getLogsList(
+      _goalsProvider?.selectedGoal?.id,
+      _stepsProvider?.lastStepAdded.id,
+      _quizzesProvider?.quizzes
+    );
     if (!_isInit && _studentCourseProvider != null) {
       await Future.wait([
         _studentCourseProvider!.getCourse(),
+        _studentCourseProvider!.getCertificateSent(),        
         _goalsProvider!.getGoals(),
         _stepsProvider!.getLastStepAdded(),
         _quizzesProvider!.getQuizzes(),
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
-      ]).timeout(const Duration(seconds: 3600));
-      // await _commonProvider!.initPushNotifications();
-      _isInit = true;
+      ]).timeout(const Duration(seconds: 3600))
+      .catchError((error) {
+        _studentCourseProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, error, logsList);
+      });
+      _studentCourseProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, '', logsList);
+      await _commonProvider!.initPushNotifications();
+      if (_goalsProvider?.selectedGoal != null || _commonProvider!.getGoalAttempts >= 10) {
+        _isInit = true;
+      } else {
+        _commonProvider!.getGoalAttempts++;
+        setState(() {});
+      }
     }
   }
 
