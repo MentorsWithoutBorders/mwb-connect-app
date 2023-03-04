@@ -251,15 +251,30 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Widget _showStartCourseText() {
+    String startCourseText = 'common.start_course_text'.tr(args:[AppConstants.maxStudentsCourse.toString()]);
+    startCourseText = startCourseText[0].toUpperCase() + startCourseText.substring(1);
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, top: 10.0),
-      child: Text(
-        'mentor_course.start_course_text'.tr(),
-        style: const TextStyle(
-          fontSize: 12.0,
-          color: AppColors.DOVE_GRAY
+      child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        text: TextSpan(
+          style: const TextStyle(
+            color: AppColors.DOVE_GRAY,
+            fontSize: 12.0
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'mentor_course.note'.tr() + ' ',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold
+              )
+            ),
+            TextSpan(
+              text: startCourseText + '.'
+            )
+          ]
         )
-      ),
+      )
     );
   }     
 
@@ -277,7 +292,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }    
 
   Widget _showButtons() {
-    String actionButtonText = 'mentor_course.start_course'.tr();
+    String actionButtonText = 'mentor_course.set_details'.tr();
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Row(

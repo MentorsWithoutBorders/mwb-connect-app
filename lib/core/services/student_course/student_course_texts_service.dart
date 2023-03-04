@@ -73,7 +73,7 @@ class StudentCourseTextsService {
     String timeZone = now.timeZoneName;
     String at = 'common.at'.tr();
     String text = 'student_course.waiting_course_text'.tr(args: [courseDuration, mentorsSubfields, mentorsNames, courseDayOfWeek, courseTime, timeZone]);
-    String courseStartText = 'student_course.start_course_text'.tr();
+    String courseStartText = 'common.start_course_text'.tr(args:[AppConstants.maxStudentsCourse.toString()]);
     courseStartText = courseStartText[0].toUpperCase() + courseStartText.substring(1) + '.';
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorsSubfields)), color: AppColors.DOVE_GRAY),

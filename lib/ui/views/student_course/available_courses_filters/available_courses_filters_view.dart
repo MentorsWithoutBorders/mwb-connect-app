@@ -204,7 +204,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
             elevation: 2.0,
             padding: const EdgeInsets.fromLTRB(30.0, 12.0, 30.0, 12.0)          
           ),
-          child: Text('available_mentors.apply_filters'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('common.apply_filters'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
             _getAvailableCourses();
           }        
@@ -223,7 +223,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
       padding: const EdgeInsets.only(right: 50.0),
       child: Center(
         child: Text(
-          'available_mentors.title_filters'.tr(),
+          'student_course.available_courses_title_filters'.tr(),
           textAlign: TextAlign.center
         ),
       )

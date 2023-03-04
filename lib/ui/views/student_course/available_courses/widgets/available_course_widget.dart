@@ -9,6 +9,7 @@ import 'package:mwb_connect_app/ui/views/student_course/available_courses/widget
 import 'package:mwb_connect_app/ui/views/student_course/available_courses/widgets/join_course_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/app_card_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
+import 'package:mwb_connect_app/utils/constants.dart';
 
 class AvailableCourse extends StatefulWidget {
   const AvailableCourse({Key? key, @required this.id, @required this.startDateTime, @required this.fieldName, @required this.courseTypeText, @required this.mentorsNames, @required this.scheduleText, @required this.mentorsSubfields, @required this.students, @required this.joinText, @required this.onJoin})
@@ -59,7 +60,8 @@ class _AvailableCourseState extends State<AvailableCourse> {
         mentorsNames,
         style: const TextStyle(
           color: AppColors.DOVE_GRAY,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
+          height: 1.3
         )
       ),
     );
@@ -76,7 +78,8 @@ class _AvailableCourseState extends State<AvailableCourse> {
         text: TextSpan(
           style: const TextStyle(
             fontSize: 14.0,
-            color: AppColors.DOVE_GRAY
+            color: AppColors.DOVE_GRAY,
+            height: 1.3
           ),
           children: <TextSpan>[
             TextSpan(
@@ -101,10 +104,11 @@ class _AvailableCourseState extends State<AvailableCourse> {
       studentsCount = students.length;
     }      
     String currentStudentsText = 'common.current_number_students'.tr();
-    String courseStartText = 'student_course.start_course_text'.tr();
-
+    String courseStartText = 'common.start_course_text'.tr(args:[AppConstants.minStudentsCourse.toString()]);
+    String maximumStudentsText = 'common.maximum_number_students'.tr(args:[AppConstants.maxStudentsCourse.toString()]);
+    String courseText = studentsCount < AppConstants.minStudentsCourse ? courseStartText : maximumStudentsText;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 15.0),
+      padding: const EdgeInsets.fromLTRB(3.0, 0.0, 10.0, 18.0),
       child: RichText(
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
         text: TextSpan(
@@ -125,9 +129,8 @@ class _AvailableCourseState extends State<AvailableCourse> {
               text: studentsCount.toString(),
             ),
             TextSpan(
-              text: ' (' + courseStartText + ')',
+              text: ' (' + courseText + ')',
               style: const TextStyle(
-                fontSize: 13.0,
                 fontStyle: FontStyle.italic
               )
             )

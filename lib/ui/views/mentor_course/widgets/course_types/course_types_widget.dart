@@ -143,7 +143,8 @@ class _CourseTypesState extends State<CourseTypes> {
         widgetInside: EditCourseDetailsDialog(
           subfields: widget.subfields,
           onSetCourseDetails: widget.onSetCourseDetails
-        )
+        ),
+        marginBottom: 190.0,
       ),
     );
   }

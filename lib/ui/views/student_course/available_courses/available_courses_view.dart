@@ -124,7 +124,7 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'available_mentors.no_mentors_found'.tr(),
+              'student_course.no_courses_found'.tr(),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
@@ -144,7 +144,7 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
   Widget _showTitle() {
     return Center(
       child: Text(
-        'available_mentors.title'.tr(),
+        'student_course.available_courses_title'.tr(),
         textAlign: TextAlign.center,
       ),
     );

@@ -152,7 +152,8 @@ class MentorCourseTextsService {
       return [];
     }    
     String maxStudentsCourse = AppConstants.maxStudentsCourse.toString();
-    String text = 'mentor_course.maximum_number_students'.tr(args: [maxStudentsCourse]);
+    String text = 'common.maximum_number_students'.tr(args: [maxStudentsCourse]);
+    text = text[0].toUpperCase() + text.substring(1);
     return [
       ColoredText(text: text.substring(0, text.indexOf(maxStudentsCourse)), color: AppColors.DOVE_GRAY),
       ColoredText(text: maxStudentsCourse, color: AppColors.TANGO),

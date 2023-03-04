@@ -55,7 +55,7 @@ class _CourseScheduleState extends State<CourseSchedule> with TickerProviderStat
     return Text(
       scheduleText,
       style: const TextStyle(
-        fontSize: 13.0,
+        fontSize: 14.0,
         color: AppColors.DOVE_GRAY
       )
     );

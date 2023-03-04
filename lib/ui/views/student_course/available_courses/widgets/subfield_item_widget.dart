@@ -55,7 +55,8 @@ class _SubfieldItemState extends State<SubfieldItem> {
         text: TextSpan(
           style: const TextStyle(
             color: AppColors.DOVE_GRAY,
-            fontSize: 13.0
+            fontSize: 14.0,
+            height: 1.3
           ),
           children: <TextSpan>[
             TextSpan(
@@ -71,7 +72,6 @@ class _SubfieldItemState extends State<SubfieldItem> {
               text: 'common.see_skills'.tr(),
               style: const TextStyle(
                 color: Colors.blue,
-                fontSize: 13.0,
                 fontStyle: FontStyle.italic,
                 decoration: TextDecoration.underline
               ),

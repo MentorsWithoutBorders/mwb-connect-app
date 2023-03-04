@@ -88,16 +88,16 @@ class _RootViewState extends State<RootView> {
 
   void _setCurrentUser() {
     _userId = _rootProvider?.getUserId();
-    _authStatus = _userId == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+    _authStatus = _userId == null || _userId!.isEmpty ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
   }    
   
   Future<void> _init() async {
-    if (_authStatus != AuthStatus.NOT_LOGGED_IN) {
+    _setCurrentUser();
+    if (_userId != null && _userId!.isNotEmpty) {
       await Future.wait([
         _commonProvider!.getUserDetails(),
         _rootProvider!.getNextLesson(),
       ]).timeout(const Duration(seconds: 3600));
-      _setCurrentUser();
     }
     if (_authStatus == AuthStatus.NOT_DETERMINED) {
       _authStatus = AuthStatus.NOT_LOGGED_IN;

@@ -89,7 +89,7 @@ class _AvailableMentorsFiltersViewState extends State<AvailableMentorsFiltersVie
             elevation: 2.0,
             padding: const EdgeInsets.fromLTRB(30.0, 12.0, 30.0, 12.0)          
           ),
-          child: Text('available_mentors.apply_filters'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('common.apply_filters'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
             _getAvailableMentors();
           }        

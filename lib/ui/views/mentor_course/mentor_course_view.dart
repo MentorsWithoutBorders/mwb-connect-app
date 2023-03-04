@@ -334,7 +334,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       ]).timeout(const Duration(seconds: 3600));
       _showExpiredMentorPartnershipRequest();
       _showCanceledMentorPartnershipRequest();      
-      // await _commonProvider!.initPushNotifications();
+      await _commonProvider!.initPushNotifications();
       _isInit = true;
     }
   }
