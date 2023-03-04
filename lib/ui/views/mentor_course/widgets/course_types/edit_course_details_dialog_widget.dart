@@ -251,7 +251,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Widget _showStartCourseText() {
-    String startCourseText = 'common.start_course_text'.tr(args:[AppConstants.maxStudentsCourse.toString()]);
+    String startCourseText = 'common.start_course_text'.tr(args:[AppConstants.minStudentsCourse.toString()]);
     startCourseText = startCourseText[0].toUpperCase() + startCourseText.substring(1);
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, top: 10.0),

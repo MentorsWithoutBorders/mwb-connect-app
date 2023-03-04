@@ -340,7 +340,7 @@
     "find_course": "Find course",
     "available_courses_title": "Available courses",
     "available_courses_title_filters": "Filter available courses",
-    "no_courses_found": "No courses found",
+    "no_courses_found": "No available courses found",
     "course_type": "Course type",
     "waiting_course_text": "You will participate in the {}-month {} course conducted by {} every {} at {} {}.",
     "waiting_start_course": "Waiting for the course to start...",

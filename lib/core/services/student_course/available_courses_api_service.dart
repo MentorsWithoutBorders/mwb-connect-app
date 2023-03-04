@@ -1,6 +1,7 @@
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/course_filter_model.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 
@@ -26,8 +27,12 @@ class AvailableCoursesApiService {
   }
 
   Future<CourseModel> joinCourse(String? id) async {
-    await _api.putHTTP(url: '/courses/$id/join');  
-    Map<String, dynamic> response = await _api.putHTTP(url: '/courses/$id/join');
+    dynamic response;
+    try {
+      response = await _api.putHTTP(url: '/courses/$id/join');
+    } on ErrorModel catch(error) {
+      throw(error);
+    }    
     CourseModel course = CourseModel.fromJson(response); 
     return course;
   } 

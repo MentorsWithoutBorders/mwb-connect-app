@@ -22,12 +22,13 @@ class AppConstants {
   static const String dateFormatLesson = 'EEEE, MMM d';
   static const String timeFormatLesson = 'h:mm a';
   static const String meetingUrlType = 'Google Meet/Zoom';
-  static const int minStudentsCourse = 2;
-  static const int maxStudentsCourse = 10;
-  static const int maxLessonsNumberRecurrence = 10;
   static const int mentorWeeksTraining = 4;
   static const int studentWeeksTraining = 13;
   static const int studentQuizzes = 12;
-  static const int availableCoursesResultsPerPage = 5;
+  static const int availableCoursesResultsPerPage = 2;
+  static const int availablePartnersResultsPerPage = 20;
   static const int availableMentorsResultsPerPage = 20;
+  static const int minStudentsCourse = 2;
+  static const int maxStudentsCourse = 10;
+  static const int maxLessonsNumberRecurrence = 10;
 }

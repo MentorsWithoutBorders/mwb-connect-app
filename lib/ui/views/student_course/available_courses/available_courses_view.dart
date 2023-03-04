@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses_filters/available_courses_filters_view.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses/widgets/available_course_widget.dart';
@@ -25,7 +26,7 @@ class AvailableCoursesView extends StatefulWidget {
 class _AvailableCoursesViewState extends State<AvailableCoursesView> {
   AvailableCoursesViewModel? _availableCoursesProvider;
   final PagingController<int, CourseModel> _pagingController =
-        PagingController(firstPageKey: 0);  
+        PagingController(firstPageKey: 1);  
   int _pageNumber = 1;
 
   @override
@@ -45,9 +46,9 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       await _availableCoursesProvider?.getAvailableCourses(pageNumber: _pageNumber);
-      final newItems = _availableCoursesProvider?.availableCourses;
+      final newItems = _availableCoursesProvider?.newAvailableCourses;
       _pageNumber++;
-      final isLastPage = newItems!.length < AppConstants.availableMentorsResultsPerPage;
+      final isLastPage = newItems!.length < AppConstants.availableCoursesResultsPerPage;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -111,7 +112,14 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
   }
 
   Future<CourseModel> _joinCourse(String courseId) async {
-    CourseModel? course = await _availableCoursesProvider?.joinCourse(courseId);
+    CourseModel? course = CourseModel();
+    try {
+      course = await _availableCoursesProvider?.joinCourse(courseId);
+    } on ErrorModel catch(error) {
+      _pageNumber = 1;
+      _pagingController.refresh();
+      throw(error);
+    } 
     return course!;
   }
 

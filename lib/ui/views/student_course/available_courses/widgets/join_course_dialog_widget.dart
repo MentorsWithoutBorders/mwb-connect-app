@@ -3,8 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 
 class JoinCourseDialog extends StatefulWidget {
   const JoinCourseDialog({Key? key, @required this.id, @required this.text, @required this.onJoin})
@@ -88,7 +91,7 @@ class _JoinCourseDialogState extends State<JoinCourseDialog> {
             'student_course.join_course'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
-            width: 56.0,
+            width: 74.0,
             height: 16.0,
             child: ButtonLoader()
           )
@@ -101,8 +104,28 @@ class _JoinCourseDialogState extends State<JoinCourseDialog> {
     setState(() {
       _isJoiningCourse = true;
     });
-    CourseModel course = await widget.onJoin!(widget.id as String);
-    Navigator.pop(context, course);
+    try {
+      CourseModel? course = await widget.onJoin!(widget.id as String);
+      Navigator.pop(context, course);
+    } on ErrorModel catch (error) {
+      String? message = error.message;
+      Navigator.pop(context);
+      _showError(message);
+    }
+  }
+
+  void _showError(String? message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AnimatedDialog(
+          widgetInside: NotificationDialog(
+            text: message,
+            buttonText: 'common.ok'.tr()
+          )
+        );
+      }
+    ); 
   }
 
   @override

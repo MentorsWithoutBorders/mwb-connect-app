@@ -33,7 +33,7 @@ class MentorsWaitingRequestsView extends StatefulWidget {
 class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView> {
   MentorsWaitingRequestsViewModel? _mentorsWaitingRequestsProvider;
   final PagingController<int, MentorWaitingRequest> _pagingController =
-        PagingController(firstPageKey: 0);  
+        PagingController(firstPageKey: 1);  
   int _pageNumber = 1;
   bool _isAddingMentorWaitingRequest = false;
 
@@ -58,7 +58,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
       await _mentorsWaitingRequestsProvider!.getMentorsWaitingRequests(courseType: courseType, pageNumber: _pageNumber);
       final newItems = _mentorsWaitingRequestsProvider?.newMentorsWaitingRequests;
       _pageNumber++;
-      final isLastPage = newItems!.length < AppConstants.availableMentorsResultsPerPage;
+      final isLastPage = newItems!.length < AppConstants.availablePartnersResultsPerPage;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

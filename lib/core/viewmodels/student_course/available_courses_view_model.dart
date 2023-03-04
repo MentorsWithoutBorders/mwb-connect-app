@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
@@ -13,6 +12,7 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/field_goal_model.dart';
+import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/course_filter_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
@@ -95,8 +95,12 @@ class AvailableCoursesViewModel extends ChangeNotifier {
   }
 
   Future<CourseModel> joinCourse(String? id) async {
-    CourseModel? course = await _availableCoursesApiService.joinCourse(id);
-    return course;
+    try {
+      CourseModel? course = await _availableCoursesApiService.joinCourse(id);
+      return course;
+    } on ErrorModel catch(error) {
+      throw(error);
+    }    
   }
 
   String getFieldName(CourseModel course) {
