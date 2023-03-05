@@ -5,7 +5,7 @@ import 'package:mwb_connect_app/core/models/lesson_request_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_recurrence_result_model.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
-import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
+import 'package:mwb_connect_app/core/models/attached_message_model.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
 import 'package:mwb_connect_app/core/models/guide_recommendation_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
@@ -28,10 +28,10 @@ class LessonRequestService {
   }  
 
   Future<void> rejectLessonRequest(String? id, String? reason) async {
-    InAppMessage inAppMessage = InAppMessage(
+    AttachedMessage attachedMessage = AttachedMessage(
       text: reason
     );
-    await _api.putHTTP(url: '/lesson_requests/$id/reject_lesson_request', data: inAppMessage.toJson());  
+    await _api.putHTTP(url: '/lesson_requests/$id/reject_lesson_request', data: attachedMessage.toJson());  
     return ;
   }
   

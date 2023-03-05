@@ -1,7 +1,7 @@
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
-import 'package:mwb_connect_app/core/models/in_app_message_model.dart';
+import 'package:mwb_connect_app/core/models/attached_message_model.dart';
 import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 
 class StudentCourseApiService {
@@ -20,10 +20,10 @@ class StudentCourseApiService {
   }
 
   Future<void> cancelCourse(String? id, String? reason) async {
-    InAppMessage inAppMessage = InAppMessage(
+    AttachedMessage attachedMessage = AttachedMessage(
       text: reason
     );
-    await _api.putHTTP(url: '/courses/$id/cancel', data: inAppMessage.toJson());  
+    await _api.putHTTP(url: '/courses/$id/cancel', data: attachedMessage.toJson());  
     return ;
   }
   

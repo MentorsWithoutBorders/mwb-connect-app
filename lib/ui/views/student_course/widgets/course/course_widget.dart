@@ -17,7 +17,7 @@ class Course extends StatefulWidget {
   final CourseMentor? partnerMentor;
   final List<ColoredText>? text;
   final String? whatsAppGroupUrl;
-  final Function(String)? onCancel;
+  final Function(String?)? onCancel;
 
   @override
   State<StatefulWidget> createState() => _CourseState();

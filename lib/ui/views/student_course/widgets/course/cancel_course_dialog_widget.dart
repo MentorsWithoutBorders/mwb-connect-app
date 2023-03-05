@@ -7,7 +7,7 @@ class CancelCourseDialog extends StatefulWidget {
   const CancelCourseDialog({Key? key, @required this.onCancel})
     : super(key: key);
 
-  final Function(String)? onCancel;
+  final Function(String?)? onCancel;
     
   @override
   State<StatefulWidget> createState() => _CancelCourseDialogState();
@@ -133,7 +133,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
 
   Future<void> _cancelCourse() async {  
     _setIsCancellingCourse(true);
-    await widget.onCancel!(_reasonText!);
+    await widget.onCancel!(_reasonText);
   }
   
   void _setIsCancellingCourse(bool isCanceling) {

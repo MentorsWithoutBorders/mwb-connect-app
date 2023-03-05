@@ -12,7 +12,7 @@ class WaitingStartCourse extends StatefulWidget {
     
   final List<ColoredText>? text;
   final List<ColoredText>? currentStudentsText;
-  final Function(String)? onCancel;
+  final Function(String?)? onCancel;
 
   @override
   State<StatefulWidget> createState() => _WaitingStartCourseState();
@@ -79,7 +79,7 @@ class _WaitingStartCourseState extends State<WaitingStartCourse> {
             ),
             padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
           ), 
-          child: Text('common.cancel'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('common.cancel_course'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
             showDialog(
               context: context,

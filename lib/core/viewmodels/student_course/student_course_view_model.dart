@@ -37,6 +37,8 @@ class StudentCourseViewModel extends ChangeNotifier {
   
   Future<void> cancelCourse(String? reason) async {
     await _studentCourseApiService.cancelCourse(course?.id, reason);
+    course = null;
+    notifyListeners();
   }
 
   bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
