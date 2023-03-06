@@ -140,7 +140,7 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
             await _sendLessonRequest();
           },
           child: !_isSendingLessonRequest ? Text(
-            'available_mentors.send_request'.tr(),
+            'common.send_request'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
             width: 56.0,

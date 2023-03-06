@@ -106,7 +106,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 3.0, 25.0, 3.0),
           ), 
-          child: Text('available_mentors.send_request'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('common.send_request'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () async {
             _setSelectedMentor();
             await Future<void>.delayed(const Duration(milliseconds: 100));

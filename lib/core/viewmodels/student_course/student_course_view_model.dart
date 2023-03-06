@@ -66,7 +66,7 @@ class StudentCourseViewModel extends ChangeNotifier {
   }   
 
   List<String> getMentorsNames() {
-    return _studentCourseUtilsService.getMentorsNames(course) as List<String>;
+    return _studentCourseUtilsService.getMentorsNames(course?.mentors) as List<String>;
   }
 
   CourseMentor getMentor() {

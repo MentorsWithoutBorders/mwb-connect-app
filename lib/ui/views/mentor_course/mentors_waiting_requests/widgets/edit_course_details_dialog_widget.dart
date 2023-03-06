@@ -151,7 +151,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                   child: Text(
-                    'available_mentors.lesson_duration'.tr(),
+                    'mentor_course.available_partners_lesson_duration'.tr(),
                     style: const TextStyle(
                       fontSize: 12.0,
                       fontStyle: FontStyle.italic,
@@ -210,7 +210,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
             await _sendMentorPartnershipRequest();
           },
           child: !_isSendingMentorPartnershipRequest ? Text(
-            'available_mentors.send_request'.tr(),
+            'common.send_request'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
             width: 56.0,

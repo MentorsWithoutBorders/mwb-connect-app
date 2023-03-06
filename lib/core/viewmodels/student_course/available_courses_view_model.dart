@@ -112,7 +112,7 @@ class AvailableCoursesViewModel extends ChangeNotifier {
   }
 
   String getMentorsNames(CourseModel course) { 
-    return _studentCourseUtilsService.getMentorsNames(course);
+    return _studentCourseUtilsService.getMentorsNames(course.mentors);
   }
 
   List<Subfield> getMentorsSubfields(CourseModel course) {

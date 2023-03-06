@@ -162,7 +162,7 @@ class _SupportViewState extends State<SupportView> {
             padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 12.0)
           ), 
           child: Text(
-            'support.send_request'.tr(),
+            'common.send_request'.tr(),
             style: const TextStyle(fontSize: 16.0, color: Colors.white)
           ),
           onPressed: () async {

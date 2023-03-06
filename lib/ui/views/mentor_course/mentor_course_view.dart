@@ -274,6 +274,9 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   Future<void> _rejectMentorPartnershipRequest(String? reason) async {
     await _mentorCourseProvider?.rejectMentorPartnershipRequest(reason);
+    setState(() {
+      _isInit = false;
+    });    
   }
 
   Future<void> _cancelMentorPartnershipRequest() async {

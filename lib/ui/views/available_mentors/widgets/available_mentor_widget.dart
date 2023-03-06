@@ -85,7 +85,7 @@ class _AvailableMentorState extends State<AvailableMentor> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 3.0, 25.0, 3.0),
           ), 
-          child: Text('available_mentors.send_request'.tr(), style: const TextStyle(color: Colors.white)),
+          child: Text('common.send_request'.tr(), style: const TextStyle(color: Colors.white)),
           onPressed: () {
             _editAvailability();
           }

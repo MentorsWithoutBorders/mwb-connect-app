@@ -22,8 +22,8 @@ class StudentCourseTextsService {
     String courseDuration = course.type?.duration.toString() as String;
     CourseMentor mentor = course.mentors?[0] as CourseMentor;
     CourseMentor? partnerMentor = course.mentors!.length > 1 ? course.mentors![1] : null;
-    String mentorsSubfields = _studentCourseUtilsService.getMentorsSubfieldsNames(course);
-    String mentorsNames = _studentCourseUtilsService.getMentorsNames(course);
+    String mentorsSubfields = _studentCourseUtilsService.getMentorsSubfieldsNames(course.mentors);
+    String mentorsNames = _studentCourseUtilsService.getMentorsNames(course.mentors);
     String courseDayOfWeek = dayOfWeekFormat.format(course.startDateTime as DateTime);
     String courseEndDate = monthDayFormat.format(_studentCourseUtilsService.getCourseEndDate(course));
     String nextLessonDate = dateFormat.format(_studentCourseUtilsService.getNextLessonDate(course));
@@ -65,8 +65,8 @@ class StudentCourseTextsService {
     String courseDuration = course.type?.duration.toString() as String;
     CourseMentor mentor = course.mentors?[0] as CourseMentor;
     CourseMentor? partnerMentor = course.mentors!.length > 1 ? course.mentors![1] : null;
-    String mentorsSubfields = _studentCourseUtilsService.getMentorsSubfieldsNames(course);
-    String mentorsNames = _studentCourseUtilsService.getMentorsNames(course);
+    String mentorsSubfields = _studentCourseUtilsService.getMentorsSubfieldsNames(course.mentors);
+    String mentorsNames = _studentCourseUtilsService.getMentorsNames(course.mentors);
     String courseDayOfWeek = dayOfWeekFormat.format(course.startDateTime as DateTime);
     String courseTime = timeFormat.format(course.startDateTime as DateTime);
     DateTime now = DateTime.now();

@@ -201,6 +201,7 @@
     "cancel_reason_placeholder": "Reason for cancellation (optional)",
     "reject_reason_placeholder": "Reason for rejection (optional)",
     "waiting_time": "(could take up to 1-2 days)",
+    "send_request": "Send request",
     "cancel_request": "Cancel request",
     "availability": "Availability",
     "available_starting_from": "I'm available starting from:",    
@@ -298,6 +299,8 @@
     "set_details": "Set details",
     "choose_day_time_course": "Choose day/time for the lessons:",
     "note": "Note:",
+    "available_partners_choose_availability": "Choose availability:",
+    "available_partners_lesson_duration": "(each lesson will be 1 / 1.5 hours long)",
     "waiting_students_no_partner_text": "Your {}-month {} course will start as soon as at least {} students join in, on the first {} at {} {}.",
     "waiting_students_partner_text": "Your {}-month {} course (with {} as your partner) will start as soon as at least {} students join in, on the first {} at {} {}.",
     "waiting_students_text": "Waiting for students...",
@@ -391,7 +394,6 @@
     "why_choose_field": "Why choose {}?",
     "extracted_from": "Extracted from: ",
     "choose_availability": "Choose availability:",
-    "send_request": "Send request",
     "please_select_error": "Please select",
     "all_fields": "All fields",
     "all_subfields": "All subfields",
@@ -754,7 +756,6 @@
 		"sub_label": "We will reply to you as soon as possible",
 		"message_placeholder": "Message",
 		"message_error": "Message can't be empty",
-		"send_request": "Send request",
 		"confirmation": "Thank you for your request. We will reply as soon as possible."
 	},
 	"feedback": {

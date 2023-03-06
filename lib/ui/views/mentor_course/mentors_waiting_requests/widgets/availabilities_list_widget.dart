@@ -30,7 +30,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   }
 
   Widget _showTitle() {
-    String title = 'available_mentors.choose_availability'.tr();
+    String title = 'mentor_course.available_partners_choose_availability'.tr();
     return Padding(
       padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
       child: Text(

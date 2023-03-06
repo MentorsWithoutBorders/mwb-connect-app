@@ -11,14 +11,12 @@ import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
-import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_api_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_utils_service.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentors_waiting_requests_texts_service.dart';
 
 class MentorsWaitingRequestsViewModel extends ChangeNotifier {
   final MentorsWaitingRequestsApiService _mentorsWaitingRequestsApiService = locator<MentorsWaitingRequestsApiService>();
-  final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();  
   final MentorsWaitingRequestsUtilsService _mentorsWaitingRequestsUtilsService = locator<MentorsWaitingRequestsUtilsService>();
   final MentorsWaitingRequestsTextsService _mentorsWaitingRequestsTextsService = locator<MentorsWaitingRequestsTextsService>();
   List<MentorWaitingRequest> mentorsWaitingRequests = [];

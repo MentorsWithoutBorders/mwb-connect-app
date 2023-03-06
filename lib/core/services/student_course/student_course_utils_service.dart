@@ -29,12 +29,12 @@ class StudentCourseUtilsService {
     return CourseMentor();
   } 
 
-  String getMentorsNames(CourseModel? course) {
-    if (course == null || course.mentors == null || course.mentors!.isEmpty) {
+  String getMentorsNames(List<CourseMentor>? mentors) {
+    if (mentors == null || mentors.isEmpty) {
       return '';
     }
-    CourseMentor mentor = course.mentors?[0] as CourseMentor;
-    CourseMentor? partnerMentor = course.mentors!.length > 1 ? course.mentors![1] : null;
+    CourseMentor mentor = mentors[0];
+    CourseMentor? partnerMentor = mentors.length > 1 ? mentors[1] : null;
     String mentorsNames = '';
     if (partnerMentor != null) {
       mentorsNames = mentor.name! + ' ' + 'common.and'.tr() + ' ' + partnerMentor.name!;
@@ -44,12 +44,12 @@ class StudentCourseUtilsService {
     return mentorsNames;
   }
 
-  String getMentorsSubfieldsNames(CourseModel course) {
-    if (course.mentors == null || course.mentors!.isEmpty) {
+  String getMentorsSubfieldsNames(List<CourseMentor>? mentors) {
+    if (mentors == null || mentors.isEmpty) {
       return '';
     }    
-    CourseMentor mentor = course.mentors?[0] as CourseMentor;
-    CourseMentor? partnerMentor = course.mentors!.length > 1 ? course.mentors![1] : null;
+    CourseMentor mentor = mentors[0];
+    CourseMentor? partnerMentor = mentors.length > 1 ? mentors[1] : null;
     String mentorsSubfields = '';
     if (partnerMentor != null) {
       mentorsSubfields = mentor.field!.subfields![0].name! + ' ' + 'common.and'.tr() + ' ' + partnerMentor.field!.subfields![0].name!;
