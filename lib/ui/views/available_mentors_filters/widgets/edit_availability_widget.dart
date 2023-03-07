@@ -7,7 +7,6 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/available_mentors_view_model.dart';
-import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/dropdown_widget.dart';
 
 class EditAvailability extends StatefulWidget {
@@ -22,7 +21,6 @@ class EditAvailability extends StatefulWidget {
 
 class _EditAvailabilityState extends State<EditAvailability> {
   AvailableMentorsViewModel? _availableMentorsProvider;
-  CommonViewModel? _commonProvider;  
   Availability? _availability;
   bool _shouldShowError = false;
   bool _isInit = false;
@@ -252,8 +250,6 @@ class _EditAvailabilityState extends State<EditAvailability> {
 
   @override
   Widget build(BuildContext context) {
-    _commonProvider = Provider.of<CommonViewModel>(context);
-
     return _showEditAvailabilityDialog();
   }
 }

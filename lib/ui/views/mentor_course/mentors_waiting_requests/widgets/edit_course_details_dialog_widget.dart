@@ -213,7 +213,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
             'common.send_request'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
-            width: 56.0,
+            width: 83.0,
             height: 16.0,
             child: ButtonLoader()
           )

@@ -125,6 +125,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   Future<void> cancelMentorPartnershipRequest() async {
     await _mentorCourseApiService.cancelMentorPartnershipRequest(mentorPartnershipRequest?.id);
     mentorPartnershipRequest = null;
+    setSelectedCourseType(courseTypes[0].id as String);
     notifyListeners();
   }
 
