@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -270,13 +271,19 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   Future<void> _acceptMentorPartnershipRequest(String? url) async {
     await _mentorCourseProvider?.acceptMentorPartnershipRequest(url);
+    CourseModel? course = _mentorCourseProvider?.course;
+    if (course?.id == null) {
+      setState(() {
+        _isInit = false;
+      });
+    }
   }   
 
   Future<void> _rejectMentorPartnershipRequest(String? reason) async {
     await _mentorCourseProvider?.rejectMentorPartnershipRequest(reason);
     setState(() {
       _isInit = false;
-    });    
+    });
   }
 
   Future<void> _cancelMentorPartnershipRequest() async {

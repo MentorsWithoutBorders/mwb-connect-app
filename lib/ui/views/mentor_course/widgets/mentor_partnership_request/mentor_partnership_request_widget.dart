@@ -108,8 +108,9 @@ class _MentorPartnershipRequestState extends State<MentorPartnershipRequest> {
                   widgetInside: AcceptMentorPartnershipRequestDialog(
                     onAccept: widget.onAccept,
                     shouldUnfocus: widget.shouldUnfocus,
-                    setShouldUnfocus: widget.setShouldUnfocus,
-                  )
+                    setShouldUnfocus: widget.setShouldUnfocus
+                  ),
+                  marginBottom: 170.0
                 ),
               );
             }

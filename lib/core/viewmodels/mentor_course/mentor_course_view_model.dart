@@ -113,6 +113,7 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   Future<void> acceptMentorPartnershipRequest(String? meetingUrl) async {
     course = await _mentorCourseApiService.acceptMentorPartnershipRequest(mentorPartnershipRequest?.id, meetingUrl as String);
+    mentorPartnershipRequest = null;
     notifyListeners();
   }
 
