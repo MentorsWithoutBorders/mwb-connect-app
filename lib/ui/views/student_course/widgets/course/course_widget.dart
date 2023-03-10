@@ -61,20 +61,22 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showMeetingUrls() {
+    bool isMentorMeetingUrl = widget.mentor != null && widget.mentor?.meetingUrl != null;
     bool isPartnerMentor = widget.partnerMentor != null && widget.partnerMentor?.id != null;
+    bool isWhatsAppGroupUrl = widget.whatsAppGroupUrl != null && widget.whatsAppGroupUrl!.isNotEmpty;
     String or = 'common.or'.tr();
     return Container(
       padding: const EdgeInsets.only(bottom: 7.0),
-      margin: const EdgeInsets.only(bottom: 12.0),
-      decoration: BoxDecoration(
+      margin: isWhatsAppGroupUrl ? const EdgeInsets.only(bottom: 12.0) : const EdgeInsets.only(bottom: 0.0),
+      decoration: isWhatsAppGroupUrl ? BoxDecoration(
         border: Border(
-          bottom: BorderSide(width: 1.0, color: AppColors.MYSTIC)
+          bottom: BorderSide(width: 1.0, color: AppColors.MYSTIC),
         )
-      ),
+      ) : null,
       child: Wrap(
         children: [
-          _showMeetingUrl(widget.mentor as CourseMentor),
-          if (isPartnerMentor) Padding(
+          if (isMentorMeetingUrl) _showMeetingUrl(widget.mentor as CourseMentor),
+          if (isMentorMeetingUrl && isPartnerMentor) Padding(
             padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
             child: Center(
               child: Text(
@@ -167,7 +169,7 @@ class _CourseState extends State<Course> {
 
   Widget _showCourseNotesButton() {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 8.0),
       child: Center(
         child: Column(
           children: [

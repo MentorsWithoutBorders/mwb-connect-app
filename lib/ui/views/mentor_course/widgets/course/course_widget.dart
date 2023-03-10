@@ -14,14 +14,15 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.text, @required this.students, @required this.courseNotes, @required this.meetingUrl, @required this.whatsAppGroupUrl, @required this.cancelText, @required this.onUpdateNotes, @required this.onSetMeetingUrl, @required this.onSetWhatsAppGroupUrl, @required this.onCancel})
+  const Course({Key? key, @required this.mentorsCount, @required this.students, @required this.courseNotes, @required this.meetingUrl, @required this.whatsAppGroupUrl, @required this.text, @required this.cancelText, @required this.onUpdateNotes, @required this.onSetMeetingUrl, @required this.onSetWhatsAppGroupUrl, @required this.onCancel})
     : super(key: key); 
 
-  final List<ColoredText>? text;
+  final int? mentorsCount;
   final List<CourseStudent>? students;
   final String? courseNotes;
   final String? meetingUrl;
   final String? whatsAppGroupUrl;
+  final List<ColoredText>? text;
   final String? cancelText;
   final Function(String?)? onUpdateNotes;
   final Function(String)? onSetMeetingUrl;
@@ -125,6 +126,8 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showMeetingLink() {
+    int mentorsCount = widget.mentorsCount ?? 0;
+    String text = mentorsCount > 1 ? 'mentor_course.course_meeting_your_link'.tr() : 'mentor_course.course_meeting_link'.tr();
     String meetingUrl = widget.meetingUrl ?? '';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +135,7 @@ class _CourseState extends State<Course> {
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
-            'mentor_course.course_meeting_link'.tr(),
+            text,
             style: const TextStyle(
               fontSize: 12,
               color: AppColors.DOVE_GRAY
@@ -140,7 +143,7 @@ class _CourseState extends State<Course> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 15.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 18.0),
           child: Row(
             children: [
               Expanded(

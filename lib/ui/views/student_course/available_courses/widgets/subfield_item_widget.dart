@@ -32,7 +32,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
 
   Widget _showBullet() {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding: const EdgeInsets.only(left: 12.0),
       child: Container(
         width: 8.0,
         height: 8.0,

@@ -203,11 +203,12 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onCancel: _cancelCourse
           ),
           if (isCourse && students.length >= minStudentsCourse) Course(
-            text: courseText,
+            mentorsCount: mentorsCount,
             students: students,
             courseNotes: courseNotes,
             meetingUrl: meetingUrl,
             whatsAppGroupUrl: whatsAppGroupUrl,
+            text: courseText,
             cancelText: cancelCourseText,
             onSetMeetingUrl: _setMeetingUrl,
             onSetWhatsAppGroupUrl: _setWhatsAppGroupUrl,
