@@ -36,6 +36,7 @@ class Course extends StatefulWidget {
 class _CourseState extends State<Course> {
 
   Widget _showCourseCard() {
+    bool isMeetingUrl = widget.meetingUrl != null && widget.meetingUrl!.isNotEmpty;
     bool isWhatsAppGroupUrl = widget.whatsAppGroupUrl != null && widget.whatsAppGroupUrl!.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -51,7 +52,7 @@ class _CourseState extends State<Course> {
             children: [
               _showText(),
               _showStudents(),
-              _showMeetingLink(),
+              if (isMeetingUrl) _showMeetingLink(),
               if (isWhatsAppGroupUrl) _showWhatsAppGroupLink(),
               if (!isWhatsAppGroupUrl) _showSetWhatsAppGroupLinkButton(),
               _showUpdateCourseNotesButton(),
@@ -182,6 +183,7 @@ class _CourseState extends State<Course> {
           builder: (_) => AnimatedDialog(
             widgetInside: SetMeetingUrlDialog(
               meetingUrl: widget.meetingUrl,
+              isUpdate: true,
               onSet: widget.onSetMeetingUrl
             )
           )

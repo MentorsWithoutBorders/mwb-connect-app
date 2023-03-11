@@ -297,6 +297,8 @@
     "find_partner": "Find partner",
     "set_course_details": "Set course details",
     "set_details": "Set details",
+    "paste_lessons_url": "Please paste the link for the lessons here:",
+    "paste_your_lessons_url": "Please paste the link for your lessons here:",
     "choose_day_time_course": "Choose day/time for the lessons:",
     "note": "Note:",
     "available_partners_choose_availability": "Choose availability:",

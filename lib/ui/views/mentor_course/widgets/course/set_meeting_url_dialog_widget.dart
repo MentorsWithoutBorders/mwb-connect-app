@@ -7,10 +7,12 @@ import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class SetMeetingUrlDialog extends StatefulWidget {
-  const SetMeetingUrlDialog({Key? key, this.meetingUrl, this.onSet})
+  const SetMeetingUrlDialog({Key? key, @required this.meetingUrl, this.mentorsCount, @required this.isUpdate, @required this.onSet})
     : super(key: key);  
 
   final String? meetingUrl;
+  final int? mentorsCount;
+  final bool? isUpdate;
   final Function(String)? onSet;
 
   @override
@@ -18,7 +20,7 @@ class SetMeetingUrlDialog extends StatefulWidget {
 }
 
 class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
-  String urlType = AppConstants.meetingUrlType;
+  final String urlType = AppConstants.meetingUrlType;
   String? _url;
   bool _shouldShowError = false;
   bool isSetting = false;
@@ -39,11 +41,12 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   }
 
   Widget _showTitle() {
+    final String text = widget.isUpdate == true ? 'common.update_url'.tr(args: [urlType]) : 'common.set_url'.tr(args: [urlType]);
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Center(
         child: Text(
-          'common.update_url'.tr(args: [urlType]),
+          text,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,
@@ -55,10 +58,11 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   }
 
   Widget _showText() {
+    final String text = widget.mentorsCount != null && widget.mentorsCount! > 1 ? 'mentor_course.paste_your_lessons_url'.tr() : 'mentor_course.paste_lessons_url'.tr(args: [urlType]);
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 8.0),
       child: Text(
-        'common.paste_url'.tr(),
+        text,
         style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.DOVE_GRAY
@@ -116,6 +120,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   }  
   
   Widget _showButtons() {
+    String actionText = widget.isUpdate == true ? 'common.update'.tr() : 'common.set'.tr();
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -137,7 +142,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
           child: !isSetting ? Text(
-            'common.update'.tr(),
+            actionText,
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
             width: 45.0,

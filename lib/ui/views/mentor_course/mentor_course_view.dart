@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
@@ -38,6 +38,8 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
+import 'widgets/course/set_meeting_url_dialog_widget.dart';
+
 class MentorCourseView extends StatefulWidget {
   MentorCourseView({Key? key, this.logoutCallback})
     : super(key: key);  
@@ -56,6 +58,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   InAppMessagesViewModel? _inAppMessagesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
+  bool _wasMeetingUrlDialogShown = false;
   bool _isInAppMessageOpen = false;
 
   @override
@@ -68,11 +71,12 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
-  }  
+  }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
+      _wasMeetingUrlDialogShown = false;
       _setTimeZone();
       _reload();
       _checkUpdate();
@@ -274,17 +278,13 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     await _mentorCourseProvider?.acceptMentorPartnershipRequest(url);
     CourseModel? course = _mentorCourseProvider?.course;
     if (course?.id == null) {
-      setState(() {
-        _isInit = false;
-      });
+      _reload();
     }
   }   
 
   Future<void> _rejectMentorPartnershipRequest(String? reason) async {
     await _mentorCourseProvider?.rejectMentorPartnershipRequest(reason);
-    setState(() {
-      _isInit = false;
-    });
+    _reload();
   }
 
   Future<void> _cancelMentorPartnershipRequest() async {
@@ -328,8 +328,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
   
   Future<void> _init() async {
-    User user = _commonProvider?.user as User;
-    String fieldId = user.field?.id as String;
+    final User user = _commonProvider?.user as User;
+    final String fieldId = user.field?.id as String;
     if (!_isInit && _mentorCourseProvider != null) {
       await Future.wait([
         _mentorCourseProvider!.getCourseTypes(),
@@ -343,12 +343,32 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
       ]).timeout(const Duration(seconds: 3600));
+      _showSetMeetingUrlDialog();
       _showExpiredMentorPartnershipRequest();
       _showCanceledMentorPartnershipRequest();      
       await _commonProvider!.initPushNotifications();
       _isInit = true;
     }
   }
+
+  void _showSetMeetingUrlDialog() {
+    final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
+    final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
+    if (meetingUrl.isEmpty && !_wasMeetingUrlDialogShown) {
+      _wasMeetingUrlDialogShown = true;
+      showDialog(
+        context: context,
+        builder: (_) => AnimatedDialog(
+          widgetInside: SetMeetingUrlDialog(
+            meetingUrl: meetingUrl,
+            mentorsCount: mentorsCount,
+            isUpdate: false,
+            onSet: _setMeetingUrl
+          )
+        )
+      ); 
+    }
+  } 
 
   void _showExpiredMentorPartnershipRequest() {
     if (_mentorCourseProvider?.shouldShowExpired == true) {
