@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
@@ -15,7 +16,7 @@ class MentorCourseUtilsService {
     DateTime now = Utils.resetTime(DateTime.now());
     DateTime registeredOn = Utils.resetTime(DateTime.parse(_storageService.registeredOn as String));
     return Utils.getDSTAdjustedDifferenceInDays(now, registeredOn) <= 7 * AppConstants.mentorWeeksTraining;
-  }  
+  }
 
   CourseMentor getMentor(CourseModel? course) {
     String userId = _storageService.userId as String;
@@ -73,6 +74,19 @@ class MentorCourseUtilsService {
     CourseMentor mentor = getMentor(course);
     return mentor.meetingUrl ?? '';
   }
+
+  List<MentorPartnershipScheduleItemModel> getUpdatedMentorPartnershipSchedule(List<MentorPartnershipScheduleItemModel>? mentorPartnershipSchedule, String? id, String? mentorId) {
+    List<MentorPartnershipScheduleItemModel> updatedMentorPartnershipSchedule = [];
+    if (mentorPartnershipSchedule != null) {
+      for (MentorPartnershipScheduleItemModel item in mentorPartnershipSchedule) {
+        if (item.id == id) {
+          item.mentor?.id = mentorId;
+        }
+        updatedMentorPartnershipSchedule.add(item);
+      }
+    }
+    return updatedMentorPartnershipSchedule;
+  } 
   
   CourseModel? getUpdatedMeetingUrl(CourseModel? course, String meetingUrl) {
     CourseMentor mentor = getMentor(course);

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
@@ -66,6 +67,19 @@ class MentorCourseTextsService {
       ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length), color: AppColors.DOVE_GRAY),
     ];
   }
+
+  List<ColoredText> getMentorPartnershipScheduleText(CourseModel? course) {
+    if (course == null || course.id == null) {
+      return [];
+    }    
+    String email = _mentorCourseUtilsService.getPartnerMentor(course).email as String;  
+    String text = 'mentor_course.partnership_schedule_text'.tr(args: [email]);
+    return [
+      ColoredText(text: text.substring(0, text.indexOf(email)), color: Colors.white),
+      ColoredText(text: email, color: Colors.blue, isBold: true),
+      ColoredText(text: text.substring(text.indexOf(email) + email.length), color: Colors.white),
+    ];
+  }  
 
   String getCancelCourseText(CourseModel? course) {
     if (course == null || course.id == null) {

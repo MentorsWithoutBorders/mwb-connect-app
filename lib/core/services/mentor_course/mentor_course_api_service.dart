@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/attached_message_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -29,6 +30,15 @@ class MentorCourseApiService {
     return course;
   }
 
+  Future<List<MentorPartnershipScheduleItemModel>> getMentorPartnershipSchedule(String? courseId) async {
+    dynamic response = await _api.getHTTP(url: '/courses/${courseId}/mentor_partnership_schedule');
+    List<MentorPartnershipScheduleItemModel> mentorPartnershipSchedule = [];
+    if (response != null) {
+      mentorPartnershipSchedule = List<MentorPartnershipScheduleItemModel>.from(response.map((model) => MentorPartnershipScheduleItemModel.fromJson(model)));
+    }
+    return mentorPartnershipSchedule;
+  }
+
   Future<CourseModel> addCourse(CourseModel? course, CourseType? selectedCourseType, Availability? availability, String meetingUrl) async {
     String dayOfWeek = availability?.dayOfWeek as String;
     String timeFrom = availability?.time?.from as String;
@@ -40,6 +50,15 @@ class MentorCourseApiService {
     Map<String, dynamic> response = await _api.postHTTP(url: '/courses/add', data: course.toJson());
     course = CourseModel.fromJson(response);
     return course;
+  }
+
+  Future<void> updateMentorPartnershipScheduleItem(String? id, String? mentorId) async {
+    MentorPartnershipScheduleItemModel mentorPartnershipScheduleItem = MentorPartnershipScheduleItemModel(
+      id: id,
+      mentor: CourseMentor(id: mentorId)
+    );
+    await _api.putHTTP(url: '/mentor_partnership_schedule', data: mentorPartnershipScheduleItem.toJson());  
+    return ;
   }
 
   Future<void> cancelCourse(String? id, String? reason) async {

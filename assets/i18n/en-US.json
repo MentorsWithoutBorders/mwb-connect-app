@@ -336,6 +336,9 @@
     "course_notes_text": "Please add anything that could be useful for the students during the course (plan, links, quick tips, etc.):",
     "course_notes_placeholder": "Add your notes here...",
     "course_notes_sent": "The course notes have been submitted successfully",
+    "partnership_schedule": "Partnership schedule",
+    "partnership_schedule_text": "You can agree with your partner on your weekly lesson schedule via email ({}) and then update it here:",
+    "update_partnership_schedule": "Update partnership schedule",
     "cancel_course_text": "Are you sure you want to cancel the course?",
     "cancel_course_partner_text": "(your partner, {}, will continue the lessons with the students)"
   },

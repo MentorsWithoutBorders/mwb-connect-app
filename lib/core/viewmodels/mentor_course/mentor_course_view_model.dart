@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
@@ -19,8 +20,9 @@ class MentorCourseViewModel extends ChangeNotifier {
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
   final LoggerService _loggerService = locator<LoggerService>();   
   List<CourseType> courseTypes = [];
-  MentorWaitingRequest? mentorWaitingRequest;
+  List<MentorPartnershipScheduleItemModel> mentorPartnershipSchedule = [];
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
+  MentorWaitingRequest? mentorWaitingRequest;
   MentorPartnershipRequestModel? mentorPartnershipRequest;
   CourseModel? course;
   Field? field;
@@ -41,9 +43,20 @@ class MentorCourseViewModel extends ChangeNotifier {
     course = await _mentorCourseApiService.getCourse();
     notifyListeners();
   }
+
+  Future<void> getMentorPartnershipSchedule() async {
+    mentorPartnershipSchedule = await _mentorCourseApiService.getMentorPartnershipSchedule(course?.id);
+    notifyListeners();
+  }
   
   Future<void> addCourse(Availability? availability, String meetingUrl) async {
     course = await _mentorCourseApiService.addCourse(course, selectedCourseType, availability, meetingUrl);
+    notifyListeners();
+  }
+
+  Future<void> updateMentorPartnershipScheduleItem(String? id, String? mentorId) async {
+    await _mentorCourseApiService.updateMentorPartnershipScheduleItem(id, mentorId);
+    mentorPartnershipSchedule = _mentorCourseUtilsService.getUpdatedMentorPartnershipSchedule(mentorPartnershipSchedule, id, mentorId);
     notifyListeners();
   }
 
@@ -185,6 +198,10 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   List<ColoredText> getCourseText() {
     return _mentorCourseTextsService.getCourseText(course);
+  }
+
+  List<ColoredText> getMentorPartnershipScheduleText() {
+    return _mentorCourseTextsService.getMentorPartnershipScheduleText(course);
   }
 
   String getCancelCourseText() {

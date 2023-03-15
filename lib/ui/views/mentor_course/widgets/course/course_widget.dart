@@ -3,30 +3,33 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
-import 'package:mwb_connect_app/core/models/course_student_model.dart';
+import 'package:mwb_connect_app/core/models/course_model.dart';
+import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_notes_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_meeting_url_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_whatsapp_group_dialog_url_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/mentor_partnership_schedule_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/cancel_course_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.mentorsCount, @required this.students, @required this.courseNotes, @required this.meetingUrl, @required this.whatsAppGroupUrl, @required this.text, @required this.cancelText, @required this.onUpdateNotes, @required this.onSetMeetingUrl, @required this.onSetWhatsAppGroupUrl, @required this.onCancel})
+  const Course({Key? key, @required this.course, @required this.mentorPartnershipSchedule, @required this.meetingUrl, @required this.text, @required this.mentorPartnershipScheduleText, @required this.cancelText, @required this.onSetMeetingUrl, @required this.onSetWhatsAppGroupUrl, @required this.onUpdateNotes, @required this.onUpdateScheduleItem, @required this.onCancel})
     : super(key: key); 
 
-  final int? mentorsCount;
-  final List<CourseStudent>? students;
-  final String? courseNotes;
+  final CourseModel? course;
+  final List<MentorPartnershipScheduleItemModel>? mentorPartnershipSchedule;
   final String? meetingUrl;
-  final String? whatsAppGroupUrl;
   final List<ColoredText>? text;
+  final List<ColoredText>? mentorPartnershipScheduleText;
   final String? cancelText;
-  final Function(String?)? onUpdateNotes;
   final Function(String)? onSetMeetingUrl;
   final Function(String)? onSetWhatsAppGroupUrl;
+  final Function(String?)? onUpdateNotes;
+  final Function(String?, String?)? onUpdateScheduleItem;
   final Function(String?)? onCancel;
 
   @override
@@ -36,8 +39,9 @@ class Course extends StatefulWidget {
 class _CourseState extends State<Course> {
 
   Widget _showCourseCard() {
+    int mentorsCount = widget.course?.mentors?.length ?? 0;
     bool isMeetingUrl = widget.meetingUrl != null && widget.meetingUrl!.isNotEmpty;
-    bool isWhatsAppGroupUrl = widget.whatsAppGroupUrl != null && widget.whatsAppGroupUrl!.isNotEmpty;
+    bool isWhatsAppGroupUrl = widget.course != null && widget.course?.whatsAppGroupUrl != null && widget.course!.whatsAppGroupUrl!.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -56,6 +60,7 @@ class _CourseState extends State<Course> {
               if (isWhatsAppGroupUrl) _showWhatsAppGroupLink(),
               if (!isWhatsAppGroupUrl) _showSetWhatsAppGroupLinkButton(),
               _showUpdateCourseNotesButton(),
+              if (mentorsCount > 1) _showUpdatePartnershipScheduleButton(),
               _showCancelButton()
             ]
           )
@@ -74,7 +79,7 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showStudents() {
-    List<User>? students = widget.students;
+    List<User>? students = widget.course?.students;
     return Container(
       margin: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 5.0),
@@ -127,7 +132,7 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showMeetingLink() {
-    int mentorsCount = widget.mentorsCount ?? 0;
+    int mentorsCount = widget.course?.mentors?.length ?? 0;
     String text = mentorsCount > 1 ? 'mentor_course.course_meeting_your_link'.tr() : 'mentor_course.course_meeting_link'.tr();
     String meetingUrl = widget.meetingUrl ?? '';
     return Column(
@@ -193,7 +198,7 @@ class _CourseState extends State<Course> {
   }
 
   Widget _showWhatsAppGroupLink() {
-    String whatsAppGroupUrl = widget.whatsAppGroupUrl ?? '';
+    String whatsAppGroupUrl = widget.course?.whatsAppGroupUrl ?? '';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -252,7 +257,7 @@ class _CourseState extends State<Course> {
       context: context,
       builder: (_) => AnimatedDialog(
         widgetInside: SetWhatsAppGroupUrlDialog(
-          whatsAppGroupUrl: widget.whatsAppGroupUrl,
+          whatsAppGroupUrl: widget.course?.whatsAppGroupUrl,
           isUpdate: isUpdate,
           onSet: widget.onSetWhatsAppGroupUrl
         )
@@ -325,12 +330,57 @@ class _CourseState extends State<Course> {
       context,
       MaterialPageRoute(
         builder: (context) => CourseNotesView(
-          courseNotes: widget.courseNotes,
+          courseNotes: widget.course?.notes,
           onUpdate: widget.onUpdateNotes
         )
       )
     ); 
   }
+
+  Widget _showUpdatePartnershipScheduleButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+              height: 30.0,
+              margin: const EdgeInsets.only(bottom: 5.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 1.0,
+                  primary: AppColors.ALLPORTS,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+                ), 
+                child: Text('mentor_course.update_partnership_schedule'.tr(), style: const TextStyle(color: Colors.white)),
+                onPressed: () {
+                  _goToUpdatePartnershipSchedule();
+                }
+              )
+            )
+          ]
+        ),
+      ),
+    );
+  }
+  
+  void _goToUpdatePartnershipSchedule() {
+    final List<CourseMentor> mentors = widget.course?.mentors ?? [];
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MentorPartnershipScheduleView(
+          mentorPartnershipSchedule: widget.mentorPartnershipSchedule,
+          mentors: mentors,
+          text: widget.mentorPartnershipScheduleText,
+          onUpdateScheduleItem: widget.onUpdateScheduleItem
+        )
+      )
+    ); 
+  }  
 
   Widget _showCancelButton() {
     return Padding(

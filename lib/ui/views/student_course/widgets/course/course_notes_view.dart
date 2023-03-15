@@ -65,7 +65,6 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
   }
   
   Widget _showCourseNotes() {
-    final String courseNotes = _studentCourseProvider?.courseNotes ?? '';
     final double screenWidth = MediaQuery.of(context).size.width;
     double heightScrollThumb = 150.0;
     if (MediaQuery.of(context).orientation == Orientation.landscape){

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -140,7 +141,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     );
   }
 
- Widget _showContent() {
+  Widget _showContent() {
     if (_isInit) {
       return _showMentorCourse();
     } else {
@@ -163,17 +164,17 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
     // Course
-    final List<CourseStudent> students = _mentorCourseProvider?.course?.students ?? [];
+    final CourseModel? course = _mentorCourseProvider?.course;
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
+    final List<MentorPartnershipScheduleItemModel>? mentorPartnershipSchedule = _mentorCourseProvider?.mentorPartnershipSchedule;
     final int studentsCount = _mentorCourseProvider?.getStudentsCount() as int;
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
-    final String? whatsAppGroupUrl = _mentorCourseProvider?.course?.whatsAppGroupUrl;
-    final String? courseNotes = _mentorCourseProvider?.course?.notes;
     final List<ColoredText> waitingStudentsNoPartnerText = _mentorCourseProvider?.getWaitingStudentsNoPartnerText() as List<ColoredText>;
     final List<ColoredText> waitingStudentsPartnerText = _mentorCourseProvider?.getWaitingStudentsPartnerText() as List<ColoredText>;
     final List<ColoredText> maximumStudentsText = _mentorCourseProvider?.getMaximumStudentsText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _mentorCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     final List<ColoredText>? courseText = _mentorCourseProvider?.getCourseText();
+    final List<ColoredText>? mentorPartnershipScheduleText = _mentorCourseProvider?.getMentorPartnershipScheduleText();
     final String cancelCourseText = _mentorCourseProvider?.getCancelCourseText() as String;
     // Mentor partnership request
     final String requestPartnerMentorName = _mentorCourseProvider?.getRequestPartnerMentorName() ?? '';
@@ -196,7 +197,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onSetCourseDetails: _setCourseDetails,
             onFindPartner: _findPartner
           ),
-          if (isCourse && students.length < minStudentsCourse) WaitingStudents(
+          if (isCourse && studentsCount < minStudentsCourse) WaitingStudents(
             mentorsCount: mentorsCount,
             studentsCount: studentsCount,
             waitingStudentsNoPartnerText: waitingStudentsNoPartnerText,
@@ -206,17 +207,17 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             cancelText: cancelCourseText,
             onCancel: _cancelCourse
           ),
-          if (isCourse && students.length >= minStudentsCourse) Course(
-            mentorsCount: mentorsCount,
-            students: students,
-            courseNotes: courseNotes,
+          if (isCourse && studentsCount >= minStudentsCourse) Course(
+            course: course,
+            mentorPartnershipSchedule: mentorPartnershipSchedule,
             meetingUrl: meetingUrl,
-            whatsAppGroupUrl: whatsAppGroupUrl,
             text: courseText,
+            mentorPartnershipScheduleText: mentorPartnershipScheduleText,
             cancelText: cancelCourseText,
             onSetMeetingUrl: _setMeetingUrl,
             onSetWhatsAppGroupUrl: _setWhatsAppGroupUrl,
             onUpdateNotes: _updateCourseNotes,
+            onUpdateScheduleItem: _updateMentorPartnershipScheduleItem,
             onCancel: _cancelCourse
           ),
           if (isMentorPartnershipRequest && !isMentorPartnershipRequestWaitingApproval) MentorPartnershipRequest(
@@ -268,6 +269,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   Future<void> _updateCourseNotes(String? notes) async {
     await _mentorCourseProvider?.updateCourseNotes(notes);
+  }
+
+  Future<void> _updateMentorPartnershipScheduleItem(String? scheduleItemId, String? mentorId) async {
+    await _mentorCourseProvider?.updateMentorPartnershipScheduleItem(scheduleItemId, mentorId);
   }
 
   Future<void> _cancelCourse(String? reason) async {
@@ -343,6 +348,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
       ]).timeout(const Duration(seconds: 3600));
+      _mentorCourseProvider!.getMentorPartnershipSchedule();
       _showSetMeetingUrlDialog();
       _showExpiredMentorPartnershipRequest();
       _showCanceledMentorPartnershipRequest();      
@@ -352,9 +358,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   }
 
   void _showSetMeetingUrlDialog() {
+    final bool isCourse = _mentorCourseProvider?.isCourse ?? false;
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
-    if (meetingUrl.isEmpty && !_wasMeetingUrlDialogShown) {
+    if (isCourse && meetingUrl.isEmpty && !_wasMeetingUrlDialogShown) {
       _wasMeetingUrlDialogShown = true;
       showDialog(
         context: context,

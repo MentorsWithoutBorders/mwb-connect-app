@@ -64,7 +64,7 @@ class _CourseNotesViewState extends State<CourseNotesView> {
       ),
     );
   }  
-  
+
   Widget _showCourseNotesInput() {
     return TextFormField(
       maxLines: null,
