@@ -8,6 +8,7 @@ import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
@@ -17,7 +18,7 @@ import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 class MentorCourseTextsService {
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
 
-  List<ColoredText> getCourseText(CourseModel? course) {
+  List<ColoredText> getCourseText(CourseModel? course, NextLessonMentor? nextLesson) {
     if (course == null || course.id == null) {
       return [];
     }
@@ -41,9 +42,9 @@ class MentorCourseTextsService {
       subfieldOrSubfields = mentorSubfield.name! + ' ' + 'common.and'.tr() + ' ' + partnerMentorSubfield.name!;
     }
     String courseDayOfWeek = dayOfWeekFormat.format(course.startDateTime as DateTime);
-    String courseEndDate = monthDayFormat.format(_mentorCourseUtilsService.getCourseEndDate(course));
-    String nextLessonDate = dateFormat.format(_mentorCourseUtilsService.getNextLessonDate(course));
-    String nextLessonTime = timeFormat.format(course.startDateTime as DateTime);
+    String courseEndDate = monthDayFormat.format(course.endDateTime as DateTime);
+    String nextLessonDate = dateFormat.format(nextLesson?.lessonDateTime as DateTime);
+    String nextLessonTime = timeFormat.format(nextLesson?.lessonDateTime as DateTime);
     DateTime now = DateTime.now();
     String timeZone = now.timeZoneName;
     String studentPlural = plural('student', course.students?.length as int);        

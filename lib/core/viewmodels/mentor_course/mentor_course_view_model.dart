@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_mentor_model.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
@@ -25,6 +26,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   MentorWaitingRequest? mentorWaitingRequest;
   MentorPartnershipRequestModel? mentorPartnershipRequest;
   CourseModel? course;
+  NextLessonMentor? nextLesson;
   Field? field;
   CourseMentor? partnerMentor;
   CourseType? selectedCourseType;
@@ -43,6 +45,11 @@ class MentorCourseViewModel extends ChangeNotifier {
     course = await _mentorCourseApiService.getCourse();
     notifyListeners();
   }
+
+  Future<void> getNextLesson() async {
+    nextLesson = await _mentorCourseApiService.getNextLesson();
+    notifyListeners();
+  }  
 
   Future<void> getMentorPartnershipSchedule() async {
     mentorPartnershipSchedule = await _mentorCourseApiService.getMentorPartnershipSchedule(course?.id);
@@ -81,6 +88,11 @@ class MentorCourseViewModel extends ChangeNotifier {
   Future<void> cancelCourse(String? reason) async {
     await _mentorCourseApiService.cancelCourse(course?.id, reason);
     course = null;
+    notifyListeners();
+  }
+
+  Future<void> cancelNextLesson(String? reason) async {
+    nextLesson = await _mentorCourseApiService.cancelNextLesson(course?.id, reason);
     notifyListeners();
   }
   
@@ -143,7 +155,7 @@ class MentorCourseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
+  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true && nextLesson?.lessonDateTime != null;
   
   bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true && mentorPartnershipRequest?.isCanceled != true && mentorPartnershipRequest?.isExpired != true;
 
@@ -197,7 +209,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   }  
 
   List<ColoredText> getCourseText() {
-    return _mentorCourseTextsService.getCourseText(course);
+    return _mentorCourseTextsService.getCourseText(course, nextLesson);
   }
 
   List<ColoredText> getMentorPartnershipScheduleText() {

@@ -11,13 +11,13 @@ import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_not
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_meeting_url_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_whatsapp_group_dialog_url_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/mentor_partnership_schedule_view.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/cancel_course_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/cancel_lessons_options_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/bullet_point_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.course, @required this.mentorPartnershipSchedule, @required this.meetingUrl, @required this.text, @required this.mentorPartnershipScheduleText, @required this.cancelText, @required this.onSetMeetingUrl, @required this.onSetWhatsAppGroupUrl, @required this.onUpdateNotes, @required this.onUpdateScheduleItem, @required this.onCancel})
+  const Course({Key? key, @required this.course, @required this.mentorPartnershipSchedule, @required this.meetingUrl, @required this.text, @required this.mentorPartnershipScheduleText, @required this.cancelCourseText, @required this.onSetMeetingUrl, @required this.onSetWhatsAppGroupUrl, @required this.onUpdateNotes, @required this.onUpdateScheduleItem, @required this.onCancelNextLesson, @required this.onCancelCourse}) 
     : super(key: key); 
 
   final CourseModel? course;
@@ -25,12 +25,13 @@ class Course extends StatefulWidget {
   final String? meetingUrl;
   final List<ColoredText>? text;
   final List<ColoredText>? mentorPartnershipScheduleText;
-  final String? cancelText;
+  final String? cancelCourseText;
   final Function(String)? onSetMeetingUrl;
   final Function(String)? onSetWhatsAppGroupUrl;
   final Function(String?)? onUpdateNotes;
   final Function(String?, String?)? onUpdateScheduleItem;
-  final Function(String?)? onCancel;
+  final Function(String?)? onCancelNextLesson;
+  final Function(String?)? onCancelCourse;
 
   @override
   State<StatefulWidget> createState() => _CourseState();
@@ -416,9 +417,11 @@ class _CourseState extends State<Course> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-        widgetInside: CancelCourseDialog(
-          cancelText: widget.cancelText,
-          onCancel: widget.onCancel
+        widgetInside: CancelLessonsOptionsDialog(
+          cancelCourseText: widget.cancelCourseText,
+          onCancelNextLesson: widget.onCancelNextLesson,
+          onCancelCourse: widget.onCancelCourse,
+          context: context
         )
       ),
     );    

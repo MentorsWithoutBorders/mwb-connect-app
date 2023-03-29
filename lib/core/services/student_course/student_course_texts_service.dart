@@ -5,13 +5,14 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_student_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_utils_service.dart';
 
 class StudentCourseTextsService {
   final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();
 
-  List<ColoredText> getCourseText(CourseModel? course) {
+  List<ColoredText> getCourseText(CourseModel? course, NextLessonStudent? nextLesson) {
     if (course == null || course.id == null) {
       return [];
     }    
@@ -25,9 +26,9 @@ class StudentCourseTextsService {
     String mentorsSubfields = _studentCourseUtilsService.getMentorsSubfieldsNames(course.mentors);
     String mentorsNames = _studentCourseUtilsService.getMentorsNames(course.mentors);
     String courseDayOfWeek = dayOfWeekFormat.format(course.startDateTime as DateTime);
-    String courseEndDate = monthDayFormat.format(_studentCourseUtilsService.getCourseEndDate(course));
-    String nextLessonDate = dateFormat.format(_studentCourseUtilsService.getNextLessonDate(course));
-    String nextLessonTime = timeFormat.format(course.startDateTime as DateTime);
+    String courseEndDate = monthDayFormat.format(course.endDateTime as DateTime);
+    String nextLessonDate = dateFormat.format(nextLesson?.lessonDateTime as DateTime);
+    String nextLessonTime = timeFormat.format(nextLesson?.lessonDateTime as DateTime);
     DateTime now = DateTime.now();
     String timeZone = now.timeZoneName;
     String until = 'common.until'.tr();

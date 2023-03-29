@@ -2,6 +2,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
@@ -29,6 +30,12 @@ class MentorCourseApiService {
     CourseModel course = CourseModel.fromJson(response);
     return course;
   }
+
+  Future<NextLessonMentor> getNextLesson() async {
+    Map<String, dynamic> response = await _api.getHTTP(url: '/courses/next_lesson');
+    NextLessonMentor nextLesson = NextLessonMentor.fromJson(response);
+    return nextLesson;
+  }  
 
   Future<List<MentorPartnershipScheduleItemModel>> getMentorPartnershipSchedule(String? courseId) async {
     dynamic response = await _api.getHTTP(url: '/courses/${courseId}/mentor_partnership_schedule');
@@ -67,6 +74,15 @@ class MentorCourseApiService {
     );
     await _api.putHTTP(url: '/courses/$id/cancel', data: attachedMessage.toJson());  
     return ;
+  }
+
+  Future<NextLessonMentor> cancelNextLesson(String? courseId, String? reason) async {
+    AttachedMessage attachedMessage = AttachedMessage(
+      text: reason
+    );
+    Map<String, dynamic> response = await _api.putHTTP(url: '/courses/$courseId/cancel_next_lesson', data: attachedMessage.toJson());  
+    NextLessonMentor nextLesson = NextLessonMentor.fromJson(response);
+    return nextLesson;
   }
 
   Future<Field> getField(String fieldId) async {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -9,13 +8,13 @@ import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
-import 'package:mwb_connect_app/core/models/course_student_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_parternship_result_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
+import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
@@ -213,12 +212,13 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             meetingUrl: meetingUrl,
             text: courseText,
             mentorPartnershipScheduleText: mentorPartnershipScheduleText,
-            cancelText: cancelCourseText,
+            cancelCourseText: cancelCourseText,
             onSetMeetingUrl: _setMeetingUrl,
             onSetWhatsAppGroupUrl: _setWhatsAppGroupUrl,
             onUpdateNotes: _updateCourseNotes,
             onUpdateScheduleItem: _updateMentorPartnershipScheduleItem,
-            onCancel: _cancelCourse
+            onCancelNextLesson: _cancelNextLesson,
+            onCancelCourse: _cancelCourse
           ),
           if (isMentorPartnershipRequest && !isMentorPartnershipRequestWaitingApproval) MentorPartnershipRequest(
             text: mentorPartnershipText,
@@ -274,6 +274,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   Future<void> _updateMentorPartnershipScheduleItem(String? scheduleItemId, String? mentorId) async {
     await _mentorCourseProvider?.updateMentorPartnershipScheduleItem(scheduleItemId, mentorId);
   }
+
+  Future<void> _cancelNextLesson(String? reason) async {
+    await _mentorCourseProvider?.cancelNextLesson(reason);
+  }  
 
   Future<void> _cancelCourse(String? reason) async {
     await _mentorCourseProvider?.cancelCourse(reason);
@@ -339,6 +343,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       await Future.wait([
         _mentorCourseProvider!.getCourseTypes(),
         _mentorCourseProvider!.getCourse(),
+        _mentorCourseProvider!.getNextLesson(),
         _mentorCourseProvider!.getField(fieldId),
         _mentorCourseProvider!.getMentorPartnershipRequest(),
         _mentorCourseProvider!.getMentorWaitingRequest(),

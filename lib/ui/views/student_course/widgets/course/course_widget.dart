@@ -5,19 +5,19 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/course/course_notes_view.dart';
-import 'package:mwb_connect_app/ui/views/student_course/widgets/course/cancel_course_dialog_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/course/cancel_lessons_options_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class Course extends StatefulWidget {
-  const Course({Key? key, @required this.mentor, @required this.partnerMentor, @required this.text, @required this.whatsAppGroupUrl, @required this.onCancel})
+  const Course({Key? key, @required this.mentorNextLesson, @required this.text, @required this.whatsAppGroupUrl, @required this.onCancelNextLesson, @required this.onCancelCourse})
     : super(key: key);
     
-  final CourseMentor? mentor;
-  final CourseMentor? partnerMentor;
+  final CourseMentor? mentorNextLesson;
   final List<ColoredText>? text;
   final String? whatsAppGroupUrl;
-  final Function(String?)? onCancel;
+  final Function(String?)? onCancelNextLesson;
+  final Function(String?)? onCancelCourse;
 
   @override
   State<StatefulWidget> createState() => _CourseState();
@@ -40,7 +40,7 @@ class _CourseState extends State<Course> {
           child: Wrap(
             children: [
               _showText(),
-              _showMeetingUrls(),
+              _showMeetingUrl(),
               if (isWhatsAppGroupUrl) _showWhatsAppGroupUrl(),
               _showCourseNotesButton(),
               _showCancelButton()
@@ -60,11 +60,10 @@ class _CourseState extends State<Course> {
     );
   }
 
-  Widget _showMeetingUrls() {
-    bool isMentorMeetingUrl = widget.mentor != null && widget.mentor?.meetingUrl != null;
-    bool isPartnerMentor = widget.partnerMentor != null && widget.partnerMentor?.id != null;
+  Widget _showMeetingUrl() {
+    String meetingUrl = widget.mentorNextLesson?.meetingUrl ?? '';
+    String mentorName = widget.mentorNextLesson?.name ?? '';
     bool isWhatsAppGroupUrl = widget.whatsAppGroupUrl != null && widget.whatsAppGroupUrl!.isNotEmpty;
-    String or = 'common.or'.tr();
     return Container(
       padding: const EdgeInsets.only(bottom: 7.0),
       margin: isWhatsAppGroupUrl ? const EdgeInsets.only(bottom: 12.0) : const EdgeInsets.only(bottom: 0.0),
@@ -73,64 +72,39 @@ class _CourseState extends State<Course> {
           bottom: BorderSide(width: 1.0, color: AppColors.MYSTIC),
         )
       ) : null,
-      child: Wrap(
-        children: [
-          if (isMentorMeetingUrl) _showMeetingUrl(widget.mentor as CourseMentor),
-          if (isMentorMeetingUrl && isPartnerMentor) Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
-            child: Center(
-              child: Text(
-                or,
-                style: const TextStyle(
-                  color: AppColors.DOVE_GRAY,
-                  fontSize: 13.0,
-                  fontStyle: FontStyle.italic
-                )
-              )
-            )
-          ),
-          if (isPartnerMentor) _showMeetingUrl(widget.partnerMentor as CourseMentor)
-        ]
-      )
-    );
-  }
-
-  Widget _showMeetingUrl(CourseMentor mentor) {
-    bool isPartnerMentor = widget.partnerMentor != null && widget.partnerMentor?.id != null;
-    String meetingUrl = mentor.meetingUrl ?? '';
-    String mentorName = mentor.name ?? '';
-    return Container(
-      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (isPartnerMentor) Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: Text(
-                mentorName + ': ',
-                style: const TextStyle(
-                  color: AppColors.DOVE_GRAY,
-                  fontSize: 13.0
-                )
-              )
-            ),
-            InkWell(
-              child: Text(
-                meetingUrl,
-                style: const TextStyle(
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5.0),
+                child: Text(
+                  mentorName + ': ',
+                  style: const TextStyle(
+                    color: AppColors.DOVE_GRAY,
+                    fontSize: 13.0
+                  )
                 )
               ),
-              onTap: () async => await Utils.launchAppUrl(meetingUrl)
-            ),
-          ],
+              InkWell(
+                child: Text(
+                  meetingUrl,
+                  style: const TextStyle(
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline
+                  )
+                ),
+                onTap: () async => await Utils.launchAppUrl(meetingUrl)
+              ),
+            ],
+          )
         )
       )
     );
-  }  
+  }
 
   Widget _showWhatsAppGroupUrl() {
     String whatsAppGroupUrl = widget.whatsAppGroupUrl ?? '';
@@ -225,8 +199,10 @@ class _CourseState extends State<Course> {
             showDialog(
               context: context,
               builder: (_) => AnimatedDialog(
-                widgetInside: CancelCourseDialog(
-                  onCancel: widget.onCancel
+                widgetInside: CancelLessonsOptionsDialog(
+                  onCancelNextLesson: widget.onCancelNextLesson,
+                  onCancelCourse: widget.onCancelCourse,
+                  context: context
                 )
               )
             ); 

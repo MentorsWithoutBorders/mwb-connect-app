@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
@@ -12,9 +13,10 @@ class CourseModel {
   String? whatsAppGroupUrl;
   String? notes;
   DateTime? startDateTime;
+  bool? hasStarted;
   bool? isCanceled;
 
-  CourseModel({this.id, this.type, this.mentors, this.students, this.whatsAppGroupUrl, this.notes, this.startDateTime, this.isCanceled});
+  CourseModel({this.id, this.type, this.mentors, this.students, this.whatsAppGroupUrl, this.notes, this.startDateTime, this.hasStarted, this.isCanceled});
 
   CourseModel.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en'); 
@@ -25,6 +27,7 @@ class CourseModel {
     whatsAppGroupUrl = json['whatsAppGroupUrl'];
     notes = json['notes'];
     startDateTime = json['startDateTime'] != null ? dateFormat.parseUTC(json['startDateTime']).toLocal() : null;
+    hasStarted = json['hasStarted'];
     isCanceled = json['isCanceled'];
   }
 
@@ -53,7 +56,18 @@ class CourseModel {
       return CourseType.fromJson(json);
     }
     return null;
-  }    
+  }
+  
+  DateTime? get endDateTime {
+    if (startDateTime != null) {
+      Jiffy endDate = Jiffy(startDateTime).add(months: 3, days: 3);
+      int daysDifference = endDate.dateTime.weekday - startDateTime!.weekday;
+      return daysDifference > 0
+          ? endDate.subtract(days: daysDifference).dateTime
+          : endDate.add(days: -daysDifference).dateTime;
+    }
+    return null;
+  }
 
   Map<String, Object?> toJson() {
     DateFormat dateFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
@@ -65,6 +79,7 @@ class CourseModel {
       'whatsAppGroupUrl': whatsAppGroupUrl,
       'notes': notes,
       'startDateTime': startDateTime != null ? dateFormat.format(startDateTime!.toUtc()) : null,
+      'hasStarted': hasStarted,
       'isCanceled': isCanceled
     };
   }

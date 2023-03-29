@@ -150,12 +150,11 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     final bool isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
     final bool isCourse = _studentCourseProvider?.isCourse as bool;
     final bool isCourseStarted = _studentCourseProvider?.isCourseStarted as bool;
-    final CourseMentor mentor = _studentCourseProvider?.getMentor() as CourseMentor;
-    final CourseMentor partnerMentor = _studentCourseProvider?.getPartnerMentor() as CourseMentor;
+    final CourseMentor? mentorNextLesson = _studentCourseProvider?.nextLesson?.mentor;
+    final String? whatsAppGroupUrl = _studentCourseProvider?.course?.whatsAppGroupUrl;
     final List<ColoredText> courseText = _studentCourseProvider?.getCourseText() as List<ColoredText>;
     final List<ColoredText> waitingStartCourseText = _studentCourseProvider?.getWaitingStartCourseText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _studentCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
-    final String? whatsAppGroupUrl = _studentCourseProvider?.course?.whatsAppGroupUrl;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
       child: ListView(
@@ -167,11 +166,11 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
             onFind: _goToAvailableCoursesFields
           ),
           if (isCourseStarted) Course(
-            mentor: mentor,
-            partnerMentor: partnerMentor,
+            mentorNextLesson: mentorNextLesson,
             text: courseText,
             whatsAppGroupUrl: whatsAppGroupUrl,
-            onCancel: _cancelCourse
+            onCancelNextLesson: _cancelNextLesson,
+            onCancelCourse: _cancelCourse
           ),
           if (isCourse && !isCourseStarted) WaitingStartCourse(
             text: waitingStartCourseText,
@@ -182,6 +181,10 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
       )
     );
   }
+
+  Future<void> _cancelNextLesson(String? reason) async {
+    await _studentCourseProvider?.cancelNextLesson(reason);
+  }   
 
   Future<void> _cancelCourse(String? reason) async {
     await _studentCourseProvider?.cancelCourse(reason);
@@ -211,7 +214,8 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     if (!_isInit && _studentCourseProvider != null) {
       await Future.wait([
         _studentCourseProvider!.getCourse(),
-        _studentCourseProvider!.getCertificateSent(),        
+        _studentCourseProvider!.getNextLesson(),
+        _studentCourseProvider!.getCertificateSent(),
         _goalsProvider!.getGoals(),
         _stepsProvider!.getLastStepAdded(),
         _quizzesProvider!.getQuizzes(),

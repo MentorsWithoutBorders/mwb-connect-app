@@ -43,21 +43,6 @@ class MentorCourseUtilsService {
     }
     return CourseMentor();
   }
-
-  DateTime getCourseEndDate(CourseModel? course) {
-    int duration = course?.type?.duration as int;
-    int weeks = duration == 3 ? 13 : 26;
-    return Jiffy(course?.startDateTime).add(weeks: weeks).dateTime;
-  }
-  
-  DateTime getNextLessonDate(CourseModel? course) {
-    DateTime now = DateTime.now();
-    Jiffy nextLessonDate = Jiffy(course?.startDateTime);
-    while (nextLessonDate.isBefore(now)) {
-      nextLessonDate.add(weeks: 1);
-    }
-    return nextLessonDate.dateTime;
-  }
   
   DateTime getCourseDateTime(String dayOfWeek, String timeFrom) {
     DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');

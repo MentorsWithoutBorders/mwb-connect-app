@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_student_model.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
@@ -16,6 +16,7 @@ class StudentCourseViewModel extends ChangeNotifier {
   final StudentCourseTextsService _studentCourseTextsService = locator<StudentCourseTextsService>();
   final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();  
   CourseModel? course;
+  NextLessonStudent? nextLesson;
   CourseType? courseType;
   String? courseNotes;
   StudentCertificate? studentCertificate;
@@ -24,6 +25,11 @@ class StudentCourseViewModel extends ChangeNotifier {
     course = await _studentCourseApiService.getCourse();
     notifyListeners();
   }
+
+  Future<void> getNextLesson() async {
+    nextLesson = await _studentCourseApiService.getNextLesson();
+    notifyListeners();
+  }   
 
   Future<void> getCourseNotes() async {
     courseNotes = await _studentCourseApiService.getCourseNotes(course?.id);
@@ -41,9 +47,14 @@ class StudentCourseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
+  Future<void> cancelNextLesson(String? reason) async {
+    nextLesson = await _studentCourseApiService.cancelNextLesson(course?.id, reason);
+    notifyListeners();
+  }  
+
+  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true && nextLesson?.lessonDateTime != null;
   
-  bool get isCourseStarted => isCourse && course!.students != null && course!.students!.length >= AppConstants.minStudentsCourse;
+  bool get isCourseStarted => isCourse && course?.hasStarted == true;
 
   DateTime? getCertificateDate() {
     return _studentCourseUtilsService.getCertificateDate();
@@ -78,7 +89,7 @@ class StudentCourseViewModel extends ChangeNotifier {
   }
 
   List<ColoredText> getCourseText() {
-    return _studentCourseTextsService.getCourseText(course);
+    return _studentCourseTextsService.getCourseText(course, nextLesson);
   }
   
   List<ColoredText> getWaitingStartCourseText() {

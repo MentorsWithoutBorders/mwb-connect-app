@@ -59,24 +59,6 @@ class StudentCourseUtilsService {
     return mentorsSubfields;
   }
 
-  DateTime getCourseEndDate(CourseModel course) {
-    Jiffy courseEndDate = Jiffy(course.startDateTime);
-    courseEndDate.add(months: 3);
-    while (courseEndDate.format('EEEE') != Jiffy(course.startDateTime).format('EEEE')) {
-      courseEndDate.add(days: 1);
-    }
-    return courseEndDate.dateTime;
-  }
-  
-  DateTime getNextLessonDate(CourseModel course) {
-    DateTime now = DateTime.now();
-    Jiffy nextLessonDate = Jiffy(course.startDateTime);
-    while (nextLessonDate.isBefore(now)) {
-      nextLessonDate.add(weeks: 1);
-    }
-    return nextLessonDate.dateTime;
-  }
-
   DateTime? getCertificateDate() {
     DateTime date = DateTime.now();
     if (_storageService.registeredOn != null) {
