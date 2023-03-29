@@ -25,7 +25,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
   void _afterLayout(_) {
@@ -99,7 +99,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
           onChanged: (String value) {
             Future<void>.delayed(const Duration(milliseconds: 10), () {        
               if (value.isNotEmpty) {
-                WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+                WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
                 _formKey.currentState?.validate();
               }
             });
@@ -127,7 +127,7 @@ class _UpdateStepDialogState extends State<UpdateStepDialog> with TickerProvider
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: AppColors.JAPANESE_LAUREL,
+              backgroundColor: AppColors.JAPANESE_LAUREL,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               ),

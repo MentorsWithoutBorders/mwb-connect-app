@@ -177,7 +177,7 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
         margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.JAPANESE_LAUREL,
+            backgroundColor: AppColors.JAPANESE_LAUREL,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),
@@ -242,7 +242,7 @@ class _MentorsWaitingRequestsFiltersViewState extends State<MentorsWaitingReques
   Widget build(BuildContext context) {
     _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context);
 
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return GestureDetector(
       onTap: () {

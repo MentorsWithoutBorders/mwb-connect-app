@@ -219,7 +219,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 2.0,
-            primary: Colors.white,
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)
             ),

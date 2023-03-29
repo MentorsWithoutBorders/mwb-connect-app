@@ -77,7 +77,7 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.MONZA,
+            backgroundColor: AppColors.MONZA,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

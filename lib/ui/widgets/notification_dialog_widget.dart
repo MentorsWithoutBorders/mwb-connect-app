@@ -68,7 +68,7 @@ class _NotificationDialogState extends State<NotificationDialog> {
     return Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.PACIFIC_BLUE,
+          backgroundColor: AppColors.PACIFIC_BLUE,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),

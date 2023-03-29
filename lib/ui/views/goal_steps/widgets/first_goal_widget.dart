@@ -136,7 +136,7 @@ class _FirstGoalState extends State<FirstGoal> {
                     padding: const EdgeInsets.all(20.0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: AppColors.JAPANESE_LAUREL,
+                        backgroundColor: AppColors.JAPANESE_LAUREL,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)
                         ),

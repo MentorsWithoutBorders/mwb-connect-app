@@ -53,7 +53,7 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.BERMUDA_GRAY,
+                backgroundColor: AppColors.BERMUDA_GRAY,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )
@@ -74,7 +74,7 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.MONZA,
+                backgroundColor: AppColors.MONZA,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )

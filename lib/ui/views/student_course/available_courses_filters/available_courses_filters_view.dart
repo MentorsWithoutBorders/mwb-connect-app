@@ -197,7 +197,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
         margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.JAPANESE_LAUREL,
+            backgroundColor: AppColors.JAPANESE_LAUREL,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),
@@ -260,7 +260,7 @@ class _AvailableCoursesFiltersViewState extends State<AvailableCoursesFiltersVie
   Widget build(BuildContext context) {
     _availableCoursesProvider = Provider.of<AvailableCoursesViewModel>(context);
 
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return GestureDetector(
       onTap: () {

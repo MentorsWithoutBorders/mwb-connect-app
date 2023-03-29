@@ -85,7 +85,7 @@ class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserv
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Future<void>.delayed(const Duration(milliseconds: 500), () async {
         // await _initPushNotifications();
       });

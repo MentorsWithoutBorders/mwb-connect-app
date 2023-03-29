@@ -214,7 +214,7 @@ class _EditAvailabilityState extends State<EditAvailability> {
           ElevatedButton(
             key: const Key(AppKeys.submitBtn),
             style: ElevatedButton.styleFrom(
-              primary: AppColors.MONZA,
+              backgroundColor: AppColors.MONZA,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               ),

@@ -62,7 +62,7 @@ class _StepDialogState extends State<StepDialog> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.ALLPORTS,
+                backgroundColor: AppColors.ALLPORTS,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )
@@ -83,7 +83,7 @@ class _StepDialogState extends State<StepDialog> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.ALLPORTS,
+                backgroundColor: AppColors.ALLPORTS,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )
@@ -104,7 +104,7 @@ class _StepDialogState extends State<StepDialog> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.ALLPORTS,
+                backgroundColor: AppColors.ALLPORTS,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )
@@ -120,7 +120,7 @@ class _StepDialogState extends State<StepDialog> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.ALLPORTS,
+                backgroundColor: AppColors.ALLPORTS,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )
@@ -136,7 +136,7 @@ class _StepDialogState extends State<StepDialog> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.MONZA,
+                backgroundColor: AppColors.MONZA,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )

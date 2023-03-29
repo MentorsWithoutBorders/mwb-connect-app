@@ -69,8 +69,8 @@ class _SubfieldsState extends State<Subfields> {
         margin: const EdgeInsets.only(top: 5.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            elevation: 1.0,
-            primary: AppColors.MONZA,
+            elevation: 1.0, 
+            backgroundColor: AppColors.MONZA,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0)
             ),

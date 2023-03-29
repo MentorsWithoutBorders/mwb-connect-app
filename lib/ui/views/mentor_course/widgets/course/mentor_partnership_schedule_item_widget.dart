@@ -24,7 +24,7 @@ class _MentorPartnershipScheduleItemState extends State<MentorPartnershipSchedul
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
   
   void _afterLayout(_) async {

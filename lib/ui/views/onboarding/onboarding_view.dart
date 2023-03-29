@@ -139,7 +139,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           color: Colors.white,
           fontSize: 15.0
         )
-      )
+      ),
     );
   }
 
@@ -147,7 +147,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     return ElevatedButton(
       key: const Key(AppKeys.goToSignupBtn),
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0)
         ),

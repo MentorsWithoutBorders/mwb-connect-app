@@ -24,7 +24,7 @@ dependencies:
   get_it: ^7.2.0
   shared_preferences: ^2.0.8
   flutter_phoenix: ^1.1.1
-  intl: ^0.18.0
+  intl: ^0.17.0
   cupertino_icons: ^1.0.5
   google_fonts: ^4.0.3
   url_launcher: ^6.1.5
@@ -33,8 +33,8 @@ dependencies:
   flutter_local_notifications: ^9.8.0+1
   flutter_native_timezone: ^2.0.0
   flutter_widget_from_html_core: ^0.8.5+3
-  flutter_inappwebview: ^5.7.2+3
-  jiffy: ^6.1.0
+  flutter_inappwebview: ^5.0.5
+  jiffy: ^5.0.0
   quiver: ^3.2.1
   cached_network_image: ^3.2.3
   smooth_page_indicator: ^1.0.1
@@ -77,3 +77,6 @@ flutter:
     - family: LatoRegular
       fonts:
         - asset: assets/fonts/Lato-Regular.ttf
+
+dependency_overrides:
+  flutter_inappwebview: 5.0.5

@@ -25,7 +25,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _setAppDirectory();
   }
 
@@ -38,7 +38,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
   
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }   
 
@@ -95,7 +95,7 @@ class _UpdateAppViewState extends State<UpdateAppView> with WidgetsBindingObserv
               children: <Widget>[
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: AppColors.MONZA,
+                    backgroundColor: AppColors.MONZA,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)
                     ),

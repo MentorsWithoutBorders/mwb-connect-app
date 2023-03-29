@@ -56,7 +56,7 @@ class _GoalDialogState extends State<GoalDialog> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: AppColors.ALLPORTS,
+                backgroundColor: AppColors.ALLPORTS,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 )
@@ -77,7 +77,7 @@ class _GoalDialogState extends State<GoalDialog> {
           //   width: double.infinity,
           //   child: ElevatedButton(
           //     style: ElevatedButton.styleFrom(
-          //       primary: AppColors.MONZA,
+          //       backgroundColor: AppColors.MONZA,
           //       shape: RoundedRectangleBorder(
           //         borderRadius: BorderRadius.circular(20.0)
           //       )
@@ -157,7 +157,7 @@ class _GoalDialogState extends State<GoalDialog> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: AppColors.MONZA,
+                    backgroundColor: AppColors.MONZA,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)
                     ),

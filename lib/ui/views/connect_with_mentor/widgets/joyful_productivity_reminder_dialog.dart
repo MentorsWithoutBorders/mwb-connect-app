@@ -78,7 +78,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.ALLPORTS,
+            backgroundColor: AppColors.ALLPORTS,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

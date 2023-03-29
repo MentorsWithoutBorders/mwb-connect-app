@@ -174,7 +174,7 @@ class _ProfileViewState extends State<ProfileView> {
         width: 150.0,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: Colors.white,
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),
@@ -244,7 +244,7 @@ class _ProfileViewState extends State<ProfileView> {
     _profileProvider = Provider.of<ProfileViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
 
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return WillPopScope(
       onWillPop: () => _onWillPop(context),

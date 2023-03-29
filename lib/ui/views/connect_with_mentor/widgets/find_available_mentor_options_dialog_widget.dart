@@ -85,7 +85,7 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
           padding: const EdgeInsets.only(bottom: 15.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: AppColors.ALLPORTS,
+              backgroundColor: AppColors.ALLPORTS,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               )
@@ -120,7 +120,7 @@ class _FindAvailableMentorOptionsDialogState extends State<FindAvailableMentorOp
           padding: const EdgeInsets.only(bottom: 20.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: AppColors.ALLPORTS,
+              backgroundColor: AppColors.ALLPORTS,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               )

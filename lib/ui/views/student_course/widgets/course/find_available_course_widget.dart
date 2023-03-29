@@ -83,7 +83,7 @@ class _FindAvailableCourseState extends State<FindAvailableCourse> with TickerPr
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.JAPANESE_LAUREL,
+            backgroundColor: AppColors.JAPANESE_LAUREL,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

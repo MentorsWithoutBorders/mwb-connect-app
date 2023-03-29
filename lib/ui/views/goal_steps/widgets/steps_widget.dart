@@ -91,7 +91,7 @@ class _StepsState extends State<Steps> {
       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.JAPANESE_LAUREL,
+          backgroundColor: AppColors.JAPANESE_LAUREL,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),
@@ -118,7 +118,7 @@ class _StepsState extends State<Steps> {
   
   Widget _showContent() {
     if (_stepsRetrieved) {  
-      WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+      WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
       return _showSteps();
     } else {
       return const Padding(

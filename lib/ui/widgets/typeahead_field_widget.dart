@@ -41,7 +41,7 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
       if (_focusNode.hasFocus) {
         widget.onFocusCallback!();
         _overlayEntry = _createOverlayEntry();
-        Overlay.of(context)?.insert(_overlayEntry!);
+        Overlay.of(context).insert(_overlayEntry!);
       } else {
         _overlayEntry?.remove();
       }
@@ -130,13 +130,13 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
     if (_overlayEntry != null && _focusNode.hasFocus) {
       _overlayEntry?.remove();
       _overlayEntry = _createOverlayEntry();
-      Overlay.of(context)?.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
     }  
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
     return CompositedTransformTarget(
       link: _layerLink,

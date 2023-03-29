@@ -36,7 +36,7 @@ class _NotificationsViewState extends State<NotificationsView> with SingleTicker
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
 
-    _offset = Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)
+    _offset = Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)
         .animate(CurvedAnimation(parent: _controller as AnimationController, curve: Curves.ease));    
   }
 

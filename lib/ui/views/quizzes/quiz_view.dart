@@ -31,7 +31,7 @@ class _QuizState extends State<QuizView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_initQuizNumber);
+    WidgetsBinding.instance.addPostFrameCallback(_initQuizNumber);
   }  
 
   void _initQuizNumber(_) {
@@ -179,7 +179,7 @@ class _QuizState extends State<QuizView> {
           height: 30.0,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: AppColors.PACIFIC_BLUE,
+              backgroundColor: AppColors.PACIFIC_BLUE,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               ),
@@ -227,7 +227,7 @@ class _QuizState extends State<QuizView> {
           height: 30.0,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: AppColors.PACIFIC_BLUE,
+              backgroundColor: AppColors.PACIFIC_BLUE,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)
               ),
@@ -285,7 +285,7 @@ class _QuizState extends State<QuizView> {
     return Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.BERMUDA_GRAY,
+          backgroundColor: AppColors.BERMUDA_GRAY,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),

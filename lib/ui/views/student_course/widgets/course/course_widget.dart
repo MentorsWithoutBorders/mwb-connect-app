@@ -153,7 +153,7 @@ class _CourseState extends State<Course> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 1.0,
-                  primary: AppColors.ALLPORTS,
+                  backgroundColor: AppColors.ALLPORTS,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)
                   ),
@@ -188,7 +188,7 @@ class _CourseState extends State<Course> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.MONZA,
+            backgroundColor: AppColors.MONZA,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

@@ -155,7 +155,7 @@ class _SupportViewState extends State<SupportView> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 2.0,
-            primary: AppColors.JAPANESE_LAUREL,
+            backgroundColor: AppColors.JAPANESE_LAUREL,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)
             ),

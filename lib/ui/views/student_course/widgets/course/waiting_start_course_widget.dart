@@ -73,7 +73,7 @@ class _WaitingStartCourseState extends State<WaitingStartCourse> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.MONZA,
+            backgroundColor: AppColors.MONZA,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

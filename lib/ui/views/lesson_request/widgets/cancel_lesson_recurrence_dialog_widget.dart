@@ -113,7 +113,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.MONZA,
+            backgroundColor: AppColors.MONZA,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

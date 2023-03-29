@@ -131,7 +131,7 @@ class _SetWhatsAppGroupUrlDialogState extends State<SetWhatsAppGroupUrlDialog> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.JAPANESE_LAUREL,
+            backgroundColor: AppColors.JAPANESE_LAUREL,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

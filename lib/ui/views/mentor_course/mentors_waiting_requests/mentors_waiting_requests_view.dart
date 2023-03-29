@@ -43,7 +43,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
       _fetchPage(pageKey);
     });
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
   @override

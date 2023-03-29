@@ -132,7 +132,7 @@ class _SkillsDialogState extends State<SkillsDialog> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,
-            primary: AppColors.BERMUDA_GRAY,
+            backgroundColor: AppColors.BERMUDA_GRAY,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),

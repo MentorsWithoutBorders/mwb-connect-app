@@ -23,7 +23,7 @@ class _AvailabilityStartDateState extends State<AvailabilityStartDate> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_initSelectedDate);
+    WidgetsBinding.instance.addPostFrameCallback(_initSelectedDate);
   }  
 
   void _initSelectedDate(_) {

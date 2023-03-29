@@ -32,14 +32,14 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
   
@@ -92,7 +92,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: AppColors.JAPANESE_LAUREL,
+          backgroundColor: AppColors.JAPANESE_LAUREL,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
           ),
@@ -164,7 +164,7 @@ class _GoalsViewState extends State<GoalsView> with WidgetsBindingObserver {
     //         });
     //       }
     //     });
-    //     WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    //     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     //     return _showGoals();
     //   } else {
     //     return FirstGoal();

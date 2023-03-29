@@ -29,7 +29,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
   
   void _afterLayout(_) {
@@ -105,7 +105,7 @@ class _SubfieldDropdownState extends State<SubfieldDropdown> {
     final List<DropdownMenuItem<String>> items = [];
     Field filterField = widget.filterField as Field;
     List<Field> fields = widget.fields as List<Field>;
-    List<Subfield> subfields = UtilsFields?.getSubfields(widget.index!, filterField, fields);
+    List<Subfield> subfields = UtilsFields.getSubfields(widget.index!, filterField, fields);
     for (final Subfield subfield in subfields) {
       items.add(DropdownMenuItem<String>(
         value: subfield.id,
