@@ -19,7 +19,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
   final MentorCourseTextsService _mentorCourseTextsService = locator<MentorCourseTextsService>();
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
-  final LoggerService _loggerService = locator<LoggerService>();   
+  final LoggerService _loggerService = locator<LoggerService>();
   List<CourseType> courseTypes = [];
   List<MentorPartnershipScheduleItemModel> mentorPartnershipSchedule = [];
   List<MentorWaitingRequest> mentorsWaitingRequests = [];
@@ -40,7 +40,7 @@ class MentorCourseViewModel extends ChangeNotifier {
     selectedCourseType = courseTypes[0];
     notifyListeners();
   }
-  
+
   Future<void> getCourse() async {
     course = await _mentorCourseApiService.getCourse();
     notifyListeners();
@@ -49,13 +49,15 @@ class MentorCourseViewModel extends ChangeNotifier {
   Future<void> getNextLesson() async {
     nextLesson = await _mentorCourseApiService.getNextLesson();
     notifyListeners();
-  }  
+  }
 
   Future<void> getMentorPartnershipSchedule() async {
-    mentorPartnershipSchedule = await _mentorCourseApiService.getMentorPartnershipSchedule(course?.id);
-    notifyListeners();
+    if (course?.id != null) {
+      mentorPartnershipSchedule = await _mentorCourseApiService.getMentorPartnershipSchedule(course?.id);
+      notifyListeners();
+    }
   }
-  
+
   Future<void> addCourse(Availability? availability, String meetingUrl) async {
     course = await _mentorCourseApiService.addCourse(course, selectedCourseType, availability, meetingUrl);
     notifyListeners();
@@ -84,7 +86,7 @@ class MentorCourseViewModel extends ChangeNotifier {
     course?.notes = courseNotes;
     notifyListeners();
   }
-  
+
   Future<void> cancelCourse(String? reason) async {
     await _mentorCourseApiService.cancelCourse(course?.id, reason);
     course = null;
@@ -95,7 +97,7 @@ class MentorCourseViewModel extends ChangeNotifier {
     nextLesson = await _mentorCourseApiService.cancelNextLesson(course?.id, reason);
     notifyListeners();
   }
-  
+
   Future<void> getField(String fieldId) async {
     field = await _mentorCourseApiService.getField(fieldId);
     notifyListeners();
@@ -105,7 +107,7 @@ class MentorCourseViewModel extends ChangeNotifier {
     mentorsWaitingRequests = await _mentorCourseApiService.getMentorsWaitingRequests();
     notifyListeners();
   }
-  
+
   Future<void> getMentorWaitingRequest() async {
     mentorWaitingRequest = await _mentorCourseApiService.getMentorWaitingRequest();
     notifyListeners();
@@ -114,7 +116,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   Future<void> addMentorWaitingRequest(MentorWaitingRequest mentorWaitingRequest) async {
     await _mentorCourseApiService.addMentorWaitingRequest(mentorWaitingRequest, selectedCourseType);
   }
-  
+
   Future<void> cancelMentorWaitingRequest() async {
     await _mentorCourseApiService.cancelMentorWaitingRequest();
     mentorWaitingRequest = null;
@@ -155,9 +157,17 @@ class MentorCourseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true && nextLesson?.lessonDateTime != null;
-  
-  bool get isMentorPartnershipRequest => !isCourse && mentorPartnershipRequest != null && mentorPartnershipRequest?.id != null && mentorPartnershipRequest?.isRejected != true && mentorPartnershipRequest?.isCanceled != true && mentorPartnershipRequest?.isExpired != true;
+  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
+
+  bool get isCourseStarted => isCourse && course?.hasStarted == true;
+
+  bool get isMentorPartnershipRequest =>
+      !isCourse &&
+      mentorPartnershipRequest != null &&
+      mentorPartnershipRequest?.id != null &&
+      mentorPartnershipRequest?.isRejected != true &&
+      mentorPartnershipRequest?.isCanceled != true &&
+      mentorPartnershipRequest?.isExpired != true;
 
   bool get isMentorWaitingRequest => !isCourse && !isMentorPartnershipRequest && mentorWaitingRequest != null && mentorWaitingRequest?.id != null;
 
@@ -177,7 +187,7 @@ class MentorCourseViewModel extends ChangeNotifier {
     this.mentorPartnershipRequest = mentorPartnershipRequest;
     notifyListeners();
   }
-  
+
   void setMentorWaitingRequest(MentorWaitingRequest? mentorWaitingRequest) {
     this.mentorWaitingRequest = mentorWaitingRequest;
     notifyListeners();
@@ -187,10 +197,10 @@ class MentorCourseViewModel extends ChangeNotifier {
     selectedCourseType = courseTypes.firstWhere((courseType) => courseType.id == courseTypeId);
     notifyListeners();
   }
-  
+
   void setErrorMessage(String message) {
     errorMessage = message;
-  } 
+  }
 
   bool shouldShowTrainingCompleted() {
     return _mentorCourseUtilsService.shouldShowTrainingCompleted();
@@ -199,14 +209,14 @@ class MentorCourseViewModel extends ChangeNotifier {
   String getMeetingUrl() {
     return _mentorCourseUtilsService.getMeetingUrl(course);
   }
-  
+
   int getMentorsCount() {
     return _mentorCourseUtilsService.getMentorsCount(course);
   }
-  
+
   int getStudentsCount() {
     return _mentorCourseUtilsService.getStudentsCount(course);
-  }  
+  }
 
   List<ColoredText> getCourseText() {
     return _mentorCourseTextsService.getCourseText(course, nextLesson);
@@ -231,7 +241,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   List<ColoredText> getMaximumStudentsText() {
     return _mentorCourseTextsService.getMaximumStudentsText(course);
   }
-  
+
   List<ColoredText> getCurrentStudentsText() {
     return _mentorCourseTextsService.getCurrentStudentsText(course);
   }
@@ -239,7 +249,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   List<ColoredText> getMentorPartnershipText() {
     return _mentorCourseTextsService.getMentorPartnershipText(mentorPartnershipRequest);
   }
-  
+
   List<ColoredText> getMentorPartnershipBottomText() {
     return _mentorCourseTextsService.getMentorPartnershipBottomText(mentorPartnershipRequest);
   }
@@ -262,5 +272,5 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   void addLogEntry(String text) {
     _loggerService.addLogEntry(text);
-  }  
+  }
 }

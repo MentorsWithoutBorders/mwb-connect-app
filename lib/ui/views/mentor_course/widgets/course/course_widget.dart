@@ -401,7 +401,7 @@ class _CourseState extends State<Course> {
                   ),
                   padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
                 ), 
-                child: Text('common.cancel_course'.tr(), style: const TextStyle(color: Colors.white)),
+                child: Text('common.cancel_lessons'.tr(), style: const TextStyle(color: Colors.white)),
                 onPressed: () {
                   _showCancelCourseDialog();
                 }

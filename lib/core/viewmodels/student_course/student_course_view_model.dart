@@ -14,7 +14,7 @@ import 'package:mwb_connect_app/core/services/student_course/student_course_util
 class StudentCourseViewModel extends ChangeNotifier {
   final StudentCourseApiService _studentCourseApiService = locator<StudentCourseApiService>();
   final StudentCourseTextsService _studentCourseTextsService = locator<StudentCourseTextsService>();
-  final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();  
+  final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();
   CourseModel? course;
   NextLessonStudent? nextLesson;
   CourseType? courseType;
@@ -29,7 +29,7 @@ class StudentCourseViewModel extends ChangeNotifier {
   Future<void> getNextLesson() async {
     nextLesson = await _studentCourseApiService.getNextLesson();
     notifyListeners();
-  }   
+  }
 
   Future<void> getCourseNotes() async {
     courseNotes = await _studentCourseApiService.getCourseNotes(course?.id);
@@ -40,7 +40,7 @@ class StudentCourseViewModel extends ChangeNotifier {
     this.course = course;
     notifyListeners();
   }
-  
+
   Future<void> cancelCourse(String? reason) async {
     await _studentCourseApiService.cancelCourse(course?.id, reason);
     course = null;
@@ -50,10 +50,10 @@ class StudentCourseViewModel extends ChangeNotifier {
   Future<void> cancelNextLesson(String? reason) async {
     nextLesson = await _studentCourseApiService.cancelNextLesson(course?.id, reason);
     notifyListeners();
-  }  
+  }
 
-  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true && nextLesson?.lessonDateTime != null;
-  
+  bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
+
   bool get isCourseStarted => isCourse && course?.hasStarted == true;
 
   DateTime? getCertificateDate() {
@@ -62,7 +62,7 @@ class StudentCourseViewModel extends ChangeNotifier {
 
   bool shouldShowTrainingCompleted() {
     return _studentCourseUtilsService.shouldShowTrainingCompleted();
-  }  
+  }
 
   bool getShouldShowProductivityReminder() {
     return _studentCourseUtilsService.getShouldShowProductivityReminder();
@@ -74,7 +74,7 @@ class StudentCourseViewModel extends ChangeNotifier {
 
   Future<void> getCertificateSent() async {
     studentCertificate = await _studentCourseApiService.getCertificateSent();
-  }   
+  }
 
   List<String> getMentorsNames() {
     return _studentCourseUtilsService.getMentorsNames(course?.mentors) as List<String>;
@@ -91,7 +91,7 @@ class StudentCourseViewModel extends ChangeNotifier {
   List<ColoredText> getCourseText() {
     return _studentCourseTextsService.getCourseText(course, nextLesson);
   }
-  
+
   List<ColoredText> getWaitingStartCourseText() {
     return _studentCourseTextsService.getWaitingStartCourseText(course);
   }
@@ -106,5 +106,5 @@ class StudentCourseViewModel extends ChangeNotifier {
 
   void sendAPIDataLogs(int i, String error, List<String> logs) {
     _studentCourseUtilsService.sendAPIDataLogs(i, error, logs);
-  }    
+  }
 }

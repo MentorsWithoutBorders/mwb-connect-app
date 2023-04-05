@@ -41,8 +41,7 @@ import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'widgets/course/set_meeting_url_dialog_widget.dart';
 
 class MentorCourseView extends StatefulWidget {
-  MentorCourseView({Key? key, this.logoutCallback})
-    : super(key: key);  
+  MentorCourseView({Key? key, this.logoutCallback}) : super(key: key);
 
   final VoidCallback? logoutCallback;
 
@@ -86,12 +85,12 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   void _reload() {
     setState(() {
       _isInit = false;
-    });    
+    });
   }
 
   void _setTimeZone() {
     _commonProvider?.setTimeZone();
-  }   
+  }
 
   Future<void> _checkUpdate() async {
     final UpdateAppViewModel updatesProvider = locator<UpdateAppViewModel>();
@@ -100,44 +99,33 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));
     } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
-    }    
+    }
   }
-  
+
   Future<void> _showInAppMessage(_) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     bool? shouldShowNotification = _inAppMessagesProvider?.inAppMessage?.text?.isNotEmpty;
     if (mounted && shouldShowNotification == true && !_isInAppMessageOpen) {
       _isInAppMessageOpen = true;
       showDialog(
-        context: context,
-        builder: (_) => AnimatedDialog(
-          widgetInside: NotificationDialog(
-            text: _inAppMessagesProvider?.inAppMessage?.text,
-            buttonText: 'common.ok'.tr(),
-            shouldReload: false,
-          )
-        )
-      ).then((_) => _setInAppMessageClosed());
+          context: context,
+          builder: (_) => AnimatedDialog(
+                  widgetInside: NotificationDialog(
+                text: _inAppMessagesProvider?.inAppMessage?.text,
+                buttonText: 'common.ok'.tr(),
+                shouldReload: false,
+              ))).then((_) => _setInAppMessageClosed());
     }
   }
-  
+
   void _setInAppMessageClosed() {
     _isInAppMessageOpen = false;
     _inAppMessagesProvider?.deleteInAppMessage();
   }
-  
 
   Widget _showTitle() {
     String title = 'mentor_course.course_title'.tr();
-    return Container(
-      padding: const EdgeInsets.only(right: 50.0),
-      child: Center(
-        child: Text(
-          title,
-          textAlign: TextAlign.center
-        )
-      )
-    );
+    return Container(padding: const EdgeInsets.only(right: 50.0), child: Center(child: Text(title, textAlign: TextAlign.center)));
   }
 
   Widget _showContent() {
@@ -146,15 +134,15 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     } else {
       return const Loader();
     }
-  }  
+  }
 
   Widget _showMentorCourse() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
-    final int minStudentsCourse = AppConstants.minStudentsCourse;
     User user = _commonProvider?.user as User;
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     final bool isCourse = _mentorCourseProvider?.isCourse ?? false;
+    final bool isCourseStarted = _mentorCourseProvider?.isCourseStarted ?? false;
     final bool isMentorPartnershipRequest = _mentorCourseProvider?.isMentorPartnershipRequest ?? false;
     final bool isMentorPartnershipRequestWaitingApproval = _mentorCourseProvider?.getIsMentorPartnershipRequestWaitingApproval(mentor) ?? false;
     final bool isMentorWaitingRequest = _mentorCourseProvider?.isMentorWaitingRequest ?? false;
@@ -182,64 +170,55 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<ColoredText>? waitingMentorPartnershipApprovalText = _mentorCourseProvider?.getWaitingMentorPartnershipApprovalText();
     final bool? shouldUnfocus = _mentorCourseProvider?.shouldUnfocus;
     return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
-      child: ListView(
-        padding: const EdgeInsets.only(top: 0.0),
-        children: [
+        padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
+        child: ListView(padding: const EdgeInsets.only(top: 0.0), children: [
           if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _mentorCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          if (!isCourse && !isMentorPartnershipRequest && !isMentorWaitingRequest) CourseTypes(
-            courseTypes: courseTypes,
-            selectedCourseType: selectedCourseType,
-            subfields: subfields,
-            onSelect: _setSelectedCourseType, 
-            onSetCourseDetails: _setCourseDetails,
-            onFindPartner: _findPartner
-          ),
-          if (isCourse && studentsCount < minStudentsCourse) WaitingStudents(
-            mentorsCount: mentorsCount,
-            studentsCount: studentsCount,
-            waitingStudentsNoPartnerText: waitingStudentsNoPartnerText,
-            waitingStudentsPartnerText: waitingStudentsPartnerText,
-            maximumStudentsText: maximumStudentsText,
-            currentStudentsText: currentStudentsText,
-            cancelText: cancelCourseText,
-            onCancel: _cancelCourse
-          ),
-          if (isCourse && studentsCount >= minStudentsCourse) Course(
-            course: course,
-            mentorPartnershipSchedule: mentorPartnershipSchedule,
-            meetingUrl: meetingUrl,
-            text: courseText,
-            mentorPartnershipScheduleText: mentorPartnershipScheduleText,
-            cancelCourseText: cancelCourseText,
-            onSetMeetingUrl: _setMeetingUrl,
-            onSetWhatsAppGroupUrl: _setWhatsAppGroupUrl,
-            onUpdateNotes: _updateCourseNotes,
-            onUpdateScheduleItem: _updateMentorPartnershipScheduleItem,
-            onCancelNextLesson: _cancelNextLesson,
-            onCancelCourse: _cancelCourse
-          ),
-          if (isMentorPartnershipRequest && !isMentorPartnershipRequestWaitingApproval) MentorPartnershipRequest(
-            text: mentorPartnershipText,
-            bottomText: mentorPartnershipBottomText,
-            onAccept: _acceptMentorPartnershipRequest,
-            onReject: _rejectMentorPartnershipRequest,
-            shouldUnfocus: shouldUnfocus,
-            setShouldUnfocus: _setShouldUnfocus
-          ),
-          if (isMentorPartnershipRequest && isMentorPartnershipRequestWaitingApproval) WaitingMentorPartnershipApproval(
-            partnerMentorName: requestPartnerMentorName,
-            text: waitingMentorPartnershipApprovalText,
-            onCancel: _cancelMentorPartnershipRequest
-          ),
-          if (isMentorWaitingRequest) WaitingMentorPartnershipRequest(
-            onCancel: _cancelMentorWaitingRequest,
-            onFindPartner: _findPartner
-          )
-        ]
-      )
-    );
+          if (!isCourse && !isMentorPartnershipRequest && !isMentorWaitingRequest)
+            CourseTypes(
+                courseTypes: courseTypes,
+                selectedCourseType: selectedCourseType,
+                subfields: subfields,
+                onSelect: _setSelectedCourseType,
+                onSetCourseDetails: _setCourseDetails,
+                onFindPartner: _findPartner),
+          if (isCourse && !isCourseStarted)
+            WaitingStudents(
+                mentorsCount: mentorsCount,
+                studentsCount: studentsCount,
+                waitingStudentsNoPartnerText: waitingStudentsNoPartnerText,
+                waitingStudentsPartnerText: waitingStudentsPartnerText,
+                maximumStudentsText: maximumStudentsText,
+                currentStudentsText: currentStudentsText,
+                cancelText: cancelCourseText,
+                onCancel: _cancelCourse),
+          if (isCourse && isCourseStarted)
+            Course(
+                course: course,
+                mentorPartnershipSchedule: mentorPartnershipSchedule,
+                meetingUrl: meetingUrl,
+                text: courseText,
+                mentorPartnershipScheduleText: mentorPartnershipScheduleText,
+                cancelCourseText: cancelCourseText,
+                onSetMeetingUrl: _setMeetingUrl,
+                onSetWhatsAppGroupUrl: _setWhatsAppGroupUrl,
+                onUpdateNotes: _updateCourseNotes,
+                onUpdateScheduleItem: _updateMentorPartnershipScheduleItem,
+                onCancelNextLesson: _cancelNextLesson,
+                onCancelCourse: _cancelCourse),
+          if (isMentorPartnershipRequest && !isMentorPartnershipRequestWaitingApproval)
+            MentorPartnershipRequest(
+                text: mentorPartnershipText,
+                bottomText: mentorPartnershipBottomText,
+                onAccept: _acceptMentorPartnershipRequest,
+                onReject: _rejectMentorPartnershipRequest,
+                shouldUnfocus: shouldUnfocus,
+                setShouldUnfocus: _setShouldUnfocus),
+          if (isMentorPartnershipRequest && isMentorPartnershipRequestWaitingApproval)
+            WaitingMentorPartnershipApproval(
+                partnerMentorName: requestPartnerMentorName, text: waitingMentorPartnershipApprovalText, onCancel: _cancelMentorPartnershipRequest),
+          if (isMentorWaitingRequest) WaitingMentorPartnershipRequest(onCancel: _cancelMentorWaitingRequest, onFindPartner: _findPartner)
+        ]));
   }
 
   void _setSelectedCourseType(String courseTypeId) {
@@ -277,7 +256,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   Future<void> _cancelNextLesson(String? reason) async {
     await _mentorCourseProvider?.cancelNextLesson(reason);
-  }  
+  }
 
   Future<void> _cancelCourse(String? reason) async {
     await _mentorCourseProvider?.cancelCourse(reason);
@@ -289,7 +268,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (course?.id == null) {
       _reload();
     }
-  }   
+  }
 
   Future<void> _rejectMentorPartnershipRequest(String? reason) async {
     await _mentorCourseProvider?.rejectMentorPartnershipRequest(reason);
@@ -299,11 +278,11 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   Future<void> _cancelMentorPartnershipRequest() async {
     await _mentorCourseProvider?.cancelMentorPartnershipRequest();
   }
-  
+
   Future<void> _cancelMentorWaitingRequest() async {
     await _mentorCourseProvider?.cancelMentorWaitingRequest();
   }
-  
+
   void _setShouldUnfocus(bool shouldUnfocus) {
     _mentorCourseProvider?.shouldUnfocus = shouldUnfocus;
   }
@@ -313,20 +292,12 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     final Field? field = _mentorCourseProvider?.field;
     final List<CourseType>? courseTypes = _mentorCourseProvider?.courseTypes;
-    MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(
-      mentor: mentor,
-      courseType: selectedCourseType
-    );
+    MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(mentor: mentor, courseType: selectedCourseType);
     Navigator.push<MentorPartnershipResult>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MentorsWaitingRequestsView(
-          field: field,
-          courseTypes: courseTypes,
-          mentorPartnershipRequest: mentorPartnershipRequest
-        )
-      )
-    ).then((MentorPartnershipResult? result) {
+            context,
+            MaterialPageRoute(
+                builder: (context) => MentorsWaitingRequestsView(field: field, courseTypes: courseTypes, mentorPartnershipRequest: mentorPartnershipRequest)))
+        .then((MentorPartnershipResult? result) {
       if (result != null) {
         _mentorCourseProvider?.setMentorPartnershipRequest(result.mentorPartnershipRequest);
         _mentorCourseProvider?.setMentorWaitingRequest(result.mentorWaitingRequest);
@@ -334,8 +305,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     });
   }
 
-  bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
-  
+  bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;
+
   Future<void> _init() async {
     final User user = _commonProvider?.user as User;
     final String fieldId = user.field?.id as String;
@@ -356,7 +327,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       _mentorCourseProvider!.getMentorPartnershipSchedule();
       _showSetMeetingUrlDialog();
       _showExpiredMentorPartnershipRequest();
-      _showCanceledMentorPartnershipRequest();      
+      _showCanceledMentorPartnershipRequest();
       await _commonProvider!.initPushNotifications();
       _isInit = true;
     }
@@ -369,34 +340,22 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (isCourse && meetingUrl.isEmpty && !_wasMeetingUrlDialogShown) {
       _wasMeetingUrlDialogShown = true;
       showDialog(
-        context: context,
-        builder: (_) => AnimatedDialog(
-          widgetInside: SetMeetingUrlDialog(
-            meetingUrl: meetingUrl,
-            mentorsCount: mentorsCount,
-            isUpdate: false,
-            onSet: _setMeetingUrl
-          )
-        )
-      ); 
+          context: context,
+          builder: (_) =>
+              AnimatedDialog(widgetInside: SetMeetingUrlDialog(meetingUrl: meetingUrl, mentorsCount: mentorsCount, isUpdate: false, onSet: _setMeetingUrl)));
     }
-  } 
+  }
 
   void _showExpiredMentorPartnershipRequest() {
     if (_mentorCourseProvider?.shouldShowExpired == true) {
       _mentorCourseProvider?.shouldShowExpired = false;
       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AnimatedDialog(
-            widgetInside: NotificationDialog(
-              text: 'mentor_course.mentor_partnership_request_expired'.tr(),
-              buttonText: 'common.ok'.tr(),
-              shouldReload: false
-            )
-          );
-        }
-      );
+          context: context,
+          builder: (BuildContext context) {
+            return AnimatedDialog(
+                widgetInside:
+                    NotificationDialog(text: 'mentor_course.mentor_partnership_request_expired'.tr(), buttonText: 'common.ok'.tr(), shouldReload: false));
+          });
     }
   }
 
@@ -404,19 +363,14 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (_mentorCourseProvider?.shouldShowCanceled == true) {
       _mentorCourseProvider?.shouldShowCanceled = false;
       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AnimatedDialog(
-            widgetInside: NotificationDialog(
-              text: 'mentor_course.mentor_partnership_request_canceled'.tr(),
-              buttonText: 'common.ok'.tr(),
-              shouldReload: false
-            )
-          );
-        }
-      );
+          context: context,
+          builder: (BuildContext context) {
+            return AnimatedDialog(
+                widgetInside:
+                    NotificationDialog(text: 'mentor_course.mentor_partnership_request_canceled'.tr(), buttonText: 'common.ok'.tr(), shouldReload: false));
+          });
     }
-  }    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -426,31 +380,23 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _inAppMessagesProvider = Provider.of<InAppMessagesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
-    WidgetsBinding.instance.addPostFrameCallback(_showInAppMessage);    
+    WidgetsBinding.instance.addPostFrameCallback(_showInAppMessage);
 
     return FutureBuilder<void>(
-      future: _init(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return Stack(
-          children: <Widget>[
-            const BackgroundGradient(),
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                title: _showTitle(),
-                backgroundColor: Colors.transparent,          
-                elevation: 0.0
-              ),
-              extendBodyBehindAppBar: true,
-              resizeToAvoidBottomInset: false,
-              body: _showContent(),
-              drawer: DrawerWidget(
-                logoutCallback: widget.logoutCallback as VoidCallback
-              )
-            )
-          ],
-        );
-      }
-    );
+        future: _init(),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          return Stack(
+            children: <Widget>[
+              const BackgroundGradient(),
+              Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: AppBar(title: _showTitle(), backgroundColor: Colors.transparent, elevation: 0.0),
+                  extendBodyBehindAppBar: true,
+                  resizeToAvoidBottomInset: false,
+                  body: _showContent(),
+                  drawer: DrawerWidget(logoutCallback: widget.logoutCallback as VoidCallback))
+            ],
+          );
+        });
   }
 }

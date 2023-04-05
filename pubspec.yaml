@@ -13,10 +13,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  firebase_auth: ^4.3.0
-  firebase_core: ^2.8.0
-  firebase_storage: ^11.0.16
-  firebase_messaging: ^14.3.0
+  firebase_auth: ^4.4.0
+  firebase_core: ^2.9.0
+  firebase_storage: ^11.1.0
+  firebase_messaging: ^14.4.0
   flutuate_mixpanel: ^2.0.0-nullsafety
   provider: ^6.0.5
   http: ^0.13.5
@@ -31,9 +31,9 @@ dependencies:
   package_info: ^2.0.2
   easy_localization: ^3.0.1
   flutter_local_notifications: ^9.8.0+1
-  flutter_native_timezone: ^2.0.0
+  flutter_timezone: ^1.0.4
   flutter_widget_from_html_core: ^0.8.5+3
-  flutter_inappwebview: ^5.0.5
+  flutter_inappwebview: ^5.7.2+3
   jiffy: ^5.0.0
   quiver: ^3.2.1
   cached_network_image: ^3.2.3
@@ -79,4 +79,4 @@ flutter:
         - asset: assets/fonts/Lato-Regular.ttf
 
 dependency_overrides:
-  flutter_inappwebview: 5.0.5
+  intl: ^0.18.0

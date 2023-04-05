@@ -13,7 +13,7 @@ class StudentCourseTextsService {
   final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();
 
   List<ColoredText> getCourseText(CourseModel? course, NextLessonStudent? nextLesson) {
-    if (course == null || course.id == null) {
+    if (course == null || course.id == null || nextLesson?.lessonDateTime == null) {
       return [];
     }    
     DateFormat dayOfWeekFormat = DateFormat(AppConstants.dayOfWeekFormat, 'en');

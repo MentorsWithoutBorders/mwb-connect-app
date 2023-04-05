@@ -14,7 +14,7 @@ class MulticolorText extends StatelessWidget {
         return TextSpan(
           text: coloredTexts[index].text,
           style: TextStyle(
-            fontSize: 12.0,
+            fontSize: 13.0,
             color: coloredTexts[index].color,
             height: 1.4,
             fontWeight: coloredTexts[index].isBold == true ? FontWeight.bold : FontWeight.normal

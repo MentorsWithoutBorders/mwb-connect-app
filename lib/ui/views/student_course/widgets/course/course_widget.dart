@@ -78,16 +78,6 @@ class _CourseState extends State<Course> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5.0),
-                child: Text(
-                  mentorName + ': ',
-                  style: const TextStyle(
-                    color: AppColors.DOVE_GRAY,
-                    fontSize: 13.0
-                  )
-                )
-              ),
               InkWell(
                 child: Text(
                   meetingUrl,
