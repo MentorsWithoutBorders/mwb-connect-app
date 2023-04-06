@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/service_locator.dart';
-import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
@@ -152,6 +152,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
     // Course
     final CourseModel? course = _mentorCourseProvider?.course;
+    final NextLessonMentor? nextLesson = _mentorCourseProvider?.nextLesson;
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
     final List<MentorPartnershipScheduleItemModel>? mentorPartnershipSchedule = _mentorCourseProvider?.mentorPartnershipSchedule;
     final int studentsCount = _mentorCourseProvider?.getStudentsCount() as int;
@@ -195,6 +196,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
           if (isCourse && isCourseStarted)
             Course(
                 course: course,
+                nextLesson: nextLesson,
                 mentorPartnershipSchedule: mentorPartnershipSchedule,
                 meetingUrl: meetingUrl,
                 text: courseText,
