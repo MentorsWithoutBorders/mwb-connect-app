@@ -149,6 +149,7 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final bool isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
     final bool isCourse = _studentCourseProvider?.isCourse as bool;
+    final bool isNextLesson = _studentCourseProvider?.isNextLesson as bool;
     final bool isCourseStarted = _studentCourseProvider?.isCourseStarted as bool;
     final CourseMentor? mentorNextLesson = _studentCourseProvider?.nextLesson?.mentor;
     final String? whatsAppGroupUrl = _studentCourseProvider?.course?.whatsAppGroupUrl;
@@ -160,22 +161,27 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0),
         children: [
-          if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
-          if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          if (!isCourse) FindAvailableCourse(
-            onFind: _goToAvailableCoursesFields
+          if (isTrainingEnabled && shouldShowTraining() == true) 
+            SolveQuizAddStep(),
+          if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) 
+            TrainingCompleted(),
+          if (!isCourse || isCourse && isCourseStarted && isNextLesson) 
+            FindAvailableCourse(
+                onFind: _goToAvailableCoursesFields
           ),
-          if (isCourseStarted) Course(
-            mentorNextLesson: mentorNextLesson,
-            text: courseText,
-            whatsAppGroupUrl: whatsAppGroupUrl,
-            onCancelNextLesson: _cancelNextLesson,
-            onCancelCourse: _cancelCourse
+          if (isCourse && isCourseStarted && isNextLesson) 
+            Course(
+                mentorNextLesson: mentorNextLesson,
+                text: courseText,
+                whatsAppGroupUrl: whatsAppGroupUrl,
+                onCancelNextLesson: _cancelNextLesson,
+                onCancelCourse: _cancelCourse
           ),
-          if (isCourse && !isCourseStarted) WaitingStartCourse(
-            text: waitingStartCourseText,
-            currentStudentsText: currentStudentsText,
-            onCancel: _cancelCourse
+          if (isCourse && !isCourseStarted) 
+            WaitingStartCourse(
+                text: waitingStartCourseText,
+                currentStudentsText: currentStudentsText,
+                onCancel: _cancelCourse
           )
         ]
       )

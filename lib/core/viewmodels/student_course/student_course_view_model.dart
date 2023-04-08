@@ -54,6 +54,8 @@ class StudentCourseViewModel extends ChangeNotifier {
 
   bool get isCourse => course != null && course?.id != null && course?.isCanceled != true;
 
+  bool get isNextLesson => nextLesson != null && nextLesson?.lessonDateTime != null;
+
   bool get isCourseStarted => isCourse && course?.hasStarted == true;
 
   DateTime? getCertificateDate() {

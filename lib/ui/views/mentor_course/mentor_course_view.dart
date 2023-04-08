@@ -142,6 +142,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     User user = _commonProvider?.user as User;
     final CourseMentor mentor = CourseMentor.fromJson(user.toJson());
     final bool isCourse = _mentorCourseProvider?.isCourse ?? false;
+    final bool isNextLesson = _mentorCourseProvider?.isNextLesson ?? false;
     final bool isCourseStarted = _mentorCourseProvider?.isCourseStarted ?? false;
     final bool isMentorPartnershipRequest = _mentorCourseProvider?.isMentorPartnershipRequest ?? false;
     final bool isMentorPartnershipRequestWaitingApproval = _mentorCourseProvider?.getIsMentorPartnershipRequestWaitingApproval(mentor) ?? false;
@@ -173,9 +174,11 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     return Padding(
         padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
         child: ListView(padding: const EdgeInsets.only(top: 0.0), children: [
-          if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
-          if (isTrainingEnabled && shouldShowTraining() == false && _mentorCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          if (!isCourse && !isMentorPartnershipRequest && !isMentorWaitingRequest)
+          if (isTrainingEnabled && shouldShowTraining() == true) 
+            SolveQuizAddStep(),
+          if (isTrainingEnabled && shouldShowTraining() == false && _mentorCourseProvider?.shouldShowTrainingCompleted() == true) 
+            TrainingCompleted(),
+          if ((!isCourse || isCourse && isCourseStarted && !isNextLesson) && !isMentorPartnershipRequest && !isMentorWaitingRequest)
             CourseTypes(
                 courseTypes: courseTypes,
                 selectedCourseType: selectedCourseType,
@@ -193,7 +196,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
                 currentStudentsText: currentStudentsText,
                 cancelText: cancelCourseText,
                 onCancel: _cancelCourse),
-          if (isCourse && isCourseStarted)
+          if (isCourse && isCourseStarted && isNextLesson)
             Course(
                 course: course,
                 nextLesson: nextLesson,
@@ -218,7 +221,9 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
                 setShouldUnfocus: _setShouldUnfocus),
           if (isMentorPartnershipRequest && isMentorPartnershipRequestWaitingApproval)
             WaitingMentorPartnershipApproval(
-                partnerMentorName: requestPartnerMentorName, text: waitingMentorPartnershipApprovalText, onCancel: _cancelMentorPartnershipRequest),
+                partnerMentorName: requestPartnerMentorName, 
+                text: waitingMentorPartnershipApprovalText, 
+                onCancel: _cancelMentorPartnershipRequest),
           if (isMentorWaitingRequest) WaitingMentorPartnershipRequest(onCancel: _cancelMentorWaitingRequest, onFindPartner: _findPartner)
         ]));
   }
@@ -296,10 +301,15 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<CourseType>? courseTypes = _mentorCourseProvider?.courseTypes;
     MentorPartnershipRequestModel mentorPartnershipRequest = MentorPartnershipRequestModel(mentor: mentor, courseType: selectedCourseType);
     Navigator.push<MentorPartnershipResult>(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MentorsWaitingRequestsView(field: field, courseTypes: courseTypes, mentorPartnershipRequest: mentorPartnershipRequest)))
-        .then((MentorPartnershipResult? result) {
+      context,
+      MaterialPageRoute(
+        builder: (context) => MentorsWaitingRequestsView(
+          field: field, 
+          courseTypes: courseTypes, 
+          mentorPartnershipRequest: mentorPartnershipRequest
+        )
+      )
+    ).then((MentorPartnershipResult? result) {
       if (result != null) {
         _mentorCourseProvider?.setMentorPartnershipRequest(result.mentorPartnershipRequest);
         _mentorCourseProvider?.setMentorWaitingRequest(result.mentorWaitingRequest);
@@ -342,9 +352,16 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (isCourse && meetingUrl.isEmpty && !_wasMeetingUrlDialogShown) {
       _wasMeetingUrlDialogShown = true;
       showDialog(
-          context: context,
-          builder: (_) =>
-              AnimatedDialog(widgetInside: SetMeetingUrlDialog(meetingUrl: meetingUrl, mentorsCount: mentorsCount, isUpdate: false, onSet: _setMeetingUrl)));
+        context: context,
+        builder: (_) => AnimatedDialog(
+          widgetInside: SetMeetingUrlDialog(
+            meetingUrl: meetingUrl,
+            mentorsCount: mentorsCount, 
+            isUpdate: false, 
+            onSet: _setMeetingUrl
+          )
+        )
+      );
     }
   }
 
@@ -365,12 +382,16 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (_mentorCourseProvider?.shouldShowCanceled == true) {
       _mentorCourseProvider?.shouldShowCanceled = false;
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AnimatedDialog(
-                widgetInside:
-                    NotificationDialog(text: 'mentor_course.mentor_partnership_request_canceled'.tr(), buttonText: 'common.ok'.tr(), shouldReload: false));
-          });
+        context: context,
+        builder: (BuildContext context) {
+          return AnimatedDialog(
+            widgetInside: NotificationDialog(
+              text: 'mentor_course.mentor_partnership_request_canceled'.tr(), 
+              buttonText: 'common.ok'.tr(), 
+              shouldReload: false)
+            );
+        }
+      );
     }
   }
 
@@ -385,20 +406,27 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     WidgetsBinding.instance.addPostFrameCallback(_showInAppMessage);
 
     return FutureBuilder<void>(
-        future: _init(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          return Stack(
-            children: <Widget>[
-              const BackgroundGradient(),
-              Scaffold(
-                  backgroundColor: Colors.transparent,
-                  appBar: AppBar(title: _showTitle(), backgroundColor: Colors.transparent, elevation: 0.0),
-                  extendBodyBehindAppBar: true,
-                  resizeToAvoidBottomInset: false,
-                  body: _showContent(),
-                  drawer: DrawerWidget(logoutCallback: widget.logoutCallback as VoidCallback))
-            ],
-          );
-        });
+      future: _init(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        return Stack(
+          children: <Widget>[
+            const BackgroundGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                title: _showTitle(), 
+                backgroundColor: Colors.transparent, 
+                elevation: 0.0
+              ),
+              extendBodyBehindAppBar: true,
+              resizeToAvoidBottomInset: false,
+              body: _showContent(),
+              drawer: DrawerWidget(
+                logoutCallback: widget.logoutCallback as VoidCallback
+              )
+            )
+          ],
+        );
+      });
   }
 }

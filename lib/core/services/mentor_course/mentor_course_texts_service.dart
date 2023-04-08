@@ -4,6 +4,7 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
+import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
@@ -13,7 +14,6 @@ import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_utils_service.dart';
-import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 
 class MentorCourseTextsService {
   final MentorCourseUtilsService _mentorCourseUtilsService = locator<MentorCourseUtilsService>();
@@ -47,7 +47,7 @@ class MentorCourseTextsService {
     String nextLessonTime = timeFormat.format(nextLesson?.lessonDateTime as DateTime);
     DateTime now = DateTime.now();
     String timeZone = now.timeZoneName;
-    String studentPlural = plural('student', course.students?.length as int);
+    String studentPlural = plural('student', nextLesson?.students?.length as int);
     String at = 'common.at'.tr();
     String until = 'common.until'.tr();
     String text = 'mentor_course.course_text'.tr(
@@ -113,8 +113,7 @@ class MentorCourseTextsService {
     String courseTime = timeFormat.format(courseStartDateTime);
     DateTime now = DateTime.now();
     String timeZone = now.timeZoneName;
-    String text = 'mentor_course.waiting_students_no_partner_text'
-        .tr(args: [courseDuration.toString(), mentorSubfieldName, minStudentsCourse, courseDayOfWeek, courseTime, timeZone]);
+    String text = 'mentor_course.waiting_students_no_partner_text'.tr(args: [courseDuration.toString(), mentorSubfieldName, minStudentsCourse, courseDayOfWeek, courseTime, timeZone]);
     String at = 'common.at'.tr();
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorSubfieldName)), color: AppColors.DOVE_GRAY),

@@ -206,6 +206,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   void _goBack() {
     MentorPartnershipRequestModel? mentorPartnershipRequest = _mentorsWaitingRequestsProvider?.mentorPartnershipRequest;
     MentorWaitingRequest? mentorWaitingRequest = _mentorsWaitingRequestsProvider?.mentorWaitingRequest;
+    _mentorsWaitingRequestsProvider?.resetValues();
     MentorPartnershipResult? mentorPartnershipResult = MentorPartnershipResult(
       mentorPartnershipRequest: mentorPartnershipRequest,
       mentorWaitingRequest: mentorWaitingRequest

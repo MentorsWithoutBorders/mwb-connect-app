@@ -39,9 +39,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       child: Wrap(
         children: <Widget>[
           _showTitle(),
-          if (widget.mentorSubfields!.length > 1) _showPartnerMentorSubfieldLabel(),
           if (widget.mentorSubfields!.length > 1) _showPartnerMentorSubfield(),
-          if (widget.mentorSubfields!.length > 1) _showMentorSubfieldsLabel(),
           if (widget.mentorSubfields!.length > 1) _showMentorSubfieldsDropdown(),
           _showTimeFromDropdown(),
           _showButtons()
@@ -55,7 +53,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Text(
-          'mentor_course.set_course_details'.tr(),
+          'mentor_course.send_mentor_partnership_request'.tr(),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18,
@@ -84,7 +82,13 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
     String subfieldName = widget.partnerMentorSubfield?.name as String;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
-      child: Text(subfieldName),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _showPartnerMentorSubfieldLabel(),
+          Text(subfieldName),
+        ],
+      ),
     );
   }  
 
@@ -103,12 +107,18 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Widget _showMentorSubfieldsDropdown() {
-    return SubfieldDropdown(
-      subfields: widget.mentorSubfields,
-      selectedSubfieldId: _subfieldId,
-      onSelect: (String? subfieldId) {
-        _setSubfieldId(subfieldId);
-      }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _showMentorSubfieldsLabel(),
+        SubfieldDropdown(
+          subfields: widget.mentorSubfields,
+          selectedSubfieldId: _subfieldId,
+          onSelect: (String? subfieldId) {
+            _setSubfieldId(subfieldId);
+          }
+        ),
+      ],
     );
   }
 

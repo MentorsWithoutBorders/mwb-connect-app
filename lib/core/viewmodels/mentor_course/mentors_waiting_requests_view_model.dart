@@ -75,6 +75,7 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
 
   Future<void> sendMentorPartnershipRequest(CourseMentor mentor, String mentorSubfieldId, String courseStartTime) async {
     String courseDayOfWeek = selectedPartnerMentor?.availabilities![0].dayOfWeek as String;
+    mentor.field?.subfields = mentor.field?.subfields!.where((Subfield subfield) => subfield.id == mentorSubfieldId).toList();
     mentorPartnershipRequest = await _mentorsWaitingRequestsApiService.sendMentorPartnershipRequest(mentor, selectedPartnerMentor, filterCourseType, courseDayOfWeek, courseStartTime);
     setMentorPartnershipRequestButtonId(null);
     notifyListeners();
