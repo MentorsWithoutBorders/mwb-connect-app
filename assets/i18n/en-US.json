@@ -301,6 +301,7 @@
     "set_details": "Set details",
     "paste_lessons_url": "Please paste the link for the lessons here:",
     "paste_your_lessons_url": "Please paste the link for your lessons here:",
+		"lessons_url_confirmation": "The link for your lessons has been set and it will be visible as soon as the course starts",
     "choose_day_time_course": "Choose day/time for the lessons:",
     "note": "Note:",
     "available_partners_choose_availability": "Choose availability:",

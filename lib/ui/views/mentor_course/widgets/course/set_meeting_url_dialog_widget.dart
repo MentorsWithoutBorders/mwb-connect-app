@@ -58,7 +58,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   }
 
   Widget _showText() {
-    final String text = widget.mentorsCount != null && widget.mentorsCount! > 1 ? 'mentor_course.paste_your_lessons_url'.tr() : 'mentor_course.paste_lessons_url'.tr(args: [urlType]);
+    final String text = widget.mentorsCount != null && widget.mentorsCount! > 1 ? 'mentor_course.paste_your_lessons_url'.tr() : 'mentor_course.paste_lessons_url'.tr();
     return Padding(
       padding: const EdgeInsets.only(left: 2.0, bottom: 8.0),
       child: Text(
@@ -162,12 +162,12 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
       _setShouldShowError(true);
       return ;
     }    
-    _setIsUpdating(true);
+    _setIsSetting(true);
     await widget.onSet!(meetingUrl);
     Navigator.pop(context);
   }
   
-  void _setIsUpdating(bool isSetting) {
+  void _setIsSetting(bool isSetting) {
     setState(() {
       isSetting = isSetting;
     });  

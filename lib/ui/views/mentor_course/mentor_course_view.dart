@@ -247,7 +247,25 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   Future<void> _setMeetingUrl(String meetingUrl) async {
     await _mentorCourseProvider?.setMeetingUrl(meetingUrl);
+    final bool isCourse = _mentorCourseProvider?.isCourse ?? false;
+    final bool isCourseStarted = _mentorCourseProvider?.isCourseStarted ?? false;    
+    if (isCourse && !isCourseStarted) {
+      _showMeetingUrlToast(context);
+    }
   }
+
+  void _showMeetingUrlToast(BuildContext context) {
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text('mentor_course.lessons_url_confirmation'.tr()),
+        action: SnackBarAction(
+          label: 'common.close'.tr(), 
+          onPressed: scaffold.hideCurrentSnackBar
+        ),
+      ),
+    );
+  }  
 
   Future<void> _setWhatsAppGroupUrl(String whatsAppGroupUrl) async {
     await _mentorCourseProvider?.setWhatsAppGroupUrl(whatsAppGroupUrl);
@@ -369,12 +387,17 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (_mentorCourseProvider?.shouldShowExpired == true) {
       _mentorCourseProvider?.shouldShowExpired = false;
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AnimatedDialog(
-                widgetInside:
-                    NotificationDialog(text: 'mentor_course.mentor_partnership_request_expired'.tr(), buttonText: 'common.ok'.tr(), shouldReload: false));
-          });
+        context: context,
+        builder: (BuildContext context) {
+          return AnimatedDialog(
+            widgetInside: NotificationDialog(
+              text: 'mentor_course.mentor_partnership_request_expired'.tr(), 
+              buttonText: 'common.ok'.tr(), 
+              shouldReload: false
+            )
+          );
+        }
+      );
     }
   }
 
