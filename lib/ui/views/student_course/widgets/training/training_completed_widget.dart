@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
-import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/student_course/student_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
 import 'package:mwb_connect_app/ui/views/goals/goals_view.dart';
@@ -19,7 +19,7 @@ class TrainingCompleted extends StatefulWidget {
 }
 
 class _TrainingCompletedState extends State<TrainingCompleted> {
-  MentorCourseViewModel? _mentorCourseProvider;
+  StudentCourseViewModel? _studentCourseProvider;
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
 
@@ -105,7 +105,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
     if (_goalsProvider?.selectedGoal != null) {
       _goToGoalSteps();
     } else {
-      _mentorCourseProvider?.addLogEntry('goal is null in training_completed_widget');
+      _studentCourseProvider?.addLogEntry('goal is null in training_completed_widget');
       Navigator.push(context, MaterialPageRoute<GoalsView>(builder: (_) => GoalsView())).then((value) => _goToGoalSteps());
     }
   }
@@ -120,7 +120,7 @@ class _TrainingCompletedState extends State<TrainingCompleted> {
 
   @override
   Widget build(BuildContext context) {
-    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
+    _studentCourseProvider = Provider.of<StudentCourseViewModel>(context);
     _goalsProvider = Provider.of<GoalsViewModel>(context);
     _stepsProvider = Provider.of<StepsViewModel>(context); 
 

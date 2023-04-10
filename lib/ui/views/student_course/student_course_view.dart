@@ -19,6 +19,7 @@ import 'package:mwb_connect_app/ui/views/student_course/widgets/course/waiting_s
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/training_completed_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/joyful_productivity_reminder_dialog.dart';
+import 'package:mwb_connect_app/ui/views/student_course/available_courses_fields/available_courses_fields_view.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/drawer_widget.dart';
@@ -26,11 +27,8 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/notification_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
-import 'available_courses_fields/available_courses_fields_view.dart';
-
 class StudentCourseView extends StatefulWidget {
-  StudentCourseView({Key? key, this.logoutCallback})
-    : super(key: key);  
+  StudentCourseView({Key? key, @required this.logoutCallback}) : super(key: key);
 
   final VoidCallback? logoutCallback;
 
@@ -46,6 +44,7 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   InAppMessagesViewModel? _inAppMessagesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
+  bool _isDataLoaded = false;
   bool _isInAppMessageOpen = false;
 
   @override
@@ -58,10 +57,10 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }  
+  }
 
   @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {   
     if (state == AppLifecycleState.resumed) {
       _setTimeZone();
       _reload();
@@ -70,14 +69,16 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   }
 
   void _reload() {
+    _commonProvider?.getGoalAttempts = 0;    
     setState(() {
+      _isDataLoaded = false;
       _isInit = false;
-    });    
+    });
   }
 
   void _setTimeZone() {
     _commonProvider?.setTimeZone();
-  }   
+  }
 
   Future<void> _checkUpdate() async {
     final UpdateAppViewModel updatesProvider = locator<UpdateAppViewModel>();
@@ -86,9 +87,9 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: false)));
     } else if (updateStatus == UpdateStatus.FORCE_UPDATE) {
       Navigator.push(context, MaterialPageRoute<UpdateAppView>(builder: (_) => UpdateAppView(isForced: true)));
-    }    
+    }
   }
-  
+
   Future<void> _showInAppMessage(_) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     bool? shouldShowNotification = _inAppMessagesProvider?.inAppMessage?.text?.isNotEmpty;
@@ -101,24 +102,17 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
             text: _inAppMessagesProvider?.inAppMessage?.text,
             buttonText: 'common.ok'.tr(),
             shouldReload: false,
-          )
-        )
-      ).then((_) => _setInAppMessageClosed());
+          ))).then((_) => _setInAppMessageClosed());
     } else {
       bool shouldShowProductivityReminder = _studentCourseProvider!.getShouldShowProductivityReminder();
       if (mounted && shouldShowProductivityReminder && !_isInAppMessageOpen) {
         _isInAppMessageOpen = true;
         _studentCourseProvider?.setLastShownProductivityReminderDate();
-        showDialog(
-          context: context,
-          builder: (_) => AnimatedDialog(
-            widgetInside: JoyfulProductivityReminderDialog()
-          )
-        ).then((_) => _setInAppMessageClosed());
+        showDialog(context: context, builder: (_) => AnimatedDialog(widgetInside: JoyfulProductivityReminderDialog())).then((_) => _setInAppMessageClosed());
       }
     }
   }
-  
+
   void _setInAppMessageClosed() {
     _isInAppMessageOpen = false;
     _inAppMessagesProvider?.deleteInAppMessage();
@@ -126,24 +120,16 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
 
   Widget _showTitle() {
     String title = 'student_course.course_title'.tr();
-    return Container(
-      padding: const EdgeInsets.only(right: 50.0),
-      child: Center(
-        child: Text(
-          title,
-          textAlign: TextAlign.center
-        )
-      )
-    );
+    return Container(padding: const EdgeInsets.only(right: 50.0), child: Center(child: Text(title, textAlign: TextAlign.center)));
   }
 
- Widget _showContent() {
-    if (_isInit) {
+  Widget _showContent() {
+    if (_isDataLoaded == true) {
       return _showStudentCourse();
     } else {
       return const Loader();
     }
-  }  
+  }
 
   Widget _showStudentCourse() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -157,60 +143,44 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     final List<ColoredText> waitingStartCourseText = _studentCourseProvider?.getWaitingStartCourseText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _studentCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0), 
-      child: ListView(
-        padding: const EdgeInsets.only(top: 0.0),
-        children: [
-          if (isTrainingEnabled && shouldShowTraining() == true) 
-            SolveQuizAddStep(),
-          if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) 
-            TrainingCompleted(),
-          if (!isCourse || isCourse && isCourseStarted && isNextLesson) 
-            FindAvailableCourse(
-                onFind: _goToAvailableCoursesFields
-          ),
-          if (isCourse && isCourseStarted && isNextLesson) 
+        padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
+        child: ListView(padding: const EdgeInsets.only(top: 0.0), children: [
+          if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
+          if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
+          if (!isCourse || isCourse && isCourseStarted && !isNextLesson) FindAvailableCourse(onFind: _goToAvailableCoursesFields),
+          if (isCourse && isCourseStarted && isNextLesson)
             Course(
                 mentorNextLesson: mentorNextLesson,
                 text: courseText,
                 whatsAppGroupUrl: whatsAppGroupUrl,
                 onCancelNextLesson: _cancelNextLesson,
-                onCancelCourse: _cancelCourse
-          ),
+                onCancelCourse: _cancelCourse),
           if (isCourse && !isCourseStarted) 
             WaitingStartCourse(
-                text: waitingStartCourseText,
-                currentStudentsText: currentStudentsText,
-                onCancel: _cancelCourse
-          )
-        ]
-      )
-    );
+                text: waitingStartCourseText, 
+                currentStudentsText: currentStudentsText, 
+                onCancel: _cancelCourse)
+        ]));
   }
 
   Future<void> _cancelNextLesson(String? reason) async {
     await _studentCourseProvider?.cancelNextLesson(reason);
-  }   
+  }
 
   Future<void> _cancelCourse(String? reason) async {
     await _studentCourseProvider?.cancelCourse(reason);
   }
 
   Future<void> _goToAvailableCoursesFields() async {
-    Navigator.push<CourseModel>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AvailableCoursesFieldsView()
-      )
-    ).then((CourseModel? course) {
+    Navigator.push<CourseModel>(context, MaterialPageRoute(builder: (context) => AvailableCoursesFieldsView())).then((CourseModel? course) {
       if (course != null) {
         _studentCourseProvider?.setCourse(course);
       }
-    });    
-  }  
+    });
+  }
 
-  bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;  
-  
+  bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;
+
   Future<void> _init() async {
     List<String> logsList = _studentCourseProvider!.getLogsList(
       _goalsProvider?.selectedGoal?.id,
@@ -218,6 +188,7 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
       _quizzesProvider?.quizzes
     );
     if (!_isInit && _studentCourseProvider != null) {
+      _isInit = true;
       await Future.wait([
         _studentCourseProvider!.getCourse(),
         _studentCourseProvider!.getNextLesson(),
@@ -227,17 +198,18 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
         _quizzesProvider!.getQuizzes(),
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
-      ]).timeout(const Duration(seconds: 3600))
-      .catchError((error) {
+      ]).timeout(const Duration(seconds: 3600)).catchError((error) {
         _studentCourseProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, error, logsList);
       });
       _studentCourseProvider?.sendAPIDataLogs(_commonProvider!.getGoalAttempts, '', logsList);
       await _commonProvider!.initPushNotifications();
-      if (_goalsProvider?.selectedGoal != null || _commonProvider!.getGoalAttempts >= 10) {
-        _isInit = true;
-      } else {
+      if (_goalsProvider?.selectedGoal == null && _commonProvider!.getGoalAttempts < 10) {
         _commonProvider!.getGoalAttempts++;
-        setState(() {});
+        _reload();
+      } else {
+        setState(() {
+          _isDataLoaded = true;
+        });
       }
     }
   }
@@ -250,7 +222,7 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     _quizzesProvider = Provider.of<QuizzesViewModel>(context);
     _inAppMessagesProvider = Provider.of<InAppMessagesViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
-    WidgetsBinding.instance.addPostFrameCallback(_showInAppMessage);    
+    WidgetsBinding.instance.addPostFrameCallback(_showInAppMessage);
 
     return FutureBuilder<void>(
       future: _init(),
@@ -260,21 +232,13 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
             const BackgroundGradient(),
             Scaffold(
               backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                title: _showTitle(),
-                backgroundColor: Colors.transparent,          
-                elevation: 0.0
-              ),
+              appBar: AppBar(title: _showTitle(), backgroundColor: Colors.transparent, elevation: 0.0),
               extendBodyBehindAppBar: true,
               resizeToAvoidBottomInset: false,
               body: _showContent(),
-              drawer: DrawerWidget(
-                logoutCallback: widget.logoutCallback as VoidCallback
-              )
-            )
+              drawer: DrawerWidget(logoutCallback: widget.logoutCallback as VoidCallback))
           ],
         );
-      }
-    );
+      });
   }
 }

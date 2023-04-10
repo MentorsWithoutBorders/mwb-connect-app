@@ -19,5 +19,4 @@ class RootViewModel extends ChangeNotifier {
   }
 
   bool get isNextLesson => nextLesson != null && nextLesson?.id != null && nextLesson?.isCanceled != true;
-
 }

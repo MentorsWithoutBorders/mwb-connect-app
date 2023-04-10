@@ -10,11 +10,13 @@ import 'package:mwb_connect_app/core/models/student_certificate.model.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_texts_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_utils_service.dart';
+import 'package:mwb_connect_app/core/services/logger_service.dart';
 
 class StudentCourseViewModel extends ChangeNotifier {
   final StudentCourseApiService _studentCourseApiService = locator<StudentCourseApiService>();
   final StudentCourseTextsService _studentCourseTextsService = locator<StudentCourseTextsService>();
   final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();
+  final LoggerService _loggerService = locator<LoggerService>();
   CourseModel? course;
   NextLessonStudent? nextLesson;
   CourseType? courseType;
@@ -109,4 +111,8 @@ class StudentCourseViewModel extends ChangeNotifier {
   void sendAPIDataLogs(int i, String error, List<String> logs) {
     _studentCourseUtilsService.sendAPIDataLogs(i, error, logs);
   }
+
+  void addLogEntry(String text) {
+    _loggerService.addLogEntry(text);
+  }  
 }

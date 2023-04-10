@@ -16,8 +16,8 @@ class ConditionsList extends StatelessWidget {
   }): super(key: key);  
   
   Widget _showConditionsList(BuildContext context) {
-    String oneNewStep = 'lesson_request.one_new_step'.tr();
-    String addStep = 'lesson_request.add_step'.tr(args: [oneNewStep]);
+    String oneNewStep = 'connect_with_mentor.one_new_step'.tr();
+    String addStep = 'connect_with_mentor.add_step'.tr(args: [oneNewStep]);
     String firstPartAddStep = addStep.substring(0, addStep.indexOf(oneNewStep));
     String secondPartAddStep = addStep.substring(addStep.indexOf(oneNewStep) + oneNewStep.length);
 
@@ -45,7 +45,7 @@ class ConditionsList extends StatelessWidget {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'lesson_request.solve'.tr()
+                          text: 'connect_with_mentor.solve'.tr()
                         ),
                         TextSpan(
                           text: ' ' + quizzes! + ' ',

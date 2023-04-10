@@ -16,12 +16,10 @@ import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/models/time_model.dart';
 import 'package:mwb_connect_app/core/services/user_service.dart';
 import 'package:mwb_connect_app/core/services/profile_service.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final UserService _userService = locator<UserService>();
   final ProfileService _profileService = locator<ProfileService>();
-  final LocalStorageService _storageService = locator<LocalStorageService>();
   final AuthService _authService = locator<AuthService>();
   User? user;
   List<Field>? fields;

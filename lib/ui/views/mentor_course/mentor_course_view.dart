@@ -57,6 +57,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   InAppMessagesViewModel? _inAppMessagesProvider;
   CommonViewModel? _commonProvider;
   bool _isInit = false;
+  bool _isDataLoaded = false;
   bool _wasMeetingUrlDialogShown = false;
   bool _isInAppMessageOpen = false;
 
@@ -84,6 +85,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   void _reload() {
     setState(() {
+      _isDataLoaded = false;
       _isInit = false;
     });
   }
@@ -129,7 +131,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   }
 
   Widget _showContent() {
-    if (_isInit) {
+    if (_isDataLoaded) {
       return _showMentorCourse();
     } else {
       return const Loader();
@@ -224,7 +226,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
                 partnerMentorName: requestPartnerMentorName, 
                 text: waitingMentorPartnershipApprovalText, 
                 onCancel: _cancelMentorPartnershipRequest),
-          if (isMentorWaitingRequest) WaitingMentorPartnershipRequest(onCancel: _cancelMentorWaitingRequest, onFindPartner: _findPartner)
+          if (isMentorWaitingRequest)
+            WaitingMentorPartnershipRequest(
+                onCancel: _cancelMentorWaitingRequest, 
+                onFindPartner: _findPartner)
         ]));
   }
 
@@ -341,6 +346,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final User user = _commonProvider?.user as User;
     final String fieldId = user.field?.id as String;
     if (!_isInit && _mentorCourseProvider != null) {
+      _isInit = true;
       await Future.wait([
         _mentorCourseProvider!.getCourseTypes(),
         _mentorCourseProvider!.getCourse(),
@@ -355,11 +361,13 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         _commonProvider!.getAppFlags()
       ]).timeout(const Duration(seconds: 3600));
       _mentorCourseProvider!.getMentorPartnershipSchedule();
+      setState(() {
+        _isDataLoaded = true;
+      });      
       _showSetMeetingUrlDialog();
       _showExpiredMentorPartnershipRequest();
       _showCanceledMentorPartnershipRequest();
       await _commonProvider!.initPushNotifications();
-      _isInit = true;
     }
   }
 

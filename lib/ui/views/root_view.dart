@@ -15,21 +15,16 @@ import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 
 final GetIt getIt = GetIt.instance;
 
-enum AuthStatus {
-  NOT_DETERMINED,
-  NOT_LOGGED_IN,
-  LOGGED_IN
-}
+enum AuthStatus { NOT_DETERMINED, NOT_LOGGED_IN, LOGGED_IN }
 
 class RootView extends StatefulWidget {
-  const RootView({Key? key})
-    : super(key: key);   
+  const RootView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _RootViewState();
 }
 
-class _RootViewState extends State<RootView> {
+class _RootViewState extends State<RootView> with WidgetsBindingObserver {
   RootViewModel? _rootProvider;
   CommonViewModel? _commonProvider;
   GoalsViewModel? _goalsProvider;
@@ -53,44 +48,35 @@ class _RootViewState extends State<RootView> {
     });
   }
 
-  Widget _showMentorCourseView() { 
+  Widget _showMentorCourseView() {
     return MentorCourseView(
       logoutCallback: _logoutCallback,
     );
   }
-  
+
   Widget _showStudentCourseView() {
     return StudentCourseView(
       logoutCallback: _logoutCallback
     );
   }
-  
+
   Widget _showLessonRequestView() {
-    return LessonRequestView(
-      logoutCallback: _logoutCallback
-    );
-  }  
-  
+    return LessonRequestView(logoutCallback: _logoutCallback);
+  }
+
   Widget _showConnectWithMentorView() {
-    return ConnectWithMentorView(
-      logoutCallback: _logoutCallback
-    );
-  } 
+    return ConnectWithMentorView(logoutCallback: _logoutCallback);
+  }
 
   Widget _buildWaitingScreen() {
-    return Stack(
-      children: <Widget>[
-        BackgroundGradient(),
-        Loader()
-      ]
-    );
+    return Stack(children: <Widget>[BackgroundGradient(), Loader()]);
   }
 
   void _setCurrentUser() {
     _userId = _rootProvider?.getUserId();
     _authStatus = _userId == null || _userId!.isEmpty ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
-  }    
-  
+  }
+
   Future<void> _init() async {
     _setCurrentUser();
     if (_userId != null && _userId!.isNotEmpty) {
@@ -111,38 +97,35 @@ class _RootViewState extends State<RootView> {
     _goalsProvider = Provider.of<GoalsViewModel>(context);
 
     return FutureBuilder<void>(
-      future: _init(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        bool? isNextLesson = _rootProvider?.isNextLesson;
-        switch (_authStatus) {
-          case AuthStatus.NOT_DETERMINED:
-            return _buildWaitingScreen();
-          case AuthStatus.NOT_LOGGED_IN:
-            return OnboardingView(
-              loginCallback: _loginCallback
-            );
-          case AuthStatus.LOGGED_IN:
-            bool? isMentor = _commonProvider?.user?.isMentor;
-            if (isMentor != null) {
-              if (isMentor) {
-               if (isNextLesson == true) {
-                  return _showLessonRequestView();
-                } else {
-                  return _showMentorCourseView();
-                }                
-              } else {
-                if (isNextLesson == true) {
-                  return _showConnectWithMentorView();
-                } else {
-                  return _showStudentCourseView();
-                }
-              }
-            } else
+        future: _init(),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          bool? isNextLesson = _rootProvider?.isNextLesson;
+          switch (_authStatus) {
+            case AuthStatus.NOT_DETERMINED:
               return _buildWaitingScreen();
-          default:
-            return _buildWaitingScreen();
-        }
-      }
-    );
+            case AuthStatus.NOT_LOGGED_IN:
+              return OnboardingView(loginCallback: _loginCallback);
+            case AuthStatus.LOGGED_IN:
+              bool? isMentor = _commonProvider?.user?.isMentor;
+              if (isMentor != null) {
+                if (isMentor) {
+                  if (isNextLesson == true) {
+                    return _showLessonRequestView();
+                  } else {
+                    return _showMentorCourseView();
+                  }
+                } else {
+                  if (isNextLesson == true) {
+                    return _showConnectWithMentorView();
+                  } else {
+                    return _showStudentCourseView();
+                  }
+                }
+              } else
+                return _buildWaitingScreen();
+            default:
+              return _buildWaitingScreen();
+          }
+        });
   }
 }
