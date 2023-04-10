@@ -4,7 +4,7 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course_types/course_item_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course_types/course_type_item_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course_types/edit_course_details_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
