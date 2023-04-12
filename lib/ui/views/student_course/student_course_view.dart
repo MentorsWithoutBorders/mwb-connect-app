@@ -5,6 +5,8 @@ import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/update_status.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/course_result_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_student_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/student_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
@@ -143,24 +145,28 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     final List<ColoredText> waitingStartCourseText = _studentCourseProvider?.getWaitingStartCourseText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _studentCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     return Padding(
-        padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
-        child: ListView(padding: const EdgeInsets.only(top: 0.0), children: [
-          if (isTrainingEnabled && shouldShowTraining() == true) SolveQuizAddStep(),
-          if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) TrainingCompleted(),
-          if (!isCourse || isCourse && isCourseStarted && !isNextLesson) FindAvailableCourse(onFind: _goToAvailableCoursesFields),
-          if (isCourse && isCourseStarted && isNextLesson)
-            Course(
-                mentorNextLesson: mentorNextLesson,
-                text: courseText,
-                whatsAppGroupUrl: whatsAppGroupUrl,
-                onCancelNextLesson: _cancelNextLesson,
-                onCancelCourse: _cancelCourse),
-          if (isCourse && !isCourseStarted) 
-            WaitingStartCourse(
-                text: waitingStartCourseText, 
-                currentStudentsText: currentStudentsText, 
-                onCancel: _cancelCourse)
-        ]));
+      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
+      child: ListView(padding: const EdgeInsets.only(top: 0.0), children: [
+        if (isTrainingEnabled && shouldShowTraining() == true) 
+          SolveQuizAddStep(),
+        if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) 
+          TrainingCompleted(),
+        if (!isCourse || isCourse && isCourseStarted && !isNextLesson) 
+          FindAvailableCourse(
+              onFind: _goToAvailableCoursesFields),
+        if (isCourse && isCourseStarted && isNextLesson)
+          Course(
+              mentorNextLesson: mentorNextLesson,
+              text: courseText,
+              whatsAppGroupUrl: whatsAppGroupUrl,
+              onCancelNextLesson: _cancelNextLesson,
+              onCancelCourse: _cancelCourse),
+        if (isCourse && !isCourseStarted) 
+          WaitingStartCourse(
+              text: waitingStartCourseText, 
+              currentStudentsText: currentStudentsText, 
+              onCancel: _cancelCourse)
+      ]));
   }
 
   Future<void> _cancelNextLesson(String? reason) async {
@@ -172,9 +178,10 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   }
 
   Future<void> _goToAvailableCoursesFields() async {
-    Navigator.push<CourseModel>(context, MaterialPageRoute(builder: (context) => AvailableCoursesFieldsView())).then((CourseModel? course) {
-      if (course != null) {
-        _studentCourseProvider?.setCourse(course);
+    Navigator.push<CourseResult>(context, MaterialPageRoute(builder: (context) => AvailableCoursesFieldsView())).then((CourseResult? courseResult) {
+      if (courseResult?.course != null) {
+        _studentCourseProvider?.setCourse(courseResult?.course as CourseModel);
+        _studentCourseProvider?.setNextLesson(courseResult?.nextLesson as NextLessonStudent);
       }
     });
   }

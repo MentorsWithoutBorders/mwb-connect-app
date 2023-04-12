@@ -34,7 +34,7 @@ class StudentCourseTextsService {
     String until = 'common.until'.tr();
     String at = 'common.at'.tr();
     String text = 'student_course.course_text'.tr(args: [courseDuration, mentorsSubfields, mentorsNames, courseDayOfWeek, courseEndDate, nextLessonDate, nextLessonTime, timeZone]);
-    String courseLinksText = partnerMentor == null || mentor.meetingUrl == null || partnerMentor.meetingUrl == null ? 'student_course.course_link_text'.tr() : 'student_course.course_links_text'.tr();
+    String courseLinkText = 'student_course.course_link_text'.tr();
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorsSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentor.field!.subfields![0].name, color: AppColors.TANGO),
@@ -53,7 +53,7 @@ class StudentCourseTextsService {
       ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: nextLessonTime + ' ' + timeZone, color: AppColors.TANGO),
       ColoredText(text: text.substring(text.indexOf(timeZone) + timeZone.length), color: AppColors.DOVE_GRAY),
-      ColoredText(text: ' ' + courseLinksText, color: AppColors.DOVE_GRAY),
+      ColoredText(text: ' ' + courseLinkText, color: AppColors.DOVE_GRAY),
     ];
   }
 

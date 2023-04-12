@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/models/course_result_model.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -119,16 +120,14 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
 
   Future<void> _goToAvailableCourses(String fieldId) async {
     _availableCoursesProvider?.setFilterField(fieldId);
-    Navigator.push<CourseModel>(
+    Navigator.push<CourseResult>(
       context,
       MaterialPageRoute(
         builder: (context) => AvailableCoursesView()
       )
-    ).then((CourseModel? course) {
-      if (course != null) {
-        _resetValues();
-        Navigator.pop(context, course);
-      }
+    ).then((CourseResult? courseResult) {
+      _resetValues();
+      Navigator.pop(context, courseResult);
     });     
   }
   

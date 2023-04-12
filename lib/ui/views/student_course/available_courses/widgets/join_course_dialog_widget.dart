@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
-import 'package:mwb_connect_app/core/models/course_model.dart';
+import 'package:mwb_connect_app/core/models/course_result_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
@@ -105,8 +105,8 @@ class _JoinCourseDialogState extends State<JoinCourseDialog> {
       _isJoiningCourse = true;
     });
     try {
-      CourseModel? course = await widget.onJoin!(widget.id as String);
-      Navigator.pop(context, course);
+      CourseResult? courseResult = await widget.onJoin!(widget.id as String);
+      Navigator.pop(context, courseResult);
     } on ErrorModel catch (error) {
       String? message = error.message;
       Navigator.pop(context);

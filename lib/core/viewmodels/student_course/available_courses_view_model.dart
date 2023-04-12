@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/utils/utils_availabilities.dart';
 import 'package:mwb_connect_app/utils/utils_fields.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_student_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/skill_model.dart';
@@ -17,6 +18,7 @@ import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/course_filter_model.dart';
 import 'package:mwb_connect_app/core/services/mentor_course/mentor_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/available_courses_api_service.dart';
+import 'package:mwb_connect_app/core/services/student_course/student_course_api_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/available_courses_utils_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/student_course_utils_service.dart';
 import 'package:mwb_connect_app/core/services/student_course/available_courses_texts_service.dart';
@@ -25,6 +27,7 @@ import 'package:mwb_connect_app/core/services/fields_goals_service.dart';
 class AvailableCoursesViewModel extends ChangeNotifier {
   final AvailableCoursesApiService _availableCoursesApiService = locator<AvailableCoursesApiService>();
   final MentorCourseApiService _mentorCourseApiService = locator<MentorCourseApiService>();
+  final StudentCourseApiService _studentCourseApiService = locator<StudentCourseApiService>();
   final AvailableCoursesUtilsService _availableCoursesUtilsService = locator<AvailableCoursesUtilsService>();
   final StudentCourseUtilsService _studentCourseUtilsService = locator<StudentCourseUtilsService>();
   final AvailableCoursesTextsService _availableCoursesTextsService = locator<AvailableCoursesTextsService>();
@@ -102,6 +105,11 @@ class AvailableCoursesViewModel extends ChangeNotifier {
       throw(error);
     }    
   }
+
+  Future<NextLessonStudent> getNextLesson() async {
+    NextLessonStudent nextLesson = await _studentCourseApiService.getNextLesson();
+    return nextLesson;
+  }  
 
   String getFieldName(CourseModel course) {
     return _availableCoursesUtilsService.getFieldName(course);

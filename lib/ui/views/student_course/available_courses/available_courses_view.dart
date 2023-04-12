@@ -5,7 +5,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
+import 'package:mwb_connect_app/core/models/course_result_model.dart';
 import 'package:mwb_connect_app/core/models/course_student_model.dart';
+import 'package:mwb_connect_app/core/models/next_lesson_student_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/error_model.dart';
@@ -111,16 +113,19 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
     );
   }
 
-  Future<CourseModel> _joinCourse(String courseId) async {
+  Future<CourseResult> _joinCourse(String courseId) async {
     CourseModel? course = CourseModel();
+    NextLessonStudent? nextLesson;
     try {
       course = await _availableCoursesProvider?.joinCourse(courseId);
+      nextLesson = await _availableCoursesProvider?.getNextLesson();
     } on ErrorModel catch(error) {
       _pageNumber = 1;
       _pagingController.refresh();
       throw(error);
-    } 
-    return course!;
+    }
+    CourseResult courseResult = CourseResult(course: course, nextLesson: nextLesson);
+    return courseResult;
   }
 
   Widget _showNoItemsFoundIndicator() {

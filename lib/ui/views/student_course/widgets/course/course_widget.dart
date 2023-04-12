@@ -62,7 +62,6 @@ class _CourseState extends State<Course> {
 
   Widget _showMeetingUrl() {
     String meetingUrl = widget.mentorNextLesson?.meetingUrl ?? '';
-    String mentorName = widget.mentorNextLesson?.name ?? '';
     bool isWhatsAppGroupUrl = widget.whatsAppGroupUrl != null && widget.whatsAppGroupUrl!.isNotEmpty;
     return Container(
       padding: const EdgeInsets.only(bottom: 7.0),

@@ -3,12 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/error_model.dart';
-import 'package:mwb_connect_app/core/services/local_storage_service.dart';
-import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -27,8 +24,6 @@ class LoginSignupView extends StatefulWidget {
 }
 
 class _LoginSignupViewState extends State<LoginSignupView> {
-  final LocalStorageService _storageService = locator<LocalStorageService>();
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();  
   LoginSignupViewModel? _loginSignupProvider;
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -464,7 +459,6 @@ class _LoginSignupViewState extends State<LoginSignupView> {
         });
 
         if (isNotEmpty(userId)) {
-          _identifyUser();
           Navigator.pop(context);
           widget.loginCallback!();
         }
@@ -490,13 +484,6 @@ class _LoginSignupViewState extends State<LoginSignupView> {
     }
     return false;
   }
-
-  void _identifyUser() {
-    final String? userId = _storageService.userId;
-    final String? name = _storageService.userName;
-    final String? email = _storageService.userEmail;
-    // _analyticsService.identifyUser(userId!, name!, email!);
-  }  
 
   void _resetForm() {
     _formKey.currentState?.reset();

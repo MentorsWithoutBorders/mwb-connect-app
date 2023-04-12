@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';

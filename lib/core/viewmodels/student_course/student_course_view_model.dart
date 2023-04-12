@@ -38,8 +38,13 @@ class StudentCourseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCourse(CourseModel course) {
-    this.course = course;
+  void setCourse(CourseModel courseToSet) {
+    course = courseToSet;
+    notifyListeners();
+  }
+
+  void setNextLesson(NextLessonStudent nextLessonToSet) {
+    nextLesson = nextLessonToSet;
     notifyListeners();
   }
 

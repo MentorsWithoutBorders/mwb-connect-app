@@ -360,7 +360,6 @@
     "cancel_course_text": "Are you sure you don't want to participate in this course?",
     "course_text": "You are participating in the {}-month {} course conducted by {} every {} until {}.\n\nThe next lesson will be on {} at {} {} and you’ll use",
     "course_link_text": "the following link:",
-    "course_links_text": "one of the following links:",
     "see_course_notes": "See course notes",
     "no_course_notes": "No course notes have been added yet.",
     "schedule": "Course schedule",
