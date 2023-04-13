@@ -80,6 +80,7 @@ class _CourseState extends State<Course> {
               InkWell(
                 child: Text(
                   meetingUrl,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 13.0,
                     fontWeight: FontWeight.bold,
@@ -116,6 +117,7 @@ class _CourseState extends State<Course> {
             InkWell(
               child: Text(
                 whatsAppGroupUrl,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 13.0,
                   fontWeight: FontWeight.bold,

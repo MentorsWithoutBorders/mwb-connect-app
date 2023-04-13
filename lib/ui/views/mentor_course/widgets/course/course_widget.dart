@@ -150,11 +150,11 @@ class _CourseState extends State<Course> {
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
             text,
-            style: const TextStyle(fontSize: 12, color: AppColors.DOVE_GRAY),
+            style: const TextStyle(fontSize: 12.0, color: AppColors.DOVE_GRAY),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 18.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 20.0),
           child: Row(
             children: [
               Expanded(
@@ -204,19 +204,28 @@ class _CourseState extends State<Course> {
     String whatsAppGroupUrl = widget.course?.whatsAppGroupUrl ?? '';
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Padding(
-        padding: const EdgeInsets.only(bottom: 5.0),
+        padding: const EdgeInsets.only(bottom: 8.0),
         child: Text(
           'common.course_whatsapp_group_link'.tr(),
           style: const TextStyle(fontSize: 12, color: AppColors.DOVE_GRAY),
         ),
       ),
       Padding(
-        padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
+        padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 15.0),
         child: Row(children: [
           Expanded(
-              child: InkWell(
-                  child: Text(whatsAppGroupUrl, style: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
-                  onTap: () async => await Utils.launchAppUrl(whatsAppGroupUrl))),
+            child: InkWell(
+              child: Text(
+                whatsAppGroupUrl, 
+                style: const TextStyle(
+                  fontSize: 13.0, 
+                  fontWeight: FontWeight.bold, 
+                  decoration: TextDecoration.underline
+                )
+              ),
+              onTap: () async => await Utils.launchAppUrl(whatsAppGroupUrl)
+            )
+          ),
           _showEditWhatsAppGroupLink()
         ]),
       )
@@ -225,22 +234,28 @@ class _CourseState extends State<Course> {
 
   Widget _showEditWhatsAppGroupLink() {
     return InkWell(
-        child: Container(
-          height: 22.0,
-          padding: const EdgeInsets.only(left: 5.0, right: 3.0),
-          child: Image.asset('assets/images/edit_icon.png'),
-        ),
-        onTap: () {
-          _showSetWhatsAppGroupLinkDialog(isUpdate: true);
-        });
+      child: Container(
+        height: 22.0,
+        padding: const EdgeInsets.only(left: 5.0, right: 3.0),
+        child: Image.asset('assets/images/edit_icon.png'),
+      ),
+      onTap: () {
+        _showSetWhatsAppGroupLinkDialog(isUpdate: true);
+      }
+    );
   }
 
   void _showSetWhatsAppGroupLinkDialog({bool isUpdate = false}) {
     showDialog(
-        context: context,
-        builder: (_) => AnimatedDialog(
-            widgetInside:
-                SetWhatsAppGroupUrlDialog(whatsAppGroupUrl: widget.course?.whatsAppGroupUrl, isUpdate: isUpdate, onSet: widget.onSetWhatsAppGroupUrl)));
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: SetWhatsAppGroupUrlDialog(
+          whatsAppGroupUrl: widget.course?.whatsAppGroupUrl, 
+          isUpdate: isUpdate, 
+          onSet: widget.onSetWhatsAppGroupUrl
+        )
+      )
+    );
   }
 
   Widget _showSetWhatsAppGroupLinkButton() {
@@ -249,19 +264,24 @@ class _CourseState extends State<Course> {
       child: Center(
         child: Column(children: [
           Container(
-              height: 30.0,
-              margin: const EdgeInsets.only(bottom: 5.0),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 1.0,
-                    backgroundColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                    padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-                  ),
-                  child: Text('mentor_course.add_whatsapp_group'.tr(), style: const TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    _showSetWhatsAppGroupLinkDialog();
-                  }))
+            height: 30.0,
+            margin: const EdgeInsets.only(bottom: 5.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 1.0,
+                backgroundColor: AppColors.ALLPORTS,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+              ),
+              child: Text(
+                'mentor_course.add_whatsapp_group'.tr(), 
+                style: const TextStyle(color: Colors.white)
+              ),
+              onPressed: () {
+                _showSetWhatsAppGroupLinkDialog();
+              }
+            )
+          )
         ]),
       ),
     );
@@ -273,19 +293,24 @@ class _CourseState extends State<Course> {
       child: Center(
         child: Column(children: [
           Container(
-              height: 30.0,
-              margin: const EdgeInsets.only(bottom: 5.0),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 1.0,
-                    backgroundColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                    padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-                  ),
-                  child: Text('mentor_course.update_course_notes'.tr(), style: const TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    _goToUpdateCourseNotes();
-                  }))
+            height: 30.0,
+            margin: const EdgeInsets.only(bottom: 5.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 1.0,
+                backgroundColor: AppColors.ALLPORTS,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+              ),
+              child: Text(
+                'mentor_course.update_course_notes'.tr(), 
+                style: const TextStyle(color: Colors.white)
+              ),
+              onPressed: () {
+                _goToUpdateCourseNotes();
+              }
+            )
+          )
         ]),
       ),
     );
