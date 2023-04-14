@@ -6,6 +6,7 @@ class AppColors {
   static const Color EMERALD = Color(0xff51d468);
   static const Color JAPANESE_LAUREL = Color(0xff088a0b);
   static const Color WATERCOURSE = Color(0xff097054);
+  static const Color BRANDEIS_BLUE = Color(0xff256eff);
   static const Color MONZA = Color(0xffd40a07);
   static const Color PACIFIC_BLUE = Color(0xff06a4c2);
   static const Color DOVE_GRAY = Color(0xff646464);

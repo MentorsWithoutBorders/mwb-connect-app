@@ -324,22 +324,29 @@ class _CourseState extends State<Course> {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Center(
-        child: Column(children: [
-          Container(
+        child: Column(
+          children: [
+            Container(
               height: 30.0,
               margin: const EdgeInsets.only(bottom: 5.0),
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 1.0,
-                    backgroundColor: AppColors.ALLPORTS,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                    padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-                  ),
-                  child: Text('mentor_course.update_partnership_schedule'.tr(), style: const TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    _goToUpdatePartnershipSchedule();
-                  }))
-        ]),
+                style: ElevatedButton.styleFrom(
+                  elevation: 1.0,
+                  backgroundColor: AppColors.ALLPORTS,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                  padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+                ),
+                child: Text(
+                  'mentor_course.update_partnership_schedule'.tr(), 
+                  style: const TextStyle(color: Colors.white)
+                ),
+                onPressed: () {
+                  _goToUpdatePartnershipSchedule();
+                }
+              )
+            )
+          ]
+        ),
       ),
     );
   }
@@ -347,36 +354,46 @@ class _CourseState extends State<Course> {
   void _goToUpdatePartnershipSchedule() {
     final List<CourseMentor> mentors = widget.course?.mentors ?? [];
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MentorPartnershipScheduleView(
-                mentorPartnershipSchedule: widget.mentorPartnershipSchedule,
-                mentors: mentors,
-                text: widget.mentorPartnershipScheduleText,
-                onUpdateScheduleItem: widget.onUpdateScheduleItem)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => MentorPartnershipScheduleView(
+          mentorPartnershipSchedule: widget.mentorPartnershipSchedule,
+          mentors: mentors,
+          text: widget.mentorPartnershipScheduleText,
+          onUpdateScheduleItem: widget.onUpdateScheduleItem
+        )
+      )
+    );
   }
 
   Widget _showCancelButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
       child: Center(
-        child: Column(children: [
-          Container(
+        child: Column(
+          children: [
+            Container(
               height: 30.0,
               margin: const EdgeInsets.only(bottom: 5.0),
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 1.0,
-                    backgroundColor: AppColors.MONZA,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                    padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
-                  ),
-                  child: Text('common.cancel_lessons'.tr(), style: const TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    _showCancelCourseDialog();
-                  }))
-        ]),
-      ),
+                style: ElevatedButton.styleFrom(
+                  elevation: 1.0,
+                  backgroundColor: AppColors.MONZA,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                  padding: const EdgeInsets.fromLTRB(30.0, 3.0, 30.0, 3.0),
+                ),
+                child: Text(
+                  'common.cancel_lessons'.tr(), 
+                  style: const TextStyle(color: Colors.white)
+                ),
+                onPressed: () {
+                  _showCancelCourseDialog();
+                }
+              )
+            )
+          ]
+        )
+      )
     );
   }
 
@@ -384,11 +401,13 @@ class _CourseState extends State<Course> {
     showDialog(
       context: context,
       builder: (_) => AnimatedDialog(
-          widgetInside: CancelLessonsOptionsDialog(
-              cancelCourseText: widget.cancelCourseText,
-              onCancelNextLesson: widget.onCancelNextLesson,
-              onCancelCourse: widget.onCancelCourse,
-              context: context)),
+        widgetInside: CancelLessonsOptionsDialog(
+          cancelCourseText: widget.cancelCourseText,
+          onCancelNextLesson: widget.onCancelNextLesson,
+          onCancelCourse: widget.onCancelCourse,
+          context: context
+        )
+      )
     );
   }
 

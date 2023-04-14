@@ -80,7 +80,7 @@ class MentorCourseTextsService {
     String text = 'mentor_course.partnership_schedule_text'.tr(args: [email]);
     return [
       ColoredText(text: text.substring(0, text.indexOf(email)), color: Colors.white),
-      ColoredText(text: email, color: Colors.blue, isBold: true),
+      ColoredText(text: email, color: AppColors.BRANDEIS_BLUE, isBold: true),
       ColoredText(text: text.substring(text.indexOf(email) + email.length), color: Colors.white),
     ];
   }

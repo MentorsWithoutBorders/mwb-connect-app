@@ -282,6 +282,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
 
   Future<void> _updateMentorPartnershipScheduleItem(String? scheduleItemId, String? mentorId) async {
     await _mentorCourseProvider?.updateMentorPartnershipScheduleItem(scheduleItemId, mentorId);
+    _reload();
   }
 
   Future<void> _cancelNextLesson(String? reason) async {
