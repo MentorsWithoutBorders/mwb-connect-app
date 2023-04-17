@@ -117,41 +117,44 @@ class _MWBConnectAppState extends State<MWBConnectApp> with WidgetsBindingObserv
         if (snapshot.hasData) {
           _setDefaults();
           return MultiProvider(
-              providers: [
-                ChangeNotifierProvider<CommonViewModel>.value(value: locator<CommonViewModel>()),
-                ChangeNotifierProvider<RootViewModel>.value(value: locator<RootViewModel>()),
-                ChangeNotifierProvider<LoginSignupViewModel>.value(value: locator<LoginSignupViewModel>()),
-                ChangeNotifierProvider<ForgotPasswordViewModel>.value(value: locator<ForgotPasswordViewModel>()),
-                ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
-                ChangeNotifierProvider<MentorCourseViewModel>.value(value: locator<MentorCourseViewModel>()),
-                ChangeNotifierProvider<StudentCourseViewModel>.value(value: locator<StudentCourseViewModel>()),
-                ChangeNotifierProvider<AvailableCoursesViewModel>.value(value: locator<AvailableCoursesViewModel>()),
-                ChangeNotifierProvider<MentorsWaitingRequestsViewModel>.value(value: locator<MentorsWaitingRequestsViewModel>()),
-                ChangeNotifierProvider<ConnectWithMentorViewModel>.value(value: locator<ConnectWithMentorViewModel>()),
-                ChangeNotifierProvider<AvailableMentorsViewModel>.value(value: locator<AvailableMentorsViewModel>()),
-                ChangeNotifierProvider<LessonRequestViewModel>.value(value: locator<LessonRequestViewModel>()),
-                ChangeNotifierProvider<GoalsViewModel>.value(value: locator<GoalsViewModel>()),
-                ChangeNotifierProvider<StepsViewModel>.value(value: locator<StepsViewModel>()),
-                ChangeNotifierProvider<QuizzesViewModel>.value(value: locator<QuizzesViewModel>()),
-                ChangeNotifierProvider<NotificationsViewModel>.value(value: locator<NotificationsViewModel>()),
-                ChangeNotifierProvider<InAppMessagesViewModel>.value(value: locator<InAppMessagesViewModel>())
-              ],
-              child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  navigatorKey: NavigationService.instance.navigationKey,
-                  initialRoute: '/',
-                  routes: {
-                    'root': (BuildContext context) => RootView(),
-                  },
-                  title: 'MWBConnect',
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: context.locale,
-                  theme: ThemeData(),
-                  home: RootView()));
+            providers: [
+              ChangeNotifierProvider<CommonViewModel>.value(value: locator<CommonViewModel>()),
+              ChangeNotifierProvider<RootViewModel>.value(value: locator<RootViewModel>()),
+              ChangeNotifierProvider<LoginSignupViewModel>.value(value: locator<LoginSignupViewModel>()),
+              ChangeNotifierProvider<ForgotPasswordViewModel>.value(value: locator<ForgotPasswordViewModel>()),
+              ChangeNotifierProvider<ProfileViewModel>.value(value: locator<ProfileViewModel>()),
+              ChangeNotifierProvider<MentorCourseViewModel>.value(value: locator<MentorCourseViewModel>()),
+              ChangeNotifierProvider<StudentCourseViewModel>.value(value: locator<StudentCourseViewModel>()),
+              ChangeNotifierProvider<AvailableCoursesViewModel>.value(value: locator<AvailableCoursesViewModel>()),
+              ChangeNotifierProvider<MentorsWaitingRequestsViewModel>.value(value: locator<MentorsWaitingRequestsViewModel>()),
+              ChangeNotifierProvider<ConnectWithMentorViewModel>.value(value: locator<ConnectWithMentorViewModel>()),
+              ChangeNotifierProvider<AvailableMentorsViewModel>.value(value: locator<AvailableMentorsViewModel>()),
+              ChangeNotifierProvider<LessonRequestViewModel>.value(value: locator<LessonRequestViewModel>()),
+              ChangeNotifierProvider<GoalsViewModel>.value(value: locator<GoalsViewModel>()),
+              ChangeNotifierProvider<StepsViewModel>.value(value: locator<StepsViewModel>()),
+              ChangeNotifierProvider<QuizzesViewModel>.value(value: locator<QuizzesViewModel>()),
+              ChangeNotifierProvider<NotificationsViewModel>.value(value: locator<NotificationsViewModel>()),
+              ChangeNotifierProvider<InAppMessagesViewModel>.value(value: locator<InAppMessagesViewModel>())
+            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: NavigationService.instance.navigationKey,
+              initialRoute: '/',
+              routes: {
+                'root': (BuildContext context) => RootView(),
+              },
+              title: 'MWBConnect',
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              theme: ThemeData(),
+              home: RootView()
+            )
+          );
         } else {
           return _buildWaitingScreen();
         }
-      });
+      }
+    );
   }
 }

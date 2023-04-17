@@ -4,14 +4,11 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
-import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/next_lesson_mentor_model.dart';
-import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/course_notes_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_meeting_url_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/set_whatsapp_group_dialog_url_widget.dart';
-import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/mentor_partnership_schedule_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/cancel_lessons_options_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
@@ -22,30 +19,26 @@ class Course extends StatefulWidget {
       {Key? key,
       @required this.course,
       @required this.nextLesson,
-      @required this.mentorPartnershipSchedule,
       @required this.meetingUrl,
       @required this.text,
-      @required this.mentorPartnershipScheduleText,
       @required this.cancelCourseText,
       @required this.onSetMeetingUrl,
       @required this.onSetWhatsAppGroupUrl,
       @required this.onUpdateNotes,
-      @required this.onUpdateScheduleItem,
+      @required this.onGoToPartnershipSchedule,
       @required this.onCancelNextLesson,
       @required this.onCancelCourse})
       : super(key: key);
 
   final CourseModel? course;
   final NextLessonMentor? nextLesson;
-  final List<MentorPartnershipScheduleItemModel>? mentorPartnershipSchedule;
   final String? meetingUrl;
   final List<ColoredText>? text;
-  final List<ColoredText>? mentorPartnershipScheduleText;
   final String? cancelCourseText;
   final Function(String)? onSetMeetingUrl;
   final Function(String)? onSetWhatsAppGroupUrl;
   final Function(String?)? onUpdateNotes;
-  final Function(String?, String?)? onUpdateScheduleItem;
+  final Function? onGoToPartnershipSchedule;
   final Function(String?)? onCancelNextLesson;
   final Function(String?)? onCancelCourse;
 
@@ -352,18 +345,7 @@ class _CourseState extends State<Course> {
   }
 
   void _goToUpdatePartnershipSchedule() {
-    final List<CourseMentor> mentors = widget.course?.mentors ?? [];
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MentorPartnershipScheduleView(
-          mentorPartnershipSchedule: widget.mentorPartnershipSchedule,
-          mentors: mentors,
-          text: widget.mentorPartnershipScheduleText,
-          onUpdateScheduleItem: widget.onUpdateScheduleItem
-        )
-      )
-    );
+    widget.onGoToPartnershipSchedule!();
   }
 
   Widget _showCancelButton() {

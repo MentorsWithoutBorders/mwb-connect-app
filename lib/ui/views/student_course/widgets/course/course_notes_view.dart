@@ -126,9 +126,9 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
       return SelectableText(
         courseNotes,
         style: const TextStyle(
-          fontSize: 13.0
+          fontSize: 13.0,
+          height: 1.5
         ),
-        toolbarOptions: const ToolbarOptions(copy: true),
         enableInteractiveSelection: true
       );
     }

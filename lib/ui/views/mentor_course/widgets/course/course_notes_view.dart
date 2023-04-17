@@ -59,7 +59,7 @@ class _CourseNotesViewState extends State<CourseNotesView> {
         style: const TextStyle(
           fontSize: 12.0,
           color: Colors.white,
-          height: 1.4
+          height: 1.5
         )
       ),
     );

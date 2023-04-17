@@ -14,7 +14,6 @@ import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_parternship_result_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
-import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/goals_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/steps_view_model.dart';
@@ -28,6 +27,7 @@ import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/waiting_st
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/mentor_partnership_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/waiting_mentor_partnership_request_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/mentor_partnership_request/waiting_mentor_partnership_approval_widget.dart';
+import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/mentor_partnership_schedule_view.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/training/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/training/training_completed_widget.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/mentors_waiting_requests/mentors_waiting_requests_view.dart';
@@ -157,7 +157,6 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final CourseModel? course = _mentorCourseProvider?.course;
     final NextLessonMentor? nextLesson = _mentorCourseProvider?.nextLesson;
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
-    final List<MentorPartnershipScheduleItemModel>? mentorPartnershipSchedule = _mentorCourseProvider?.mentorPartnershipSchedule;
     final int studentsCount = _mentorCourseProvider?.getStudentsCount() as int;
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
     final List<ColoredText> waitingStudentsNoPartnerText = _mentorCourseProvider?.getWaitingStudentsNoPartnerText() as List<ColoredText>;
@@ -165,7 +164,6 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<ColoredText> maximumStudentsText = _mentorCourseProvider?.getMaximumStudentsText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _mentorCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     final List<ColoredText>? courseText = _mentorCourseProvider?.getCourseText();
-    final List<ColoredText>? mentorPartnershipScheduleText = _mentorCourseProvider?.getMentorPartnershipScheduleText();
     final String cancelCourseText = _mentorCourseProvider?.getCancelCourseText() as String;
     // Mentor partnership request
     final String requestPartnerMentorName = _mentorCourseProvider?.getRequestPartnerMentorName() ?? '';
@@ -202,15 +200,13 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             Course(
                 course: course,
                 nextLesson: nextLesson,
-                mentorPartnershipSchedule: mentorPartnershipSchedule,
                 meetingUrl: meetingUrl,
                 text: courseText,
-                mentorPartnershipScheduleText: mentorPartnershipScheduleText,
                 cancelCourseText: cancelCourseText,
                 onSetMeetingUrl: _setMeetingUrl,
                 onSetWhatsAppGroupUrl: _setWhatsAppGroupUrl,
                 onUpdateNotes: _updateCourseNotes,
-                onUpdateScheduleItem: _updateMentorPartnershipScheduleItem,
+                onGoToPartnershipSchedule: _goToPartnershipSchedule,
                 onCancelNextLesson: _cancelNextLesson,
                 onCancelCourse: _cancelCourse),
           if (isMentorPartnershipRequest && !isMentorPartnershipRequestWaitingApproval)
@@ -341,6 +337,22 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     });
   }
 
+  void _goToPartnershipSchedule() {
+    final CourseModel? course = _mentorCourseProvider?.course;
+    final List<CourseMentor> mentors = course?.mentors ?? [];
+    final List<ColoredText>? mentorPartnershipScheduleText = _mentorCourseProvider?.getMentorPartnershipScheduleText();    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MentorPartnershipScheduleView(
+          mentors: mentors,
+          text: mentorPartnershipScheduleText,
+          onUpdateScheduleItem: _updateMentorPartnershipScheduleItem
+        )
+      )
+    );
+  }  
+
   bool shouldShowTraining() => _stepsProvider?.getShouldShowAddStep() == true || _quizzesProvider?.getShouldShowQuizzes() == true;
 
   Future<void> _init() async {
@@ -361,7 +373,6 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         _inAppMessagesProvider!.getInAppMessage(),
         _commonProvider!.getAppFlags()
       ]).timeout(const Duration(seconds: 3600));
-      _mentorCourseProvider!.getMentorPartnershipSchedule();
       setState(() {
         _isDataLoaded = true;
       });      
@@ -459,6 +470,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             )
           ],
         );
-      });
+      }
+    );
   }
 }

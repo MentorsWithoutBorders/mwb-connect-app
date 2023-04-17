@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
@@ -6,15 +7,16 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
 import 'package:mwb_connect_app/core/models/colored_text_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
 import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course/mentor_partnership_schedule_item_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/multicolor_text_widget.dart';
 
 class MentorPartnershipScheduleView extends StatefulWidget {
-  const MentorPartnershipScheduleView({Key? key, @required this.mentorPartnershipSchedule, @required this.mentors, @required this.text, @required this.onUpdateScheduleItem})
+  const MentorPartnershipScheduleView({Key? key, @required this.mentors, @required this.text, @required this.onUpdateScheduleItem})
     : super(key: key);
 
-  final List<MentorPartnershipScheduleItemModel>? mentorPartnershipSchedule;
   final List<CourseMentor>? mentors;
   final List<ColoredText>? text;
   final Function(String?, String?)? onUpdateScheduleItem;
@@ -24,7 +26,9 @@ class MentorPartnershipScheduleView extends StatefulWidget {
 }
 
 class _MentorPartnershipScheduleViewState extends State<MentorPartnershipScheduleView> with WidgetsBindingObserver {
+  MentorCourseViewModel? _mentorCourseProvider;
   final ScrollController _scrollController = ScrollController();
+  bool _isInit = false;
   
   @override
   void initState() {
@@ -42,7 +46,7 @@ class _MentorPartnershipScheduleViewState extends State<MentorPartnershipSchedul
   Widget _showMentorPartnershipScheduleView() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final List<Widget> scheduleWidgets = [];
-    final List<MentorPartnershipScheduleItemModel>? partnershipSchedule = widget.mentorPartnershipSchedule;
+    final List<MentorPartnershipScheduleItemModel>? partnershipSchedule = _mentorCourseProvider?.mentorPartnershipSchedule;
     if (partnershipSchedule != null) {
       for (int i = 0; i < partnershipSchedule.length; i++) {
         final MentorPartnershipScheduleItemModel scheduleItem = partnershipSchedule[i];
@@ -134,7 +138,7 @@ class _MentorPartnershipScheduleViewState extends State<MentorPartnershipSchedul
   
   Widget _showScheduleItems() {
     final List<Widget> scheduleWidgets = [];
-    final List<MentorPartnershipScheduleItemModel>? partnershipSchedule = widget.mentorPartnershipSchedule;
+    final List<MentorPartnershipScheduleItemModel>? partnershipSchedule = _mentorCourseProvider?.mentorPartnershipSchedule;
     if (partnershipSchedule != null) {
       for (int i = 0; i < partnershipSchedule.length; i++) {
         final MentorPartnershipScheduleItemModel scheduleItem = partnershipSchedule[i];
@@ -176,32 +180,54 @@ class _MentorPartnershipScheduleViewState extends State<MentorPartnershipSchedul
     );
   }
 
+  Future<void> _init() async {
+    if (!_isInit && _mentorCourseProvider != null) { 
+      await _mentorCourseProvider?.getMentorPartnershipSchedule();
+      _isInit = true; 
+    } 
+  }
+
+  Widget _showContent() {
+    if (_isInit) {
+      return _showMentorPartnershipScheduleView();
+    } else {
+      return const Loader();
+    }
+  }   
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        BackgroundGradient(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: _showTitle(),
-            backgroundColor: Colors.transparent,          
-            elevation: 0.0,
-            leading: GestureDetector(
-              onTap: () async { 
-                Navigator.pop(context);
-              },
-              child: Platform.isIOS ? Icon(
-                Icons.arrow_back_ios_new
-              ) : Icon(
-                Icons.arrow_back
-              )
+    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
+
+    return FutureBuilder<void>(
+      future: _init(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {      
+        return Stack(
+          children: <Widget>[
+            BackgroundGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                title: _showTitle(),
+                backgroundColor: Colors.transparent,          
+                elevation: 0.0,
+                leading: GestureDetector(
+                  onTap: () async { 
+                    Navigator.pop(context);
+                  },
+                  child: Platform.isIOS ? Icon(
+                    Icons.arrow_back_ios_new
+                  ) : Icon(
+                    Icons.arrow_back
+                  )
+                )
+              ),
+              extendBodyBehindAppBar: true,
+              body: _showContent()
             )
-          ),
-          extendBodyBehindAppBar: true,
-          body: _showMentorPartnershipScheduleView()
-        )
-      ],
+          ]
+        );
+      }
     );
   }
 }
