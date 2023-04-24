@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/lesson_note_model.dart';
@@ -91,10 +90,8 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
 
     if (_areLessonsNotesRetrieved) {
       double height = 250.0;
-      double heightScrollThumb = 125.0;
       if (isHorizontal) {
         height = MediaQuery.of(context).size.height * 0.4;
-        heightScrollThumb = 50.0;
       }      
       return Stack(
         children: [
@@ -108,31 +105,12 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
           Container(
             height: height,
             padding: const EdgeInsets.only(bottom: 20.0),
-            child: DraggableScrollbar(
+            child: Scrollbar(
               controller: _scrollController,
               child: ListView(
                 controller: _scrollController,
                 children: lessonNoteWidgets
-              ),
-              heightScrollThumb: heightScrollThumb,
-              backgroundColor: AppColors.SILVER,
-              scrollThumbBuilder: (
-                Color backgroundColor,
-                Animation<double> thumbAnimation,
-                Animation<double> labelAnimation,
-                double height, {
-                Text? labelText,
-                BoxConstraints? labelConstraints
-              }) {
-                return FadeTransition(
-                  opacity: thumbAnimation,
-                  child: Container(
-                    height: height,
-                    width: 5.0,
-                    color: backgroundColor,
-                  )
-                );
-              }        
+              )
             )
           ),
         ],

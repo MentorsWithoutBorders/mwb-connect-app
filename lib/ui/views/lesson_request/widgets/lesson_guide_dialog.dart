@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/guide_tutorial_model.dart';
@@ -120,40 +119,16 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
 
     if (_isLessonGuideRetrieved) {
       double height = 300.0;
-      double heightScrollThumb = 150.0;
-      if (isHorizontal) {
-        height = MediaQuery.of(context).size.height * 0.4;
-        heightScrollThumb = 50.0;
-      }
       return Container(
         height: height,
         padding: const EdgeInsets.only(bottom: 20.0),
-        child: DraggableScrollbar(
+        child: Scrollbar(
           controller: _scrollController,
           child: ListView(
             padding: const EdgeInsets.only(right: 10.0),
             controller: _scrollController,
             children: lessonGuideWidgets
-          ),
-          heightScrollThumb: heightScrollThumb,
-          backgroundColor: AppColors.SILVER,
-          scrollThumbBuilder: (
-            Color backgroundColor,
-            Animation<double> thumbAnimation,
-            Animation<double> labelAnimation,
-            double height, {
-            Text? labelText,
-            BoxConstraints? labelConstraints
-          }) {
-            return FadeTransition(
-              opacity: thumbAnimation,
-              child: Container(
-                height: height,
-                width: 5.0,
-                color: backgroundColor,
-              )
-            );
-          }        
+          )
         )
       );
     } else {

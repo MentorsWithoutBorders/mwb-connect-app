@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
-import 'package:mwb_connect_app/utils/colors.dart';
 
 class TypeAheadField extends StatefulWidget {
   const TypeAheadField({
@@ -77,7 +75,6 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
     if (optionWidgets.length < 5) {
       height = optionWidgets.length * 32.0;
     }
-    double heightScrollThumb = 150.0 / (optionsLength / 5);
 
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
@@ -92,32 +89,17 @@ class _TypeAheadFieldState extends State<TypeAheadField> {
             elevation: 4.0,
             child: Container(
               height: height,
-              child: DraggableScrollbar(
-                controller: _scrollController,
-                child: ListView(
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: Scrollbar(
                   controller: _scrollController,
-                  padding: EdgeInsets.zero,
-                  children: optionWidgets
+                  child: ListView(
+                    controller: _scrollController,
+                    padding: EdgeInsets.zero,
+                    children: optionWidgets
+                  )
                 ),
-                heightScrollThumb: heightScrollThumb,
-                backgroundColor: AppColors.SILVER,
-                scrollThumbBuilder: (
-                  Color backgroundColor,
-                  Animation<double> thumbAnimation,
-                  Animation<double> labelAnimation,
-                  double height, {
-                  Text? labelText,
-                  BoxConstraints? labelConstraints
-                }) {
-                  return FadeTransition(
-                    opacity: thumbAnimation,
-                    child: Container(
-                      height: height,
-                      width: 5.0,
-                      color: backgroundColor,
-                    )
-                  );
-                }
               )
             )
           )

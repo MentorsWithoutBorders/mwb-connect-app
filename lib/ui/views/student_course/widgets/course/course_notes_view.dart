@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/student_course_view_model.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
@@ -43,9 +42,8 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
   }  
   
   Widget _showCourseNotesView() {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 20.0),
+      padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -65,57 +63,25 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
   }
   
   Widget _showCourseNotes() {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    double heightScrollThumb = 150.0;
-    if (MediaQuery.of(context).orientation == Orientation.landscape){
-      heightScrollThumb = 80.0;
-    }    
     return Container(
-      width: screenWidth,
-      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 7.0, 20.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
       ),
-      child: DraggableScrollbar(
+      child: Scrollbar(
         controller: _scrollController,
-        alwaysVisibleScrollThumb: true,
+        thumbVisibility: true,
         child: ListView.builder(
           padding: const EdgeInsets.only(top: 0.0),
           controller: _scrollController,
           itemCount: 1,
           itemBuilder: (BuildContext context, int index) {
-            return Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: _showNotesText()
-                  )
-                )
-              ]
+            return Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: _showNotesText()
             );
-          },
-        ),
-        heightScrollThumb: heightScrollThumb,
-        backgroundColor: AppColors.SILVER,
-        scrollThumbBuilder: (
-          Color backgroundColor,
-          Animation<double> thumbAnimation,
-          Animation<double> labelAnimation,
-          double height, {
-          Text? labelText,
-          BoxConstraints? labelConstraints
-        }) {
-          return FadeTransition(
-            opacity: thumbAnimation,
-            child: Container(
-              height: height,
-              width: 5.0,
-              color: backgroundColor
-            )
-          );
-        }
+          }
+        )
       )
     );
   }
@@ -125,6 +91,7 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
     if (courseNotes.isNotEmpty) {
       return SelectableText(
         courseNotes,
+        textAlign: TextAlign.left,
         style: const TextStyle(
           fontSize: 13.0,
           height: 1.5
@@ -178,7 +145,7 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {      
         return Stack(
           children: <Widget>[
-            BackgroundGradient(),
+            const BackgroundGradient(),
             Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
@@ -196,7 +163,6 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
                   )
                 )
               ),
-              extendBodyBehindAppBar: true,
               body: _showContent()
             )
           ],

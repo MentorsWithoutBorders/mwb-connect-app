@@ -5,7 +5,6 @@ import 'package:path/path.dart' as p;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/service_locator.dart';
@@ -81,9 +80,8 @@ class _TutorialViewState extends State<TutorialView> {
   Widget _showTutorial() {
     final int initialPage = widget.section != null ? _sections.indexOf(widget.section!) : 0;
     final PageController controller = PageController(initialPage: initialPage, viewportFraction: 1, keepPage: true);
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 50.0),    
+      padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 50.0),    
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -126,14 +124,10 @@ class _TutorialViewState extends State<TutorialView> {
   Widget _buildCarouselItem(String section) {
     final String itemTitle = 'tutorials.${widget.type}.$section.title'.tr();
     final String itemText = 'tutorials.${widget.type}.$section.text'.tr();
-    double heightScrollThumb = 300.0;
-    if (MediaQuery.of(context).orientation == Orientation.landscape){
-      heightScrollThumb = 80.0;
-    }
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 14.0, 20.0),
-      child: DraggableScrollbar(
+      child: Scrollbar(
         controller: _scrollController,
         child: ListView.builder(
           padding: const EdgeInsets.only(top: 0.0),
@@ -163,27 +157,8 @@ class _TutorialViewState extends State<TutorialView> {
                 )
               ]
             );
-          },
-        ),
-        heightScrollThumb: heightScrollThumb,
-        backgroundColor: AppColors.SILVER,
-        scrollThumbBuilder: (
-          Color backgroundColor,
-          Animation<double> thumbAnimation,
-          Animation<double> labelAnimation,
-          double height, {
-          Text? labelText,
-          BoxConstraints? labelConstraints
-        }) {
-          return FadeTransition(
-            opacity: thumbAnimation,
-            child: Container(
-              height: height,
-              width: 5.0,
-              color: backgroundColor,
-            ),
-          );
-        }
+          }
+        )
       )
     );
   }
@@ -230,19 +205,21 @@ class _TutorialViewState extends State<TutorialView> {
   @override
   Widget build(BuildContext context) {
     if (_isLoaded) {
-      return Scaffold(
-        appBar: AppBar(
-          title: _showTitle(),
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-        ),
-        extendBodyBehindAppBar: true,
-        body: Stack(
-          children: <Widget>[
-            const BackgroundGradient(),
-            _showTutorial()
-          ]
-        )
+      return Stack(
+        children: [
+          const BackgroundGradient(),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: _showTitle(),
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+            ),
+            body: Center(
+              child: _showTutorial()
+            ),
+          )
+        ]
       );
     } else {
       return _buildWaitingScreen();

@@ -149,7 +149,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 80.0,
+                width: 90.0,
                 height: 30.0,
                 child: Dropdown(
                   dropdownMenuItemList: _buildTimeDropdown(),

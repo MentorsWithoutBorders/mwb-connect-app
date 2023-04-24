@@ -17,6 +17,7 @@ class CourseNotesView extends StatefulWidget {
 }
 
 class _CourseNotesViewState extends State<CourseNotesView> {
+  final ScrollController _scrollController = ScrollController();
   String _courseNotes = '';
   bool _isSubmitting = false;
 
@@ -26,10 +27,15 @@ class _CourseNotesViewState extends State<CourseNotesView> {
     _courseNotes = widget.courseNotes ?? '';
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }  
+
   Widget _showCourseNotesView() {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 20.0),
+      padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -66,25 +72,33 @@ class _CourseNotesViewState extends State<CourseNotesView> {
   }  
 
   Widget _showCourseNotesInput() {
-    return TextFormField(
-      maxLines: null,
-      textCapitalization: TextCapitalization.sentences,
-      style: const TextStyle(
-        fontSize: 13.0
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 7.0, 15.0),
+      child: Scrollbar(
+        controller: _scrollController,
+        child: TextFormField(
+          scrollController: _scrollController,
+          maxLines: null,
+          textCapitalization: TextCapitalization.sentences,
+          style: const TextStyle(
+            fontSize: 13.0,
+            height: 1.4
+          ),
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+            isDense: true,
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            hintStyle: const TextStyle(color: AppColors.SILVER),
+            hintText: 'mentor_course.course_notes_placeholder'.tr(),
+          ),
+          initialValue: _courseNotes,
+          onChanged: (String value) => _courseNotes = value.trim(),
+        )
       ),
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        isDense: true,
-        border: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        errorBorder: InputBorder.none,
-        disabledBorder: InputBorder.none,
-        hintStyle: const TextStyle(color: AppColors.SILVER),
-        hintText: 'mentor_course.course_notes_placeholder'.tr(),
-      ),
-      initialValue: _courseNotes,
-      onChanged: (String value) => _courseNotes = value.trim(),
     );
   }
 
@@ -181,7 +195,6 @@ class _CourseNotesViewState extends State<CourseNotesView> {
                 )
               )
             ),
-            extendBodyBehindAppBar: true,
             body: _showCourseNotesView()
           )
         ],
