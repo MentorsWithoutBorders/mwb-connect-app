@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/utils/utils.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/quiz_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 import 'package:mwb_connect_app/core/services/logger_service.dart';
@@ -49,9 +50,11 @@ class StudentCourseUtilsService {
       return '';
     }    
     CourseMentor mentor = mentors[0];
-    CourseMentor? partnerMentor = mentors.length > 1 ? mentors[1] : null;
+    CourseMentor? partnerMentor = mentors.length > 1 ? mentors[1] : CourseMentor();
+    Subfield mentorSubfield = Utils.getMentorSubfield(mentor);
+    Subfield partnerMentorSubfield = Utils.getMentorSubfield(partnerMentor);    
     String mentorsSubfields = '';
-    if (partnerMentor != null) {
+    if (partnerMentorSubfield.id != null && mentorSubfield.id != partnerMentorSubfield.id) {
       mentorsSubfields = mentor.field!.subfields![0].name! + ' ' + 'common.and'.tr() + ' ' + partnerMentor.field!.subfields![0].name!;
     } else {
       mentorsSubfields = mentor.field!.subfields![0].name!;

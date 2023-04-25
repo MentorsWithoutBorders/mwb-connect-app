@@ -33,8 +33,7 @@ class AvailableCoursesUtilsService {
           subfields.add(partnerMentorSubfields[0]);
         } else {
           subfields[0].skills?.addAll(partnerMentorSubfields[0].skills as List<Skill>);
-          // Remove duplicate skills
-          subfields[0].skills = subfields[0].skills?.toSet().toList();
+          subfields[0].skills = Utils.removeDuplicateSkills(subfields[0].skills as List<Skill>);
         }
       }        
     }

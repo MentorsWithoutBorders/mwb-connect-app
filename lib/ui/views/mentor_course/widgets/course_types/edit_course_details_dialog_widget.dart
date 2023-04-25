@@ -319,7 +319,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
               actionButtonText,
               style: const TextStyle(color: Colors.white)
             ) : SizedBox(
-              width: 77.0,
+              width: 67.0,
               child: ButtonLoader()
             ),
             onPressed: () async {

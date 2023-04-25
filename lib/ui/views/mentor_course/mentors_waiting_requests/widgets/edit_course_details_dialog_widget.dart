@@ -233,11 +233,15 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Future<void> _sendMentorPartnershipRequest() async {
-    setState(() {
-      _isSendingMentorPartnershipRequest = true;
-    });
+    _setIsSending(true);
     await widget.onSendRequest!(_subfieldId as String, _startTime as String);
     Navigator.pop(context, true);
+  }
+
+  void _setIsSending(bool isSending) {
+    setState(() {
+      _isSendingMentorPartnershipRequest = isSending;
+    });
   }
 
   @override

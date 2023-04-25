@@ -58,7 +58,7 @@ class _JoyfulProductivityReminderDialogState extends State<JoyfulProductivityRem
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Scrollbar(
         controller: _scrollController,
-        isAlwaysShown: true,
+        thumbVisibility: true,
         child: SingleChildScrollView(
           controller: _scrollController,     
           child: Padding(

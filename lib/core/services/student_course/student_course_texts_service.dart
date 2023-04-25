@@ -38,8 +38,8 @@ class StudentCourseTextsService {
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorsSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentor.field!.subfields![0].name, color: AppColors.TANGO),
-      if (partnerMentor != null) ColoredText(text: ' ' + 'common.and'.tr() + ' ', color: AppColors.DOVE_GRAY),
-      if (partnerMentor != null) ColoredText(text: partnerMentor.field!.subfields![0].name, color: AppColors.TANGO),
+      if (partnerMentor != null && mentorsSubfields.indexOf('common.and'.tr()) > 0) ColoredText(text: ' ' + 'common.and'.tr() + ' ', color: AppColors.DOVE_GRAY),
+      if (partnerMentor != null && mentorsSubfields.indexOf('common.and'.tr()) > 0) ColoredText(text: partnerMentor.field!.subfields![0].name, color: AppColors.TANGO),
       ColoredText(text: text.substring(text.indexOf(mentorsSubfields) + mentorsSubfields.length, text.indexOf(mentorsNames)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentor.name, color: AppColors.TANGO),
       if (partnerMentor != null) ColoredText(text: ' ' + 'common.and'.tr() + ' ', color: AppColors.DOVE_GRAY),

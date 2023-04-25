@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/utils/constants.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
+import 'package:mwb_connect_app/core/models/skill_model.dart';
 import 'package:mwb_connect_app/core/services/local_storage_service.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -212,5 +213,15 @@ class Utils {
       }
     }
     return false;
+  }
+
+  static List<Skill> removeDuplicateSkills(List<Skill> skills) {
+    List<Skill> uniqueSkills = [];
+    for (Skill skill in skills) {
+      if (!uniqueSkills.any((element) => element.id == skill.id)) {
+        uniqueSkills.add(skill);
+      }
+    }
+    return uniqueSkills;
   }
 }

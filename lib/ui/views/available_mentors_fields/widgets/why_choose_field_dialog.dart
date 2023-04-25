@@ -102,7 +102,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
         padding: const EdgeInsets.only(bottom: 15.0, right: 5.0),
         child: Scrollbar(
           controller: _scrollController, 
-          isAlwaysShown: true, 
+          thumbVisibility: true, 
           child: SingleChildScrollView(
             controller: _scrollController,                
             child: Padding(

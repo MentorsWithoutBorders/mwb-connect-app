@@ -5,7 +5,6 @@ import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:mwb_connect_app/core/models/course_model.dart';
 import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/student_course/available_courses_view_model.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses_fields/widgets/why_choose_field_dialog.dart';
@@ -127,7 +126,9 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
       )
     ).then((CourseResult? courseResult) {
       _resetValues();
-      Navigator.pop(context, courseResult);
+      if (courseResult != null) {
+        Navigator.pop(context, courseResult);
+      }
     });     
   }
   

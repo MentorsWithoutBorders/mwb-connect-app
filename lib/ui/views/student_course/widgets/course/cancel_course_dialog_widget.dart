@@ -119,12 +119,11 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
             'common.yes_cancel'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
-            width: 70.0,
+            width: 71.0,
             child: ButtonLoader(),
           ),
           onPressed: () async {
             await _cancelCourse();
-            Navigator.pop(context);
           },
         )
       ]
@@ -134,6 +133,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
   Future<void> _cancelCourse() async {  
     _setIsCancellingCourse(true);
     await widget.onCancel!(_reasonText);
+    Navigator.pop(context);    
   }
   
   void _setIsCancellingCourse(bool isCanceling) {

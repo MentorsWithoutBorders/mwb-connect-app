@@ -323,7 +323,7 @@
     "cancel_mentor_partnership_request": "Cancel partnership request",
     "cancel_mentor_partnership_request_text": "Are you sure you want to cancel the partnership request?",    
     "accept_mentor_partnership_request": "Accept partnership request",
-    "accept_mentor_partnership_request_text": "Thank you for accepting the partnership request. You will be able to start the course as soon as at least 5 students join in.",
+    "accept_mentor_partnership_request_text": "Thank you for accepting the partnership request. You will be able to start the course as soon as a minimum of 5 students enroll.",
     "paste_partnership_url": "Please paste your Google Meet/Zoom link for the course here:",
 		"send_mentor_partnership_request": "Send partnership request",
     "reject_mentor_partnership_request": "Reject partnership request",

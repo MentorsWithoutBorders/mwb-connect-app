@@ -86,12 +86,11 @@ class _CancelWaitingMentorPartnershipRequestDialogState extends State<CancelWait
             'common.yes_cancel'.tr(),
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
-            width: 70.0,
+            width: 71.0,
             child: ButtonLoader(),
           ),
           onPressed: () async {
             await _cancelWaitingMentorPartnershipRequest();
-            Navigator.pop(context);
           },
         )
       ]
@@ -101,6 +100,7 @@ class _CancelWaitingMentorPartnershipRequestDialogState extends State<CancelWait
   Future<void> _cancelWaitingMentorPartnershipRequest() async {  
     _setIsCanceling(true);
     await widget.onCancel!();
+    Navigator.pop(context);
   }
   
   void _setIsCanceling(bool isCanceling) {

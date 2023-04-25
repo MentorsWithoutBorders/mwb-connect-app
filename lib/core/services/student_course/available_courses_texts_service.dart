@@ -52,6 +52,10 @@ class AvailableCoursesTextsService {
     String at = 'common.at'.tr();
     String text = 'student_course.join_course_confirmation_text'.tr(args: [courseDuration, mentorsSubfields, mentorsNames, courseDayOfWeek, courseTime, timeZone]);
     String courseStartText = 'common.start_course_text'.tr(args:[AppConstants.minStudentsCourse.toString()]);
+    int courseStudentsNumber = 0;
+    if (course.students != null) {
+      courseStudentsNumber = course.students!.length;
+    }
     return [
       ColoredText(text: text.substring(0, text.indexOf(mentorsSubfields)), color: AppColors.DOVE_GRAY),
       ColoredText(text: mentor.field!.subfields![0].name, color: AppColors.TANGO),
@@ -65,7 +69,8 @@ class AvailableCoursesTextsService {
       ColoredText(text: courseDayOfWeek, color: AppColors.TANGO),
       ColoredText(text: ' ' + at + ' ', color: AppColors.DOVE_GRAY),
       ColoredText(text: courseTime + ' ' + timeZone, color: AppColors.TANGO),
-      ColoredText(text: '? ' + '(' + courseStartText + ')', color: AppColors.DOVE_GRAY)
+      ColoredText(text: '?', color: AppColors.DOVE_GRAY),
+      if (courseStudentsNumber < AppConstants.minStudentsCourse) ColoredText(text: ' (' + courseStartText + ')', color: AppColors.DOVE_GRAY)
     ];
   }
 }
