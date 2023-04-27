@@ -117,7 +117,7 @@ class _StandingByState extends State<StandingBy> {
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12.0,
+            fontSize: 13.0,
             color: AppColors.DOVE_GRAY,
             height: 1.4
           ),
@@ -177,7 +177,7 @@ class _StandingByState extends State<StandingBy> {
               'lesson_request.add_more_lessons_text'.tr(),
               textAlign: TextAlign.justify,
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 13.0,
                 color: AppColors.DOVE_GRAY,
                 height: 1.4
               )

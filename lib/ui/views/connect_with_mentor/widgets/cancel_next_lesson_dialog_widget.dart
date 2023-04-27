@@ -77,7 +77,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13.0,
             color: AppColors.DOVE_GRAY,
             height: 1.5
           ),
@@ -135,7 +135,7 @@ class _CancelNextLessonDialogState extends State<CancelNextLessonDialog> {
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(
-          fontSize: 12.0
+          fontSize: 13.0
         ),
         decoration: InputDecoration(
           isDense: true,

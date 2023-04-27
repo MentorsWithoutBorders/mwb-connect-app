@@ -95,7 +95,7 @@ class _SetWhatsAppGroupUrlDialogState extends State<SetWhatsAppGroupUrlDialog> {
       child: Text(
         'common.send_url_error'.tr(args: ['common.whatsapp_group'.tr()]),
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: Colors.red
         )
       ),

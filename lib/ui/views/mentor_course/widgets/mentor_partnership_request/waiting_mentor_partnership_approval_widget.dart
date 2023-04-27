@@ -72,7 +72,7 @@ class _WaitingMentorPartnershipApprovalState extends State<WaitingMentorPartners
             child: Text(
               'common.waiting_time'.tr(),
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 13.0,
                 fontStyle: FontStyle.italic,
                 color: AppColors.DOVE_GRAY,
                 height: 1.4

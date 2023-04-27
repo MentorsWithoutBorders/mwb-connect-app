@@ -73,7 +73,7 @@ class _LessonRequestState extends State<LessonRequest> {
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 13.0,
                 color: AppColors.DOVE_GRAY,
                 height: 1.4
               ),
@@ -198,7 +198,7 @@ class _LessonRequestState extends State<LessonRequest> {
         textAlign: TextAlign.center,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13.0,
             color: AppColors.DOVE_GRAY,
             fontStyle: FontStyle.italic,
             height: 1.4

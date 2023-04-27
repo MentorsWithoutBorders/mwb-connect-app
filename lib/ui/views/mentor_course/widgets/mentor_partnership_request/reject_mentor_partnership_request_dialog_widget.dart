@@ -55,7 +55,7 @@ class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartn
       child: Text(
         'mentor_course.reject_mentor_partnership_request_text'.tr(),
         style: const TextStyle(
-          fontSize: 15.0,
+          fontSize: 14.0,
           color: AppColors.DOVE_GRAY,
           height: 1.5
         ),
@@ -75,7 +75,7 @@ class _RejectMentorPartnershipRequestDialogState extends State<RejectMentorPartn
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(
-          fontSize: 12.0
+          fontSize: 13.0
         ),
         decoration: InputDecoration(
           isDense: true,

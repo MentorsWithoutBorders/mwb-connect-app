@@ -64,7 +64,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
       child: Text(
         text,
         style: const TextStyle(
-          fontSize: 12,
+          fontSize: 13.0,
           color: AppColors.DOVE_GRAY,
           height: 1.5
         )
@@ -83,7 +83,7 @@ class _CancelLessonRecurrenceDialogState extends State<CancelLessonRecurrenceDia
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(
-          fontSize: 12.0
+          fontSize: 13.0
         ),
         decoration: InputDecoration(
           isDense: true,

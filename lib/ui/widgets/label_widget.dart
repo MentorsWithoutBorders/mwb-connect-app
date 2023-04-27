@@ -13,7 +13,7 @@ class Label extends StatelessWidget {
       child: Text(
         text!,
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: AppColors.DOVE_GRAY
         )
       )

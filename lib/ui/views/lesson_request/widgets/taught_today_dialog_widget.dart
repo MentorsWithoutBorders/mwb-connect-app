@@ -63,7 +63,7 @@ class _TaughtTodayDialogState extends State<TaughtTodayDialog> {
         'lesson_request.taught_today_text'.tr(args: [studentPlural]),
         textAlign: TextAlign.justify,
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: AppColors.DOVE_GRAY,
           height: 1.4
         )

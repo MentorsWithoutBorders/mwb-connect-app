@@ -158,7 +158,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
         child: Text(
           errorMessage,
           style: const TextStyle(
-            fontSize: 12.0,
+            fontSize: 13.0,
             color: AppColors.MONZA
           )
         ),

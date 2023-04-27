@@ -20,6 +20,7 @@ import 'package:mwb_connect_app/ui/views/student_course/widgets/course/find_avai
 import 'package:mwb_connect_app/ui/views/student_course/widgets/course/waiting_start_course_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/training_completed_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/training/lessons_disabled_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/joyful_productivity_reminder_dialog.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses_fields/available_courses_fields_view.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
@@ -136,6 +137,7 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
   Widget _showStudentCourse() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final bool isTrainingEnabled = _commonProvider!.appFlags.isTrainingEnabled;
+    final bool isMentoringEnabled = _commonProvider!.appFlags.isMentoringEnabled;
     final bool isCourse = _studentCourseProvider?.isCourse as bool;
     final bool isNextLesson = _studentCourseProvider?.isNextLesson as bool;
     final bool isCourseStarted = _studentCourseProvider?.isCourseStarted as bool;
@@ -145,27 +147,29 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
     final List<ColoredText> waitingStartCourseText = _studentCourseProvider?.getWaitingStartCourseText() as List<ColoredText>;
     final List<ColoredText> currentStudentsText = _studentCourseProvider?.getCurrentStudentsText() as List<ColoredText>;
     return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
+      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 65.0, 15.0, 0.0),
       child: ListView(padding: const EdgeInsets.only(top: 0.0), children: [
         if (isTrainingEnabled && shouldShowTraining() == true) 
           SolveQuizAddStep(),
         if (isTrainingEnabled && shouldShowTraining() == false && _studentCourseProvider?.shouldShowTrainingCompleted() == true) 
           TrainingCompleted(),
-        if (!isCourse || isCourse && isCourseStarted && !isNextLesson) 
+        if (isMentoringEnabled && (!isCourse || isCourse && isCourseStarted && !isNextLesson))
           FindAvailableCourse(
               onFind: _goToAvailableCoursesFields),
-        if (isCourse && isCourseStarted && isNextLesson)
+        if (isMentoringEnabled && isCourse && isCourseStarted && isNextLesson)
           Course(
               mentorNextLesson: mentorNextLesson,
               text: courseText,
               whatsAppGroupUrl: whatsAppGroupUrl,
               onCancelNextLesson: _cancelNextLesson,
               onCancelCourse: _cancelCourse),
-        if (isCourse && !isCourseStarted) 
+        if (isMentoringEnabled && isCourse && !isCourseStarted) 
           WaitingStartCourse(
               text: waitingStartCourseText, 
               currentStudentsText: currentStudentsText, 
-              onCancel: _cancelCourse)
+              onCancel: _cancelCourse),
+        if (!isMentoringEnabled) 
+          LessonsDisabled()              
       ]));
   }
 

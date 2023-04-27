@@ -75,7 +75,7 @@ class _FindAvailableMentorState extends State<FindAvailableMentor> with TickerPr
         'connect_with_mentor.next_lesson'.tr(),
         textAlign: TextAlign.justify,
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: AppColors.DOVE_GRAY,
           height: 1.4
         ),

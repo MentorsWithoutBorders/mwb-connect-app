@@ -106,7 +106,7 @@ class _CourseState extends State<Course> {
                     textScaleFactor: MediaQuery.of(context).textScaleFactor,
                     text: TextSpan(
                       style: const TextStyle(
-                        fontSize: 12.0, 
+                        fontSize: 13.0, 
                         color: AppColors.DOVE_GRAY, 
                         height: 1.4
                       ), 
@@ -143,7 +143,7 @@ class _CourseState extends State<Course> {
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
             text,
-            style: const TextStyle(fontSize: 12.0, color: AppColors.DOVE_GRAY),
+            style: const TextStyle(fontSize: 13.0, color: AppColors.DOVE_GRAY),
           ),
         ),
         Padding(
@@ -200,7 +200,7 @@ class _CourseState extends State<Course> {
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Text(
           'common.course_whatsapp_group_link'.tr(),
-          style: const TextStyle(fontSize: 12, color: AppColors.DOVE_GRAY),
+          style: const TextStyle(fontSize: 13.0, color: AppColors.DOVE_GRAY),
         ),
       ),
       Padding(

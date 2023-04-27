@@ -38,7 +38,7 @@ class Tag extends StatelessWidget {
                   text!,
                   key: textKey,
                   style: TextStyle(
-                    fontSize: 12, 
+                    fontSize: 13.0, 
                     color: Colors.white
                   ),
                 ),

@@ -56,7 +56,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
       child: Text(
         text,
         style: const TextStyle(
-          fontSize: 15.0,
+          fontSize: 14.0,
           color: AppColors.DOVE_GRAY,
           height: 1.5
         ),
@@ -76,7 +76,7 @@ class _CancelCourseDialogState extends State<CancelCourseDialog> {
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(
-          fontSize: 12.0
+          fontSize: 13.0
         ),
         decoration: InputDecoration(
           isDense: true,

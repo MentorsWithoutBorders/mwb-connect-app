@@ -94,7 +94,7 @@ class _SupportViewState extends State<SupportView> {
             child: Text(
               'support.sub_label'.tr(),
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 13.0,
                 color: Colors.white
               ),
             ) 

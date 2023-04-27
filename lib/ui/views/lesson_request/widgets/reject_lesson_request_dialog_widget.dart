@@ -78,7 +78,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
         textAlign: TextAlign.center,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13.0,
             color: AppColors.DOVE_GRAY,
             height: 1.5
           ),
@@ -145,7 +145,7 @@ class _RejectLessonRequestDialogState extends State<RejectLessonRequestDialog> {
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(
-          fontSize: 12.0
+          fontSize: 13.0
         ),
         decoration: InputDecoration(
           isDense: true,

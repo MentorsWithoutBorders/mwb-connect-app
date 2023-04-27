@@ -79,7 +79,10 @@ class _SubfieldItemState extends State<SubfieldItem> {
               )
             ),
             if (hasSkills) TextSpan(
-              text: ' ('
+              text: ' (',
+              style: const TextStyle(
+                fontStyle: FontStyle.italic,
+              )              
             ),
             if (hasSkills) TextSpan(
               text: 'common.see_skills'.tr(),
@@ -103,7 +106,10 @@ class _SubfieldItemState extends State<SubfieldItem> {
               } 
             ),
             if (hasSkills) TextSpan(
-              text: ')'
+              text: ')',
+              style: const TextStyle(
+                fontStyle: FontStyle.italic,
+              )              
             )
           ]
         )

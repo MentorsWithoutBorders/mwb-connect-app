@@ -149,7 +149,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12.0,
+            fontSize: 13.0,
             fontWeight: FontWeight.bold,
             color: Colors.white,
             height: 1.4

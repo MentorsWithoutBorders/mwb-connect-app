@@ -100,7 +100,7 @@ class _NextLessonState extends State<NextLesson> {
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13.0,
             color: AppColors.DOVE_GRAY,
             height: 1.4
           ),
@@ -198,7 +198,7 @@ class _NextLessonState extends State<NextLesson> {
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13.0,
             color: AppColors.DOVE_GRAY,
             height: 1.4
           ),
@@ -306,7 +306,7 @@ class _NextLessonState extends State<NextLesson> {
                     textScaleFactor: MediaQuery.of(context).textScaleFactor,
                     text: TextSpan(
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 13.0,
                         color: AppColors.DOVE_GRAY,
                         height: 1.4
                       ),
@@ -363,7 +363,7 @@ class _NextLessonState extends State<NextLesson> {
           child: Text(
             'lesson_request.lesson_link'.tr(),
             style: const TextStyle(
-              fontSize: 12,
+              fontSize: 13.0,
               color: AppColors.DOVE_GRAY
             ),
           ),

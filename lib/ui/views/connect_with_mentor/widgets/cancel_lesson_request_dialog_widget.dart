@@ -53,7 +53,7 @@ class _CancelLessonRequestDialogState extends State<CancelLessonRequestDialog> w
       child: Text(
         'connect_with_mentor.cancel_lesson_request_text'.tr(),
         style: const TextStyle(
-          fontSize: 15.0,
+          fontSize: 14.0,
           color: AppColors.DOVE_GRAY,
           height: 1.5
         ),

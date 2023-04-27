@@ -66,7 +66,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 13.0,
                 color: AppColors.DOVE_GRAY,
                 height: 1.4
               ),
@@ -130,7 +130,7 @@ class _FindingAvailableMentorState extends State<FindingAvailableMentor> {
             child: Text(
               'common.waiting_time'.tr(),
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 13.0,
                 fontStyle: FontStyle.italic,
                 color: AppColors.DOVE_GRAY,
                 height: 1.4

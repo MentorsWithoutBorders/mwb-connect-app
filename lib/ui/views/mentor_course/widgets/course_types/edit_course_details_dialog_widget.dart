@@ -243,7 +243,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       child: Text(
         'common.set_url_error'.tr(args: [urlType]),
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: Colors.red
         )
       ),
@@ -260,7 +260,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
         text: TextSpan(
           style: const TextStyle(
             color: AppColors.DOVE_GRAY,
-            fontSize: 12.0
+            fontSize: 13.0
           ),
           children: <TextSpan>[
             TextSpan(

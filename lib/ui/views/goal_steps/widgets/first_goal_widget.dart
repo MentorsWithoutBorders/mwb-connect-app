@@ -69,7 +69,7 @@ class _FirstGoalState extends State<FirstGoal> {
                             'goals.first_goal_sublabel'.tr(),
                             style: const TextStyle(
                               fontStyle: FontStyle.italic,
-                              fontSize: 12.0,
+                              fontSize: 13.0,
                               color: Colors.white),
                           )
                         )

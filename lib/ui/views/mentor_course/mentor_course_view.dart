@@ -175,7 +175,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<ColoredText>? waitingMentorPartnershipApprovalText = _mentorCourseProvider?.getWaitingMentorPartnershipApprovalText();
     final bool? shouldUnfocus = _mentorCourseProvider?.shouldUnfocus;
     return Padding(
-      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
+      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 65.0, 15.0, 0.0),
       child: ListView(
         padding: const EdgeInsets.only(top: 0.0), 
         children: [

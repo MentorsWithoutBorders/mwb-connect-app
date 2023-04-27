@@ -128,7 +128,7 @@ class _AvailableMentorState extends State<AvailableMentor> {
         child: Text(
           _errorMessage,
           style: const TextStyle(
-            fontSize: 12.0,
+            fontSize: 13.0,
             color: AppColors.MONZA
           )
         ),

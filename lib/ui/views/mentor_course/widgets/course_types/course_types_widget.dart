@@ -74,7 +74,7 @@ class _CourseTypesState extends State<CourseTypes> {
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: AppColors.DOVE_GRAY
         )
       ),

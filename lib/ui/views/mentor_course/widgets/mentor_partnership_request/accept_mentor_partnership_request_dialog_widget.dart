@@ -112,7 +112,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
       child: Text(
         'common.set_url_error'.tr(args: [urlType]),
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: Colors.red
         )
       ),

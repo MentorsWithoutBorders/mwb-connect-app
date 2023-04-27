@@ -107,7 +107,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             child: Text(
               'forgot_password.link_label'.tr(),
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 13.0,
                 color: Colors.white
               ),
             ) 

@@ -39,7 +39,7 @@ class ConditionsList extends StatelessWidget {
                     textAlign: TextAlign.justify,
                     text: TextSpan(
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 13.0,
                         color: AppColors.DOVE_GRAY,
                         height: 1.3
                       ),
@@ -92,7 +92,7 @@ class ConditionsList extends StatelessWidget {
                     textAlign: TextAlign.justify,
                     text: TextSpan(
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 13.0,
                         color: AppColors.DOVE_GRAY,
                         height: 1.3
                       ),

@@ -86,7 +86,7 @@ class _NextLessonState extends State<NextLesson> {
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 13.0,
                 color: AppColors.DOVE_GRAY,
                 height: 1.4
               ),
@@ -189,7 +189,7 @@ class _NextLessonState extends State<NextLesson> {
             textAlign: TextAlign.justify,
             text: TextSpan(
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 13.0,
                 color: AppColors.DOVE_GRAY,
                 height: 1.4
               ),

@@ -102,7 +102,7 @@ class _ChangeUrlDialogState extends State<ChangeUrlDialog> {
       child: Text(
         'common.send_url_error'.tr(args: [urlType]),
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: Colors.red
         )
       ),

@@ -68,7 +68,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
               Text(
                 lessonNoteDate,
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 13.0,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   height: 1.5
@@ -77,7 +77,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
               Text(
                 lessonNote.text as String,
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 13.0,
                   color: AppColors.DOVE_GRAY
                 )
               )
@@ -98,7 +98,7 @@ class _LessonsNotesDialogState extends State<LessonsNotesDialog> {
           if (widget.lessonsNotes?.length == 0) Text(
             'lesson_request.no_notes_previous_mentors'.tr(),
             style: TextStyle(
-              fontSize: 12.0,
+              fontSize: 13.0,
               color: AppColors.DOVE_GRAY
             )
           ),

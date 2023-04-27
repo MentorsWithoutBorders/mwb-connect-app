@@ -55,11 +55,10 @@ class CourseTypeItem extends StatelessWidget {
     final String withOrWithout = isWithPartner ? 'common.with'.tr() : 'common.without'.tr();
     final String? description = 'mentor_course.course_description'.tr(args: [duration.toString(), withOrWithout]); 
     return Container(
-      width: 200.0,
       child: Text(
         '$description',
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: AppColors.DOVE_GRAY
         )
       ),

@@ -93,7 +93,7 @@ class _QuizState extends State<QuizView> {
                   child: Text(
                     'quizzes.solve_quiz_subtitle'.tr(),
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 13.0,
                       color: AppColors.DOVE_GRAY
                     )
                   )
@@ -267,7 +267,7 @@ class _QuizState extends State<QuizView> {
             child: Text(
               'quizzes.quizzes_solved'.tr(),
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 13.0,
                 color: AppColors.ALLPORTS,
                 height: 1.3
               ),

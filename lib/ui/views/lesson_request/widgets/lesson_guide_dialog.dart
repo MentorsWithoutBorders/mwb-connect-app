@@ -61,7 +61,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
       child: Text(
         'lesson_request.lesson_guide_tutorials_text'.tr(),
         style: const TextStyle(
-          fontSize: 12.0,
+          fontSize: 13.0,
           color: AppColors.DOVE_GRAY,
           height: 1.5
         )
@@ -80,7 +80,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
               Text(
                 guideTutorial.skills!.join(', '),
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 13.0,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   height: 1.5
@@ -103,7 +103,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
               Text(
                 guideRecommendations.type! + ' ' + 'lesson_request.recommendations'.tr() + ':',
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 13.0,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   height: 1.5
@@ -163,7 +163,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
                     child: Text(
                       '${guideLines?[index]}',
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 13.0,
                         color: Colors.blue,
                         decoration: TextDecoration.underline
                       )
@@ -179,7 +179,7 @@ class _LessonGuideDialogState extends State<LessonGuideDialog> {
                       '${guideLines?[index]}',
                       textAlign: TextAlign.justify,
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 13.0,
                         color: AppColors.DOVE_GRAY,
                       )
                     )
