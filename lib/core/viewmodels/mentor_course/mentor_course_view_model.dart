@@ -38,18 +38,24 @@ class MentorCourseViewModel extends ChangeNotifier {
   Future<void> getCourseTypes() async {
     courseTypes = await _mentorCourseApiService.getCourseTypes();
     if (selectedCourseType == null) {
-      selectedCourseType = courseTypes[0];
+      setSelectedCourseType(courseTypes[0].id as String);
     }
     notifyListeners();
   }
 
   Future<void> getCourse() async {
     course = await _mentorCourseApiService.getCourse();
+    if (course?.id != null) {
+      setSelectedCourseType(courseTypes[0].id as String);
+    }
     notifyListeners();
   }
 
   Future<void> getNextLesson() async {
     nextLesson = await _mentorCourseApiService.getNextLesson();
+    if (nextLesson?.lessonDateTime != null) {
+      setSelectedCourseType(courseTypes[0].id as String);
+    }
     notifyListeners();
   }
 
@@ -92,11 +98,13 @@ class MentorCourseViewModel extends ChangeNotifier {
   Future<void> cancelCourse(String? reason) async {
     await _mentorCourseApiService.cancelCourse(course?.id, reason);
     course = null;
+    setSelectedCourseType(courseTypes[0].id as String);
     notifyListeners();
   }
 
   Future<void> cancelNextLesson(String? reason) async {
     nextLesson = await _mentorCourseApiService.cancelNextLesson(course?.id, reason);
+    setSelectedCourseType(courseTypes[0].id as String);
     notifyListeners();
   }
 
@@ -112,6 +120,9 @@ class MentorCourseViewModel extends ChangeNotifier {
 
   Future<void> getMentorWaitingRequest() async {
     mentorWaitingRequest = await _mentorCourseApiService.getMentorWaitingRequest();
+    if (mentorWaitingRequest?.id != null) {
+      setSelectedCourseType(courseTypes[0].id as String);
+    }
     notifyListeners();
   }
 
@@ -122,6 +133,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   Future<void> cancelMentorWaitingRequest() async {
     await _mentorCourseApiService.cancelMentorWaitingRequest();
     mentorWaitingRequest = null;
+    setSelectedCourseType(courseTypes[0].id as String);
     notifyListeners();
   }
 
@@ -137,18 +149,23 @@ class MentorCourseViewModel extends ChangeNotifier {
       await _mentorCourseApiService.updateMentorPartnershipRequest(mentorPartnershipRequest?.id, MentorPartnershipRequestModel(wasCanceledShown: true));
       mentorPartnershipRequest = null;
     }
+    if (mentorPartnershipRequest?.id != null) {
+      setSelectedCourseType(courseTypes[0].id as String);
+    }    
     notifyListeners();
   }
 
   Future<void> acceptMentorPartnershipRequest(String? meetingUrl) async {
     course = await _mentorCourseApiService.acceptMentorPartnershipRequest(mentorPartnershipRequest?.id, meetingUrl as String);
     mentorPartnershipRequest = null;
+    setSelectedCourseType(courseTypes[0].id as String);
     notifyListeners();
   }
 
   Future<void> rejectMentorPartnershipRequest(String? reason) async {
     await _mentorCourseApiService.rejectMentorPartnershipRequest(mentorPartnershipRequest?.id, reason);
     mentorPartnershipRequest = null;
+    setSelectedCourseType(courseTypes[0].id as String);
     notifyListeners();
   }
 

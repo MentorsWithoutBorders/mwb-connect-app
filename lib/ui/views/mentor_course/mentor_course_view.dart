@@ -83,6 +83,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   }
 
   void _reload() {
+    List<CourseType> courseTypes = _mentorCourseProvider?.courseTypes ?? [];
+    _mentorCourseProvider?.setSelectedCourseType(courseTypes[0].id as String);
     setState(() {
       _isDataLoaded = false;
       _isInit = false;
