@@ -6,6 +6,7 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/common_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/name_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/field_dropdown_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/subfields_widget.dart';
@@ -30,6 +31,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   ProfileViewModel? _profileProvider;
   CommonViewModel? _commonProvider;
+  RootViewModel? _rootProvider;
   final ScrollController _scrollController = ScrollController();
   bool _isProfileRetrieved = false;
 
@@ -41,6 +43,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget _showProfile() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    bool? isNextLesson = _rootProvider?.isNextLesson;
     return Padding(
       padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 60.0, 15.0, 0.0), 
       child: ListView(
@@ -50,7 +53,7 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           _showPrimaryCard(),
           _showAvailabilityCard(),
-          if (_profileProvider?.user?.isMentor == true) _showLessonsCard(),
+          if (_profileProvider?.user?.isMentor == true && isNextLesson == true) _showLessonsCard(),
           if (Platform.isIOS) _showDeleteAccountButton()
         ]
       )
@@ -91,6 +94,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _showAvailabilityCard() {
+    bool? isNextLesson = _rootProvider?.isNextLesson;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -103,8 +107,8 @@ class _ProfileViewState extends State<ProfileView> {
           padding: const EdgeInsets.all(16.0),
           child: Wrap(
             children: [
-              if (_profileProvider?.user?.isMentor == true) AvailabilityStartDate(),
-              if (_profileProvider?.user?.isMentor == true) _showDivider(),
+              if (_profileProvider?.user?.isMentor == true && isNextLesson == true) AvailabilityStartDate(),
+              if (_profileProvider?.user?.isMentor == true && isNextLesson == true) _showDivider(),
               AvailabilitiesList(),
             ],
           )
@@ -243,6 +247,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
     _commonProvider = Provider.of<CommonViewModel>(context);
+    _rootProvider = Provider.of<RootViewModel>(context);
 
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 

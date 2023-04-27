@@ -96,7 +96,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             child: Column(
               children: <Widget>[
                 Container(
-                  width: 110,
+                  width: 110.0,
                   padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 15.0),
                   child: Image.asset('assets/images/logo.png')
                 ),

@@ -5,6 +5,7 @@ import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/profile_view_model.dart';
+import 'package:mwb_connect_app/core/viewmodels/root_view_model.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/timezone_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/availability_item_widget.dart';
 import 'package:mwb_connect_app/ui/views/profile/widgets/add_availability_widget.dart';
@@ -20,6 +21,7 @@ class AvailabilitiesList extends StatefulWidget {
 
 class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProviderStateMixin {
   ProfileViewModel? _profileProvider;
+  RootViewModel? _rootProvider;
 
   Widget _showAvailability() {
     return Column(
@@ -34,7 +36,8 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   }
 
   Widget _showTitle() {
-    String title = _profileProvider?.user?.isMentor == true ? 'common.available_days_times'.tr() : 'common.availability'.tr();
+    bool? isNextLesson = _rootProvider?.isNextLesson;
+    String title = _profileProvider?.user?.isMentor == true && isNextLesson == true ? 'common.available_days_times'.tr() : 'common.availability'.tr();
     return Container(
       margin: const EdgeInsets.only(left: 5.0, bottom: 8.0),
       child: Text(
@@ -124,6 +127,7 @@ class _AvailabilitiesListState extends State<AvailabilitiesList> with TickerProv
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
+    _rootProvider = Provider.of<RootViewModel>(context);
       
     return _showAvailability();
   }
