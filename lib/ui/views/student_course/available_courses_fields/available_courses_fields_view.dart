@@ -25,8 +25,7 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
   AvailableCoursesViewModel? _availableCoursesProvider;
   bool _areFieldsRetrieved = false;
 
-  Widget _showAvailableCoursesFields() {
-    final List<Field> fields = _availableCoursesProvider?.fields as List<Field>;
+  Widget _showAvailableCoursesFields(List<Field> fields) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.fromLTRB(20.0, statusBarHeight + 60.0, 20.0, 0.0), 
@@ -150,11 +149,42 @@ class _AvailableCoursesFieldsViewState extends State<AvailableCoursesFieldsView>
 
   Widget _showContent() {
     if (_areFieldsRetrieved) {
-      return _showAvailableCoursesFields();
+      final List<Field> fields = _availableCoursesProvider?.fields as List<Field>;
+      if (fields.length > 0) {
+        return _showAvailableCoursesFields(fields);
+      } else {
+        return _showNoCoursesFound();
+      }
     } else {
       return const Loader();
     }
-  }  
+  }
+  
+  Widget _showNoCoursesFound() {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    return Center(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20.0, statusBarHeight + 80.0, 20.0, 0.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'student_course.no_courses_found'.tr(),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                height: 1.4
+              )
+            )
+          ]
+        )
+      )
+    );
+  }
 
   Future<void> _getFields() async {
     if (!_areFieldsRetrieved && _availableCoursesProvider != null) {
