@@ -58,8 +58,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   CommonViewModel? _commonProvider;
   bool _isInit = false;
   bool _isDataLoaded = false;
-  bool _wasMeetingUrlDialogShown = false;
   bool _isInAppMessageOpen = false;
+  bool _isMeetingUrlDialogShown = false;
 
   @override
   initState() {
@@ -76,7 +76,6 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      _wasMeetingUrlDialogShown = false;
       _setTimeZone();
       _reload();
       _checkUpdate();
@@ -110,13 +109,15 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     if (mounted && shouldShowNotification == true && !_isInAppMessageOpen) {
       _isInAppMessageOpen = true;
       showDialog(
-          context: context,
-          builder: (_) => AnimatedDialog(
-                  widgetInside: NotificationDialog(
-                text: _inAppMessagesProvider?.inAppMessage?.text,
-                buttonText: 'common.ok'.tr(),
-                shouldReload: false,
-              ))).then((_) => _setInAppMessageClosed());
+        context: context,
+        builder: (_) => AnimatedDialog(
+          widgetInside: NotificationDialog(
+            text: _inAppMessagesProvider?.inAppMessage?.text,
+            buttonText: 'common.ok'.tr(),
+            shouldReload: false,
+          )
+        )
+      ).then((_) => _setInAppMessageClosed());
     }
   }
 
@@ -172,8 +173,10 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<ColoredText>? waitingMentorPartnershipApprovalText = _mentorCourseProvider?.getWaitingMentorPartnershipApprovalText();
     final bool? shouldUnfocus = _mentorCourseProvider?.shouldUnfocus;
     return Padding(
-        padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
-        child: ListView(padding: const EdgeInsets.only(top: 0.0), children: [
+      padding: EdgeInsets.fromLTRB(15.0, statusBarHeight + 70.0, 15.0, 0.0),
+      child: ListView(
+        padding: const EdgeInsets.only(top: 0.0), 
+        children: [
           if (isTrainingEnabled && shouldShowTraining() == true) 
             SolveQuizAddStep(),
           if (isTrainingEnabled && shouldShowTraining() == false && _mentorCourseProvider?.shouldShowTrainingCompleted() == true) 
@@ -226,7 +229,9 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             WaitingMentorPartnershipRequest(
                 onCancel: _cancelMentorWaitingRequest, 
                 onFindPartner: _findPartner)
-        ]));
+        ]
+      )
+    );
   }
 
   void _setSelectedCourseType(String courseTypeId) {
@@ -387,8 +392,8 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final bool isCourse = _mentorCourseProvider?.isCourse ?? false;
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
-    if (isCourse && meetingUrl.isEmpty && !_wasMeetingUrlDialogShown) {
-      _wasMeetingUrlDialogShown = true;
+    if (isCourse && meetingUrl.isEmpty && !_isMeetingUrlDialogShown) {
+      _isMeetingUrlDialogShown = true;
       showDialog(
         context: context,
         builder: (_) => AnimatedDialog(
@@ -399,7 +404,9 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             onSet: _setMeetingUrl
           )
         )
-      );
+      ).then((value) {
+        _isMeetingUrlDialogShown = false;
+      });
     }
   }
 
