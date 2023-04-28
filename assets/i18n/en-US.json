@@ -144,9 +144,12 @@
 		"reject": "Reject",
 		"set": "Set",
 		"send": "Send",
+		"date": "Date",
+		"time": "Time",
 		"from": "from",
 		"to": "to",
 		"until": "until",
+		"after": "after",
 		"and": "and",
 		"or": "or",
 		"at": "at",
@@ -754,10 +757,11 @@
 	},
 	"notifications": {
 		"title": "Notifications",
-		"label": "Training notifications",
-		"time": "Time",
+		"training_reminders_label": "Training reminders",
+		"training_reminders_time": "Time",
+		"start_course_reminders_label": "Monthly reminders for starting a new course",
 		"done": "Done",
-    "information": "These notifications are referring only to the MWB training (e.g. adding steps for achieving a clear goal and solving the 3 quizzes per week related to the mental process goal/steps, relaxation method, and super-focus method).\n\nPlease keep in mind that the notifications for lesson requests and scheduled lessons will be sent independently of this setting."
+    "information": "These notifications are referring only to the MWB training (e.g. adding steps for achieving a clear goal and solving the 3 quizzes per week related to the mental process goal/steps, relaxation method, and super-focus method).\n\nPlease keep in mind that the notifications for the courses will be sent independently of this setting."
 	},
 	"support": {
 		"title": "Support",

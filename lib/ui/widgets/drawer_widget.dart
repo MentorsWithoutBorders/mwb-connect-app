@@ -30,7 +30,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final AuthService _authService = locator<AuthService>();
   LessonRequestViewModel? _lessonRequestProvider;
   ConnectWithMentorViewModel? _connectWithMentorProvider;  
-  CommonViewModel? _commonProvider;  
+  CommonViewModel? _commonProvider;
   GoalsViewModel? _goalsProvider;
   StepsViewModel? _stepsProvider;
 

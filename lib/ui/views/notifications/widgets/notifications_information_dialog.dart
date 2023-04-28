@@ -31,7 +31,7 @@ class _NotificationsInformationDialogState extends State<NotificationsInformatio
       padding: const EdgeInsets.only(bottom: 20.0, right: 5.0),
       child: Center(
         child: Text(
-          'notifications.label'.tr(),
+          'notifications.training_reminders_label'.tr(),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 18.0,

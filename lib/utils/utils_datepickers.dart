@@ -20,7 +20,7 @@ class UtilsDatePickers {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light(),
-          child: child!,
+          child: child!
         );
       }
     );
@@ -31,6 +31,7 @@ class UtilsDatePickers {
 
   static void showDatePickerIOS({BuildContext? context, DateTime? initialDate, DateTime? firstDate, DateTime? lastDate, Function? setDate}) async {
     final DateTime now = DateTime.now();
+    DateTime? selectedDate = initialDate as DateTime;
     showModalBottomSheet(
       context: context as BuildContext,
       builder: (BuildContext builder) {
@@ -39,20 +40,50 @@ class UtilsDatePickers {
             Container(
               color: AppColors.WILD_SAND,
               height: 40.0,
-              child: InkWell(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                  child: Text(
-                    'common.done'.tr(),
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.blue
-                    ), 
+              child: Row(
+                children: <Widget>[
+                  InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
+                      child: Text(
+                        'common.cancel'.tr(),
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.blue
+                        ), 
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'common.date'.tr(),
+                        style: const TextStyle(
+                          fontSize: 16.0
+                        ), 
+                      ),
+                    )
+                  ),
+                  InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                      child: Text(
+                        'notifications.done'.tr(),
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.blue
+                        ), 
+                      ),
+                    ),
+                    onTap: () async {
+                      setDate!(selectedDate);
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ]
               )
             ),
             Container(
@@ -62,10 +93,10 @@ class UtilsDatePickers {
                 mode: CupertinoDatePickerMode.date,
                 onDateTimeChanged: (DateTime? picked) {
                   if (picked != null && picked != initialDate) {
-                    setDate!(picked);
+                    selectedDate = picked;
                   }
                 },
-                initialDateTime: Jiffy(now).isBefore(Jiffy(initialDate!), Units.DAY) ? initialDate : now,
+                initialDateTime: Jiffy(now).isBefore(Jiffy(initialDate), Units.DAY) ? initialDate : now,
                 minimumDate: firstDate != null ? firstDate : now,
                 maximumDate: lastDate != null ? lastDate : DateTime(now.year + 4),
               ),
@@ -75,4 +106,94 @@ class UtilsDatePickers {
       }
     );
   }
+
+  static Future<void> showTimePickerAndroid({BuildContext? context, List<String>? initialTimeSplit, Function? setTime}) async {
+    final TimeOfDay? selectedTime = await showTimePicker(
+      context: context as BuildContext,
+      initialTime: TimeOfDay(hour: int.parse(initialTimeSplit![0]), minute: int.parse(initialTimeSplit[1])),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+            .copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      }
+    );
+    if (selectedTime != null) {
+      setTime!(selectedTime);
+    }    
+  }
+
+  static void showTimePickerIOS({BuildContext? context, Duration? initialTime, Function? setTime}) async {
+    Duration? selectedTime = initialTime as Duration;
+    showModalBottomSheet(
+      context: context as BuildContext,
+      builder: (BuildContext builder) {
+        return Wrap(
+          children: <Widget>[
+            Container(
+              color: Colors.white,
+              width: double.infinity,
+              height: 40.0,
+              child: Row(
+                children: <Widget>[
+                  InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
+                      child: Text(
+                        'common.cancel'.tr(),
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.blue
+                        ), 
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'common.time'.tr(),
+                        style: const TextStyle(
+                          fontSize: 16.0
+                        ), 
+                      ),
+                    )
+                  ),
+                  InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                      child: Text(
+                        'notifications.done'.tr(),
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.blue
+                        ), 
+                      ),
+                    ),
+                    onTap: () async {
+                      setTime!(selectedTime);
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              )
+            ),
+            Container(
+              color: Colors.white,
+              child: CupertinoTimerPicker(
+                mode: CupertinoTimerPickerMode.hm,
+                initialTimerDuration: initialTime,
+                onTimerDurationChanged: (Duration picked) {
+                  selectedTime = picked;
+                },
+              ),
+            ),
+          ],
+        );
+      }
+    );
+  }  
 }

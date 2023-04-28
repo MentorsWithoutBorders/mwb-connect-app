@@ -12,8 +12,9 @@ class AppConstants {
     'relaxation_method': ['main', 'how_to_relax'],
     'super_focus_method': ['main', 'joyful_productivity']
   };
-  static const bool notificationsEnabled = true;
-  static const String notificationsTime = '21:00';
+  static const bool trainingRemindersEnabled = true;
+  static const String trainingRemindersTime = '21:00';
+  static const bool startCourseRemindersEnabled = true;
   static const String dateTimeFormat = 'yyyy-MM-dd HH:mm:ss';
   static const String dateFormat = 'MMM d, yyyy';
   static const String monthDayFormat = 'MMM d';
