@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 
-class NotificationsInformationDialog extends StatefulWidget {
-  const NotificationsInformationDialog({Key? key})
+class TrainingRemindersInformation extends StatefulWidget {
+  const TrainingRemindersInformation({Key? key})
     : super(key: key);  
 
   @override
-  State<StatefulWidget> createState() => _NotificationsInformationDialogState();
+  State<StatefulWidget> createState() => _TrainingRemindersInformationState();
 }
 
-class _NotificationsInformationDialogState extends State<NotificationsInformationDialog> {
+class _TrainingRemindersInformationState extends State<TrainingRemindersInformation> {
 
-  Widget _showNotificationsInformationDialog() {
+  Widget _showTrainingRemindersInformation() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -87,6 +87,6 @@ class _NotificationsInformationDialogState extends State<NotificationsInformatio
   
   @override
   Widget build(BuildContext context) {
-    return _showNotificationsInformationDialog();
+    return _showTrainingRemindersInformation();
   }
 }
