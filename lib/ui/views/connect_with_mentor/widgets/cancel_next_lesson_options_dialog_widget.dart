@@ -63,7 +63,8 @@ class _CancelNextLessonOptionsDialogState extends State<CancelNextLessonOptionsD
                 showDialog(
                   context: context,
                   builder: (_) => const AnimatedDialog(
-                    widgetInside: CancelNextLessonDialog()
+                    widgetInside: CancelNextLessonDialog(),
+                    marginBottom: 210.0
                   ),
                 ); 
               },

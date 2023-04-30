@@ -67,7 +67,8 @@ class _CancelLessonsOptionsDialogState extends State<CancelLessonsOptionsDialog>
                   builder: (_) => AnimatedDialog(
                     widgetInside: CancelNextLessonDialog(
                       onCancel: widget.onCancelNextLesson
-                    )
+                    ),
+                    marginBottom: 210.0
                   ),
                 ); 
               },
@@ -90,7 +91,8 @@ class _CancelLessonsOptionsDialogState extends State<CancelLessonsOptionsDialog>
                   builder: (_) => AnimatedDialog(
                     widgetInside: CancelCourseDialog(
                       onCancel: widget.onCancelCourse,
-                    )
+                    ),
+                    marginBottom: 210.0
                   ),
                 );                      
               },

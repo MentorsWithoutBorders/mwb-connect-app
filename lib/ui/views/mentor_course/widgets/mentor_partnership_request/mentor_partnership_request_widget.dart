@@ -82,7 +82,8 @@ class _MentorPartnershipRequestState extends State<MentorPartnershipRequest> {
                 builder: (_) => AnimatedDialog(
                   widgetInside: RejectMentorPartnershipRequestDialog(
                     onReject: widget.onReject
-                  )
+                  ),
+                  marginBottom: 210.0
                 ),
               );
             }

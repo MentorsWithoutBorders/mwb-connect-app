@@ -86,7 +86,8 @@ class _WaitingStartCourseState extends State<WaitingStartCourse> {
               builder: (_) => AnimatedDialog(
                 widgetInside: CancelCourseDialog(
                   onCancel: widget.onCancel
-                )
+                ),
+                marginBottom: 210.0
               )
             ); 
           }

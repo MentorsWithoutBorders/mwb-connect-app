@@ -131,7 +131,6 @@ class _AvailableCoursesViewState extends State<AvailableCoursesView> {
   Widget _showNoItemsFoundIndicator() {
     return Center(
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.7,
         padding: const EdgeInsets.only(top: 30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

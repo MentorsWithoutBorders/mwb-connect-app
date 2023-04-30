@@ -126,7 +126,8 @@ class _WaitingStudentsState extends State<WaitingStudents> {
                 widgetInside: CancelCourseDialog(
                   cancelText: widget.cancelText,
                   onCancel: widget.onCancel
-                )
+                ),
+                marginBottom: 210.0
               )
             ); 
           }
