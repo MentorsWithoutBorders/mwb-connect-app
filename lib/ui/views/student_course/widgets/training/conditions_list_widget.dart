@@ -41,7 +41,7 @@ class ConditionsList extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 13.0,
                         color: AppColors.DOVE_GRAY,
-                        height: 1.3
+                        height: 1.4
                       ),
                       children: <TextSpan>[
                         TextSpan(
@@ -94,7 +94,7 @@ class ConditionsList extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 13.0,
                         color: AppColors.DOVE_GRAY,
-                        height: 1.3
+                        height: 1.4
                       ),
                       children: <TextSpan>[
                         TextSpan(

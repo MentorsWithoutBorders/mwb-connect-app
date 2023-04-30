@@ -108,7 +108,7 @@ class _WaitingStudentsState extends State<WaitingStudents> {
     return Center(
       child: Container(
         height: 30.0,
-        margin: const EdgeInsets.only(bottom: 5.0),
+        margin: const EdgeInsets.only(bottom: 8.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 1.0,

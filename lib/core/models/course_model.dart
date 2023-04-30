@@ -59,12 +59,14 @@ class CourseModel {
   }
   
   DateTime? get endDateTime {
-    if (startDateTime != null) {
-      Jiffy endDate = Jiffy(startDateTime).add(months: 3, days: 3);
-      int daysDifference = endDate.dateTime.weekday - startDateTime!.weekday;
-      return daysDifference > 0
-          ? endDate.subtract(days: daysDifference).dateTime
-          : endDate.add(days: -daysDifference).dateTime;
+    if (startDateTime != null && type != null) {
+      int duration = type!.duration!;
+      Jiffy endDate = Jiffy(startDateTime).add(months: duration, days: 3);
+      Jiffy lastLessonDateTime = Jiffy(startDateTime);
+      while (lastLessonDateTime.isBefore(endDate)) {
+        lastLessonDateTime.add(weeks: 1);
+      }
+      return lastLessonDateTime.subtract(weeks: 1).dateTime;
     }
     return null;
   }

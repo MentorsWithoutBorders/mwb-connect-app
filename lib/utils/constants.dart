@@ -29,7 +29,7 @@ class AppConstants {
   static const int availableCoursesResultsPerPage = 2;
   static const int availablePartnersResultsPerPage = 20;
   static const int availableMentorsResultsPerPage = 20;
-  static const int minStudentsCourse = 2;
+  static const int minStudentsCourse = 5;
   static const int maxStudentsCourse = 10;
   static const int maxLessonsNumberRecurrence = 10;
 }

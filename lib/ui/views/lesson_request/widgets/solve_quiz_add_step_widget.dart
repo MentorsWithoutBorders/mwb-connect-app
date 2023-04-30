@@ -88,7 +88,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
         style: const TextStyle(
           fontSize: 13.0,
           color: AppColors.DOVE_GRAY,
-          height: 1.3
+          height: 1.4
         ),
         textAlign: TextAlign.justify,
       )

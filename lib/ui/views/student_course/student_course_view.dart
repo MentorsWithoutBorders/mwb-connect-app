@@ -20,7 +20,7 @@ import 'package:mwb_connect_app/ui/views/student_course/widgets/course/find_avai
 import 'package:mwb_connect_app/ui/views/student_course/widgets/course/waiting_start_course_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/solve_quiz_add_step_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/training_completed_widget.dart';
-import 'package:mwb_connect_app/ui/views/student_course/widgets/training/lessons_disabled_widget.dart';
+import 'package:mwb_connect_app/ui/views/student_course/widgets/training/mentorship_suspended_widget.dart';
 import 'package:mwb_connect_app/ui/views/student_course/widgets/training/joyful_productivity_reminder_dialog.dart';
 import 'package:mwb_connect_app/ui/views/student_course/available_courses_fields/available_courses_fields_view.dart';
 import 'package:mwb_connect_app/ui/views/others/update_app_view.dart';
@@ -169,7 +169,7 @@ class _StudentCourseViewState extends State<StudentCourseView> with WidgetsBindi
               currentStudentsText: currentStudentsText, 
               onCancel: _cancelCourse),
         if (!isMentoringEnabled) 
-          LessonsDisabled()              
+          MentorshipSuspended()              
       ]));
   }
 

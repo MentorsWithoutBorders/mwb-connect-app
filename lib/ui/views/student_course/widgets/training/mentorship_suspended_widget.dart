@@ -4,16 +4,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
 import 'package:mwb_connect_app/ui/views/others/support_request_view.dart';
 
-class LessonsDisabled extends StatefulWidget {
-  const LessonsDisabled({Key? key})
+class MentorshipSuspended extends StatefulWidget {
+  const MentorshipSuspended({Key? key})
     : super(key: key); 
 
   @override
-  State<StatefulWidget> createState() => _LessonsDisabledState();
+  State<StatefulWidget> createState() => _MentorshipSuspendedState();
 }
 
-class _LessonsDisabledState extends State<LessonsDisabled> {
-  Widget _showLessonsDisabledCard() {
+class _MentorshipSuspendedState extends State<MentorshipSuspended> {
+  Widget _showMentorshipSuspendedCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
       child: Card(
@@ -43,7 +43,7 @@ class _LessonsDisabledState extends State<LessonsDisabled> {
       margin: const EdgeInsets.only(top: 3.0, bottom: 15.0),
       child: Center(
         child: Text(
-          'lessons_disabled.title'.tr(),
+          'mentorship_suspended.title'.tr(),
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.TANGO,
@@ -60,7 +60,7 @@ class _LessonsDisabledState extends State<LessonsDisabled> {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: RichText(
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
             fontSize: 13.0,
@@ -69,7 +69,7 @@ class _LessonsDisabledState extends State<LessonsDisabled> {
           ),
           children: <TextSpan>[
             TextSpan(
-              text: 'lessons_disabled.text'.tr() + ' ',             
+              text: 'mentorship_suspended.text'.tr() + ' ',             
             ),
             TextSpan(
               text: 'common.contact_support'.tr(),
@@ -95,6 +95,6 @@ class _LessonsDisabledState extends State<LessonsDisabled> {
   
   @override
   Widget build(BuildContext context) {
-    return _showLessonsDisabledCard();
+    return _showMentorshipSuspendedCard();
   }
 }

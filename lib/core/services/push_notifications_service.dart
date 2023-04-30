@@ -82,9 +82,9 @@ class PushNotificationsService {
             _showNormalPushNotification(event);
           }
           break;
-        case PushNotificationType.lessonRequest:
+        case PushNotificationType.request:
           if (!isOpenApp) {
-            _showLessonRequestPushNotification(event);
+            _showRequestPushNotification(event);
           }
           break;
         default:
@@ -120,7 +120,7 @@ class PushNotificationsService {
     }
   }
 
-  void _showLessonRequestPushNotification(event) {
+  void _showRequestPushNotification(event) {
     if (event != null && event.notification.body.isNotEmpty) {
       _inAppMessagesService.deleteInAppMessage();
       _loggerService.addLogEntry('showing PN inside app: ' + event.notification.body);
@@ -132,7 +132,7 @@ class PushNotificationsService {
             child: AnimatedDialog(
               widgetInside: NotificationDialog(
                 text: event.notification.body, 
-                buttonText: 'lesson_request.show_request'.tr(),
+                buttonText: 'common.show_request'.tr(),
                 shouldReload: true
               )
             )
