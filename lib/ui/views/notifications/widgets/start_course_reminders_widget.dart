@@ -30,6 +30,12 @@ class _StartCourseRemindersState extends State<StartCourseReminders> with Single
     super.initState();
     _isEnabled = widget.isEnabled;
     _date = widget.date;
+    if (_date != null) {
+      DateTime today = DateTime.now();
+      if (_date!.isBefore(today)) {
+        _date = today;
+      }
+    }
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: _animationDuration));
   }
