@@ -29,7 +29,7 @@ class _RootViewState extends State<RootView> with WidgetsBindingObserver {
   CommonViewModel? _commonProvider;
   GoalsViewModel? _goalsProvider;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
-  String? _userId = '';
+  String? _userId;
 
   void _loginCallback() {
     setState(() {
@@ -44,7 +44,7 @@ class _RootViewState extends State<RootView> with WidgetsBindingObserver {
     _goalsProvider?.setSelectedGoal(null);
     setState(() {
       _authStatus = AuthStatus.NOT_LOGGED_IN;
-      _userId = '';
+      _userId = null;
     });
   }
 
