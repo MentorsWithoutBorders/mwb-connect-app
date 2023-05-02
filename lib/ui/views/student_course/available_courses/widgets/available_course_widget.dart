@@ -88,7 +88,7 @@ class _AvailableCourseState extends State<AvailableCourse> {
             TextSpan(
               text: ' ' + courseTypeText,
               style: const TextStyle(
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               ) 
             )
           ]
@@ -131,7 +131,7 @@ class _AvailableCourseState extends State<AvailableCourse> {
             TextSpan(
               text: ' (' + courseText + ')',
               style: const TextStyle(
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               )
             )
           ]

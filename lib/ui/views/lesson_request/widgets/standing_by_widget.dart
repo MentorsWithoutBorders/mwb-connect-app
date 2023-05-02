@@ -166,7 +166,7 @@ class _StandingByState extends State<StandingBy> {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 13.0,
-                fontStyle: FontStyle.italic,
+                fontFamily: 'RobotoItalic',
                 color: AppColors.TANGO
               )
             )

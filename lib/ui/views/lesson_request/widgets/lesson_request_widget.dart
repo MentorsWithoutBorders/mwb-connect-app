@@ -200,7 +200,7 @@ class _LessonRequestState extends State<LessonRequest> {
           style: const TextStyle(
             fontSize: 13.0,
             color: AppColors.DOVE_GRAY,
-            fontStyle: FontStyle.italic,
+            fontFamily: 'RobotoItalic',
             height: 1.4
           ),
           children: <TextSpan>[

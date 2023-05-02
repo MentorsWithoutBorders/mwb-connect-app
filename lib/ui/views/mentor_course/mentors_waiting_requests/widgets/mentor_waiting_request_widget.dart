@@ -86,7 +86,7 @@ class _MentorsWaitingRequeststate extends State<MentorWaitingRequestItem> {
         courseTypeText,
         style: const TextStyle(
           color: AppColors.DOVE_GRAY,
-          fontStyle: FontStyle.italic
+          fontFamily: 'RobotoItalic'
         )
       )
     );

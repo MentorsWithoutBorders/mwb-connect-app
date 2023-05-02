@@ -142,7 +142,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
                 text: whyChooseUrl,
                 style: const TextStyle(
                   color: Colors.blue,
-                  fontStyle: FontStyle.italic,
+                  fontFamily: 'RobotoItalic',
                   decoration: TextDecoration.underline
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () async {

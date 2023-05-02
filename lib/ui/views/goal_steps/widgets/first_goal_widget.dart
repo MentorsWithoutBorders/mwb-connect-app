@@ -68,7 +68,7 @@ class _FirstGoalState extends State<FirstGoal> {
                           child: Text(
                             'goals.first_goal_sublabel'.tr(),
                             style: const TextStyle(
-                              fontStyle: FontStyle.italic,
+                              fontFamily: 'RobotoItalic',
                               fontSize: 13.0,
                               color: Colors.white),
                           )

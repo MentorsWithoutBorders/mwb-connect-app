@@ -47,7 +47,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
     _availability = Availability(dayOfWeek: _defaultDayOfWeek, time: Time(from: _defaultTimeFrom));
   }
   
-  Widget _showEditCourseDetailsDialogDialog() {
+  Widget _showEditCourseDetailsDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -363,7 +363,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       onTap: () {
         _unfocus();
       },
-      child: _showEditCourseDetailsDialogDialog()
+      child: _showEditCourseDetailsDialog()
     );
   }
 }

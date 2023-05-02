@@ -111,7 +111,7 @@ class _MentorPartnershipRequestState extends State<MentorPartnershipRequest> {
                     shouldUnfocus: widget.shouldUnfocus,
                     setShouldUnfocus: widget.setShouldUnfocus
                   ),
-                  marginBottom: 170.0
+                  marginBottom: 220.0
                 ),
               );
             }

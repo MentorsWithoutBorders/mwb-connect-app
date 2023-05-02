@@ -1,6 +1,6 @@
 name: mwb_connect_app
 description: MWBConnect
-version: 1.6.0+43
+version: 2.0.1+43
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -70,6 +70,9 @@ flutter:
     - assets/fonts/
 
   fonts:
+    - family: RobotoItalic
+      fonts:
+        - asset: assets/fonts/Roboto-Italic.ttf  
     - family: RopaSans
       fonts:
         - asset: assets/fonts/RopaSans.ttf

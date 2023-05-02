@@ -24,7 +24,7 @@ class JoinCourseDialog extends StatefulWidget {
 class _JoinCourseDialogState extends State<JoinCourseDialog> {
   bool _isJoiningCourse = false;  
   
-  Widget _showJoinCourseDialogDialog() {
+  Widget _showJoinCourseDialog() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 15.0),
@@ -130,6 +130,6 @@ class _JoinCourseDialogState extends State<JoinCourseDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return _showJoinCourseDialogDialog();
+    return _showJoinCourseDialog();
   }
 }

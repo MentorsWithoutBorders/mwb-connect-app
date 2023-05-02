@@ -144,7 +144,7 @@ class _CourseTypesState extends State<CourseTypes> {
           subfields: widget.subfields,
           onSetCourseDetails: widget.onSetCourseDetails
         ),
-        marginBottom: 190.0,
+        marginBottom: 220.0,
       ),
     );
   }

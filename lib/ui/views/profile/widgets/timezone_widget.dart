@@ -22,9 +22,9 @@ class _UserTimezoneState extends State<UserTimezone> {
       child: Text(
         'common.availability_timezone'.tr(args: [now.timeZoneName]),
         style: const TextStyle(
+          fontFamily: 'RobotoItalic',
           fontSize: 13.0,
-          color: AppColors.DOVE_GRAY,
-          fontStyle: FontStyle.italic
+          color: AppColors.DOVE_GRAY
         ),
       ),
     );

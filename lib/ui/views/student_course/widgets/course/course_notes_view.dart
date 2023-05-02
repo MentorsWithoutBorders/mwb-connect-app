@@ -104,7 +104,7 @@ class _CourseNotesViewState extends State<CourseNotesView> with WidgetsBindingOb
       style: TextStyle(
         fontSize: 13.0,
         color: AppColors.SILVER,
-        fontStyle: FontStyle.italic
+        fontFamily: 'RobotoItalic'
       )
     );
   }

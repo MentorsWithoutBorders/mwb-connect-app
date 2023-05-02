@@ -141,14 +141,14 @@ class _NextLessonState extends State<NextLesson> {
             if (isAvailableForOtherStudents) TextSpan(
               text: fourthPart,
               style: const TextStyle(
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               )
             ),
             if (isAvailableForOtherStudents) TextSpan(
               text: ' ' + 'common.your_profile'.tr(),
               style: const TextStyle(
                 decoration: TextDecoration.underline,
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
                 Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
@@ -157,7 +157,7 @@ class _NextLessonState extends State<NextLesson> {
             if (isAvailableForOtherStudents) TextSpan(
               text: '):',
               style: const TextStyle(
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               )
             )
           ]
@@ -251,14 +251,14 @@ class _NextLessonState extends State<NextLesson> {
             if (isAvailableForOtherStudents) TextSpan(
               text: fourthPart + ' ',
               style: const TextStyle(
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               )
             ),
             if (isAvailableForOtherStudents) TextSpan(
               text: 'common.your_profile'.tr(),
               style: const TextStyle(
                 decoration: TextDecoration.underline,
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
                 Navigator.push(context, MaterialPageRoute<ProfileView>(builder: (_) => ProfileView()));
@@ -267,7 +267,7 @@ class _NextLessonState extends State<NextLesson> {
             if (isAvailableForOtherStudents) TextSpan(
               text: '):',
               style: const TextStyle(
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               )
             )
           ]
@@ -327,7 +327,7 @@ class _NextLessonState extends State<NextLesson> {
                           text: 'lesson_request.notes_previous_mentors'.tr(),
                           style: const TextStyle(
                             color: Colors.blue,
-                            fontStyle: FontStyle.italic,
+                            fontFamily: 'RobotoItalic',
                             decoration: TextDecoration.underline
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () {

@@ -84,15 +84,15 @@ class _SubfieldItemState extends State<SubfieldItem> {
             if (hasSkills) TextSpan(
               text: ' (',
               style: const TextStyle(
-                fontStyle: FontStyle.italic,
-              )              
+                fontFamily: 'RobotoItalic'
+              )
             ),
             if (hasSkills) TextSpan(
               text: 'common.see_skills'.tr(),
               style: const TextStyle(
                 color: Colors.blue,
                 fontSize: 13.0,
-                fontStyle: FontStyle.italic,
+                fontFamily: 'RobotoItalic',
                 decoration: TextDecoration.underline
               ),
               recognizer: TapGestureRecognizer()..onTap = () {
@@ -111,7 +111,7 @@ class _SubfieldItemState extends State<SubfieldItem> {
             if (hasSkills) TextSpan(
               text: ')',
               style: const TextStyle(
-                fontStyle: FontStyle.italic,
+                fontFamily: 'RobotoItalic',
               )              
             )
           ]

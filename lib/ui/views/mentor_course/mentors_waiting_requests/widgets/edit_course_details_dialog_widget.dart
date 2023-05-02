@@ -164,7 +164,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
                     'mentor_course.available_partners_lesson_duration'.tr(),
                     style: const TextStyle(
                       fontSize: 13.0,
-                      fontStyle: FontStyle.italic,
+                      fontFamily: 'RobotoItalic',
                       color: AppColors.DOVE_GRAY
                     )
                   ),

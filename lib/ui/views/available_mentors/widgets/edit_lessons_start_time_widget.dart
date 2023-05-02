@@ -86,7 +86,7 @@ class _EditLessonsStartTimeState extends State<EditLessonsStartTime> {
                     'available_mentors.lesson_duration'.tr(),
                     style: const TextStyle(
                       fontSize: 13.0,
-                      fontStyle: FontStyle.italic,
+                      fontFamily: 'RobotoItalic',
                       color: AppColors.DOVE_GRAY
                     )
                   ),

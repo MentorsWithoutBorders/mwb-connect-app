@@ -103,7 +103,7 @@ class _SolveQuizAddStepState extends State<SolveQuizAddStep> {
             TextSpan(
               text: and,
               style: const TextStyle(
-                fontStyle: FontStyle.italic
+                fontFamily: 'RobotoItalic'
               )
             ),
             TextSpan(
