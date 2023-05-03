@@ -56,7 +56,7 @@ class _WhyChooseFieldDialogState extends State<WhyChooseFieldDialog> {
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              Navigator.pop(context, false);
+              Navigator.pop(context);
             },
             child: Container(
               width: 25.0,
