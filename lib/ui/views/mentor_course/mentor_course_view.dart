@@ -156,6 +156,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<CourseType>? courseTypes = _mentorCourseProvider?.courseTypes;
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
+    final String? previousMeetingUrl = _mentorCourseProvider?.previousMeetingUrl;
     // Course
     final CourseModel? course = _mentorCourseProvider?.course;
     final NextLessonMentor? nextLesson = _mentorCourseProvider?.nextLesson;
@@ -188,6 +189,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
                 courseTypes: courseTypes,
                 selectedCourseType: selectedCourseType,
                 subfields: subfields,
+                previousMeetingUrl: previousMeetingUrl,
                 onSelect: _setSelectedCourseType,
                 onSetCourseDetails: _setCourseDetails,
                 onFindPartner: _findPartner),
@@ -218,6 +220,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
             MentorPartnershipRequest(
                 text: mentorPartnershipText,
                 bottomText: mentorPartnershipBottomText,
+                previousMeetingUrl: previousMeetingUrl,
                 onAccept: _acceptMentorPartnershipRequest,
                 onReject: _rejectMentorPartnershipRequest,
                 shouldUnfocus: shouldUnfocus,
@@ -370,6 +373,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
       await Future.wait([
         _mentorCourseProvider!.getCourseTypes(),
         _mentorCourseProvider!.getCourse(),
+        _mentorCourseProvider!.getPreviousCourse(),
         _mentorCourseProvider!.getNextLesson(),
         _mentorCourseProvider!.getField(fieldId),
         _mentorCourseProvider!.getMentorPartnershipRequest(),
@@ -393,6 +397,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   void _showSetMeetingUrlDialog() {
     final bool isCourse = _mentorCourseProvider?.isCourse ?? false;
     final String meetingUrl = _mentorCourseProvider?.getMeetingUrl() as String;
+    final String previousMeetingUrl = _mentorCourseProvider?.previousMeetingUrl as String;
     final int mentorsCount = _mentorCourseProvider?.getMentorsCount() as int;
     if (isCourse && meetingUrl.isEmpty && !_isMeetingUrlDialogShown) {
       _isMeetingUrlDialogShown = true;
@@ -400,7 +405,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
         context: context,
         builder: (_) => AnimatedDialog(
           widgetInside: SetMeetingUrlDialog(
-            meetingUrl: meetingUrl,
+            meetingUrl: previousMeetingUrl,
             mentorsCount: mentorsCount, 
             isUpdate: false, 
             onSet: _setMeetingUrl

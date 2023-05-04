@@ -21,9 +21,15 @@ class SetMeetingUrlDialog extends StatefulWidget {
 
 class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   final String urlType = AppConstants.meetingUrlType;
-  String? _url;
+  String? _meetingUrl;
   bool _shouldShowError = false;
   bool isSetting = false;
+
+  @override
+  void initState() {
+    _meetingUrl = widget.meetingUrl;
+    super.initState();
+  }
 
   Widget _showSetMeetingUrlDialog() {
     return Container(
@@ -108,7 +114,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
 
   void _changeUrl(String url) {
     setState(() {
-      _url = url;
+      _meetingUrl = url;
     });    
     _setShouldShowError(false);    
   }
@@ -157,7 +163,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   } 
 
   Future<void> _setMeetingUrl() async {
-    String meetingUrl = _url ?? '';
+    String meetingUrl = _meetingUrl ?? '';
     if (Utils.checkValidMeetingUrl(meetingUrl) == false) {
       _setShouldShowError(true);
       return ;

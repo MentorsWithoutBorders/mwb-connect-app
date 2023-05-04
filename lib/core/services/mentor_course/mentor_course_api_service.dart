@@ -31,6 +31,12 @@ class MentorCourseApiService {
     return course;
   }
 
+  Future<CourseModel> getPreviousCourse() async {
+    Map<String, dynamic> response = await _api.getHTTP(url: '/courses/previous');
+    CourseModel course = CourseModel.fromJson(response);
+    return course;
+  }  
+
   Future<NextLessonMentor> getNextLesson() async {
     Map<String, dynamic> response = await _api.getHTTP(url: '/courses/next_lesson');
     NextLessonMentor nextLesson = NextLessonMentor.fromJson(response);

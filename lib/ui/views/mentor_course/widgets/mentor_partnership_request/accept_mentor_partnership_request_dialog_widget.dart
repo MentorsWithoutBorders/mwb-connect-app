@@ -7,9 +7,10 @@ import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class AcceptMentorPartnershipRequestDialog extends StatefulWidget {
-  const AcceptMentorPartnershipRequestDialog({Key? key, @required this.onAccept, @required this.shouldUnfocus, @required this.setShouldUnfocus})
+  const AcceptMentorPartnershipRequestDialog({Key? key, @required this.previousMeetingUrl, @required this.onAccept, @required this.shouldUnfocus, @required this.setShouldUnfocus})
     : super(key: key);
     
+  final String? previousMeetingUrl;
   final Function(String?)? onAccept;
   final bool? shouldUnfocus;
   final Function(bool)? setShouldUnfocus;
@@ -20,9 +21,15 @@ class AcceptMentorPartnershipRequestDialog extends StatefulWidget {
 
 class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartnershipRequestDialog> {
   String urlType = AppConstants.meetingUrlType;
-  String _url = '';
+  String _meetingUrl = '';
   bool _shouldShowError = false;
   bool _isAccepting = false;
+
+  @override
+  void initState() {
+    _meetingUrl = widget.previousMeetingUrl ?? '';
+    super.initState();
+  }
 
   Widget _showAcceptMentorPartnershipRequestDialog() {
     return Container(
@@ -95,7 +102,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
             child: InputBox(
               autofocus: true, 
               hint: '',
-              text: _url,
+              text: _meetingUrl,
               textCapitalization: TextCapitalization.none,
               inputChangedCallback: _changeUrl
             ),
@@ -121,7 +128,7 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
 
   void _changeUrl(String url) {
     setState(() {
-      _url = url;
+      _meetingUrl = url;
     });
     _setShouldShowError(false);
   }
@@ -173,13 +180,13 @@ class _AcceptMentorPartnershipRequestDialogState extends State<AcceptMentorPartn
   }
 
   Future<void> _acceptMentorPartnershipRequest() async {
-    _changeUrl(Utils.setUrl(_url));
-    if (Utils.checkValidMeetingUrl(_url) == false) {
+    _changeUrl(Utils.setUrl(_meetingUrl));
+    if (Utils.checkValidMeetingUrl(_meetingUrl) == false) {
       _setShouldShowError(true);
       return ;
     }
     _setIsAccepting(true);
-    await widget.onAccept!(_url);
+    await widget.onAccept!(_meetingUrl);
     Navigator.pop(context);
   }
   

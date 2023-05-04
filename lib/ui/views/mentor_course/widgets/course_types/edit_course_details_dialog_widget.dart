@@ -12,10 +12,11 @@ import 'package:mwb_connect_app/ui/widgets/input_box_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/button_loader_widget.dart';
 
 class EditCourseDetailsDialog extends StatefulWidget {
-  const EditCourseDetailsDialog({Key? key, @required this.subfields, @required this.onSetCourseDetails})
+  const EditCourseDetailsDialog({Key? key, @required this.subfields, @required this.previousMeetingUrl, @required this.onSetCourseDetails})
     : super(key: key); 
 
   final List<Subfield>? subfields;
+  final String? previousMeetingUrl;
   final Function(String, Availability?, String)? onSetCourseDetails;  
 
   @override
@@ -32,6 +33,12 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   bool _shouldShowError = false;  
   bool _isInit = false;
   bool _isSchedulingCourse = false;
+
+  @override
+  void initState() {
+    _meetingUrl = widget.previousMeetingUrl ?? '';
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {

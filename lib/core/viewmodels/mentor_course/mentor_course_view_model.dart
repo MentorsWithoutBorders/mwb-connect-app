@@ -30,6 +30,7 @@ class MentorCourseViewModel extends ChangeNotifier {
   Field? field;
   CourseMentor? partnerMentor;
   CourseType? selectedCourseType;
+  String? previousMeetingUrl = '';
   String errorMessage = '';
   bool _shouldUnfocus = false;
   bool shouldShowExpired = false;
@@ -47,6 +48,15 @@ class MentorCourseViewModel extends ChangeNotifier {
     course = await _mentorCourseApiService.getCourse();
     if (course?.id != null) {
       setSelectedCourseType(courseTypes[0].id as String);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getPreviousCourse() async {
+    CourseModel previousCourse = await _mentorCourseApiService.getPreviousCourse();
+    CourseMentor mentor = _mentorCourseUtilsService.getMentor(previousCourse);
+    if (mentor.meetingUrl != null && mentor.meetingUrl!.isNotEmpty) {
+      previousMeetingUrl = mentor.meetingUrl as String;
     }
     notifyListeners();
   }

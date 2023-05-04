@@ -9,12 +9,13 @@ import 'package:mwb_connect_app/ui/views/mentor_course/widgets/course_types/edit
 import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 
 class CourseTypes extends StatefulWidget {
-  const CourseTypes({Key? key, @required this.courseTypes, @required this.selectedCourseType, @required this.subfields, @required this.onSelect, @required this.onSetCourseDetails, @required this.onFindPartner})
+  const CourseTypes({Key? key, @required this.courseTypes, @required this.selectedCourseType, @required this.subfields, @required this.previousMeetingUrl, @required this.onSelect, @required this.onSetCourseDetails, @required this.onFindPartner})
     : super(key: key); 
 
   final List<CourseType>? courseTypes;
   final CourseType? selectedCourseType;
   final List<Subfield>? subfields;
+  final String? previousMeetingUrl;
   final Function(String)? onSelect;
   final Function(String, Availability?, String)? onSetCourseDetails;
   final Function? onFindPartner;
@@ -142,6 +143,7 @@ class _CourseTypesState extends State<CourseTypes> {
       builder: (_) => AnimatedDialog(
         widgetInside: EditCourseDetailsDialog(
           subfields: widget.subfields,
+          previousMeetingUrl: widget.previousMeetingUrl,
           onSetCourseDetails: widget.onSetCourseDetails
         ),
         marginBottom: 220.0,
