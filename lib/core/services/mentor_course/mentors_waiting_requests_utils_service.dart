@@ -270,11 +270,7 @@ class MentorsWaitingRequestsUtilsService {
     filterAvailabilities.sort((a, b) => Utils.daysOfWeek.indexOf(a.dayOfWeek as String).compareTo(Utils.daysOfWeek.indexOf(b.dayOfWeek as String)));
     return filterAvailabilities;
   } 
-  
-  Field getSelectedField(Field filterField, List<Field> fields) {
-    return fields.firstWhere((field) => field.id == filterField.id);
-  } 
-  
+
   Field setSubfield(Subfield subfield, int index, Field filterField) {
     subfield.skills = [];
     List<Subfield>? filterSubfields = filterField.subfields;

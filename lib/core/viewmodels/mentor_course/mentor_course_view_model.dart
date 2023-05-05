@@ -218,6 +218,11 @@ class MentorCourseViewModel extends ChangeNotifier {
     return _mentorCourseUtilsService.getRequestPartnerMentorName(mentorPartnershipRequest);
   }
 
+  void setField(Field? field) {
+    this.field = field;
+    notifyListeners();
+  }
+
   void setMentorPartnershipRequest(MentorPartnershipRequestModel? mentorPartnershipRequest) {
     this.mentorPartnershipRequest = mentorPartnershipRequest;
     notifyListeners();

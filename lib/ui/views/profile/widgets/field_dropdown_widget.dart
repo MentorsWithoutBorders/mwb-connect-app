@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mwb_connect_app/core/viewmodels/mentor_course/mentor_course_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
@@ -17,6 +18,7 @@ class FieldDropdown extends StatefulWidget {
 
 class _FieldDropdownState extends State<FieldDropdown> {
   ProfileViewModel? _profileProvider;
+  MentorCourseViewModel? _mentorCourseProvider;
   Field? _selectedField;
 
   @override
@@ -78,6 +80,9 @@ class _FieldDropdownState extends State<FieldDropdown> {
     }    
     _setSelectedField(selectedField);
     _profileProvider?.setField(selectedField);
+    if (_profileProvider?.user?.isMentor == true) {
+      _mentorCourseProvider?.setField(selectedField);
+    }
   }
   
   void _setSelectedField(Field field) {
@@ -93,6 +98,7 @@ class _FieldDropdownState extends State<FieldDropdown> {
   @override
   Widget build(BuildContext context) {
     _profileProvider = Provider.of<ProfileViewModel>(context);
+    _mentorCourseProvider = Provider.of<MentorCourseViewModel>(context);
 
     return Wrap(
       children: [

@@ -43,7 +43,6 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
     if (filterCourseType.duration == null) {
       filterCourseType = this.courseTypes[0];
     }
-    notifyListeners();
 }  
   
   CourseType getCourseTypeByDuration(int? duration) {
@@ -242,16 +241,11 @@ class MentorsWaitingRequestsViewModel extends ChangeNotifier {
         subfields: []
       );
     }
-    notifyListeners();
   }
 
   CourseType getCourseTypeById(String? courseTypeId) {
     CourseType? courseType = courseTypes.firstWhere((CourseType courseType) => courseType.id == courseTypeId, orElse: () => CourseType());
     return courseType;
-  }
-
-  Field getSelectedField() {
-    return _mentorsWaitingRequestsUtilsService.getSelectedField(filterField, fields);
   }
 
   void setSubfield(Subfield subfield, int index) {

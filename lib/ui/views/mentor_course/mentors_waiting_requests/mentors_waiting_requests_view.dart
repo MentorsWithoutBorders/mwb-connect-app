@@ -39,6 +39,11 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
 
   @override
   void initState() {
+    _mentorsWaitingRequestsProvider = Provider.of<MentorsWaitingRequestsViewModel>(context, listen: false);
+    _mentorsWaitingRequestsProvider?.fields = [widget.field as Field];
+    _mentorsWaitingRequestsProvider?.setCourseTypes(widget.courseTypes as List<CourseType>);
+    _mentorsWaitingRequestsProvider?.setFilterField(widget.field as Field);    
+    _mentorsWaitingRequestsProvider?.filterCourseType = _mentorsWaitingRequestsProvider!.getCourseTypeById(widget.mentorPartnershipRequest?.courseType?.id);
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -70,11 +75,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
     }
   }
   
-  void _afterLayout(_) {
-    _mentorsWaitingRequestsProvider?.fields = [widget.field as Field];
-    _mentorsWaitingRequestsProvider?.setCourseTypes(widget.courseTypes as List<CourseType>);
-    _mentorsWaitingRequestsProvider?.setFilterCourseType(widget.mentorPartnershipRequest?.courseType?.id);
-    _mentorsWaitingRequestsProvider?.setFilterField(widget.field as Field);
+  void _afterLayout(_) { 
     _mentorsWaitingRequestsProvider?.setSubfieldOptionId(null);
     _mentorsWaitingRequestsProvider?.setAvailabilityOptionId(null);
   }
@@ -219,10 +220,9 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
   }
 
   Widget _showNoItemsFoundIndicator() {
-    return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        padding: const EdgeInsets.only(top: 30.0),
+    return Container(
+      padding: const EdgeInsets.only(top: 30.0),
+      child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -239,7 +239,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
               )
             )
           ]
-        )
+        ),
       )
     );
   }

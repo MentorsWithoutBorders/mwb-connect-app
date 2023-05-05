@@ -31,7 +31,10 @@ class LocalStorageService {
   set isMentor(bool? value) => _saveToDisk('isMentor', value);
 
   String? get registeredOn => _getFromDisk('registeredOn');
-  set registeredOn(String? value) => _saveToDisk('registeredOn', value);  
+  set registeredOn(String? value) => _saveToDisk('registeredOn', value);
+  
+  String? get fieldId => _getFromDisk('fieldId');
+  set fieldId(String? value) => _saveToDisk('fieldId', value);   
 
   String? get fieldName => _getFromDisk('fieldName');
   set fieldName(String? value) => _saveToDisk('fieldName', value);  

@@ -44,15 +44,17 @@ class _WaitingMentorPartnershipRequestState extends State<WaitingMentorPartnersh
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-          child: Text(
-            'mentor_course.waiting_mentor_partnership_request_text'.tr(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: AppColors.DOVE_GRAY,
-              height: 1.4
-            )
+          child: Center(
+            child: Text(
+              'mentor_course.waiting_mentor_partnership_request_text'.tr(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: AppColors.DOVE_GRAY,
+                height: 1.4
+              )
+            ),
           )
         )
       ]
