@@ -221,7 +221,7 @@ class _MentorsWaitingRequestsViewState extends State<MentorsWaitingRequestsView>
 
   Widget _showNoItemsFoundIndicator() {
     return Container(
-      padding: const EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 0.0),
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -282,7 +282,7 @@ class _TutorialPreviewsState extends State<TutorialPreviews> with TickerProvider
         textAlign: TextAlign.justify,
         text: TextSpan(
           style: const TextStyle(
-            fontSize: 13.0,
+            fontSize: 12.0,
             color: Colors.white,
             height: 1.2
           ),

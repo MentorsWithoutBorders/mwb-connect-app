@@ -257,11 +257,11 @@ class MentorCourseTextsService {
     String date = dateFormat.format(sentDateTime.add(Duration(days: 1)));
     String text = 'mentor_course.mentor_partnership_request_bottom_text'.tr(args: [date, mentorName]);
     return [
-      ColoredText(text: text.substring(0, text.indexOf(date)), color: AppColors.DOVE_GRAY),
-      ColoredText(text: date, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(date) + date.length, text.indexOf(mentorName)), color: AppColors.DOVE_GRAY),
-      ColoredText(text: mentorName, color: AppColors.TANGO),
-      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length), color: AppColors.DOVE_GRAY),
+      ColoredText(text: text.substring(0, text.indexOf(date)), color: AppColors.DOVE_GRAY, isItalic: true),
+      ColoredText(text: date, color: AppColors.TANGO, isItalic: true),
+      ColoredText(text: text.substring(text.indexOf(date) + date.length, text.indexOf(mentorName)), color: AppColors.DOVE_GRAY, isItalic: true),
+      ColoredText(text: mentorName, color: AppColors.TANGO, isItalic: true),
+      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length), color: AppColors.DOVE_GRAY, isItalic: true),
     ];
   }
 
