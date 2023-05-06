@@ -7,6 +7,7 @@ import 'package:mwb_connect_app/core/models/field_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_waiting_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_request_model.dart';
 import 'package:mwb_connect_app/core/models/mentor_partnership_schedule_item_model.dart';
+import 'package:mwb_connect_app/core/models/subfield_model.dart';
 import 'package:mwb_connect_app/core/models/availability_model.dart';
 import 'package:mwb_connect_app/core/models/attached_message_model.dart';
 import 'package:mwb_connect_app/core/services/api_service.dart';
@@ -52,13 +53,16 @@ class MentorCourseApiService {
     return mentorPartnershipSchedule;
   }
 
-  Future<CourseModel> addCourse(CourseModel? course, CourseType? selectedCourseType, Availability? availability, String meetingUrl) async {
+  Future<CourseModel> addCourse(CourseModel? course, CourseType? selectedCourseType, Field? field, String subfieldId, Availability? availability, String meetingUrl) async {
     String dayOfWeek = availability?.dayOfWeek as String;
     String timeFrom = availability?.time?.from as String;
+    List<Subfield> subfields = field?.subfields as List<Subfield>;
+    subfields = subfields.where((subfield) => subfield.id == subfieldId).toList();
+    field?.subfields = subfields;
     CourseModel course = CourseModel(
       type: selectedCourseType,
       startDateTime: _mentorCourseUtilsService.getCourseDateTime(dayOfWeek, timeFrom),
-      mentors: [CourseMentor(meetingUrl: meetingUrl)]
+      mentors: [CourseMentor(field: field, meetingUrl: meetingUrl)]
     );
     Map<String, dynamic> response = await _api.postHTTP(url: '/courses/add', data: course.toJson());
     course = CourseModel.fromJson(response);

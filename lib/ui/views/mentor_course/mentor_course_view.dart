@@ -244,11 +244,11 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   }
 
   Future<void> _setCourseDetails(String subfieldId, Availability? availability, String meetingUrl) async {
-    await _addCourse(availability, meetingUrl);
+    await _addCourse(subfieldId, availability, meetingUrl);
   }
 
-  Future<void> _addCourse(Availability? availability, String meetingUrl) async {
-    await _mentorCourseProvider?.addCourse(availability, meetingUrl);
+  Future<void> _addCourse(String subfieldId, Availability? availability, String meetingUrl) async {
+    await _mentorCourseProvider?.addCourse(subfieldId, availability, meetingUrl);
   }
 
   void _findPartner() {

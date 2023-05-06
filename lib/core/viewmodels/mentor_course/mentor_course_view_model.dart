@@ -76,8 +76,8 @@ class MentorCourseViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> addCourse(Availability? availability, String meetingUrl) async {
-    course = await _mentorCourseApiService.addCourse(course, selectedCourseType, availability, meetingUrl);
+  Future<void> addCourse(String subfieldId, Availability? availability, String meetingUrl) async {
+    course = await _mentorCourseApiService.addCourse(course, selectedCourseType, field, subfieldId, availability, meetingUrl);
     notifyListeners();
   }
 
