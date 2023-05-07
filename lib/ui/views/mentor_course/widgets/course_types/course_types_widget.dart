@@ -254,7 +254,7 @@ class _CourseTypesState extends State<CourseTypes> {
   
   void _handleVisibilityChanged(VisibilityInfo info) {
     final visiblePercentage = info.visibleFraction * 100;
-    if (visiblePercentage == 0.0) {
+    if (mounted && visiblePercentage == 0.0) {
       _setShouldShowError(false);
     }
   }  
