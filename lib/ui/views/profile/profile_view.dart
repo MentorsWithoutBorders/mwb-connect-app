@@ -207,7 +207,6 @@ class _ProfileViewState extends State<ProfileView> {
     ).then((shouldGoBack) {
       if (shouldGoBack == true) {
         Navigator.pop(context);
-        Navigator.pop(context);
       }
     }); 
   }

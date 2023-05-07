@@ -156,6 +156,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
     final List<CourseType>? courseTypes = _mentorCourseProvider?.courseTypes;
     final CourseType? selectedCourseType = _mentorCourseProvider?.selectedCourseType;
     final List<Subfield>? subfields = mentor.field?.subfields as List<Subfield>;
+    final List<Availability>? availabilities = mentor.availabilities as List<Availability>;
     final String? previousMeetingUrl = _mentorCourseProvider?.previousMeetingUrl;
     // Course
     final CourseModel? course = _mentorCourseProvider?.course;
@@ -189,6 +190,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
                 courseTypes: courseTypes,
                 selectedCourseType: selectedCourseType,
                 subfields: subfields,
+                availabilities: availabilities,
                 previousMeetingUrl: previousMeetingUrl,
                 onSelect: _setSelectedCourseType,
                 onSetCourseDetails: _setCourseDetails,
@@ -233,7 +235,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
           if (isMentorWaitingRequest)
             WaitingMentorPartnershipRequest(
                 onCancel: _cancelMentorWaitingRequest, 
-                onFindPartner: _findPartner)
+                onFindPartner: _findPartner),
         ]
       )
     );
@@ -254,7 +256,7 @@ class _MentorCourseViewState extends State<MentorCourseView> with WidgetsBinding
   void _findPartner() {
     CourseType selectedCourseType = _mentorCourseProvider?.selectedCourseType ?? CourseType();
     _goToMentorsWaitingRequests(selectedCourseType);
-  }
+  } 
 
   Future<void> _setMeetingUrl(String meetingUrl) async {
     await _mentorCourseProvider?.setMeetingUrl(meetingUrl);
