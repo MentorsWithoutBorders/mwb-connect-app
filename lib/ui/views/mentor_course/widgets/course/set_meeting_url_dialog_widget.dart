@@ -23,7 +23,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   final String urlType = AppConstants.meetingUrlType;
   String? _meetingUrl;
   bool _shouldShowError = false;
-  bool isSetting = false;
+  bool _isSetting = false;
 
   @override
   void initState() {
@@ -147,7 +147,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
             ),
             padding: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
           ),
-          child: !isSetting ? Text(
+          child: !_isSetting ? Text(
             actionText,
             style: const TextStyle(color: Colors.white)
           ) : SizedBox(
@@ -175,7 +175,7 @@ class _SetMeetingUrlDialogState extends State<SetMeetingUrlDialog> {
   
   void _setIsSetting(bool isSetting) {
     setState(() {
-      isSetting = isSetting;
+      _isSetting = isSetting;
     });  
   }    
   

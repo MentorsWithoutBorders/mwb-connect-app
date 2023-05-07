@@ -142,7 +142,10 @@ class _MentorPartnershipScheduleViewState extends State<MentorPartnershipSchedul
     if (_isInit) {
       return _showMentorPartnershipScheduleView();
     } else {
-      return const Loader();
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 100.0),
+        child: const Loader(),
+      );
     }
   }   
 
@@ -173,9 +176,7 @@ class _MentorPartnershipScheduleViewState extends State<MentorPartnershipSchedul
                   )
                 )
               ),
-              body: Center(
-                child: _showContent()
-              )
+              body: _showContent()
             )
           ]
         );
