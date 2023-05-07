@@ -9,7 +9,7 @@ class Label extends StatelessWidget {
 
   Widget _showLabel() {
     return Padding(
-      padding: const EdgeInsets.only(left: 3.0, bottom: 8.0),
+      padding: const EdgeInsets.only(left: 3.0, bottom: 5.0),
       child: Text(
         text!,
         style: const TextStyle(
