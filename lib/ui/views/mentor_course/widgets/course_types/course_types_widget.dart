@@ -237,7 +237,7 @@ class _CourseTypesState extends State<CourseTypes> {
           previousMeetingUrl: widget.previousMeetingUrl,
           onSetCourseDetails: widget.onSetCourseDetails
         ),
-        marginBottom: 240.0,
+        marginBottom: 280.0,
       ),
     );
   }

@@ -111,12 +111,15 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _showMentorSubfieldsLabel(),
-        SubfieldDropdown(
-          subfields: widget.mentorSubfields,
-          selectedSubfieldId: _subfieldId,
-          onSelect: (String? subfieldId) {
-            _setSubfieldId(subfieldId);
-          }
+        Container(
+          height: 48.0,
+          child: SubfieldDropdown(
+            subfields: widget.mentorSubfields,
+            selectedSubfieldId: _subfieldId,
+            onSelect: (String? subfieldId) {
+              _setSubfieldId(subfieldId);
+            }
+          ),
         ),
       ],
     );
@@ -150,7 +153,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
             children: [
               Container(
                 width: 90.0,
-                height: 30.0,
+                height: 37.0,
                 child: Dropdown(
                   dropdownMenuItemList: _buildTimeDropdown(),
                   onChanged: _setStartTime,

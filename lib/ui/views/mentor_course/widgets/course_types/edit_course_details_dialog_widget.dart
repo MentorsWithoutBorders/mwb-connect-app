@@ -106,12 +106,15 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   }
 
   Widget _showSubfieldsDropdown() {
-    return SubfieldDropdown(
-      subfields: widget.subfields,
-      selectedSubfieldId: _subfieldId,
-      onSelect: (String? subfieldId) {
-        _setSubfieldId(subfieldId);
-      }
+    return Container(
+      height: 47.0,
+      child: SubfieldDropdown(
+        subfields: widget.subfields,
+        selectedSubfieldId: _subfieldId,
+        onSelect: (String? subfieldId) {
+          _setSubfieldId(subfieldId);
+        }
+      ),
     );
   }
 
@@ -156,7 +159,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   Widget _showDayOfWeekDropdown() {
     return Expanded(
       child: Container(
-        height: 30.0,
+        height: 37.0,
         child: Dropdown(
           dropdownMenuItemList: _buildDayOfWeekDropdown(),
           onChanged: _setDayOfWeek,
@@ -186,7 +189,7 @@ class _EditCourseDetailsDialogState extends State<EditCourseDetailsDialog> {
   Widget _showTimeDropdown() {
     return Container(
       width: 90.0,
-      height: 30.0,
+      height: 37.0,
       child: Dropdown(
         dropdownMenuItemList: _buildTimeDropdown(),
         onChanged: _setTimeFrom,
