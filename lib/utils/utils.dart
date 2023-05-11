@@ -3,6 +3,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mwb_connect_app/service_locator.dart';
 import 'package:mwb_connect_app/utils/constants.dart';
+import 'package:mwb_connect_app/core/models/user_model.dart';
 import 'package:mwb_connect_app/core/models/course_mentor_model.dart';
 import 'package:mwb_connect_app/core/models/course_type_model.dart';
 import 'package:mwb_connect_app/core/models/subfield_model.dart';
@@ -177,6 +178,13 @@ class Utils {
   static bool isLessonRecurrent(DateTime lessonDateTime, DateTime? endRecurrenceDateTime) {
     DateFormat dateTimeFormat = DateFormat(AppConstants.dateTimeFormat, 'en');
     return endRecurrenceDateTime != null && dateTimeFormat.format(lessonDateTime) != dateTimeFormat.format(endRecurrenceDateTime);
+  }
+
+  static String getUserFirstName(String? name) {
+    if (name != null && name.isNotEmpty) {
+      return name.split(' ')[0];
+    }
+    return '';
   }
 
   static Subfield getMentorSubfield(CourseMentor mentor) {

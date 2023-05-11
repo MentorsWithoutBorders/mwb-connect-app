@@ -253,15 +253,16 @@ class MentorCourseTextsService {
     DateTime sentDateTime = mentorPartnershipRequest.sentDateTime as DateTime;
     CourseMentor mentor = mentorPartnershipRequest.mentor as CourseMentor;
     String mentorName = mentor.name as String;
+    String mentorFirstName = Utils.getUserFirstName(mentorName);
     DateFormat dateFormat = DateFormat(AppConstants.dateFormatLesson, 'en');
     String date = dateFormat.format(sentDateTime.add(Duration(days: 1)));
-    String text = 'mentor_course.mentor_partnership_request_bottom_text'.tr(args: [date, mentorName]);
+    String text = 'mentor_course.mentor_partnership_request_bottom_text'.tr(args: [date, mentorFirstName]);
     return [
       ColoredText(text: text.substring(0, text.indexOf(date)), color: AppColors.DOVE_GRAY, isItalic: true),
       ColoredText(text: date, color: AppColors.TANGO, isItalic: true),
-      ColoredText(text: text.substring(text.indexOf(date) + date.length, text.indexOf(mentorName)), color: AppColors.DOVE_GRAY, isItalic: true),
-      ColoredText(text: mentorName, color: AppColors.TANGO, isItalic: true),
-      ColoredText(text: text.substring(text.indexOf(mentorName) + mentorName.length), color: AppColors.DOVE_GRAY, isItalic: true),
+      ColoredText(text: text.substring(text.indexOf(date) + date.length, text.indexOf(mentorFirstName)), color: AppColors.DOVE_GRAY, isItalic: true),
+      ColoredText(text: mentorFirstName, color: AppColors.DOVE_GRAY, isItalic: true),
+      ColoredText(text: text.substring(text.indexOf(mentorFirstName) + mentorFirstName.length), color: AppColors.DOVE_GRAY, isItalic: true),
     ];
   }
 

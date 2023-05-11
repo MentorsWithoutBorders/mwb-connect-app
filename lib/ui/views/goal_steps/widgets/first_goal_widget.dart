@@ -51,7 +51,8 @@ class _FirstGoalState extends State<FirstGoal> {
                   child: Container(
                     padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                     alignment: Alignment.topLeft,
-                    child: Wrap(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
