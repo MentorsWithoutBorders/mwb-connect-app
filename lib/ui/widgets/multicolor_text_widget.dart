@@ -9,13 +9,12 @@ class MulticolorText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double scaleFactor = MediaQuery.of(context).textScaleFactor;
     final TextSpan text = TextSpan(
       children: List<TextSpan>.generate(coloredTexts.length, (index) {
         return TextSpan(
           text: coloredTexts[index].text,
           style: TextStyle(
-            fontSize: 13.0 / scaleFactor,
+            fontSize: 13.0,
             color: coloredTexts[index].color,
             height: 1.4,
             fontWeight: coloredTexts[index].isBold == true ? FontWeight.bold : FontWeight.normal,
@@ -29,11 +28,13 @@ class MulticolorText extends StatelessWidget {
       return SelectableText.rich(
         text,
         textAlign: TextAlign.justify,
+        textScaleFactor: MediaQuery.of(context).textScaleFactor
       );
     } else {
       return RichText(
         textAlign: TextAlign.justify,
         text: text,
+        textScaleFactor: MediaQuery.of(context).textScaleFactor
       );
     }
   }
