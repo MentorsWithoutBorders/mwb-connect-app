@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
@@ -5,12 +6,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:mwb_connect_app/utils/keys.dart';
 import 'package:mwb_connect_app/utils/colors.dart';
+import 'package:mwb_connect_app/utils/string_extension.dart';
 import 'package:mwb_connect_app/core/models/error_model.dart';
 import 'package:mwb_connect_app/core/viewmodels/login_signup_view_model.dart';
 import 'package:mwb_connect_app/core/models/user_model.dart';
+import 'package:mwb_connect_app/ui/views/account/widgets/privacy_policy_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
+import 'package:mwb_connect_app/ui/widgets/animated_dialog_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
-import 'package:mwb_connect_app/ui/views/forgot_password_view.dart';
+import 'package:mwb_connect_app/ui/views/account/forgot_password_view.dart';
 
 class LoginSignupView extends StatefulWidget {
   const LoginSignupView({Key? key, this.loginCallback, required this.isLoginForm})
@@ -41,7 +45,7 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   void initState() {
     super.initState();
     KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {    
+    WidgetsBinding.instance.addPostFrameCallback((_) async {    
       keyboardVisibilityController.onChange.listen((bool visible) {
         if (visible && _scrollController.hasClients) {
           Future<void>.delayed(const Duration(milliseconds: 100), () {
@@ -62,22 +66,29 @@ class _LoginSignupViewState extends State<LoginSignupView> {
   Widget _showForm() {
     return Container(
       padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 15.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          controller: _scrollController,
-          children: <Widget>[
-            _showLogo(),
-            _showTitle(),
-            if (_isLoginForm == false) _showNameInput(),
-            _showEmailInput(),
-            _showPasswordInput(),
-            _showErrorMessage(),
-            _showPrimaryButton(),
-            _showSecondaryButton(),
-            if (_isLoginForm == true) _showTertiaryButton()
-          ],
-        )
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                controller: _scrollController,
+                children: <Widget>[
+                  _showLogo(),
+                  _showTitle(),
+                  if (_isLoginForm == false) _showNameInput(),
+                  _showEmailInput(),
+                  _showPasswordInput(),
+                  _showErrorMessage(),
+                  _showPrimaryButton(),
+                  _showSecondaryButton(),
+                  if (_isLoginForm == true) _showTertiaryButton(),
+                ],
+              ),
+            ),
+          ),
+          if (_isLoginForm == false) _showPrivacy(),
+        ],
       )
     );
   }
@@ -372,6 +383,49 @@ class _LoginSignupViewState extends State<LoginSignupView> {
         height: 0.0,
       );
     }
+  }
+
+  Widget _showPrivacy() {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(25.0, 10.0, 20.0, 5.0),
+      child: RichText(
+        softWrap: true,
+        text: TextSpan(
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 13.0,
+            height: 1.3,
+          ),
+          children: [
+            TextSpan(
+              text: 'privacy.agree_text'.tr() + ' '
+            ),
+            TextSpan(
+              text: 'privacy.title'.tr().toTitleCase(),
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async {
+                  _goToPrivacy();
+                },
+            ),
+            TextSpan(
+              text: '.'
+            )
+          ]
+        )
+      )
+    );
+  }
+
+  void _goToPrivacy() {
+    showDialog(
+      context: context,
+      builder: (_) => AnimatedDialog(
+        widgetInside: PrivacyPolicyDialog()
+      )
+    );
   }  
 
   Widget _showPrimaryButton() {

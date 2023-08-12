@@ -12,7 +12,7 @@ import 'package:mwb_connect_app/core/services/analytics_service.dart';
 import 'package:mwb_connect_app/ui/widgets/background_gradient_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/loader_widget.dart';
 import 'package:mwb_connect_app/ui/widgets/slide_swipe_widget.dart';
-import 'package:mwb_connect_app/ui/views/login_signup_view.dart';
+import 'package:mwb_connect_app/ui/views/account/login_signup_view.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key, this.loginCallback})

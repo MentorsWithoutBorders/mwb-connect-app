@@ -14,7 +14,6 @@ class PrivacyView extends StatefulWidget {
 class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _cardKey = GlobalKey();
-  final GlobalKey _textKey = GlobalKey();
 
   @override
   void dispose() {
@@ -23,8 +22,6 @@ class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStat
   }  
 
   Widget _showPrivacy() {
-    final String privacyLastUpdatedLabel = 'privacy.last_updated_label'.tr();
-    final String privacyLastUpdated = 'privacy.last_updated'.tr();
     final String privacyText = 'privacy.text'.tr();
     
     return Container(
@@ -35,42 +32,40 @@ class _PrivacyViewState extends State<PrivacyView> with SingleTickerProviderStat
         key: _cardKey,
         elevation: 2,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 7.0, 20.0),
+          padding: const EdgeInsets.fromLTRB(15.0, 20.0, 7.0, 20.0),
           child: Scrollbar(
             controller: _scrollController,
             thumbVisibility: true,
-            child: ListView.builder(
-              padding: const EdgeInsets.only(top: 0.0),
-              controller: _scrollController,
-              itemCount: 1,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  key: _textKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: Text(
-                          privacyLastUpdatedLabel + ' ' + privacyLastUpdated,
-                          textAlign: TextAlign.justify,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                  controller: _scrollController,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: viewportConstraints.maxHeight,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 7.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 10.0),
+                            child: HtmlWidget(privacyText,
+                              onLoadingBuilder: (context, element, loadingProgress) => Padding(
+                                padding: const EdgeInsets.only(bottom: 70.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                        child: HtmlWidget(privacyText)
-                      )
-                    ]
-                  )
+                    ),
+                  ),
                 );
-              }
-            )
-          )
+              },
+            ),
+          ),
         )
       )
     );
